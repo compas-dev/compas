@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fix bug in `compas.datastructures.AttributesView`.
+
 ### Removed
 
 
@@ -29,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `is_windows` to work for CPython and IronPython.
 * Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
-* Fix bug in `compas.datastructures.AttributesView`.
 * Fixed data serialisation in `compas.datastructures.HalfFace`.
 
 ### Removed
