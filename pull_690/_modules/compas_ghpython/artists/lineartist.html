@@ -59,7 +59,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.18.1
+            0.19.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -129,23 +129,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="LineArtist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_ghpython.artists.LineArtist.draw_collection.html#compas_ghpython.artists.LineArtist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw the collection of lines.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        collection : list of compas.geometry.Line</span>
-<span class="sd">            A collection of ``Line`` objects.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list of :class:`Rhino.Geometry.Line`</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">LineArtist</span><span class="o">.</span><span class="n">_get_args</span><span class="p">(</span><span class="n">primitive</span><span class="p">)</span> <span class="k">for</span> <span class="n">primitive</span> <span class="ow">in</span> <span class="n">collection</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_args</span><span class="p">(</span><span class="n">primitive</span><span class="p">):</span>
@@ -301,7 +284,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.18.1',
+    VERSION           : '0.19.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

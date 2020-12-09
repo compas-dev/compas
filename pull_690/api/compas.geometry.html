@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Primitive" href="generated/compas.geometry.Primitive.html" />
+    <link rel="next" title="Circle" href="generated/compas.geometry.Circle.html" />
   
   
   
@@ -63,7 +63,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.18.1
+            0.19.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -101,20 +101,34 @@
 <h1>geometry</h1>
 <div class="section" id="primitives">
 <h2>Primitives</h2>
-<div class="section" id="base-classes">
-<h3>Base Classes</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Primitive</span></code></a></p></td>
-<td><p>Base class for geometric primitives.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+digraph inheritancee20350881f {
+rankdir=TB;
+ratio=auto;
+size=&quot;16.0, 16.0&quot;;
+  &quot;Base&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Abstract base class for all COMPAS objects.&quot;];
+  &quot;Circle&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A circle is defined by a plane and a radius.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Circle&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Ellipse&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A ellipse is defined by a plane and a major.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Ellipse&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Frame&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A frame is defined by a base point and two orthonormal base vectors.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Frame&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Line&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A line is defined by two points.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Line&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Plane&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A plane is defined by a base point and a normal vector.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Plane&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Point&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A point is defined by XYZ coordinates.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Point&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Polygon&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;An object representing an ordered collection of points in space connected&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Polygon&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Polyline&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A polyline is a sequence of points connected by line segments.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Polyline&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Primitive&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Base class for geometric primitives.&quot;];
+  &quot;Base&quot; -&gt; &quot;Primitive&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Quaternion&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Creates a ``Quaternion`` object.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Quaternion&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Vector&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A vector is defined by XYZ components and a homogenisation factor.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Vector&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
 <div class="section" id="classes">
 <h3>Classes</h3>
 <table class="longtable docutils align-default">
@@ -155,78 +169,8 @@
 </tr>
 </tbody>
 </table>
-<p>The following representations of primitives can be used
-interchangeably as input in methods and functions.
-The representations using native Python objects also correspond to the required input
-parameters of the default constructor functions of the corresponding COMPAS objects.</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 11%" />
-<col style="width: 27%" />
-<col style="width: 62%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Object</p></td>
-<td><p>COMPAS</p></td>
-<td><p>Python</p></td>
-</tr>
-<tr class="row-even"><td><p>point</p></td>
-<td><p>Point(float, float, float)</p></td>
-<td><p>[float, float, float]</p></td>
-</tr>
-<tr class="row-odd"><td><p>vector</p></td>
-<td><p>Vector(float, float, float)</p></td>
-<td><p>[float, float, float]</p></td>
-</tr>
-<tr class="row-even"><td><p>line</p></td>
-<td><p>Line(point, point)</p></td>
-<td><p>[[float, float, float], [float, float, float]]</p></td>
-</tr>
-<tr class="row-odd"><td><p>plane</p></td>
-<td><p>Plane(point, vector)</p></td>
-<td><p>[[float, float, float], [float, float, float]]</p></td>
-</tr>
-<tr class="row-even"><td><p>circle</p></td>
-<td><p>Circle(plane, float)</p></td>
-<td><p>[[[float, float, float], [float, float, float]], float]</p></td>
-</tr>
-<tr class="row-odd"><td><p>polygon</p></td>
-<td><p>Polygon(points)</p></td>
-<td><p>[[float, float, float], … [float, float, float]]</p></td>
-</tr>
-<tr class="row-even"><td><p>polyline</p></td>
-<td><p>Polyline(points)</p></td>
-<td><p>[[float, float, float], … [float, float, float]]</p></td>
-</tr>
-<tr class="row-odd"><td><p>ellipse</p></td>
-<td><p>Ellipse(plane, float, float)</p></td>
-<td><p>[[[float, float, float], [float, float, float]], float, float]</p></td>
-</tr>
-<tr class="row-even"><td><p>frame</p></td>
-<td><p>Frame(point, vector,  vector)</p></td>
-<td><p>[[float, float, float], [float, float, float], [float, float, float]]</p></td>
-</tr>
-</tbody>
-</table>
-<p>COMPAS primitives also support indexing, assignment, and iteration according to the above
-equivalency.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">a</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-</code></pre></div>
 </div>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">plane</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">n</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="shapes">
-<h2>Shapes</h2>
-<div class="section" id="id1">
+<div class="section" id="base-classes">
 <h3>Base Classes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -234,13 +178,38 @@ equivalency.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
-<td><p>Base class for geometric shapes.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Primitive</span></code></a></p></td>
+<td><p>Base class for geometric primitives.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="id2">
+</div>
+<div class="section" id="shapes">
+<h2>Shapes</h2>
+digraph inheritance51bf464d92 {
+rankdir=TB;
+ratio=auto;
+size=&quot;16.0, 16.0&quot;;
+  &quot;Base&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Abstract base class for all COMPAS objects.&quot;];
+  &quot;Box&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.&quot;];
+  &quot;Shape&quot; -&gt; &quot;Box&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Capsule&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A capsule is defined by a line segment and a radius.&quot;];
+  &quot;Shape&quot; -&gt; &quot;Capsule&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Cone&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A cone is defined by a circle and a height.&quot;];
+  &quot;Shape&quot; -&gt; &quot;Cone&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Cylinder&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A cylinder is defined by a circle and a height.&quot;];
+  &quot;Shape&quot; -&gt; &quot;Cylinder&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Polyhedron&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A polyhedron is defined by its vertices and faces.&quot;];
+  &quot;Shape&quot; -&gt; &quot;Polyhedron&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Primitive&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Base class for geometric primitives.&quot;];
+  &quot;Base&quot; -&gt; &quot;Primitive&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Shape&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Base class for geometric shapes.&quot;];
+  &quot;Primitive&quot; -&gt; &quot;Shape&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Torus&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;A torus is defined by a plane and two radii.&quot;];
+  &quot;Shape&quot; -&gt; &quot;Torus&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+<div class="section" id="id1">
 <h3>Classes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -272,9 +241,80 @@ equivalency.</p>
 </tbody>
 </table>
 </div>
+<div class="section" id="id2">
+<h3>Base Classes</h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
+<td><p>Base class for geometric shapes.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+<div class="section" id="transformations">
+<h2>Transformations</h2>
+digraph inheritance3fb4d02326 {
+rankdir=TB;
+ratio=auto;
+size=&quot;16.0, 16.0&quot;;
+  &quot;Base&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Abstract base class for all COMPAS objects.&quot;];
+  &quot;Projection&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Create a projection transformation.&quot;];
+  &quot;Transformation&quot; -&gt; &quot;Projection&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Reflection&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Creates a ``Reflection`` that mirrors points at a plane.&quot;];
+  &quot;Transformation&quot; -&gt; &quot;Reflection&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Rotation&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Create a rotation transformation.&quot;];
+  &quot;Transformation&quot; -&gt; &quot;Rotation&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Scale&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Creates a scale transformation.&quot;];
+  &quot;Transformation&quot; -&gt; &quot;Scale&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Shear&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Create a shear transformation.&quot;];
+  &quot;Transformation&quot; -&gt; &quot;Shear&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Transformation&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;The ``Transformation`` represents a 4x4 transformation matrix.&quot;];
+  &quot;Base&quot; -&gt; &quot;Transformation&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Translation&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Create a translation transformation.&quot;];
+  &quot;Transformation&quot; -&gt; &quot;Translation&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+<div class="section" id="id3">
+<h3>Classes</h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Projection.html#compas.geometry.Projection" title="compas.geometry.Projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Projection</span></code></a></p></td>
+<td><p>Create a projection transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Reflection.html#compas.geometry.Reflection" title="compas.geometry.Reflection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Reflection</span></code></a></p></td>
+<td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Reflection</span></code> that mirrors points at a plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Rotation.html#compas.geometry.Rotation" title="compas.geometry.Rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rotation</span></code></a></p></td>
+<td><p>Create a rotation transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Scale.html#compas.geometry.Scale" title="compas.geometry.Scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scale</span></code></a></p></td>
+<td><p>Creates a scale transformation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Shear.html#compas.geometry.Shear" title="compas.geometry.Shear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shear</span></code></a></p></td>
+<td><p>Create a shear transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transformation</span></code></a></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> represents a 4x4 transformation matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Translation.html#compas.geometry.Translation" title="compas.geometry.Translation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Translation</span></code></a></p></td>
+<td><p>Create a translation transformation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions</h2>
 <div class="section" id="predicates-2d">
-<h2>Predicates 2D</h2>
+<h3>Predicates 2D</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -318,7 +358,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="predicates-3d">
-<h2>Predicates 3D</h2>
+<h3>Predicates 3D</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -355,39 +395,8 @@ equivalency.</p>
 </tbody>
 </table>
 </div>
-<div class="section" id="transformations">
-<h2>Transformations</h2>
-<p><strong>Classes</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Projection.html#compas.geometry.Projection" title="compas.geometry.Projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Projection</span></code></a></p></td>
-<td><p>Create a projection transformation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Reflection.html#compas.geometry.Reflection" title="compas.geometry.Reflection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Reflection</span></code></a></p></td>
-<td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Reflection</span></code> that mirrors points at a plane.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Rotation.html#compas.geometry.Rotation" title="compas.geometry.Rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rotation</span></code></a></p></td>
-<td><p>Create a rotation transformation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Scale.html#compas.geometry.Scale" title="compas.geometry.Scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scale</span></code></a></p></td>
-<td><p>Creates a scale transformation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Shear.html#compas.geometry.Shear" title="compas.geometry.Shear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shear</span></code></a></p></td>
-<td><p>Create a shear transformation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transformation</span></code></a></p></td>
-<td><p>The <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> represents a 4x4 transformation matrix.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Translation.html#compas.geometry.Translation" title="compas.geometry.Translation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Translation</span></code></a></p></td>
-<td><p>Create a translation transformation.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Functions</strong></p>
+<div class="section" id="id4">
+<h3>Transformations</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -548,7 +557,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="linear-algebra">
-<h2>Linear algebra</h2>
+<h3>Linear algebra</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -679,7 +688,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="points-vectors-lines-planes">
-<h2>Points, Vectors, Lines, Planes</h2>
+<h3>Points, Vectors, Lines, Planes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -771,7 +780,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="polygons-polyhedrons">
-<h2>Polygons &amp; Polyhedrons</h2>
+<h3>Polygons &amp; Polyhedrons</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -827,7 +836,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="point-sets">
-<h2>Point Sets</h2>
+<h3>Point Sets</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -862,7 +871,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="distance">
-<h2>Distance</h2>
+<h3>Distance</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -900,7 +909,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="intersections">
-<h2>Intersections</h2>
+<h3>Intersections</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -971,7 +980,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="offsets">
-<h2>Offsets</h2>
+<h3>Offsets</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -991,7 +1000,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="interpolation">
-<h2>Interpolation</h2>
+<h3>Interpolation</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -1014,7 +1023,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="fitting">
-<h2>Fitting</h2>
+<h3>Fitting</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -1034,7 +1043,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="boolean-operations">
-<h2>Boolean operations</h2>
+<h3>Boolean operations</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -1054,7 +1063,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="triangulation">
-<h2>Triangulation</h2>
+<h3>Triangulation</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -1083,7 +1092,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="triangle-meshes">
-<h2>Triangle meshes</h2>
+<h3>Triangle meshes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -1124,7 +1133,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="quad-meshes">
-<h2>Quad meshes</h2>
+<h3>Quad meshes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -1138,7 +1147,7 @@ equivalency.</p>
 </table>
 </div>
 <div class="section" id="pointclouds">
-<h2>Pointclouds</h2>
+<h3>Pointclouds</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -1151,22 +1160,6 @@ equivalency.</p>
 </tbody>
 </table>
 </div>
-<div class="section" id="id3">
-<h2>Base Classes</h2>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Primitive</span></code></a></p></td>
-<td><p>Base class for geometric primitives.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
-<td><p>Base class for geometric shapes.</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 
@@ -1227,18 +1220,23 @@ equivalency.</p>
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#primitives">Primitives</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#base-classes">Base Classes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#base-classes">Base Classes</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#shapes">Shapes</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id1">Base Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id2">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id1">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id2">Base Classes</a></li>
 </ul>
 </li>
+<li class="nav-item"><a class="nav-link reference internal" href="#transformations">Transformations</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id3">Classes</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#functions">Functions</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#predicates-2d">Predicates 2D</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#predicates-3d">Predicates 3D</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#transformations">Transformations</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id4">Transformations</a><ul class="nav flex-column">
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#linear-algebra">Linear algebra</a></li>
@@ -1255,7 +1253,8 @@ equivalency.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#triangle-meshes">Triangle meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#quad-meshes">Quad meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#pointclouds">Pointclouds</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id3">Base Classes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1362,7 +1361,7 @@ equivalency.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.18.1',
+    VERSION           : '0.19.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

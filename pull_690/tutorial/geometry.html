@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Meshes" href="meshes.html" />
+    <link rel="next" title="Networks" href="networks.html" />
   
   
   
@@ -63,7 +63,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.18.1
+            0.19.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -441,6 +441,76 @@ but are available through the plugin mechanism if <code class="xref py py-mod do
 and unserialised from such a representation to reconstruct an equivalent object without loss
 of information. The serialisation mechanism relies on the underlying data model.</p>
 </div>
+<div class="section" id="notes">
+<h2>Notes</h2>
+<p>The following representations of primitives can be used
+interchangeably as input in methods and functions.
+The representations using native Python objects also correspond to the required input
+parameters of the default constructor functions of the corresponding COMPAS objects.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 27%" />
+<col style="width: 62%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Object</p></td>
+<td><p>COMPAS</p></td>
+<td><p>Python</p></td>
+</tr>
+<tr class="row-even"><td><p>point</p></td>
+<td><p>Point(float, float, float)</p></td>
+<td><p>[float, float, float]</p></td>
+</tr>
+<tr class="row-odd"><td><p>vector</p></td>
+<td><p>Vector(float, float, float)</p></td>
+<td><p>[float, float, float]</p></td>
+</tr>
+<tr class="row-even"><td><p>line</p></td>
+<td><p>Line(point, point)</p></td>
+<td><p>[[float, float, float], [float, float, float]]</p></td>
+</tr>
+<tr class="row-odd"><td><p>plane</p></td>
+<td><p>Plane(point, vector)</p></td>
+<td><p>[[float, float, float], [float, float, float]]</p></td>
+</tr>
+<tr class="row-even"><td><p>circle</p></td>
+<td><p>Circle(plane, float)</p></td>
+<td><p>[[[float, float, float], [float, float, float]], float]</p></td>
+</tr>
+<tr class="row-odd"><td><p>polygon</p></td>
+<td><p>Polygon(points)</p></td>
+<td><p>[[float, float, float], … [float, float, float]]</p></td>
+</tr>
+<tr class="row-even"><td><p>polyline</p></td>
+<td><p>Polyline(points)</p></td>
+<td><p>[[float, float, float], … [float, float, float]]</p></td>
+</tr>
+<tr class="row-odd"><td><p>ellipse</p></td>
+<td><p>Ellipse(plane, float, float)</p></td>
+<td><p>[[[float, float, float], [float, float, float]], float, float]</p></td>
+</tr>
+<tr class="row-even"><td><p>frame</p></td>
+<td><p>Frame(point, vector,  vector)</p></td>
+<td><p>[[float, float, float], [float, float, float], [float, float, float]]</p></td>
+</tr>
+</tbody>
+</table>
+<p>COMPAS primitives also support indexing, assignment, and iteration according to the above
+equivalency.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">plane</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">n</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
 </div>
 
         
@@ -465,13 +535,13 @@ of information. The serialisation mechanism relies on the underlying data model.
 <li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="networks.html">Networks</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="robots.html">Robots</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="rpc.html">Remote Procedure Calls</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="geomaps.html">Geometric Maps</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="rhino.html">Rhino</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="blender.html">Blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="rpc.html">Remote Procedure Calls</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="geomaps.html">Geometric Maps</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
@@ -500,6 +570,7 @@ of information. The serialisation mechanism relies on the underlying data model.
 <li class="nav-item"><a class="nav-link reference internal" href="#boolean-operations">Boolean Operations</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#serialization">Serialization</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
@@ -606,7 +677,7 @@ of information. The serialisation mechanism relies on the underlying data model.
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.18.1',
+    VERSION           : '0.19.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

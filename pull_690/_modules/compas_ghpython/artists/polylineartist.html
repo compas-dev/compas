@@ -59,7 +59,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.18.1
+            0.19.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -127,23 +127,6 @@
 <span class="sd">        :class:`Rhino.Geometry.Polyline`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">polylines</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_polylines</span><span class="p">(</span><span class="n">polylines</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PolylineArtist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_ghpython.artists.PolylineArtist.draw_collection.html#compas_ghpython.artists.PolylineArtist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw a collection of polylines.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        collection : list of compas.geometry.Polyline</span>
-<span class="sd">            A collection of ``Polyline`` objects.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list of :class:`Rhino.Geometry.Polyline`</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">polylines</span> <span class="o">=</span> <span class="p">[</span><span class="n">PolylineArtist</span><span class="o">.</span><span class="n">_get_args</span><span class="p">(</span><span class="n">primitive</span><span class="p">)</span> <span class="k">for</span> <span class="n">primitive</span> <span class="ow">in</span> <span class="n">collection</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_polylines</span><span class="p">(</span><span class="n">polylines</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
@@ -298,7 +281,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.18.1',
+    VERSION           : '0.19.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

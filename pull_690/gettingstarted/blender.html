@@ -63,7 +63,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.18.1
+            0.19.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -98,12 +98,12 @@
         
           
           <div class="section" id="blender">
-<h1>Blender</h1>
+<span id="gs-blender"></span><h1>Blender</h1>
 <p>Blender ships with its own embedded version of Python. Therefore, the simplest
 (and recommended) way to install COMPAS for Blender is to replace the embedded
 Python by the Python of a <cite>conda</cite> environment that already has COMPAS installed.</p>
 <p>It is important that the version of Python installed in the <cite>conda</cite> environment matches
-the version of Python that was originally shipped with Blender. For Blender 2.8x
+the version of Python that was originally shipped with Blender. For Blender 2.9x
 this is Python 3.7x.</p>
 <div class="section" id="installation">
 <h2>Installation</h2>
@@ -116,6 +116,9 @@ this is Python 3.7x.</p>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#replace_python_osx">OSX</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#replace_python_linux">Linux</a>
+            </li>
         </ul>
     </div>
     <div class="card-body">
@@ -126,10 +129,10 @@ conda create -n blender <span class="nv">python</span><span class="o">=</span><s
 </div>
 <p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83&quot;</span>
+python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91&quot;</span>
 </code></pre></div>
 </div>
-<p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\Blender</span> <span class="pre">Foundation\Blender</span> <span class="pre">2.83\2.83</span></code> might be different
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.91\\2.91</span></code> might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.</p>
 </div>
@@ -140,11 +143,25 @@ conda create -n blender <span class="nv">python</span><span class="o">=</span><s
 </div>
 <p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.83
+python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
 </code></pre></div>
 </div>
-<p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.83</span></code> might be different
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.91</span></code> might be different
 if you have another version of Blender intalled.
+Check your version of Blender and change the path accordingly.</p>
+</div>
+<div class="tab-pane" id="replace_python_linux"><p>If you wish to install a new python environment with COMPAS, open the Terminal and type the following:</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
+conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
+</code></pre></div>
+</div>
+<p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS.</p>
+<p>First, backup the original python:</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+python -m compas_blender.install ~/Blender/2.91
+</code></pre></div>
+</div>
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.91</span></code> might be different for your setup.
 Check your version of Blender and change the path accordingly.</p>
 </div></div>
 </div>
@@ -347,7 +364,7 @@ Just add the following to your <code class="docutils literal notranslate"><span 
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.18.1',
+    VERSION           : '0.19.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Remote Procedure Calls" href="rpc.html" />
+    <link rel="next" title="Rhino" href="rhino.html" />
   
   
   
-    <link rel="prev" title="Networks" href="networks.html" />
+    <link rel="prev" title="Meshes" href="meshes.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -63,7 +63,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.18.1
+            0.19.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -98,7 +98,7 @@
         
           
           <div class="section" id="robots">
-<span id="id1"></span><h1>Robots</h1>
+<h1>Robots</h1>
 <p class="lead">COMPAS provides several fundamental structures and features that simplify working
 with robots models, kinematic chains and coordinate frames. On top of this,
 the <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/">COMPAS FAB</a> extension
@@ -117,7 +117,7 @@ in relation to the next. Examples of typical coordinate frames are:</p>
 <li><p>Tool coordinate frame (<code class="docutils literal notranslate"><span class="pre">TCF</span></code>)</p></li>
 <li><p>Object coordinate frame (<code class="docutils literal notranslate"><span class="pre">OCF</span></code>)</p></li>
 </ul>
-<div class="figure align-default" id="id3">
+<div class="figure align-default" id="id2">
 <img alt="../_images/coordinate_frames.jpg" class="figure-img img-fluid" src="../_images/coordinate_frames.jpg" />
 <p class="caption"><span class="caption-text">Coordinate frame convention of a robotic setup.</span></p>
 </div>
@@ -315,8 +315,7 @@ The following snippet shows how to load the robot model currently active in ROS:
 Grasshopper using one of COMPAS’s artists.  The basic procedure is the same in
 any of the CAD software (aside from the import statement), so for simplicity we
 will demonstrate the use of <a class="reference internal" href="../api/generated/compas_rhino.artists.RobotModelArtist.html#compas_rhino.artists.RobotModelArtist" title="compas_rhino.artists.RobotModelArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.RobotModelArtist</span></code></a> in Rhino.  Once
-COMPAS has been installed for Rhino
-(see <span class="xref std std-ref">Getting started with Rhino</span>),
+COMPAS has been installed for Rhino,
 the following can be run in a Python script editor within Rhino.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">GithubPackageMeshLoader</span>
@@ -368,13 +367,13 @@ COMPAS FAB documentation.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="geometry.html">Geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="networks.html">Networks</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Robots</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="rpc.html">Remote Procedure Calls</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="geomaps.html">Geometric Maps</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="rhino.html">Rhino</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="blender.html">Blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="rpc.html">Remote Procedure Calls</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="geomaps.html">Geometric Maps</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
@@ -509,7 +508,7 @@ COMPAS FAB documentation.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.18.1',
+    VERSION           : '0.19.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
