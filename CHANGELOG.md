@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [0.19.0] 2020-12-09
+
+### Added
+
 * Added `is_osx`.
 
 ### Changed
@@ -21,8 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
 * Fix bug in `compas.datastructures.AttributesView`.
+* Fixed data serialisation in `compas.datastructures.HalfFace`.
 
 ### Removed
+
+* Removed all implementations of `draw_collection`.
 
 
 ## [0.18.1] 2020-12-01

@@ -5,8 +5,9 @@ topology
 
 .. currentmodule:: compas.topology
 
-connectivity
-------------
+
+Connectivity
+============
 
 .. autosummary::
     :toctree: generated/
@@ -14,8 +15,9 @@ connectivity
 
     adjacency_from_edges
 
-combinatorics
--------------
+
+Combinatorics
+=============
 
 .. autosummary::
     :toctree: generated/
@@ -24,8 +26,9 @@ combinatorics
     vertex_coloring
     connected_components
 
-orientation
------------
+
+Orientation
+===========
 
 .. autosummary::
     :toctree: generated/
@@ -36,8 +39,9 @@ orientation
     unify_cycles
     unify_cycles_numpy
 
-traversal
----------
+
+Traversal
+=========
 
 .. autosummary::
     :toctree: generated/

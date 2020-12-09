@@ -16,10 +16,6 @@ class BaseArtist(object):
     def draw(self):
         raise NotImplementedError
 
-    @staticmethod
-    def draw_collection(collection):
-        raise NotImplementedError
-
 
 # ==============================================================================
 # Main

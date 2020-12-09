@@ -5,10 +5,11 @@ compas
 
 .. currentmodule:: compas
 
-
 .. toctree::
     :maxdepth: 1
+    :titlesonly:
 
+    compas.base
     compas.datastructures
     compas.files
     compas.geometry
@@ -35,7 +36,7 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '0.18.1'
+__version__ = '0.19.0'
 
 
 HERE = os.path.dirname(__file__)

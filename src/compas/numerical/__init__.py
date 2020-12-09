@@ -5,6 +5,7 @@ numerical
 
 .. currentmodule:: compas.numerical
 
+
 Solvers
 =======
 

@@ -49,6 +49,7 @@ jobs:
           fi;
           echo "Docs will be deployed to https://compas.dev/compas/$FOLDER_NAME"
           mkdir -p deploy/$BRANCH_OR_TAG && mv -T dist/docs deploy/$FOLDER_NAME/
+          
       - name: Deploy docs
         if: success() && env.GH_PAT != ''
         uses: crazy-max/ghaction-github-pages@v2

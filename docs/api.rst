@@ -4,6 +4,7 @@ API Reference
 
 .. toctree::
     :maxdepth: 1
+    :titlesonly:
 
     api/compas
     api/compas_rhino

@@ -35,23 +35,6 @@ class CircleArtist(PrimitiveArtist):
         return compas_ghpython.draw_circles(circles)[0]
 
     @staticmethod
-    def draw_collection(collection):
-        """Draw the collection of circles.
-
-        Parameters
-        ----------
-        collection : list of compas.geometry.Circle
-            A collection of ``Circle`` objects.
-
-        Returns
-        -------
-        list of :class:`Rhino.Geometry.Circle`
-
-        """
-        circles = [CircleArtist._get_args(primitive) for primitive in collection]
-        return compas_ghpython.draw_circles(circles)
-
-    @staticmethod
     def _get_args(primitive):
         point = list(primitive.plane.point)
         normal = list(primitive.plane.normal)

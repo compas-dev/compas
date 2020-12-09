@@ -35,23 +35,6 @@ class PointArtist(PrimitiveArtist):
         return compas_ghpython.draw_points(points)[0]
 
     @staticmethod
-    def draw_collection(collection):
-        """Draw a collection of points.
-
-        Parameters
-        ----------
-        collection : list of compas.geometry.Point
-            A collection of ``Point`` objects.
-
-        Returns
-        -------
-        list of :class:`Rhino.Geometry.Point3d`
-
-        """
-        points = [PointArtist._get_args(primitive) for primitive in collection]
-        return compas_ghpython.draw_points(points)
-
-    @staticmethod
     def _get_args(primitive):
         return {'pos': list(primitive)}
 

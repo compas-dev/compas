@@ -5,4 +5,4 @@
 
 .. currentmodule:: {{ module }}
 
-.. automethod:: {{ objname }}
+.. autoattribute:: {{ objname }}
