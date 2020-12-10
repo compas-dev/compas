@@ -22,12 +22,6 @@ If you don't have an environment yet with Python 3.7 and COMPAS you can create o
     conda config --add channels conda-forge
     conda create -n blender python=3.7 COMPAS
 
-Make sure it is active when you install COMPAS for Blender.
-
-.. code-block:: bash
-
-    conda activate blender
-
 Configuring Blender to use the newly installed environment is slightly different per OS.
 
 .. raw:: html
@@ -55,6 +49,7 @@ Configuring Blender to use the newly installed environment is slightly different
 
 .. code-block:: bash
 
+    conda activate blender
     python -m compas_blender.install "%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91"
 
 Note that the path ``%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91`` might be different
@@ -68,6 +63,7 @@ Check your version of Blender and change the path accordingly.
 
 .. code-block:: bash
 
+    conda activate blender
     python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
 
 Note that the path ``/Applications/blender.app/Contents/Resources/2.91`` might be different
@@ -81,6 +77,7 @@ Check your version of Blender and change the path accordingly.
 
 .. code-block:: bash
 
+    conda activate blender
     python -m compas_blender.install ~/Blender/2.91
 
 Note that the path ``~/Blender/2.91`` might be different for your setup.
@@ -145,7 +142,7 @@ Just add the following to your ``.bash_profile`` or ``.bashrc``.
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#add_blender_to_path_osx">OSX</a>
+                    <a class="nav-link active" data-toggle="tab" href="#add_blender_to_path_osx">OSX</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#add_blender_to_path_linux">Linux</a>
