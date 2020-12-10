@@ -124,7 +124,10 @@ Otherwise, the changes will not have any effect.
     conda install ...
 
 .. note::
-    if you want to use blender with a different environment, you simply have to activate that environment and floow the same procedure described above.
+
+    If you want to use blender with a different environment,
+    you simply have to activate that environment and follow the same procedure described above.
+
 
 Start Blender
 =============
