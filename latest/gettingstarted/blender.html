@@ -112,10 +112,6 @@ this is Python 3.7x.</p>
 conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
 </code></pre></div>
 </div>
-<p>Make sure it is active when you install COMPAS for Blender.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-</code></pre></div>
-</div>
 <p>Configuring Blender to use the newly installed environment is slightly different per OS.</p>
 <div class="card">
     <div class="card-header">
@@ -132,21 +128,24 @@ conda create -n blender <span class="nv">python</span><span class="o">=</span><s
         </ul>
     </div>
     <div class="card-body">
-        <div class="tab-content"><div class="tab-pane active" id="replace_python_windows"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91&quot;</span>
+        <div class="tab-content"><div class="tab-pane active" id="replace_python_windows"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91&quot;</span>
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.91\\2.91</span></code> might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.</p>
 </div>
-<div class="tab-pane" id="replace_python_osx"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
+<div class="tab-pane" id="replace_python_osx"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.91</span></code> might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.</p>
 </div>
-<div class="tab-pane" id="replace_python_linux"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_blender.install ~/Blender/2.91
+<div class="tab-pane" id="replace_python_linux"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+python -m compas_blender.install ~/Blender/2.91
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.91</span></code> might be different for your setup.</p>
@@ -191,7 +190,7 @@ Just add the following to your <code class="docutils literal notranslate"><span 
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#add_blender_to_path_osx">OSX</a>
+                <a class="nav-link active" data-toggle="tab" href="#add_blender_to_path_osx">OSX</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#add_blender_to_path_linux">Linux</a>
