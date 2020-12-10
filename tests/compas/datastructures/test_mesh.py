@@ -1,11 +1,12 @@
-# import pytest
-import os
-import compas
 import json
+import os
+
 import pytest
 
+import compas
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join_and_weld
+from compas.geometry import Box
 from compas.geometry import Polygon
 from compas.geometry import Translation
 
@@ -18,6 +19,12 @@ def tet():
 @pytest.fixture
 def cube():
     return Mesh.from_polyhedron(6)
+
+
+@pytest.fixture
+def box():
+    box = Box.from_width_height_depth(2, 2, 2)
+    return Mesh.from_shape(box)
 
 
 @pytest.fixture
@@ -666,3 +673,14 @@ def test_faces_on_boundaries_triangleboundarychain(triangleboundarychain):
 # --------------------------------------------------------------------------
 # attributes
 # --------------------------------------------------------------------------
+
+def test_face_attributes_includes_all_defaults(box):
+    box.update_default_face_attributes({"attr1": "value1", "attr2": "value2"})
+
+    random_fkey = box.get_any_face()
+    assert sorted(box.face_attributes(random_fkey).keys()) == ['attr1', 'attr2']
+
+    box.face_attribute(random_fkey, "attr3", "value3")
+    assert sorted(box.face_attributes(random_fkey).keys()) == ['attr1', 'attr2', 'attr3']
+
+    assert box.face_attribute(random_fkey, "attr3") == 'value3'
