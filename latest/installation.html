@@ -67,8 +67,8 @@
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
-        <!-- version -->
         
+        <!-- version -->
         <!-- social -->
         <li class="nav-item">
           <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
@@ -93,7 +93,7 @@
   <!-- main -->
   <div class="container-fluid">
     <div class="row">
-      <!-- main -->
+      <!-- content -->
       <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
           
@@ -107,31 +107,31 @@ using popular package managers such as coda or pip.</p>
 <div class="section" id="install-with-conda">
 <h2>Install with conda</h2>
 <p>The recommended way to install COMPAS is with <a class="reference external" href="https://conda.io/docs/">conda</a>.
-For example, create an environment named <code class="docutils literal notranslate"><span class="pre">my-project</span></code> and install COMPAS.</p>
+For example, create an environment named <code class="docutils literal notranslate"><span class="pre">research</span></code> and install COMPAS.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
-conda create -n my-project COMPAS
+conda create -n research COMPAS
 </code></pre></div>
 </div>
 <p>Afterwards, simply activate the environment
 and run the following command to check if the installation process was successful.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate my-project
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate research
 python -m compas
 </code></pre></div>
 </div>
 <div class="language-none notranslate"><div class="highlight"><pre><code><span></span>Yay! COMPAS is installed correctly!
 
-COMPAS: 0.16.5
+COMPAS: 0.19.1
 Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clang 9.0.1 ]
 </code></pre></div>
 </div>
 <div class="section" id="installation-options">
 <h3>Installation options</h3>
 <p>Install COMPAS in an environment with a specific version of Python.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n my-project <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n research <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
 </code></pre></div>
 </div>
 <p>Install COMPAS in an existing environment.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda install -n my-project COMPAS
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda install -n research COMPAS
 </code></pre></div>
 </div>
 </div>
@@ -139,7 +139,8 @@ Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clan
 <div class="section" id="install-with-pip">
 <h2>Install with pip</h2>
 <p>Install COMPAS using <code class="docutils literal notranslate"><span class="pre">pip</span></code> from the Python Package Index.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install COMPAS
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
+pip install COMPAS
 </code></pre></div>
 </div>
 <p>Install an editable version from local source.</p>
@@ -176,7 +177,8 @@ Then run the <code class="docutils literal notranslate"><span class="pre">pip</s
 </div>
 <div class="section" id="runtimeerror-the-current-numpy-installation-fails-to-pass-a-sanity-check">
 <h3>RuntimeError: The current Numpy installation (…) fails to pass a sanity check</h3>
-<p>If you see this error, it means latest Numpy 1.19.4 could not init due to a bug from windows. To avoid it, simply downgrade Numpy by <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpy==1.19.3</span></code>
+<p>If you see this error, it means latest Numpy 1.19.4 could not init due to a bug from windows.
+To avoid it, simply downgrade Numpy by <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpy==1.19.3</span></code>
 See the detail of the bug here: <a class="reference external" href="https://github.com/numpy/numpy/issues/17726">https://github.com/numpy/numpy/issues/17726</a></p>
 </div>
 </div>
@@ -184,7 +186,7 @@ See the detail of the bug here: <a class="reference external" href="https://gith
 
         
       </main>
-      <!-- main -->
+      <!-- content -->
       <!-- sidebar -->
       <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
         <form id="search" class="d-flex align-items-center compas-searchbox" action="search.html" method="get">
@@ -239,68 +241,9 @@ See the detail of the bug here: <a class="reference external" href="https://gith
       <!-- toc -->
     </div>
   </div>
-
-  <!-- <footer class="bg-dark py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-3 d-flex flex-even my-4">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-3 d-flex flex-even my-4">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer> -->
-
+  <!-- main -->
+  <!-- footer -->
+  <!-- footer -->
   <div class="below py-5" style="background-color: #23272b;">
     <div class="container">
       <div class="row flex-column">

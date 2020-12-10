@@ -67,8 +67,8 @@
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
-        <!-- version -->
         
+        <!-- version -->
         <!-- social -->
         <li class="nav-item">
           <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
@@ -93,7 +93,7 @@
   <!-- main -->
   <div class="container-fluid">
     <div class="row">
-      <!-- main -->
+      <!-- content -->
       <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
           
@@ -103,10 +103,20 @@
 (and recommended) way to install COMPAS for Blender is to replace the embedded
 Python by the Python of a <cite>conda</cite> environment that already has COMPAS installed.</p>
 <p>It is important that the version of Python installed in the <cite>conda</cite> environment matches
-the version of Python that was originally shipped with Blender. For Blender 2.9x
+the version of Python that was originally shipped with Blender. For Blender 2.8x and 2.9x
 this is Python 3.7x.</p>
 <div class="section" id="installation">
 <h2>Installation</h2>
+<p>If you don’t have an environment yet with Python 3.7 and COMPAS you can create one with <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
+conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
+</code></pre></div>
+</div>
+<p>Make sure it is active when you install COMPAS for Blender.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+</code></pre></div>
+</div>
+<p>Configuring Blender to use the newly installed environment is slightly different per OS.</p>
 <div class="card">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
@@ -122,47 +132,24 @@ this is Python 3.7x.</p>
         </ul>
     </div>
     <div class="card-body">
-        <div class="tab-content"><div class="tab-pane active" id="replace_python_windows"><p>If you wish to install a new python environment with COMPAS, open the command prompt and type the following:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
-conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
-</code></pre></div>
-</div>
-<p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91&quot;</span>
+        <div class="tab-content"><div class="tab-pane active" id="replace_python_windows"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91&quot;</span>
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.91\\2.91</span></code> might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.</p>
 </div>
-<div class="tab-pane" id="replace_python_osx"><p>If you wish to install a new python environment with COMPAS, open the Terminal and type the following:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
-conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
-</code></pre></div>
-</div>
-<p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
+<div class="tab-pane" id="replace_python_osx"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.91</span></code> might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.</p>
 </div>
-<div class="tab-pane" id="replace_python_linux"><p>If you wish to install a new python environment with COMPAS, open the Terminal and type the following:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
-conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
+<div class="tab-pane" id="replace_python_linux"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_blender.install ~/Blender/2.91
 </code></pre></div>
 </div>
-<p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS.</p>
-<p>First, backup the original python:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install ~/Blender/2.91
-</code></pre></div>
-</div>
-<p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.91</span></code> might be different for your setup.
-Check your version of Blender and change the path accordingly.</p>
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.91</span></code> might be different for your setup.</p>
 </div></div>
 </div>
 </div></div>
@@ -189,20 +176,39 @@ conda install ...
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>if you want to use blender with a different environment, you simply have to activate that environment and floow the same procedure described above.</p>
+<p>If you want to use blender with a different environment,
+you simply have to activate that environment and follow the same procedure described above.</p>
 </div>
 </div>
 <div class="section" id="start-blender">
 <h2>Start Blender</h2>
 <p>Blender uses the command window of your system to display error messages and other text output.
 On Windows, the output window can be brought to the front directly from the “Window” menu.
-On Mac, you should start Blender from the command line.</p>
+On Mac or Linux, you should start Blender from the command line.</p>
 <p>By adding the Blender executable to the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable this is really simple.
-Just add the following to your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code></p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+Just add the following to your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>.</p>
+<div class="card">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#add_blender_to_path_osx">OSX</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#add_blender_to_path_linux">Linux</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content"><div class="tab-pane active" id="add_blender_to_path_osx"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
-<p>After that starting Blender from the command line is much simpler.</p>
+</div><div class="tab-pane" id="add_blender_to_path_linux"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.91:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</code></pre></div>
+</div>
+<p>Note that this path might be different on your system.</p>
+</div></div>
+</div>
+</div><p>After that starting Blender from the command line is much simpler.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>blender
 </code></pre></div>
 </div>
@@ -211,7 +217,7 @@ Just add the following to your <code class="docutils literal notranslate"><span 
 
         
       </main>
-      <!-- main -->
+      <!-- content -->
       <!-- sidebar -->
       <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
         <form id="search" class="d-flex align-items-center compas-searchbox" action="../search.html" method="get">
@@ -266,68 +272,9 @@ Just add the following to your <code class="docutils literal notranslate"><span 
       <!-- toc -->
     </div>
   </div>
-
-  <!-- <footer class="bg-dark py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-3 d-flex flex-even my-4">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-3 d-flex flex-even my-4">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
-          <div class="card w-100 border-0">
-            <div class="card-body" style="background-color: #23272b;">
-              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
-              <nav class="nav flex-column">
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
-                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer> -->
-
+  <!-- main -->
+  <!-- footer -->
+  <!-- footer -->
   <div class="below py-5" style="background-color: #23272b;">
     <div class="container">
       <div class="row flex-column">

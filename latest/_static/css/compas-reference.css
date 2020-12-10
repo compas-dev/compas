@@ -43,7 +43,7 @@
   border: 1px solid transparent; }
 
 .admonition p {
-  margin-bottom: 1rem; }
+  margin: 1rem 0; }
 
 .admonition-title {
   font-weight: 600;
