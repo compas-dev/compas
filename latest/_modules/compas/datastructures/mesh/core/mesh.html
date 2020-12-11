@@ -142,17 +142,10 @@
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    attributes : dict</span>
-<span class="sd">        A dictionary of general mesh attributes.</span>
-
-<span class="sd">        * ``&#39;name&#39;: &quot;Mesh&quot;``</span>
-
+<span class="sd">        A dictionary of general mesh attributes: ``{&#39;name&#39;: &quot;Mesh&quot;}``.</span>
 <span class="sd">    default_vertex_attributes : dict</span>
-<span class="sd">        The names of pre-assigned vertex attributes and their default values.</span>
-
-<span class="sd">        * ``&#39;x&#39;: 0.0``</span>
-<span class="sd">        * ``&#39;y&#39;: 0.0``</span>
-<span class="sd">        * ``&#39;z&#39;: 0.0``</span>
-
+<span class="sd">        The names of pre-assigned vertex attributes and their default values:</span>
+<span class="sd">        ``{&#39;x&#39;: 0.0, &#39;y&#39;: 0.0, &#39;z&#39;: 0.0}``</span>
 <span class="sd">    default_edge_attributes : dict</span>
 <span class="sd">        The default data attributes assigned to every new edge.</span>
 <span class="sd">    default_face_attributes : dict</span>
@@ -162,20 +155,6 @@
 <span class="sd">        Shorthand for ``mesh.attributes[&#39;name&#39;]``</span>
 <span class="sd">    adjacency : dict, read-only</span>
 <span class="sd">        The vertex adjacency dictionary.</span>
-<span class="sd">    data : dict</span>
-<span class="sd">        The data representing the mesh.</span>
-<span class="sd">        The dict has the following structure:</span>
-
-<span class="sd">        * &#39;attributes&#39;   =&gt; dict</span>
-<span class="sd">        * &#39;dva&#39;          =&gt; dict</span>
-<span class="sd">        * &#39;dea&#39;          =&gt; dict</span>
-<span class="sd">        * &#39;dfa&#39;          =&gt; dict</span>
-<span class="sd">        * &#39;vertex&#39;       =&gt; dict</span>
-<span class="sd">        * &#39;face&#39;         =&gt; dict</span>
-<span class="sd">        * &#39;facedata&#39;     =&gt; dict</span>
-<span class="sd">        * &#39;edgedata&#39;     =&gt; dict</span>
-<span class="sd">        * &#39;max_int_key&#39;  =&gt; int</span>
-<span class="sd">        * &#39;max_int_fkey&#39; =&gt; int</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>

@@ -106,38 +106,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>attributes</strong> (<em>dict</em>) – A dictionary of general mesh attributes.</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">'name':</span> <span class="pre">&quot;Mesh&quot;</span></code></p></li>
-</ul>
-</li>
-<li><p><strong>default_vertex_attributes</strong> (<em>dict</em>) – The names of pre-assigned vertex attributes and their default values.</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">'x':</span> <span class="pre">0.0</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">'y':</span> <span class="pre">0.0</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">'z':</span> <span class="pre">0.0</span></code></p></li>
-</ul>
-</li>
+<li><p><strong>attributes</strong> (<em>dict</em>) – A dictionary of general mesh attributes: <code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">&quot;Mesh&quot;}</span></code>.</p></li>
+<li><p><strong>default_vertex_attributes</strong> (<em>dict</em>) – The names of pre-assigned vertex attributes and their default values:
+<code class="docutils literal notranslate"><span class="pre">{'x':</span> <span class="pre">0.0,</span> <span class="pre">'y':</span> <span class="pre">0.0,</span> <span class="pre">'z':</span> <span class="pre">0.0}</span></code></p></li>
 <li><p><strong>default_edge_attributes</strong> (<em>dict</em>) – The default data attributes assigned to every new edge.</p></li>
 <li><p><strong>default_face_attributes</strong> (<em>dict</em>) – The default data attributes assigned to every new face.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – The name of the mesh.
 Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.attributes['name']</span></code></p></li>
 <li><p><strong>adjacency</strong> (<em>dict, read-only</em>) – The vertex adjacency dictionary.</p></li>
-<li><p><strong>data</strong> (<em>dict</em>) – The data representing the mesh.
-The dict has the following structure:</p>
-<ul>
-<li><p>‘attributes’   =&gt; dict</p></li>
-<li><p>‘dva’          =&gt; dict</p></li>
-<li><p>‘dea’          =&gt; dict</p></li>
-<li><p>‘dfa’          =&gt; dict</p></li>
-<li><p>‘vertex’       =&gt; dict</p></li>
-<li><p>‘face’         =&gt; dict</p></li>
-<li><p>‘facedata’     =&gt; dict</p></li>
-<li><p>‘edgedata’     =&gt; dict</p></li>
-<li><p>‘max_int_key’  =&gt; int</p></li>
-<li><p>‘max_int_fkey’ =&gt; int</p></li>
-</ul>
-</li>
 </ul>
 </dd>
 </dl>

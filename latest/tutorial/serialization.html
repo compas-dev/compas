@@ -98,12 +98,52 @@
           
           <div class="section" id="data-serialization">
 <span id="tut-serialization"></span><h1>Data Serialization</h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Work in Progress…</p>
+</div>
+<p>Data serialization is an important component of the cross-platform design of the COMPAS code base,
+since it is the basis for data transfer during Remote Procedure Calls with <code class="docutils literal notranslate"><span class="pre">compas.rpc</span></code>.</p>
+<p>It is also the preferred mechanism for writing COMPAS data to files such that it can be retrieved at a later point in time,
+or even store information about entire work sessions during iterative processes.</p>
+<p>The mechanism is based on serialization to JSON to ensure maximum compatibility with various use cases and circumstances.
+All COMPAS data objects (geometry and data structures) implement the interface provided by <code class="docutils literal notranslate"><span class="pre">compas.base.Base</span></code>,
+which forces them to define the methods and properties that form the backbone of the serialization infrastructure.</p>
 <ul class="simple">
-<li><p>basis for RPC communication</p></li>
-<li><p>data persistence</p></li>
-<li><p>work sessions</p></li>
-<li><p>undo/redo</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.to_data()</span></code></p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.from_data()</span></code></p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.to_json()</span></code></p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.from_json()</span></code></p></li>
 </ul>
+<p>The “from” methods are class methods (<code class="docutils literal notranslate"><span class="pre">&#64;classmethod</span></code>) and act as alternative constructors.
+The “to” methods are their counterparts that produce compatible data from object instances.</p>
+<div class="section" id="explicit-serialisation">
+<h2>Explicit serialisation</h2>
+<p>Create a mesh, convert it do its data representation, and construct a new mesh from that data.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># to data</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="n">mesh1</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">mesh1</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">mesh1</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">mesh1</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">mesh1</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">mesh1</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">mesh1</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span>
+
+<span class="c1"># from data</span>
+
+<span class="n">mesh2</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="section" id="implicit-serialisation">
+<h2>Implicit serialisation</h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># to json</span>
 
 <span class="kn">import</span> <span class="nn">math</span>
@@ -141,6 +181,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span><span class="p">)</span>
 </code></pre></div>
+</div>
 </div>
 </div>
 
@@ -194,7 +235,11 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Data Serialization</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Data Serialization</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#explicit-serialisation">Explicit serialisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#implicit-serialisation">Implicit serialisation</a></li>
+</ul>
+</li>
 </ul>
 
       </div>
