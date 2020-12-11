@@ -5,7 +5,7 @@ Installation
 .. rst-class:: lead
 
 COMPAS can be easily installed on multiple platforms,
-using popular package managers such as coda or pip.
+using popular package managers such as conda or pip.
 
 .. figure:: /_images/installation.gif
      :figclass: figure
