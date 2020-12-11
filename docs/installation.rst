@@ -80,6 +80,38 @@ Note that installation with ``pip`` is also possible within a ``conda`` environm
     pip install -e .
 
 
+Update with conda
+=================
+
+To update COMPAS to the latest version with ``conda``
+
+.. code-block:: bash
+
+    conda update -n research COMPAS
+
+To switch to a specific version
+
+.. code-block:: bash
+
+    conda install -n research COMPAS=0.19.1
+
+
+Update with pip
+===============
+
+If you installed COMPAS with ``pip`` the update command is the following
+
+.. code-block:: bash
+
+    pip install --upgrade COMPAS
+
+Or to switch to a specific version
+
+.. code-block:: bash
+
+    pip install COMPAS==0.19.1
+
+
 Known Issues
 ============
 
