@@ -277,9 +277,15 @@ def delete_layers(layers):
 
     Parameters
     ----------
-    layers : dict
-        A dictionary of layers with the keys representing layer names,
-        and the values also dictionaries defining optional nested layers.
+    layers : :obj:`dict` or :obj:`list` of :obj:`str`
+        Can be given as either a list of strings or as a dictionary.
+
+        When given as a list the list elements should be name of layers given
+        with ``"::"`` as a separator between hierarchies.
+
+        It can also be defined as a dictionary of layers with the keys
+        representing layer names, and the values also dictionaries defining
+        optional nested layers.
 
     Examples
     --------
@@ -312,9 +318,15 @@ def delete_layers(layers):
 
     rs.EnableRedraw(False)
     recurse(layers)
+
     for layer in to_delete:
         if rs.IsLayer(layer):
-            rs.DeleteLayer(layer)
+            if rs.IsLayerCurrent(layer):
+                print("Can't delete {} as it is the current layer".format(layer))
+                continue
+
+            rs.PurgeLayer(layer)
+
     rs.EnableRedraw(True)
 
 
