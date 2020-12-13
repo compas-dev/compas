@@ -8,7 +8,7 @@ Geometry
 
 This tutorial provides a quick tour of the functionality in :mod:`compas.geometry`.
 For a complete overview, visit the API Reference:
-https://compas-dev.github.io/main/api/compas.geometry.html
+https://compas.dev/compas/latest/api/compas.geometry.html
 
 
 Points and Vectors
