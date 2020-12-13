@@ -372,9 +372,15 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    layers : dict</span>
-<span class="sd">        A dictionary of layers with the keys representing layer names,</span>
-<span class="sd">        and the values also dictionaries defining optional nested layers.</span>
+<span class="sd">    layers : :obj:`dict` or :obj:`list` of :obj:`str`</span>
+<span class="sd">        Can be given as either a list of strings or as a dictionary.</span>
+
+<span class="sd">        When given as a list the list elements should be name of layers given</span>
+<span class="sd">        with ``&quot;::&quot;`` as a separator between hierarchies.</span>
+
+<span class="sd">        It can also be defined as a dictionary of layers with the keys</span>
+<span class="sd">        representing layer names, and the values also dictionaries defining</span>
+<span class="sd">        optional nested layers.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -407,9 +413,15 @@
 
     <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">recurse</span><span class="p">(</span><span class="n">layers</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">to_delete</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsLayer</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-            <span class="n">rs</span><span class="o">.</span><span class="n">DeleteLayer</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsLayerCurrent</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Can&#39;t delete </span><span class="si">{}</span><span class="s2"> as it is the current layer&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">layer</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="n">rs</span><span class="o">.</span><span class="n">PurgeLayer</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
     <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
 
 

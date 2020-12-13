@@ -102,10 +102,14 @@
 <dt id="compas_rhino.utilities.delete_layers">
 <code class="sig-prename descclassname">compas_rhino.utilities.</code><code class="sig-name descname">delete_layers</code><span class="sig-paren">(</span><em class="sig-param">layers</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/utilities/layers.html#delete_layers"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Delete layers and all contained objects.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>layers</strong> (<em>dict</em>) – A dictionary of layers with the keys representing layer names,
-and the values also dictionaries defining optional nested layers.</p>
+<dd class="field-odd"><p><strong>layers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Can be given as either a list of strings or as a dictionary.</p>
+<p>When given as a list the list elements should be name of layers given
+with <code class="docutils literal notranslate"><span class="pre">&quot;::&quot;</span></code> as a separator between hierarchies.</p>
+<p>It can also be defined as a dictionary of layers with the keys
+representing layer names, and the values also dictionaries defining
+optional nested layers.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
