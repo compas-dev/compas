@@ -199,7 +199,9 @@ However, the result type is not always the same as the type of the inputs</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 <span class="go">0.0</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
+<span class="go">Vector(0.267, 0.535, 0.802)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">cross</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">Vector(0.000, 0.000, 1.000)</span>
