@@ -30,7 +30,7 @@ Meshes can be built from scratch by adding vertices and faces.
 
 ::
 
-    >>> from compas.datastrctures import Mesh
+    >>> from compas.datastructures import Mesh
 
     >>> mesh = Mesh()
 
