@@ -98,7 +98,7 @@ autosummary_mock_imports = [
 # graph options
 
 inheritance_graph_attrs = dict(rankdir="TB", size='"16.0, 16.0"', ratio="auto")
-inheritance_node_attrs = dict(fontsize=14)
+inheritance_node_attrs = dict(fontsize=12)
 
 # napoleon options
 
