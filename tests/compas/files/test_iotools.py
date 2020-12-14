@@ -79,4 +79,4 @@ def test_iter_file_chunks_path_image(path_image):
         for data in _iotools.iter_file(file, size=CHUNK_SIZE):
             chunks.append(data)
 
-    assert len(chunks) == math.ceil(IMAGE_FILE_SIZE / CHUNK_SIZE)
+    assert len(chunks) == math.ceil(IMAGE_FILE_SIZE / float(CHUNK_SIZE))
