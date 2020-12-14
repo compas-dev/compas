@@ -1,4 +1,5 @@
 import io
+import math
 import os
 
 import pytest
@@ -6,6 +7,9 @@ import pytest
 from compas.files import _iotools
 
 BASE_FOLDER = os.path.dirname(__file__)
+IMAGE_FILE_SIZE = 252391
+TEXT_FILE_SIZE = 747
+REMOTE_IMAGE_FILE_SIZE = 373
 
 
 @pytest.fixture
@@ -30,24 +34,24 @@ def url_image():
 
 def test_open_file_path_binary(path_image):
     with _iotools.open_file(path_image, mode='rb') as file:
-        assert len(file.read()) == 252391
+        assert len(file.read()) == IMAGE_FILE_SIZE
 
 
 def test_open_file_path_text(path_text):
     with _iotools.open_file(path_text, mode='r') as file:
-        assert len(file.read()) == 747
+        assert len(file.read()) == TEXT_FILE_SIZE
 
 
 def test_open_file_object_binary(path_image):
     with open(path_image, mode='rb') as f:
         with _iotools.open_file(f) as file:
-            assert len(file.read()) == 252391
+            assert len(file.read()) == IMAGE_FILE_SIZE
 
 
 def test_open_file_object_text(path_text):
     with open(path_text, mode='r') as f:
         with _iotools.open_file(f) as file:
-            assert len(file.read()) == 747
+            assert len(file.read()) == TEXT_FILE_SIZE
 
 
 def test_open_file_memory_stream():
@@ -59,9 +63,20 @@ def test_open_file_memory_stream():
 
 def test_open_file_url_image(url_image):
     with _iotools.open_file(url_image) as file:
-        assert len(file.read()) == 373
+        assert len(file.read()) == REMOTE_IMAGE_FILE_SIZE
 
 
 def test_open_file_url_text(url_text):
     with _iotools.open_file(url_text) as file:
         assert b'COMPAS framework' in file.read()
+
+
+def test_iter_file_chunks_path_image(path_image):
+    CHUNK_SIZE = 30
+    chunks = []
+
+    with _iotools.open_file(path_image, 'rb') as file:
+        for data in _iotools.iter_file(file, size=CHUNK_SIZE):
+            chunks.append(data)
+
+    assert len(chunks) == math.ceil(IMAGE_FILE_SIZE / CHUNK_SIZE)
