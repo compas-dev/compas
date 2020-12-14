@@ -19,6 +19,11 @@ def open_file(file_or_filename, mode='r'):
     This context manager ensures that when using a path-like object as input,
     the file is closed once it it goes out of scope.
 
+    Notes
+    -----
+    This context-manager will only close files that it opened itself. If an opened file
+    is passed as the argument, it will not close it.
+
     Parameters
     ----------
     file_or_filename : path-like, file-like object or URL string
