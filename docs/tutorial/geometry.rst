@@ -8,7 +8,7 @@ Geometry
 
 This tutorial provides a quick tour of the functionality in :mod:`compas.geometry`.
 For a complete overview, visit the API Reference:
-https://compas-dev.github.io/main/api/compas.geometry.html
+https://compas.dev/compas/latest/api/compas.geometry.html
 
 
 Points and Vectors
@@ -136,7 +136,9 @@ Many of the basic functions are also available as object methods
     >>> x.dot(y)
     0.0
 
-    >>> x.normalize()
+    >>> z = Vector(1, 2, 3)
+    >>> z.unitize()
+    Vector(0.267, 0.535, 0.802)
 
     >>> x.cross([0, 1, 0])
     Vector(0.000, 0.000, 1.000)

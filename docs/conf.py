@@ -49,7 +49,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
     "sphinx.ext.inheritance_diagram",
-    # "sphinx.ext.graphviz",
+    "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "m2r",
     "nbsphinx",
@@ -252,7 +252,7 @@ plot_html_show_formats = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/", None),
-    "compas": ("https://compas-dev.github.io/compas", None),
+    "compas": ("https://compas.dev/compas/latest/", None),
 }
 
 

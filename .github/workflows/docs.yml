@@ -24,6 +24,7 @@ jobs:
           python-version: 3.8
       - name: Install dependencies
         run: |
+          sudo apt-get install graphviz
           python -m pip install --upgrade pip
           python -m pip install cython --install-option="--no-cython-compile"
       - name: Install
