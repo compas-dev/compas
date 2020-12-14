@@ -1,0 +1,6 @@
+<map id="inheritance595e3d3035" name="inheritance595e3d3035">
+<area shape="rect" id="node1" title="Basic contract/interface for all mesh loaders." alt="" coords="235,5,421,33"/>
+<area shape="rect" id="node2" title="Handles basic mesh loader tasks, mostly from local files." alt="" coords="5,81,184,109"/>
+<area shape="rect" id="node3" title="Loads resources stored in Github." alt="" coords="209,81,447,109"/>
+<area shape="rect" id="node4" title="Loads suport package resources stored locally." alt="" coords="472,81,701,109"/>
+</map>
