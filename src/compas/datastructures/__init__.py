@@ -5,7 +5,7 @@ datastructures
 
 .. currentmodule:: compas.datastructures
 
-.. class:: figure
+.. rst-class:: figure
 
 .. inheritance-diagram:: Network Mesh VolMesh
     :parts: 1
