@@ -49,7 +49,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
     "sphinx.ext.inheritance_diagram",
-    # "sphinx.ext.graphviz",
+    "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "m2r",
     "nbsphinx",
