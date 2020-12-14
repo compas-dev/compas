@@ -1,6 +1,7 @@
 import io
 import math
 import os
+import tempfile
 
 import pytest
 
@@ -80,3 +81,24 @@ def test_iter_file_chunks_path_image(path_image):
             chunks.append(data)
 
     assert len(chunks) == math.ceil(IMAGE_FILE_SIZE / float(CHUNK_SIZE))
+
+
+def test_open_file_write_path():
+    path = os.path.join(tempfile.gettempdir(), 'test-file.txt')
+
+    with _iotools.open_file(path, 'w') as file:
+        file.write('Hello world')
+
+    with _iotools.open_file(path, 'r') as file:
+        assert file.read() == 'Hello world'
+
+
+def test_open_file_write_file_object():
+    path = os.path.join(tempfile.gettempdir(), 'test-file.txt')
+    with open(path, mode='w') as f:
+        with _iotools.open_file(f) as file:
+            file.write('Hello world')
+
+    with open(path, mode='r') as f:
+        with _iotools.open_file(f) as file:
+            assert file.read() == 'Hello world'
