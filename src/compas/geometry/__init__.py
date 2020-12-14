@@ -9,8 +9,6 @@ geometry
 Primitives
 ==========
 
-.. rst-class:: figure
-
 .. inheritance-diagram:: Circle Ellipse Frame Line Plane Point Polygon Polyline Quaternion Vector
     :parts: 1
 
@@ -46,8 +44,6 @@ Base Classes
 Shapes
 ======
 
-.. rst-class:: figure
-
 .. inheritance-diagram:: Box Capsule Cone Cylinder Polyhedron Torus
     :parts: 1
 
@@ -79,8 +75,6 @@ Base Classes
 
 Transformations
 ===============
-
-.. rst-class:: figure
 
 .. inheritance-diagram:: Projection Reflection Rotation Scale Shear Transformation Translation
     :parts: 1

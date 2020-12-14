@@ -9,8 +9,6 @@ robots
 Model
 =====
 
-.. rst-class:: figure
-
 .. inheritance-diagram:: RobotModel Joint Link ToolModel
     :parts: 1
 
@@ -30,8 +28,6 @@ elements connecting the links together.
 
 Geometric description
 =====================
-
-.. rst-class:: figure
 
 .. inheritance-diagram:: Origin Geometry Box Cylinder Sphere Capsule MeshDescriptor Material Texture Color
     :parts: 1
@@ -58,8 +54,6 @@ using the following classes.
 Link
 ====
 
-.. rst-class:: figure
-
 .. inheritance-diagram:: Visual Collision Inertial Mass Inertia
     :parts: 1
 
@@ -78,8 +72,6 @@ The link is described as a rigid body with inertial, visual and collision values
 
 Joint
 =====
-
-.. rst-class:: figure
 
 .. inheritance-diagram:: ParentLink ChildLink Calibration Dynamics Limit Axis Mimic SafetyController
     :parts: 1
@@ -102,8 +94,6 @@ The joint describes the kinematics and dynamics of the robot's joint.
 
 Resources
 =========
-
-.. rst-class:: figure
 
 .. inheritance-diagram:: AbstractMeshLoader DefaultMeshLoader GithubPackageMeshLoader LocalPackageMeshLoader
     :parts: 1
