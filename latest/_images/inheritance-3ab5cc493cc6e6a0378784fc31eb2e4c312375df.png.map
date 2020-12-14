@@ -1,0 +1,10 @@
+<map id="inheritance3fb4d02326" name="inheritance3fb4d02326">
+<area shape="rect" id="node1" title="Abstract base class for all COMPAS objects." alt="" coords="315,5,387,33"/>
+<area shape="rect" id="node3" title="The ``Transformation`` represents a 4x4 transformation matrix." alt="" coords="280,81,423,109"/>
+<area shape="rect" id="node2" title="Create a projection transformation." alt="" coords="5,157,105,185"/>
+<area shape="rect" id="node4" title="Creates a ``Reflection`` that mirrors points at a plane." alt="" coords="130,157,231,185"/>
+<area shape="rect" id="node5" title="Create a rotation transformation." alt="" coords="255,157,343,185"/>
+<area shape="rect" id="node6" title="Creates a scale transformation." alt="" coords="367,157,439,185"/>
+<area shape="rect" id="node7" title="Create a shear transformation." alt="" coords="463,157,535,185"/>
+<area shape="rect" id="node8" title="Create a translation transformation." alt="" coords="560,157,668,185"/>
+</map>
