@@ -186,6 +186,9 @@ dt .brackets::after {
 .citation dd {
   padding: 0 2rem; }
 
+.graphviz {
+  text-align: center !important; }
+
 .graphviz img {
   margin-bottom: .5rem;
   line-height: 1;
