@@ -98,32 +98,7 @@
           
           <span class="target" id="module-compas.datastructures"></span><div class="section" id="datastructures">
 <h1>datastructures</h1>
-digraph inheritance13737ac8ac {
-rankdir=TB;
-ratio=auto;
-size=&quot;16.0, 16.0&quot;;
-  &quot;Base&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Abstract base class for all COMPAS objects.&quot;];
-  &quot;BaseMesh&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Geometric implementation of a half edge data structure for polygon meshses.&quot;];
-  &quot;HalfEdge&quot; -&gt; &quot;BaseMesh&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;BaseNetwork&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Geometric implementation of a basic edge graph.&quot;];
-  &quot;Graph&quot; -&gt; &quot;BaseNetwork&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;BaseVolMesh&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Geometric implementation of a face data structure for volumetric meshes.&quot;];
-  &quot;HalfFace&quot; -&gt; &quot;BaseVolMesh&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;Datastructure&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;Base&quot; -&gt; &quot;Datastructure&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;Graph&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Base graph data structure for describing the topological relationships between nodes connected by edges.&quot;];
-  &quot;Datastructure&quot; -&gt; &quot;Graph&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;HalfEdge&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Base half-edge data structure for representing meshes.&quot;];
-  &quot;Datastructure&quot; -&gt; &quot;HalfEdge&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;HalfFace&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Base half-face data structure fore representing volumetric meshes.&quot;];
-  &quot;Datastructure&quot; -&gt; &quot;HalfFace&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;Mesh&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Implementation of the base mesh data structure that adds some of the mesh algorithms as methods.&quot;];
-  &quot;BaseMesh&quot; -&gt; &quot;Mesh&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;Network&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;BaseNetwork&quot; -&gt; &quot;Network&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;VolMesh&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Implementation of the base volmesh data structure that adds some of the mesh algorithms as methods.&quot;];
-  &quot;BaseVolMesh&quot; -&gt; &quot;VolMesh&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-}
+<div class="graphviz"><img src="../_images/inheritance-7568b392a90bc5b1149780620cdb4af43c37d6c9.png" alt="Inheritance diagram of Network, Mesh, VolMesh" class="inheritance graphviz" /></div>
 <div class="section" id="meshes">
 <h2>Meshes</h2>
 <div class="section" id="classes">
