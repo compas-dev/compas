@@ -102,3 +102,18 @@ def test_open_file_write_file_object():
     with open(path, mode='r') as f:
         with _iotools.open_file(f) as file:
             assert file.read() == 'Hello world'
+
+
+def test_open_file_does_not_close_file_objects(path_image):
+    with open(path_image, mode='rb') as f:
+        with _iotools.open_file(f):
+            pass
+        assert not f.closed
+    assert f.closed
+
+
+def test_open_file_closes_path_like(path_image):
+    with _iotools.open_file(path_image, mode='rb') as file:
+        assert not file.closed
+
+    assert file.closed
