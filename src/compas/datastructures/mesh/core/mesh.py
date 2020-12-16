@@ -1253,7 +1253,7 @@ class BaseMesh(HalfEdge):
         boundaries = self.vertices_on_boundaries()
         return boundaries[0] if boundaries else []
 
-    def edges_on_boundary(self, oriented=False):
+    def edges_on_boundary(self):
         """Find the edges on the longest boundary.
 
         Returns
