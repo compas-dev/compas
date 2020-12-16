@@ -40,6 +40,7 @@ Table of Contents
    plugins
    devguide
    changelog
+   releases
    license
    citing
 
