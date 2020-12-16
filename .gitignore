@@ -135,6 +135,6 @@ data/ctralie
 
 *.pickle
 
-.DS_Store
+*.DS_Store
 
 .vscode
