@@ -223,13 +223,11 @@ def prepare_environment(env=None):
     if PYTHON_DIRECTORY:
         if is_windows():
             lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
-            if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
-                env['PATH'] = lib_bin + os.pathsep + env['PATH']
-
         else:
             lib_bin = os.path.join(PYTHON_DIRECTORY, 'bin')
-            if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
-                env['PATH'] = lib_bin + os.pathsep + env['PATH']
+
+        if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
+            env['PATH'] = lib_bin + os.pathsep + env['PATH']
 
     if CONDA_EXE:
         env['CONDA_EXE'] = CONDA_EXE
