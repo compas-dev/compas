@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas_rhino.utilities.misc</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            0.19.1
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <h1>Source code for compas_rhino.utilities.misc</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">basestring</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="kn">import</span> <span class="n">TextForm</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="kn">import</span> <span class="n">ImageForm</span>
+
+<span class="kn">import</span> <span class="nn">System</span>
+
+<span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
+<span class="kn">import</span> <span class="nn">Rhino</span>
+<span class="kn">import</span> <span class="nn">clr</span>
+
+<span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s1">&#39;Rhino.UI&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">Rhino.UI</span>  <span class="c1"># noqa: E402</span>
+<span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="kn">import</span> <span class="n">ShowMessageBox</span>  <span class="c1"># noqa: E402</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="kn">import</span> <span class="n">PropertyListForm</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="kn">import</span> <span class="n">ShowPropertyListBox</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;wait&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_tolerance&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;toggle_toolbargroup&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pick_point&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;browse_for_folder&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;browse_for_file&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;print_display_on&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;display_message&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;display_text&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;display_image&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;display_html&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;update_settings&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;update_named_values&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;screenshot_current_view&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_folder&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_file&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;unload_modules&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Truly miscellaneous :)</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">screenshot_current_view</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
+                            <span class="n">width</span><span class="o">=</span><span class="mi">1920</span><span class="p">,</span>
+                            <span class="n">height</span><span class="o">=</span><span class="mi">1080</span><span class="p">,</span>
+                            <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">draw_grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="n">draw_world_axes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="n">draw_cplane_axes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="n">background</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Take a screenshot of the current view.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        The filepath for saving the screenshot.</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    width : int, optional</span>
+<span class="sd">    height : int, optional</span>
+<span class="sd">    scale : float, optional</span>
+<span class="sd">    draw_grid : bool, optional</span>
+<span class="sd">    draw_world_axes : bool, optional</span>
+<span class="sd">    draw_cplane_axes : bool, optional</span>
+<span class="sd">    background : bool, optional</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the command was successful.</span>
+<span class="sd">        False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="n">draw_grid</span><span class="p">,</span> <span class="n">draw_world_axes</span><span class="p">,</span> <span class="n">draw_cplane_axes</span><span class="p">,</span> <span class="n">background</span><span class="p">]</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Yes&quot;</span> <span class="k">if</span> <span class="n">item</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">]</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>  <span class="c1"># the rhino command requires a scale &gt; 1</span>
+    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">rs</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s2">&quot;-_ViewCaptureToFile </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+                        <span class="s2">&quot; Width=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">width</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="s2">&quot; Height=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="s2">&quot; Scale=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="s2">&quot; DrawGrid=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">&quot; DrawWorldAxes=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">&quot; DrawCPlaneAxes=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">&quot; TransparentBackground=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">&quot; _enter&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">wait</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">RhinoApp</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_tolerance</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get the absolute tolerance.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The tolerance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">UnitAbsoluteTolerance</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">toggle_toolbargroup</span><span class="p">(</span><span class="n">rui</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">rui</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">rui</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">collection</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsToolbarCollection</span><span class="p">(</span><span class="n">rui</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">collection</span><span class="p">:</span>
+        <span class="n">collection</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">OpenToolbarCollection</span><span class="p">(</span><span class="n">rui</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsToolbar</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="n">rs</span><span class="o">.</span><span class="n">ShowToolbar</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsToolbar</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsToolbarVisible</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+                <span class="n">rs</span><span class="o">.</span><span class="n">HideToolbar</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rs</span><span class="o">.</span><span class="n">ShowToolbar</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">pick_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Pick a point.&#39;</span><span class="p">):</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetPoint</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">point</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># File system</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">browse_for_folder</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">BrowseForFolder</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;compas&#39;</span><span class="p">)</span>
+
+
+<span class="n">select_folder</span> <span class="o">=</span> <span class="n">browse_for_folder</span>
+
+
+<span class="k">def</span> <span class="nf">browse_for_file</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">filter</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s1">&#39;JSON files (*.json)|*.json||&#39;</span>
+    <span class="k">elif</span> <span class="nb">filter</span> <span class="o">==</span> <span class="s1">&#39;obj&#39;</span><span class="p">:</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s1">&#39;OBJ files (*.obj)|*.obj||&#39;</span>
+    <span class="k">elif</span> <span class="nb">filter</span> <span class="o">==</span> <span class="s1">&#39;fofin&#39;</span><span class="p">:</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s1">&#39;FOFIN session files (*.fofin)|*.fofin||&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">OpenFileName</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="n">folder</span><span class="p">)</span>
+
+
+<span class="n">select_file</span> <span class="o">=</span> <span class="n">browse_for_file</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Display</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">print_display_on</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">on</span><span class="p">:</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s1">&#39;_PrintDisplay State On Color Display Thickness 1 _Enter&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s1">&#39;_PrintDisplay State Off _Enter&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">display_message</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ShowMessageBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s1">&#39;Message&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">display_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Text&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">NewLine</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">TextForm</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">display_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">ImageForm</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">display_html</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Settings and attributes</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update named values&#39;</span><span class="p">,</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">PropertyListForm</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">ShowPropertyListBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dialog</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">evaluate</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">SyntaxError</span><span class="p">):</span>
+                    <span class="k">pass</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+
+<span class="k">def</span> <span class="nf">update_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update settings&#39;</span><span class="p">):</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">settings</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">SyntaxError</span><span class="p">):</span>
+                <span class="n">settings</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="unload_modules"><a class="viewcode-back" href="../../../api/generated/compas_ghpython.utilities.unload_modules.html#compas_ghpython.utilities.unload_modules">[docs]</a><span class="k">def</span> <span class="nf">unload_modules</span><span class="p">(</span><span class="n">top_level_module_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unloads all modules named starting with the specified string.</span>
+
+<span class="sd">    This function eases the development workflow when editing a library that is</span>
+<span class="sd">    used from Rhino/Grasshopper.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    top_level_module_name : :obj:`str`</span>
+<span class="sd">        Name of the top-level module to unload.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        List of unloaded module names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modules</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">top_level_module_name</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">modules</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="k">pass</span>
+</code></pre></div>
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <!-- footer -->
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.19.1',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../_static/underscore.js"></script>
+  <script src="../../../_static/doctools.js"></script>
+  <script src="../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
