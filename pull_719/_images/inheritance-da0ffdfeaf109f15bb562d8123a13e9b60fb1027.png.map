@@ -1,0 +1,11 @@
+<map id="inheritance51bf464d92" name="inheritance51bf464d92">
+<area shape="rect" id="node1" title="Abstract base class for all COMPAS objects." alt="" coords="390,8,502,48"/>
+<area shape="rect" id="node8" title="Base class for geometric primitives." alt="" coords="382,123,509,162"/>
+<area shape="rect" id="node2" title="A box is defined by a frame and its dimensions along the frame&#39;s x&#45;, y&#45; and z&#45;axes." alt="" coords="8,352,121,392"/>
+<area shape="rect" id="node3" title="Base class for geometric shapes." alt="" coords="390,237,502,277"/>
+<area shape="rect" id="node4" title="A capsule is defined by a line segment and a radius." alt="" coords="158,352,275,392"/>
+<area shape="rect" id="node5" title="A cone is defined by a circle and a height." alt="" coords="312,352,425,392"/>
+<area shape="rect" id="node6" title="A cylinder is defined by a circle and a height." alt="" coords="464,352,582,392"/>
+<area shape="rect" id="node7" title="A polyhedron is defined by its vertices and faces." alt="" coords="620,352,768,392"/>
+<area shape="rect" id="node9" title="A torus is defined by a plane and two radii." alt="" coords="806,352,919,392"/>
+</map>
