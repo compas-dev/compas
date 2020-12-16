@@ -822,10 +822,6 @@
     <span class="c1"># polyedge topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="c1"># face strips?</span>
-    <span class="c1"># edge chains?</span>
-    <span class="c1"># ...?</span>
-
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># face topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -885,7 +881,7 @@
 <span class="sd">        list</span>
 <span class="sd">            Coordinates of the vertex.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseMesh.vertex_area"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertex_area.html#compas.datastructures.BaseMesh.vertex_area">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the tributary area of a vertex.</span>
