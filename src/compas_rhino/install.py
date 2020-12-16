@@ -24,8 +24,8 @@ def install(version=None, packages=None):
         The version number of Rhino.
         Default is ``'6.0'``.
     packages : list of str, optional
-        List of packages to install or None to use default package list.
-        Default is ``['compas', 'compas_rhino', 'compas_ghpython']``.
+        List of packages to install in addition to packages available as
+        ``installable_rhino_packages`` plugins.
 
     Examples
     --------
@@ -43,6 +43,10 @@ def install(version=None, packages=None):
     if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
+    if not packages:
+        packages = []
+
+    # Collect rhino_installable_packages and filter out incompatible and duplicate entries
     packages = _filter_installable_packages(version, packages)
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
@@ -168,16 +172,18 @@ def _filter_installable_packages(version, packages):
     if compas.OSX and version == 5.0:
         ghpython_incompatible = True
 
-    if not packages:
-        # Flatten list of results (resulting from collect_all pluggable)
-        packages = list(itertools.chain.from_iterable(installable_rhino_packages()))
-    elif 'compas_ghpython' in packages and ghpython_incompatible:
+    # Flatten list of results (resulting from collect_all pluggable)
+    discovered_packages = list(itertools.chain.from_iterable(installable_rhino_packages()))
+
+    # Create set from union of user defined and discovered packages to make sure
+    # all elements are unique
+    _packages = set(packages + discovered_packages)
+
+    if "compas_ghpython" in _packages and ghpython_incompatible:
         print('Skipping installation of compas_ghpython since it\'s not supported for Rhino 5 for Mac')
+        _packages.remove('compas_ghpython')
 
-    if ghpython_incompatible:
-        packages.remove('compas_ghpython')
-
-    return packages
+    return list(_packages)
 
 
 # ==============================================================================
