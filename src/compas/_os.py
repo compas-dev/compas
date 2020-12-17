@@ -194,8 +194,10 @@ def select_python(python_executable):
             if os.path.exists(python):
                 return python
 
+    default_exe = 'pythonw' if is_windows() else 'python'
+
     # Assume a system-wide install exists
-    return python_executable or 'pythonw'
+    return python_executable or default_exe
 
 
 def prepare_environment(env=None):
