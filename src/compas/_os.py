@@ -195,7 +195,7 @@ def select_python(python_executable):
                 return python
 
     # Assume a system-wide install exists
-    return python_executable or 'pythonw'
+    return python_executable or 'python'
 
 
 def prepare_environment(env=None):
