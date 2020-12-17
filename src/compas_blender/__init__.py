@@ -41,7 +41,7 @@ def clear():
             bpy.data.collections.remove(block)
 
 
-__version__ = '0.19.2'
+__version__ = '0.19.3'
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
