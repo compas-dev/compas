@@ -1,0 +1,11 @@
+<map id="inheritance13737ac8ac" name="inheritance13737ac8ac">
+<area shape="rect" id="node1" title="Abstract base class for all COMPAS objects." alt="" coords="216,8,328,48"/>
+<area shape="rect" id="node2" title="Geometric implementation of a half edge data structure for polygon meshses." alt="" coords="8,352,148,392"/>
+<area shape="rect" id="node9" title="Implementation of the base mesh data structure that adds some of the mesh algorithms as methods." alt="" coords="22,467,134,506"/>
+<area shape="rect" id="node3" title="Base half&#45;edge data structure for representing meshes." alt="" coords="33,237,160,277"/>
+<area shape="rect" id="node4" title="Geometric implementation of a basic edge graph." alt="" coords="186,352,357,392"/>
+<area shape="rect" id="node5" title="Base graph data structure for describing the topological relationships between nodes connected by edges." alt="" coords="216,237,328,277"/>
+<area shape="rect" id="node6" title="Geometric implementation of a face data structure for volumetric meshes." alt="" coords="395,352,566,392"/>
+<area shape="rect" id="node11" title="Implementation of the base volmesh data structure that adds some of the mesh algorithms as methods." alt="" coords="420,467,541,506"/>
+<area shape="rect" id="node7" title="Base half&#45;face data structure fore representing volumetric meshes." alt="" coords="392,237,515,277"/>
+</map>

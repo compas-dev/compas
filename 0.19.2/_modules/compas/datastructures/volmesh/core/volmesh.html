@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas.datastructures.volmesh.core.volmesh</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            0.19.2
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <h1>Source code for compas.datastructures.volmesh.core.volmesh</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures.volmesh.core.halfface</span> <span class="kn">import</span> <span class="n">HalfFace</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="kn">from</span> <span class="nn">compas.files</span> <span class="kn">import</span> <span class="n">OBJ</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">bestfit_plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_polyhedron</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normal_polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">project_point_plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseVolMesh&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="BaseVolMesh"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.html#compas.datastructures.BaseVolMesh">[docs]</a><span class="k">class</span> <span class="nc">BaseVolMesh</span><span class="p">(</span><span class="n">HalfFace</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Geometric implementation of a face data structure for volumetric meshes.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    attributes : dict</span>
+<span class="sd">        A dictionary of general volmesh attributes.</span>
+
+<span class="sd">        * ``&#39;name&#39;: &quot;VolMesh&quot;``</span>
+
+<span class="sd">    default_vertex_attributes : dict</span>
+<span class="sd">        The names of pre-assigned vertex attributes and their default values.</span>
+
+<span class="sd">        * ``&#39;x&#39;: 0.0``</span>
+<span class="sd">        * ``&#39;y&#39;: 0.0``</span>
+<span class="sd">        * ``&#39;z&#39;: 0.0``</span>
+
+<span class="sd">    default_edge_attributes : dict</span>
+<span class="sd">        The default data attributes assigned to every new edge.</span>
+<span class="sd">    default_face_attributes : dict</span>
+<span class="sd">        The default data attributes assigned to every new face.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the volmesh.</span>
+<span class="sd">        Shorthand for ``volmesh.attributes[&#39;name&#39;]``</span>
+
+<span class="sd">    data : dict</span>
+<span class="sd">        The data representing the mesh.</span>
+<span class="sd">        The dict has the following structure:</span>
+
+<span class="sd">        * &#39;attributes&#39;   =&gt; dict</span>
+<span class="sd">        * &#39;dva&#39;          =&gt; dict</span>
+<span class="sd">        * &#39;dea&#39;          =&gt; dict</span>
+<span class="sd">        * &#39;dfa&#39;          =&gt; dict</span>
+<span class="sd">        * &#39;dca&#39;          =&gt; dict</span>
+<span class="sd">        * &#39;vertex&#39;       =&gt; dict</span>
+<span class="sd">        * &#39;halface&#39;      =&gt; dict</span>
+<span class="sd">        * &#39;cell&#39;         =&gt; dict</span>
+<span class="sd">        * &#39;plane&#39;        =&gt; dict</span>
+<span class="sd">        * &#39;edgedata&#39;     =&gt; dict</span>
+<span class="sd">        * &#39;facedata&#39;     =&gt; dict</span>
+<span class="sd">        * &#39;celldata&#39;     =&gt; dict</span>
+<span class="sd">        * &#39;max_int_key&#39;  =&gt; int</span>
+<span class="sd">        * &#39;max_int_hfkey&#39; =&gt; int</span>
+<span class="sd">        * &#39;max_int_ckey&#39; =&gt; int</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseVolMesh.__init__"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.__init__.html#compas.datastructures.BaseVolMesh.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BaseVolMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;VolMesh&#39;</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># customisation</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># special properties</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># from/to</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="BaseVolMesh.from_obj"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.from_obj.html#compas.datastructures.BaseVolMesh.from_obj">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a volmesh object from the data described in an OBJ file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str</span>
+<span class="sd">            The path to the file.</span>
+<span class="sd">        precision: str, optional</span>
+<span class="sd">            The precision of the geometric map that is used to connect the lines.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Volesh</span>
+<span class="sd">            A volmesh object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">faces</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">groups</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_cells</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.to_obj"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.to_obj.html#compas.datastructures.BaseVolMesh.to_obj">[docs]</a>    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write the volmesh to an OBJ file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str</span>
+<span class="sd">            Full path of the file.</span>
+<span class="sd">        precision: str, optional</span>
+<span class="sd">            The precision of the geometric map that is used to connect the lines.</span>
+<span class="sd">        unweld : bool, optional</span>
+<span class="sd">            If true, all faces have their own unique vertices.</span>
+<span class="sd">            If false, vertices are shared between faces if this is also the case in the mesh.</span>
+<span class="sd">            Default is ``False``.</span>
+
+<span class="sd">        Warnings</span>
+<span class="sd">        --------</span>
+<span class="sd">        This function only writes geometric data about the vertices and</span>
+<span class="sd">        the faces to the file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.from_vertices_and_cells"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.from_vertices_and_cells.html#compas.datastructures.BaseVolMesh.from_vertices_and_cells">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_vertices_and_cells</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">cells</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a volmesh object from vertices and cells.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertices : list</span>
+<span class="sd">            Ordered list of vertices, represented by their XYZ coordinates.</span>
+<span class="sd">        cells : lists of lists</span>
+<span class="sd">            List of cells (list of faces).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Volmesh</span>
+<span class="sd">            A volmesh object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">volmesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="n">volmesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
+            <span class="n">volmesh</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">volmesh</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.to_vertices_and_cells"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.to_vertices_and_cells.html#compas.datastructures.BaseVolMesh.to_vertices_and_cells">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the vertices and cells of a volmesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A 2-tuple containing</span>
+
+<span class="sd">            * a list of vertices, represented by their XYZ coordinates, and</span>
+<span class="sd">            * a list of cells.</span>
+
+<span class="sd">            Each cell is a list of faces, which are lists of indices referencing the list of vertex coordinates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertex_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_index</span><span class="p">()</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">:</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span>
+            <span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">cells</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.cell_to_mesh"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.cell_to_mesh.html#compas.datastructures.BaseVolMesh.cell_to_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">cell_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a mesh object from from a cell of a volmesh.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : hashable</span>
+<span class="sd">            Identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Mesh</span>
+<span class="sd">            A mesh object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.cell_to_vertices_and_faces"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.cell_to_vertices_and_faces.html#compas.datastructures.BaseVolMesh.cell_to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">cell_to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the vertices and faces of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : hashable</span>
+<span class="sd">            Identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A 2-tuple containing</span>
+
+<span class="sd">            * a list of vertices, represented by their XYZ coordinates, and</span>
+<span class="sd">            * a list of faces.</span>
+
+<span class="sd">            Each face is a list of indices referencing the list of vertex coordinates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vertex_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">vertex</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># helpers</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="BaseVolMesh.vertex_gkey"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.vertex_gkey.html#compas.datastructures.BaseVolMesh.vertex_gkey">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_gkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps vertex dictionary keys to the corresponding</span>
+<span class="sd">        *geometric key* up to a certain precision.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        precision : str (3f)</span>
+<span class="sd">            The float precision specifier used in string formatting.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary of vertex-geometric key pairs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.gkey_vertex"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.gkey_vertex.html#compas.datastructures.BaseVolMesh.gkey_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">gkey_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps *geometric keys* of a certain precision</span>
+<span class="sd">        to the keys of the corresponding vertices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        precision : str (3f)</span>
+<span class="sd">            The float precision specifier used in string formatting.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary of geometric key-vertex pairs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">vertex</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># builders</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># modifiers</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># volmesh geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="BaseVolMesh.centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.centroid.html#compas.datastructures.BaseVolMesh.centroid">[docs]</a>    <span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the centroid of the volmesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The coordinates of the centroid.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()])</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># vertex geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="BaseVolMesh.vertex_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.vertex_coordinates.html#compas.datastructures.BaseVolMesh.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinates of a vertex.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            The axes alon which to take the coordinates.</span>
+<span class="sd">            Should be a combination of ``&#39;x&#39;``, ``&#39;y&#39;``, ``&#39;z&#39;``.</span>
+<span class="sd">            Default is ``&#39;xyz&#39;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            Coordinates of the vertex.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.vertex_laplacian"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.vertex_laplacian.html#compas.datastructures.BaseVolMesh.vertex_laplacian">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the vector from a vertex to the centroid of its neighbors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The components of the vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighborhood_centroid</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.vertex_neighborhood_centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.vertex_neighborhood_centroid.html#compas.datastructures.BaseVolMesh.vertex_neighborhood_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighborhood_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the centroid of the neighbors of a vertex.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The coordinates of the centroid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vertex</span><span class="p">)])</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># edge geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="BaseVolMesh.edge_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.edge_coordinates.html#compas.datastructures.BaseVolMesh.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinates of the start and end point of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
+<span class="sd">        axes : str (xyz)</span>
+<span class="sd">            The axes along which the coordinates should be included.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            The coordinates of the start point and the coordinates of the end point.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.edge_length"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.edge_length.html#compas.datastructures.BaseVolMesh.edge_length">[docs]</a>    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the length of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The length of the edge.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.edge_vector"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.edge_vector.html#compas.datastructures.BaseVolMesh.edge_vector">[docs]</a>    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the vector of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The vector from u to v.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ab</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.edge_point"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.edge_point.html#compas.datastructures.BaseVolMesh.edge_point">[docs]</a>    <span class="k">def</span> <span class="nf">edge_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the location of a point along an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
+<span class="sd">        t : float (0.5)</span>
+<span class="sd">            The location of the point on the edge.</span>
+<span class="sd">            If the value of ``t`` is outside the range ``0-1``, the point will</span>
+<span class="sd">            lie in the direction of the edge, but not on the edge vector.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The XYZ coordinates of the point.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.edge_direction"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.edge_direction.html#compas.datastructures.BaseVolMesh.edge_direction">[docs]</a>    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the direction vector of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The direction vector of the edge.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># face geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="BaseVolMesh.face_vertices"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_vertices.html#compas.datastructures.BaseVolMesh.face_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The vertices of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            Ordered vertex identifiers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.face_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_coordinates.html#compas.datastructures.BaseVolMesh.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            The axes alon which to take the coordinates.</span>
+<span class="sd">            Should be a combination of ``&#39;x&#39;``, ``&#39;y&#39;``, ``&#39;z&#39;``.</span>
+<span class="sd">            Default is ``&#39;xyz&#39;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of list</span>
+<span class="sd">            The coordinates of the vertices of the face.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.face_normal"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_normal.html#compas.datastructures.BaseVolMesh.face_normal">[docs]</a>    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the oriented normal of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+<span class="sd">        unitized : bool, optional</span>
+<span class="sd">            Unitize the normal vector.</span>
+<span class="sd">            Default is ``True``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The components of the normal vector.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.face_centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_centroid.html#compas.datastructures.BaseVolMesh.face_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the location of the centroid of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The coordinates of the centroid.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.face_center"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_center.html#compas.datastructures.BaseVolMesh.face_center">[docs]</a>    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the location of the center of mass of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The coordinates of the center of mass.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.face_area"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_area.html#compas.datastructures.BaseVolMesh.face_area">[docs]</a>    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the oriented area of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The non-oriented area of the face.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.face_flatness"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_flatness.html#compas.datastructures.BaseVolMesh.face_flatness">[docs]</a>    <span class="k">def</span> <span class="nf">face_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the flatness of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The flatness.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        compas.geometry.mesh_flatness function currently only works for quadrilateral faces.</span>
+<span class="sd">        This function uses the distance between each face vertex and its projected point on the best-fit plane of the face as the flatness metric.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">deviation</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">polygon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="n">plane</span> <span class="o">=</span> <span class="n">bestfit_plane</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">polygon</span><span class="p">:</span>
+            <span class="n">pt_proj</span> <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
+            <span class="n">dev</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">pt_proj</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dev</span> <span class="o">&gt;</span> <span class="n">deviation</span><span class="p">:</span>
+                <span class="n">deviation</span> <span class="o">=</span> <span class="n">dev</span>
+        <span class="k">return</span> <span class="n">deviation</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.face_aspect_ratio"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.face_aspect_ratio.html#compas.datastructures.BaseVolMesh.face_aspect_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">face_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The aspect ratio.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] Wikipedia. *Types of mesh*.</span>
+<span class="sd">               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">face_edge_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span></div>
+
+    <span class="n">halfface_area</span> <span class="o">=</span> <span class="n">face_area</span>
+    <span class="n">halfface_centroid</span> <span class="o">=</span> <span class="n">face_centroid</span>
+    <span class="n">halfface_center</span> <span class="o">=</span> <span class="n">face_center</span>
+    <span class="n">halfface_coordinates</span> <span class="o">=</span> <span class="n">face_coordinates</span>
+    <span class="n">halfface_flatness</span> <span class="o">=</span> <span class="n">face_flatness</span>
+    <span class="n">halfface_normal</span> <span class="o">=</span> <span class="n">face_normal</span>
+    <span class="n">halfface_aspect_ratio</span> <span class="o">=</span> <span class="n">face_aspect_ratio</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># cell geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="BaseVolMesh.cell_centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.cell_centroid.html#compas.datastructures.BaseVolMesh.cell_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">cell_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the location of the centroid of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : hashable</span>
+<span class="sd">            The identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The coordinates of the centroid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.cell_center"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.cell_center.html#compas.datastructures.BaseVolMesh.cell_center">[docs]</a>    <span class="k">def</span> <span class="nf">cell_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the location of the center of mass of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : hashable</span>
+<span class="sd">            The identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The coordinates of the center of mass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">centroid_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BaseVolMesh.cell_vertex_normal"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseVolMesh.cell_vertex_normal.html#compas.datastructures.BaseVolMesh.cell_vertex_normal">[docs]</a>    <span class="k">def</span> <span class="nf">cell_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the normal vector at the vertex of a boundary cell as the weighted average of the</span>
+<span class="sd">        normals of the neighboring faces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            The identifier of the vertex of the cell.</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The components of the normal vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cell_faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">if</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">cell_faces</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span></div></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
+</code></pre></div>
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../releases.html">Releases</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <!-- footer -->
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.19.2',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../../../_static/underscore.js"></script>
+  <script src="../../../../../_static/doctools.js"></script>
+  <script src="../../../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
