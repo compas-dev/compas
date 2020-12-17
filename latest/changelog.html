@@ -62,7 +62,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.1
+            0.19.2
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -108,23 +108,20 @@ and this project adheres to <a class="reference external" href="https://semver.o
 </div>
 <div class="section" id="changed">
 <h3>Changed</h3>
-<ul class="simple">
-<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas._os.prepare_environment</span></code> to prepend environment paths (fixes problem with RPC on windows).</p></li>
-</ul>
 </div>
 <div class="section" id="removed">
 <h3>Removed</h3>
 </div>
 </div>
 <div class="section" id="id1">
-<h2>[0.19.1] 2020-12-10</h2>
+<h2>[0.19.2] 2020-12-17</h2>
 <div class="section" id="id2">
 <h3>Added</h3>
 </div>
 <div class="section" id="id3">
 <h3>Changed</h3>
 <ul class="simple">
-<li><p>Fix bug in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.AttributesView</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas._os.prepare_environment</span></code> to prepend environment paths (fixes problem with RPC on windows).</p></li>
 </ul>
 </div>
 <div class="section" id="id4">
@@ -132,14 +129,29 @@ and this project adheres to <a class="reference external" href="https://semver.o
 </div>
 </div>
 <div class="section" id="id5">
-<h2>[0.19.0] 2020-12-09</h2>
+<h2>[0.19.1] 2020-12-10</h2>
 <div class="section" id="id6">
+<h3>Added</h3>
+</div>
+<div class="section" id="id7">
+<h3>Changed</h3>
+<ul class="simple">
+<li><p>Fix bug in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.AttributesView</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3>Removed</h3>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>[0.19.0] 2020-12-09</h2>
+<div class="section" id="id10">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">is_osx</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id7">
+<div class="section" id="id11">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix default namespace handling in URDF documents.</p></li>
@@ -152,16 +164,16 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed data serialisation in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.HalfFace</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id8">
+<div class="section" id="id12">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed all implementations of <code class="docutils literal notranslate"><span class="pre">draw_collection</span></code>.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id9">
+<div class="section" id="id13">
 <h2>[0.18.1] 2020-12-01</h2>
-<div class="section" id="id10">
+<div class="section" id="id14">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added URDF and XML writers.</p></li>
@@ -169,7 +181,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.files.URDF.from_robot</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id11">
+<div class="section" id="id15">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Changed implementation of <code class="docutils literal notranslate"><span class="pre">Mesh.vertices_on_boundaries</span></code> to account for special cases.</p></li>
@@ -182,13 +194,13 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.</p></li>
 </ul>
 </div>
-<div class="section" id="id12">
+<div class="section" id="id16">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id13">
+<div class="section" id="id17">
 <h2>[0.18.0] 2020-11-24</h2>
-<div class="section" id="id14">
+<div class="section" id="id18">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">remap_values</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_utilities</span></code>.</p></li>
@@ -196,7 +208,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.json_dump</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.json_dumps</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.json_load</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.json_loads</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id15">
+<div class="section" id="id19">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Network.delete_node</span></code>.</p></li>
@@ -206,19 +218,19 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>changed base of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.base.Base</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id16">
+<div class="section" id="id20">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_cut_by_plane</span></code>.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id17">
+<div class="section" id="id21">
 <h2>[0.17.3] 2020-11-20</h2>
-<div class="section" id="id18">
+<div class="section" id="id22">
 <h3>Added</h3>
 </div>
-<div class="section" id="id19">
+<div class="section" id="id23">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.is_coplanar</span></code>.</p></li>
@@ -227,16 +239,16 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Volmesh.cell_to_mesh</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id20">
+<div class="section" id="id24">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id21">
+<div class="section" id="id25">
 <h2>[0.17.2] 2020-11-04</h2>
-<div class="section" id="id22">
+<div class="section" id="id26">
 <h3>Added</h3>
 </div>
-<div class="section" id="id23">
+<div class="section" id="id27">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">__getstate__</span></code>, <code class="docutils literal notranslate"><span class="pre">__setstate__</span></code> of <code class="docutils literal notranslate"><span class="pre">compas.base.Base</span></code>.</p></li>
@@ -245,13 +257,13 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">ABCMeta</span></code> from the list of base classes of several objects in compas.</p></li>
 </ul>
 </div>
-<div class="section" id="id24">
+<div class="section" id="id28">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id25">
+<div class="section" id="id29">
 <h2>[0.17.1] 2020-10-28</h2>
-<div class="section" id="id26">
+<div class="section" id="id30">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.BoxArtist.draw_collection</span></code>.</p></li>
@@ -266,7 +278,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added option to show/hide vertices, edges, and faces in <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.VectorArtist.draw</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id27">
+<div class="section" id="id31">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Changed implementation of <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.BoxArtist.draw</span></code>.</p></li>
@@ -276,7 +288,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed bug in polyhedron data.</p></li>
 </ul>
 </div>
-<div class="section" id="id28">
+<div class="section" id="id32">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.PointArtist.draw_collection</span></code>.</p></li>
@@ -285,9 +297,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 </ul>
 </div>
 </div>
-<div class="section" id="id29">
+<div class="section" id="id33">
 <h2>[0.16.9] 2020-10-21</h2>
-<div class="section" id="id30">
+<div class="section" id="id34">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added binary STL writer.</p></li>
@@ -303,7 +315,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.network_smooth_centroid</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id31">
+<div class="section" id="id35">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in handling of keys in edge attribute functions of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge</span></code>.</p></li>
@@ -317,13 +329,13 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">summary</span></code> method of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id32">
+<div class="section" id="id36">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id33">
+<div class="section" id="id37">
 <h2>[0.16.8] 2020-10-14</h2>
-<div class="section" id="id34">
+<div class="section" id="id38">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">RobotModelArtist</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_ghpython</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_blender</span></code>.</p></li>
@@ -333,44 +345,44 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">PolygonArtist</span></code>, <code class="docutils literal notranslate"><span class="pre">PolylineArtist</span></code> to <code class="docutils literal notranslate"><span class="pre">GeometryPlotter</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id35">
+<div class="section" id="id39">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Mesh</span></code> takes name of <code class="docutils literal notranslate"><span class="pre">Shape</span></code> in <code class="docutils literal notranslate"><span class="pre">Mesh.from_shape</span></code>.</p></li>
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">zoom_extents</span></code> of <code class="docutils literal notranslate"><span class="pre">GeometryPlotter</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id36">
+<div class="section" id="id40">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">SegmentArtist</span></code> from <code class="docutils literal notranslate"><span class="pre">compas_plotters</span></code>.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id37">
+<div class="section" id="id41">
 <h2>[0.16.7] 2020-10-06</h2>
-<div class="section" id="id38">
+<div class="section" id="id42">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added functionality to the RPC service to automatically reload modules if a change is detected.</p></li>
 </ul>
 </div>
-<div class="section" id="id39">
+<div class="section" id="id43">
 <h3>Changed</h3>
 </div>
-<div class="section" id="id40">
+<div class="section" id="id44">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id41">
+<div class="section" id="id45">
 <h2>[0.16.6] 2020-09-30</h2>
-<div class="section" id="id42">
+<div class="section" id="id46">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_plotters.geometryplotter.GeometryPlotter</span></code> for COMPAS geometry objects.</p></li>
 </ul>
 </div>
-<div class="section" id="id43">
+<div class="section" id="id47">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.base.Base.dtype</span></code> to property.</p></li>
@@ -378,19 +390,19 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Changed version processing to <code class="docutils literal notranslate"><span class="pre">distutils.version.LooseVersion</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id44">
+<div class="section" id="id48">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id45">
+<div class="section" id="id49">
 <h2>[0.16.5] 2020-09-26</h2>
-<div class="section" id="id46">
+<div class="section" id="id50">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added tests for halfedge data schemas.</p></li>
 </ul>
 </div>
-<div class="section" id="id47">
+<div class="section" id="id51">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed RGB color processing in <code class="docutils literal notranslate"><span class="pre">compas.utilities.color_to_colordict</span></code>.</p></li>
@@ -400,28 +412,28 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed JSON data validation of base COMPAS object.</p></li>
 </ul>
 </div>
-<div class="section" id="id48">
-<h3>Removed</h3>
-</div>
-</div>
-<div class="section" id="id49">
-<h2>[0.16.4] 2020-09-24</h2>
-<div class="section" id="id50">
-<h3>Added</h3>
-</div>
-<div class="section" id="id51">
-<h3>Changed</h3>
-<ul class="simple">
-<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Box.vertices</span></code>.</p></li>
-</ul>
-</div>
 <div class="section" id="id52">
 <h3>Removed</h3>
 </div>
 </div>
 <div class="section" id="id53">
-<h2>[0.16.3] 2020-09-23</h2>
+<h2>[0.16.4] 2020-09-24</h2>
 <div class="section" id="id54">
+<h3>Added</h3>
+</div>
+<div class="section" id="id55">
+<h3>Changed</h3>
+<ul class="simple">
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Box.vertices</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="id56">
+<h3>Removed</h3>
+</div>
+</div>
+<div class="section" id="id57">
+<h2>[0.16.3] 2020-09-23</h2>
+<div class="section" id="id58">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added abstract <code class="docutils literal notranslate"><span class="pre">DATASCHEMA</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.base.Base</span></code>.</p></li>
@@ -439,7 +451,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_collection</span></code> methods to Grasshopper artists.</p></li>
 </ul>
 </div>
-<div class="section" id="id55">
+<div class="section" id="id59">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Updated naming conventions in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.HalfFace</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></p></li>
@@ -450,7 +462,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Moved attribute views to <code class="docutils literal notranslate"><span class="pre">compas.datastructure.attributes</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id56">
+<div class="section" id="id60">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">from_json</span></code>, <code class="docutils literal notranslate"><span class="pre">to_json</span></code>, <code class="docutils literal notranslate"><span class="pre">to_data</span></code>, <code class="docutils literal notranslate"><span class="pre">copy</span></code>, <code class="docutils literal notranslate"><span class="pre">transformed</span></code> from primitives, defaulting to the base implementation in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code>.</p></li>
@@ -458,9 +470,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 </ul>
 </div>
 </div>
-<div class="section" id="id57">
+<div class="section" id="id61">
 <h2>[0.16.2] 2020-08-06</h2>
-<div class="section" id="id58">
+<div class="section" id="id62">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added plugin system based on decorators: <code class="docutils literal notranslate"><span class="pre">compas.plugins.pluggable</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">compas.plugins.plugin</span></code>.</p></li>
@@ -477,7 +489,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added the methods <code class="docutils literal notranslate"><span class="pre">to_data</span></code> and <code class="docutils literal notranslate"><span class="pre">from_data</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id59">
+<div class="section" id="id63">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Restructure and reorganize volmesh datastructure</p></li>
@@ -494,7 +506,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Changed vertex reading of PLY files to include all property information.</p></li>
 </ul>
 </div>
-<div class="section" id="id60">
+<div class="section" id="id64">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed CGAL based boolean implementations.</p></li>
@@ -507,24 +519,24 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id61">
+<div class="section" id="id65">
 <h2>[0.16.1] 2020-06-08</h2>
-<div class="section" id="id62">
+<div class="section" id="id66">
 <h3>Added</h3>
 </div>
-<div class="section" id="id63">
+<div class="section" id="id67">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed scaling bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id64">
+<div class="section" id="id68">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id65">
+<div class="section" id="id69">
 <h2>[0.16.0] 2020-06-05</h2>
-<div class="section" id="id66">
+<div class="section" id="id70">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoVector</span></code>.</p></li>
@@ -536,7 +548,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">unweld</span></code> option to obj writing.</p></li>
 </ul>
 </div>
-<div class="section" id="id67">
+<div class="section" id="id71">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">FaceAttributeView.__get_item__</span></code>: access to default was tried before attrs.</p></li>
@@ -559,13 +571,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Changed params (point, normal) into plane for <code class="docutils literal notranslate"><span class="pre">compas.geometry.matrix_from_parallel_projection</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.matrix_from_orthogonal_projection</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.matrix_from_perspective_projection</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id68">
+<div class="section" id="id72">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id69">
+<div class="section" id="id73">
 <h2>[0.15.6] 2020-04-27</h2>
-<div class="section" id="id70">
+<div class="section" id="id74">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Extended glTF support.</p></li>
@@ -577,7 +589,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">Mesh.to_obj</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id71">
+<div class="section" id="id75">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">Box.from_bounding_box</span></code>.</p></li>
@@ -587,13 +599,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Fixed bug where <code class="docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code> derived classes cannot be serialized by jsonpickle.</p></li>
 </ul>
 </div>
-<div class="section" id="id72">
+<div class="section" id="id76">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id73">
+<div class="section" id="id77">
 <h2>[0.15.5] 2020-03-29</h2>
-<div class="section" id="id74">
+<div class="section" id="id78">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added classmethod <code class="docutils literal notranslate"><span class="pre">from_geometry</span></code> to <code class="docutils literal notranslate"><span class="pre">RhinoMesh</span></code>.</p></li>
@@ -605,7 +617,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">Mesh.to_off</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id75">
+<div class="section" id="id79">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed object naming in artists of <code class="docutils literal notranslate"><span class="pre">compas_ghpython</span></code>.</p></li>
@@ -615,13 +627,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Fixed bug in mesh boundary functions.</p></li>
 </ul>
 </div>
-<div class="section" id="id76">
+<div class="section" id="id80">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id77">
+<div class="section" id="id81">
 <h2>[0.15.4] 2020-03-05</h2>
-<div class="section" id="id78">
+<div class="section" id="id82">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added algorithm for pulling points onto mesh.</p></li>
@@ -632,27 +644,27 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added support for robot mimicking joints.</p></li>
 </ul>
 </div>
-<div class="section" id="id79">
+<div class="section" id="id83">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bugs in <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.NetworkArtist</span></code>.</p></li>
 <li><p>Add conda executable path to <code class="docutils literal notranslate"><span class="pre">compas_bootstrapper.py</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id80">
+<div class="section" id="id84">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id81">
+<div class="section" id="id85">
 <h2>[0.15.3] 2020-02-26</h2>
-<div class="section" id="id82">
+<div class="section" id="id86">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added optional class parameter to <code class="docutils literal notranslate"><span class="pre">RhinoMesh.to_compas</span></code>.</p></li>
 <li><p>Added max int key to serialisation of graph.</p></li>
 </ul>
 </div>
-<div class="section" id="id83">
+<div class="section" id="id87">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Changed name of base mesh implementation to <code class="docutils literal notranslate"><span class="pre">BaseMesh</span></code>.</p></li>
@@ -660,7 +672,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Fixed bug in face finding function.</p></li>
 </ul>
 </div>
-<div class="section" id="id84">
+<div class="section" id="id88">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed optional requirements from setup file.</p></li>
@@ -668,21 +680,21 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id85">
+<div class="section" id="id89">
 <h2>[0.15.2] 2020-02-20</h2>
-<div class="section" id="id86">
+<div class="section" id="id90">
 <h3>Added</h3>
 </div>
-<div class="section" id="id87">
+<div class="section" id="id91">
 <h3>Changed</h3>
 </div>
-<div class="section" id="id88">
+<div class="section" id="id92">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id89">
+<div class="section" id="id93">
 <h2>[0.15.1] 2020-02-16</h2>
-<div class="section" id="id90">
+<div class="section" id="id94">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added glTF support.</p></li>
@@ -691,7 +703,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added Rhino plane geometry.</p></li>
 </ul>
 </div>
-<div class="section" id="id91">
+<div class="section" id="id95">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">compas_hpc</span></code> import problem.</p></li>
@@ -703,7 +715,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Integrated mixin functionality and removed mixins.</p></li>
 </ul>
 </div>
-<div class="section" id="id92">
+<div class="section" id="id96">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed parallelisation from network algorithms.</p></li>
@@ -711,9 +723,9 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id93">
+<div class="section" id="id97">
 <h2>[0.15.0] 2020-01-24</h2>
-<div class="section" id="id94">
+<div class="section" id="id98">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">to_compas</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPoint</span></code>.</p></li>
@@ -726,7 +738,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_pull_points_numpy</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id95">
+<div class="section" id="id99">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Moved <code class="docutils literal notranslate"><span class="pre">compas_rhino.conduits</span></code> into <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists</span></code>.</p></li>
@@ -739,7 +751,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.offset</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id96">
+<div class="section" id="id100">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed deprecated <code class="docutils literal notranslate"><span class="pre">compas.geometry.xforms</span></code>.</p></li>
@@ -748,9 +760,9 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id97">
+<div class="section" id="id101">
 <h2>[0.14.0] 2020-01-21</h2>
-<div class="section" id="id98">
+<div class="section" id="id102">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh.Mesh.any_vertex</span></code>.</p></li>
@@ -771,7 +783,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added mutable attribute view for mesh vertex/face/edge attributes.</p></li>
 </ul>
 </div>
-<div class="section" id="id99">
+<div class="section" id="id103">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Default Mesh vertex, face, edge attributes are no longer copied and stored explicitly per vertex, face, edge, repesctively.</p></li>
@@ -785,7 +797,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Split <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.has_edge</span></code> into <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.is_edge</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.is_halfedge</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id100">
+<div class="section" id="id104">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh.Mesh.get_any_vertex</span></code>.</p></li>
@@ -819,9 +831,9 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id101">
+<div class="section" id="id105">
 <h2>[0.13.3] 2020-01-10</h2>
-<div class="section" id="id102">
+<div class="section" id="id106">
 <h3>Added</h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.ShapeArtist</span></code> as base artist for all shape artists.</p></li>
@@ -833,7 +845,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">clear_layer</span></code> method to <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id103">
+<div class="section" id="id107">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Renamed <code class="docutils literal notranslate"><span class="pre">compas.utilities.maps.geometric_key2</span></code> to <code class="docutils literal notranslate"><span class="pre">geometric_key_xy</span></code>.</p></li>
@@ -843,7 +855,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">transform</span></code> and <code class="docutils literal notranslate"><span class="pre">transformed</span></code> (and others) to <code class="docutils literal notranslate"><span class="pre">Mesh</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id104">
+<div class="section" id="id108">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.BoxArtist</span></code></p></li>
@@ -852,15 +864,15 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id105">
+<div class="section" id="id109">
 <h2>[0.13.2] 2020-01-06</h2>
-<div class="section" id="id106">
+<div class="section" id="id110">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>File reading functions for ascii files in <code class="docutils literal notranslate"><span class="pre">compas.files</span></code> has moved from the individual reader classes to a new parent class, <code class="docutils literal notranslate"><span class="pre">BaseReader</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id107">
+<div class="section" id="id111">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code> on new-style artist <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.Artist</span></code>.</p></li>
@@ -871,20 +883,20 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.VolMeshArtist</span></code> on <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id108">
+<div class="section" id="id112">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id109">
+<div class="section" id="id113">
 <h2>[0.13.0] 2019-12-16</h2>
-<div class="section" id="id110">
+<div class="section" id="id114">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added DOI to bibtex entry.</p></li>
 <li><p>Added conversion for old mesh JSON data.</p></li>
 </ul>
 </div>
-<div class="section" id="id111">
+<div class="section" id="id115">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Indirectly changed mesh serialisation to JSON (by changing key conversion and moving conversion into JSON methods).</p></li>
@@ -893,32 +905,17 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Subdivision algorithms use fast mesh copy.</p></li>
 </ul>
 </div>
-<div class="section" id="id112">
+<div class="section" id="id116">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Support for non-integer vertex and face identifiers in mesh.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id113">
-<h2>[0.12.4] 2019-12-11</h2>
-<div class="section" id="id114">
-<h3>Added</h3>
-</div>
-<div class="section" id="id115">
-<h3>Changed</h3>
-</div>
-<div class="section" id="id116">
-<h3>Removed</h3>
-</div>
-</div>
 <div class="section" id="id117">
-<h2>[0.12.3] 2019-12-11</h2>
+<h2>[0.12.4] 2019-12-11</h2>
 <div class="section" id="id118">
 <h3>Added</h3>
-<ul class="simple">
-<li><p>Added <code class="docutils literal notranslate"><span class="pre">mesh_subdivide_frames</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.datastructures.subdivision</span></code></p></li>
-</ul>
 </div>
 <div class="section" id="id119">
 <h3>Changed</h3>
@@ -928,8 +925,23 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </div>
 </div>
 <div class="section" id="id121">
-<h2>[0.12.2] 2019-12-11</h2>
+<h2>[0.12.3] 2019-12-11</h2>
 <div class="section" id="id122">
+<h3>Added</h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">mesh_subdivide_frames</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.datastructures.subdivision</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id123">
+<h3>Changed</h3>
+</div>
+<div class="section" id="id124">
+<h3>Removed</h3>
+</div>
+</div>
+<div class="section" id="id125">
+<h2>[0.12.2] 2019-12-11</h2>
+<div class="section" id="id126">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">intersection_segment_polyline</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.intersections</span></code></p></li>
@@ -937,20 +949,20 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">from_sides_and_radius</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id123">
+<div class="section" id="id127">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Reworked docstrings of methods in <code class="docutils literal notranslate"><span class="pre">compas.geometry.queries</span></code></p></li>
 <li><p>Set default <code class="docutils literal notranslate"><span class="pre">tol</span></code> to <code class="docutils literal notranslate"><span class="pre">1e-6</span></code> in <code class="docutils literal notranslate"><span class="pre">compas.geometry.queries</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id124">
+<div class="section" id="id128">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id125">
+<div class="section" id="id129">
 <h2>[[0.12.1] 2019-12-10] 2019-12-10</h2>
-<div class="section" id="id126">
+<div class="section" id="id130">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added inherited methods to class docs.</p></li>
@@ -959,7 +971,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added explicit support for collections to <code class="docutils literal notranslate"><span class="pre">compas_blender</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id127">
+<div class="section" id="id131">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Bottom face of cylinder shape should be flipped.</p></li>
@@ -967,30 +979,30 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p><code class="docutils literal notranslate"><span class="pre">compas.geometry.Box</span></code> is now centred at origin by default.</p></li>
 </ul>
 </div>
-<div class="section" id="id128">
+<div class="section" id="id132">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.remote</span></code> because it does not provide an advatage over <code class="docutils literal notranslate"><span class="pre">compas.rpc</span></code>.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id129">
+<div class="section" id="id133">
 <h2>[[0.11.4] 2019-11-26] 2019-11-26</h2>
-<div class="section" id="id130">
+<div class="section" id="id134">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.etoforms.ImageForm</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">doc8</span></code> as dev requirement.</p></li>
 </ul>
 </div>
-<div class="section" id="id131">
+<div class="section" id="id135">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install_plugin</span></code> to use only the plugin name, w/o the GUID.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">iterable_like</span></code> to prevent exhausting generators passed as targets.</p></li>
 </ul>
 </div>
-<div class="section" id="id132">
+<div class="section" id="id136">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas_rhino.ui.Controller</span></code>.</p></li>
@@ -998,15 +1010,15 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id133">
+<div class="section" id="id137">
 <h2>[[0.11.2] 2019-11-19] 2019-11-19</h2>
-<div class="section" id="id134">
+<div class="section" id="id138">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added factory methods for <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists._Artist</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id135">
+<div class="section" id="id139">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.FrameArtist</span></code> layer clear to false by default.</p></li>
@@ -1017,13 +1029,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Switched to <code class="docutils literal notranslate"><span class="pre">compas.geometry.KDTree</span></code> as fallback for <code class="docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code> instead of Rhino <code class="docutils literal notranslate"><span class="pre">RTree</span></code> because it currently fails.</p></li>
 </ul>
 </div>
-<div class="section" id="id136">
+<div class="section" id="id140">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id137">
+<div class="section" id="id141">
 <h2>[0.11.0] 2019-11-09</h2>
-<div class="section" id="id138">
+<div class="section" id="id142">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">iterable_like</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.utilities.itertools_</span></code></p></li>
@@ -1042,7 +1054,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added support for <code class="docutils literal notranslate"><span class="pre">data</span></code> to all geometric primitives.</p></li>
 </ul>
 </div>
-<div class="section" id="id139">
+<div class="section" id="id143">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Docs are only deployed to github pages for tagged commits.</p></li>
@@ -1056,13 +1068,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Fixed different argument naming between Rhino5 and Rhino6 of <code class="docutils literal notranslate"><span class="pre">rs.LayerVisible()</span></code> in <code class="docutils literal notranslate"><span class="pre">compas_rhino.utilities.objects</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id140">
+<div class="section" id="id144">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id141">
+<div class="section" id="id145">
 <h2>[0.10.0] 2019-10-28</h2>
-<div class="section" id="id142">
+<div class="section" id="id146">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added method for computing the determinant of the matrix of a transformation <code class="docutils literal notranslate"><span class="pre">compas.geometry.Transformation.determinant</span></code>.</p></li>
@@ -1074,7 +1086,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added method <code class="docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code> to all the classes inheriting from <code class="docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code> to create a <code class="docutils literal notranslate"><span class="pre">Mesh</span></code> representation of them.</p></li>
 </ul>
 </div>
-<div class="section" id="id143">
+<div class="section" id="id147">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Transformation.inverse</span></code> to return an inverted copy of the transformation.</p></li>
@@ -1082,13 +1094,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Transformation.concatenate</span></code> to add another transformation to the transformation instance.</p></li>
 </ul>
 </div>
-<div class="section" id="id144">
+<div class="section" id="id148">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id145">
+<div class="section" id="id149">
 <h2>[0.9.1] 2019-10-28</h2>
-<div class="section" id="id146">
+<div class="section" id="id150">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Point.transform_collection</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.Point.transformed_collection</span></code>.</p></li>
@@ -1098,20 +1110,20 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.bestfit_frame_numpy</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id147">
+<div class="section" id="id151">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed transformation of start and end point of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code> to update the point objects in place.</p></li>
 <li><p>Fixed return value of <code class="docutils literal notranslate"><span class="pre">compas.numerical.pca_numpy</span></code> to return mean not as nested list.</p></li>
 </ul>
 </div>
-<div class="section" id="id148">
+<div class="section" id="id152">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id149">
+<div class="section" id="id153">
 <h2>[0.9.0] 2019-10-21</h2>
-<div class="section" id="id150">
+<div class="section" id="id154">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">matrix_change_basis</span></code>, <code class="docutils literal notranslate"><span class="pre">Transformation.change_basis</span></code></p></li>
@@ -1124,7 +1136,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">transform_frames_numpy</span></code> and respective helper functions <code class="docutils literal notranslate"><span class="pre">dehomogenize_and_unflatten_frames_numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">homogenize_and_flatten_frames_numpy</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id151">
+<div class="section" id="id155">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Renamed <code class="docutils literal notranslate"><span class="pre">global_coords_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">local_coords_numpy</span></code> to <code class="docutils literal notranslate"><span class="pre">local_to_world_coords_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">world_to_local_coords_numpy</span></code>.</p></li>
@@ -1133,28 +1145,28 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Renamed methods <code class="docutils literal notranslate"><span class="pre">Frame.represent_point/vector/frame_in_global_coordinates</span></code> and <code class="docutils literal notranslate"><span class="pre">Frame.represent_point/vector/frame_in_local_coordinates</span></code> to <code class="docutils literal notranslate"><span class="pre">Frame.to_local_coords</span></code> and <code class="docutils literal notranslate"><span class="pre">Frame.to_world_coords</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id152">
-<h3>Removed</h3>
-</div>
-</div>
-<div class="section" id="id153">
-<h2>[0.8.1] 2019-10-01</h2>
-<div class="section" id="id154">
-<h3>Added</h3>
-</div>
-<div class="section" id="id155">
-<h3>Changed</h3>
-<ul class="simple">
-<li><p>Fixed unguarded import of <code class="docutils literal notranslate"><span class="pre">numpy</span></code> based transformations in mesh package.</p></li>
-</ul>
-</div>
 <div class="section" id="id156">
 <h3>Removed</h3>
 </div>
 </div>
 <div class="section" id="id157">
-<h2>[0.8.0] 2019-10-01</h2>
+<h2>[0.8.1] 2019-10-01</h2>
 <div class="section" id="id158">
+<h3>Added</h3>
+</div>
+<div class="section" id="id159">
+<h3>Changed</h3>
+<ul class="simple">
+<li><p>Fixed unguarded import of <code class="docutils literal notranslate"><span class="pre">numpy</span></code> based transformations in mesh package.</p></li>
+</ul>
+</div>
+<div class="section" id="id160">
+<h3>Removed</h3>
+</div>
+</div>
+<div class="section" id="id161">
+<h2>[0.8.0] 2019-10-01</h2>
+<div class="section" id="id162">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added test section for <code class="docutils literal notranslate"><span class="pre">compas.geometry.transformations</span></code></p></li>
@@ -1165,7 +1177,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_mesh</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.MeshArtist</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id159">
+<div class="section" id="id163">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Generate sphinx documentation from markdown files in repo root for top level sections.</p></li>
@@ -1191,7 +1203,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Separated <code class="docutils literal notranslate"><span class="pre">numpy</span></code> based tranformations into separate module.</p></li>
 </ul>
 </div>
-<div class="section" id="id160">
+<div class="section" id="id164">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas_viewers</span></code> to separate repo.</p></li>
@@ -1199,9 +1211,9 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id161">
+<div class="section" id="id165">
 <h2>[0.7.2] 2019-08-09</h2>
-<div class="section" id="id162">
+<div class="section" id="id166">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoGeometry</span></code> to the docs.</p></li>
@@ -1211,7 +1223,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.set_precision</span></code> function for the setting the global precision used by COMPAS as a floating point number.</p></li>
 </ul>
 </div>
-<div class="section" id="id163">
+<div class="section" id="id167">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix mesh genus in <code class="docutils literal notranslate"><span class="pre">compas.datastructures</span></code>.</p></li>
@@ -1227,16 +1239,16 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Fix loss of precision during mesh welding in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_weld</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id164">
+<div class="section" id="id168">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id165">
+<div class="section" id="id169">
 <h2>[0.7.1] 2019-06-29</h2>
-<div class="section" id="id166">
+<div class="section" id="id170">
 <h3>Added</h3>
 </div>
-<div class="section" id="id167">
+<div class="section" id="id171">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Include <code class="docutils literal notranslate"><span class="pre">compas_plotters</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_viewers</span></code> in the build instructions.</p></li>
@@ -1247,13 +1259,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Default Python to <code class="docutils literal notranslate"><span class="pre">pythonw</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id168">
+<div class="section" id="id172">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id169">
+<div class="section" id="id173">
 <h2>[0.7.0] 2019-06-27</h2>
-<div class="section" id="id170">
+<div class="section" id="id174">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added filter shorthand for selecting OBJ, JSON files in Rhino.</p></li>
@@ -1267,7 +1279,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.remote</span></code> package for making HTTP based Remote Procedure Calls.</p></li>
 </ul>
 </div>
-<div class="section" id="id171">
+<div class="section" id="id175">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Restructure halffaces as lists in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code>.</p></li>
@@ -1278,7 +1290,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added non-imported service for <code class="docutils literal notranslate"><span class="pre">compas.remote</span></code> for starting the subprocess that runs the server.</p></li>
 </ul>
 </div>
-<div class="section" id="id172">
+<div class="section" id="id176">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.plotters</span></code></p></li>
@@ -1286,31 +1298,16 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id173">
-<h2>[0.6.2] 2019-04-30</h2>
-<div class="section" id="id174">
-<h3>Added</h3>
-</div>
-<div class="section" id="id175">
-<h3>Changed</h3>
-<ul class="simple">
-<li><p>Based mesh drawing for Rhino on RhinoCommon rather than Rhinoscriptsyntax.</p></li>
-<li><p>Fixed mesh drawing for Rhino 6</p></li>
-</ul>
-</div>
-<div class="section" id="id176">
-<h3>Removed</h3>
-</div>
-</div>
 <div class="section" id="id177">
-<h2>[0.6.1] 2019-04-29</h2>
+<h2>[0.6.2] 2019-04-30</h2>
 <div class="section" id="id178">
 <h3>Added</h3>
 </div>
 <div class="section" id="id179">
 <h3>Changed</h3>
 <ul class="simple">
-<li><p>Fixed bug in RPC. The services cannot have a <code class="docutils literal notranslate"><span class="pre">pass</span></code> statement as class body.</p></li>
+<li><p>Based mesh drawing for Rhino on RhinoCommon rather than Rhinoscriptsyntax.</p></li>
+<li><p>Fixed mesh drawing for Rhino 6</p></li>
 </ul>
 </div>
 <div class="section" id="id180">
@@ -1318,15 +1315,30 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </div>
 </div>
 <div class="section" id="id181">
-<h2>[0.6.0] 2019-04-29</h2>
+<h2>[0.6.1] 2019-04-29</h2>
 <div class="section" id="id182">
+<h3>Added</h3>
+</div>
+<div class="section" id="id183">
+<h3>Changed</h3>
+<ul class="simple">
+<li><p>Fixed bug in RPC. The services cannot have a <code class="docutils literal notranslate"><span class="pre">pass</span></code> statement as class body.</p></li>
+</ul>
+</div>
+<div class="section" id="id184">
+<h3>Removed</h3>
+</div>
+</div>
+<div class="section" id="id185">
+<h2>[0.6.0] 2019-04-29</h2>
+<div class="section" id="id186">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">center</span></code> property getter to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Cirle</span></code> primitive</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">astar_shortest_path</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.topology.traversal</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id183">
+<div class="section" id="id187">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Updated configuration instructions for Blender.</p></li>
@@ -1334,16 +1346,16 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Changed mesh drawing in Rhino to use separate mesh vertices per face. This makes the mesh look more “as expected” in <em>Shaded</em> view.</p></li>
 </ul>
 </div>
-<div class="section" id="id184">
+<div class="section" id="id188">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed support for Python 3.5.x by setting the minimum requirements for Numpy and Scipy to <code class="docutils literal notranslate"><span class="pre">1.16</span></code> and <code class="docutils literal notranslate"><span class="pre">1.2</span></code>, respectively.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id185">
+<div class="section" id="id189">
 <h2>[0.5.2] 2019-04-12</h2>
-<div class="section" id="id186">
+<div class="section" id="id190">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_polylines</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.Artist</span></code>.</p></li>
@@ -1351,7 +1363,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Added named colors to <code class="docutils literal notranslate"><span class="pre">compas.utilities.colors.py</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id187">
+<div class="section" id="id191">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix <code class="docutils literal notranslate"><span class="pre">mesh_uv_to_xyz</span></code> in <code class="docutils literal notranslate"><span class="pre">RhinoSurface</span></code>.</p></li>
@@ -1362,7 +1374,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Changed Numpy and Scipy version requirements to allow for Python 3.5.x.</p></li>
 </ul>
 </div>
-<div class="section" id="id188">
+<div class="section" id="id192">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">mixing.py</span></code> from <code class="docutils literal notranslate"><span class="pre">compas.utilities</span></code>.</p></li>
@@ -1374,12 +1386,12 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id189">
+<div class="section" id="id193">
 <h2>[0.5.1] 2019-03-25</h2>
-<div class="section" id="id190">
+<div class="section" id="id194">
 <h3>Added</h3>
 </div>
-<div class="section" id="id191">
+<div class="section" id="id195">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix <code class="docutils literal notranslate"><span class="pre">XFunc</span></code> and <code class="docutils literal notranslate"><span class="pre">RPC</span></code> environment activation.</p></li>
@@ -1389,13 +1401,13 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Fix installation for Rhino, related to implicit import of <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id192">
+<div class="section" id="id196">
 <h3>Removed</h3>
 </div>
 </div>
-<div class="section" id="id193">
+<div class="section" id="id197">
 <h2>[0.5.0] 2019-03-15</h2>
-<div class="section" id="id194">
+<div class="section" id="id198">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">Circle</span></code> and <code class="docutils literal notranslate"><span class="pre">Sphere</span></code> primitives to <code class="docutils literal notranslate"><span class="pre">compas.geometry</span></code>.</p></li>
@@ -1405,7 +1417,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">is_scalable</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.robots.Joint</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id195">
+<div class="section" id="id199">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix exception in <code class="docutils literal notranslate"><span class="pre">Plane.transform</span></code>.</p></li>
@@ -1414,9 +1426,9 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id196">
+<div class="section" id="id200">
 <h2>[0.4.22] 2019-03-05</h2>
-<div class="section" id="id197">
+<div class="section" id="id201">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Add pretty print option to JSON formatter.</p></li>
@@ -1425,36 +1437,36 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id198">
+<div class="section" id="id202">
 <h2>[0.4.21] 2019-03-04</h2>
-<div class="section" id="id199">
+<div class="section" id="id203">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix import in <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code> vertex modifiers.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id200">
+<div class="section" id="id204">
 <h2>[0.4.20] 2019-03-04</h2>
-<div class="section" id="id201">
+<div class="section" id="id205">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Remove <code class="docutils literal notranslate"><span class="pre">download_image_from_remote</span></code> utility function.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id202">
+<div class="section" id="id206">
 <h2>[0.4.12] 2019-03-04</h2>
-<div class="section" id="id203">
+<div class="section" id="id207">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Small fixes on Rhino forms support.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id204">
+<div class="section" id="id208">
 <h2>[0.4.11] 2019-03-03</h2>
-<div class="section" id="id205">
+<div class="section" id="id209">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>New function to join network edges into polylines: <code class="docutils literal notranslate"><span class="pre">network_polylines</span></code>.</p></li>
@@ -1471,7 +1483,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Add support for relative mesh references in URDF.</p></li>
 </ul>
 </div>
-<div class="section" id="id206">
+<div class="section" id="id210">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix mesh centroid and mesh normal calculation.</p></li>
@@ -1481,9 +1493,9 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 </ul>
 </div>
 </div>
-<div class="section" id="id207">
+<div class="section" id="id211">
 <h2>[0.4.9] 2019-02-10</h2>
-<div class="section" id="id208">
+<div class="section" id="id212">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>New class methods for <code class="docutils literal notranslate"><span class="pre">Polyhedron</span></code>: <code class="docutils literal notranslate"><span class="pre">from_platonicsolid</span></code> and <code class="docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code>.</p></li>
@@ -1493,7 +1505,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p><code class="docutils literal notranslate"><span class="pre">trimesh_face_circle</span></code> in <code class="docutils literal notranslate"><span class="pre">mesh.geometry</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id209">
+<div class="section" id="id213">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fix exception in <code class="docutils literal notranslate"><span class="pre">angle_vectors_signed</span></code> if vectors aligned</p></li>
@@ -1501,16 +1513,16 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Update Rhino installation merging Win32 and Mac implementations and defaulting the bootstrapper to the active python even if no CONDA environment is active during install.</p></li>
 </ul>
 </div>
-<div class="section" id="id210">
+<div class="section" id="id214">
 <h3>Removed</h3>
 <ul class="simple">
 <li><p>Bound mesh operations.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id211">
+<div class="section" id="id215">
 <h2>[0.4.8] 2019-01-28</h2>
-<div class="section" id="id212">
+<div class="section" id="id216">
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Curve tangent at parameter.</p></li>
@@ -1567,328 +1579,334 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li class="nav-item"><a class="nav-link reference internal" href="#removed">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id1">[0.19.1] 2020-12-10</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id1">[0.19.2] 2020-12-17</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id2">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id3">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id4">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id5">[0.19.0] 2020-12-09</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id5">[0.19.1] 2020-12-10</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id6">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id7">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id8">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id9">[0.18.1] 2020-12-01</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id9">[0.19.0] 2020-12-09</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id10">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id11">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id12">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id13">[0.18.0] 2020-11-24</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id13">[0.18.1] 2020-12-01</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id14">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id15">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id16">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id17">[0.17.3] 2020-11-20</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id17">[0.18.0] 2020-11-24</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id18">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id19">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id20">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id21">[0.17.2] 2020-11-04</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id21">[0.17.3] 2020-11-20</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id22">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id23">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id24">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id25">[0.17.1] 2020-10-28</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id25">[0.17.2] 2020-11-04</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id26">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id27">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id28">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id29">[0.16.9] 2020-10-21</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id29">[0.17.1] 2020-10-28</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id30">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id31">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id32">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id33">[0.16.8] 2020-10-14</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id33">[0.16.9] 2020-10-21</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id34">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id35">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id36">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id37">[0.16.7] 2020-10-06</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id37">[0.16.8] 2020-10-14</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id38">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id39">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id40">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id41">[0.16.6] 2020-09-30</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id41">[0.16.7] 2020-10-06</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id42">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id43">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id44">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id45">[0.16.5] 2020-09-26</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id45">[0.16.6] 2020-09-30</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id46">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id47">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id48">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id49">[0.16.4] 2020-09-24</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id49">[0.16.5] 2020-09-26</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id50">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id51">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id52">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id53">[0.16.3] 2020-09-23</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id53">[0.16.4] 2020-09-24</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id54">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id55">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id56">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id57">[0.16.2] 2020-08-06</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id57">[0.16.3] 2020-09-23</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id58">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id59">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id60">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id61">[0.16.1] 2020-06-08</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id61">[0.16.2] 2020-08-06</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id62">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id63">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id64">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id65">[0.16.0] 2020-06-05</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id65">[0.16.1] 2020-06-08</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id66">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id67">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id68">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id69">[0.15.6] 2020-04-27</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id69">[0.16.0] 2020-06-05</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id70">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id71">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id72">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id73">[0.15.5] 2020-03-29</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id73">[0.15.6] 2020-04-27</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id74">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id75">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id76">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id77">[0.15.4] 2020-03-05</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id77">[0.15.5] 2020-03-29</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id78">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id79">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id80">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id81">[0.15.3] 2020-02-26</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id81">[0.15.4] 2020-03-05</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id82">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id83">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id84">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id85">[0.15.2] 2020-02-20</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id85">[0.15.3] 2020-02-26</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id86">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id87">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id88">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id89">[0.15.1] 2020-02-16</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id89">[0.15.2] 2020-02-20</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id90">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id91">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id92">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id93">[0.15.0] 2020-01-24</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id93">[0.15.1] 2020-02-16</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id94">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id95">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id96">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id97">[0.14.0] 2020-01-21</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id97">[0.15.0] 2020-01-24</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id98">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id99">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id100">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id101">[0.13.3] 2020-01-10</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id101">[0.14.0] 2020-01-21</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id102">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id103">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id104">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id105">[0.13.2] 2020-01-06</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id105">[0.13.3] 2020-01-10</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id106">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id107">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id108">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id109">[0.13.0] 2019-12-16</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id109">[0.13.2] 2020-01-06</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id110">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id111">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id112">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id113">[0.12.4] 2019-12-11</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id113">[0.13.0] 2019-12-16</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id114">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id115">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id116">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id117">[0.12.3] 2019-12-11</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id117">[0.12.4] 2019-12-11</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id118">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id119">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id120">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id121">[0.12.2] 2019-12-11</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id121">[0.12.3] 2019-12-11</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id122">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id123">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id124">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id125">[[0.12.1] 2019-12-10] 2019-12-10</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id125">[0.12.2] 2019-12-11</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id126">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id127">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id128">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id129">[[0.11.4] 2019-11-26] 2019-11-26</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id129">[[0.12.1] 2019-12-10] 2019-12-10</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id130">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id131">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id132">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id133">[[0.11.2] 2019-11-19] 2019-11-19</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id133">[[0.11.4] 2019-11-26] 2019-11-26</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id134">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id135">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id136">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id137">[0.11.0] 2019-11-09</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id137">[[0.11.2] 2019-11-19] 2019-11-19</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id138">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id139">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id140">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id141">[0.10.0] 2019-10-28</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id141">[0.11.0] 2019-11-09</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id142">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id143">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id144">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id145">[0.9.1] 2019-10-28</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id145">[0.10.0] 2019-10-28</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id146">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id147">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id148">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id149">[0.9.0] 2019-10-21</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id149">[0.9.1] 2019-10-28</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id150">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id151">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id152">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id153">[0.8.1] 2019-10-01</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id153">[0.9.0] 2019-10-21</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id154">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id155">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id156">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id157">[0.8.0] 2019-10-01</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id157">[0.8.1] 2019-10-01</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id158">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id159">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id160">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id161">[0.7.2] 2019-08-09</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id161">[0.8.0] 2019-10-01</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id162">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id163">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id164">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id165">[0.7.1] 2019-06-29</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id165">[0.7.2] 2019-08-09</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id166">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id167">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id168">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id169">[0.7.0] 2019-06-27</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id169">[0.7.1] 2019-06-29</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id170">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id171">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id172">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id173">[0.6.2] 2019-04-30</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id173">[0.7.0] 2019-06-27</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id174">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id175">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id176">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id177">[0.6.1] 2019-04-29</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id177">[0.6.2] 2019-04-30</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id178">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id179">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id180">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id181">[0.6.0] 2019-04-29</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id181">[0.6.1] 2019-04-29</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id182">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id183">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id184">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id185">[0.5.2] 2019-04-12</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id185">[0.6.0] 2019-04-29</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id186">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id187">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id188">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id189">[0.5.1] 2019-03-25</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id189">[0.5.2] 2019-04-12</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id190">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id191">Changed</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id192">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id193">[0.5.0] 2019-03-15</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id193">[0.5.1] 2019-03-25</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id194">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id195">Changed</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id196">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id196">[0.4.22] 2019-03-05</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id197">Added</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id198">[0.4.21] 2019-03-04</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id197">[0.5.0] 2019-03-15</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id198">Added</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#id199">Changed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id200">[0.4.20] 2019-03-04</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id201">Removed</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id200">[0.4.22] 2019-03-05</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id201">Added</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id202">[0.4.12] 2019-03-04</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id202">[0.4.21] 2019-03-04</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id203">Changed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id204">[0.4.11] 2019-03-03</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id205">Added</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id206">Changed</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id204">[0.4.20] 2019-03-04</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id205">Removed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id207">[0.4.9] 2019-02-10</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id208">Added</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id209">Changed</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id210">Removed</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id206">[0.4.12] 2019-03-04</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id207">Changed</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id211">[0.4.8] 2019-01-28</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id208">[0.4.11] 2019-03-03</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id209">Added</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id210">Changed</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id211">[0.4.9] 2019-02-10</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id212">Added</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id213">Changed</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id214">Removed</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id215">[0.4.8] 2019-01-28</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id216">Added</a></li>
 </ul>
 </li>
 </ul>
@@ -1938,7 +1956,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.1',
+    VERSION           : '0.19.2',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
