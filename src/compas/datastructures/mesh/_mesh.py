@@ -59,16 +59,6 @@ class Mesh(BaseMesh):
         from compas.datastructures.mesh.transformations_numpy import mesh_transform_numpy
         mesh_transform_numpy(self, M)
 
-    # def to_trimesh(self):
-    #     # convert to mesh with only triangle faces
-    #     # provides options that define the rules for triangulation
-    #     # for use with trimesh-specific algorithms
-    #     # provide option to use numpy for storage of vertices and faces
-    #     pass
-
-    # def to_quadmesh(self):
-    #     pass
-
 
 # =============================================================================
 # Main
