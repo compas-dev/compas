@@ -220,12 +220,13 @@ This is for example the mechanism behind <code class="xref py py-meth docutils l
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 
 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_mesh</span><span class="p">()</span>
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">RhinoMesh</span><span class="o">.</span><span class="n">from_guid</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span><span class="o">.</span><span class="n">to_compas</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">Mesh</span><span class="p">)</span>
+<span class="n">surf</span> <span class="o">=</span> <span class="n">RhinoMesh</span><span class="o">.</span><span class="n">from_guid</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">surf</span><span class="o">.</span><span class="n">to_compas</span><span class="p">()</span>
 
-<span class="n">points</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_point_coordinates</span><span class="p">(</span><span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_points</span><span class="p">())</span>
+<span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_points</span><span class="p">()</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_point_coordinates</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
 <span class="n">gkey_vertex</span> <span class="o">=</span> <span class="p">{</span><span class="n">geometric_key</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)):</span> <span class="n">vertex</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
-<span class="c1"># gkey_key = mesh.gkey_key()</span>
 
 <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
     <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
@@ -267,6 +268,7 @@ This is for example the mechanism behind <code class="xref py py-meth docutils l
 <li class="nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="volmeshes.html">Vol(umetric) Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="robots.html">Robots</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="numericaldata.html">Numerical Data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="rpc.html">Remote Procedure Calls</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Geometric Maps</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="serialization.html">Data Serialization</a></li>
