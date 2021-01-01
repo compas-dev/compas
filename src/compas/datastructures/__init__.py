@@ -190,11 +190,38 @@ Functions
 from __future__ import absolute_import
 
 
-from .datastructure import *  # noqa: F401 E402 F403
+from .datastructure import *  # noqa: F401 F403
+from .network import *  # noqa: F401 F403
+from .mesh import *  # noqa: F401 F403
+from .volmesh import *  # noqa: F401 F403
 
-from .network import *  # noqa: F401 E402 F403
-from .mesh import *  # noqa: F401 E402 F403
-from .volmesh import *  # noqa: F401 E402 F403
+# from . import datastructure
+# from . import network
+# from . import mesh
+# from . import volmesh
 
+# __all__ = []
+# __all__.extend(datastructure.__all__)
+# __all__.extend(network.__all__)
+# __all__.extend(mesh.__all__)
+# __all__.extend(volmesh.__all__)
+
+# __all__ = ['Datastructure', 'Network', 'Mesh', 'VolMesh']  # noqa: F405
 
 __all__ = [name for name in dir() if not name.startswith('_')]
+
+# __all__ = [  # noqa: F405
+#     'mesh_collapse_edge',
+#     'trimesh_collapse_edge',
+#     'mesh_add_vertex_to_face_edge',
+#     'mesh_insert_vertex_on_edge',
+#     'mesh_merge_faces',
+#     'mesh_split_edge',
+#     'mesh_split_face',
+#     'trimesh_split_edge',
+#     'mesh_substitute_vertex_in_faces',
+#     'trimesh_swap_edge',
+#     'mesh_unweld_vertices',
+#     'mesh_unweld_edges',
+#     'mesh_delete_duplicate_vertices',
+# ]
