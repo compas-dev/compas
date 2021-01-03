@@ -10,7 +10,7 @@ class PolylineArtist(Artist):
 
     zorder = 1000
 
-    def __init__(self, polyline, draw_points=False, linewidth=1.0, linestyle='solid', color=(0, 0, 0)):
+    def __init__(self, polyline, draw_points=True, linewidth=1.0, linestyle='solid', color=(0, 0, 0)):
         super(PolylineArtist, self).__init__(polyline)
         self._mpl_polyline = None
         self._draw_points = draw_points
@@ -18,6 +18,7 @@ class PolylineArtist(Artist):
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.color = color
+        self._points_artists = []
 
     @property
     def data(self):
@@ -31,6 +32,9 @@ class PolylineArtist(Artist):
                         color=self.color,
                         zorder=self.zorder)
         self.mpl_line = self.plotter.axes.add_line(line2d)
+        if self._draw_points:
+            for point in self.polyline:
+                self._points_artists.append(self.plotter.add(point))
 
     def redraw(self):
         x, y, _ = zip(* self.polyline.points)

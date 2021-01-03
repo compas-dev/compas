@@ -38,7 +38,11 @@ Artist.register(Line, LineArtist)
 Artist.register(Polyline, PolylineArtist)
 Artist.register(Polygon, PolygonArtist)
 Artist.register(Circle, CircleArtist)
-Artist.register(Ellipse, EllipseArtist)
+
+from .datastructartist import DatastructureArtist
+from compas.datastructures import Mesh
+Artist.register(Mesh, DatastructureArtist)
+
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
