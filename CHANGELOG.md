@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Separate `compas.robots.Joint.origin` into the parent-relative origin `origin` and the world-relative origin `current_origin`.
+
 ### Removed
 
 

@@ -588,7 +588,7 @@ class RobotModel(Base):
         frames = []
         for link in self.iter_links():
             if len(link.visual) and link.parent_joint:
-                frames.append(link.parent_joint.origin.copy())
+                frames.append(link.parent_joint.current_origin.copy())
         return frames
 
     @property
@@ -741,7 +741,7 @@ class RobotModel(Base):
         Frame(Point(0.000, 0.000, 0.000), Vector(0.362, 0.932, 0.000), Vector(-0.932, 0.362, 0.000))
         """
         transformations = self.compute_transformations(joint_state)
-        return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
+        return [j.current_origin.transformed(transformations[j.name]) for j in self.iter_joints()]
 
     def transformed_axes(self, joint_state):
         """Returns the transformed axes based on the joint_state.
@@ -798,7 +798,7 @@ class RobotModel(Base):
         joint = ee_link.parent_joint
         if joint:
             transformations = self.compute_transformations(joint_state)
-            return joint.origin.transformed(transformations[joint.name])
+            return joint.current_origin.transformed(transformations[joint.name])
         else:
             return Frame.worldXY()  # if we ask forward from base link
 
