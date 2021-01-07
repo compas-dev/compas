@@ -602,8 +602,7 @@ class RobotModel(Base):
         """
         axes = []
         for joint in self.iter_joints():
-            if joint.axis:
-                axes.append(joint.axis.vector)
+            axes.append(joint.current_axis.vector)
         return axes
 
     def __str__(self):
@@ -765,7 +764,7 @@ class RobotModel(Base):
         [Vector(0.000, 0.000, 1.000), Vector(0.000, 0.000, 1.000)]
         """
         transformations = self.compute_transformations(joint_state)
-        return [j.axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.axis.vector.length]
+        return [j.current_axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.current_axis.vector.length]
 
     def forward_kinematics(self, joint_state, link_name=None):
         """Calculate the robot's forward kinematic.
