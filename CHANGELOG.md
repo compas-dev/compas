@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.19.3] 2020-12-20
 
 ### Added
-* Added `compas.datastructures.mesh.trimesh_samplepoints`.
+* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
 ### Changed
 
 ### Removed
