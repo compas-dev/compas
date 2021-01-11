@@ -683,7 +683,7 @@
         <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_links</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">visual</span><span class="p">)</span> <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">parent_joint</span><span class="p">:</span>
-                <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parent_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+                <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parent_joint</span><span class="o">.</span><span class="n">current_origin</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">frames</span>
 
     <span class="nd">@property</span>
@@ -697,8 +697,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">axes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">joint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_joints</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">joint</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span>
-                <span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">joint</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+            <span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">joint</span><span class="o">.</span><span class="n">current_axis</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">axes</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -836,7 +835,7 @@
 <span class="sd">        Frame(Point(0.000, 0.000, 0.000), Vector(0.362, 0.932, 0.000), Vector(-0.932, 0.362, 0.000))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">transformations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_transformations</span><span class="p">(</span><span class="n">joint_state</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">transformations</span><span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_joints</span><span class="p">()]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">current_origin</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">transformations</span><span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_joints</span><span class="p">()]</span></div>
 
 <div class="viewcode-block" id="RobotModel.transformed_axes"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.transformed_axes.html#compas.robots.RobotModel.transformed_axes">[docs]</a>    <span class="k">def</span> <span class="nf">transformed_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_state</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the transformed axes based on the joint_state.</span>
@@ -860,7 +859,7 @@
 <span class="sd">        [Vector(0.000, 0.000, 1.000), Vector(0.000, 0.000, 1.000)]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">transformations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_transformations</span><span class="p">(</span><span class="n">joint_state</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">transformations</span><span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_joints</span><span class="p">()</span> <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">length</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">current_axis</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">transformations</span><span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_joints</span><span class="p">()</span> <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">current_axis</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">length</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="RobotModel.forward_kinematics"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.forward_kinematics.html#compas.robots.RobotModel.forward_kinematics">[docs]</a>    <span class="k">def</span> <span class="nf">forward_kinematics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_state</span><span class="p">,</span> <span class="n">link_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the robot&#39;s forward kinematic.</span>
@@ -893,7 +892,7 @@
         <span class="n">joint</span> <span class="o">=</span> <span class="n">ee_link</span><span class="o">.</span><span class="n">parent_joint</span>
         <span class="k">if</span> <span class="n">joint</span><span class="p">:</span>
             <span class="n">transformations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_transformations</span><span class="p">(</span><span class="n">joint_state</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">transformations</span><span class="p">[</span><span class="n">joint</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">joint</span><span class="o">.</span><span class="n">current_origin</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">transformations</span><span class="p">[</span><span class="n">joint</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>  <span class="c1"># if we ask forward from base link</span></div>
 
