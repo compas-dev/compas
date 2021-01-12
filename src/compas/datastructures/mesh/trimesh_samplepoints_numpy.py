@@ -1,7 +1,6 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from __future__ import annotations
 
+from typing import Tuple, Union
 
 from numpy import array
 from numpy import ndarray
@@ -13,7 +12,8 @@ from numpy import cross
 from numpy.linalg import norm
 from numpy import clip
 from numpy import finfo
-from typing import Tuple, Union
+
+from .core import BaseMesh
 
 
 __all__ = [
@@ -21,7 +21,7 @@ __all__ = [
 ]
 
 
-def trimesh_samplepoints_numpy(mesh, num_points: int = 1000, return_normals: bool = False) -> Union[ndarray, Tuple[ndarray, ndarray]]:
+def trimesh_samplepoints_numpy(mesh: BaseMesh, num_points: int = 1000, return_normals: bool = False) -> Union[ndarray, Tuple[ndarray, ndarray]]:
     """Compute sample points on a triangle mesh surface
 
     Parameters
