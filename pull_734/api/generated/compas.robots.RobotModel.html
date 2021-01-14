@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - RobotModel</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+  
+    <link rel="next" title="RobotModel.__init__" href="compas.robots.RobotModel.__init__.html" />
+  
+  
+  
+    <link rel="prev" title="robots" href="../compas.robots.html" />
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            0.19.3
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <div class="detail section" id="robotmodel">
+<h1>RobotModel</h1>
+<dl class="class">
+<dt id="compas.robots.RobotModel">
+<em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">RobotModel</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">joints=[]</em>, <em class="sig-param">links=[]</em>, <em class="sig-param">materials=[]</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/robots/model/robot.html#RobotModel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></p>
+<p>RobotModel is the root element of the model.</p>
+<p>Instances of this class represent an entire robot as defined in an URDF
+structure.</p>
+<p>In line with URDF limitations, only tree structures can be represented by
+this model, ruling out all parallel robots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Unique name of the robot.</p></li>
+<li><p><strong>joints</strong> – List of joint elements.</p></li>
+<li><p><strong>links</strong> – List of links of the robot.</p></li>
+<li><p><strong>materials</strong> – List of global materials.</p></li>
+<li><p><strong>root</strong> – Root link of the model.</p></li>
+<li><p><strong>attr</strong> – Non-standard attributes.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.__init__.html#compas.robots.RobotModel.__init__" title="compas.robots.RobotModel.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(name[, joints, links, materials])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.add_joint.html#compas.robots.RobotModel.add_joint" title="compas.robots.RobotModel.add_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_joint</span></code></a>(name, type, parent_link, child_link)</p></td>
+<td><p>Adds a joint to the robot model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.add_link.html#compas.robots.RobotModel.add_link" title="compas.robots.RobotModel.add_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_link</span></code></a>(name[, visual_meshes, …])</p></td>
+<td><p>Adds a link to the robot model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.compute_transformations.html#compas.robots.RobotModel.compute_transformations" title="compas.robots.RobotModel.compute_transformations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_transformations</span></code></a>(joint_state[, link, …])</p></td>
+<td><p>Recursive function to calculate the transformations of each joint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.find_children_joints.html#compas.robots.RobotModel.find_children_joints" title="compas.robots.RobotModel.find_children_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_children_joints</span></code></a>(link)</p></td>
+<td><p>Returns a list of all children joints of the link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.find_parent_joint.html#compas.robots.RobotModel.find_parent_joint" title="compas.robots.RobotModel.find_parent_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_parent_joint</span></code></a>(link)</p></td>
+<td><p>Returns the parent joint of the link or None if not found.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.forward_kinematics.html#compas.robots.RobotModel.forward_kinematics" title="compas.robots.RobotModel.forward_kinematics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_kinematics</span></code></a>(joint_state[, link_name])</p></td>
+<td><p>Calculate the robot’s forward kinematic.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_data.html#compas.robots.RobotModel.from_data" title="compas.robots.RobotModel.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<td><p>Construct the <a class="reference internal" href="#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> from its data representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_json.html#compas.robots.RobotModel.from_json" title="compas.robots.RobotModel.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<td><p>Construct an object from serialised data contained in a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_urdf_file.html#compas.robots.RobotModel.from_urdf_file" title="compas.robots.RobotModel.from_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_urdf_file</span></code></a>(file)</p></td>
+<td><p>Construct a robot model from a URDF file model description.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_urdf_string.html#compas.robots.RobotModel.from_urdf_string" title="compas.robots.RobotModel.from_urdf_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_urdf_string</span></code></a>(text)</p></td>
+<td><p>Construct a robot model from a URDF description as string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_base_link_name.html#compas.robots.RobotModel.get_base_link_name" title="compas.robots.RobotModel.get_base_link_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_base_link_name</span></code></a>()</p></td>
+<td><p>Returns the name of the base link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_configurable_joint_names.html#compas.robots.RobotModel.get_configurable_joint_names" title="compas.robots.RobotModel.get_configurable_joint_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_configurable_joint_names</span></code></a>()</p></td>
+<td><p>Returns the configurable joint names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_configurable_joints.html#compas.robots.RobotModel.get_configurable_joints" title="compas.robots.RobotModel.get_configurable_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_configurable_joints</span></code></a>()</p></td>
+<td><p>Returns the configurable joints.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_end_effector_link.html#compas.robots.RobotModel.get_end_effector_link" title="compas.robots.RobotModel.get_end_effector_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_end_effector_link</span></code></a>()</p></td>
+<td><p>Returns the end effector link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_end_effector_link_name.html#compas.robots.RobotModel.get_end_effector_link_name" title="compas.robots.RobotModel.get_end_effector_link_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_end_effector_link_name</span></code></a>()</p></td>
+<td><p>Returns the name of the end effector link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_joint_by_name.html#compas.robots.RobotModel.get_joint_by_name" title="compas.robots.RobotModel.get_joint_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_joint_by_name</span></code></a>(name)</p></td>
+<td><p>Get a joint in a robot model matching by its name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_joint_types.html#compas.robots.RobotModel.get_joint_types" title="compas.robots.RobotModel.get_joint_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_joint_types</span></code></a>()</p></td>
+<td><p>Returns the joint types of the configurable joints.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_link_by_name.html#compas.robots.RobotModel.get_link_by_name" title="compas.robots.RobotModel.get_link_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_link_by_name</span></code></a>(name)</p></td>
+<td><p>Get a link in a robot model matching by its name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_urdf_element.html#compas.robots.RobotModel.get_urdf_element" title="compas.robots.RobotModel.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_chain.html#compas.robots.RobotModel.iter_chain" title="compas.robots.RobotModel.iter_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_chain</span></code></a>([start, end])</p></td>
+<td><p>Iterator over the chain of all elements between a pair of start and end elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joint_chain.html#compas.robots.RobotModel.iter_joint_chain" title="compas.robots.RobotModel.iter_joint_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joint_chain</span></code></a>([link_start_name, …])</p></td>
+<td><p>Iterator over the chain of joints between a pair of start and end links.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joints.html#compas.robots.RobotModel.iter_joints" title="compas.robots.RobotModel.iter_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joints</span></code></a>()</p></td>
+<td><p>Iterator over the joints that starts with the root link’s children joints.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_link_chain.html#compas.robots.RobotModel.iter_link_chain" title="compas.robots.RobotModel.iter_link_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_link_chain</span></code></a>([link_start_name, link_end_name])</p></td>
+<td><p>Iterator over the chain of links between a pair of start and end links.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_links.html#compas.robots.RobotModel.iter_links" title="compas.robots.RobotModel.iter_links"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_links</span></code></a>()</p></td>
+<td><p>Iterator over the links that starts with the root link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.load_geometry.html#compas.robots.RobotModel.load_geometry" title="compas.robots.RobotModel.load_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_geometry</span></code></a>(*resource_loaders, **kwargs)</p></td>
+<td><p>Load external geometry resources, such as meshes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.scale.html#compas.robots.RobotModel.scale" title="compas.robots.RobotModel.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor[, link])</p></td>
+<td><p>Scales the robot by factor (absolute).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_data.html#compas.robots.RobotModel.to_data" title="compas.robots.RobotModel.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<td><p>Returns the data dictionary that represents the <a class="reference internal" href="#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_json.html#compas.robots.RobotModel.to_json" title="compas.robots.RobotModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_urdf_file.html#compas.robots.RobotModel.to_urdf_file" title="compas.robots.RobotModel.to_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_urdf_file</span></code></a>(file[, prettify])</p></td>
+<td><p>Construct a URDF file model description from a robot model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_axes.html#compas.robots.RobotModel.transformed_axes" title="compas.robots.RobotModel.transformed_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_axes</span></code></a>(joint_state)</p></td>
+<td><p>Returns the transformed axes based on the joint_state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_frames.html#compas.robots.RobotModel.transformed_frames" title="compas.robots.RobotModel.transformed_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_frames</span></code></a>(joint_state)</p></td>
+<td><p>Returns the transformed frames based on the joint_state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_data.html#compas.robots.RobotModel.validate_data" title="compas.robots.RobotModel.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_json.html#compas.robots.RobotModel.validate_json" title="compas.robots.RobotModel.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.plugins.html">plugins</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.robots.html">robots</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../releases.html">Releases</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">RobotModel</a></li>
+</ul>
+
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <!-- footer -->
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.19.3',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../_static/underscore.js"></script>
+  <script src="../../_static/doctools.js"></script>
+  <script src="../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
