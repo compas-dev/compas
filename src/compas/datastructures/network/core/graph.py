@@ -242,11 +242,45 @@ class Graph(Datastructure):
 
     @classmethod
     def from_networkx(cls, graph):
-        raise NotImplementedError
+        """Create a new graph instance from a NetworkX DiGraph instance.
+
+        Parameters
+        ----------
+        graph : networkx.DiGraph
+            NetworkX instance of a directed graph.
+
+        Returns
+        -------
+        Graph
+            A newly created graph.
+        """
+        g = cls()
+
+        for node in graph.nodes():
+            g.add_node(node, **graph.nodes[node])
+
+        for edge in graph.edges():
+            g.add_edge(*edge, **graph.edges[edge])
+
+        return g
 
     def to_networkx(self):
+        """Create a new NetworkX graph instance from a graph.
+
+        Returns
+        -------
+        networkx.DiGraph
+            A newly created NetworkX DiGraph.
+        """
         import networkx as nx
-        graph = nx.Graph(self.edges())
+        graph = nx.DiGraph()
+
+        for node, attr in self.nodes(data=True):
+            graph.add_node(node, **attr)
+
+        for edge, attr in self.edges(data=True):
+            graph.add_edge(*edge, **attr)
+
         return graph
 
     # --------------------------------------------------------------------------
@@ -1393,9 +1427,9 @@ class Graph(Datastructure):
         u : hashable
             The identifier of the first node of the edge.
         v : hashable
-            The identifier of the secondt node of the edge.
+            The identifier of the second node of the edge.
         directed : bool, optional
-            Take into accoun the direction of the edge.
+            Take into account the direction of the edge.
             Default is ``True``.
 
         Returns

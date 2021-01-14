@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix Rhino7 Mac installation path
 * Separate `compas.robots.Joint.origin` into the static parent-relative `origin` and the dynamic world-relative `current_origin`.
 * Separate `compas.robots.Joint.axis` into the static parent-relative `axis` and the dynamic world-relative `current_axis`.
+* Fixed support to convert back and forth between `compas.datastructures.Graph` and NetworkX `DiGraph`.
 
 ### Removed
 
