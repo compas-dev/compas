@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
+
 ### Changed
 
 * Fix Rhino7 Mac installation path
