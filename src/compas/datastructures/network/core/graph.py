@@ -255,6 +255,7 @@ class Graph(Datastructure):
             A newly created graph.
         """
         g = cls()
+        g.attributes.update(graph.graph)
 
         for node in graph.nodes():
             g.add_node(node, **graph.nodes[node])
@@ -274,6 +275,7 @@ class Graph(Datastructure):
         """
         import networkx as nx
         graph = nx.DiGraph()
+        graph.graph.update(self.attributes)
 
         for node, attr in self.nodes(data=True):
             graph.add_node(node, **attr)
