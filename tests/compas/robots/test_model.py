@@ -69,6 +69,9 @@ def test_programmatic_robot_model():
     urdf = URDF.from_robot(robot)
     robot_reincarnated = RobotModel.from_urdf_string(urdf.to_string())
     assert(['link0', 'joint1', 'link1', 'joint2', 'link2'] == list(robot_reincarnated.iter_chain()))
+    robot.remove_link('link2')
+    robot.remove_joint('joint2')
+    assert ['link0', 'joint1', 'link1'] == list(robot.iter_chain())
 
 
 def test_ur5_urdf(ur5_file):

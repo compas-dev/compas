@@ -68,6 +68,7 @@ class RobotModel(Base):
         self._rebuild_tree()
         self._create(self.root, Transformation())
         self._scale_factor = 1.
+        self._geometry_loaded = False
 
     def get_urdf_element(self):
         attributes = {'name': self.name}
@@ -220,6 +221,21 @@ class RobotModel(Base):
         """
         urdf = URDF.from_string(text)
         return urdf.robot
+
+    def to_urdf_string(self, prettify=False):
+        """Construct a URDF string model description from a robot model.
+
+        Parameters
+        ----------
+        prettify:
+            If ``True``, the string will be pretty printed.
+
+        Returns
+        -------
+        :obj:`str`
+        """
+        urdf = URDF.from_robot(self)
+        return urdf.to_string(prettify=prettify)
 
     def find_children_joints(self, link):
         """Returns a list of all children joints of the link.
@@ -575,6 +591,18 @@ class RobotModel(Base):
 
                     if not shape.geometry:
                         raise Exception('Unable to load geometry for {}'.format(shape.filename))
+        self._geometry_loaded = True
+
+    def ensure_geometry(self):
+        """Check if geometry has been loaded.
+        Raises
+        ------
+        :exc:`Exception`
+            If geometry has not been loaded.
+        """
+        if not self._geometry_loaded:
+            raise Exception(
+                'This method is only callable once the geometry has been loaded.')
 
     @property
     def frames(self):
@@ -869,6 +897,18 @@ class RobotModel(Base):
         self.links.append(link)
         return link
 
+    def remove_link(self, name):
+        """Removes a link to the robot model.
+
+        Provides an easy way to programmatically remove a link from the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the link
+        """
+        self.links = [link for link in self.links if link.name != name]
+
     def add_joint(self, name, type, parent_link, child_link, origin=None, axis=None, limit=None, **kwargs):
         """Adds a joint to the robot model.
 
@@ -958,6 +998,25 @@ class RobotModel(Base):
             item.init_transformation = joint.current_transformation
 
         return joint
+
+    def remove_joint(self, name):
+        """Removes a joint to the robot model.
+
+        Provides an easy way to programmatically remove a joint from the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the joint
+        """
+        joint = self.get_joint_by_name(name)
+        self.joints = [joint for joint in self.joints if joint.name != name]
+        parent_link = self.get_link_by_name(joint.parent.link)
+        parent_link.joints = [joint for joint in parent_link.joints if joint.name != name]
+        self._adjacency[parent_link.name] = [joint.name for joint in parent_link.joints]
+        del self._links[joint.child.link]
+        del self._joints[name]
+        del self._adjacency[name]
 
 
 URDFParser.install_parser(RobotModel, 'robot')
