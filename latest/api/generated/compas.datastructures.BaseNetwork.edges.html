@@ -107,10 +107,8 @@
 <dd class="field-odd"><p><strong>data</strong> (<em>bool, optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, yield both the identifier and the attributes.</p>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><em>2-tuple</em> – The next edge identifier (u, v), if <code class="docutils literal notranslate"><span class="pre">data</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><em>3-tuple</em> – The next node as a (u, v, attr) tuple, if <code class="docutils literal notranslate"><span class="pre">data</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-</ul>
+<dd class="field-even"><p><em>tuple</em> – The next edge identifier (u, v), if <code class="docutils literal notranslate"><span class="pre">data</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.
+Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.</p>
 </dd>
 </dl>
 </dd></dl>
