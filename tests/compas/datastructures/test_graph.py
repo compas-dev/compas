@@ -36,6 +36,7 @@ def test_graph_json_schema(graph):
 
     graph.validate_json()
 
+
 def test_graph_networkx_conversion():
     if compas.IPY:
         return
