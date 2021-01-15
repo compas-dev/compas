@@ -704,10 +704,9 @@ class Graph(Datastructure):
 
         Yields
         ------
-        2-tuple
+        tuple
             The next edge identifier (u, v), if ``data`` is ``False``.
-        3-tuple
-            The next node as a (u, v, attr) tuple, if ``data`` is ``True``.
+            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
         """
         for u, nbrs in iter(self.edge.items()):
             for v, attr in iter(nbrs.items()):
@@ -731,10 +730,9 @@ class Graph(Datastructure):
 
         Yields
         ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data=False``.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple
+            The next edge identifier (u, v), if ``data`` is ``False``.
+            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
         """
         for key in self.edges():
             is_match = True
@@ -779,17 +777,16 @@ class Graph(Datastructure):
         ----------
         predicate : callable
             The condition you want to evaluate.
-            The callable takes 3 parameters: ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
+            The callable takes 2 parameters: a key ``(u, v)`` tuple and ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the nodes and their data attributes.
             Default is ``False``.
 
         Yields
         ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data=False``.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple
+            The next edge identifier (u, v), if ``data`` is ``False``.
+            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
 
         Examples
         --------
