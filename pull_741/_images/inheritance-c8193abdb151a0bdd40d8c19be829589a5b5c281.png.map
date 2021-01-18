@@ -1,0 +1,7 @@
+<map id="inheritance61475aefe8" name="inheritance61475aefe8">
+<area shape="rect" id="node1" title="Abstract base class for all COMPAS objects." alt="" coords="8,83,121,121"/>
+<area shape="rect" id="node2" title="Representation of the kinematics and dynamics of a joint and its safety limits." alt="" coords="207,8,320,46"/>
+<area shape="rect" id="node3" title="Link represented as a rigid body with an inertia, visual, and collision features." alt="" coords="207,83,320,121"/>
+<area shape="rect" id="node4" title="RobotModel is the root element of the model." alt="" coords="196,158,331,196"/>
+<area shape="rect" id="node5" title="Represents a tool to be attached to the robot&#39;s flange." alt="" coords="406,158,527,196"/>
+</map>
