@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas.numerical.ga.ga</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            1.0.0
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas.numerical.ga.ga</li>
+          </ol>
+        </nav>
+        
+  
+        
+          
+          <h1>Source code for compas.numerical.ga.ga</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ga&#39;</span><span class="p">]</span>
+
+
+<span class="n">TPL</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">GA summary</span>
+<span class="s2">==========</span>
+<span class="s2">- fitness function name: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">- fitnes function type : </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">- number of generations : </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">- number of individuals : </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">- number of variables : </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">- optimal individual : </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">- optimal fitness value : </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="ga"><a class="viewcode-back" href="../../../../api/generated/compas.numerical.ga.html#compas.numerical.ga">[docs]</a><span class="k">def</span> <span class="nf">ga</span><span class="p">(</span><span class="n">fit_function</span><span class="p">,</span>
+       <span class="n">fit_type</span><span class="p">,</span>
+       <span class="n">num_var</span><span class="p">,</span>
+       <span class="n">boundaries</span><span class="p">,</span>
+       <span class="n">num_gen</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+       <span class="n">num_pop</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+       <span class="n">num_elite</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+       <span class="n">mutation_probability</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+       <span class="n">n_cross</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+       <span class="n">num_bin_dig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">num_pop_init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">num_gen_init_pop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">start_from_gen</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+       <span class="n">min_fit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">fit_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">fargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">fkwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">input_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">print_refresh</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Genetic Algorithm optimisation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fit_function : callable</span>
+<span class="sd">        The function used by the :class&#39;GA&#39; to determine the fitness value. The function</span>
+<span class="sd">        must have as a first argument a list of variables that determine the</span>
+<span class="sd">        fitness value. Other arguments and keyword arguments can be used to feed</span>
+<span class="sd">        the function relevant data.</span>
+<span class="sd">    fit_type : str</span>
+<span class="sd">        String that indicates if the fitness function is to be minimized or maximized.</span>
+<span class="sd">        &quot;min&quot; for minimization and &quot;max&quot; for maximization.</span>
+<span class="sd">    num_var :  int</span>
+<span class="sd">        The number of variables used by the fitness function.</span>
+<span class="sd">    boundaries : list</span>
+<span class="sd">        The minimum and vaximum values each variable is allowed to have. Must be</span>
+<span class="sd">        a ``num_var`` long list of tuples in the form [(min, max),...].</span>
+<span class="sd">    num_gen : int, optional [100]</span>
+<span class="sd">        The maximum number of generations.</span>
+<span class="sd">    num_pop : int, optional [100]</span>
+<span class="sd">        The number of individuals in the population. Must be an even number.</span>
+<span class="sd">    num_elite : int, optional [10]</span>
+<span class="sd">        The number of individuals in the elite population. Must be an even number.</span>
+<span class="sd">    mutation_probablity : float, optional [0.001]</span>
+<span class="sd">        Float from 0 to 1. Percentage of genes that will be mutated.</span>
+<span class="sd">    n_cross: int, optional [1]</span>
+<span class="sd">        Number of crossover points used in the crossover operator.</span>
+<span class="sd">    num_bin_dig : list, optional [None]</span>
+<span class="sd">        Number of genes used to codify each variable. Must be a ``num_var`` long</span>
+<span class="sd">        list of intergers. If None is given, each variable will be coded with a</span>
+<span class="sd">        8 digit binary number, corresponding to 256 steps.</span>
+<span class="sd">    num_pop_init : int, optional [None]</span>
+<span class="sd">        The number of individuals in the population for the first ``num_gen_init_pop``</span>
+<span class="sd">        generations.</span>
+<span class="sd">    num_gen_init_pop : int, optional</span>
+<span class="sd">        The number of generations to keep a ``num_pop_init`` size population for.</span>
+<span class="sd">    start_from_get : int, optional [None]</span>
+<span class="sd">        The generation number to restart a previous optimization process.</span>
+<span class="sd">    min_fit : float, optional [None]</span>
+<span class="sd">        A target fitness value. If the GA finds a solution with a fitness value</span>
+<span class="sd">        equal or better than ``min_fit``, the optimization is stopped.</span>
+<span class="sd">    fit_name : str, optional [None]</span>
+<span class="sd">        The name of the optimisation. If None is given, the name of the fitness</span>
+<span class="sd">        function is used.</span>
+<span class="sd">    fargs : list, optional [None]</span>
+<span class="sd">        Arguments fo be fed to the fitness function.</span>
+<span class="sd">    fkwargs : dict, optional [None]</span>
+<span class="sd">        Keyword arguments to be fed to the fitness function.</span>
+<span class="sd">    output_path : str, optional [None]</span>
+<span class="sd">        Path for the optimization result files.</span>
+<span class="sd">    input_path : str, optional [None]</span>
+<span class="sd">        Path to the fitness function file.</span>
+<span class="sd">    print_refresh : int</span>
+<span class="sd">        Print current generation summary every ``print_refresh`` generations.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ga_ : object</span>
+<span class="sd">        The resulting :class&#39;GA&#39; instance.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For more info, see [1]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Holland, J. H., *Adaptation in Natural and Artificial Systems*, 1st edn,</span>
+<span class="sd">           The University of Michigan, Ann Arbor, 1975.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ga_</span> <span class="o">=</span> <span class="n">GA</span><span class="p">()</span>
+
+    <span class="n">ga_</span><span class="o">.</span><span class="n">fit_name</span> <span class="o">=</span> <span class="n">fit_name</span> <span class="ow">or</span> <span class="n">fit_function</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">=</span> <span class="n">fit_type</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">num_gen</span> <span class="o">=</span> <span class="n">num_gen</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">=</span> <span class="n">num_pop</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">num_pop_init</span> <span class="o">=</span> <span class="n">num_pop_init</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">num_gen_init_pop</span> <span class="o">=</span> <span class="n">num_gen_init_pop</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">=</span> <span class="n">num_elite</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">num_var</span> <span class="o">=</span> <span class="n">num_var</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">mutation_probability</span> <span class="o">=</span> <span class="n">mutation_probability</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">ncross</span> <span class="o">=</span> <span class="n">n_cross</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">start_from_gen</span> <span class="o">=</span> <span class="n">start_from_gen</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">min_fit</span> <span class="o">=</span> <span class="n">min_fit</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">boundaries</span> <span class="o">=</span> <span class="n">boundaries</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">num_bin_dig</span> <span class="o">=</span> <span class="n">num_bin_dig</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_var</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">max_bin_dig</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ga_</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">)</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">total_bin_dig</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ga_</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">)</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">fargs</span> <span class="o">=</span> <span class="n">fargs</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">fkwargs</span> <span class="o">=</span> <span class="n">fkwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">fit_function</span> <span class="o">=</span> <span class="n">fit_function</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">input_path</span> <span class="o">=</span> <span class="n">input_path</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">print_refresh</span> <span class="o">=</span> <span class="n">print_refresh</span>
+    <span class="n">ga_</span><span class="o">.</span><span class="n">ga_optimize</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ga_</span></div>
+
+
+<span class="k">class</span> <span class="nc">GA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class contains a binary coded, single objective genetic algorithm.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    best_fit : float</span>
+<span class="sd">        The fitness value of the best performing solution for the current generation.</span>
+<span class="sd">    best_individual_index: int</span>
+<span class="sd">        The index of the best performing individual for the current generation.</span>
+<span class="sd">    boundaries : dict</span>
+<span class="sd">        This dictionary contains all the max and min bounds for each optimization variable.</span>
+<span class="sd">        ``GA.boundaries[index] = [min,max]``.</span>
+<span class="sd">    current_pop : dict</span>
+<span class="sd">        This dictionary contains the coded, decoded and scaled population of the current</span>
+<span class="sd">        generation, as well as their fitness values.</span>
+<span class="sd">    elite_pop : dict</span>
+<span class="sd">        This dictionary contains the coded, decoded and scaled data for the elite</span>
+<span class="sd">        population of the current generation, as well as their fitness values.</span>
+<span class="sd">    end_gen : int</span>
+<span class="sd">        The maximum number of generations the GA is allowed to run.</span>
+<span class="sd">    fit_function: function</span>
+<span class="sd">        The fitness function.</span>
+<span class="sd">    fit_name : str</span>
+<span class="sd">        The name of the python file containing the fitness function (without extension).</span>
+<span class="sd">    fit_type : str</span>
+<span class="sd">        String that indicates if the fitness function is to be minimized or maximized.</span>
+<span class="sd">        &quot;min&quot; for minimization and &quot;max&quot; for maximization.</span>
+<span class="sd">    input_path: str</span>
+<span class="sd">        Path to the fitness function file.</span>
+<span class="sd">    fkwargs : dict</span>
+<span class="sd">        This dictionary will be passed as a keyword argument to all fitness functions.</span>
+<span class="sd">        It can be used to pass required data, objects, that are not related to the</span>
+<span class="sd">        optimmization variables but are required to run the fitness function.</span>
+<span class="sd">    max_bin_digit : int</span>
+<span class="sd">        The maximum number of binary digits that are used to code a variable values.</span>
+<span class="sd">        The number of binary digits assigned to code a variable determine the number</span>
+<span class="sd">        of discrete steps inside the variable bounds. For example, an 8 digit binary</span>
+<span class="sd">        number will produce 256 steps.</span>
+<span class="sd">    min_fit : float</span>
+<span class="sd">        An end condition related to fitness value. If it is set, the GA will stop</span>
+<span class="sd">        when any individual achieves a fitness equal or better that ``GA.min_fit``. If</span>
+<span class="sd">        it is not set, the GA will end after ``GA.num_gen`` generations.</span>
+<span class="sd">    min_fit_flag : bool</span>
+<span class="sd">        Flag the GA uses to determine if the ``GA.min_fit`` value has been achieved.</span>
+<span class="sd">    mutation_probability : float</span>
+<span class="sd">        Determines the probability that the mutation operator will mutate each gene.</span>
+<span class="sd">        For each gene a random number ``x`` between 0 and 1 is generated, if ``x``</span>
+<span class="sd">        is higher than ``GA.mutation_probability`` it will be mutated.</span>
+<span class="sd">    num_bin_dig : list</span>
+<span class="sd">        List of the number of binary digits for each variable. The number of binary</span>
+<span class="sd">        digits assigned to code a variable determine the number of discrete steps</span>
+<span class="sd">        inside the variable bounds. For example, an 8 digit binary number will</span>
+<span class="sd">        produce 256 steps.</span>
+<span class="sd">    num_elite : int</span>
+<span class="sd">        The number of top performing individuals in the population that are not subject</span>
+<span class="sd">        to genetic operators, but are simply copied to the next generation.</span>
+<span class="sd">    num_gen : int</span>
+<span class="sd">        The number of genertions the GA will run.</span>
+<span class="sd">    num_pop : int</span>
+<span class="sd">        The number of individuals per generation.</span>
+<span class="sd">    num_var : int</span>
+<span class="sd">        The number of variables in the optimization problem.</span>
+<span class="sd">    output_path : str</span>
+<span class="sd">        The path to which the GA outputs result files.</span>
+<span class="sd">    start_from_gen : int</span>
+<span class="sd">        The generation from which the GA will restart. If this number is given, the GA</span>
+<span class="sd">        will look for generation output files in the ``GA.input_path`` and if found,</span>
+<span class="sd">        the GA will resume optimization from the ``GA.start_from_gen`` generation.</span>
+<span class="sd">    total_bin_dig : int</span>
+<span class="sd">        The total number of binary digits. It is the sum of the ``GA.num_bin_dig`` of</span>
+<span class="sd">        all variables.</span>
+<span class="sd">    ind_fit_dict : dict</span>
+<span class="sd">        This dictionary keeps track of already evaluated solutions to avoid dupplicate</span>
+<span class="sd">        fitness function calls.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initializes the GA object.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fkwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;binary&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;decoded&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;scaled&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;fit_value&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;binary&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;decoded&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;scaled&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;fit_value&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_gen</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_function</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_bin_dig</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_fit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_fit_flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutation_probability</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cross</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_gen</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_gen_init_pop</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_pop_init</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_pop_temp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_from_gen</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_bin_dig</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_diversity</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ind_fit_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_refresh</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compile a summary of the GA.&quot;&quot;&quot;</span>
+        <span class="n">fit_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_name</span>
+        <span class="n">fit_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span>
+        <span class="n">num_gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_gen</span>
+        <span class="n">num_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span>
+        <span class="n">num_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+            <span class="n">fit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">TPL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fit_name</span><span class="p">,</span> <span class="n">fit_type</span><span class="p">,</span> <span class="n">num_gen</span><span class="p">,</span> <span class="n">num_pop</span><span class="p">,</span> <span class="n">num_var</span><span class="p">,</span> <span class="n">best</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print a summary of the GA.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">ga_optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; This is the main optimization function, this function permorms the GA optimization,</span>
+<span class="sd">        performing all genetic operators.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_ga_json_file</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop_init</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_pop_temp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop_init</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_from_gen</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pop_from_pop_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_from_gen</span><span class="p">)</span>
+            <span class="n">start_gen_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_from_gen</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_bin_pop</span><span class="p">()</span>
+            <span class="n">start_gen_number</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">generation</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_gen_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_gen</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">generation</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[]]</span> <span class="o">*</span> <span class="n">num</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_fitness</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop_init</span> <span class="ow">and</span> <span class="n">generation</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_gen_init_pop</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop_temp</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_elite_pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">,</span> <span class="n">num_elite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_out_file</span><span class="p">(</span><span class="n">generation</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_fit</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_min_fit_flag</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_best_fit</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">generation</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_refresh</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;generation &#39;</span><span class="p">,</span> <span class="n">generation</span><span class="p">,</span> <span class="s1">&#39; best fit &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span><span class="p">,</span> <span class="s1">&#39;min fit&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_fit</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_diversity</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;num repeated individuals&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_pop_diversity</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">generation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_gen</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_fit_flag</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_elite_pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tournament_selection</span><span class="p">()</span>  <span class="c1"># n-e</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_mating_pool</span><span class="p">()</span>  <span class="c1"># n-e</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">npoint_crossover</span><span class="p">()</span>  <span class="c1"># n-e</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">random_mutation</span><span class="p">()</span>  <span class="c1"># n-e</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_elite_to_current</span><span class="p">()</span>  <span class="c1"># n</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end_gen</span> <span class="o">=</span> <span class="n">generation</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_best_individual_index</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_ga_json_file</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">def</span> <span class="nf">evaluate_fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">chromo</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">fit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ind_fit_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">chromo</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">fit</span><span class="p">:</span>
+            <span class="n">fit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fargs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">fkwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ind_fit_dict</span><span class="p">[</span><span class="n">chromo</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit</span>
+        <span class="k">return</span> <span class="n">fit</span>
+
+    <span class="k">def</span> <span class="nf">check_pop_diversity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="n">seen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
+            <span class="n">all_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_pop</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decodes the binary population, from binary to unscaled variable values</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bin_pop: list</span>
+<span class="sd">            The binary population list.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        decoded_pop:</span>
+<span class="sd">            The decoded population list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">decoded_pop</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">chrom</span> <span class="o">=</span> <span class="n">bin_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">gene</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chrom</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">gene</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="n">u</span>
+                <span class="n">decoded_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">decoded_pop</span>
+
+    <span class="k">def</span> <span class="nf">generate_random_bin_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Generates random binary population of ``GA.num_pop`` size.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        random_bin_pop: list</span>
+<span class="sd">            A list containing a random binary population.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">random_bin_pop</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">random_bin_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span>
+        <span class="k">return</span> <span class="n">random_bin_pop</span>
+
+    <span class="k">def</span> <span class="nf">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scales the decoded population, variable values are scaled according to each</span>
+<span class="sd">        of their bounds contained in ``GA.boundaries``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        decoded_pop: list</span>
+<span class="sd">            The decoded population list.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scaled_pop: list</span>
+<span class="sd">            The scaled ppopulation list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scaled_pop</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">maxbin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="mi">2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">scaled_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">decoded_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">maxbin</span>
+        <span class="k">return</span> <span class="n">scaled_pop</span>
+
+    <span class="k">def</span> <span class="nf">tournament_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performs the tournament selection operator on the current population.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pop_a</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pop_b</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)</span>
+        <span class="n">pop_a</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span>
+        <span class="n">pop_b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">):</span>
+            <span class="n">fit_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">pop_a</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">fit_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">pop_b</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">fit_a</span> <span class="o">&lt;</span> <span class="n">fit_b</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">fit_a</span> <span class="o">&gt;</span> <span class="n">fit_b</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">select_elite_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">num_elite</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the elite population in the elite population dictionary</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pop: dict</span>
+<span class="sd">            A population dictionary</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        elite_pop: dict</span>
+<span class="sd">            The elite population dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+            <span class="n">sorted_ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sorting_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
+            <span class="n">sorted_ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sorting_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;User selected fit_type is wrong. Use &quot;min&quot; or &quot;max&quot; only&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">num_elite</span><span class="p">:</span>
+            <span class="n">num_elite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span>
+
+        <span class="n">elite_pop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;binary&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;decoded&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;scaled&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;fit_value&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_elite</span><span class="p">):</span>
+            <span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">sorted_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">][</span><span class="n">sorted_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="n">sorted_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">sorted_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">elite_pop</span>
+
+    <span class="k">def</span> <span class="nf">get_sorting_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">floats</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reurns the indices that would sort a list of floats. If floats are</span>
+<span class="sd">        repeated in the list, only one instance is considered. The index of</span>
+<span class="sd">        repeaded floats are included in the end of the index list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        floats: list</span>
+<span class="sd">            The list of floats to be sorted.</span>
+<span class="sd">        reverse: bool</span>
+<span class="sd">            If true the sorting will be done from top to bottom.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sorting_index: list</span>
+<span class="sd">            The list of indices that would sort the given list of floats.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">l_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">floats</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l_</span><span class="p">:</span>
+                <span class="n">l_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">l_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">sorting_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l_</span><span class="p">))]</span>
+        <span class="k">if</span> <span class="n">reverse</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">sorting_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">sorting_index</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">sorting_index</span>
+
+    <span class="k">def</span> <span class="nf">create_mating_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates two lists of cromosomes to be used by the crossover operator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)):</span>
+            <span class="n">chrom_a</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">chrom_b</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">chrom_a</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">chrom_b</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))]][</span><span class="n">j</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_a</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">simple_crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performs the simple crossover operator. Individuals in ``GA.mating_pool_a`` are</span>
+<span class="sd">        combined with individuals in ``GA.mating_pool_b`` using a single, randomly selected</span>
+<span class="sd">        crossover point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;binary&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;decoded&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;scaled&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;fit_value&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)):</span>
+            <span class="n">cross</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_bin_dig</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:</span><span class="n">cross</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">cross</span><span class="p">:]</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">b</span><span class="p">[:</span><span class="n">cross</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">cross</span><span class="p">:]</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">variable_a</span> <span class="o">=</span> <span class="n">c</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">variable_b</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="k">del</span> <span class="n">c</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="k">del</span> <span class="n">d</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_a</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_b</span>
+
+    <span class="k">def</span> <span class="nf">npoint_crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performs the n-point crossover operator. Individuals in ``GA.mating_pool_a`` are</span>
+<span class="sd">        combined with individuals in ``GA.mating_pool_b`` using ne, randomly selected</span>
+<span class="sd">        crossover points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;binary&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;decoded&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;scaled&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;fit_value&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">cross_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_bin_dig</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cross</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">cross</span> <span class="ow">in</span> <span class="n">cross_list</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:</span><span class="n">cross</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">cross</span><span class="p">:]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">b</span><span class="p">[:</span><span class="n">cross</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">cross</span><span class="p">:]</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">d</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">c</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">variable_a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">variable_b</span> <span class="o">=</span> <span class="n">b</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_a</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_b</span>
+
+    <span class="k">def</span> <span class="nf">random_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This mutation operator replaces a gene from 0 to 1 or viceversa</span>
+<span class="sd">        with a probability of ``GA.mutation_probability``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
+                    <span class="n">random_value</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">random_value</span> <span class="o">&lt;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mutation_probability</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">code_decoded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a binary coded population from a decoded population</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        decoded_pop: dict</span>
+<span class="sd">            The decoded population dictionary to be coded</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        binary_pop: dict</span>
+<span class="sd">            The binary population dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">binary_pop</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">bin_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">temp_bin</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="n">decoded_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])[</span><span class="mi">2</span><span class="p">:]</span>
+                <span class="n">temp_bin</span> <span class="o">=</span> <span class="n">temp_bin</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">digit_dif</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp_bin</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">digit_dif</span><span class="p">):</span>
+                    <span class="n">temp_bin</span> <span class="o">=</span> <span class="n">temp_bin</span> <span class="o">+</span> <span class="s1">&#39;0&#39;</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
+                    <span class="n">bin_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">temp_bin</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+                <span class="n">binary_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">bin_list</span>
+        <span class="k">return</span> <span class="n">binary_pop</span>
+
+    <span class="k">def</span> <span class="nf">unscale_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled_pop</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an unscaled population from a scaled one. The variable values are scaled</span>
+<span class="sd">        from 0 to x, where x is the highest number described by the number of binary digits</span>
+<span class="sd">        used to encode that variable. For example, if ``GA.num_bin_dig`` for a variable is 8, that</span>
+<span class="sd">        variable will be scaled back from its bounds to its corresponding value from 0 to 255.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scaled_pop: dict</span>
+<span class="sd">            the scaled population dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        unscaled_pop: dict</span>
+<span class="sd">            The unscaled population dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unscaled_pop</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="n">unscaled_pop</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">bin_dig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">max_unscaled_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_max_value_from_bin_big</span><span class="p">(</span><span class="n">bin_dig</span><span class="p">)</span>
+                <span class="n">dom</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">value_s</span> <span class="o">=</span> <span class="n">scaled_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">value_s</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span>
+                <span class="n">unscaled</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="n">max_unscaled_value</span><span class="p">)</span>
+                <span class="n">unscaled_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">unscaled</span>
+
+        <span class="k">return</span> <span class="n">unscaled_pop</span>
+
+    <span class="k">def</span> <span class="nf">get_max_value_from_bin_big</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_dig</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the highest number described by a ``GA.bin_dig`` long binary number.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bin_dig: int</span>
+<span class="sd">            The number of digits in the binary number.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        value: int</span>
+<span class="sd">            The highest number described by a ``GA.bin_dig`` long binary number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bin_dig</span><span class="p">):</span>
+            <span class="n">binary</span> <span class="o">+=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bin_dig</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">write_out_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes the population data for a given generation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        generation: int</span>
+<span class="sd">            The generation number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;generation_&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%05d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">generation</span> <span class="o">+</span> <span class="s1">&#39;_population&#39;</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+        <span class="n">pf_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">+</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Generation </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">generation</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Number of individuals per generation</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">))</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Population scaled variables </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
+                <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">f</span><span class="p">]))</span>
+                <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Population fitness value </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+            <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_elite_to_current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds the elite population to the current population dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">make_ga_input_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary containing the most relavant genetic data present in the instance</span>
+<span class="sd">        of ``GA``. This is the data required to restart a genetic optimization process or to</span>
+<span class="sd">        launch a visualization using ``compas_ga.visualization.ga_visualization``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data: dict</span>
+<span class="sd">            A dictionary containing genetic data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;num_var&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">,</span>
+                <span class="s1">&#39;num_pop&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">,</span>
+                <span class="s1">&#39;num_gen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_gen</span><span class="p">,</span>
+                <span class="s1">&#39;boundaries&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">,</span>
+                <span class="s1">&#39;num_bin_dig&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">,</span>
+                <span class="s1">&#39;mutation_probability&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation_probability</span><span class="p">,</span>
+                <span class="s1">&#39;fit_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_name</span><span class="p">,</span>
+                <span class="s1">&#39;fit_type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span><span class="p">,</span>
+                <span class="s1">&#39;start_from_gen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_from_gen</span><span class="p">,</span>
+                <span class="s1">&#39;max_bin_dig&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_bin_dig</span><span class="p">,</span>
+                <span class="s1">&#39;total_bin_dig&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_bin_dig</span><span class="p">,</span>
+                <span class="s1">&#39;output_path&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span>
+                <span class="s1">&#39;num_elite&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">,</span>
+                <span class="s1">&#39;min_fit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_fit</span><span class="p">,</span>
+                <span class="s1">&#39;end_gen&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_gen</span><span class="p">,</span>
+                <span class="s1">&#39;best_individual_index&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span>
+                <span class="p">}</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">write_ga_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes a JSON file containing the most relevant data for GA optimization and</span>
+<span class="sd">        visualization using ``compas_ga.visualization.ga_visualization``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_ga_input_data</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_name</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_min_fit_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if the minimum desired fitness value has been achieved during optimization</span>
+<span class="sd">        and saves the result in ``GA.min_fit_flag``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_fit</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">min_fit_flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_fit</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">min_fit_flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">get_best_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the best fitness value in ``GA.best_fit``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">get_pop_from_pop_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reads the population file corresponding to the ``gen`` generation and returns</span>
+<span class="sd">        the saved population data. The population file must be in ``GA.input_path``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gen: int</span>
+<span class="sd">            The generation index.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        file_pop: dict</span>
+<span class="sd">            The population dictionary contained in the file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;generation_&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%05d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gen</span> <span class="o">+</span> <span class="s1">&#39;_population&#39;</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_path</span> <span class="o">+</span> <span class="n">filename</span>
+        <span class="n">pf_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">pf_file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">file_pop</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+        <span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
+            <span class="n">line_scaled</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">7</span><span class="p">]</span>
+            <span class="n">line_fit</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">9</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">]</span>
+            <span class="n">string_scaled</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">line_scaled</span><span class="p">)</span>
+            <span class="n">string_fit</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">line_fit</span><span class="p">)</span>
+            <span class="n">string_fit</span> <span class="o">=</span> <span class="n">string_fit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">string_scaled</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">string_scaled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">scaled</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">string_scaled</span><span class="p">]</span>
+            <span class="n">fit_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">string_fit</span><span class="p">)</span>
+            <span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_value</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scaled</span><span class="p">)):</span>
+                <span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaled</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+        <span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale_pop</span><span class="p">(</span><span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">])</span>
+        <span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_decoded</span><span class="p">(</span><span class="n">file_pop</span><span class="p">[</span><span class="s1">&#39;decoded&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">file_pop</span>
+
+    <span class="k">def</span> <span class="nf">get_best_individual_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the index of the best performing individual of the current population</span>
+<span class="sd">         in ``GA.best_individual_index``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fit_values</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">&#39;fit_value&#39;</span><span class="p">]))]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sorting_indices</span><span class="p">(</span><span class="n">fit_values</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sorting_indices</span><span class="p">(</span><span class="n">fit_values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../releases.html">Releases</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+
+      
+    </nav>  
+  </footer>
+  <!-- footer -->
+  <div class="below py-5">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '1.0.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../../_static/underscore.js"></script>
+  <script src="../../../../_static/doctools.js"></script>
+  <script src="../../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>

@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas.files.obj</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            1.0.0
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas.files.obj</li>
+          </ol>
+        </nav>
+        
+  
+        
+          
+          <h1>Source code for compas.files.obj</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib2</span> <span class="kn">import</span> <span class="n">urlopen</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;OBJ&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OBJReader&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OBJParser&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OBJWriter&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="OBJ"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJ.html#compas.files.OBJ">[docs]</a><span class="k">class</span> <span class="nc">OBJ</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read and write files in OBJ format.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] http://paulbourke.net/dataformats/obj/</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">=</span> <span class="n">precision</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_parsed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="OBJ.read"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJ.read.html#compas.files.OBJ.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">OBJReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span> <span class="o">=</span> <span class="n">OBJParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="o">.</span><span class="n">pre</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="o">.</span><span class="n">post</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_parsed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="OBJ.write"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJ.write.html#compas.files.OBJ.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">OBJWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="n">unweld</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_parsed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_parsed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">lines</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">faces</span></div>
+
+
+<div class="viewcode-block" id="OBJReader"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJReader.html#compas.files.OBJReader">[docs]</a><span class="k">class</span> <span class="nc">OBJReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read the contents of an *obj* file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        Path to the file.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vertices : list</span>
+<span class="sd">        Vertex coordinates.</span>
+<span class="sd">    weights : list</span>
+<span class="sd">        Vertex weights.</span>
+<span class="sd">    textures : list</span>
+<span class="sd">        Vertex textures.</span>
+<span class="sd">    normals : list</span>
+<span class="sd">        Vertex normals.</span>
+<span class="sd">    points : list</span>
+<span class="sd">        Point objects, referencing the list of vertices.</span>
+<span class="sd">    lines : list</span>
+<span class="sd">        Line objects, referencing the list of vertices.</span>
+<span class="sd">    faces : list</span>
+<span class="sd">        Face objects, referencing the list of vertices.</span>
+<span class="sd">    curves : list</span>
+<span class="sd">        Curves</span>
+<span class="sd">    curves2 : list</span>
+<span class="sd">        Curves</span>
+<span class="sd">    surfaces : list</span>
+<span class="sd">        Surfaces</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For more info, see [1]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Bourke, P. *Object Files*.</span>
+<span class="sd">           Available at: http://paulbourke.net/dataformats/obj/.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># vertex data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textures</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># polygonal geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># free-form geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curves</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curves2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surfaces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># free-form attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bmat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cstype</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># free-form statements</span>
+        <span class="c1"># parm, trim, hole, scrv, sp, end</span>
+        <span class="c1"># grouping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># open file path and read</span>
+        <span class="c1"># self.open()</span>
+        <span class="c1"># self.pre()</span>
+        <span class="c1"># self.read()</span>
+        <span class="c1"># self.post()</span>
+
+<div class="viewcode-block" id="OBJReader.open"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJReader.open.html#compas.files.OBJReader.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="OBJReader.pre"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJReader.pre.html#compas.files.OBJReader.pre">[docs]</a>    <span class="k">def</span> <span class="nf">pre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">is_continuation</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">is_continuation</span><span class="p">:</span>
+                <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">line</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">:</span>
+                <span class="n">is_continuation</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">is_continuation</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OBJReader.post"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJReader.post.html#compas.files.OBJReader.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="OBJReader.read"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJReader.read.html#compas.files.OBJReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read the contents of the file, line by line.</span>
+
+<span class="sd">        Every line is split into a *head* and a *tail*.</span>
+<span class="sd">        The *head* determines the meaning of the data found in *tail*.</span>
+
+<span class="sd">        * ``#``: comment</span>
+<span class="sd">        * ``v``: vertex coordinates</span>
+<span class="sd">        * ``vt``: vertex texture</span>
+<span class="sd">        * ``vn``: vertex normal</span>
+<span class="sd">        * ``vp``: parameter vertex</span>
+<span class="sd">        * ``p``: point</span>
+<span class="sd">        * ``l``: line</span>
+<span class="sd">        * ``f``: face</span>
+<span class="sd">        * ``deg``: freeform attribute *degree*</span>
+<span class="sd">        * ``bmat``: freeform attribute *basis matrix*</span>
+<span class="sd">        * ``step``: freeform attribute *step size*</span>
+<span class="sd">        * ``cstype``: freeform attribute *curve or surface type*</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">parts</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">tail</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_comment</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="o">==</span> <span class="s1">&#39;v&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_vertex_coordinates</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="o">==</span> <span class="s1">&#39;vt&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_vertex_texture</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="o">==</span> <span class="s1">&#39;vn&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_vertex_normal</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="o">==</span> <span class="s1">&#39;vp&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_parameter_vertex</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_polygonal_geometry</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;deg&#39;</span><span class="p">,</span> <span class="s1">&#39;bmat&#39;</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="s1">&#39;cstype&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_freeform_attribute</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;curv&#39;</span><span class="p">,</span> <span class="s1">&#39;curv2&#39;</span><span class="p">,</span> <span class="s1">&#39;surf&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_freeform_geometry</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;parm&#39;</span><span class="p">,</span> <span class="s1">&#39;trim&#39;</span><span class="p">,</span> <span class="s1">&#39;hole&#39;</span><span class="p">,</span> <span class="s1">&#39;scrv&#39;</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_freeform_statement</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">head</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;mg&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_grouping</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">)</span>
+                <span class="k">continue</span></div>
+
+    <span class="k">def</span> <span class="nf">_read_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read a comment.</span>
+
+<span class="sd">        Comments start with ``#``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_read_vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read the coordinates of a vertex.</span>
+
+<span class="sd">        Two types of formats are possible:</span>
+
+<span class="sd">        * x y z</span>
+<span class="sd">        * x y z w</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">_read_vertex_texture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_read_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_read_parameter_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_read_polygonal_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="c1"># point</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;p&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># line</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># face</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_read_freeform_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;deg&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deg</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;bmat&#39;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;step&#39;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;cstype&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cstype</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">_read_freeform_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="c1"># curv u0 u1 v1 v2 ...</span>
+        <span class="c1"># u0: starting parameter value for the curve</span>
+        <span class="c1"># u1: ending parameter value for the curve</span>
+        <span class="c1"># v1: vertex reference number for control point</span>
+        <span class="c1"># v2: vertex reference number for control point</span>
+        <span class="c1"># ...</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;curv&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                    <span class="k">return</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">:]])</span>
+                    <span class="c1"># if self.group:</span>
+                    <span class="c1">#     self.groups[self.group].append((&#39;l&#39;, len(self.lines) - 1))</span>
+                    <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">_read_freeform_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_read_grouping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;g&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="OBJParser"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJParser.html#compas.files.OBJParser">[docs]</a><span class="k">class</span> <span class="nc">OBJParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">=</span> <span class="n">precision</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textures</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normals</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polylines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curves</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curves2</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surfaces</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># self.parse()</span>
+
+<div class="viewcode-block" id="OBJParser.parse"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJParser.parse.html#compas.files.OBJParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">index_key</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">vertex</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">vertices</span><span class="p">)):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>
+            <span class="n">index_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span>
+
+        <span class="n">key_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertex</span><span class="p">)}</span>
+        <span class="n">index_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">index</span><span class="p">:</span> <span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">index_key</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">xyz</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">index_index</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">points</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[[</span><span class="n">index_index</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">lines</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polylines</span> <span class="o">=</span> <span class="p">[[</span><span class="n">index_index</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">lines</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">index_index</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">faces</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">groups</span></div></div>
+
+
+<div class="viewcode-block" id="OBJWriter"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJWriter.html#compas.files.OBJWriter">[docs]</a><span class="k">class</span> <span class="nc">OBJWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">=</span> <span class="n">precision</span> <span class="ow">or</span> <span class="n">compas</span><span class="o">.</span><span class="n">PRECISION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unweld</span> <span class="o">=</span> <span class="n">unweld</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex_tpl</span> <span class="o">=</span> <span class="s2">&quot;v {0:.&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span> <span class="o">+</span> <span class="s2">&quot; {1:.&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span> <span class="o">+</span> <span class="s2">&quot; {2:.&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">+</span> <span class="s2">&quot;}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="OBJWriter.write"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJWriter.write.html#compas.files.OBJWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_header</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unweld</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_vertices_and_faces</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_vertices</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_faces</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="OBJWriter.write_header"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJWriter.write_header.html#compas.files.OBJWriter.write_header">[docs]</a>    <span class="k">def</span> <span class="nf">write_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# OBJ</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# COMPAS</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# version: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# precision: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# V F E: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# author: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# email: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# date: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OBJWriter.write_vertices"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJWriter.write_vertices.html#compas.files.OBJWriter.write_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">write_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="OBJWriter.write_faces"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJWriter.write_faces.html#compas.files.OBJWriter.write_faces">[docs]</a>    <span class="k">def</span> <span class="nf">write_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">key_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
+            <span class="n">vertices_str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;f </span><span class="si">{0}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vertices_str</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="OBJWriter.write_vertices_and_faces"><a class="viewcode-back" href="../../../api/generated/compas.files.OBJWriter.write_vertices_and_faces.html#compas.files.OBJWriter.write_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">write_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">indices_str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;f </span><span class="si">{0}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">indices_str</span><span class="p">))</span></div></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+    <span class="n">FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">DATA</span><span class="p">,</span> <span class="s1">&#39;tubemesh.obj&#39;</span><span class="p">)</span>
+
+    <span class="n">mesh1</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.json&#39;</span><span class="p">))</span>
+
+    <span class="n">mesh1</span><span class="o">.</span><span class="n">to_obj</span><span class="p">(</span><span class="n">FILE</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;12f&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Tom Van Mele&quot;</span><span class="p">)</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">FILE</span><span class="p">)</span>
+
+    <span class="n">mesh2</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">FILE</span><span class="p">)</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">mesh1</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">mesh1</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">mesh2</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="n">mesh2</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="n">v2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span> <span class="o">==</span> <span class="n">f2</span><span class="p">)</span>
+
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../releases.html">Releases</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+
+      
+    </nav>  
+  </footer>
+  <!-- footer -->
+  <div class="below py-5">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '1.0.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../_static/underscore.js"></script>
+  <script src="../../../_static/doctools.js"></script>
+  <script src="../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
