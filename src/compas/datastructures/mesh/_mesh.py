@@ -29,7 +29,7 @@ __all__ = ['Mesh']
 
 
 class Mesh(BaseMesh):
-    """Implementation of the base mesh data structure that adds some of the mesh algorithms as methods.
+    """Data structure for the representation of and operation on polygonal meshes.
 
     Examples
     --------
@@ -50,8 +50,49 @@ class Mesh(BaseMesh):
         """
         return mesh_bounding_box(self)
 
-    bounding_box_xy = mesh_bounding_box_xy
-    collapse_edge = mesh_collapse_edge
+    def bounding_box_xy(self):
+        """Compute the axis-aligned bounding box of the mesh in the XY plane.
+
+        Returns
+        -------
+        box: tuple of 4 points.
+            The corners of the bounding rectangle in the XY plane.
+        """
+        return mesh_bounding_box_xy(self)
+
+    def collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
+        """Collapse an edge to its first or second vertex, or to an intermediate point.
+
+        Parameters
+        ----------
+        u : int
+            The first vertex of the (half-) edge.
+        v : int
+            The second vertex of the (half-) edge.
+        t : float, optional
+            Default is ``0.5``.
+            Determines where to collapse to.
+            If ``t == 0.0`` collapse to ``u``.
+            If ``t == 1.0`` collapse to ``v``.
+            If ``0.0 < t < 1.0``, collapse to a point between ``u`` and ``v``.
+        allow_boundary : bool, optional
+            Default is ``False``.
+            Allow collapses involving boundary vertices.
+        fixed : list, optional
+            A list of identifiers of vertices that should stay fixed.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If `u` and `v` are not neighbors.
+
+        """
+        return mesh_collapse_edge(self, u, v, t=t, allow_boundary=allow_boundary, fixed=fixed)
+
     connected_components = mesh_connected_components
     dual = mesh_dual
     face_adjacency = mesh_face_adjacency
