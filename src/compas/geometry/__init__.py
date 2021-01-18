@@ -5,15 +5,11 @@ geometry
 
 .. currentmodule:: compas.geometry
 
+Classes
+=======
 
 Primitives
-==========
-
-.. inheritance-diagram:: Circle Ellipse Frame Line Plane Point Polygon Polyline Quaternion Vector
-    :parts: 1
-
-Classes
--------
+----------
 
 .. autosummary::
     :toctree: generated/
@@ -31,24 +27,8 @@ Classes
     Vector
 
 
-Base Classes
-------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Primitive
-
-
 Shapes
-======
-
-.. inheritance-diagram:: Box Capsule Cone Cylinder Polyhedron Torus
-    :parts: 1
-
-Classes
--------
+------
 
 .. autosummary::
     :toctree: generated/
@@ -63,25 +43,8 @@ Classes
     Torus
 
 
-Base Classes
-------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Shape
-
-
 Transformations
-===============
-
-.. inheritance-diagram:: Projection Reflection Rotation Scale Shear Transformation Translation
-    :parts: 1
-
-
-Classes
--------
+---------------
 
 .. autosummary::
     :toctree: generated/

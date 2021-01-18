@@ -65,7 +65,7 @@ class Frame(Primitive):
     >>> from compas.geometry import Point
     >>> from compas.geometry import Vector
     >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-    >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
+    >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
     """
 
     def __init__(self, point, xaxis, yaxis):

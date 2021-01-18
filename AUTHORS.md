@@ -27,3 +27,4 @@
 - Nik Eftekhar Olivo <<eftekhar@arch.ethz.ch>> [@nikeftekhar](https://github.com/nikeftekhar)
 - Beverly Lytle <<lytle@arch.ethz.ch>> [@beverlylytle](https://github.com/beverlylytle>)
 - Juney Lee <<juney.lee@arch.ethz.ch>> [@juney-lee](https://github.com/juney-lee)
+- Xingxin He <<xingxin.he@mail.polimi.it>> [@XingxinHE](https://github.com/XingxinHE)
