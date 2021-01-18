@@ -4,14 +4,9 @@
 #
 # needs_sphinx = "1.0"
 
-import sys
-import os
-
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
 import sphinx_compas_theme
-
-sys.path.insert(0, os.path.abspath("../src"))
 
 # -- General configuration ------------------------------------------------
 
@@ -79,6 +74,17 @@ autodoc_member_order = "groupwise"
 
 autoclass_content = "class"
 
+
+def skip(app, what, name, obj, would_skip, options):
+    if name.startswith('_'):
+        return True
+    return would_skip
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", skip)
+
+
 # autosummary options
 
 autosummary_generate = True
@@ -97,8 +103,8 @@ autosummary_mock_imports = [
 
 # graph options
 
-inheritance_graph_attrs = dict(rankdir="TB", size='"16.0, 10.0"', ratio="auto", resolution=150)
-inheritance_node_attrs = dict(fontsize=10)
+inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
+inheritance_node_attrs = dict(fontsize=8)
 
 # napoleon options
 
