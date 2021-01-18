@@ -8,9 +8,6 @@ datastructures
 Meshes
 ======
 
-Classes
--------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
