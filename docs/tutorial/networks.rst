@@ -4,20 +4,51 @@ Networks
 
 .. rst-class:: lead
 
-In COMPAS a network is a "directed edge graph" that encodes the relationships between "nodes" with "edges".
-Networks can, for example, be used to keep track of the relationships between the individual elements of a
-Discrete Element Assembly, or to represent the elements of a cable net.
+Networks are very flexible data structures.
+They can, for example, be used to represent the elements of a cablenet,
+or even to keep track of the relationships between the individual elements
+of a Discrete Element Assembly.
 
-.. COMPAS networks are simple edge graphs: they consist of vertices
-.. connected by edges. Not all vertices have to be connected by edges. A
-.. network without edges is a valid network. In fact, even a network
-.. without vertices and edges is a valid network, albeit a quite pointless
-.. one.
 
-.. Edges have a direction. There can only be one edge between two vertices
-.. in a particular direction. However, there can be two edges between two
-.. vertices in opposite direction. Vertices can be connected to
-.. themseleves.
+Data structure
+==============
 
-.. Check out the docs for detailed information about the network and the available
-.. functionality: :class:`compas.datastructures.Network`.
+In COMPAS a network is a "directed edge graph"
+that encodes the relationships between "nodes" with "edges".
+Not all nodes have to be connected by edges.
+In fact, even a network without edges is a valid network.
+
+Edges have a direction.
+There can only be one edge between two nodes in a particular direction.
+However, there can be two edges between the same two nodes
+in opposite direction.
+
+
+Building a Network
+==================
+
+Networks can be built from scratch by adding nodes and edges.
+
+::
+
+    >>> from compas.datastructures import Network
+
+    >>> network = Network()
+
+    >>> a = network.add_node()  # x, y, z coordinates are optional and default to x=0, y-0, z=0
+    >>> b = network.add_node(x=1)
+    >>> c = network.add_node(y=1)
+    >>> d = network.add_node(x=-1)
+    >>> e = network.add_node(y=-1)
+
+    >>> network.add_edge(a, b)
+    >>> network.add_edge(a, c)
+    >>> network.add_edge(a, d)
+    >>> network.add_edge(a, e)
+
+
+Constructors
+============
+
+Building a network node per node and edge per edge is fine for very simple Networks
+but quickly becomes tedious for networks of relevant size.
