@@ -83,14 +83,28 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="compas.html">compas</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">robots</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <span class="target" id="module-compas.robots"></span><div class="section" id="robots">
 <h1>robots</h1>
 <div class="section" id="model">
 <h2>Model</h2>
-<div class="graphviz"><img src="../_images/inheritance-f511e6336558ba9c379b1ee15638329e31728352.png" alt="Inheritance diagram of RobotModel, Joint, Link, ToolModel" class="inheritance graphviz" /></div>
+<div class="graphviz"><img src="../_images/inheritance-c8193abdb151a0bdd40d8c19be829589a5b5c281.png" alt="Inheritance diagram of RobotModel, Joint, Link, ToolModel" class="inheritance graphviz" /></div>
 <p>The root of the model is the <a class="reference internal" href="generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a> class, which
 describes a robot consisting of a set of link elements, and a set of joint
 elements connecting the links together.</p>
@@ -117,7 +131,7 @@ elements connecting the links together.</p>
 </div>
 <div class="section" id="geometric-description">
 <h2>Geometric description</h2>
-<div class="graphviz"><img src="../_images/inheritance-16a9ee8aa0b55a78b91eab7a44699fb0ca7eff3d.png" alt="Inheritance diagram of Origin, Geometry, Box, Cylinder, Sphere, Capsule, MeshDescriptor, Material, Texture, Color" class="inheritance graphviz" /></div>
+<div class="graphviz"><img src="../_images/inheritance-067f53c6375101eee8899b62b547ec270e4ef071.png" alt="Inheritance diagram of Origin, Geometry, Box, Cylinder, Sphere, Capsule, MeshDescriptor, Material, Texture, Color" class="inheritance graphviz" /></div>
 <p>The robot itself as well as its links can be geometrically described
 using the following classes.</p>
 <table class="longtable docutils align-default">
@@ -161,7 +175,7 @@ using the following classes.</p>
 </div>
 <div class="section" id="link">
 <h2>Link</h2>
-<div class="graphviz"><img src="../_images/inheritance-85ec489b3d80697eee7ad10f8d9c25f3e29dd4e3.png" alt="Inheritance diagram of Visual, Collision, Inertial, Mass, Inertia" class="inheritance graphviz" /></div>
+<div class="graphviz"><img src="../_images/inheritance-3356977d166f42f865941cf1b70c64e0bcaa7ed5.png" alt="Inheritance diagram of Visual, Collision, Inertial, Mass, Inertia" class="inheritance graphviz" /></div>
 <p>The link is described as a rigid body with inertial, visual and collision values.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -189,7 +203,7 @@ using the following classes.</p>
 </div>
 <div class="section" id="joint">
 <h2>Joint</h2>
-<div class="graphviz"><img src="../_images/inheritance-93ccaf102c47961fedc55a8c5adc93c17dd40942.png" alt="Inheritance diagram of ParentLink, ChildLink, Calibration, Dynamics, Limit, Axis, Mimic, SafetyController" class="inheritance graphviz" /></div>
+<div class="graphviz"><img src="../_images/inheritance-9ffa4cf4aa0cc09f1fe648715c6a4de86d7f94e1.png" alt="Inheritance diagram of ParentLink, ChildLink, Calibration, Dynamics, Limit, Axis, Mimic, SafetyController" class="inheritance graphviz" /></div>
 <p>The joint describes the kinematics and dynamics of the robot’s joint.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -226,7 +240,7 @@ using the following classes.</p>
 </div>
 <div class="section" id="resources">
 <h2>Resources</h2>
-<div class="graphviz"><img src="../_images/inheritance-fc79d9df0f63af2cfc5d1aaa320a53b032109bca.png" alt="Inheritance diagram of AbstractMeshLoader, DefaultMeshLoader, GithubPackageMeshLoader, LocalPackageMeshLoader" class="inheritance graphviz" /></div>
+<div class="graphviz"><img src="../_images/inheritance-b78812e5962f5b190f2895f101e950536d5681ea.png" alt="Inheritance diagram of AbstractMeshLoader, DefaultMeshLoader, GithubPackageMeshLoader, LocalPackageMeshLoader" class="inheritance graphviz" /></div>
 <p>Model descriptions usually do not contain embedded geometry information but only
 descriptions, filenames or URLs for externally hosted resources.
 For that purpose, this package provides various loader classes that help automate

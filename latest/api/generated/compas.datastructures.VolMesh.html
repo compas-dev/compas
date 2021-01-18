@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.__init__" href="compas.datastructures.VolMesh.__init__.html" />
+    <link rel="next" title="VolMesh.bounding_box" href="compas.datastructures.VolMesh.bounding_box.html" />
   
   
   
@@ -83,7 +83,23 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.html">compas</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.datastructures.html">datastructures</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">VolMesh</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <div class="detail section" id="volmesh">
@@ -100,20 +116,32 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.__init__.html#compas.datastructures.VolMesh.__init__" title="compas.datastructures.VolMesh.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.add_cell.html#compas.datastructures.VolMesh.add_cell" title="compas.datastructures.VolMesh.add_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cell</span></code></a>(faces[, ckey, attr_dict])</p></td>
-<td><p>Add a cell to the volmesh object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.add_halfface.html#compas.datastructures.VolMesh.add_halfface" title="compas.datastructures.VolMesh.add_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_halfface</span></code></a>(vertices[, fkey, attr_dict])</p></td>
-<td><p>Add a face to the volmesh object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.add_vertex.html#compas.datastructures.VolMesh.add_vertex" title="compas.datastructures.VolMesh.add_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_vertex</span></code></a>([key, attr_dict])</p></td>
-<td><p>Add a vertex to the volmesh object.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.bounding_box.html#compas.datastructures.VolMesh.bounding_box" title="compas.datastructures.VolMesh.bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounding_box</span></code></a>()</p></td>
 <td><p>Compute the (axis aligned) bounding box of a volmesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.transform.html#compas.datastructures.VolMesh.transform" title="compas.datastructures.VolMesh.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
+<td><p>Transform a mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.transformed.html#compas.datastructures.VolMesh.transformed" title="compas.datastructures.VolMesh.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.add_cell.html#compas.datastructures.VolMesh.add_cell" title="compas.datastructures.VolMesh.add_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cell</span></code></a>(faces[, ckey, attr_dict])</p></td>
+<td><p>Add a cell to the volmesh object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.add_halfface.html#compas.datastructures.VolMesh.add_halfface" title="compas.datastructures.VolMesh.add_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_halfface</span></code></a>(vertices[, fkey, attr_dict])</p></td>
+<td><p>Add a face to the volmesh object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.add_vertex.html#compas.datastructures.VolMesh.add_vertex" title="compas.datastructures.VolMesh.add_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_vertex</span></code></a>([key, attr_dict])</p></td>
+<td><p>Add a vertex to the volmesh object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.cell_attribute.html#compas.datastructures.VolMesh.cell_attribute" title="compas.datastructures.VolMesh.cell_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_attribute</span></code></a>(cell, name[, value])</p></td>
 <td><p>Get or set an attribute of a cell.</p></td>
@@ -415,12 +443,6 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.to_vertices_and_cells.html#compas.datastructures.VolMesh.to_vertices_and_cells" title="compas.datastructures.VolMesh.to_vertices_and_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_cells</span></code></a>()</p></td>
 <td><p>Return the vertices and cells of a volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.transform.html#compas.datastructures.VolMesh.transform" title="compas.datastructures.VolMesh.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
-<td><p>Transform a mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.transformed.html#compas.datastructures.VolMesh.transformed" title="compas.datastructures.VolMesh.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.unset_cell_attribute.html#compas.datastructures.VolMesh.unset_cell_attribute" title="compas.datastructures.VolMesh.unset_cell_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_cell_attribute</span></code></a>(cell, name)</p></td>
 <td><p>Unset the attribute of a cell.</p></td>
 </tr>
@@ -570,7 +592,9 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">VolMesh</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">VolMesh</a><ul class="nav flex-column">
+</ul>
+</li>
 </ul>
 
       </div>
@@ -592,10 +616,10 @@
       
 
       
-        <a href="compas.datastructures.VolMesh.__init__.html" title="VolMesh.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.datastructures.VolMesh.bounding_box.html" title="VolMesh.bounding_box" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 h4 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            VolMesh.__init__
+            VolMesh.bounding_box
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

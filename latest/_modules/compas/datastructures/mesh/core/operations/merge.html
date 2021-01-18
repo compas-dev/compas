@@ -79,7 +79,19 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../../../../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas.datastructures.mesh.core.operations.merge</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <h1>Source code for compas.datastructures.mesh.core.operations.merge</h1><div class="highlight"><pre><code>
@@ -91,7 +103,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mesh_merge_faces&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="mesh_merge_faces"><a class="viewcode-back" href="../../../../../../api/generated/compas.datastructures.mesh_merge_faces.html#compas.datastructures.mesh_merge_faces">[docs]</a><span class="k">def</span> <span class="nf">mesh_merge_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">mesh_merge_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Merge two faces of a mesh over their shared edge.</span>
 
 <span class="sd">    Parameters</span>
@@ -162,7 +174,7 @@
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">v</span><span class="p">:</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">key</span></div>
+    <span class="k">return</span> <span class="n">key</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>

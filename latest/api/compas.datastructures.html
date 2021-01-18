@@ -83,12 +83,25 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="compas.html">compas</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">datastructures</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <span class="target" id="module-compas.datastructures"></span><div class="section" id="datastructures">
 <h1>datastructures</h1>
-<div class="graphviz"><img src="../_images/inheritance-9ba29470b7acd9665e8e3c321cb2c046bca2bdb3.png" alt="Inheritance diagram of Network, Mesh, VolMesh" class="inheritance graphviz" /></div>
 <div class="section" id="meshes">
 <h2>Meshes</h2>
 <div class="section" id="classes">
@@ -105,23 +118,6 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="base-classes">
-<h3>Base Classes</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.HalfEdge.html#compas.datastructures.HalfEdge" title="compas.datastructures.HalfEdge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HalfEdge</span></code></a></p></td>
-<td><p>Base half-edge data structure for representing meshes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.BaseMesh.html#compas.datastructures.BaseMesh" title="compas.datastructures.BaseMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseMesh</span></code></a></p></td>
-<td><p>Geometric implementation of a half edge data structure for polygon meshses.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
 <div class="section" id="functions">
 <h3>Functions</h3>
 <table class="longtable docutils align-default">
@@ -130,143 +126,83 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_bounding_box.html#compas.datastructures.mesh_bounding_box" title="compas.datastructures.mesh_bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_bounding_box</span></code></a></p></td>
-<td><p>Compute the (axis aligned) bounding box of a mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_bounding_box_xy.html#compas.datastructures.mesh_bounding_box_xy" title="compas.datastructures.mesh_bounding_box_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_bounding_box_xy</span></code></a></p></td>
-<td><p>Compute the (axis aligned) bounding box of a projection of the mesh in the XY plane.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_connected_components.html#compas.datastructures.mesh_connected_components" title="compas.datastructures.mesh_connected_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_connected_components</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_contours_numpy.html#compas.datastructures.mesh_contours_numpy" title="compas.datastructures.mesh_contours_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_contours_numpy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_contours_numpy.html#compas.datastructures.mesh_contours_numpy" title="compas.datastructures.mesh_contours_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_contours_numpy</span></code></a></p></td>
 <td><p>Compute the contours of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_dual.html#compas.datastructures.mesh_conway_dual" title="compas.datastructures.mesh_conway_dual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_dual</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_dual.html#compas.datastructures.mesh_conway_dual" title="compas.datastructures.mesh_conway_dual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_dual</span></code></a></p></td>
 <td><p>Generates the dual mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_join.html#compas.datastructures.mesh_conway_join" title="compas.datastructures.mesh_conway_join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_join</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_join.html#compas.datastructures.mesh_conway_join" title="compas.datastructures.mesh_conway_join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_join</span></code></a></p></td>
 <td><p>Generates the join mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_ambo.html#compas.datastructures.mesh_conway_ambo" title="compas.datastructures.mesh_conway_ambo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_ambo</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_ambo.html#compas.datastructures.mesh_conway_ambo" title="compas.datastructures.mesh_conway_ambo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_ambo</span></code></a></p></td>
 <td><p>Generates the ambo mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_kis.html#compas.datastructures.mesh_conway_kis" title="compas.datastructures.mesh_conway_kis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_kis</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_kis.html#compas.datastructures.mesh_conway_kis" title="compas.datastructures.mesh_conway_kis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_kis</span></code></a></p></td>
 <td><p>Generates the kis mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_needle.html#compas.datastructures.mesh_conway_needle" title="compas.datastructures.mesh_conway_needle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_needle</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_needle.html#compas.datastructures.mesh_conway_needle" title="compas.datastructures.mesh_conway_needle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_needle</span></code></a></p></td>
 <td><p>Generates the needle mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_zip.html#compas.datastructures.mesh_conway_zip" title="compas.datastructures.mesh_conway_zip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_zip</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_zip.html#compas.datastructures.mesh_conway_zip" title="compas.datastructures.mesh_conway_zip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_zip</span></code></a></p></td>
 <td><p>Generates the zip mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_truncate.html#compas.datastructures.mesh_conway_truncate" title="compas.datastructures.mesh_conway_truncate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_truncate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_truncate.html#compas.datastructures.mesh_conway_truncate" title="compas.datastructures.mesh_conway_truncate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_truncate</span></code></a></p></td>
 <td><p>Generates the truncate mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_ortho.html#compas.datastructures.mesh_conway_ortho" title="compas.datastructures.mesh_conway_ortho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_ortho</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_ortho.html#compas.datastructures.mesh_conway_ortho" title="compas.datastructures.mesh_conway_ortho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_ortho</span></code></a></p></td>
 <td><p>Generates the ortho mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_expand.html#compas.datastructures.mesh_conway_expand" title="compas.datastructures.mesh_conway_expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_expand</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_expand.html#compas.datastructures.mesh_conway_expand" title="compas.datastructures.mesh_conway_expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_expand</span></code></a></p></td>
 <td><p>Generates the expand mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_gyro.html#compas.datastructures.mesh_conway_gyro" title="compas.datastructures.mesh_conway_gyro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_gyro</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_gyro.html#compas.datastructures.mesh_conway_gyro" title="compas.datastructures.mesh_conway_gyro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_gyro</span></code></a></p></td>
 <td><p>Generates the gyro mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_snub.html#compas.datastructures.mesh_conway_snub" title="compas.datastructures.mesh_conway_snub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_snub</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_snub.html#compas.datastructures.mesh_conway_snub" title="compas.datastructures.mesh_conway_snub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_snub</span></code></a></p></td>
 <td><p>Generates the snub mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_meta.html#compas.datastructures.mesh_conway_meta" title="compas.datastructures.mesh_conway_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_meta</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_meta.html#compas.datastructures.mesh_conway_meta" title="compas.datastructures.mesh_conway_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_meta</span></code></a></p></td>
 <td><p>Generates the meta mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_bevel.html#compas.datastructures.mesh_conway_bevel" title="compas.datastructures.mesh_conway_bevel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_bevel</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_bevel.html#compas.datastructures.mesh_conway_bevel" title="compas.datastructures.mesh_conway_bevel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_bevel</span></code></a></p></td>
 <td><p>Generates the bevel mesh from a seed mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_delete_duplicate_vertices.html#compas.datastructures.mesh_delete_duplicate_vertices" title="compas.datastructures.mesh_delete_duplicate_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_delete_duplicate_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_delete_duplicate_vertices.html#compas.datastructures.mesh_delete_duplicate_vertices" title="compas.datastructures.mesh_delete_duplicate_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_delete_duplicate_vertices</span></code></a></p></td>
 <td><p>Cull all duplicate vertices of a mesh and sanitize affected faces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_dual.html#compas.datastructures.mesh_dual" title="compas.datastructures.mesh_dual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_dual</span></code></a></p></td>
-<td><p>Construct the dual of a mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_explode.html#compas.datastructures.mesh_explode" title="compas.datastructures.mesh_explode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_explode</span></code></a></p></td>
 <td><p>Explode a mesh into its disconnected parts.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_face_adjacency.html#compas.datastructures.mesh_face_adjacency" title="compas.datastructures.mesh_face_adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_face_adjacency</span></code></a></p></td>
-<td><p>Build a face adjacency dict.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_flip_cycles.html#compas.datastructures.mesh_flip_cycles" title="compas.datastructures.mesh_flip_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_flip_cycles</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_flip_cycles.html#compas.datastructures.mesh_flip_cycles" title="compas.datastructures.mesh_flip_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_flip_cycles</span></code></a></p></td>
 <td><p>Flip the cycle directions of all faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_geodesic_distances_numpy.html#compas.datastructures.mesh_geodesic_distances_numpy" title="compas.datastructures.mesh_geodesic_distances_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_geodesic_distances_numpy</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_geodesic_distances_numpy.html#compas.datastructures.mesh_geodesic_distances_numpy" title="compas.datastructures.mesh_geodesic_distances_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_geodesic_distances_numpy</span></code></a></p></td>
 <td><p>Compute geodesic from the vertices of a mesh to given source vertices.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_is_connected.html#compas.datastructures.mesh_is_connected" title="compas.datastructures.mesh_is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_is_connected</span></code></a></p></td>
-<td><p>Verify that the mesh is connected.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_isolines_numpy.html#compas.datastructures.mesh_isolines_numpy" title="compas.datastructures.mesh_isolines_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_isolines_numpy</span></code></a></p></td>
 <td><p>Compute the isolines of a specified attribute of the vertices of a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_merge_faces.html#compas.datastructures.mesh_merge_faces" title="compas.datastructures.mesh_merge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_merge_faces</span></code></a></p></td>
-<td><p>Merge two faces of a mesh over their shared edge.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_offset.html#compas.datastructures.mesh_offset" title="compas.datastructures.mesh_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_offset</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_offset.html#compas.datastructures.mesh_offset" title="compas.datastructures.mesh_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_offset</span></code></a></p></td>
 <td><p>Offset a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_oriented_bounding_box_numpy.html#compas.datastructures.mesh_oriented_bounding_box_numpy" title="compas.datastructures.mesh_oriented_bounding_box_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_numpy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_oriented_bounding_box_numpy.html#compas.datastructures.mesh_oriented_bounding_box_numpy" title="compas.datastructures.mesh_oriented_bounding_box_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_numpy</span></code></a></p></td>
 <td><p>Compute the (axis aligned) bounding box of a mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_oriented_bounding_box_xy_numpy.html#compas.datastructures.mesh_oriented_bounding_box_xy_numpy" title="compas.datastructures.mesh_oriented_bounding_box_xy_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_xy_numpy</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_oriented_bounding_box_xy_numpy.html#compas.datastructures.mesh_oriented_bounding_box_xy_numpy" title="compas.datastructures.mesh_oriented_bounding_box_xy_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_xy_numpy</span></code></a></p></td>
 <td><p>Compute the (axis aligned) bounding box of a projection of the mesh in the XY plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_planarize_faces.html#compas.datastructures.mesh_planarize_faces" title="compas.datastructures.mesh_planarize_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_planarize_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_planarize_faces.html#compas.datastructures.mesh_planarize_faces" title="compas.datastructures.mesh_planarize_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_planarize_faces</span></code></a></p></td>
 <td><p>Planarise a set of connected faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_quads_to_triangles.html#compas.datastructures.mesh_quads_to_triangles" title="compas.datastructures.mesh_quads_to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_quads_to_triangles</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_slice_plane.html#compas.datastructures.mesh_slice_plane" title="compas.datastructures.mesh_slice_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_slice_plane</span></code></a></p></td>
-<td><p>Slice a mesh with a plane and construct the resulting submeshes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_smooth_centroid.html#compas.datastructures.mesh_smooth_centroid" title="compas.datastructures.mesh_smooth_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_smooth_centroid</span></code></a></p></td>
-<td><p>Smooth a mesh by moving every free vertex to the centroid of its neighbors.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_smooth_area.html#compas.datastructures.mesh_smooth_area" title="compas.datastructures.mesh_smooth_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_smooth_area</span></code></a></p></td>
-<td><p>Smooth a mesh by moving each vertex to the barycenter of the centroids of the surrounding faces, weighted by area.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_subdivide.html#compas.datastructures.mesh_subdivide" title="compas.datastructures.mesh_subdivide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_subdivide</span></code></a></p></td>
-<td><p>Subdivide the input mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_subdivide_tri.html#compas.datastructures.mesh_subdivide_tri" title="compas.datastructures.mesh_subdivide_tri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_subdivide_tri</span></code></a></p></td>
-<td><p>Subdivide a mesh using simple insertion of vertices.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_subdivide_corner.html#compas.datastructures.mesh_subdivide_corner" title="compas.datastructures.mesh_subdivide_corner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_subdivide_corner</span></code></a></p></td>
-<td><p>Subdivide a mesh by cutting corners.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_subdivide_quad.html#compas.datastructures.mesh_subdivide_quad" title="compas.datastructures.mesh_subdivide_quad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_subdivide_quad</span></code></a></p></td>
-<td><p>Subdivide a mesh such that all faces are quads.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_subdivide_catmullclark.html#compas.datastructures.mesh_subdivide_catmullclark" title="compas.datastructures.mesh_subdivide_catmullclark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_subdivide_catmullclark</span></code></a></p></td>
-<td><p>Subdivide a mesh using the Catmull-Clark algorithm.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_subdivide_doosabin.html#compas.datastructures.mesh_subdivide_doosabin" title="compas.datastructures.mesh_subdivide_doosabin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_subdivide_doosabin</span></code></a></p></td>
-<td><p>Subdivide a mesh following the doo-sabin scheme.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_thicken.html#compas.datastructures.mesh_thicken" title="compas.datastructures.mesh_thicken"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_thicken</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_thicken.html#compas.datastructures.mesh_thicken" title="compas.datastructures.mesh_thicken"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_thicken</span></code></a></p></td>
 <td><p>Thicken a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transform.html#compas.datastructures.mesh_transform" title="compas.datastructures.mesh_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transform_numpy.html#compas.datastructures.mesh_transform_numpy" title="compas.datastructures.mesh_transform_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transform_numpy</span></code></a></p></td>
 <td><p>Transform a mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transformed.html#compas.datastructures.mesh_transformed" title="compas.datastructures.mesh_transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transformed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transformed_numpy.html#compas.datastructures.mesh_transformed_numpy" title="compas.datastructures.mesh_transformed_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transformed_numpy</span></code></a></p></td>
 <td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transform_numpy.html#compas.datastructures.mesh_transform_numpy" title="compas.datastructures.mesh_transform_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transform_numpy</span></code></a></p></td>
-<td><p>Transform a mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transformed_numpy.html#compas.datastructures.mesh_transformed_numpy" title="compas.datastructures.mesh_transformed_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transformed_numpy</span></code></a></p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_unify_cycles.html#compas.datastructures.mesh_unify_cycles" title="compas.datastructures.mesh_unify_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_unify_cycles</span></code></a></p></td>
-<td><p>Unify the cycle directions of all faces.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_weld.html#compas.datastructures.mesh_weld" title="compas.datastructures.mesh_weld"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_weld</span></code></a></p></td>
 <td><p>Weld vertices of a mesh within some precision distance.</p></td>
@@ -333,23 +269,6 @@
 </table>
 </div>
 <div class="section" id="id2">
-<h3>Base Classes</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.Graph.html#compas.datastructures.Graph" title="compas.datastructures.Graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p></td>
-<td><p>Base graph data structure for describing the topological relationships between nodes connected by edges.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.BaseNetwork.html#compas.datastructures.BaseNetwork" title="compas.datastructures.BaseNetwork"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseNetwork</span></code></a></p></td>
-<td><p>Geometric implementation of a basic edge graph.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="id3">
 <h3>Functions</h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -399,7 +318,7 @@
 </div>
 <div class="section" id="volmesh">
 <h2>VolMesh</h2>
-<div class="section" id="id4">
+<div class="section" id="id3">
 <h3>Classes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -413,24 +332,7 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="id5">
-<h3>Base Classes</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.HalfFace.html#compas.datastructures.HalfFace" title="compas.datastructures.HalfFace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HalfFace</span></code></a></p></td>
-<td><p>Base half-face data structure fore representing volumetric meshes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.BaseVolMesh.html#compas.datastructures.BaseVolMesh" title="compas.datastructures.BaseVolMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseVolMesh</span></code></a></p></td>
-<td><p>Geometric implementation of a face data structure for volumetric meshes.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="id6">
+<div class="section" id="id4">
 <h3>Functions</h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -503,21 +405,18 @@
 <li class="nav-item"><a class="nav-link reference internal" href="#">datastructures</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#meshes">Meshes</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#base-classes">Base Classes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#functions">Functions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#matrices">Matrices</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#networks">Networks</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#id1">Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id2">Base Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id3">Functions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id2">Functions</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#volmesh">VolMesh</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id4">Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id5">Base Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id6">Functions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id3">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id4">Functions</a></li>
 </ul>
 </li>
 </ul>

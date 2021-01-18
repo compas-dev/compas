@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="ToolModel.__init__" href="compas.robots.ToolModel.__init__.html" />
+    <link rel="next" title="ToolModel.from_data" href="compas.robots.ToolModel.from_data.html" />
   
   
   
@@ -83,7 +83,23 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.html">compas</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.robots.html">robots</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">ToolModel</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <div class="detail section" id="toolmodel">
@@ -120,41 +136,53 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.__init__.html#compas.robots.ToolModel.__init__" title="compas.robots.ToolModel.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(visual, frame_in_tool0_frame[, …])</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.add_joint.html#compas.robots.ToolModel.add_joint" title="compas.robots.ToolModel.add_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_joint</span></code></a>(name, type, parent_link, child_link)</p></td>
-<td><p>Adds a joint to the robot model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.add_link.html#compas.robots.ToolModel.add_link" title="compas.robots.ToolModel.add_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_link</span></code></a>(name[, visual_meshes, …])</p></td>
-<td><p>Adds a link to the robot model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.compute_transformations.html#compas.robots.ToolModel.compute_transformations" title="compas.robots.ToolModel.compute_transformations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_transformations</span></code></a>(joint_state[, link, …])</p></td>
-<td><p>Recursive function to calculate the transformations of each joint.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.find_children_joints.html#compas.robots.ToolModel.find_children_joints" title="compas.robots.ToolModel.find_children_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_children_joints</span></code></a>(link)</p></td>
-<td><p>Returns a list of all children joints of the link.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.find_parent_joint.html#compas.robots.ToolModel.find_parent_joint" title="compas.robots.ToolModel.find_parent_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_parent_joint</span></code></a>(link)</p></td>
-<td><p>Returns the parent joint of the link or None if not found.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.forward_kinematics.html#compas.robots.ToolModel.forward_kinematics" title="compas.robots.ToolModel.forward_kinematics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_kinematics</span></code></a>(joint_state[, link_name])</p></td>
-<td><p>Calculate the robot’s forward kinematic.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_data.html#compas.robots.ToolModel.from_data" title="compas.robots.ToolModel.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_data.html#compas.robots.ToolModel.from_data" title="compas.robots.ToolModel.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a <cite>ToolModel</cite> from its data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_json.html#compas.robots.ToolModel.from_json" title="compas.robots.ToolModel.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_json.html#compas.robots.ToolModel.from_json" title="compas.robots.ToolModel.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct a <cite>ToolModel</cite> from the data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_robot_model.html#compas.robots.ToolModel.from_robot_model" title="compas.robots.ToolModel.from_robot_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_robot_model</span></code></a>(robot, frame_in_tool0_frame)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_robot_model.html#compas.robots.ToolModel.from_robot_model" title="compas.robots.ToolModel.from_robot_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_robot_model</span></code></a>(robot, frame_in_tool0_frame)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">ToolModel</span></code> from a <a class="reference internal" href="compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> instance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_t0cf_to_tcf.html#compas.robots.ToolModel.from_t0cf_to_tcf" title="compas.robots.ToolModel.from_t0cf_to_tcf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_t0cf_to_tcf</span></code></a>(frames_t0cf)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_t0cf_to_tcf.html#compas.robots.ToolModel.from_t0cf_to_tcf" title="compas.robots.ToolModel.from_t0cf_to_tcf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_t0cf_to_tcf</span></code></a>(frames_t0cf)</p></td>
 <td><p>Converts frames at the robot’s flange (tool0 frame) to frames at the robot’s tool tip (tcf frame).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_tcf_to_t0cf.html#compas.robots.ToolModel.from_tcf_to_t0cf" title="compas.robots.ToolModel.from_tcf_to_t0cf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_tcf_to_t0cf</span></code></a>(frames_tcf)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_tcf_to_t0cf.html#compas.robots.ToolModel.from_tcf_to_t0cf" title="compas.robots.ToolModel.from_tcf_to_t0cf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_tcf_to_t0cf</span></code></a>(frames_tcf)</p></td>
 <td><p>Converts a list of frames at the robot’s tool tip (tcf frame) to frames at the robot’s flange (tool0 frame).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.to_data.html#compas.robots.ToolModel.to_data" title="compas.robots.ToolModel.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<td><p>Returns the data dictionary that represents the <a class="reference internal" href="compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.to_json.html#compas.robots.ToolModel.to_json" title="compas.robots.ToolModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<td><p>Serialise the data dictionary representing the tool to JSON and store in a file.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.add_joint.html#compas.robots.ToolModel.add_joint" title="compas.robots.ToolModel.add_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_joint</span></code></a>(name, type, parent_link, child_link)</p></td>
+<td><p>Adds a joint to the robot model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.add_link.html#compas.robots.ToolModel.add_link" title="compas.robots.ToolModel.add_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_link</span></code></a>(name[, visual_meshes, …])</p></td>
+<td><p>Adds a link to the robot model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.compute_transformations.html#compas.robots.ToolModel.compute_transformations" title="compas.robots.ToolModel.compute_transformations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_transformations</span></code></a>(joint_state[, link, …])</p></td>
+<td><p>Recursive function to calculate the transformations of each joint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.find_children_joints.html#compas.robots.ToolModel.find_children_joints" title="compas.robots.ToolModel.find_children_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_children_joints</span></code></a>(link)</p></td>
+<td><p>Returns a list of all children joints of the link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.find_parent_joint.html#compas.robots.ToolModel.find_parent_joint" title="compas.robots.ToolModel.find_parent_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_parent_joint</span></code></a>(link)</p></td>
+<td><p>Returns the parent joint of the link or None if not found.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.forward_kinematics.html#compas.robots.ToolModel.forward_kinematics" title="compas.robots.ToolModel.forward_kinematics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_kinematics</span></code></a>(joint_state[, link_name])</p></td>
+<td><p>Calculate the robot’s forward kinematic.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.from_urdf_file.html#compas.robots.ToolModel.from_urdf_file" title="compas.robots.ToolModel.from_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_urdf_file</span></code></a>(file)</p></td>
 <td><p>Construct a robot model from a URDF file model description.</p></td>
@@ -209,12 +237,6 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.scale.html#compas.robots.ToolModel.scale" title="compas.robots.ToolModel.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor[, link])</p></td>
 <td><p>Scales the robot by factor (absolute).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.to_data.html#compas.robots.ToolModel.to_data" title="compas.robots.ToolModel.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns the data dictionary that represents the <a class="reference internal" href="compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.ToolModel.to_json.html#compas.robots.ToolModel.to_json" title="compas.robots.ToolModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialise the data dictionary representing the tool to JSON and store in a file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.ToolModel.to_urdf_file.html#compas.robots.ToolModel.to_urdf_file" title="compas.robots.ToolModel.to_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_urdf_file</span></code></a>(file[, prettify])</p></td>
 <td><p>Construct a URDF file model description from a robot model.</p></td>
@@ -293,7 +315,9 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">ToolModel</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">ToolModel</a><ul class="nav flex-column">
+</ul>
+</li>
 </ul>
 
       </div>
@@ -315,10 +339,10 @@
       
 
       
-        <a href="compas.robots.ToolModel.__init__.html" title="ToolModel.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.robots.ToolModel.from_data.html" title="ToolModel.from_data" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 h4 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            ToolModel.__init__
+            ToolModel.from_data
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

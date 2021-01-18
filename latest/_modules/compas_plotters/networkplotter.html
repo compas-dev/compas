@@ -79,7 +79,19 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas_plotters.networkplotter</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <h1>Source code for compas_plotters.networkplotter</h1><div class="highlight"><pre><code>
@@ -143,7 +155,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="NetworkPlotter.__init__"><a class="viewcode-back" href="../../api/generated/compas_plotters.NetworkPlotter.__init__.html#compas_plotters.NetworkPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;NetworkPlotter&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datastructure</span> <span class="o">=</span> <span class="n">network</span>
@@ -161,7 +173,7 @@
             <span class="s1">&#39;edge.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
             <span class="s1">&#39;edge.textcolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
             <span class="s1">&#39;edge.fontsize&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
-        <span class="p">}</span></div>
+        <span class="p">}</span>
 
 <div class="viewcode-block" id="NetworkPlotter.clear"><a class="viewcode-back" href="../../api/generated/compas_plotters.NetworkPlotter.clear.html#compas_plotters.NetworkPlotter.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clears the network plotter edges and nodes.&quot;&quot;&quot;</span>

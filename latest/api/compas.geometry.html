@@ -83,16 +83,29 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="compas.html">compas</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">geometry</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <span class="target" id="module-compas.geometry"></span><div class="section" id="geometry">
 <h1>geometry</h1>
-<div class="section" id="primitives">
-<h2>Primitives</h2>
-<div class="graphviz"><img src="../_images/inheritance-3e2c026eb2a0855978168f7f2f505c7e4570671b.png" alt="Inheritance diagram of Circle, Ellipse, Frame, Line, Plane, Point, Polygon, Polyline, Quaternion, Vector" class="inheritance graphviz" /></div>
 <div class="section" id="classes">
-<h3>Classes</h3>
+<h2>Classes</h2>
+<div class="section" id="primitives">
+<h3>Primitives</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -132,26 +145,8 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="base-classes">
-<h3>Base Classes</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Primitive</span></code></a></p></td>
-<td><p>Base class for geometric primitives.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <div class="section" id="shapes">
-<h2>Shapes</h2>
-<div class="graphviz"><img src="../_images/inheritance-da0ffdfeaf109f15bb562d8123a13e9b60fb1027.png" alt="Inheritance diagram of Box, Capsule, Cone, Cylinder, Polyhedron, Torus" class="inheritance graphviz" /></div>
-<div class="section" id="id1">
-<h3>Classes</h3>
+<h3>Shapes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -182,26 +177,8 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="id2">
-<h3>Base Classes</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
-<td><p>Base class for geometric shapes.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <div class="section" id="transformations">
-<h2>Transformations</h2>
-<div class="graphviz"><img src="../_images/inheritance-a8e6f6984481930d077e61172eb2fae7051ea732.png" alt="Inheritance diagram of Projection, Reflection, Rotation, Scale, Shear, Transformation, Translation" class="inheritance graphviz" /></div>
-<div class="section" id="id3">
-<h3>Classes</h3>
+<h3>Transformations</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -317,7 +294,7 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="id4">
+<div class="section" id="id1">
 <h3>Transformations</h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1142,24 +1119,16 @@
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#primitives">Primitives</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#base-classes">Base Classes</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="#shapes">Shapes</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id1">Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id2">Base Classes</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="#transformations">Transformations</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#id3">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#primitives">Primitives</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#shapes">Shapes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#transformations">Transformations</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#functions">Functions</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#predicates-2d">Predicates 2D</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#predicates-3d">Predicates 3D</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#id4">Transformations</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id1">Transformations</a><ul class="nav flex-column">
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#linear-algebra">Linear algebra</a></li>
