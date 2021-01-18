@@ -55,9 +55,9 @@ class Mesh(BaseMesh):
     unify_cycles = mesh_unify_cycles
     quads_to_triangles = mesh_quads_to_triangles
 
-    def transform_numpy(self, M):
-        from compas.datastructures.mesh.transformations_numpy import mesh_transform_numpy
-        mesh_transform_numpy(self, M)
+    # def transform_numpy(self, M):
+    #     from compas.datastructures.mesh.transformations_numpy import mesh_transform_numpy
+    #     mesh_transform_numpy(self, M)
 
 
 # =============================================================================
