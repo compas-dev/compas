@@ -66,11 +66,13 @@ For strictly two-dimensional inputs in the XY plane, the following can also be u
 This process is only successful if the input lines form a planar graph.
 ``from_points`` generates a delaunay triangulation of the provided points in the XY plane.
 
-For every ``from_`` function there is a corresponding ``to_`` function that basically accomplishes the exact opposite.
+For most ``from_`` function there is a corresponding ``to_`` function that basically accomplishes the exact opposite.
 
 ::
 
-    >>>
+    >>> mesh.to_vertices_and_faces()
+    >>> mesh.to_points()
+    >>> mesh.to_polygons()
 
 
 Geometry Formats
