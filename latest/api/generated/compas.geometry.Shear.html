@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Shear.from_angle_direction_plane" href="compas.geometry.Shear.from_angle_direction_plane.html" />
+    <link rel="next" title="Shear.concatenate" href="compas.geometry.Shear.concatenate.html" />
   
   
   
@@ -133,28 +133,6 @@ of P onto the shear plane.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_angle_direction_plane.html#compas.geometry.Shear.from_angle_direction_plane" title="compas.geometry.Shear.from_angle_direction_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_angle_direction_plane</span></code></a>(angle, direction, …)</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – The angle in radians.</p></li>
-</ul>
-</dd>
-</dl>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_entries.html#compas.geometry.Shear.from_entries" title="compas.geometry.Shear.from_entries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_entries</span></code></a>(shear_entries)</p></td>
-<td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Shear</span></code> from the 3 factors for x-y, x-z, and y-z axes.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.concatenate.html#compas.geometry.Shear.concatenate" title="compas.geometry.Shear.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(other)</p></td>
 <td><p>Concatenate another transformation to this transformation.</p></td>
 </tr>
@@ -167,11 +145,24 @@ of P onto the shear plane.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.decomposed.html#compas.geometry.Shear.decomposed" title="compas.geometry.Shear.decomposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decomposed</span></code></a>()</p></td>
 <td><p>Decompose the <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> into its <code class="docutils literal notranslate"><span class="pre">Scale</span></code>, <code class="docutils literal notranslate"><span class="pre">Shear</span></code>, <code class="docutils literal notranslate"><span class="pre">Rotation</span></code>, <code class="docutils literal notranslate"><span class="pre">Translation</span></code> and <code class="docutils literal notranslate"><span class="pre">Projection</span></code> components.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_change_of_basis.html#compas.geometry.Shear.from_change_of_basis" title="compas.geometry.Shear.from_change_of_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_change_of_basis</span></code></a>(frame_from, frame_to)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_angle_direction_plane.html#compas.geometry.Shear.from_angle_direction_plane" title="compas.geometry.Shear.from_angle_direction_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_angle_direction_plane</span></code></a>(angle, direction, …)</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – The angle in radians.</p></li>
+</ul>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_change_of_basis.html#compas.geometry.Shear.from_change_of_basis" title="compas.geometry.Shear.from_change_of_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_change_of_basis</span></code></a>(frame_from, frame_to)</p></td>
 <td><p>Computes a change of basis transformation between two frames.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_data.html#compas.geometry.Shear.from_data" title="compas.geometry.Shear.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_data.html#compas.geometry.Shear.from_data" title="compas.geometry.Shear.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a data dict.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_entries.html#compas.geometry.Shear.from_entries" title="compas.geometry.Shear.from_entries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_entries</span></code></a>(shear_entries)</p></td>
+<td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Shear</span></code> from the 3 factors for x-y, x-z, and y-z axes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_euler_angles.html#compas.geometry.Shear.from_euler_angles" title="compas.geometry.Shear.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, …])</p></td>
 <td><p>Construct a transformation from a rotation represented by Euler angles.</p></td>
@@ -280,9 +271,7 @@ of P onto the shear plane.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Shear</a><ul class="nav flex-column">
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Shear</a></li>
 </ul>
 
       </div>
@@ -304,10 +293,10 @@ of P onto the shear plane.</p>
       
 
       
-        <a href="compas.geometry.Shear.from_angle_direction_plane.html" title="Shear.from_angle_direction_plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Shear.concatenate.html" title="Shear.concatenate" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 h4 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Shear.from_angle_direction_plane
+            Shear.concatenate
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

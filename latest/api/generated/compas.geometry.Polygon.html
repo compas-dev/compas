@@ -152,8 +152,14 @@ closing edge is implied.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.contains.html#compas.geometry.Polygon.contains" title="compas.geometry.Polygon.contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a>(point)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_data.html#compas.geometry.Polygon.from_data" title="compas.geometry.Polygon.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.copy.html#compas.geometry.Polygon.copy" title="compas.geometry.Polygon.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>Makes a copy of this primitive.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_data.html#compas.geometry.Polygon.from_data" title="compas.geometry.Polygon.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a polygon from its data representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_json.html#compas.geometry.Polygon.from_json" title="compas.geometry.Polygon.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<td><p>Construct a primitive from structured data contained in a json file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_sides_and_radius_xy.html#compas.geometry.Polygon.from_sides_and_radius_xy" title="compas.geometry.Polygon.from_sides_and_radius_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sides_and_radius_xy</span></code></a>(n, radius)</p></td>
 <td><p>Construct a polygon from a number of sides and a radius.</p></td>
@@ -164,29 +170,14 @@ closing edge is implied.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.is_planar.html#compas.geometry.Polygon.is_planar" title="compas.geometry.Polygon.is_planar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_planar</span></code></a>()</p></td>
 <td><p>Determine if the polygon is planar.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.transform.html#compas.geometry.Polygon.transform" title="compas.geometry.Polygon.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
-<td><p>Transform this polygon.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.copy.html#compas.geometry.Polygon.copy" title="compas.geometry.Polygon.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Makes a copy of this primitive.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_json.html#compas.geometry.Polygon.from_json" title="compas.geometry.Polygon.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a primitive from structured data contained in a json file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_data.html#compas.geometry.Polygon.to_data" title="compas.geometry.Polygon.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_data.html#compas.geometry.Polygon.to_data" title="compas.geometry.Polygon.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Returns the data dictionary that represents the primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_json.html#compas.geometry.Polygon.to_json" title="compas.geometry.Polygon.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_json.html#compas.geometry.Polygon.to_json" title="compas.geometry.Polygon.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialise the structured data representing the primitive to json.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.transform.html#compas.geometry.Polygon.transform" title="compas.geometry.Polygon.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
+<td><p>Transform this polygon.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.transformed.html#compas.geometry.Polygon.transformed" title="compas.geometry.Polygon.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
@@ -259,9 +250,7 @@ closing edge is implied.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Polygon</a><ul class="nav flex-column">
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Polygon</a></li>
 </ul>
 
       </div>

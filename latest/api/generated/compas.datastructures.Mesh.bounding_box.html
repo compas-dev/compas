@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Mesh" href="compas.datastructures.Mesh.html" />
+    <link rel="prev" title="Mesh.area" href="compas.datastructures.Mesh.area.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,21 +108,15 @@
 <h1>Mesh.bounding_box</h1>
 <dl class="method">
 <dt id="compas.datastructures.Mesh.bounding_box">
-<code class="sig-prename descclassname">Mesh.</code><code class="sig-name descname">bounding_box</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Compute the (axis aligned) bounding box of a mesh.</p>
+<code class="sig-prename descclassname">Mesh.</code><code class="sig-name descname">bounding_box</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/_mesh.html#Mesh.bounding_box"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Compute the axis-aligned bounding box of the mesh.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – The mesh data structure.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list of point</em> – The 8 corners of the bounding box of the mesh.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>box</strong> (<em>tuple of 8 points.</em>) – The corners of the bounding box.
+The first 4 points are the corners of the bottom face, in counter clockwise direction wrt the positive Z-axis.
+The last 4 points are the corners of the top face, in counter clockwise direction wrt the positive Z-axis.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_bounding_box</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="go">[[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </div>
@@ -195,11 +189,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.datastructures.Mesh.html" title="Mesh" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.datastructures.Mesh.area.html" title="Mesh.area" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 h4 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            Mesh
+            Mesh.area
           </div>
         </a>
       

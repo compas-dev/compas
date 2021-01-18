@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Translation.from_vector" href="compas.geometry.Translation.from_vector.html" />
+    <link rel="next" title="Translation.concatenate" href="compas.geometry.Translation.concatenate.html" />
   
   
   
@@ -154,18 +154,6 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.from_vector.html#compas.geometry.Translation.from_vector" title="compas.geometry.Translation.from_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vector</span></code></a>(vector)</p></td>
-<td><p>Create a translation transformation from a translation vector.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.concatenate.html#compas.geometry.Translation.concatenate" title="compas.geometry.Translation.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(other)</p></td>
 <td><p>Concatenate another transformation to this transformation.</p></td>
 </tr>
@@ -202,31 +190,34 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.from_matrix.html#compas.geometry.Translation.from_matrix" title="compas.geometry.Translation.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a 4x4 matrix-like object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.inverse.html#compas.geometry.Translation.inverse" title="compas.geometry.Translation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.from_vector.html#compas.geometry.Translation.from_vector" title="compas.geometry.Translation.from_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vector</span></code></a>(vector)</p></td>
+<td><p>Create a translation transformation from a translation vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.inverse.html#compas.geometry.Translation.inverse" title="compas.geometry.Translation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.invert.html#compas.geometry.Translation.invert" title="compas.geometry.Translation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.invert.html#compas.geometry.Translation.invert" title="compas.geometry.Translation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
 <td><p>Invert this transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.inverted.html#compas.geometry.Translation.inverted" title="compas.geometry.Translation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.inverted.html#compas.geometry.Translation.inverted" title="compas.geometry.Translation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.to_data.html#compas.geometry.Translation.to_data" title="compas.geometry.Translation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.to_data.html#compas.geometry.Translation.to_data" title="compas.geometry.Translation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.to_json.html#compas.geometry.Translation.to_json" title="compas.geometry.Translation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.to_json.html#compas.geometry.Translation.to_json" title="compas.geometry.Translation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.transpose.html#compas.geometry.Translation.transpose" title="compas.geometry.Translation.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.transpose.html#compas.geometry.Translation.transpose" title="compas.geometry.Translation.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
 <td><p>Transpose the matrix of this transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.transposed.html#compas.geometry.Translation.transposed" title="compas.geometry.Translation.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.transposed.html#compas.geometry.Translation.transposed" title="compas.geometry.Translation.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
 <td><p>Create a transposed copy of this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.validate_data.html#compas.geometry.Translation.validate_data" title="compas.geometry.Translation.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.validate_data.html#compas.geometry.Translation.validate_data" title="compas.geometry.Translation.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.validate_json.html#compas.geometry.Translation.validate_json" title="compas.geometry.Translation.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.validate_json.html#compas.geometry.Translation.validate_json" title="compas.geometry.Translation.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
@@ -291,9 +282,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Translation</a><ul class="nav flex-column">
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Translation</a></li>
 </ul>
 
       </div>
@@ -315,10 +304,10 @@
       
 
       
-        <a href="compas.geometry.Translation.from_vector.html" title="Translation.from_vector" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Translation.concatenate.html" title="Translation.concatenate" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 h4 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Translation.from_vector
+            Translation.concatenate
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

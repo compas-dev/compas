@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Plane.from_abcd" href="compas.geometry.Plane.from_abcd.html" />
+    <link rel="next" title="Plane.copy" href="compas.geometry.Plane.copy.html" />
   
   
   
@@ -140,14 +140,20 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.from_abcd.html#compas.geometry.Plane.from_abcd" title="compas.geometry.Plane.from_abcd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_abcd</span></code></a>(abcd)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.copy.html#compas.geometry.Plane.copy" title="compas.geometry.Plane.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>Makes a copy of this primitive.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.from_abcd.html#compas.geometry.Plane.from_abcd" title="compas.geometry.Plane.from_abcd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_abcd</span></code></a>(abcd)</p></td>
 <td><p>Construct a plane from the plane equation coefficients.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.from_data.html#compas.geometry.Plane.from_data" title="compas.geometry.Plane.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.from_data.html#compas.geometry.Plane.from_data" title="compas.geometry.Plane.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a plane from its data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.from_frame.html#compas.geometry.Plane.from_frame" title="compas.geometry.Plane.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.from_frame.html#compas.geometry.Plane.from_frame" title="compas.geometry.Plane.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
 <td><p>Construct a plane from a frame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.from_json.html#compas.geometry.Plane.from_json" title="compas.geometry.Plane.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<td><p>Construct a primitive from structured data contained in a json file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.from_point_and_two_vectors.html#compas.geometry.Plane.from_point_and_two_vectors" title="compas.geometry.Plane.from_point_and_two_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_and_two_vectors</span></code></a>(point, u, v)</p></td>
 <td><p>Construct a plane from a base point and two vectors.</p></td>
@@ -155,32 +161,14 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.from_three_points.html#compas.geometry.Plane.from_three_points" title="compas.geometry.Plane.from_three_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_three_points</span></code></a>(a, b, c)</p></td>
 <td><p>Construct a plane from three points in three-dimensional space.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.transform.html#compas.geometry.Plane.transform" title="compas.geometry.Plane.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
-<td><p>Transform this plane.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.worldXY.html#compas.geometry.Plane.worldXY" title="compas.geometry.Plane.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a>()</p></td>
-<td><p>Construct the world XY plane.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.copy.html#compas.geometry.Plane.copy" title="compas.geometry.Plane.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Makes a copy of this primitive.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.from_json.html#compas.geometry.Plane.from_json" title="compas.geometry.Plane.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a primitive from structured data contained in a json file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.to_data.html#compas.geometry.Plane.to_data" title="compas.geometry.Plane.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.to_data.html#compas.geometry.Plane.to_data" title="compas.geometry.Plane.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Returns the data dictionary that represents the primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.to_json.html#compas.geometry.Plane.to_json" title="compas.geometry.Plane.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.to_json.html#compas.geometry.Plane.to_json" title="compas.geometry.Plane.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialise the structured data representing the primitive to json.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.transform.html#compas.geometry.Plane.transform" title="compas.geometry.Plane.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
+<td><p>Transform this plane.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.transformed.html#compas.geometry.Plane.transformed" title="compas.geometry.Plane.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
@@ -190,6 +178,9 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_json.html#compas.geometry.Plane.validate_json" title="compas.geometry.Plane.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.worldXY.html#compas.geometry.Plane.worldXY" title="compas.geometry.Plane.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a>()</p></td>
+<td><p>Construct the world XY plane.</p></td>
 </tr>
 </tbody>
 </table>
@@ -253,9 +244,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Plane</a><ul class="nav flex-column">
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Plane</a></li>
 </ul>
 
       </div>
@@ -277,10 +266,10 @@
       
 
       
-        <a href="compas.geometry.Plane.from_abcd.html" title="Plane.from_abcd" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Plane.copy.html" title="Plane.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 h4 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Plane.from_abcd
+            Plane.copy
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

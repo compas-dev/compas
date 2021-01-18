@@ -131,8 +131,22 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_polyhedron(6)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">bounding_box</span> <span class="o">=</span> <span class="n">mesh_bounding_box</span>
+
+<div class="viewcode-block" id="Mesh.bounding_box"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.Mesh.bounding_box.html#compas.datastructures.Mesh.bounding_box">[docs]</a>    <span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the axis-aligned bounding box of the mesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        box: tuple of 8 points.</span>
+<span class="sd">            The corners of the bounding box.</span>
+<span class="sd">            The first 4 points are the corners of the bottom face, in counter clockwise direction wrt the positive Z-axis.</span>
+<span class="sd">            The last 4 points are the corners of the top face, in counter clockwise direction wrt the positive Z-axis.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">mesh_bounding_box</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
     <span class="n">bounding_box_xy</span> <span class="o">=</span> <span class="n">mesh_bounding_box_xy</span>
     <span class="n">collapse_edge</span> <span class="o">=</span> <span class="n">mesh_collapse_edge</span>
     <span class="n">connected_components</span> <span class="o">=</span> <span class="n">mesh_connected_components</span>
@@ -151,10 +165,6 @@
     <span class="n">transformed</span> <span class="o">=</span> <span class="n">mesh_transformed</span>
     <span class="n">unify_cycles</span> <span class="o">=</span> <span class="n">mesh_unify_cycles</span>
     <span class="n">quads_to_triangles</span> <span class="o">=</span> <span class="n">mesh_quads_to_triangles</span></div>
-
-    <span class="c1"># def transform_numpy(self, M):</span>
-    <span class="c1">#     from compas.datastructures.mesh.transformations_numpy import mesh_transform_numpy</span>
-    <span class="c1">#     mesh_transform_numpy(self, M)</span>
 
 
 <span class="c1"># =============================================================================</span>
