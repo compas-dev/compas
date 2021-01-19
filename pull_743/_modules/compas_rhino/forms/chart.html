@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas_rhino.forms.chart</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            1.0.0
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas_rhino.forms.chart</li>
+          </ol>
+        </nav>
+        
+  
+        
+          
+          <h1>Source code for compas_rhino.forms.chart</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">basestring</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.forms.base</span> <span class="kn">import</span> <span class="n">BaseForm</span>
+
+<span class="kn">import</span> <span class="nn">clr</span>
+<span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="kn">import</span> <span class="n">Size</span>
+<span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="kn">import</span> <span class="n">Color</span>
+
+<span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s2">&quot;System.Windows.Forms.DataVisualization&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">System.Windows.Forms.DataVisualization</span> <span class="kn">import</span> <span class="n">Charting</span>  <span class="c1"># noqa: E402</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ChartForm&#39;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">Series</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="ChartForm"><a class="viewcode-back" href="../../../api/generated/compas_rhino.forms.ChartForm.html#compas_rhino.forms.ChartForm">[docs]</a><span class="k">class</span> <span class="nc">ChartForm</span><span class="p">(</span><span class="n">BaseForm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A form for displaying charts.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    series : list of dict</span>
+<span class="sd">        A list of dictionaries with each dictionary defining the attributes of a series.</span>
+<span class="sd">        The following attributes are supported:</span>
+
+<span class="sd">        * name: The name of the series.</span>
+<span class="sd">        * data: A dictionary with x-y pairs.</span>
+<span class="sd">        * color (optional): A hex color or an RGB(255) color specification.</span>
+<span class="sd">        * linewidth (optional): The width of the series graph line.</span>
+<span class="sd">        * linetype (optional): The visual style of the graph line.</span>
+<span class="sd">          Should be one of ``{&#39;solid&#39;, &#39;dotted&#39;, &#39;dashed&#39;}``.</span>
+
+<span class="sd">    xlimits : 2-tuple</span>
+<span class="sd">        Minimum and maximum values on the X-axis.</span>
+<span class="sd">    xstep : int</span>
+<span class="sd">        Size of the steps along the X-axis.</span>
+<span class="sd">    ylimits : 2-tuple, optional</span>
+<span class="sd">        Minimum and maximum values on the Y-axis.</span>
+<span class="sd">        Default is ``None``, in which case the limits will be computed from the</span>
+<span class="sd">        min/max values of the data in the series.</span>
+<span class="sd">    ystep : int, optional</span>
+<span class="sd">        Size of the steps along the Y-axis.</span>
+<span class="sd">        Default is ``int((ymax - ymin) / 10.)```.</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    bgcolor : str, tuple, System.Drawing.Color</span>
+<span class="sd">        The background color of the chart area.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import random</span>
+
+<span class="sd">        from compas.utilities import fibonacci</span>
+<span class="sd">        from compas_rhino.forms import ChartForm</span>
+
+<span class="sd">        series = [</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;name&#39;      : &#39;series1&#39;,</span>
+<span class="sd">                &#39;color&#39;     : (255, 0, 0),</span>
+<span class="sd">                &#39;linewidth&#39; : 1,</span>
+<span class="sd">                &#39;linestyle&#39; : &#39;dashed&#39;,</span>
+<span class="sd">                &#39;data&#39;      : dict((str(i), random.randint(30, 70)) for i in range(10)),</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;name&#39;      : &#39;series2&#39;,</span>
+<span class="sd">                &#39;color&#39;     : (0, 255, 0),</span>
+<span class="sd">                &#39;linewidth&#39; : 1,</span>
+<span class="sd">                &#39;linestyle&#39; : &#39;solid&#39;,</span>
+<span class="sd">                &#39;data&#39;      : dict((str(i), i ** 2) for i in range(10)),</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;name&#39;      : &#39;series3&#39;,</span>
+<span class="sd">                &#39;color&#39;     : (0, 0, 255),</span>
+<span class="sd">                &#39;linewidth&#39; : 1,</span>
+<span class="sd">                &#39;linestyle&#39; : &#39;dotted&#39;,</span>
+<span class="sd">                &#39;data&#39;      : dict((str(i), fibonacci(i)) for i in range(10)),</span>
+<span class="sd">            },</span>
+<span class="sd">        ]</span>
+
+<span class="sd">        form = ChartForm(series, (0, 10), 1)</span>
+<span class="sd">        form.show()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">series</span><span class="p">,</span>
+                 <span class="n">xlimits</span><span class="p">,</span> <span class="n">xstep</span><span class="p">,</span>
+                 <span class="n">ylimits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ystep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">chartsize</span><span class="o">=</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+                 <span class="n">bgcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Chart&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bgcolor</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">chartsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chartwidth</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chartheight</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">series</span> <span class="o">=</span> <span class="n">series</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span> <span class="o">=</span> <span class="n">xlimits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span> <span class="o">=</span> <span class="n">xlimits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xstep</span> <span class="o">=</span> <span class="n">xstep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bgcolor</span> <span class="o">=</span> <span class="n">bgcolor</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ystep</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">series</span><span class="p">:</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ystep</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span><span class="p">)</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ChartForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bgcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bgcolor</span>
+
+    <span class="nd">@bgcolor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bgcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">colour</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bgcolor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">White</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colour</span><span class="p">,</span> <span class="n">Color</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bgcolor</span> <span class="o">=</span> <span class="n">colour</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colour</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colour</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bgcolor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span> <span class="n">colour</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="ChartForm.init"><a class="viewcode-back" href="../../../api/generated/compas_rhino.forms.ChartForm.init.html#compas_rhino.forms.ChartForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chartwidth</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chartheight</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+        <span class="n">charting</span> <span class="o">=</span> <span class="n">Charting</span>
+        <span class="n">chart</span> <span class="o">=</span> <span class="n">charting</span><span class="o">.</span><span class="n">Chart</span><span class="p">()</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">Size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chartwidth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chartheight</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">ChartAreas</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s1">&#39;series&#39;</span><span class="p">)</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">chart</span><span class="o">.</span><span class="n">ChartAreas</span><span class="p">[</span><span class="s1">&#39;series&#39;</span><span class="p">]</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">area</span><span class="o">.</span><span class="n">AxisX</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">Minimum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">Maximum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">Interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xstep</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">MajorGrid</span><span class="o">.</span><span class="n">LineColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">White</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">MajorGrid</span><span class="o">.</span><span class="n">LineDashStyle</span> <span class="o">=</span> <span class="n">charting</span><span class="o">.</span><span class="n">ChartDashStyle</span><span class="o">.</span><span class="n">NotSet</span>
+
+        <span class="n">y</span> <span class="o">=</span> <span class="n">area</span><span class="o">.</span><span class="n">AxisY</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">Minimum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymin</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">Maximum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">Interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ystep</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">MajorGrid</span><span class="o">.</span><span class="n">LineColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">Gray</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">MajorGrid</span><span class="o">.</span><span class="n">LineDashStyle</span> <span class="o">=</span> <span class="n">charting</span><span class="o">.</span><span class="n">ChartDashStyle</span><span class="o">.</span><span class="n">Dot</span>
+
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">series</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
+            <span class="n">linewidth</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;linewidth&#39;</span><span class="p">]</span>
+            <span class="n">chart</span><span class="o">.</span><span class="n">Series</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">series</span> <span class="o">=</span> <span class="n">chart</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">series</span><span class="o">.</span><span class="n">ChartType</span> <span class="o">=</span> <span class="n">charting</span><span class="o">.</span><span class="n">SeriesChartType</span><span class="o">.</span><span class="n">Line</span>
+            <span class="n">series</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">)</span>
+            <span class="n">series</span><span class="o">.</span><span class="n">BorderWidth</span> <span class="o">=</span> <span class="n">linewidth</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">series</span><span class="o">.</span><span class="n">Points</span><span class="o">.</span><span class="n">AddXY</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="n">area</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bgcolor</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">chart</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">random</span>
+    <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">fibonacci</span>
+
+    <span class="n">series</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;series1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;linewidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;series2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;linewidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">i</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;series3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;linewidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="n">ChartForm</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../releases.html">Releases</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+
+      
+    </nav>  
+  </footer>
+  <!-- footer -->
+  <!-- below -->
+  <div class="below py-5">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- below -->
+  <!-- scripts -->
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '1.0.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../_static/underscore.js"></script>
+  <script src="../../../_static/doctools.js"></script>
+  <script src="../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+  <!-- scripts -->
+  
+  
+</body>
+</html>
