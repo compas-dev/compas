@@ -22,8 +22,15 @@ release and rolls back to A after reaching Z. For example: ``COMPAS 16.0: Projec
 Past and future release names
 =============================
 
-===========  ===================  =============
-Version      Code name            Release date
------------  -------------------  -------------
-COMPAS 1.0   Affine Anchor        2021-01-18
-===========  ===================  =============
+.. rst-class:: table table-bordered
+
+.. list-table::
+    :widths: auto
+    :header-rows: 1
+
+    * - Version
+      - Code name
+      - Release date
+    * - COMPAS 1.0
+      - Affine Anchor
+      - 2021-01-18
