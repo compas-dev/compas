@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `RobotModel.remove_link`, `RobotModel.remove_joint`, `RobotModel.to_urdf_string`, and `RobotModel.ensure_geometry`.
+
 ### Changed
 
 * Fixed bug in parameter list of function `mesh_bounding_box` bound as method `Mesh.bounding_box`.
