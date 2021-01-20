@@ -68,7 +68,6 @@ class RobotModel(Base):
         self._rebuild_tree()
         self._create(self.root, Transformation())
         self._scale_factor = 1.
-        self._geometry_loaded = False
 
     def get_urdf_element(self):
         attributes = {'name': self.name}
