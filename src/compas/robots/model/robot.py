@@ -1012,10 +1012,10 @@ class RobotModel(Base):
             The name of the joint
         """
         joint = self.get_joint_by_name(name)
-        self.joints = [joint for joint in self.joints if joint.name != name]
+        self.joints = [j for j in self.joints if j.name != name]
         parent_link = self.get_link_by_name(joint.parent.link)
-        parent_link.joints = [joint for joint in parent_link.joints if joint.name != name]
-        self._adjacency[parent_link.name] = [joint.name for joint in parent_link.joints]
+        parent_link.joints = [j for j in parent_link.joints if j.name != name]
+        self._adjacency[parent_link.name] = [j.name for j in parent_link.joints]
         del self._links[joint.child.link]
         del self._joints[name]
         del self._adjacency[name]
