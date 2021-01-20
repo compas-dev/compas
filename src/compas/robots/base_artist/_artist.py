@@ -217,8 +217,11 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         -------
         None
         """
-        relative_transformation = transformation * item.current_transformation.inverse()
-        for native_geometry in item.native_geometry:
+        if getattr(item, 'current_transformation'):
+            relative_transformation = transformation * item.current_transformation.inverse()
+        else:
+            relative_transformation = transformation
+        for native_geometry in item.native_geometry or []:
             self.transform(native_geometry, relative_transformation)
         item.current_transformation = transformation
 
