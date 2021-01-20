@@ -57,7 +57,7 @@ Submitting a PR
 Once you are done making changes, you have to submit your contribution through a pull request (PR).
 The procedure for submitting a PR is the following.
 
-1. Make sure all tests still pass, the code is free of lint, and you docstrings compile correctly:
+1. Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:
 
    .. code-block:: bash
 
@@ -66,8 +66,9 @@ The procedure for submitting a PR is the following.
         invoke docs
 
 2. Add yourself to ``AUTHORS.md``.
-3. Commit your changes and push your branch to GitHub.
-4. Create a `pull request <https://help.github.com/articles/about-pull-requests/>`_.
+3. Summarize the changes you made in ``CHANGELOG.md``.
+4. Commit your changes and push your branch to GitHub.
+5. Create a `pull request <https://help.github.com/articles/about-pull-requests/>`_.
 
 
 Style guide
@@ -109,13 +110,13 @@ Quotes
 
 Ideally, we would use the following conventions for quotes.
 
-1. Double quotes for multiline statements (``"""``).
-   This includes the quotes for docstrings.
+1. Double quotation marks for multiline statements and docstrings.
+   For example, ``"""Calculate the sum of two numbers."""``
 
-2. Single quotes for strings that are used "as variables".
+2. Single quotation marks for strings that are used "as variables".
    For example, ``config['param'] = 1``.
 
-3. Double quotes for strings that are meant to be used as text.
+3. Double quotation marks for strings that are meant to be used as text.
    For examples, ``message = "Select one or more points."``
 
 
@@ -126,19 +127,18 @@ The documentation of COMPAS is generated with Sphinx.
 This means that code docstrings and general documentation pages
 have to be written in RestructuredText.
 
+Each function, method, and class should have a docstring describing its behaviour.
+We use ``sphinx.ext.napoleon`` to allow for human-readable docstrings,
+and prefer Numpy-style docstring formatting rules.
 
+* https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html
+* https://numpydoc.readthedocs.io/en/latest/format.html
 
-* sphinx
-* RestructuredText
-* docs structure
-* api docs
+To include a new function or class in the documentation,
+it should be added to the API docstring in ``__init__.py`` of the main package it belongs to.
 
-  * napoleon
-  * Numpy-style
-
-* examples
-* references
-* see also
+For example, if you add a function somewhere in the geometry package,
+make sure to include it in the docstring of ``compas.geometry.__init__.py``.
 
 
 Type hints
@@ -147,7 +147,7 @@ Type hints
 Type hints should be added to stub files at the public API level
 of the main packages (see :ref:`code_structure`).
 This allows the type hints to be written using Python 3 style
-annotations while mainting compatibility with Python 2.7 for Rhino/GH.
+annotations while maintaining compatibility with Python 2.7 for Rhino/GH.
 
 For example, the type hints for ``compas.datastructures`` should be defined in
 ``compas.datastructures.__init__.pyi``.
@@ -201,7 +201,7 @@ Per package, the APIs of the contained module are collected in the ``__all__`` v
 Dependencies
 ============
 
-More nfo coming soon...
+More info coming soon...
 
 
 Testing
@@ -209,7 +209,7 @@ Testing
 
 Although we still have a significant backlog of existing functionality
 not yet covered by unit tests, at least all newly added functionality
-should have a cooresponding test.
+should have a corresponding test.
 
 We use ``pytest`` as a testing framework.
 The tests are in the ``tests`` folder at the root of the repo.
