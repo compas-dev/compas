@@ -138,23 +138,22 @@ order: 1;
 }
 
 @media (min-width: 768px) {
-.compas-content {
-}
+  .compas-content {}
 
-@supports ((position: sticky)
-      or (position: -webkit-sticky)
-      or (position: -moz-sticky)
-      or (position: -ms-sticky)
-      or (position: -o-sticky)) {
-  .compas-content {
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
-  position: sticky;
-  top: 74px;
+  @supports ((position: sticky)
+        or (position: -webkit-sticky)
+        or (position: -moz-sticky)
+        or (position: -ms-sticky)
+        or (position: -o-sticky)) {
+    .compas-content {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    top: 74px;
+    }
   }
-}
 }
 
 .compas-toc {
@@ -164,22 +163,22 @@ font-size: 0.875rem;
 }
 
 @media (min-width: 768px) {
-@supports ((position: sticky)
-      or (position: -webkit-sticky)
-      or (position: -moz-sticky)
-      or (position: -ms-sticky)
-      or (position: -o-sticky)) {
-  .compas-toc {
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
-  position: sticky;
-  top: 74px;
-  max-height: calc(100vh - 74px);
-  overflow-y: auto;
+  @supports ((position: sticky)
+        or (position: -webkit-sticky)
+        or (position: -moz-sticky)
+        or (position: -ms-sticky)
+        or (position: -o-sticky)) {
+    .compas-toc {
+      position: -webkit-sticky;
+      position: -moz-sticky;
+      position: -ms-sticky;
+      position: -o-sticky;
+      position: sticky;
+      top: 74px;
+      max-height: calc(100vh - 74px);
+      overflow-y: auto;
+    }
   }
-}
 }
 
 /* Sidebar */
@@ -333,4 +332,32 @@ background-color: #f0f0f0;
 
 .compas-content .anchorjs-link {
 text-decoration: none;
+}
+
+/* Footer */
+
+.compas-footer {
+  background-color: #000000;
+}
+
+.footer-text,
+.footer-link,
+.footer-title {
+  color: rgba(255, 255, 255, 0.5);
+}
+.footer-link:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.below {
+  background-color: #23272b;
+}
+
+.below-text,
+.below-link,
+.below-title {
+  color: rgba(255, 255, 255, 0.25);
+}
+.below-link:hover {
+  color: rgba(255, 255, 255, 0.5);
 }

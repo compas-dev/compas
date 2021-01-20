@@ -21,17 +21,6 @@
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-  <style>
-  .footer-text,
-  .footer-link,
-  .footer-title {
-    color: rgba(255, 255, 255, 0.25);
-  }
-  .footer-link:hover {
-    color: rgba(255, 255, 255, 0.5);
-  }
-  </style>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -49,6 +38,7 @@
         <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
         <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
         <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
       </ul>
       <!-- primary -->
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
@@ -58,7 +48,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.0.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -89,7 +79,19 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../../../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas.datastructures.mesh.core.mesh</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <h1>Source code for compas.datastructures.mesh.core.mesh</h1><div class="highlight"><pre><code>
@@ -136,7 +138,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseMesh&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="BaseMesh"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.html#compas.datastructures.BaseMesh">[docs]</a><span class="k">class</span> <span class="nc">BaseMesh</span><span class="p">(</span><span class="n">HalfEdge</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">BaseMesh</span><span class="p">(</span><span class="n">HalfEdge</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Geometric implementation of a half edge data structure for polygon meshses.</span>
 
 <span class="sd">    Attributes</span>
@@ -168,10 +170,10 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BaseMesh.__init__"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.__init__.html#compas.datastructures.BaseMesh.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Mesh&#39;</span><span class="p">})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># customisation</span>
@@ -185,7 +187,7 @@
     <span class="c1"># from/to</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.from_obj"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_obj.html#compas.datastructures.BaseMesh.from_obj">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh object from the data described in an OBJ file.</span>
 
@@ -225,9 +227,9 @@
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">edges</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vertices</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.to_obj"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_obj.html#compas.datastructures.BaseMesh.to_obj">[docs]</a>    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write the mesh to an OBJ file.</span>
 
 <span class="sd">        Parameters</span>
@@ -247,9 +249,9 @@
 <span class="sd">        the faces to the file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="n">unweld</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="n">unweld</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.from_ply"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_ply.html#compas.datastructures.BaseMesh.from_ply">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_ply</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh object from the data described in a PLY file.</span>
 
@@ -272,9 +274,9 @@
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">ply</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="n">ply</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">faces</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
+        <span class="k">return</span> <span class="n">mesh</span>
 
-<div class="viewcode-block" id="BaseMesh.to_ply"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_ply.html#compas.datastructures.BaseMesh.to_ply">[docs]</a>    <span class="k">def</span> <span class="nf">to_ply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_ply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write a mesh object to a PLY file.</span>
 
 <span class="sd">        Parameters</span>
@@ -287,9 +289,9 @@
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ply</span> <span class="o">=</span> <span class="n">PLY</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-        <span class="n">ply</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">ply</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.from_stl"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_stl.html#compas.datastructures.BaseMesh.from_stl">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_stl</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh object from the data described in a STL file.</span>
 
@@ -313,9 +315,9 @@
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">stl</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="n">stl</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">faces</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
+        <span class="k">return</span> <span class="n">mesh</span>
 
-<div class="viewcode-block" id="BaseMesh.to_stl"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_stl.html#compas.datastructures.BaseMesh.to_stl">[docs]</a>    <span class="k">def</span> <span class="nf">to_stl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_stl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write a mesh to an STL file.</span>
 
 <span class="sd">        Parameters</span>
@@ -340,9 +342,9 @@
 <span class="sd">        For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stl</span> <span class="o">=</span> <span class="n">STL</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
-        <span class="n">stl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="n">binary</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">stl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="n">binary</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.from_off"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_off.html#compas.datastructures.BaseMesh.from_off">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_off</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh object from the data described in a OFF file.</span>
 
@@ -364,9 +366,9 @@
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">vertices</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">faces</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
+        <span class="k">return</span> <span class="n">mesh</span>
 
-<div class="viewcode-block" id="BaseMesh.to_off"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_off.html#compas.datastructures.BaseMesh.to_off">[docs]</a>    <span class="k">def</span> <span class="nf">to_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write a mesh object to an OFF file.</span>
 
 <span class="sd">        Parameters</span>
@@ -379,9 +381,9 @@
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">off</span> <span class="o">=</span> <span class="n">OFF</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-        <span class="n">off</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">off</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.from_lines"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_lines.html#compas.datastructures.BaseMesh.from_lines">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">delete_boundary_face</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh object from a list of lines described by start and end point coordinates.</span>
 
@@ -414,12 +416,12 @@
         <span class="k">if</span> <span class="n">delete_boundary_face</span><span class="p">:</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">cull_vertices</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
+        <span class="k">return</span> <span class="n">mesh</span>
 
-<div class="viewcode-block" id="BaseMesh.to_lines"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_lines.html#compas.datastructures.BaseMesh.to_lines">[docs]</a>    <span class="k">def</span> <span class="nf">to_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="k">def</span> <span class="nf">to_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BaseMesh.from_polylines"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_polylines.html#compas.datastructures.BaseMesh.from_polylines">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_polylines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">boundary_polylines</span><span class="p">,</span> <span class="n">other_polylines</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct mesh from polylines.</span>
 
@@ -454,12 +456,12 @@
             <span class="k">if</span> <span class="nb">sum</span><span class="p">([</span><span class="n">geometric_key</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">))</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">boundary_vertices</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]):</span>
                 <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">vertex_map</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">if</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">))</span> <span class="ow">in</span> <span class="n">corner_vertices</span><span class="p">])</span>
         <span class="n">mesh</span><span class="o">.</span><span class="n">cull_vertices</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.to_polylines"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_polylines.html#compas.datastructures.BaseMesh.to_polylines">[docs]</a>    <span class="k">def</span> <span class="nf">to_polylines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="k">def</span> <span class="nf">to_polylines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BaseMesh.from_vertices_and_faces"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_vertices_and_faces.html#compas.datastructures.BaseMesh.from_vertices_and_faces">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_vertices_and_faces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh object from a list of vertices and faces.</span>
 
@@ -502,9 +504,9 @@
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">faces</span><span class="p">):</span>
                 <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">mesh</span></div>
+        <span class="k">return</span> <span class="n">mesh</span>
 
-<div class="viewcode-block" id="BaseMesh.to_vertices_and_faces"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_vertices_and_faces.html#compas.datastructures.BaseMesh.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vertices and faces of a mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -524,9 +526,9 @@
         <span class="n">key_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
 
-<div class="viewcode-block" id="BaseMesh.from_polyhedron"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_polyhedron.html#compas.datastructures.BaseMesh.from_polyhedron">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_polyhedron</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh from a platonic solid.</span>
 
@@ -546,9 +548,9 @@
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="o">.</span><span class="n">from_platonicsolid</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.from_shape"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_shape.html#compas.datastructures.BaseMesh.from_shape">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_shape</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh from a primitive shape.</span>
 
@@ -571,9 +573,9 @@
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
         <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
+        <span class="k">return</span> <span class="n">mesh</span>
 
-<div class="viewcode-block" id="BaseMesh.from_points"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_points.html#compas.datastructures.BaseMesh.from_points">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">holes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh from a delaunay triangulation of a set of points.</span>
 
@@ -594,12 +596,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">delaunay_from_points</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="n">delaunay_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="n">boundary</span><span class="p">,</span> <span class="n">holes</span><span class="o">=</span><span class="n">holes</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.to_points"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_points.html#compas.datastructures.BaseMesh.to_points">[docs]</a>    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BaseMesh.from_polygons"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_polygons.html#compas.datastructures.BaseMesh.from_polygons">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_polygons</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">polygons</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh from a series of polygons.</span>
 
@@ -628,16 +630,16 @@
         <span class="n">gkey_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">gkey</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gkey_xyz</span><span class="p">)}</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">gkey_xyz</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="n">faces</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">gkey_index</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.to_polygons"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_polygons.html#compas.datastructures.BaseMesh.to_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">to_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span></div>
+    <span class="k">def</span> <span class="nf">to_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.key_gkey"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.key_gkey.html#compas.datastructures.BaseMesh.key_gkey">[docs]</a>    <span class="k">def</span> <span class="nf">key_gkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">key_gkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps vertex dictionary keys to the corresponding</span>
 <span class="sd">        *geometric key* up to a certain precision.</span>
 
@@ -654,9 +656,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
-<div class="viewcode-block" id="BaseMesh.gkey_key"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.gkey_key.html#compas.datastructures.BaseMesh.gkey_key">[docs]</a>    <span class="k">def</span> <span class="nf">gkey_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">gkey_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps *geometric keys* of a certain precision</span>
 <span class="sd">        to the keys of the corresponding vertices.</span>
 
@@ -673,7 +675,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
     <span class="n">vertex_gkey</span> <span class="o">=</span> <span class="n">key_gkey</span>
     <span class="n">gkey_vertex</span> <span class="o">=</span> <span class="n">gkey_key</span>
@@ -686,7 +688,7 @@
     <span class="c1"># modifiers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.insert_vertex"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.insert_vertex.html#compas.datastructures.BaseMesh.insert_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">insert_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_fkeys</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">insert_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_fkeys</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Insert a vertex in the specified face.</span>
 
 <span class="sd">        Parameters</span>
@@ -726,9 +728,9 @@
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">return_fkeys</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">fkeys</span>
-        <span class="k">return</span> <span class="n">w</span></div>
+        <span class="k">return</span> <span class="n">w</span>
 
-<div class="viewcode-block" id="BaseMesh.join"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.join.html#compas.datastructures.BaseMesh.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add the vertices and faces of another mesh to the current mesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -775,7 +777,7 @@
             <span class="n">vertex_old_new</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
         <span class="k">for</span> <span class="n">face</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">faces</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
             <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex_old_new</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># accessors</span>
@@ -830,7 +832,7 @@
     <span class="c1"># mesh geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.area"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.area.html#compas.datastructures.BaseMesh.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the total mesh area.</span>
 
 <span class="sd">        Returns</span>
@@ -838,9 +840,9 @@
 <span class="sd">        float</span>
 <span class="sd">            The area.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
 
-<div class="viewcode-block" id="BaseMesh.centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.centroid.html#compas.datastructures.BaseMesh.centroid">[docs]</a>    <span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the mesh centroid.</span>
 
 <span class="sd">        Returns</span>
@@ -848,9 +850,9 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the mesh centroid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">sum_vectors</span><span class="p">([</span><span class="n">scale_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]),</span> <span class="mf">1.</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">sum_vectors</span><span class="p">([</span><span class="n">scale_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]),</span> <span class="mf">1.</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">())</span>
 
-<div class="viewcode-block" id="BaseMesh.normal"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.normal.html#compas.datastructures.BaseMesh.normal">[docs]</a>    <span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the average mesh normal.</span>
 
 <span class="sd">        Returns</span>
@@ -858,13 +860,13 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the mesh normal.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">sum_vectors</span><span class="p">([</span><span class="n">scale_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]),</span> <span class="mf">1.</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">sum_vectors</span><span class="p">([</span><span class="n">scale_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]),</span> <span class="mf">1.</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">())</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># vertex geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.vertex_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertex_coordinates.html#compas.datastructures.BaseMesh.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinates of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -881,9 +883,9 @@
 <span class="sd">        list</span>
 <span class="sd">            Coordinates of the vertex.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.vertex_area"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertex_area.html#compas.datastructures.BaseMesh.vertex_area">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the tributary area of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -921,9 +923,9 @@
                 <span class="n">v3</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p0</span><span class="p">)</span>
                 <span class="n">area</span> <span class="o">+=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v3</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">area</span></div>
+        <span class="k">return</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">area</span>
 
-<div class="viewcode-block" id="BaseMesh.vertex_laplacian"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertex_laplacian.html#compas.datastructures.BaseMesh.vertex_laplacian">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the vector from a vertex to the centroid of its neighbors.</span>
 
 <span class="sd">        Parameters</span>
@@ -938,9 +940,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighborhood_centroid</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.vertex_neighborhood_centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertex_neighborhood_centroid.html#compas.datastructures.BaseMesh.vertex_neighborhood_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighborhood_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_neighborhood_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the centroid of the neighbors of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -953,9 +955,9 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the centroid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span></div>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
 
-<div class="viewcode-block" id="BaseMesh.vertex_normal"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertex_normal.html#compas.datastructures.BaseMesh.vertex_normal">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the normal vector at the vertex as the weighted average of the</span>
 <span class="sd">        normals of the neighboring faces.</span>
 
@@ -970,9 +972,9 @@
 <span class="sd">            The components of the normal vector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span>
 
-<div class="viewcode-block" id="BaseMesh.vertex_curvature"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertex_curvature.html#compas.datastructures.BaseMesh.vertex_curvature">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dimensionless vertex curvature.</span>
 
 <span class="sd">        Parameters</span>
@@ -994,13 +996,13 @@
         <span class="n">C</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">C</span> <span class="o">+=</span> <span class="n">angle_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">-</span> <span class="n">C</span></div>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">-</span> <span class="n">C</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># edge geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.edge_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edge_coordinates.html#compas.datastructures.BaseMesh.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinates of the start and end point of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1018,9 +1020,9 @@
 <span class="sd">            The coordinates of the start point and the coordinates of the end point.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.edge_length"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edge_length.html#compas.datastructures.BaseMesh.edge_length">[docs]</a>    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the length of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1037,9 +1039,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.edge_vector"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edge_vector.html#compas.datastructures.BaseMesh.edge_vector">[docs]</a>    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1057,9 +1059,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ab</span></div>
+        <span class="k">return</span> <span class="n">ab</span>
 
-<div class="viewcode-block" id="BaseMesh.edge_point"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edge_point.html#compas.datastructures.BaseMesh.edge_point">[docs]</a>    <span class="k">def</span> <span class="nf">edge_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the location of a point along an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1081,9 +1083,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
 
-<div class="viewcode-block" id="BaseMesh.edge_midpoint"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edge_midpoint.html#compas.datastructures.BaseMesh.edge_midpoint">[docs]</a>    <span class="k">def</span> <span class="nf">edge_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the location of the midpoint of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1100,9 +1102,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">midpoint_line</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">midpoint_line</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 
-<div class="viewcode-block" id="BaseMesh.edge_direction"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edge_direction.html#compas.datastructures.BaseMesh.edge_direction">[docs]</a>    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the direction vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1118,13 +1120,13 @@
 <span class="sd">            The direction vector of the edge.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># face geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.face_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_coordinates.html#compas.datastructures.BaseMesh.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1141,9 +1143,9 @@
 <span class="sd">        list of list</span>
 <span class="sd">            The coordinates of the vertices of the face.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span>
 
-<div class="viewcode-block" id="BaseMesh.face_normal"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_normal.html#compas.datastructures.BaseMesh.face_normal">[docs]</a>    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the normal of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1159,9 +1161,9 @@
 <span class="sd">        list</span>
 <span class="sd">            The components of the normal vector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.face_centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_centroid.html#compas.datastructures.BaseMesh.face_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the location of the centroid of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1174,9 +1176,9 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the centroid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
 
-<div class="viewcode-block" id="BaseMesh.face_center"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_center.html#compas.datastructures.BaseMesh.face_center">[docs]</a>    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the location of the center of mass of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1189,9 +1191,9 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the center of mass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
 
-<div class="viewcode-block" id="BaseMesh.face_area"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_area.html#compas.datastructures.BaseMesh.face_area">[docs]</a>    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the area of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1204,9 +1206,9 @@
 <span class="sd">        float</span>
 <span class="sd">            The area of the face.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">area_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">area_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
 
-<div class="viewcode-block" id="BaseMesh.face_flatness"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_flatness.html#compas.datastructures.BaseMesh.face_flatness">[docs]</a>    <span class="k">def</span> <span class="nf">face_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the flatness of the mesh face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1238,9 +1240,9 @@
         <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">points</span> <span class="o">+</span> <span class="n">points</span><span class="p">[:</span><span class="mi">1</span><span class="p">])]</span>
         <span class="n">length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">distance_line_line</span><span class="p">((</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">length</span><span class="p">)</span> <span class="o">/</span> <span class="n">maxdev</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">length</span><span class="p">)</span> <span class="o">/</span> <span class="n">maxdev</span>
 
-<div class="viewcode-block" id="BaseMesh.face_aspect_ratio"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_aspect_ratio.html#compas.datastructures.BaseMesh.face_aspect_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">face_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -1259,9 +1261,9 @@
 <span class="sd">               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">face_edge_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.face_skewness"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_skewness.html#compas.datastructures.BaseMesh.face_skewness">[docs]</a>    <span class="k">def</span> <span class="nf">face_skewness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_skewness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Face skewness as the maximum absolute angular deviation from the ideal polygon angle.</span>
 
 <span class="sd">        Parameters</span>
@@ -1288,9 +1290,9 @@
             <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
             <span class="n">angle</span> <span class="o">=</span> <span class="n">angle_points</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">max</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span> <span class="o">-</span> <span class="n">ideal_angle</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">180</span> <span class="o">-</span> <span class="n">ideal_angle</span><span class="p">),</span> <span class="p">(</span><span class="n">ideal_angle</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">angles</span><span class="p">))</span> <span class="o">/</span> <span class="n">ideal_angle</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span> <span class="o">-</span> <span class="n">ideal_angle</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">180</span> <span class="o">-</span> <span class="n">ideal_angle</span><span class="p">),</span> <span class="p">(</span><span class="n">ideal_angle</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">angles</span><span class="p">))</span> <span class="o">/</span> <span class="n">ideal_angle</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMesh.face_curvature"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_curvature.html#compas.datastructures.BaseMesh.face_curvature">[docs]</a>    <span class="k">def</span> <span class="nf">face_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dimensionless face curvature as the maximum face vertex deviation from</span>
 <span class="sd">        the best-fit plane of the face vertices divided by the average lengths of</span>
 <span class="sd">        the face vertices to the face centroid.</span>
@@ -1311,9 +1313,9 @@
         <span class="n">plane</span> <span class="o">=</span> <span class="n">bestfit_plane</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="n">max_deviation</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">distance_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
         <span class="n">average_distances</span> <span class="o">=</span> <span class="n">vector_average</span><span class="p">([</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">max_deviation</span> <span class="o">/</span> <span class="n">average_distances</span></div>
+        <span class="k">return</span> <span class="n">max_deviation</span> <span class="o">/</span> <span class="n">average_distances</span>
 
-<div class="viewcode-block" id="BaseMesh.face_plane"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_plane.html#compas.datastructures.BaseMesh.face_plane">[docs]</a>    <span class="k">def</span> <span class="nf">face_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A plane defined by the centroid and the normal of the face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1326,13 +1328,13 @@
 <span class="sd">        tuple</span>
 <span class="sd">            point, vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># boundary</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BaseMesh.vertices_on_boundary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertices_on_boundary.html#compas.datastructures.BaseMesh.vertices_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the vertices on the longest boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -1342,9 +1344,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">boundaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundaries</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">boundaries</span> <span class="k">else</span> <span class="p">[]</span></div>
+        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">boundaries</span> <span class="k">else</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="BaseMesh.edges_on_boundary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edges_on_boundary.html#compas.datastructures.BaseMesh.edges_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">edges_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the edges on the longest boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -1353,9 +1355,9 @@
 <span class="sd">            The edges of the longest boundary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">boundaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges_on_boundaries</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">boundaries</span> <span class="k">else</span> <span class="p">[]</span></div>
+        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">boundaries</span> <span class="k">else</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="BaseMesh.faces_on_boundary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.faces_on_boundary.html#compas.datastructures.BaseMesh.faces_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">faces_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the faces on the longest boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -1364,9 +1366,9 @@
 <span class="sd">            The faces on the longest boundary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">boundaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces_on_boundaries</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">boundaries</span> <span class="k">else</span> <span class="p">[]</span></div>
+        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">boundaries</span> <span class="k">else</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="BaseMesh.vertices_on_boundaries"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.vertices_on_boundaries.html#compas.datastructures.BaseMesh.vertices_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the vertices on all boundaries of the mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -1470,9 +1472,9 @@
                     <span class="n">key</span> <span class="o">=</span> <span class="n">vertices_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># return the boundary groups in order of the length of the group</span>
-        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">boundaries</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">vertices</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">boundaries</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">vertices</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="BaseMesh.edges_on_boundaries"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edges_on_boundaries.html#compas.datastructures.BaseMesh.edges_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">edges_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the edges on all boundaries of the mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -1485,9 +1487,9 @@
         <span class="n">edgegroups</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">vertexgroups</span><span class="p">:</span>
             <span class="n">edgegroups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">vertices</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="n">edgegroups</span></div>
+        <span class="k">return</span> <span class="n">edgegroups</span>
 
-<div class="viewcode-block" id="BaseMesh.faces_on_boundaries"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.faces_on_boundaries.html#compas.datastructures.BaseMesh.faces_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">faces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the faces on all boundaries of the mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -1507,7 +1509,7 @@
                     <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">faces</span><span class="p">:</span>
                 <span class="n">facegroups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">facegroups</span></div></div>
+        <span class="k">return</span> <span class="n">facegroups</span>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -1563,27 +1565,35 @@
   </div>
   <!-- main -->
   <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+
+      
+    </nav>  
+  </footer>
   <!-- footer -->
-  <div class="below py-5" style="background-color: #23272b;">
+  <!-- below -->
+  <div class="below py-5">
     <div class="container">
       <div class="row flex-column">
         <div class="col-12 col-md-6 mx-md-auto text-center">
-          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
-          <p class="footer-text">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
           <nav class="nav justify-content-center my-4">
-            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
           </nav>
           <nav class="nav justify-content-center pb-3">
-            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>
             </a>
-            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
               <span class="fab fa-discourse fa-1x"></span>
             </a>
-            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
               <span class="fab fa-python fa-1x"></span>
             </a>
           </nav>
@@ -1591,16 +1601,17 @@
       </div>
       <div class="row">
         <div class="col text-center">
-          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
         </div>
       </div>
     </div>
   </div>
-
+  <!-- below -->
+  <!-- scripts -->
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.0.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
@@ -1648,20 +1659,7 @@
     })
   }
   </script>
-
-  <script>
-  // var prevScrollpos = window.pageYOffset;
-  // window.onscroll = function() {
-  // var currentScrollPos = window.pageYOffset;
-  // if (prevScrollpos > currentScrollPos) {
-  //     document.getElementById("header").style.top = "0";
-  // } else {
-  //     document.getElementById("header").style.top = "-58px";
-  // }
-  // prevScrollpos = currentScrollPos;
-  // }
-  </script>
-
+  <!-- scripts -->
   
   
 </body>

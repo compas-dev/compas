@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Transformation.__init__" href="compas.geometry.Transformation.__init__.html" />
+    <link rel="next" title="Transformation.concatenate" href="compas.geometry.Transformation.concatenate.html" />
   
   
   
@@ -25,17 +25,6 @@
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-  <style>
-  .footer-text,
-  .footer-link,
-  .footer-title {
-    color: rgba(255, 255, 255, 0.25);
-  }
-  .footer-link:hover {
-    color: rgba(255, 255, 255, 0.5);
-  }
-  </style>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -53,6 +42,7 @@
         <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
         <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
         <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
       </ul>
       <!-- primary -->
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
@@ -62,7 +52,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.0.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,7 +83,23 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.html">compas</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">Transformation</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <div class="detail section" id="transformation">
@@ -132,70 +138,67 @@ x, y, z are in the right column of the matrix, i.e. <code class="docutils litera
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.__init__.html#compas.geometry.Transformation.__init__" title="compas.geometry.Transformation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([matrix])</p></td>
-<td><p>Construct a transformation from a 4x4 transformation matrix.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.concatenate.html#compas.geometry.Transformation.concatenate" title="compas.geometry.Transformation.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.concatenate.html#compas.geometry.Transformation.concatenate" title="compas.geometry.Transformation.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(other)</p></td>
 <td><p>Concatenate another transformation to this transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.concatenated.html#compas.geometry.Transformation.concatenated" title="compas.geometry.Transformation.concatenated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenated</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.concatenated.html#compas.geometry.Transformation.concatenated" title="compas.geometry.Transformation.concatenated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenated</span></code></a>(other)</p></td>
 <td><p>Concatenate two transformations into one <code class="docutils literal notranslate"><span class="pre">Transformation</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.copy.html#compas.geometry.Transformation.copy" title="compas.geometry.Transformation.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.copy.html#compas.geometry.Transformation.copy" title="compas.geometry.Transformation.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
 <td><p>Returns a copy of the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.decomposed.html#compas.geometry.Transformation.decomposed" title="compas.geometry.Transformation.decomposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decomposed</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.decomposed.html#compas.geometry.Transformation.decomposed" title="compas.geometry.Transformation.decomposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decomposed</span></code></a>()</p></td>
 <td><p>Decompose the <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> into its <code class="docutils literal notranslate"><span class="pre">Scale</span></code>, <code class="docutils literal notranslate"><span class="pre">Shear</span></code>, <code class="docutils literal notranslate"><span class="pre">Rotation</span></code>, <code class="docutils literal notranslate"><span class="pre">Translation</span></code> and <code class="docutils literal notranslate"><span class="pre">Projection</span></code> components.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_change_of_basis.html#compas.geometry.Transformation.from_change_of_basis" title="compas.geometry.Transformation.from_change_of_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_change_of_basis</span></code></a>(frame_from, frame_to)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_change_of_basis.html#compas.geometry.Transformation.from_change_of_basis" title="compas.geometry.Transformation.from_change_of_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_change_of_basis</span></code></a>(frame_from, frame_to)</p></td>
 <td><p>Computes a change of basis transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_data.html#compas.geometry.Transformation.from_data" title="compas.geometry.Transformation.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_data.html#compas.geometry.Transformation.from_data" title="compas.geometry.Transformation.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a data dict.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_euler_angles.html#compas.geometry.Transformation.from_euler_angles" title="compas.geometry.Transformation.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_euler_angles.html#compas.geometry.Transformation.from_euler_angles" title="compas.geometry.Transformation.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, …])</p></td>
 <td><p>Construct a transformation from a rotation represented by Euler angles.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_frame.html#compas.geometry.Transformation.from_frame" title="compas.geometry.Transformation.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_frame.html#compas.geometry.Transformation.from_frame" title="compas.geometry.Transformation.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
 <td><p>Computes a transformation from world XY to frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_frame_to_frame.html#compas.geometry.Transformation.from_frame_to_frame" title="compas.geometry.Transformation.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a>(frame_from, frame_to)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_frame_to_frame.html#compas.geometry.Transformation.from_frame_to_frame" title="compas.geometry.Transformation.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a>(frame_from, frame_to)</p></td>
 <td><p>Computes a transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_json.html#compas.geometry.Transformation.from_json" title="compas.geometry.Transformation.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_json.html#compas.geometry.Transformation.from_json" title="compas.geometry.Transformation.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialised data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_list.html#compas.geometry.Transformation.from_list" title="compas.geometry.Transformation.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_list.html#compas.geometry.Transformation.from_list" title="compas.geometry.Transformation.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a list of 16 numbers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_matrix.html#compas.geometry.Transformation.from_matrix" title="compas.geometry.Transformation.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.from_matrix.html#compas.geometry.Transformation.from_matrix" title="compas.geometry.Transformation.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a 4x4 matrix-like object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.inverse.html#compas.geometry.Transformation.inverse" title="compas.geometry.Transformation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.inverse.html#compas.geometry.Transformation.inverse" title="compas.geometry.Transformation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.invert.html#compas.geometry.Transformation.invert" title="compas.geometry.Transformation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.invert.html#compas.geometry.Transformation.invert" title="compas.geometry.Transformation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
 <td><p>Invert this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.inverted.html#compas.geometry.Transformation.inverted" title="compas.geometry.Transformation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.inverted.html#compas.geometry.Transformation.inverted" title="compas.geometry.Transformation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.to_data.html#compas.geometry.Transformation.to_data" title="compas.geometry.Transformation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.to_data.html#compas.geometry.Transformation.to_data" title="compas.geometry.Transformation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.to_json.html#compas.geometry.Transformation.to_json" title="compas.geometry.Transformation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.to_json.html#compas.geometry.Transformation.to_json" title="compas.geometry.Transformation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.transpose.html#compas.geometry.Transformation.transpose" title="compas.geometry.Transformation.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.transpose.html#compas.geometry.Transformation.transpose" title="compas.geometry.Transformation.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
 <td><p>Transpose the matrix of this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.transposed.html#compas.geometry.Transformation.transposed" title="compas.geometry.Transformation.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.transposed.html#compas.geometry.Transformation.transposed" title="compas.geometry.Transformation.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
 <td><p>Create a transposed copy of this transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.validate_data.html#compas.geometry.Transformation.validate_data" title="compas.geometry.Transformation.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.validate_data.html#compas.geometry.Transformation.validate_data" title="compas.geometry.Transformation.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.validate_json.html#compas.geometry.Transformation.validate_json" title="compas.geometry.Transformation.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.validate_json.html#compas.geometry.Transformation.validate_json" title="compas.geometry.Transformation.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
@@ -269,27 +272,51 @@ x, y, z are in the right column of the matrix, i.e. <code class="docutils litera
   </div>
   <!-- main -->
   <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+        <a href="compas.geometry.Shear.validate_json.html" title="Shear.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
+          <div class="nav-title flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Previous</div>
+            Shear.validate_json
+          </div>
+        </a>
+      
+
+      
+        <a href="compas.geometry.Transformation.concatenate.html" title="Transformation.concatenate" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+          <div class="nav-title footer-link flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Next</div>
+            Transformation.concatenate
+          </div>
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
+        </a>
+      
+    </nav>  
+  </footer>
   <!-- footer -->
-  <div class="below py-5" style="background-color: #23272b;">
+  <!-- below -->
+  <div class="below py-5">
     <div class="container">
       <div class="row flex-column">
         <div class="col-12 col-md-6 mx-md-auto text-center">
-          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
-          <p class="footer-text">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
           <nav class="nav justify-content-center my-4">
-            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
           </nav>
           <nav class="nav justify-content-center pb-3">
-            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>
             </a>
-            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
               <span class="fab fa-discourse fa-1x"></span>
             </a>
-            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
               <span class="fab fa-python fa-1x"></span>
             </a>
           </nav>
@@ -297,16 +324,17 @@ x, y, z are in the right column of the matrix, i.e. <code class="docutils litera
       </div>
       <div class="row">
         <div class="col text-center">
-          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
         </div>
       </div>
     </div>
   </div>
-
+  <!-- below -->
+  <!-- scripts -->
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.0.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
@@ -354,20 +382,7 @@ x, y, z are in the right column of the matrix, i.e. <code class="docutils litera
     })
   }
   </script>
-
-  <script>
-  // var prevScrollpos = window.pageYOffset;
-  // window.onscroll = function() {
-  // var currentScrollPos = window.pageYOffset;
-  // if (prevScrollpos > currentScrollPos) {
-  //     document.getElementById("header").style.top = "0";
-  // } else {
-  //     document.getElementById("header").style.top = "-58px";
-  // }
-  // prevScrollpos = currentScrollPos;
-  // }
-  </script>
-
+  <!-- scripts -->
   
   
 </body>

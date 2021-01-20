@@ -1,0 +1,8 @@
+<map id="inheritanceef3b640450" name="inheritanceef3b640450">
+<area shape="rect" id="node1" title="Abstract base class for all COMPAS objects." alt="" coords="8,158,121,196"/>
+<area shape="rect" id="node2" title="Collidable description of a link." alt="" coords="196,8,308,46"/>
+<area shape="rect" id="node3" title="Rotational inertia matrix (3x3) represented in the inertia frame." alt="" coords="196,83,308,121"/>
+<area shape="rect" id="node4" title="Inertial properties of a link." alt="" coords="196,158,308,196"/>
+<area shape="rect" id="node5" title="Represents a value of mass usually related to a link." alt="" coords="196,233,308,271"/>
+<area shape="rect" id="node6" title="Visual description of a link." alt="" coords="196,308,308,346"/>
+</map>

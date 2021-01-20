@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="RobotModelArtist.__init__" href="compas_blender.artists.RobotModelArtist.__init__.html" />
+    <link rel="next" title="RobotModelArtist.attach_tool_model" href="compas_blender.artists.RobotModelArtist.attach_tool_model.html" />
   
   
   
@@ -25,17 +25,6 @@
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-  <style>
-  .footer-text,
-  .footer-link,
-  .footer-title {
-    color: rgba(255, 255, 255, 0.25);
-  }
-  .footer-link:hover {
-    color: rgba(255, 255, 255, 0.5);
-  }
-  </style>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -53,6 +42,7 @@
         <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
         <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
         <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
       </ul>
       <!-- primary -->
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
@@ -62,7 +52,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.0.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,7 +83,23 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas_blender.html">compas_blender</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas_blender.artists.html">artists</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">RobotModelArtist</li>
+          </ol>
+        </nav>
+        
+  
         
           
           <div class="detail section" id="robotmodelartist">
@@ -118,43 +124,40 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.__init__.html#compas_blender.artists.RobotModelArtist.__init__" title="compas_blender.artists.RobotModelArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(model[, layer])</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.attach_tool_model.html#compas_blender.artists.RobotModelArtist.attach_tool_model" title="compas_blender.artists.RobotModelArtist.attach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach_tool_model</span></code></a>(tool_model)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.attach_tool_model.html#compas_blender.artists.RobotModelArtist.attach_tool_model" title="compas_blender.artists.RobotModelArtist.attach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach_tool_model</span></code></a>(tool_model)</p></td>
 <td><p>Attach a tool to the robot artist.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.create.html#compas_blender.artists.RobotModelArtist.create" title="compas_blender.artists.RobotModelArtist.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>([link, context])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.create.html#compas_blender.artists.RobotModelArtist.create" title="compas_blender.artists.RobotModelArtist.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>([link, context])</p></td>
 <td><p>Recursive function that triggers the drawing of the robot model’s geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.detach_tool_model.html#compas_blender.artists.RobotModelArtist.detach_tool_model" title="compas_blender.artists.RobotModelArtist.detach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detach_tool_model</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.detach_tool_model.html#compas_blender.artists.RobotModelArtist.detach_tool_model" title="compas_blender.artists.RobotModelArtist.detach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detach_tool_model</span></code></a>()</p></td>
 <td><p>Detach the tool.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_collision.html#compas_blender.artists.RobotModelArtist.draw_collision" title="compas_blender.artists.RobotModelArtist.draw_collision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collision</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_collision.html#compas_blender.artists.RobotModelArtist.draw_collision" title="compas_blender.artists.RobotModelArtist.draw_collision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collision</span></code></a>()</p></td>
 <td><p>Draws all collision geometry of the robot model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_geometry.html#compas_blender.artists.RobotModelArtist.draw_geometry" title="compas_blender.artists.RobotModelArtist.draw_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_geometry</span></code></a>(geometry[, name, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_geometry.html#compas_blender.artists.RobotModelArtist.draw_geometry" title="compas_blender.artists.RobotModelArtist.draw_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_geometry</span></code></a>(geometry[, name, color])</p></td>
 <td><p>Draw a <strong>COMPAS</strong> geometry in the respective CAD environment.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_visual.html#compas_blender.artists.RobotModelArtist.draw_visual" title="compas_blender.artists.RobotModelArtist.draw_visual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_visual</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_visual.html#compas_blender.artists.RobotModelArtist.draw_visual" title="compas_blender.artists.RobotModelArtist.draw_visual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_visual</span></code></a>()</p></td>
 <td><p>Draws all visual geometry of the robot model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.redraw.html#compas_blender.artists.RobotModelArtist.redraw" title="compas_blender.artists.RobotModelArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([timeout])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.redraw.html#compas_blender.artists.RobotModelArtist.redraw" title="compas_blender.artists.RobotModelArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([timeout])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale.html#compas_blender.artists.RobotModelArtist.scale" title="compas_blender.artists.RobotModelArtist.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale.html#compas_blender.artists.RobotModelArtist.scale" title="compas_blender.artists.RobotModelArtist.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor)</p></td>
 <td><p>Scales the robot model’s geometry by factor (absolute).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale_link.html#compas_blender.artists.RobotModelArtist.scale_link" title="compas_blender.artists.RobotModelArtist.scale_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_link</span></code></a>(link, transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale_link.html#compas_blender.artists.RobotModelArtist.scale_link" title="compas_blender.artists.RobotModelArtist.scale_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_link</span></code></a>(link, transformation)</p></td>
 <td><p>Recursive function to apply the scale transformation on each link.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.transform.html#compas_blender.artists.RobotModelArtist.transform" title="compas_blender.artists.RobotModelArtist.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(native_mesh, transformation)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.transform.html#compas_blender.artists.RobotModelArtist.transform" title="compas_blender.artists.RobotModelArtist.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(native_mesh, transformation)</p></td>
 <td><p>Transforms a CAD-specific geometry using a <strong>COMPAS</strong> transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update.html#compas_blender.artists.RobotModelArtist.update" title="compas_blender.artists.RobotModelArtist.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(joint_state[, visual, collision])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update.html#compas_blender.artists.RobotModelArtist.update" title="compas_blender.artists.RobotModelArtist.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(joint_state[, visual, collision])</p></td>
 <td><p>Triggers the update of the robot geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update_tool.html#compas_blender.artists.RobotModelArtist.update_tool" title="compas_blender.artists.RobotModelArtist.update_tool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_tool</span></code></a>([joint_state, visual, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update_tool.html#compas_blender.artists.RobotModelArtist.update_tool" title="compas_blender.artists.RobotModelArtist.update_tool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_tool</span></code></a>([joint_state, visual, …])</p></td>
 <td><p>Triggers the update of the robot geometry of the tool.</p></td>
 </tr>
 </tbody>
@@ -223,27 +226,51 @@
   </div>
   <!-- main -->
   <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+        <a href="compas_blender.artists.MeshArtist.register.html" title="MeshArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
+          <div class="nav-title flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Previous</div>
+            MeshArtist.register
+          </div>
+        </a>
+      
+
+      
+        <a href="compas_blender.artists.RobotModelArtist.attach_tool_model.html" title="RobotModelArtist.attach_tool_model" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+          <div class="nav-title footer-link flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Next</div>
+            RobotModelArtist.attach_tool_model
+          </div>
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
+        </a>
+      
+    </nav>  
+  </footer>
   <!-- footer -->
-  <div class="below py-5" style="background-color: #23272b;">
+  <!-- below -->
+  <div class="below py-5">
     <div class="container">
       <div class="row flex-column">
         <div class="col-12 col-md-6 mx-md-auto text-center">
-          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
-          <p class="footer-text">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
           <nav class="nav justify-content-center my-4">
-            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
           </nav>
           <nav class="nav justify-content-center pb-3">
-            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>
             </a>
-            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
               <span class="fab fa-discourse fa-1x"></span>
             </a>
-            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
               <span class="fab fa-python fa-1x"></span>
             </a>
           </nav>
@@ -251,16 +278,17 @@
       </div>
       <div class="row">
         <div class="col text-center">
-          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
         </div>
       </div>
     </div>
   </div>
-
+  <!-- below -->
+  <!-- scripts -->
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.0.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
@@ -308,20 +336,7 @@
     })
   }
   </script>
-
-  <script>
-  // var prevScrollpos = window.pageYOffset;
-  // window.onscroll = function() {
-  // var currentScrollPos = window.pageYOffset;
-  // if (prevScrollpos > currentScrollPos) {
-  //     document.getElementById("header").style.top = "0";
-  // } else {
-  //     document.getElementById("header").style.top = "-58px";
-  // }
-  // prevScrollpos = currentScrollPos;
-  // }
-  </script>
-
+  <!-- scripts -->
   
   
 </body>
