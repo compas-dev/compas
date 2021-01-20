@@ -145,7 +145,7 @@ invoke <span class="nb">test</span>
 <p>Once you are done making changes, you have to submit your contribution through a pull request (PR).
 The procedure for submitting a PR is the following.</p>
 <ol class="arabic">
-<li><p>Make sure all tests still pass, the code is free of lint, and you docstrings compile correctly:</p>
+<li><p>Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke lint
 invoke <span class="nb">test</span>
 invoke docs
@@ -153,6 +153,7 @@ invoke docs
 </div>
 </li>
 <li><p>Add yourself to <code class="docutils literal notranslate"><span class="pre">AUTHORS.md</span></code>.</p></li>
+<li><p>Summarize the changes you made in <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code>.</p></li>
 <li><p>Commit your changes and push your branch to GitHub.</p></li>
 <li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a>.</p></li>
 </ol>
@@ -187,11 +188,11 @@ and with spaces between words replaced by underscores.</p></li>
 <h2>Quotes</h2>
 <p>Ideally, we would use the following conventions for quotes.</p>
 <ol class="arabic simple">
-<li><p>Double quotes for multiline statements (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;</span></code>).
-This includes the quotes for docstrings.</p></li>
-<li><p>Single quotes for strings that are used “as variables”.
+<li><p>Double quotation marks for multiline statements and docstrings.
+For example, <code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;Calculate</span> <span class="pre">the</span> <span class="pre">sum</span> <span class="pre">of</span> <span class="pre">two</span> <span class="pre">numbers.&quot;&quot;&quot;</span></code></p></li>
+<li><p>Single quotation marks for strings that are used “as variables”.
 For example, <code class="docutils literal notranslate"><span class="pre">config['param']</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></li>
-<li><p>Double quotes for strings that are meant to be used as text.
+<li><p>Double quotation marks for strings that are meant to be used as text.
 For examples, <code class="docutils literal notranslate"><span class="pre">message</span> <span class="pre">=</span> <span class="pre">&quot;Select</span> <span class="pre">one</span> <span class="pre">or</span> <span class="pre">more</span> <span class="pre">points.&quot;</span></code></p></li>
 </ol>
 </div>
@@ -200,27 +201,24 @@ For examples, <code class="docutils literal notranslate"><span class="pre">messa
 <p>The documentation of COMPAS is generated with Sphinx.
 This means that code docstrings and general documentation pages
 have to be written in RestructuredText.</p>
+<p>Each function, method, and class should have a docstring describing its behaviour.
+We use <code class="docutils literal notranslate"><span class="pre">sphinx.ext.napoleon</span></code> to allow for human-readable docstrings,
+and prefer Numpy-style docstring formatting rules.</p>
 <ul class="simple">
-<li><p>sphinx</p></li>
-<li><p>RestructuredText</p></li>
-<li><p>docs structure</p></li>
-<li><p>api docs</p>
-<ul>
-<li><p>napoleon</p></li>
-<li><p>Numpy-style</p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html">https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html</a></p></li>
+<li><p><a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">https://numpydoc.readthedocs.io/en/latest/format.html</a></p></li>
 </ul>
-</li>
-<li><p>examples</p></li>
-<li><p>references</p></li>
-<li><p>see also</p></li>
-</ul>
+<p>To include a new function or class in the documentation,
+it should be added to the API docstring in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> of the main package it belongs to.</p>
+<p>For example, if you add a function somewhere in the geometry package,
+make sure to include it in the docstring of <code class="docutils literal notranslate"><span class="pre">compas.geometry.__init__.py</span></code>.</p>
 </div>
 <div class="section" id="type-hints">
 <h2>Type hints</h2>
 <p>Type hints should be added to stub files at the public API level
 of the main packages (see <span class="xref std std-ref">code_structure</span>).
 This allows the type hints to be written using Python 3 style
-annotations while mainting compatibility with Python 2.7 for Rhino/GH.</p>
+annotations while maintaining compatibility with Python 2.7 for Rhino/GH.</p>
 <p>For example, the type hints for <code class="docutils literal notranslate"><span class="pre">compas.datastructures</span></code> should be defined in
 <code class="docutils literal notranslate"><span class="pre">compas.datastructures.__init__.pyi</span></code>.</p>
 </div>
@@ -263,13 +261,13 @@ Per package, the APIs of the contained module are collected in the <code class="
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies</h2>
-<p>More nfo coming soon…</p>
+<p>More info coming soon…</p>
 </div>
 <div class="section" id="testing">
 <h2>Testing</h2>
 <p>Although we still have a significant backlog of existing functionality
 not yet covered by unit tests, at least all newly added functionality
-should have a cooresponding test.</p>
+should have a corresponding test.</p>
 <p>We use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> as a testing framework.
 The tests are in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder at the root of the repo.</p>
 <p>More info coming soon…</p>
