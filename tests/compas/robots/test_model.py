@@ -79,6 +79,47 @@ def test_programmatic_robot_model():
     assert ['link0', 'joint1', 'link1'] == list(robot.iter_chain())
 
 
+def test_remove_joint(urdf_file):
+    robot = RobotModel.from_urdf_file(urdf_file)
+    robot.remove_joint('panda_finger_joint1')
+    links = [link.name for link in robot.iter_links()]
+    expected_links = [
+        'panda_link0',
+        'panda_link1',
+        'panda_link2',
+        'panda_link3',
+        'panda_link4',
+        'panda_link5',
+        'panda_link6',
+        'panda_link7',
+        'panda_link8',
+        'panda_hand',
+        'panda_rightfinger',
+    ]
+    assert links == expected_links
+    robot.remove_joint('panda_joint7')
+    links = [link.name for link in robot.iter_links()]
+    expected_links = [
+        'panda_link0',
+        'panda_link1',
+        'panda_link2',
+        'panda_link3',
+        'panda_link4',
+        'panda_link5',
+        'panda_link6',
+    ]
+    assert links == expected_links
+    expected_joints = [
+        'panda_joint1',
+        'panda_joint2',
+        'panda_joint3',
+        'panda_joint4',
+        'panda_joint5',
+        'panda_joint6',
+    ]
+    assert robot.get_configurable_joint_names() == expected_joints
+
+
 def test_ur5_urdf(ur5_file):
     r = RobotModel.from_urdf_file(ur5_file)
     assert r.name == 'ur5'
