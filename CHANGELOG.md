@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in parameter list of function `mesh_bounding_box` bound as method `Mesh.bounding_box`.
+* Fixed bug in `RobotModel/RobotModelArtist.update` which raised an error when the geometry had not been loaded.
 
 ### Removed
 
