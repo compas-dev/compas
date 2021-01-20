@@ -591,7 +591,6 @@ class RobotModel(Base):
 
                     if not shape.geometry:
                         raise Exception('Unable to load geometry for {}'.format(shape.filename))
-        self._geometry_loaded = True
 
     def ensure_geometry(self):
         """Check if geometry has been loaded.
@@ -600,9 +599,12 @@ class RobotModel(Base):
         :exc:`Exception`
             If geometry has not been loaded.
         """
-        if not self._geometry_loaded:
-            raise Exception(
-                'This method is only callable once the geometry has been loaded.')
+        for link in self.links:
+            for element in itertools.chain(link.collision, link.visual):
+                shape = element.geometry.shape
+                if not shape.geometry:
+                    raise Exception(
+                        'This method is only callable once the geometry has been loaded.')
 
     @property
     def frames(self):

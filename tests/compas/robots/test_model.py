@@ -25,6 +25,11 @@ def urdf_file_with_shapes():
 
 
 @pytest.fixture
+def urdf_file_with_shapes_only():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'sample.with_shapes_only.urdf')
+
+
+@pytest.fixture
 def ur5_file():
     return os.path.join(BASE_FOLDER, 'fixtures', 'ur5.xacro')
 
@@ -133,10 +138,12 @@ def test_robot_link_nameless_is_allowed_with_custom_namespace():
     assert isinstance(r, RobotModel)
     assert r.name == 'NamelessLinkRobot'
 
+
 def test_link_nameless_raises_if_no_custom_namespace():
     with pytest.raises(Exception):
         r = RobotModel.from_urdf_string(
             """<?xml version="1.0" encoding="UTF-8"?><robot name="NamelessLinkRobot"><link/></robot>""")
+
 
 def test_robot_default_namespace_creates_box_shape_based_on_tagname():
     r = RobotModel.from_urdf_string(
@@ -145,12 +152,14 @@ def test_robot_default_namespace_creates_box_shape_based_on_tagname():
     assert r.links[0].name == 'base_link'
     assert isinstance(r.links[0].visual[0].geometry.shape, Box)
 
+
 def test_robot_default_namespace_to_string():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://drake.mit.edu" name="Acrobot"><frame/></robot>""")
     urdf_string = URDF.from_robot(r).to_string(prettify=True)
     assert b'xmlns="https://drake.mit.edu"' in urdf_string
     assert b'<ns0:frame' in urdf_string
+
 
 def test_robot_with_default_nested_namespaces():
     r = RobotModel.from_urdf_string(
@@ -159,6 +168,7 @@ def test_robot_with_default_nested_namespaces():
     urdf = URDF.from_robot(r)
     assert urdf.robot.attr['xmlns'] == 'https://ethz.ch'
     assert urdf.robot.links[0].attr['xmlns'] == 'https://ita.ethz.ch'
+
 
 def test_robot_with_default_nested_namespaces_to_string():
     r = RobotModel.from_urdf_string(
@@ -175,6 +185,7 @@ def test_robot_with_prefixed_nested_namespaces_to_string():
     assert b'xmlns="https://ethz.ch"' in urdf_string
     assert b'xmlns:ns0="https://ita.ethz.ch"' in urdf_string
     assert b'<ns0:visual' in urdf_string
+
 
 def test_programmatic_model(ur5):
     chain = list(ur5.iter_chain('base_link', 'wrist_3_link'))
@@ -550,6 +561,14 @@ def test_unknown_axis_attribute_data(urdf_with_unknown_attr):
     r_original = RobotModel.from_urdf_file(urdf_with_unknown_attr)
     r = RobotModel.from_data(r_original.data)
     assert r.joints[0].axis.attr['rpy'] == '0 0 0'
+
+
+def test_ensure_geometry(urdf_file, urdf_file_with_shapes_only):
+    robot = RobotModel.from_urdf_file(urdf_file)
+    with pytest.raises(Exception):
+        robot.ensure_geometry()
+    robot = RobotModel.from_urdf_file(urdf_file_with_shapes_only)
+    robot.ensure_geometry()
 
 
 # ==============================================================================
