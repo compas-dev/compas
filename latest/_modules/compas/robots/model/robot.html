@@ -318,6 +318,21 @@
         <span class="n">urdf</span> <span class="o">=</span> <span class="n">URDF</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">urdf</span><span class="o">.</span><span class="n">robot</span></div>
 
+<div class="viewcode-block" id="RobotModel.to_urdf_string"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.to_urdf_string.html#compas.robots.RobotModel.to_urdf_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_urdf_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a URDF string model description from a robot model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prettify:</span>
+<span class="sd">            If ``True``, the string will be pretty printed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">urdf</span> <span class="o">=</span> <span class="n">URDF</span><span class="o">.</span><span class="n">from_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">urdf</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="RobotModel.find_children_joints"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.find_children_joints.html#compas.robots.RobotModel.find_children_joints">[docs]</a>    <span class="k">def</span> <span class="nf">find_children_joints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a list of all children joints of the link.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -673,6 +688,20 @@
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">shape</span><span class="o">.</span><span class="n">geometry</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unable to load geometry for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span></div>
 
+<div class="viewcode-block" id="RobotModel.ensure_geometry"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.ensure_geometry.html#compas.robots.RobotModel.ensure_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">ensure_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if geometry has been loaded.</span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        :exc:`Exception`</span>
+<span class="sd">            If geometry has not been loaded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">collision</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">visual</span><span class="p">):</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shape</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">shape</span><span class="o">.</span><span class="n">geometry</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                        <span class="s1">&#39;This method is only callable once the geometry has been loaded.&#39;</span><span class="p">)</span></div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the frames of links that have a visual node.</span>
@@ -966,6 +995,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">link</span></div>
 
+<div class="viewcode-block" id="RobotModel.remove_link"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.remove_link.html#compas.robots.RobotModel.remove_link">[docs]</a>    <span class="k">def</span> <span class="nf">remove_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removes a link to the robot model.</span>
+
+<span class="sd">        Provides an easy way to programmatically remove a link from the robot model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the link</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">name</span><span class="p">]</span></div>
+
 <div class="viewcode-block" id="RobotModel.add_joint"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.add_joint.html#compas.robots.RobotModel.add_joint">[docs]</a>    <span class="k">def</span> <span class="nf">add_joint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">parent_link</span><span class="p">,</span> <span class="n">child_link</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a joint to the robot model.</span>
 
@@ -1054,7 +1095,26 @@
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">child_link</span><span class="o">.</span><span class="n">visual</span><span class="p">,</span> <span class="n">child_link</span><span class="o">.</span><span class="n">collision</span><span class="p">):</span>
             <span class="n">item</span><span class="o">.</span><span class="n">init_transformation</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">current_transformation</span>
 
-        <span class="k">return</span> <span class="n">joint</span></div></div>
+        <span class="k">return</span> <span class="n">joint</span></div>
+
+<div class="viewcode-block" id="RobotModel.remove_joint"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.remove_joint.html#compas.robots.RobotModel.remove_joint">[docs]</a>    <span class="k">def</span> <span class="nf">remove_joint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removes a joint to the robot model.</span>
+
+<span class="sd">        Provides an easy way to programmatically remove a joint from the robot model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the joint</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_joint_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joints</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">joints</span> <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">name</span><span class="p">]</span>
+        <span class="n">parent_link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_link_by_name</span><span class="p">(</span><span class="n">joint</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
+        <span class="n">parent_link</span><span class="o">.</span><span class="n">joints</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">parent_link</span><span class="o">.</span><span class="n">joints</span> <span class="k">if</span> <span class="n">j</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adjacency</span><span class="p">[</span><span class="n">parent_link</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">parent_link</span><span class="o">.</span><span class="n">joints</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span><span class="p">[</span><span class="n">joint</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">link</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_joints</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjacency</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div></div>
 
 
 <span class="n">URDFParser</span><span class="o">.</span><span class="n">install_parser</span><span class="p">(</span><span class="n">RobotModel</span><span class="p">,</span> <span class="s1">&#39;robot&#39;</span><span class="p">)</span>
