@@ -2,8 +2,8 @@
 Developer Guide
 ***************
 
-This guide is intended for people who want to contribute to the code and documentation
-of the core COMPAS packages:
+This guide is intended for people who want to contribute
+to the code, documentation, and test coverage of the core COMPAS packages:
 
 * :mod:`compas`
 * :mod:`compas_blender`
@@ -12,6 +12,7 @@ of the core COMPAS packages:
 * :mod:`compas_rhino`
 
 Note, however, that the general procedure is applicable to all COMPAS package development.
+
 
 Setup/Installation
 ==================
@@ -23,7 +24,7 @@ To set up a developer environment
 
    .. code-block:: bash
 
-       conda create -n compas-dev python=3.7
+       conda create -n compas-dev python=3.8 cython --yes
        conda activate compas-dev
 
 3. Install development dependencies:
@@ -33,10 +34,11 @@ To set up a developer environment
        cd path/to/compas
        pip install -r requirements-dev.txt
 
-4. Make sure all tests pass:
+4. Make sure all tests pass and the code is free of lint:
 
    .. code-block:: bash
 
+       invoke lint
        invoke test
 
 5. Create a branch for your contributions.
@@ -55,38 +57,76 @@ Submitting a PR
 Once you are done making changes, you have to submit your contribution through a pull request (PR).
 The procedure for submitting a PR is the following.
 
-1. Make sure all tests still pass:
+1. Make sure all tests still pass, the code is free of lint, and you docstrings compile correctly:
 
    .. code-block:: bash
 
+        invoke lint
         invoke test
+        invoke docs
 
 2. Add yourself to ``AUTHORS.md``.
 3. Commit your changes and push your branch to GitHub.
-4. Create a `pull request <https://help.github.com/articles/about-pull-requests/>`_ through the GitHub website.
-
-During development, use `pyinvoke <http://docs.pyinvoke.org/>`_ tasks on the
-command line to ease recurring operations:
-
-* ``invoke clean``: Clean all generated artifacts.
-* ``invoke check``: Run various code and documentation style checks.
-* ``invoke docs``: Generate documentation.
-* ``invoke test``: Run all tests and checks in one swift command.
+4. Create a `pull request <https://help.github.com/articles/about-pull-requests/>`_.
 
 
 Style guide
 ===========
 
-* PEP 8
-* flake8
-* naming conventions
-* consistency
-* foolish consistency
-* principle of least astonishment
+The command ``invoke lint`` runs the entire codebase through ``flake8``.
+As described in the `docs <https://flake8.pycqa.org/en/latest/manpage.html>`_,
+``flake8`` includes lint checks provided by the PyFlakes project,
+PEP-0008 inspired style checks provided by the PyCodeStyle project,
+and McCabe complexity checking provided by the McCabe project.
+
+The list of potential error codes issued by ``flake8`` are available here:
+https://flake8.pycqa.org/en/latest/user/error-codes.html
+
+The PEP-0008 style guide is available here:
+https://www.python.org/dev/peps/pep-0008/
+
+Note that the maximum line length is set to 180 rather 79 in the ``setup.cfg`` of the repo.
+
+
+Naming conventions
+==================
+
+We (intend to) use the following naming conventions.
+
+1. variables, functions, methods, attributes use "snake_case":
+   they are written in lowercase and spaces between words are replaced by underscores.
+
+2. class names use (Upper) "CamelCase":
+   The are written in lowercase, with the first letter of each word capitalized
+   and spaces between words removed.
+
+3. module or package level variables are in uppercase
+   and with spaces between words replaced by underscores.
+
+
+Quotes
+======
+
+Ideally, we would use the following conventions for quotes.
+
+1. Double quotes for multiline statements (``"""``).
+   This includes the quotes for docstrings.
+
+2. Single quotes for strings that are used "as variables".
+   For example, ``config['param'] = 1``.
+
+3. Double quotes for strings that are meant to be used as text.
+   For examples, ``message = "Select one or more points."``
 
 
 Documentation
 =============
+
+The documentation of COMPAS is generated with Sphinx.
+This means that code docstrings and general documentation pages
+have to be written in RestructuredText.
+
+
 
 * sphinx
 * RestructuredText
@@ -100,6 +140,20 @@ Documentation
 * references
 * see also
 
+
+Type hints
+==========
+
+Type hints should be added to stub files at the public API level
+of the main packages (see :ref:`code_structure`).
+This allows the type hints to be written using Python 3 style
+annotations while mainting compatibility with Python 2.7 for Rhino/GH.
+
+For example, the type hints for ``compas.datastructures`` should be defined in
+``compas.datastructures.__init__.pyi``.
+
+
+.. _code-structure:
 
 Code structure
 ==============
@@ -144,6 +198,25 @@ Per package, the APIs of the contained module are collected in the ``__all__`` v
     __all__ = [_ for _ in dir() if not _.startswith('_')]
 
 
+Dependencies
+============
+
+More nfo coming soon...
+
+
+Testing
+=======
+
+Although we still have a significant backlog of existing functionality
+not yet covered by unit tests, at least all newly added functionality
+should have a cooresponding test.
+
+We use ``pytest`` as a testing framework.
+The tests are in the ``tests`` folder at the root of the repo.
+
+More info coming soon...
+
+
 .. _plugins:
 
 Plugins
@@ -177,6 +250,7 @@ Once these parts are implemented, the program could simply
 call the function ``do_hard_stuff`` and the appropriate plugin
 implementation using ``numpy`` would be called automatically.
 
+
 Why are plugins important?
 --------------------------
 
@@ -190,6 +264,7 @@ for its current execution context. For instance, one could have two implementati
 of the same :meth:`compas.plugins.pluggable` definition, one using ``numpy`` and
 another one using *Rhino SDK* and have the correct one automatically selected
 based on where your script is executing.
+
 
 How to make plugins discoverable?
 ---------------------------------
@@ -215,6 +290,7 @@ Once a package is found, the metadata in ``__all_plugins__`` is read and all mod
 listed are analyzed to look for functions decorated with the :meth:`compas.plugins.plugin`
 decorator.
 
+
 Two kinds of extension points
 -----------------------------
 
@@ -228,10 +304,12 @@ based on how they select which implementation to pick if there are multiple avai
   values into a list. An example of this is the Rhino install extension
   point: :meth:`compas_rhino.install.installable_rhino_packages`.
 
+
 A complete example
 ------------------
 
 Let's explore a complete example to gain a better understanding.
+
 
 Extension point
 ^^^^^^^^^^^^^^^
@@ -246,6 +324,7 @@ the following :meth:`compas.plugins.pluggable` interface in
     @pluggable(category='booleans')
     def boolean_union_mesh_mesh(A, B):
         pass
+
 
 Plugin
 ^^^^^^
@@ -279,6 +358,7 @@ Now let's write a plugin that implements this interface:
 
 Voilà! We have a trimesh-based boolean union plugin!
 
+
 Advanced options
 ----------------
 
@@ -307,12 +387,3 @@ accordingly:
 
     from compas.plugins import plugin_manager
     plugin_manager.DEBUG = True
-
-
-Multiple implementations
-========================
-
-
-Testing
-=======
-
