@@ -197,7 +197,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    mesh : Mesh</span>
 <span class="sd">        A mesh object.</span>
-<span class="sd">    scheme : {&#39;tri&#39;, &#39;corner&#39;, &#39;catmullclark&#39;, &#39;doosabin&#39;}, optional</span>
+<span class="sd">    scheme : {&#39;tri&#39;, &#39;quad&#39;, &#39;corner&#39;, &#39;catmullclark&#39;, &#39;doosabin&#39;}, optional</span>
 <span class="sd">        The scheme according to which the mesh should be subdivided.</span>
 <span class="sd">        Default is ``&#39;catmullclark&#39;``.</span>
 <span class="sd">    options : dict</span>
@@ -210,7 +210,7 @@
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
-<span class="sd">    NotImplementedError</span>
+<span class="sd">    ValueError</span>
 <span class="sd">        If the scheme is not supported.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -225,7 +225,7 @@
     <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;doosabin&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">mesh_subdivide_doosabin</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Scheme is not supported&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">mesh_subdivide_tri</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
