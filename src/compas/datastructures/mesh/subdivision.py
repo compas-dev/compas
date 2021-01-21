@@ -100,7 +100,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
     ----------
     mesh : Mesh
         A mesh object.
-    scheme : {'tri', 'corner', 'catmullclark', 'doosabin'}, optional
+    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin'}, optional
         The scheme according to which the mesh should be subdivided.
         Default is ``'catmullclark'``.
     options : dict
@@ -113,7 +113,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
 
     Raises
     ------
-    NotImplementedError
+    ValueError
         If the scheme is not supported.
 
     """
@@ -128,7 +128,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
     if scheme == 'doosabin':
         return mesh_subdivide_doosabin(mesh, **options)
 
-    raise NotImplementedError
+    raise ValueError('Scheme is not supported')
 
 
 def mesh_subdivide_tri(mesh, k=1):
