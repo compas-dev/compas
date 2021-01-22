@@ -206,29 +206,50 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
 
 <div class="viewcode-block" id="RobotModelArtist.draw_collision"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.RobotModelArtist.draw_collision.html#compas_rhino.artists.RobotModelArtist.draw_collision">[docs]</a>    <span class="k">def</span> <span class="nf">draw_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw all the collision geometries of the robot model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">collisions</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">RobotModelArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_collision</span><span class="p">()</span>
         <span class="n">collisions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">collisions</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_enter_layer</span><span class="p">()</span>
 
+        <span class="n">new_guids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">collisions</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_mesh_to_doc</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+            <span class="n">guids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_mesh_to_doc</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+            <span class="n">new_guids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_exit_layer</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exit_layer</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">new_guids</span></div>
 
 <div class="viewcode-block" id="RobotModelArtist.draw_visual"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.RobotModelArtist.draw_visual.html#compas_rhino.artists.RobotModelArtist.draw_visual">[docs]</a>    <span class="k">def</span> <span class="nf">draw_visual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw all the visual geometries of the robot model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">visuals</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">RobotModelArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
         <span class="n">visuals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">visuals</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_enter_layer</span><span class="p">()</span>
 
+        <span class="n">new_guids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">visuals</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_mesh_to_doc</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+            <span class="n">guids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_mesh_to_doc</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+            <span class="n">new_guids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_exit_layer</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exit_layer</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">new_guids</span></div>
 
 <div class="viewcode-block" id="RobotModelArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.RobotModelArtist.draw.html#compas_rhino.artists.RobotModelArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span></div>
+        <span class="sd">&quot;&quot;&quot;Same as draw_visual.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="RobotModelArtist.redraw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.RobotModelArtist.redraw.html#compas_rhino.artists.RobotModelArtist.redraw">[docs]</a>    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Redraw the Rhino view.</span>
@@ -293,7 +314,8 @@
             <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
                 <span class="n">attr</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="n">name</span>
 
-            <span class="n">obj</span><span class="o">.</span><span class="n">CommitChanges</span><span class="p">()</span></div>
+            <span class="n">obj</span><span class="o">.</span><span class="n">CommitChanges</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span></div>
 </code></pre></div>
         
       </main>
