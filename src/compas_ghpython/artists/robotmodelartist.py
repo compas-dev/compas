@@ -45,7 +45,3 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
     def draw(self):
         self.draw_visual()
-
-    @staticmethod
-    def draw_collection(collection):
-        raise NotImplementedError

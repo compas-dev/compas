@@ -4,14 +4,9 @@
 #
 # needs_sphinx = "1.0"
 
-import sys
-import os
-
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
 import sphinx_compas_theme
-
-sys.path.insert(0, os.path.abspath("../src"))
 
 # -- General configuration ------------------------------------------------
 
@@ -19,7 +14,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "0.18.1"
+release = "1.0.0"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -28,7 +23,7 @@ source_suffix = {
     ".md": "markdown",
 }
 templates_path = ["_templates", ]
-exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks"]
+exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
 pygments_style = "sphinx"
 show_authors = True
@@ -48,6 +43,8 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
+    "sphinx.ext.inheritance_diagram",
+    "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "m2r",
     "nbsphinx",
@@ -77,6 +74,17 @@ autodoc_member_order = "groupwise"
 
 autoclass_content = "class"
 
+
+def skip(app, what, name, obj, would_skip, options):
+    if name.startswith('_'):
+        return True
+    return would_skip
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", skip)
+
+
 # autosummary options
 
 autosummary_generate = True
@@ -92,6 +100,11 @@ autosummary_mock_imports = [
     "bmesh",
     "mathutils"
 ]
+
+# graph options
+
+inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
+inheritance_node_attrs = dict(fontsize=8)
 
 # napoleon options
 
@@ -245,18 +258,11 @@ plot_html_show_formats = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/", None),
-    "compas": ("https://compas-dev.github.io/compas", None),
+    "compas": ("https://compas.dev/compas/latest/", None),
 }
 
 
 # -- Options for HTML output ----------------------------------------------
-
-package_docs_root = "/compas/"
-
-with open(os.path.join(os.path.dirname(__file__), "docversions.txt"), "r") as f:
-    version_names = [version.strip() for version in f.readlines()]
-    package_docs_versions = [(version, "{}{}".format(package_docs_root, version))
-                             for version in version_names if version]
 
 html_theme = "compas"
 html_theme_path = sphinx_compas_theme.get_html_theme_path()

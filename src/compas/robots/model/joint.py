@@ -181,7 +181,6 @@ class Dynamics(Base):
             'friction': self.friction,
         }
         attributes.update(self.attr)
-        attributes = dict(filter(lambda x: x[1], attributes.items()))
         return URDFElement('dynamics', attributes)
 
     @property
@@ -609,6 +608,10 @@ class Joint(Base):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
+        # The following are world-relative frames representing the origin and the axis, which change with
+        # the joint state, while `origin` and `axis` above are parent-relative and static.
+        self.current_origin = self.origin.copy()
+        self.current_axis = self.axis.copy()
 
     def get_urdf_element(self):
         attributes = {
@@ -681,10 +684,7 @@ class Joint(Base):
     @property
     def current_transformation(self):
         """Current transformation of the joint."""
-        if self.origin:
-            return Transformation.from_frame(self.origin)
-        else:
-            return Transformation()
+        return Transformation.from_frame(self.current_origin)
 
     def transform(self, transformation):
         """Transform the joint in place.
@@ -698,10 +698,8 @@ class Joint(Base):
         -------
         None
         """
-        if self.origin:
-            self.origin.transform(transformation)
-        if self.axis:
-            self.axis.transform(transformation)
+        self.current_origin.transform(transformation)
+        self.current_axis.transform(transformation)
 
     def _create(self, transformation):
         """Internal method to initialize the transformation tree.
@@ -715,10 +713,8 @@ class Joint(Base):
         -------
         None
         """
-        if self.origin:
-            self.origin.transform(transformation)
-        if self.axis:
-            self.axis.transform(self.current_transformation)
+        self.current_origin.transform(transformation)
+        self.current_axis.transform(self.current_transformation)
 
     def calculate_revolute_transformation(self, position):
         """Returns a transformation of a revolute joint.
@@ -758,7 +754,7 @@ class Joint(Base):
         :class:`Rotation`
             Transformation of type rotation for the continuous joint.
         """
-        return Rotation.from_axis_and_angle(self.axis.vector, position, self.origin.point)
+        return Rotation.from_axis_and_angle(self.current_axis.vector, position, self.current_origin.point)
 
     def calculate_prismatic_transformation(self, position):
         """Returns a transformation of a prismatic joint.
@@ -781,7 +777,7 @@ class Joint(Base):
             raise ValueError('Prismatic joints are required to define a limit')
 
         position = max(min(position, self.limit.upper), self.limit.lower)
-        return Translation.from_vector(self.axis.vector * position)
+        return Translation.from_vector(self.current_axis.vector * position)
 
     # does this ever happen?
     def calculate_fixed_transformation(self, position):
@@ -857,7 +853,7 @@ class Joint(Base):
         -------
         None
         """
-        self.origin.scale(factor)
+        self.current_origin.scale(factor)
         if self.is_scalable():
             self.limit.scale(factor)
 

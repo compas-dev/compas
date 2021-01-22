@@ -14,6 +14,7 @@ the `COMPAS FAB <https://gramaziokohler.github.io/compas_fab/latest/>`_ extensio
 package provides additional functionality to connect these models with planning
 and execution tools and libraries.
 
+
 Coordinate frames
 =================
 
@@ -101,6 +102,7 @@ a local coordinate frame using the ``to_local_coordinates`` method::
     >>> f1 = Frame([130, 25, 80], [1, 0, 0], [0, 1, 0])
     >>> f1.to_local_coordinates(p)
     Point(-120.000, -15.000, -70.000)
+
 
 Robot models
 ============
@@ -246,6 +248,7 @@ The following snippet shows how to load the robot model currently active in ROS:
     ...    robot = ros.load_robot(load_geometry=True)
     ...    print(robot.model)
 
+
 Visualizing Robots
 ==================
 
@@ -253,8 +256,7 @@ Once a robot has been built or loaded, it can be visualized in Blender, Rhino or
 Grasshopper using one of COMPAS's artists.  The basic procedure is the same in
 any of the CAD software (aside from the import statement), so for simplicity we
 will demonstrate the use of :class:`compas_rhino.artists.RobotModelArtist` in Rhino.  Once
-COMPAS has been installed for Rhino
-(see :ref:`Getting started with Rhino <cad_rhino>`),
+COMPAS has been installed for Rhino,
 the following can be run in a Python script editor within Rhino.
 
 .. code-block:: python
@@ -272,6 +274,7 @@ the following can be run in a Python script editor within Rhino.
     artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
     artist.clear_layer()
     artist.draw_visual()
+
 
 FK, IK & Path Planning
 ======================

@@ -1,11 +1,19 @@
 """
-If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.
-Assigning __metaclass__ = ABCMeta to a class causes a severe memory leak/performance
-degradation on IronPython 2.7.
+********************************************************************************
+base
+********************************************************************************
 
-See these issues for more details:
- - https://github.com/compas-dev/compas/issues/562
- - https://github.com/compas-dev/compas/issues/649
+.. currentmodule:: compas.base
+
+Classes
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Base
+
 """
 from __future__ import print_function
 from __future__ import absolute_import
@@ -22,6 +30,16 @@ __all__ = [
     'Base',
 ]
 
+# ==============================================================================
+# If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.
+# Assigning __metaclass__ = ABCMeta to a class causes a severe memory leak/performance
+# degradation on IronPython 2.7.
+
+# See these issues for more details:
+# - https://github.com/compas-dev/compas/issues/562
+# - https://github.com/compas-dev/compas/issues/649
+
+# ==============================================================================
 
 # import abc
 # ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})

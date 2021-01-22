@@ -25,16 +25,16 @@ optional_requirements = {}
 
 setup(
     name='COMPAS',
-    version='0.18.1',
+    version='1.0.0',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='http://compas-dev.github.io',
+    url='http://compas.dev',
     author='Tom Van Mele',
     author_email='van.mele@arch.ethz.ch',
     license='MIT',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Scientific/Engineering',
         'License :: OSI Approved :: MIT License',
@@ -52,7 +52,7 @@ setup(
     ],
     keywords=['architecture', 'engineering', 'fabrication', 'construction'],
     project_urls={
-        "Documentation": "http://compas-dev.github.io",
+        "Documentation": "http://compas.dev",
         "Forum": "https://forum.compas-framework.org/",
         "Repository": "https://github.com/compas-dev/compas",
         "Issues": "https://github.com/compas-dev/compas/issues",

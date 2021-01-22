@@ -75,7 +75,7 @@ class GeometryPlotter:
             figure = plt.figure(facecolor=self.bgcolor,
                                 figsize=self.figsize,
                                 dpi=self.dpi)
-            axes = figure.add_subplot('111', aspect='equal')
+            axes = figure.add_subplot(111, aspect='equal')
             if self.viewbox:
                 xmin, xmax = self.viewbox[0]
                 ymin, ymax = self.viewbox[1]

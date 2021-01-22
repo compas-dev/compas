@@ -38,7 +38,7 @@ __all__ = [
 
 
 def midpoint_point_point(a, b):
-    """Compute the midpoint of two points lying in the XY-plane.
+    """Compute the midpoint of two points.
 
     Parameters
     ----------

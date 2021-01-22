@@ -9,7 +9,7 @@ a remote process or computer. This is especially useful in scenarios where COMPA
 runs inside an IronPython host (eg. Rhino) and needs to execute code that only
 runs on CPython (eg. code that requires ``numpy``).
 
-COMPAS provides **two ways to achieve** this: ``rcp`` and `XFunc``.
+COMPAS provides **two ways to achieve** this: ``rcp`` and ``XFunc``.
 
 Through ``Xfunc``, COMPAS provides a mechanism for calling Python functions through
 a separately launched sub-process.
@@ -63,6 +63,7 @@ The use of :mod:`compas.rpc` is not restricted to COMPAS packages only. ::
 
 Note that Numpy arrays are automatically converted to lists.
 
+
 Supported data types
 ====================
 
@@ -80,6 +81,7 @@ side of the RPC communication network.
 
 Therefore the data types supported by :mod:`compas.rpc` include all native Python
 data types and COMPAS objects. Numpy arrays are automatically converted to lists.
+
 
 Starting and Stopping
 =====================

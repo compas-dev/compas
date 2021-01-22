@@ -135,9 +135,6 @@ class MeshArtist(BaseArtist):
     # components
     # ==========================================================================
 
-    # @staticmethod
-    # def draw_collection(meshes, colors=(1.0, 1.0, 1.0), name=None, clear)
-
     def draw(self):
         """Draw the mesh using the chosen visualisation settings.
 

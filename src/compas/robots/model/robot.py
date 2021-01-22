@@ -221,6 +221,21 @@ class RobotModel(Base):
         urdf = URDF.from_string(text)
         return urdf.robot
 
+    def to_urdf_string(self, prettify=False):
+        """Construct a URDF string model description from a robot model.
+
+        Parameters
+        ----------
+        prettify:
+            If ``True``, the string will be pretty printed.
+
+        Returns
+        -------
+        :obj:`str`
+        """
+        urdf = URDF.from_robot(self)
+        return urdf.to_string(prettify=prettify)
+
     def find_children_joints(self, link):
         """Returns a list of all children joints of the link.
         """
@@ -576,6 +591,20 @@ class RobotModel(Base):
                     if not shape.geometry:
                         raise Exception('Unable to load geometry for {}'.format(shape.filename))
 
+    def ensure_geometry(self):
+        """Check if geometry has been loaded.
+        Raises
+        ------
+        :exc:`Exception`
+            If geometry has not been loaded.
+        """
+        for link in self.links:
+            for element in itertools.chain(link.collision, link.visual):
+                shape = element.geometry.shape
+                if not shape.geometry:
+                    raise Exception(
+                        'This method is only callable once the geometry has been loaded.')
+
     @property
     def frames(self):
         """Returns the frames of links that have a visual node.
@@ -588,7 +617,7 @@ class RobotModel(Base):
         frames = []
         for link in self.iter_links():
             if len(link.visual) and link.parent_joint:
-                frames.append(link.parent_joint.origin.copy())
+                frames.append(link.parent_joint.current_origin.copy())
         return frames
 
     @property
@@ -602,8 +631,7 @@ class RobotModel(Base):
         """
         axes = []
         for joint in self.iter_joints():
-            if joint.axis:
-                axes.append(joint.axis.vector)
+            axes.append(joint.current_axis.vector)
         return axes
 
     def __str__(self):
@@ -741,7 +769,7 @@ class RobotModel(Base):
         Frame(Point(0.000, 0.000, 0.000), Vector(0.362, 0.932, 0.000), Vector(-0.932, 0.362, 0.000))
         """
         transformations = self.compute_transformations(joint_state)
-        return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
+        return [j.current_origin.transformed(transformations[j.name]) for j in self.iter_joints()]
 
     def transformed_axes(self, joint_state):
         """Returns the transformed axes based on the joint_state.
@@ -765,7 +793,7 @@ class RobotModel(Base):
         [Vector(0.000, 0.000, 1.000), Vector(0.000, 0.000, 1.000)]
         """
         transformations = self.compute_transformations(joint_state)
-        return [j.axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.axis.vector.length]
+        return [j.current_axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.current_axis.vector.length]
 
     def forward_kinematics(self, joint_state, link_name=None):
         """Calculate the robot's forward kinematic.
@@ -798,7 +826,7 @@ class RobotModel(Base):
         joint = ee_link.parent_joint
         if joint:
             transformations = self.compute_transformations(joint_state)
-            return joint.origin.transformed(transformations[joint.name])
+            return joint.current_origin.transformed(transformations[joint.name])
         else:
             return Frame.worldXY()  # if we ask forward from base link
 
@@ -869,6 +897,18 @@ class RobotModel(Base):
         link = Link(name, visual=visual, collision=collision, **kwargs)
         self.links.append(link)
         return link
+
+    def remove_link(self, name):
+        """Removes a link to the robot model.
+
+        Provides an easy way to programmatically remove a link from the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the link
+        """
+        self.links = [link for link in self.links if link.name != name]
 
     def add_joint(self, name, type, parent_link, child_link, origin=None, axis=None, limit=None, **kwargs):
         """Adds a joint to the robot model.
@@ -959,6 +999,25 @@ class RobotModel(Base):
             item.init_transformation = joint.current_transformation
 
         return joint
+
+    def remove_joint(self, name):
+        """Removes a joint to the robot model.
+
+        Provides an easy way to programmatically remove a joint from the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the joint
+        """
+        joint = self.get_joint_by_name(name)
+        self.joints = [j for j in self.joints if j.name != name]
+        parent_link = self.get_link_by_name(joint.parent.link)
+        parent_link.joints = [j for j in parent_link.joints if j.name != name]
+        self._adjacency[parent_link.name] = [j.name for j in parent_link.joints]
+        del self._links[joint.child.link]
+        del self._joints[name]
+        del self._adjacency[name]
 
 
 URDFParser.install_parser(RobotModel, 'robot')

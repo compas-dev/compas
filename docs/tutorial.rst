@@ -6,11 +6,11 @@ Tutorial
     :titlesonly:
 
     tutorial/geometry
-    tutorial/meshes
     tutorial/networks
+    tutorial/meshes
+    tutorial/volmeshes
     tutorial/robots
+    tutorial/numericaldata
     tutorial/rpc
     tutorial/geomaps
-    tutorial/rhino
-    tutorial/blender
-    tutorial/grasshopper
+    tutorial/serialization

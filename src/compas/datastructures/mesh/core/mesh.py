@@ -47,17 +47,10 @@ class BaseMesh(HalfEdge):
     Attributes
     ----------
     attributes : dict
-        A dictionary of general mesh attributes.
-
-        * ``'name': "Mesh"``
-
+        A dictionary of general mesh attributes: ``{'name': "Mesh"}``.
     default_vertex_attributes : dict
-        The names of pre-assigned vertex attributes and their default values.
-
-        * ``'x': 0.0``
-        * ``'y': 0.0``
-        * ``'z': 0.0``
-
+        The names of pre-assigned vertex attributes and their default values:
+        ``{'x': 0.0, 'y': 0.0, 'z': 0.0}``
     default_edge_attributes : dict
         The default data attributes assigned to every new edge.
     default_face_attributes : dict
@@ -67,20 +60,6 @@ class BaseMesh(HalfEdge):
         Shorthand for ``mesh.attributes['name']``
     adjacency : dict, read-only
         The vertex adjacency dictionary.
-    data : dict
-        The data representing the mesh.
-        The dict has the following structure:
-
-        * 'attributes'   => dict
-        * 'dva'          => dict
-        * 'dea'          => dict
-        * 'dfa'          => dict
-        * 'vertex'       => dict
-        * 'face'         => dict
-        * 'facedata'     => dict
-        * 'edgedata'     => dict
-        * 'max_int_key'  => int
-        * 'max_int_fkey' => int
 
     Examples
     --------
@@ -748,10 +727,6 @@ class BaseMesh(HalfEdge):
     # polyedge topology
     # --------------------------------------------------------------------------
 
-    # face strips?
-    # edge chains?
-    # ...?
-
     # --------------------------------------------------------------------------
     # face topology
     # --------------------------------------------------------------------------
@@ -811,7 +786,7 @@ class BaseMesh(HalfEdge):
         list
             Coordinates of the vertex.
         """
-        return [self.vertex[key][axis] for axis in axes]
+        return self.vertex_attributes(key, axes)
 
     def vertex_area(self, key):
         """Compute the tributary area of a vertex.
@@ -1274,7 +1249,7 @@ class BaseMesh(HalfEdge):
         boundaries = self.vertices_on_boundaries()
         return boundaries[0] if boundaries else []
 
-    def edges_on_boundary(self, oriented=False):
+    def edges_on_boundary(self):
         """Find the edges on the longest boundary.
 
         Returns

@@ -242,11 +242,47 @@ class Graph(Datastructure):
 
     @classmethod
     def from_networkx(cls, graph):
-        raise NotImplementedError
+        """Create a new graph instance from a NetworkX DiGraph instance.
+
+        Parameters
+        ----------
+        graph : networkx.DiGraph
+            NetworkX instance of a directed graph.
+
+        Returns
+        -------
+        Graph
+            A newly created graph.
+        """
+        g = cls()
+        g.attributes.update(graph.graph)
+
+        for node in graph.nodes():
+            g.add_node(node, **graph.nodes[node])
+
+        for edge in graph.edges():
+            g.add_edge(*edge, **graph.edges[edge])
+
+        return g
 
     def to_networkx(self):
+        """Create a new NetworkX graph instance from a graph.
+
+        Returns
+        -------
+        networkx.DiGraph
+            A newly created NetworkX DiGraph.
+        """
         import networkx as nx
-        graph = nx.Graph(self.edges())
+        graph = nx.DiGraph()
+        graph.graph.update(self.attributes)
+
+        for node, attr in self.nodes(data=True):
+            graph.add_node(node, **attr)
+
+        for edge, attr in self.edges(data=True):
+            graph.add_edge(*edge, **attr)
+
         return graph
 
     # --------------------------------------------------------------------------
@@ -670,10 +706,9 @@ class Graph(Datastructure):
 
         Yields
         ------
-        2-tuple
+        tuple
             The next edge identifier (u, v), if ``data`` is ``False``.
-        3-tuple
-            The next node as a (u, v, attr) tuple, if ``data`` is ``True``.
+            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
         """
         for u, nbrs in iter(self.edge.items()):
             for v, attr in iter(nbrs.items()):
@@ -697,10 +732,9 @@ class Graph(Datastructure):
 
         Yields
         ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data=False``.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple
+            The next edge identifier (u, v), if ``data`` is ``False``.
+            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
         """
         for key in self.edges():
             is_match = True
@@ -745,17 +779,16 @@ class Graph(Datastructure):
         ----------
         predicate : callable
             The condition you want to evaluate.
-            The callable takes 3 parameters: ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
+            The callable takes 2 parameters: a key ``(u, v)`` tuple and ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the nodes and their data attributes.
             Default is ``False``.
 
         Yields
         ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data=False``.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple
+            The next edge identifier (u, v), if ``data`` is ``False``.
+            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
 
         Examples
         --------
@@ -1393,9 +1426,9 @@ class Graph(Datastructure):
         u : hashable
             The identifier of the first node of the edge.
         v : hashable
-            The identifier of the secondt node of the edge.
+            The identifier of the second node of the edge.
         directed : bool, optional
-            Take into accoun the direction of the edge.
+            Take into account the direction of the edge.
             Default is ``True``.
 
         Returns

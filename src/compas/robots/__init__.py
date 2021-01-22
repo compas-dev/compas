@@ -5,28 +5,12 @@ robots
 
 .. currentmodule:: compas.robots
 
-This package provides basic structures and data exchange mechanisms that are
-building blocks for robotics support.
-
-The primary data representation for robot models is based on the Unified Robot Description Format
-(`URDF`_).
-
-.. note::
-
-    A detailed description of the model is available on the `URDF Model wiki`_.
-    This package parses URDF v1.0 according to the `URDF XSD Schema`_.
-
-    * `URDF`_
-    * `URDF Model wiki`_
-    * `URDF XSD Schema`_
-
-.. _URDF: http://wiki.ros.org/urdf
-.. _URDF Model wiki: http://wiki.ros.org/urdf/XML/model
-.. _URDF XSD Schema: https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd
-
 
 Model
 =====
+
+.. inheritance-diagram:: RobotModel Joint Link ToolModel
+    :parts: 1
 
 The root of the model is the :class:`RobotModel` class, which
 describes a robot consisting of a set of link elements, and a set of joint
@@ -41,8 +25,12 @@ elements connecting the links together.
     Link
     ToolModel
 
+
 Geometric description
 =====================
+
+.. inheritance-diagram:: Origin Geometry Box Cylinder Sphere Capsule MeshDescriptor Material Texture Color
+    :parts: 1
 
 The robot itself as well as its links can be geometrically described
 using the following classes.
@@ -62,8 +50,12 @@ using the following classes.
     Texture
     Color
 
+
 Link
 ====
+
+.. inheritance-diagram:: Visual Collision Inertial Mass Inertia
+    :parts: 1
 
 The link is described as a rigid body with inertial, visual and collision values.
 
@@ -77,8 +69,12 @@ The link is described as a rigid body with inertial, visual and collision values
     Mass
     Inertia
 
+
 Joint
 =====
+
+.. inheritance-diagram:: ParentLink ChildLink Calibration Dynamics Limit Axis Mimic SafetyController
+    :parts: 1
 
 The joint describes the kinematics and dynamics of the robot's joint.
 
@@ -95,8 +91,12 @@ The joint describes the kinematics and dynamics of the robot's joint.
     Mimic
     SafetyController
 
+
 Resources
 =========
+
+.. inheritance-diagram:: AbstractMeshLoader DefaultMeshLoader GithubPackageMeshLoader LocalPackageMeshLoader
+    :parts: 1
 
 Model descriptions usually do not contain embedded geometry information but only
 descriptions, filenames or URLs for externally hosted resources.

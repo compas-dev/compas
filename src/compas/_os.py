@@ -194,8 +194,10 @@ def select_python(python_executable):
             if os.path.exists(python):
                 return python
 
+    default_exe = 'pythonw' if is_windows() else 'python'
+
     # Assume a system-wide install exists
-    return python_executable or 'pythonw'
+    return python_executable or default_exe
 
 
 def prepare_environment(env=None):
@@ -221,13 +223,13 @@ def prepare_environment(env=None):
         env = os.environ.copy()
 
     if PYTHON_DIRECTORY:
-        lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
-        if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
-            env['PATH'] += os.pathsep + lib_bin
+        if is_windows():
+            lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
+        else:
+            lib_bin = os.path.join(PYTHON_DIRECTORY, 'bin')
 
-        lib_bin = os.path.join(PYTHON_DIRECTORY, 'lib')
         if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
-            env['PATH'] += os.pathsep + lib_bin
+            env['PATH'] = lib_bin + os.pathsep + env['PATH']
 
     if CONDA_EXE:
         env['CONDA_EXE'] = CONDA_EXE

@@ -34,7 +34,7 @@ __all__ = ['topop_numpy']
 
 
 def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None):
-    """ Topology optimisation in 2D using NumPy and SciPy.
+    """Topology optimisation in 2D.
 
     Parameters
     ----------
@@ -57,10 +57,6 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
     -------
     array
         Density array.
-
-    Notes
-    -----
-    - Based on the MATLAB code of  [andreassen2011]_.
 
     Examples
     --------

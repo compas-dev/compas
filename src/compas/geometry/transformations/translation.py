@@ -88,6 +88,7 @@ class Translation(Transformation):
 
     @property
     def translation_vector(self):
+        """:class:`compas.geometry.Vector` : The translation vector."""
         from compas.geometry import Vector
         x = self.matrix[0][3]
         y = self.matrix[1][3]

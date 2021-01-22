@@ -9,6 +9,68 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `RobotModel.remove_link`, `RobotModel.remove_joint`, `RobotModel.to_urdf_string`, and `RobotModel.ensure_geometry`.
+
+### Changed
+
+* Fixed bug in parameter list of function `mesh_bounding_box` bound as method `Mesh.bounding_box`.
+* Changed exception type when subdivide scheme argument is incorrect on `mesh_subdivide`.
+* The `compas_rhino.artist.RobotModelArtist` functions `draw_visual` and `draw_collision` now return list of newly created Rhino object guids.
+
+### Removed
+
+
+## [1.0.0] 2021-01-18
+
+### Added
+
+* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
+
+### Changed
+
+* Fix Rhino7 Mac installation path
+* Separate `compas.robots.Joint.origin` into the static parent-relative `origin` and the dynamic world-relative `current_origin`.
+* Separate `compas.robots.Joint.axis` into the static parent-relative `axis` and the dynamic world-relative `current_axis`.
+* Fixed support to convert back and forth between `compas.datastructures.Graph` and NetworkX `DiGraph`.
+
+### Removed
+
+
+## [0.19.3] 2020-12-17
+
+### Added
+
+### Changed
+
+### Removed
+
+
+## [0.19.2] 2020-12-17
+
+### Added
+
+### Changed
+
+* Changed `compas._os.prepare_environment` to prepend environment paths (fixes problem with RPC on windows).
+
+### Removed
+
+
+## [0.19.1] 2020-12-10
+
+### Added
+
+### Changed
+
+* Fix bug in `compas.datastructures.AttributesView`.
+
+### Removed
+
+
+## [0.19.0] 2020-12-09
+
+### Added
+
 * Added `is_osx`.
 
 ### Changed
@@ -20,9 +82,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `is_windows` to work for CPython and IronPython.
 * Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
-* The `compas_rhino.artist.RobotModelArtist` functions `draw_visual` and `draw_collision` now return list of newly created Rhino object guids.
+* Fixed data serialisation in `compas.datastructures.HalfFace`.
 
 ### Removed
+
+* Removed all implementations of `draw_collection`.
 
 
 ## [0.18.1] 2020-12-01

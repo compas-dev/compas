@@ -220,7 +220,3 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
             obj.CommitChanges()
         return [guid]
-
-    @staticmethod
-    def draw_collection(collection):
-        raise NotImplementedError
