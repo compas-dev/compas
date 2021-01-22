@@ -130,7 +130,14 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         return new_guids
 
     def draw_visual(self):
-        """Draws all visual geometry of the robot model. Return list of newly created Rhino object's GUID."""
+        
+        """Draw all the visual geometries of the robot model.
+
+        Returns
+        -------
+        list 
+            The GUIDs of the created Rhino objects.
+        """
         visuals = super(RobotModelArtist, self).draw_visual()
         visuals = list(visuals)
 
@@ -146,7 +153,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
     def draw(self):
         """Same as draw_visual."""
-        self.draw_visual()
+        return self.draw_visual()
 
     def redraw(self, timeout=None):
         """Redraw the Rhino view.
