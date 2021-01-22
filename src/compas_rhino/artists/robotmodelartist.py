@@ -113,7 +113,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
         Returns
         -------
-        list 
+        list
             The GUIDs of the created Rhino objects.
         """
         collisions = super(RobotModelArtist, self).draw_collision()
@@ -130,12 +130,11 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         return new_guids
 
     def draw_visual(self):
-        
         """Draw all the visual geometries of the robot model.
 
         Returns
         -------
-        list 
+        list
             The GUIDs of the created Rhino objects.
         """
         visuals = super(RobotModelArtist, self).draw_visual()
