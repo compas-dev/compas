@@ -109,7 +109,13 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         self.redraw()
 
     def draw_collision(self):
-        """Draws all collision geometry of the robot model. Return list of newly created Rhino object's GUID."""
+        """Draw all the collision geometries of the robot model.
+
+        Returns
+        -------
+        list 
+            The GUIDs of the created Rhino objects.
+        """
         collisions = super(RobotModelArtist, self).draw_collision()
         collisions = list(collisions)
 
