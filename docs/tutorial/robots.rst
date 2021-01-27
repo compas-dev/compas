@@ -175,35 +175,119 @@ shows how to construct one programmatically:
 
 This approach can end up being very verbose, so the methods ``add_link``
 and ``add_joint`` of :class:`compas.robots.RobotModel` offer an alternative that
-significantly reduces the amount of code required:
+significantly reduces the amount of code required.  Starting with an empty
+robot model, adding a link in the shape of a box is as easy as:
 
 ::
 
     >>> from compas.geometry import Box, Frame
-    >>> from compas.datastructures import Mesh
-    >>> from compas.robots import Joint, Link, RobotModel
+    >>> from compas.robots import RobotModel
 
 ::
 
-    >>> length, width, axis = 5, 0.4, (0, 0, 1)
-    >>> box = Box.from_diagonal([(0, width / -2, width / -2), (length, width / 2, width / 2)])
-    >>> robot = RobotModel('bender')
-    >>> link_last = robot.add_link('world')
-    >>> robot.name
-    'bender'
+    >>> model = RobotModel(name='Boxy')
+    >>> box = Box(Frame.worldXY(), 1, 2, .5)
+    >>> model.add_link(name='box_link', visual_meshes=[box])
 
-    >>> for i in range(6):
-    ...     visual_mesh = Mesh.from_shape(box)
-    ...     origin = Frame.from_quaternion((1, 0, 0, 0), point=(length, 0, 0))
-    ...     link = robot.add_link('link_{}'.format(i), visual_mesh)
-    ...     robot.add_joint('joint_{}'.format(i), Joint.CONTINUOUS, link_last, link, origin, axis)
-    ...     link_last = link
-    ...
-    >>> robot.get_configurable_joint_names()
-    ['joint_0', 'joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5']
+This has added a box of dimensions ``1`` x ``2`` x ``.5`` whose geometric center
+and orientation coincides with the world XY frame.  The ``visual_meshes`` argument
+can be given a list containing COMPAS primitives such as :class:`compas.geometry.Box`
+or more the more complex COMPAS meshes :class:`compas.geometry.Mesh`. For simplicity,
+this tutorial uses only primitives.
 
-However, more often than not, robot models are loaded from URDF files instead of being
-defined programmatically. To load a URDF into a robot model, use the
+To reposition the box relative to the link's
+origin, simply change the frame of the provided box. To move the box so that it sits
+above the XY plane, the origin must be shifted in the z-direction by half the height
+of the box.  The box is also shifted slightly forward in the y-direction:
+
+::
+
+    >>> from compas.geometry import Box, Frame
+    >>> from compas.robots import RobotModel
+
+::
+
+    >>> model = RobotModel(name='Boxy')
+    >>> box = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
+    >>> model.add_link(name='box_link', visual_meshes=[box])
+
+A link may have more than one geometric element associated to it.  Now
+there is a stack of two boxes:
+
+::
+
+    >>> from compas.geometry import Box, Frame
+    >>> from compas.robots import RobotModel
+
+::
+
+    >>> model = RobotModel(name='Boxy')
+    >>> box_1 = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
+    >>> box_2 = Box(Frame([0, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
+    >>> model.add_link(name='box_link', visual_meshes=[box_1, box_2])
+
+Remember that the frame of the box is the geometric center of the box relative
+to the link's origin (which, in this case, happens to be the world XY frame).
+So to stack the boxes, the center of ``box_2`` must be placed at a height of
+``<height of box_1> + 1/2 * <height of box_2> = .5 + .5 * 7 = 4``.
+
+One link does not an interesting robot make.  The following code snippet adds
+a cylindrical second link as well as a joint connecting the two.
+
+::
+
+    >>> from compas.geometry import Box, Cylinder, Frame, Plane, Vector
+    >>> from compas.robots import Joint, RobotModel
+
+::
+
+    >>> model = RobotModel(name='Jointy')
+    >>> box_1 = Box(Frame([2, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
+    >>> box_2 = Box(Frame([2, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
+    >>> box_link = model.add_link(name='box_link', visual_meshes=[box_1, box_2])
+    >>>
+    >>> cylinder = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), .5), 8)
+    >>> cylinder_link = model.add_link(name='cylinder_link', visual_meshes=[cylinder])
+    >>>
+    >>> origin = Frame([0, 0, 7], [1, 0, 0], [0, 1, 0])
+    >>> axis = Vector(1, 0, 0)
+    >>> model.add_joint(
+    >>>     name='box_cylinder_joint',
+    >>>     type=Joint.CONTINUOUS,
+    >>>     parent_link=box_link,
+    >>>     child_link=cylinder_link,
+    >>>     origin=origin,
+    >>>     axis=axis,
+    >>> )
+
+There's a lot going on in this snippet, so let's break it down.  First, the link
+containing the stacked boxes is added, but the geometry has been shifted to the
+side ``2`` units in the x-direction.  Second, a cylindrical link is added.
+The cylinder has height ``8`` and radius ``.5`` and is vertically oriented.  Finally, a
+joint is added.  This is the most involved operation so far, so let's explore
+this in detail.
+
+Several parameters must be defined for the joint to be sensible.
+The required parameters for a minimally defined joint are the ``name``, ``type``,
+``parent_link`` and ``child_link``.  The location and orientation of the joint is defined
+by the ``origin``, which specifies a frame relative to the origin of the ``parent_link``.
+In this case, the location of the joint is located ``7`` units above (ie,
+in the z-direction) the origin of the ``box_link``, making it ``.5`` units below the top
+of the second box.  The origin of the joint also specifies the origin of its
+``child_link``.  Here, this means that the center of the cylinder will coincide with
+the location of the joint.  Since the geometries of the boxes have been shifted,
+the boxes and the cylinder do not overlap.  If the joint origin is not specified,
+it will default to coincide with the origin of the ``parent_link``.  Since a continuous
+joint was added, it makes sense that the axis of rotation would also need to be given.
+Here, the joint will rotate about the joint origin's x-axis.
+
+Adding a bit more geometry and a few links with fixed joints and we arrive at a rough
+model of the classic drinking bird toy (full code
+:download:`here <files/drinking_bird.py>`).  To visualize this,
+see the section Visualizing Robots below.
+
+While it can be useful to programmatically create a robot, more often than not, robot
+models are loaded from URDF files. To load a URDF into a robot model, use the
 ``from_urdf_file`` method::
 
     >>> model = RobotModel.from_urdf_file('ur5.urdf')

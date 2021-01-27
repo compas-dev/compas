@@ -6,6 +6,7 @@ import itertools
 import json
 
 from compas.base import Base
+from compas.datastructures import Mesh
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.files import URDFElement
@@ -644,7 +645,7 @@ class RobotModel(Base):
         )
 
     def _create(self, link, parent_transformation):
-        """Private function called during initialisation to transform origins and axes.
+        """Private function called during initialization to transform origins and axes.
 
         Parameters
         ----------
@@ -836,7 +837,13 @@ class RobotModel(Base):
         mesh = kwargs.get(key)
         if mesh:
             meshes.append(mesh)
-        return meshes
+            del kwargs[key]
+        return meshes, kwargs
+
+    def _check_link_name(self, name):
+        all_link_names = [l.name for l in self.links]  # noqa: E741
+        if name in all_link_names:
+            raise ValueError("Link name '%s' already used in chain." % name)
 
     def add_link(self, name, visual_meshes=None, visual_color=None, collision_meshes=None, **kwargs):
         """Adds a link to the robot model.
@@ -871,31 +878,38 @@ class RobotModel(Base):
         >>> robot = RobotModel('robot')
         >>> link = robot.add_link('link0', visual_mesh=mesh)
         """
-        visual_meshes = self._consolidate_meshes(visual_meshes, 'visual_mesh', **kwargs)
-        collision_meshes = self._consolidate_meshes(collision_meshes, 'collision_mesh', **kwargs)
+        self._check_link_name(name)
+        visual_meshes, kwargs = self._consolidate_meshes(visual_meshes, 'visual_mesh', **kwargs)
+        collision_meshes, kwargs = self._consolidate_meshes(collision_meshes, 'collision_mesh', **kwargs)
+        if not visual_color:
+            visual_color = (0.8, 0.8, 0.8)
 
-        all_link_names = [l.name for l in self.links]  # noqa: E741
-        if name in all_link_names:
-            raise ValueError("Link name '%s' already used in chain." % name)
+        visuals = []
+        collisions = []
 
-        visual = []
-        collision = []
-
-        for visual_mesh in visual_meshes:
-            if not visual_color:
-                visual_color = (0.8, 0.8, 0.8)
-            v = Visual(Geometry(MeshDescriptor("")))
+        for visual in visual_meshes:
+            if isinstance(visual, Mesh):
+                v = Visual(Geometry(MeshDescriptor("")))
+                v.geometry.shape.geometry = visual
+            else:
+                v = Visual.from_primitive(visual)
             v.material = Material(color=Color("%f %f %f 1" % visual_color))
-            v.geometry.shape.geometry = visual_mesh
-            visual.append(v)
+            visuals.append(v)
 
-        for collision_mesh in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
-            c = Collision(Geometry(MeshDescriptor("")))
-            c.geometry.shape.geometry = collision_mesh
-            collision.append(c)
+        for collision in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
+            if isinstance(collision, Mesh):
+                c = Collision(Geometry(MeshDescriptor("")))
+                c.geometry.shape.geometry = collision
+            else:
+                c = Collision.from_primitive(collision)
+            collisions.append(c)
 
-        link = Link(name, visual=visual, collision=collision, **kwargs)
+        link = Link(name, visual=visuals, collision=collisions, **kwargs)
         self.links.append(link)
+        # Must build the tree structure, if adding the first link to an empty robot
+        if len(self.links) == 1:
+            self._rebuild_tree()
+            self._create(self.root, Transformation())
         return link
 
     def remove_link(self, name):
@@ -985,18 +999,7 @@ class RobotModel(Base):
         self._joints[joint.name] = joint
         self._adjacency[joint.name] = [child_link.name]
 
-        # Using only part of self._create(link, parent_transformation)
-        parent_transformation = Transformation()
-        for item in itertools.chain(parent_link.visual, parent_link.collision):
-            if not item.init_transformation:
-                item.init_transformation = parent_transformation
-            else:
-                parent_transformation = item.init_transformation
-
-        joint._create(parent_transformation)
-
-        for item in itertools.chain(child_link.visual, child_link.collision):
-            item.init_transformation = joint.current_transformation
+        self._create(self.root, Transformation())
 
         return joint
 
