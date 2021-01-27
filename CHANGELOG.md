@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug in parameter list of function `mesh_bounding_box` bound as method `Mesh.bounding_box`.
 * Added ability of `RobotMdel.add_link` to accept primitives in addition to meshes.
+* Fixed bug regarding the computation of `Joint.current_origin`.
+* Fixed bug regarding a repeated call to `RobotModel.add_joint`.
 
 ### Removed
 
