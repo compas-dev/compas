@@ -854,7 +854,7 @@ class RobotModel(Base):
         ----------
         name : str
             The name of the link
-        visual_meshes : list of :class:`compas.datastructures.Mesh`, optional
+        visual_meshes : list of :class:`compas.datastructures.Mesh` or :class:`compas.geometry.Shape`, optional
             The link's visual mesh.
         visual_color : list of 3 float, optional
             The rgb color of the mesh. Defaults to (0.8, 0.8, 0.8)
