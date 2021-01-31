@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - mesh_planarize_faces</title>
+  
+  <title> - mesh_planarize_faces</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -104,9 +106,9 @@
           
           <div class="detail section" id="mesh-planarize-faces">
 <h1>mesh_planarize_faces</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="compas.datastructures.mesh_planarize_faces">
-<code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">mesh_planarize_faces</code><span class="sig-paren">(</span><em class="sig-param">mesh</em>, <em class="sig-param">fixed=None</em>, <em class="sig-param">kmax=100</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">callback_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/planarisation.html#mesh_planarize_faces"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">mesh_planarize_faces</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mesh</span></em>, <em class="sig-param"><span class="n">fixed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">kmax</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">callback</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">callback_args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/master/src/compas/datastructures/mesh/planarisation.py#L60"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Planarise a set of connected faces.</p>
 <p>Planarisation is implemented as a two-step iterative procedure. At every
 iteration, faces are first individually projected to their best-fit plane,

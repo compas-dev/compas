@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - ImageForm</title>
+  
+  <title> - ImageForm</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="ImageForm.init" href="compas_rhino.forms.ImageForm.init.html" />
+    <link rel="next" title="ImageForm.on_cancel" href="compas_rhino.forms.ImageForm.on_cancel.html" />
   
   
   
@@ -104,11 +106,11 @@
           
           <div class="detail section" id="imageform">
 <h1>ImageForm</h1>
-<dl class="class">
+<dl class="py class">
 <dt id="compas_rhino.forms.ImageForm">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.forms.</code><code class="sig-name descname">ImageForm</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">title='Image'</em>, <em class="sig-param">width=None</em>, <em class="sig-param">height=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/forms/image.html#ImageForm"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.forms.base.BaseForm</span></code></p>
-<p>A form for displaying images.</p>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.forms.</code><code class="sig-name descname">ImageForm</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/master/src/compas_rhino/forms/etoforms/image.py#L76"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Eto.Forms.Dialog.</span></code></p>
+<p>Windows form for displaying images.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -126,10 +128,9 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="kn">import</span> <span class="n">ImageForm</span>
-
-<span class="n">form</span> <span class="o">=</span> <span class="n">ImageForm</span><span class="p">(</span><span class="s1">&#39;http://block.arch.ethz.ch/brg/images/cache/dsc02360_ni-2_cropped_1528706473_624x351.jpg&#39;</span><span class="p">)</span>
-<span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="kn">import</span> <span class="n">ImageForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">form</span> <span class="o">=</span> <span class="n">ImageForm</span><span class="p">(</span><span class="s1">&#39;http://block.arch.ethz.ch/brg/images/cache/dsc02360_ni-2_cropped_1528706473_624x351.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -139,14 +140,14 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.ImageForm.init.html#compas_rhino.forms.ImageForm.init" title="compas_rhino.forms.ImageForm.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.ImageForm.on_cancel.html#compas_rhino.forms.ImageForm.on_cancel" title="compas_rhino.forms.ImageForm.on_cancel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_cancel</span></code></a>(sender, e)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.ImageForm.on_form_closed.html#compas_rhino.forms.ImageForm.on_form_closed" title="compas_rhino.forms.ImageForm.on_form_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_form_closed</span></code></a>(sender, e)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.ImageForm.on_ok.html#compas_rhino.forms.ImageForm.on_ok" title="compas_rhino.forms.ImageForm.on_ok"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_ok</span></code></a>(sender, e)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.ImageForm.show.html#compas_rhino.forms.ImageForm.show" title="compas_rhino.forms.ImageForm.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
-<td><p>Show the form as a modal dialog.</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -229,10 +230,10 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
       
 
       
-        <a href="compas_rhino.forms.ImageForm.init.html" title="ImageForm.init" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.forms.ImageForm.on_cancel.html" title="ImageForm.on_cancel" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            ImageForm.init
+            ImageForm.on_cancel
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
