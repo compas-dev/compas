@@ -1,12 +1,19 @@
+# flake8: noqa
 # -*- coding: utf-8 -*-
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = "1.0"
 
-from sphinx.ext.napoleon.docstring import NumpyDocstring
+import sys
+import os
+import inspect
+import importlib
 
 import sphinx_compas_theme
+from sphinx.ext.napoleon.docstring import NumpyDocstring
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../src'))
 
 # -- General configuration ------------------------------------------------
 
@@ -40,7 +47,8 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
+    "sphinx.ext.linkcode",
+    "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
     "sphinx.ext.inheritance_diagram",
@@ -147,6 +155,7 @@ NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
 # assigned to the _section dict
 def patched_parse(self):
     self._sections["keys"] = self._parse_keys_section
+    self._sections["attributes"] = self._parse_attributes_section
     self._sections["class attributes"] = self._parse_class_attributes_section
     self._unpatched_parse()
 
@@ -261,6 +270,44 @@ intersphinx_mapping = {
     "compas": ("https://compas.dev/compas/latest/", None),
 }
 
+# linkcode
+
+def linkcode_resolve(domain, info):
+    if domain != 'py':
+        return None
+    if not info['module']:
+        return None
+    if not info['fullname']:
+        return None
+
+    package = info['module'].split('.')[0]
+    if not package.startswith('compas'):
+        return None
+
+    module = importlib.import_module(info['module'])
+    parts = info['fullname'].split('.')
+
+    if len(parts) == 1:
+        obj = getattr(module, info['fullname'])
+        filename = inspect.getmodule(obj).__name__.replace('.', '/')
+        lineno = inspect.getsourcelines(obj)[1]
+    elif len(parts) == 2:
+        obj_name, attr_name = parts
+        obj = getattr(module, obj_name)
+        attr = getattr(obj, attr_name)
+        if inspect.isfunction(attr):
+            filename = inspect.getmodule(obj).__name__.replace('.', '/')
+            lineno = inspect.getsourcelines(attr)[1]
+        else:
+            return None
+    else:
+        return None
+
+    return f"https://github.com/compas-dev/compas/blob/master/src/{filename}.py#L{lineno}"
+
+# extlinks
+
+extlinks = {}
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -274,7 +321,7 @@ html_theme_options = {
 }
 html_context = {}
 html_static_path = []
-html_extra_path = [".nojekyll"]
+html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
 html_show_sourcelink = False
