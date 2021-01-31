@@ -71,7 +71,7 @@ extensions = [
     "sphinx.ext.inheritance_diagram",
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
-    "m2r",
+    "m2r2",
     "nbsphinx",
 ]
 
