@@ -234,7 +234,7 @@ it can be used as a scaffolding for code to be run in a Python script editor wit
 
 <span class="c1"># Add some geometry to Robby here</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS FAB::Example&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
@@ -295,7 +295,7 @@ and is useful, outside of a CAD environment.</p>
 <span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;box_link&#39;</span><span class="p">,</span> <span class="n">visual_meshes</span><span class="o">=</span><span class="p">[</span><span class="n">box</span><span class="p">])</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS FAB::Example&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
@@ -321,7 +321,7 @@ of the box.  The box is also shifted slightly forward in the y-direction:</p>
 <span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;box_link&#39;</span><span class="p">,</span> <span class="n">visual_meshes</span><span class="o">=</span><span class="p">[</span><span class="n">box</span><span class="p">])</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS FAB::Example&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
@@ -340,7 +340,7 @@ there is a stack of two boxes:</p>
 <span class="n">box_2</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;box_link&#39;</span><span class="p">,</span> <span class="n">visual_meshes</span><span class="o">=</span><span class="p">[</span><span class="n">box_1</span><span class="p">,</span> <span class="n">box_2</span><span class="p">])</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS FAB::Example&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
@@ -355,7 +355,7 @@ So to stack the boxes, the center of <code class="docutils literal notranslate">
 <p>One link does not an interesting robot make.  The following code snippet adds
 a cylindrical second link as well as a joint connecting the two.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Cylinder</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Plane</span><span class="p">,</span> <span class="n">Vector</span>
-<span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
+<span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">Joint</span><span class="p">,</span> <span class="n">RobotModel</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Jointy&#39;</span><span class="p">)</span>
@@ -377,7 +377,7 @@ a cylindrical second link as well as a joint connecting the two.</p>
      <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS FAB::Example&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
