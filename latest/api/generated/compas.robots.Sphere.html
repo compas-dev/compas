@@ -108,7 +108,7 @@
 <h1>Sphere</h1>
 <dl class="py class">
 <dt id="compas.robots.Sphere">
-<em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">Sphere</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">radius</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/master/src/compas/robots/model/geometry.py#L299"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">Sphere</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">radius</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/master/src/compas/robots/model/geometry.py#L307"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.model.geometry.BaseShape</span></code></p>
 <p>3D shape primitive representing a sphere.</p>
 <dl class="field-list simple">
@@ -138,22 +138,25 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Sphere.from_data.html#compas.robots.Sphere.from_data" title="compas.robots.Sphere.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Sphere.from_json.html#compas.robots.Sphere.from_json" title="compas.robots.Sphere.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct an object from serialised data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Sphere.get_urdf_element.html#compas.robots.Sphere.get_urdf_element" title="compas.robots.Sphere.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Sphere.from_geometry.html#compas.robots.Sphere.from_geometry" title="compas.robots.Sphere.from_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_geometry</span></code></a>(geometry)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Sphere.to_data.html#compas.robots.Sphere.to_data" title="compas.robots.Sphere.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Sphere.from_json.html#compas.robots.Sphere.from_json" title="compas.robots.Sphere.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<td><p>Construct an object from serialised data contained in a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Sphere.get_urdf_element.html#compas.robots.Sphere.get_urdf_element" title="compas.robots.Sphere.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Sphere.to_data.html#compas.robots.Sphere.to_data" title="compas.robots.Sphere.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Sphere.to_json.html#compas.robots.Sphere.to_json" title="compas.robots.Sphere.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Sphere.to_json.html#compas.robots.Sphere.to_json" title="compas.robots.Sphere.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Sphere.validate_data.html#compas.robots.Sphere.validate_data" title="compas.robots.Sphere.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Sphere.validate_data.html#compas.robots.Sphere.validate_data" title="compas.robots.Sphere.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Sphere.validate_json.html#compas.robots.Sphere.validate_json" title="compas.robots.Sphere.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Sphere.validate_json.html#compas.robots.Sphere.validate_json" title="compas.robots.Sphere.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>

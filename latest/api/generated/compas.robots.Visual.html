@@ -108,7 +108,7 @@
 <h1>Visual</h1>
 <dl class="py class">
 <dt id="compas.robots.Visual">
-<em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">Visual</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">geometry</span></em>, <em class="sig-param"><span class="n">origin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">material</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/master/src/compas/robots/model/link.py#L193"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">Visual</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">geometry</span></em>, <em class="sig-param"><span class="n">origin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">material</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/master/src/compas/robots/model/link.py#L219"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></p>
 <p>Visual description of a link.</p>
 <dl class="field-list simple">
@@ -136,22 +136,25 @@ to the reference frame of the link.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Visual.from_json.html#compas.robots.Visual.from_json" title="compas.robots.Visual.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialised data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Visual.get_color.html#compas.robots.Visual.get_color" title="compas.robots.Visual.get_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_color</span></code></a>()</p></td>
-<td><p>Get the RGBA color array assigned to the link.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Visual.get_urdf_element.html#compas.robots.Visual.get_urdf_element" title="compas.robots.Visual.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Visual.from_primitive.html#compas.robots.Visual.from_primitive" title="compas.robots.Visual.from_primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_primitive</span></code></a>(primitive, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Visual.to_data.html#compas.robots.Visual.to_data" title="compas.robots.Visual.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Visual.get_color.html#compas.robots.Visual.get_color" title="compas.robots.Visual.get_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_color</span></code></a>()</p></td>
+<td><p>Get the RGBA color array assigned to the link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Visual.get_urdf_element.html#compas.robots.Visual.get_urdf_element" title="compas.robots.Visual.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Visual.to_data.html#compas.robots.Visual.to_data" title="compas.robots.Visual.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Visual.to_json.html#compas.robots.Visual.to_json" title="compas.robots.Visual.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Visual.to_json.html#compas.robots.Visual.to_json" title="compas.robots.Visual.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Visual.validate_data.html#compas.robots.Visual.validate_data" title="compas.robots.Visual.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Visual.validate_data.html#compas.robots.Visual.validate_data" title="compas.robots.Visual.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Visual.validate_json.html#compas.robots.Visual.validate_json" title="compas.robots.Visual.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Visual.validate_json.html#compas.robots.Visual.validate_json" title="compas.robots.Visual.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
