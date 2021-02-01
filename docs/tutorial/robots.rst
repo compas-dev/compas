@@ -141,6 +141,36 @@ of joints:
 * **Fixed**: Not really a joint because it cannot move, all degrees of freedom
   are locked.
 
+
+Visualizing Robots
+==================
+
+Before jumping into how to build a robot model, let's first see how to visualize
+one. This can be done with Blender, Rhino or Grasshopper using one of COMPAS's
+artists.  The basic procedure is the same in
+any of the CAD software (aside from the import statement), so for simplicity we
+will demonstrate the use of :class:`compas_rhino.artists.RobotModelArtist` in Rhino.
+Be sure to first install COMPAS for Rhino.  While the following code is incomplete,
+it can be used as a scaffolding for code to be run in a Python script editor within Rhino.
+
+.. code-block:: python
+
+    import compas
+    from compas.robots import RobotModel
+    from compas_rhino.artists import RobotModelArtist
+
+    model = RobotModel('Robby')
+
+    # Add some geometry to Robby here
+
+    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist.clear_layer()
+    artist.draw_visual()
+
+
+See below for a complete example.
+
+
 Building robots models
 ======================
 
@@ -189,10 +219,36 @@ robot model, adding a link in the shape of a box is as easy as:
     >>> box = Box(Frame.worldXY(), 1, 2, .5)
     >>> model.add_link(name='box_link', visual_meshes=[box])
 
-This has added a box of dimensions ``1`` x ``2`` x ``.5`` whose geometric center
-and orientation coincides with the world XY frame.  The ``visual_meshes`` argument
-can be given a list containing COMPAS primitives such as :class:`compas.geometry.Box`
-or the more complex COMPAS meshes :class:`compas.geometry.Mesh`. For simplicity,
+This code snippet can be modified and run in a Rhino python editor
+to visualize Boxy.  Throughout the rest of this tutorial, the code
+snippets will include the lines for visualization in Rhino, but be
+aware that the class :class:`compas.robots.RobotModel` can be used,
+and is useful, outside of a CAD environment.
+
+.. code-block:: python
+
+    from compas.geometry import Box, Frame
+    from compas.robots import RobotModel
+    from compas_rhino.artists import RobotModelArtist
+
+    model = RobotModel(name='Boxy')
+    box = Box(Frame.worldXY(), 1, 2, .5)
+    model.add_link(name='box_link', visual_meshes=[box])
+
+    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist.clear_layer()
+    artist.draw_visual()
+
+
+.. figure:: files/boxy_1.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+As can be seen, this has added a box of dimensions ``1`` x ``2`` x ``.5``
+whose geometric center and orientation coincides with the world XY frame.
+The ``visual_meshes`` argument can be given a list containing COMPAS
+primitives such as :class:`compas.geometry.Box` or the more complex
+COMPAS meshes :class:`compas.geometry.Mesh`. For simplicity,
 this tutorial uses only primitives.
 
 To reposition the box relative to the link's
@@ -200,31 +256,45 @@ origin, simply change the frame of the provided box. To move the box so that it 
 above the XY plane, the origin must be shifted in the z-direction by half the height
 of the box.  The box is also shifted slightly forward in the y-direction:
 
-::
+.. code-block:: python
 
-    >>> from compas.geometry import Box, Frame
-    >>> from compas.robots import RobotModel
+    from compas.geometry import Box, Frame
+    from compas.robots import RobotModel
+    from compas_rhino.artists import RobotModelArtist
 
-::
+    model = RobotModel(name='Boxy')
+    box = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
+    model.add_link(name='box_link', visual_meshes=[box])
 
-    >>> model = RobotModel(name='Boxy')
-    >>> box = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
-    >>> model.add_link(name='box_link', visual_meshes=[box])
+    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist.clear_layer()
+    artist.draw_visual()
+
+.. figure:: files/boxy_2.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 A link may have more than one geometric element associated to it.  Now
 there is a stack of two boxes:
 
-::
+.. code-block:: python
 
-    >>> from compas.geometry import Box, Frame
-    >>> from compas.robots import RobotModel
+    from compas.geometry import Box, Frame
+    from compas.robots import RobotModel
+    from compas_rhino.artists import RobotModelArtist
 
-::
+    model = RobotModel(name='Boxy')
+    box_1 = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
+    box_2 = Box(Frame([0, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
+    model.add_link(name='box_link', visual_meshes=[box_1, box_2])
 
-    >>> model = RobotModel(name='Boxy')
-    >>> box_1 = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
-    >>> box_2 = Box(Frame([0, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
-    >>> model.add_link(name='box_link', visual_meshes=[box_1, box_2])
+    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist.clear_layer()
+    artist.draw_visual()
+
+.. figure:: files/boxy_3.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 Remember that the frame of the box is the geometric center of the box relative
 to the link's origin (which, in this case, happens to be the world XY frame).
@@ -234,31 +304,39 @@ So to stack the boxes, the center of ``box_2`` must be placed at a height of
 One link does not an interesting robot make.  The following code snippet adds
 a cylindrical second link as well as a joint connecting the two.
 
-::
+.. code-block:: python
 
-    >>> from compas.geometry import Box, Circle, Cylinder, Frame, Plane, Vector
-    >>> from compas.robots import Joint, RobotModel
+    from compas.geometry import Box, Circle, Cylinder, Frame, Plane, Vector
+    from compas.robots import RobotModel
+    from compas_rhino.artists import RobotModelArtist
 
-::
+    model = RobotModel(name='Jointy')
+    box_1 = Box(Frame([2, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
+    box_2 = Box(Frame([2, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
+    box_link = model.add_link(name='box_link', visual_meshes=[box_1, box_2])
 
-    >>> model = RobotModel(name='Jointy')
-    >>> box_1 = Box(Frame([2, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
-    >>> box_2 = Box(Frame([2, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
-    >>> box_link = model.add_link(name='box_link', visual_meshes=[box_1, box_2])
-    >>>
-    >>> cylinder = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), .5), 8)
-    >>> cylinder_link = model.add_link(name='cylinder_link', visual_meshes=[cylinder])
-    >>>
-    >>> origin = Frame([0, 0, 7], [1, 0, 0], [0, 1, 0])
-    >>> axis = Vector(1, 0, 0)
-    >>> model.add_joint(
-    >>>     name='box_cylinder_joint',
-    >>>     type=Joint.CONTINUOUS,
-    >>>     parent_link=box_link,
-    >>>     child_link=cylinder_link,
-    >>>     origin=origin,
-    >>>     axis=axis,
-    >>> )
+    cylinder = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), .5), 8)
+    cylinder_link = model.add_link(name='cylinder_link', visual_meshes=[cylinder])
+
+    origin = Frame([0, 0, 7], [1, 0, 0], [0, 1, 0])
+    axis = Vector(1, 0, 0)
+    model.add_joint(
+         name='box_cylinder_joint',
+         type=Joint.CONTINUOUS,
+         parent_link=box_link,
+         child_link=cylinder_link,
+         origin=origin,
+         axis=axis,
+    )
+
+    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist.clear_layer()
+    artist.draw_visual()
+
+
+.. figure:: files/jointy.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 There's a lot going on in this snippet, so let's break it down.  First, the link
 containing the stacked boxes is added, but the geometry has been shifted to the
@@ -283,8 +361,11 @@ Here, the joint will rotate about the joint origin's x-axis.
 
 Adding a bit more geometry and a few links with fixed joints and we arrive at a rough
 model of the classic drinking bird toy (full code
-:download:`here <files/drinking_bird.py>`).  To visualize this,
-see the section Visualizing Robots below.
+:download:`here <files/drinking_bird.py>`).
+
+.. figure:: files/drinking_bird.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 While it can be useful to programmatically create a robot, more often than not, robot
 models are loaded from URDF files. To load a URDF into a robot model, use the
@@ -331,33 +412,6 @@ The following snippet shows how to load the robot model currently active in ROS:
     >>> with RosClient() as ros:
     ...    robot = ros.load_robot(load_geometry=True)
     ...    print(robot.model)
-
-
-Visualizing Robots
-==================
-
-Once a robot has been built or loaded, it can be visualized in Blender, Rhino or
-Grasshopper using one of COMPAS's artists.  The basic procedure is the same in
-any of the CAD software (aside from the import statement), so for simplicity we
-will demonstrate the use of :class:`compas_rhino.artists.RobotModelArtist` in Rhino.  Once
-COMPAS has been installed for Rhino,
-the following can be run in a Python script editor within Rhino.
-
-.. code-block:: python
-
-    import compas
-    from compas.robots import GithubPackageMeshLoader
-    from compas.robots import RobotModel
-    from compas_rhino.artists import RobotModelArtist
-
-    compas.PRECISION = '12f'
-    github = GithubPackageMeshLoader('ros-industrial/abb', 'abb_irb6600_support', 'kinetic-devel')
-    model = RobotModel.from_urdf_file(github.load_urdf('irb6640.urdf'))
-    model.load_geometry(github)
-
-    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
-    artist.clear_layer()
-    artist.draw_visual()
 
 
 FK, IK & Path Planning
