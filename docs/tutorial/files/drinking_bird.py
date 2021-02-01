@@ -32,7 +32,7 @@ model.add_joint(
 )
 
 head = Sphere([0, 0, 0], 1)
-beak = Cylinder(Circle(Plane([0, 1, -.3], [-1, 0, 0]), .3), 1.5)
+beak = Cylinder(Circle(Plane([0, 1, -.3], [0, 1, 0]), .3), 1.5)
 head_link = model.add_link('head', visual_meshes=[head, beak])
 neck_joint_origin = Frame([0, 0, 4], [1, 0, 0], [0, 1, 0])
 model.add_joint('neck_joint', Joint.FIXED, torso_link, head_link, origin=neck_joint_origin)

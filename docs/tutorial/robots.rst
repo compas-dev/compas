@@ -192,7 +192,7 @@ robot model, adding a link in the shape of a box is as easy as:
 This has added a box of dimensions ``1`` x ``2`` x ``.5`` whose geometric center
 and orientation coincides with the world XY frame.  The ``visual_meshes`` argument
 can be given a list containing COMPAS primitives such as :class:`compas.geometry.Box`
-or more the more complex COMPAS meshes :class:`compas.geometry.Mesh`. For simplicity,
+or the more complex COMPAS meshes :class:`compas.geometry.Mesh`. For simplicity,
 this tutorial uses only primitives.
 
 To reposition the box relative to the link's
@@ -236,7 +236,7 @@ a cylindrical second link as well as a joint connecting the two.
 
 ::
 
-    >>> from compas.geometry import Box, Cylinder, Frame, Plane, Vector
+    >>> from compas.geometry import Box, Circle, Cylinder, Frame, Plane, Vector
     >>> from compas.robots import Joint, RobotModel
 
 ::
