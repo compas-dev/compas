@@ -163,7 +163,7 @@ it can be used as a scaffolding for code to be run in a Python script editor wit
 
     # Add some geometry to Robby here
 
-    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
@@ -235,7 +235,7 @@ and is useful, outside of a CAD environment.
     box = Box(Frame.worldXY(), 1, 2, .5)
     model.add_link(name='box_link', visual_meshes=[box])
 
-    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
@@ -266,7 +266,7 @@ of the box.  The box is also shifted slightly forward in the y-direction:
     box = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
     model.add_link(name='box_link', visual_meshes=[box])
 
-    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
@@ -288,7 +288,7 @@ there is a stack of two boxes:
     box_2 = Box(Frame([0, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
     model.add_link(name='box_link', visual_meshes=[box_1, box_2])
 
-    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
@@ -307,7 +307,7 @@ a cylindrical second link as well as a joint connecting the two.
 .. code-block:: python
 
     from compas.geometry import Box, Circle, Cylinder, Frame, Plane, Vector
-    from compas.robots import RobotModel
+    from compas.robots import Joint, RobotModel
     from compas_rhino.artists import RobotModelArtist
 
     model = RobotModel(name='Jointy')
@@ -329,7 +329,7 @@ a cylindrical second link as well as a joint connecting the two.
          axis=axis,
     )
 
-    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
