@@ -9,11 +9,11 @@ invoke >=0.14
 ipykernel
 ipython >=5.8
 isort
-m2r
+m2r2
 nbsphinx
 pydocstyle
 pytest >=3.2
-sphinx_compas_theme >=0.12.3
-sphinx >=1.6, <2.4.4
+sphinx_compas_theme >=0.13
+sphinx >=3.4
 twine
 -e .

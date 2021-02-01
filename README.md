@@ -50,3 +50,8 @@ See changes between releases on the [changelog](https://compas.dev/compas/latest
 ## License
 
 The main library of **COMPAS** is [released under the MIT license](https://compas.dev/compas/latest/license.html).
+
+## Credits
+
+COMPAS is developed by a small team of core developers (`compas-dev`) and with the support of contributers from the open source community.
+See the [list of authors](AUTHORS.md) for a complete overview...
