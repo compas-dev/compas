@@ -1,9 +1,11 @@
-import re
 import os
+import re
 
 import pytest
 
 from compas.files import URDF
+from compas.geometry import Frame
+from compas.geometry import Transformation
 from compas.robots import Box
 from compas.robots import Cylinder
 from compas.robots import Joint
@@ -133,6 +135,51 @@ def test_ur5_urdf_to_string(ur5_file):
     assert r.name == 'ur5'
     assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
 
+
+def test_forward_kinematics(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    f = r.forward_kinematics(dict())
+
+    ftip = Frame((0.817, 0.191, -0.005), (-0.000, 1.000, 0.000), (1.000, 0.000, 0.000))
+    assert str(f) == str(ftip)
+
+    fbase = r.forward_kinematics(dict(), link_name='base_link')
+    assert str(fbase) == str(Frame.worldXY())
+
+
+def test_rcf_on_fixed_joints(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    fbase = r.forward_kinematics(dict(), link_name='base_link')
+    assert str(fbase) == str(Frame.worldXY())
+
+    f = r.forward_kinematics(dict())
+    ftip = Frame((0.817, 0.191, -0.005), (-0.000, 1.000, 0.000), (1.000, 0.000, 0.000))
+    assert str(f) == str(ftip)
+
+    frcf = Frame((1.72, 2.25, 0.53), (0.000, 1.000, 0.000), (1.000, -0.000, 0.000))
+    r.rcf = frcf
+    fbase = r.forward_kinematics(dict(), link_name='base_link')
+    assert str(fbase) == str(frcf)
+
+    f = r.forward_kinematics(dict())
+    fexpected = Frame.from_transformation(Transformation.from_frame(frcf) * Transformation.from_frame(ftip))
+    assert str(f.point) == str(fexpected.point)
+
+
+def test_rcf_without_fixed_joint():
+    model = RobotModel("robot")
+    link0 = model.add_link("link0")
+    link1 = model.add_link("link1")
+    link2 = model.add_link("link2")
+    tip = model.add_link("tip")
+
+    model.add_joint("joint1", Joint.CONTINUOUS, link0, link1, origin=Frame((20, 0, 0), (1, 0, 0), (0, 1, 0)))
+    model.add_joint("joint2", Joint.CONTINUOUS, link1, link2, origin=Frame((20, 0, 0), (1, 0, 0), (0, 1, 0)))
+    model.add_joint("joint3", Joint.CONTINUOUS, link2, tip, origin=Frame((11, 0, 0), (1, 0, 0), (0, 1, 0)))
+    assert str(model.forward_kinematics(dict(), 'tip').point) == 'Point(51.000, 0.000, 0.000)'
+
+    model.rcf = Frame((10, 0, 0), (1, 0, 0), (0, 1, 0))
+    assert str(model.forward_kinematics(dict(), 'tip').point) == 'Point(61.000, 0.000, 0.000)'
 
 def test_ur5_urdf_data(ur5_file):
     r_original = RobotModel.from_urdf_file(ur5_file)
@@ -620,8 +667,9 @@ if __name__ == '__main__':
     import os
     from zipfile import ZipFile
     try:
-        from StringIO import StringIO as ReaderIO
         from urllib import urlopen
+
+        from StringIO import StringIO as ReaderIO
     except ImportError:
         from io import BytesIO as ReaderIO
         from urllib.request import urlopen
