@@ -313,7 +313,7 @@ def linkcode_resolve(domain, info):
         obj = getattr(module, obj_name)
         attr = getattr(obj, attr_name)
         if inspect.isfunction(attr):
-            filename = inspect.getmodule(obj).__name__.replace('.', '/')
+            filename = inspect.getmodule(attr).__name__.replace('.', '/')
             lineno = inspect.getsourcelines(attr)[1]
         else:
             return None
