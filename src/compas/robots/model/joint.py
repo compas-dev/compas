@@ -713,7 +713,7 @@ class Joint(Base):
         -------
         None
         """
-        self.current_origin.transform(transformation)
+        self.current_origin = self.origin.transformed(transformation)
         self.current_axis.transform(self.current_transformation)
 
     def calculate_revolute_transformation(self, position):
