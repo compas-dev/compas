@@ -509,7 +509,12 @@ class Axis(Base):
         """
         xyz = transform_vectors(
             [[self.x, self.y, self.z]], transformation.matrix)
-        return Vector(xyz[0][0], xyz[0][1], xyz[0][2])
+
+        axis = Axis()
+        axis.x = xyz[0][0]
+        axis.y = xyz[0][1]
+        axis.z = xyz[0][2]
+        return axis
 
     @property
     def vector(self):
@@ -608,10 +613,28 @@ class Joint(Base):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
-        # The following are world-relative frames representing the origin and the axis, which change with
-        # the joint state, while `origin` and `axis` above are parent-relative and static.
-        self.current_origin = self.origin.copy()
-        self.current_axis = self.axis.copy()
+
+    @property
+    def origin(self):
+        return self._origin
+
+    @property
+    def axis(self):
+        return self._axis
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = value
+        # The following is a world-relative frame representing the origin, which change with
+        # the joint state, while `origin` is parent-relative and static.
+        self.current_origin = value.copy()
+
+    @axis.setter
+    def axis(self, value):
+        self._axis = value
+        # The following is a world-relative axis which change with
+        # the joint state, while `axis` is parent-relative and static.
+        self.current_axis = value.copy()
 
     def get_urdf_element(self):
         attributes = {
@@ -699,7 +722,7 @@ class Joint(Base):
         None
         """
         self.current_origin.transform(transformation)
-        self.current_axis.transform(transformation)
+        self.current_axis = self.axis.transformed(self.current_transformation)
 
     def _create(self, transformation):
         """Internal method to initialize the transformation tree.
@@ -714,7 +737,7 @@ class Joint(Base):
         None
         """
         self.current_origin = self.origin.transformed(transformation)
-        self.current_axis.transform(self.current_transformation)
+        self.current_axis = self.axis.transformed(self.current_transformation)
 
     def calculate_revolute_transformation(self, position):
         """Returns a transformation of a revolute joint.
