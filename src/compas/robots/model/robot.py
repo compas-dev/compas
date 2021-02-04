@@ -592,25 +592,19 @@ class RobotModel(Base):
         :class:`compas.geometry.Frame`
             Robot coordinate frame, usually placed at the base of the robot and attached to a ``world`` link.
         """
-        return Frame.from_transformation(self._root_transformation)
+        rcf_joint = self._get_rcf_candidate_joint()
+
+        if rcf_joint:
+            return Frame(rcf_joint.origin.point, rcf_joint.origin.xaxis, rcf_joint.origin.yaxis)
+        else:
+            return self._rcf or Frame.worldXY()
 
     @rcf.setter
     def rcf(self, frame):
-        # RCF can be set in two ways:"
-        # 1) as a fixed frame in front of the configurable joint chain (this is the URDF way)
-        # 2) or independently of the model of joints, as a reference frame
-        # The 1) takes precedence over the 2) if both are used.
-        if not self.root or not self._joints:
-            self._rcf = frame.copy()
-            return
-
-        base_link = self.get_link_by_name(self.get_base_link_name())
-
-        # if a fixed joint exists, set its origin based on the specified frame
-        if base_link and base_link.parent_joint and base_link.parent_joint.type == Joint.FIXED:
-            base_link.parent_joint.origin = Origin(frame.point, frame.xaxis, frame.yaxis)
+        rcf_joint = self._get_rcf_candidate_joint()
+        if rcf_joint:
+            rcf_joint.origin = Origin(frame.point, frame.xaxis, frame.yaxis)
         else:
-            # else, store the frame as a memory reference only
             self._rcf = frame.copy()
 
         self._create(self.root, self._root_transformation)
@@ -619,24 +613,39 @@ class RobotModel(Base):
     def _root_transformation(self):
         """Internal: root transformation used as base of the kinematic chain.
 
+        If there's no fixed joint to be used as RCF, take the manually configured self.rcf
+        otherwise, use Transformation()
+
         Returns
         -------
         :class:`compas.geometry.Transformation`
             A transformation describing the root of the chain.
         """
-        # Uninitialized robot, default to identity matrix
-        if not self.root or not self._joints:
+        rcf_joint = self._get_rcf_candidate_joint()
+
+        if rcf_joint or not self._rcf:
             return Transformation()
 
+        return Transformation.from_frame(self._rcf)
+
+    def _get_rcf_candidate_joint(self):
+        """Internal: try to return a fixed joint as candidate for RCF (robot coordinate frame)"""
+        if not self.root or not self.joints or not self.links:
+            return None
+
         base_link = self.get_link_by_name(self.get_base_link_name())
+        if not base_link:
+            return None
 
-        # if there's no fixed joint and there is an RCF is explicitly set, return it as a transform
-        ref_frame = Frame.worldXY()
+        rcf_candidate = base_link.parent_joint
 
-        if (not base_link or not base_link.parent_joint or base_link.parent_joint.type != Joint.FIXED) and self._rcf:
-            ref_frame = self._rcf
+        if not rcf_candidate:
+            return None
 
-        return Transformation.from_frame(ref_frame)
+        if rcf_candidate.type != Joint.FIXED:
+            return None
+
+        return rcf_candidate
 
     def load_geometry(self, *resource_loaders, **kwargs):
         """Load external geometry resources, such as meshes.
