@@ -625,14 +625,14 @@ class Joint(Base):
     @origin.setter
     def origin(self, value):
         self._origin = value
-        # The following is a world-relative frame representing the origin, which change with
+        # The following is a world-relative frame representing the origin, which changes with
         # the joint state, while `origin` is parent-relative and static.
         self.current_origin = value.copy()
 
     @axis.setter
     def axis(self, value):
         self._axis = value
-        # The following is a world-relative axis which change with
+        # The following is a world-relative axis which changes with
         # the joint state, while `axis` is parent-relative and static.
         self.current_axis = value.copy()
 
