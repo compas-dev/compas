@@ -285,22 +285,22 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
     def draw_visual(self):
         """Draws all visual geometry of the robot model."""
-        for native_geometry in self._draw_model_geometry(self.model, 'visual'):
+        for native_geometry in self._iter_geometry(self.model, 'visual'):
             yield native_geometry
         if self.attached_tool_model:
-            for native_geometry in self._draw_model_geometry(self.attached_tool_model, 'visual'):
+            for native_geometry in self._iter_geometry(self.attached_tool_model, 'visual'):
                 yield native_geometry
 
     def draw_collision(self):
         """Draws all collision geometry of the robot model."""
-        for native_geometry in self._draw_model_geometry(self.model, 'collision'):
+        for native_geometry in self._iter_geometry(self.model, 'collision'):
             yield native_geometry
         if self.attached_tool_model:
-            for native_geometry in self._draw_model_geometry(self.attached_tool_model, 'collision'):
+            for native_geometry in self._iter_geometry(self.attached_tool_model, 'collision'):
                 yield native_geometry
 
     @staticmethod
-    def _draw_model_geometry(model, geometry_type):
+    def _iter_geometry(model, geometry_type):
         for link in model.iter_links():
             for item in getattr(link, geometry_type):
                 if item.native_geometry:

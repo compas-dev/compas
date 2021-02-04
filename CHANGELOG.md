@@ -520,12 +520,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Split up network and mesh naming conventions.
 * Reworked network face cycle finding.
 * Updated mesh from lines.
-* Updated network plotter in correspondance with network.
+* Updated network plotter in correspondence with network.
 * Integrated mixin functionality and removed mixins.
+* Meshes are now initially hidden in `compas_blender.artists.RobotModelArtist`.
+* `compas_blender.artists.RobotModelArtist.draw_visual` and `compas_blender.artists.RobotModelArtist.draw_collision` now show those meshes.
 
 ### Removed
 
-* Removed parallelisation from network algorithms.
+* Removed parallelization from network algorithms.
 * Removed numba based dr implementations.
 
 ## [0.15.0] 2020-01-24

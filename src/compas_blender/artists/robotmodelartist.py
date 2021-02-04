@@ -35,16 +35,28 @@ class RobotModelArtist(BaseRobotModelArtist):
         # If we have a color, we'll discard alpha because draw_mesh is hard coded for a=1
         if color:
             r, g, b, _a = color
-            color = [r, g, b]
+            color = (r, g, b)
         else:
-            color = [1., 1., 1.]
+            color = (1., 1., 1.)
 
         if self.layer:
             collection = bpy.data.collections.new(self.layer)
             bpy.context.scene.collection.children.link(collection)
 
         v, f = geometry.to_vertices_and_faces()
-        return compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, layer=self.layer)
+        native_mesh = compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, layer=self.layer)
+        native_mesh.hide_set(True)
+        return native_mesh
 
     def redraw(self, timeout=None):
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1, time_limit=timeout)
+
+    def draw_visual(self):
+        visuals = super(RobotModelArtist, self).draw_visual()
+        for visual in visuals:
+            visual.hide_set(False)
+
+    def draw_collision(self):
+        collisions = super(RobotModelArtist, self).draw_collision()
+        for collision in collisions:
+            collision.hide_set(False)
