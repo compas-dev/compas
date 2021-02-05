@@ -46,11 +46,11 @@ def _link_objects(objects, collection=None, layer=None):
     # if not layer:
     #     layer = bpy.context.view_layer
     # layer_collection = layer.active_layer_collection.collection
-    
+
     for o in objects:
         for c in o.users_collection:
             c.objects.unlink(o)
-        collection.objects.link(o)  # TODO: why does this not work
+        collection.objects.link(o)
         # layer_collection.objects.link(o)
 
 
