@@ -29,6 +29,8 @@ class RobotModelArtist(BaseRobotModelArtist):
 
     def draw_geometry(self, geometry, name=None, color=None):
         # Imported colors take priority over a the parameter color
+        # TODO: cleanup confusion between layers and collections
+
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']
 
@@ -40,11 +42,22 @@ class RobotModelArtist(BaseRobotModelArtist):
             color = [1., 1., 1.]
 
         if self.layer:
-            collection = bpy.data.collections.new(self.layer)
-            bpy.context.scene.collection.children.link(collection)
+            
+            current_collections = bpy.data.collections.items()
+            #print(bpy.data.collections)
+            #print(bpy.data.collections.keys())
+
+            if self.layer not in bpy.data.collections.keys():
+                collection = bpy.data.collections.new(self.layer)  # create new collection if none exists
+                bpy.context.scene.collection.children.link(collection)  # link the new collection to the base collection
+            else: 
+                collection = bpy.data.collections.get(self.layer)
+               # print(collection)
+            
 
         v, f = geometry.to_vertices_and_faces()
-        return compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, layer=self.layer)
+        # Draw the mesh in blender in the specified collection
+        return compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, collection=self.layer)
 
     def redraw(self, timeout=None):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
