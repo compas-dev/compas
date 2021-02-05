@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased 2021-02-05
+
+### Added
+* Added Blender Python-example to the documentation section: Tutorials -> Robots
+
+### Changed
+
+* Fixed bug where initialising a `compas_blender.artists.Robotmodelartist` would create a new collection for each mesh and then also not put the mesh iton the created collection. 
+* Changed the initialisation of `compas_blender.artists.Robotmodelartist` to include a `collection`-parameter instead of a `layer`-parameter to be more consistent with Blender's nomenclature. 
+* Used a utility function from `compas_blender.utilities` to create the collection if none exists instead of using a new call to a bpy-method. 
+
+### Removed
+
 ## Unreleased
 
 ### Added

@@ -28,3 +28,4 @@
 - Beverly Lytle <<lytle@arch.ethz.ch>> [@beverlylytle](https://github.com/beverlylytle>)
 - Juney Lee <<juney.lee@arch.ethz.ch>> [@juney-lee](https://github.com/juney-lee)
 - Xingxin He <<xingxin.he@mail.polimi.it>> [@XingxinHE](https://github.com/XingxinHE)
+- Robin Godwyll <<rodwyll+github@gmail.com>> [@robin-gdwl](https://github.com/robin-gdwl)
