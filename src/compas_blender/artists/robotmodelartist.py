@@ -43,13 +43,9 @@ class RobotModelArtist(BaseRobotModelArtist):
 
         if self.collection:
             if self.collection not in bpy.data.collections.keys():
-                target_collection = bpy.data.collections.new(self.collection)  # create new collection if none exists
-                bpy.context.scene.collection.children.link(target_collection)  # link the new collection to the base collection
-            else:  # not necessary: linking the object to an existing collection is done in compas_blender.draw_mesh
-                target_collection = bpy.data.collections.get(self.collection)
+                compas_blender.utilities.create_collection(self.collection)
 
         v, f = geometry.to_vertices_and_faces()
-        # Draw the mesh in Blender in the specified collection
         return compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, collection=self.collection)
 
     def redraw(self, timeout=None):
