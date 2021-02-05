@@ -148,8 +148,29 @@ Visualizing Robots
 Before jumping into how to build a robot model, let's first see how to visualize
 one. This can be done with Blender, Rhino or Grasshopper using one of COMPAS's
 artists.  The basic procedure is the same in
-any of the CAD software (aside from the import statement), so for simplicity we
-will demonstrate the use of :class:`compas_rhino.artists.RobotModelArtist` in Rhino.
+any of the CAD software (aside from the import statement). Below you can find an example code for both Rhino and Blender. 
+
+
+.. raw:: html
+
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#visualise_robot_rhino">Rhino</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#visualise_robot_blender">Blender</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+
+.. raw:: html
+
+    <div class="tab-pane active" id="visualise_robot_rhino">
+
 Be sure to first install COMPAS for Rhino.  While the following code is incomplete,
 it can be used as a scaffolding for code to be run in a Python script editor within Rhino.
 
@@ -167,8 +188,45 @@ it can be used as a scaffolding for code to be run in a Python script editor wit
     artist.clear_layer()
     artist.draw_visual()
 
+.. raw:: html
 
-See below for a complete example.
+    </div>
+    <div class="tab-pane" id="visualise_robot_blender">
+
+.. code-block:: python
+
+    import compas
+    from compas.robots import GithubPackageMeshLoader
+    from compas.robots import RobotModel
+    import compas_blender
+    from compas_blender.artists import RobotModelArtist, BaseArtist
+
+    compas_blender.clear()  # Delete all objects in the scene
+
+    compas.PRECISION = '12f'
+    # Load the urdf-file from Github 
+    github = GithubPackageMeshLoader('ros-industrial/abb', 'abb_irb6600_support', 'kinetic-devel')
+    model = RobotModel.from_urdf_file(github.load_urdf('irb6640.urdf'))
+    model.load_geometry(github)
+    
+    # Load the robot meshes into the blender scene
+    artist = RobotModelArtist(model, collection='COMPAS FAB::Example')
+
+Note that the blender ``RobotModelArtist`` is not as developed as the one for Rhino. 
+
+.. raw:: html
+
+    </div>
+
+.. raw:: html
+
+    </div>
+    </div>
+    </div>
+
+
+
+See below for a complete example in Rhino.
 
 
 Building robots models
