@@ -22,13 +22,13 @@ class AbstractRobotModelArtist(object):
         Parameters
         ----------
         geometry : object
-            A CAD-specific (i.e. native) geometry object as returned by :meth:`draw_geometry`.
+            A CAD-specific (i.e. native) geometry object as returned by :meth:`create_geometry`.
         transformation : `Transformation`
             **COMPAS** transformation to update the geometry object.
         """
         raise NotImplementedError
 
-    def draw_geometry(self, geometry, name=None, color=None):
+    def create_geoemetry(self, geometry, name=None, color=None):
         """Draw a **COMPAS** geometry in the respective CAD environment.
 
         Note
@@ -60,7 +60,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
     There are two methods that implementers of this base class should provide, one
     is concerned with the actual creation of geometry in the native format of the
-    CAD environment (:meth:`draw_geometry`) and the other is one to apply a transformation
+    CAD environment (:meth:`create_geometry`) and the other is one to apply a transformation
     to geometry (:meth:`transform`).
 
     Attributes
@@ -117,7 +117,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
     def create(self, link=None, context=None):
         """Recursive function that triggers the drawing of the robot model's geometry.
 
-        This method delegates the geometry drawing to the :meth:`draw_geometry`
+        This method delegates the geometry drawing to the :meth:`create_geometry`
         method. It transforms the geometry based on the saved initial
         transformation from the robot model.
 
@@ -150,7 +150,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                     else:
                         mesh_name_components = [self.model.name, mesh_type, context, link.name, str(i)]
                     mesh_name = '.'.join(mesh_name_components)
-                    native_mesh = self.draw_geometry(mesh, name=mesh_name, color=color)
+                    native_mesh = self.create_geoemetry(mesh, name=mesh_name, color=color)
 
                     self.transform(native_mesh, item.init_transformation)
 

@@ -524,6 +524,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Integrated mixin functionality and removed mixins.
 * Meshes are now initially hidden in `compas_blender.artists.RobotModelArtist`.
 * `compas_blender.artists.RobotModelArtist.draw_visual` and `compas_blender.artists.RobotModelArtist.draw_collision` now show those meshes.
+* Renamed the method `draw_geometry` of `compas.robots.base_artist.RobotModelBaseArtist` to `create_geometry`.
 
 ### Removed
 

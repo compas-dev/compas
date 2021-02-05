@@ -27,7 +27,7 @@ class RobotModelArtist(BaseRobotModelArtist):
     def transform(self, native_mesh, transformation):
         native_mesh.matrix_world @= mathutils.Matrix(transformation.matrix)
 
-    def draw_geometry(self, geometry, name=None, color=None):
+    def create_geoemetry(self, geometry, name=None, color=None):
         # Imported colors take priority over a the parameter color
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']

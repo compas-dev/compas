@@ -43,7 +43,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         T = xform_from_transformation(transformation)
         native_mesh.Transform(T)
 
-    def draw_geometry(self, geometry, name=None, color=None):
+    def create_geoemetry(self, geometry, name=None, color=None):
         # Imported colors take priority over a the parameter color
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']

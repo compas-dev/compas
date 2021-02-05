@@ -30,7 +30,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
     def transform(self, native_mesh, transformation):
         xtransform(native_mesh, transformation)
 
-    def draw_geometry(self, geometry, name=None, color=None):
+    def create_geoemetry(self, geometry, name=None, color=None):
         if color:
             color = rgb_to_rgb(color[0], color[1], color[2])
         vertices, faces = geometry.to_vertices_and_faces()
