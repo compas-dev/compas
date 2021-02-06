@@ -65,7 +65,7 @@ try:
 
     if os.path.exists(git_head_file):
         # git head file contains one line that looks like this:
-        # ref: refs/heads/master
+        # ref: refs/heads/main
         with open(git_head_file, 'r') as git_head:
             _, ref_path = git_head.read().strip().split(' ')
             ref_path = ref_path.split('/')
@@ -149,7 +149,7 @@ def get(filename):
     This folder is only locally available if you installed **COMPAS** from source,
     or if you are working directly with the source.
     In all other cases, the function will get the corresponding files directly from
-    the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/master/data
+    the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/main/data
 
     Examples
     --------
@@ -174,7 +174,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://github.com/compas-dev/compas/raw/master/data/{}".format(filename)
+        return "https://github.com/compas-dev/compas/raw/main/data/{}".format(filename)
 
 
 def get_bunny(localstorage=None):

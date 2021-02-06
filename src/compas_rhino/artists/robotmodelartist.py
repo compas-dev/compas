@@ -109,29 +109,50 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         self.redraw()
 
     def draw_collision(self):
+        """Draw all the collision geometries of the robot model.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+        """
         collisions = super(RobotModelArtist, self).draw_collision()
         collisions = list(collisions)
 
         self._enter_layer()
 
+        new_guids = []
         for mesh in collisions:
-            self._add_mesh_to_doc(mesh)
+            guids = self._add_mesh_to_doc(mesh)
+            new_guids.extend(guids)
 
         self._exit_layer()
+        return new_guids
 
     def draw_visual(self):
+        """Draw all the visual geometries of the robot model.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+        """
         visuals = super(RobotModelArtist, self).draw_visual()
         visuals = list(visuals)
 
         self._enter_layer()
 
+        new_guids = []
         for mesh in visuals:
-            self._add_mesh_to_doc(mesh)
+            guids = self._add_mesh_to_doc(mesh)
+            new_guids.extend(guids)
 
         self._exit_layer()
+        return new_guids
 
     def draw(self):
-        self.draw_visual()
+        """Same as draw_visual."""
+        return self.draw_visual()
 
     def redraw(self, timeout=None):
         """Redraw the Rhino view.
@@ -197,3 +218,4 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
                 attr.Name = name
 
             obj.CommitChanges()
+        return [guid]

@@ -216,36 +216,5 @@ def _find_closest_component(point, vertices, triangles, closest_tris, closest_vi
 
 if __name__ == "__main__":
 
-    # import compas
-
-    # from compas.datastructures import Mesh
-    # from compas.datastructures import mesh_quads_to_triangles
-
-    # from compas_plotters import MeshPlotter
-
-    # mesh = Mesh.from_obj(compas.get('hypar.obj'))
-    # target = mesh.copy()
-
-    # points = mesh.vertices_attributes('xyz')
-    # points[:] = [[x, y, 0] for x, y, z in points]
-
-    # mesh_quads_to_triangles(target)
-
-    # pulled = trimesh_pull_points_numpy(target, points)
-
-    # plotter = MeshPlotter(mesh, figsize=(8, 5))
-    # plotter.defaults['vertex.fontsize'] = 6
-    # plotter.draw_vertices(text={key: "{:.1f}".format(attr['z']) for key, attr in mesh.vertices(True)}, radius=0.08)
-    # plotter.draw_faces()
-    # plotter.draw_points([{
-    #     'pos': [x, y, z],
-    #     'text': "{:.1f}".format(z),
-    #     'radius': 0.08,
-    #     'facecolor': '#00ff00',
-    #     'fontsize': 6
-    # } for x, y, z in pulled])
-
-    # plotter.show()
-
     import doctest
     doctest.testmod(globs=globals())

@@ -6,6 +6,7 @@ import itertools
 import json
 
 from compas.base import Base
+from compas.datastructures import Mesh
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.files import URDFElement
@@ -220,6 +221,21 @@ class RobotModel(Base):
         """
         urdf = URDF.from_string(text)
         return urdf.robot
+
+    def to_urdf_string(self, prettify=False):
+        """Construct a URDF string model description from a robot model.
+
+        Parameters
+        ----------
+        prettify:
+            If ``True``, the string will be pretty printed.
+
+        Returns
+        -------
+        :obj:`str`
+        """
+        urdf = URDF.from_robot(self)
+        return urdf.to_string(prettify=prettify)
 
     def find_children_joints(self, link):
         """Returns a list of all children joints of the link.
@@ -576,6 +592,20 @@ class RobotModel(Base):
                     if not shape.geometry:
                         raise Exception('Unable to load geometry for {}'.format(shape.filename))
 
+    def ensure_geometry(self):
+        """Check if geometry has been loaded.
+        Raises
+        ------
+        :exc:`Exception`
+            If geometry has not been loaded.
+        """
+        for link in self.links:
+            for element in itertools.chain(link.collision, link.visual):
+                shape = element.geometry.shape
+                if not shape.geometry:
+                    raise Exception(
+                        'This method is only callable once the geometry has been loaded.')
+
     @property
     def frames(self):
         """Returns the frames of links that have a visual node.
@@ -615,7 +645,7 @@ class RobotModel(Base):
         )
 
     def _create(self, link, parent_transformation):
-        """Private function called during initialisation to transform origins and axes.
+        """Private function called during initialization to transform origins and axes.
 
         Parameters
         ----------
@@ -807,7 +837,13 @@ class RobotModel(Base):
         mesh = kwargs.get(key)
         if mesh:
             meshes.append(mesh)
-        return meshes
+            del kwargs[key]
+        return meshes, kwargs
+
+    def _check_link_name(self, name):
+        all_link_names = [l.name for l in self.links]  # noqa: E741
+        if name in all_link_names:
+            raise ValueError("Link name '%s' already used in chain." % name)
 
     def add_link(self, name, visual_meshes=None, visual_color=None, collision_meshes=None, **kwargs):
         """Adds a link to the robot model.
@@ -818,11 +854,11 @@ class RobotModel(Base):
         ----------
         name : str
             The name of the link
-        visual_meshes : list of :class:`compas.datastructures.Mesh`, optional
+        visual_meshes : list of :class:`compas.datastructures.Mesh` or :class:`compas.geometry.Shape`, optional
             The link's visual mesh.
         visual_color : list of 3 float, optional
             The rgb color of the mesh. Defaults to (0.8, 0.8, 0.8)
-        collision_meshes : list of :class:`compas.datastructures.Mesh`, optional
+        collision_meshes : list of :class:`compas.datastructures.Mesh` or :class:`compas.geometry.Shape`, optional
             The link's collision mesh.
 
         Returns
@@ -842,32 +878,51 @@ class RobotModel(Base):
         >>> robot = RobotModel('robot')
         >>> link = robot.add_link('link0', visual_mesh=mesh)
         """
-        visual_meshes = self._consolidate_meshes(visual_meshes, 'visual_mesh', **kwargs)
-        collision_meshes = self._consolidate_meshes(collision_meshes, 'collision_mesh', **kwargs)
+        self._check_link_name(name)
+        visual_meshes, kwargs = self._consolidate_meshes(visual_meshes, 'visual_mesh', **kwargs)
+        collision_meshes, kwargs = self._consolidate_meshes(collision_meshes, 'collision_mesh', **kwargs)
+        if not visual_color:
+            visual_color = (0.8, 0.8, 0.8)
 
-        all_link_names = [l.name for l in self.links]  # noqa: E741
-        if name in all_link_names:
-            raise ValueError("Link name '%s' already used in chain." % name)
+        visuals = []
+        collisions = []
 
-        visual = []
-        collision = []
-
-        for visual_mesh in visual_meshes:
-            if not visual_color:
-                visual_color = (0.8, 0.8, 0.8)
-            v = Visual(Geometry(MeshDescriptor("")))
+        for visual in visual_meshes:
+            if isinstance(visual, Mesh):
+                v = Visual(Geometry(MeshDescriptor("")))
+                v.geometry.shape.geometry = visual
+            else:
+                v = Visual.from_primitive(visual)
             v.material = Material(color=Color("%f %f %f 1" % visual_color))
-            v.geometry.shape.geometry = visual_mesh
-            visual.append(v)
+            visuals.append(v)
 
-        for collision_mesh in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
-            c = Collision(Geometry(MeshDescriptor("")))
-            c.geometry.shape.geometry = collision_mesh
-            collision.append(c)
+        for collision in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
+            if isinstance(collision, Mesh):
+                c = Collision(Geometry(MeshDescriptor("")))
+                c.geometry.shape.geometry = collision
+            else:
+                c = Collision.from_primitive(collision)
+            collisions.append(c)
 
-        link = Link(name, visual=visual, collision=collision, **kwargs)
+        link = Link(name, visual=visuals, collision=collisions, **kwargs)
         self.links.append(link)
+        # Must build the tree structure, if adding the first link to an empty robot
+        if len(self.links) == 1:
+            self._rebuild_tree()
+            self._create(self.root, Transformation())
         return link
+
+    def remove_link(self, name):
+        """Removes a link to the robot model.
+
+        Provides an easy way to programmatically remove a link from the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the link
+        """
+        self.links = [link for link in self.links if link.name != name]
 
     def add_joint(self, name, type, parent_link, child_link, origin=None, axis=None, limit=None, **kwargs):
         """Adds a joint to the robot model.
@@ -944,20 +999,28 @@ class RobotModel(Base):
         self._joints[joint.name] = joint
         self._adjacency[joint.name] = [child_link.name]
 
-        # Using only part of self._create(link, parent_transformation)
-        parent_transformation = Transformation()
-        for item in itertools.chain(parent_link.visual, parent_link.collision):
-            if not item.init_transformation:
-                item.init_transformation = parent_transformation
-            else:
-                parent_transformation = item.init_transformation
-
-        joint._create(parent_transformation)
-
-        for item in itertools.chain(child_link.visual, child_link.collision):
-            item.init_transformation = joint.current_transformation
+        self._create(self.root, Transformation())
 
         return joint
+
+    def remove_joint(self, name):
+        """Removes a joint to the robot model.
+
+        Provides an easy way to programmatically remove a joint from the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the joint
+        """
+        joint = self.get_joint_by_name(name)
+        self.joints = [j for j in self.joints if j.name != name]
+        parent_link = self.get_link_by_name(joint.parent.link)
+        parent_link.joints = [j for j in parent_link.joints if j.name != name]
+        self._adjacency[parent_link.name] = [j.name for j in parent_link.joints]
+        del self._links[joint.child.link]
+        del self._joints[name]
+        del self._adjacency[name]
 
 
 URDFParser.install_parser(RobotModel, 'robot')

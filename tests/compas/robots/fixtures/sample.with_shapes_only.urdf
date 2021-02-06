@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+   <link name="panda_link0">
+      <visual>
+         <geometry>
+            <box size="1.0 2.0 3.0"/>
+         </geometry>
+      </visual>
+      <collision>
+         <geometry>
+            <sphere radius="0.2"/>
+         </geometry>
+      </collision>
+   </link>
+   <link name="panda_link1">
+      <visual>
+         <geometry>
+            <box size="0.6 0.1 0.2"/>
+         </geometry>
+      </visual>
+      <collision>
+         <geometry>
+            <cylinder length="0.6" radius="0.2"/>
+         </geometry>
+      </collision>
+   </link>
+</robot>
+

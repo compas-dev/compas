@@ -4,9 +4,11 @@ from __future__ import print_function
 
 import json
 
+import compas
 from compas.base import Base
 from compas.files import URDFElement
 from compas.files import URDFParser
+from compas.geometry import Plane
 from compas.geometry import Transformation
 
 from compas.robots.model.geometry import Box
@@ -23,6 +25,30 @@ from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _attr_from_data
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
+
+
+def _get_geometry_and_origin(primitive):
+    shape = None
+    origin = None
+    if isinstance(primitive, compas.geometry.Box):
+        shape = Box.from_geometry(primitive)
+        origin = Origin(*primitive.frame)
+    if isinstance(primitive, compas.geometry.Capsule):
+        shape = Capsule.from_geometry(primitive)
+        point = primitive.line.midpoint
+        normal = primitive.line.vector
+        plane = Plane(point, normal)
+        origin = Origin.from_plane(plane)
+    if isinstance(primitive, compas.geometry.Cylinder):
+        shape = Cylinder.from_geometry(primitive)
+        origin = Origin.from_plane(primitive.circle.plane)
+    if isinstance(primitive, compas.geometry.Sphere):
+        shape = Sphere.from_geometry(primitive)
+        origin = Origin(primitive.point, [1, 0, 0], [0, 1, 0])
+    if not shape:
+        raise Exception('Unrecognized primitive type {}'.format(primitive.__class__))
+    geometry = Geometry(shape)
+    return geometry, origin
 
 
 class Mass(Base):
@@ -294,6 +320,11 @@ class Visual(Base):
         else:
             return None
 
+    @classmethod
+    def from_primitive(cls, primitive, **kwargs):
+        geometry, origin = _get_geometry_and_origin(primitive)
+        return cls(geometry, origin=origin, **kwargs)
+
 
 class Collision(Base):
     """Collidable description of a link.
@@ -378,6 +409,11 @@ class Collision(Base):
     def to_json(self, filepath):
         with open(filepath, 'w+') as f:
             json.dump(self.data, f)
+
+    @classmethod
+    def from_primitive(cls, primitive, **kwargs):
+        geometry, origin = _get_geometry_and_origin(primitive)
+        return cls(geometry, origin=origin, **kwargs)
 
 
 class Link(Base):
