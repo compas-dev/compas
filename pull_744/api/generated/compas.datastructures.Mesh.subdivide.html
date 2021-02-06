@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - Mesh.subdivide</title>
+  
+  <title> - Mesh.subdivide</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -106,15 +108,15 @@
           
           <div class="detail section" id="mesh-subdivide">
 <h1>Mesh.subdivide</h1>
-<dl class="method">
+<dl class="py method">
 <dt id="compas.datastructures.Mesh.subdivide">
-<code class="sig-prename descclassname">Mesh.</code><code class="sig-name descname">subdivide</code><span class="sig-paren">(</span><em class="sig-param">scheme='catmullclark'</em>, <em class="sig-param">**options</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">Mesh.</code><code class="sig-name descname">subdivide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scheme</span><span class="o">=</span><span class="default_value">'catmullclark'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/subdivision.py#L96"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Subdivide the input mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</p></li>
-<li><p><strong>scheme</strong> (<em>{‘tri’, ‘corner’, ‘catmullclark’, ‘doosabin’}, optional</em>) – The scheme according to which the mesh should be subdivided.
+<li><p><strong>scheme</strong> (<em>{‘tri’, ‘quad’, ‘corner’, ‘catmullclark’, ‘doosabin’}, optional</em>) – The scheme according to which the mesh should be subdivided.
 Default is <code class="docutils literal notranslate"><span class="pre">'catmullclark'</span></code>.</p></li>
 <li><p><strong>options</strong> (<em>dict</em>) – Optional additional keyword arguments.</p></li>
 </ul>
@@ -123,7 +125,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">'catmull
 <dd class="field-even"><p><em>Mesh</em> – The subdivided mesh.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.9)"><strong>NotImplementedError</strong></a> – If the scheme is not supported.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the scheme is not supported.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -229,9 +231,9 @@ Default is <code class="docutils literal notranslate"><span class="pre">'catmull
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
-          <nav class="nav justify-content-center my-4">
-            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
-          </nav>
+          <!-- <nav class="nav justify-content-center my-4">
+            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav> -->
           <nav class="nav justify-content-center pb-3">
             <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>

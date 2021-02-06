@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - conduits</title>
+  
+  <title> - conduits</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -132,10 +134,10 @@ with less of a performance penalty than with regular geometry objects.</p>
 </div>
 <div class="section" id="baseconduit">
 <h2>BaseConduit</h2>
-<dl class="class">
+<dl class="py class">
 <dt id="compas_rhino.conduits.BaseConduit">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">BaseConduit</code><span class="sig-paren">(</span><em class="sig-param">refreshrate=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/base.html#BaseConduit"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Display.DisplayConduit</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">BaseConduit</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/base.py#L15"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Display.</span></code></p>
 <p>Base class for conduits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -143,26 +145,26 @@ with less of a performance penalty than with regular geometry objects.</p>
 Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="compas_rhino.conduits.BaseConduit.disable">
-<code class="sig-name descname">disable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/base.html#BaseConduit.disable"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">disable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/base.py#L43"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Disable the conduit.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="compas_rhino.conduits.BaseConduit.enable">
-<code class="sig-name descname">enable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/base.html#BaseConduit.enable"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">enable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/base.py#L39"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Enable the conduit.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="compas_rhino.conduits.BaseConduit.enabled">
-<code class="sig-name descname">enabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/base.html#BaseConduit.enabled"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">enabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/base.py#L29"><span class="viewcode-link">[source]</span></a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="compas_rhino.conduits.BaseConduit.redraw">
-<code class="sig-name descname">redraw</code><span class="sig-paren">(</span><em class="sig-param">k=0</em>, <em class="sig-param">pause=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/base.html#BaseConduit.redraw"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">redraw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/base.py#L47"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Redraw the conduit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -184,9 +186,9 @@ Default is no pause.</p></li>
 <hr class="docutils" />
 <div class="section" id="faces-conduit">
 <h2>Faces Conduit</h2>
-<dl class="class">
+<dl class="py class">
 <dt id="compas_rhino.conduits.FacesConduit">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">FacesConduit</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">faces</em>, <em class="sig-param">color=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/faces.html#FacesConduit"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">FacesConduit</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/faces.py#L20"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>A Rhino display conduit for faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -225,9 +227,9 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 <hr class="docutils" />
 <div class="section" id="lines-conduit">
 <h2>Lines Conduit</h2>
-<dl class="class">
+<dl class="py class">
 <dt id="compas_rhino.conduits.LinesConduit">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">LinesConduit</code><span class="sig-paren">(</span><em class="sig-param">lines</em>, <em class="sig-param">thickness=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/lines.html#LinesConduit"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">LinesConduit</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/lines.py#L23"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>A Rhino display conduit for lines.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -267,9 +269,9 @@ Default is <code class="docutils literal notranslate"><span class="pre">(255,</s
 <hr class="docutils" />
 <div class="section" id="points-conduit">
 <h2>Points Conduit</h2>
-<dl class="class">
+<dl class="py class">
 <dt id="compas_rhino.conduits.PointsConduit">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">PointsConduit</code><span class="sig-paren">(</span><em class="sig-param">points</em>, <em class="sig-param">size=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/points.html#PointsConduit"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">PointsConduit</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/points.py#L23"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>A Rhino display conduit for points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -308,9 +310,9 @@ Default is <code class="docutils literal notranslate"><span class="pre">(255,</s
 <hr class="docutils" />
 <div class="section" id="labels-conduit">
 <h2>Labels Conduit</h2>
-<dl class="class">
+<dl class="py class">
 <dt id="compas_rhino.conduits.LabelsConduit">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">LabelsConduit</code><span class="sig-paren">(</span><em class="sig-param">labels</em>, <em class="sig-param">color=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/conduits/labels.html#LabelsConduit"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.conduits.</code><code class="sig-name descname">LabelsConduit</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/labels.py#L15"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>A Rhino display conduit for labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -452,9 +454,9 @@ Each tuple contains a position and text for the label.</p></li>
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
-          <nav class="nav justify-content-center my-4">
-            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
-          </nav>
+          <!-- <nav class="nav justify-content-center my-4">
+            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav> -->
           <nav class="nav justify-content-center pb-3">
             <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>

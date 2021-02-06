@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - Developer Guide</title>
+  
+  <title> - Developer Guide</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -98,8 +100,8 @@
           
           <div class="section" id="developer-guide">
 <h1>Developer Guide</h1>
-<p>This guide is intended for people who want to contribute to the code and documentation
-of the core COMPAS packages:</p>
+<p>This guide is intended for people who want to contribute
+to the code, documentation, and test coverage of the core COMPAS packages:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="api/compas.html#module-compas" title="compas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/compas_blender.html#module-compas_blender" title="compas_blender"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code></a></p></li>
@@ -114,7 +116,7 @@ of the core COMPAS packages:</p>
 <ol class="arabic">
 <li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork.</p></li>
 <li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n compas-dev <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n compas-dev <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 cython --yes
 conda activate compas-dev
 </code></pre></div>
 </div>
@@ -125,8 +127,9 @@ pip install -r requirements-dev.txt
 </code></pre></div>
 </div>
 </li>
-<li><p>Make sure all tests pass:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke <span class="nb">test</span>
+<li><p>Make sure all tests pass and the code is free of lint:</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke lint
+invoke <span class="nb">test</span>
 </code></pre></div>
 </div>
 </li>
@@ -144,54 +147,85 @@ pip install -r requirements-dev.txt
 <p>Once you are done making changes, you have to submit your contribution through a pull request (PR).
 The procedure for submitting a PR is the following.</p>
 <ol class="arabic">
-<li><p>Make sure all tests still pass:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke <span class="nb">test</span>
+<li><p>Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke lint
+invoke <span class="nb">test</span>
+invoke docs
 </code></pre></div>
 </div>
 </li>
 <li><p>Add yourself to <code class="docutils literal notranslate"><span class="pre">AUTHORS.md</span></code>.</p></li>
+<li><p>Summarize the changes you made in <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code>.</p></li>
 <li><p>Commit your changes and push your branch to GitHub.</p></li>
-<li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a> through the GitHub website.</p></li>
+<li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a>.</p></li>
 </ol>
-<p>During development, use <a class="reference external" href="http://docs.pyinvoke.org/">pyinvoke</a> tasks on the
-command line to ease recurring operations:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">clean</span></code>: Clean all generated artifacts.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">check</span></code>: Run various code and documentation style checks.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">docs</span></code>: Generate documentation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">test</span></code>: Run all tests and checks in one swift command.</p></li>
-</ul>
 </div>
 <div class="section" id="style-guide">
 <h2>Style guide</h2>
-<ul class="simple">
-<li><p>PEP 8</p></li>
-<li><p>flake8</p></li>
-<li><p>naming conventions</p></li>
-<li><p>consistency</p></li>
-<li><p>foolish consistency</p></li>
-<li><p>principle of least astonishment</p></li>
-</ul>
+<p>The command <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> runs the entire codebase through <code class="docutils literal notranslate"><span class="pre">flake8</span></code>.
+As described in the <a class="reference external" href="https://flake8.pycqa.org/en/latest/manpage.html">docs</a>,
+<code class="docutils literal notranslate"><span class="pre">flake8</span></code> includes lint checks provided by the PyFlakes project,
+PEP-0008 inspired style checks provided by the PyCodeStyle project,
+and McCabe complexity checking provided by the McCabe project.</p>
+<p>The list of potential error codes issued by <code class="docutils literal notranslate"><span class="pre">flake8</span></code> are available here:
+<a class="reference external" href="https://flake8.pycqa.org/en/latest/user/error-codes.html">https://flake8.pycqa.org/en/latest/user/error-codes.html</a></p>
+<p>The PEP-0008 style guide is available here:
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">https://www.python.org/dev/peps/pep-0008/</a></p>
+<p>Note that the maximum line length is set to 180 rather 79 in the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> of the repo.</p>
+</div>
+<div class="section" id="naming-conventions">
+<h2>Naming conventions</h2>
+<p>We (intend to) use the following naming conventions.</p>
+<ol class="arabic simple">
+<li><p>variables, functions, methods, attributes use “snake_case”:
+they are written in lowercase and spaces between words are replaced by underscores.</p></li>
+<li><p>class names use (Upper) “CamelCase”:
+The are written in lowercase, with the first letter of each word capitalized
+and spaces between words removed.</p></li>
+<li><p>module or package level variables are in uppercase
+and with spaces between words replaced by underscores.</p></li>
+</ol>
+</div>
+<div class="section" id="quotes">
+<h2>Quotes</h2>
+<p>Ideally, we would use the following conventions for quotes.</p>
+<ol class="arabic simple">
+<li><p>Double quotation marks for multiline statements and docstrings.
+For example, <code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;Calculate</span> <span class="pre">the</span> <span class="pre">sum</span> <span class="pre">of</span> <span class="pre">two</span> <span class="pre">numbers.&quot;&quot;&quot;</span></code></p></li>
+<li><p>Single quotation marks for strings that are used “as variables”.
+For example, <code class="docutils literal notranslate"><span class="pre">config['param']</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></li>
+<li><p>Double quotation marks for strings that are meant to be used as text.
+For examples, <code class="docutils literal notranslate"><span class="pre">message</span> <span class="pre">=</span> <span class="pre">&quot;Select</span> <span class="pre">one</span> <span class="pre">or</span> <span class="pre">more</span> <span class="pre">points.&quot;</span></code></p></li>
+</ol>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation</h2>
+<p>The documentation of COMPAS is generated with Sphinx.
+This means that code docstrings and general documentation pages
+have to be written in RestructuredText.</p>
+<p>Each function, method, and class should have a docstring describing its behaviour.
+We use <code class="docutils literal notranslate"><span class="pre">sphinx.ext.napoleon</span></code> to allow for human-readable docstrings,
+and prefer Numpy-style docstring formatting rules.</p>
 <ul class="simple">
-<li><p>sphinx</p></li>
-<li><p>RestructuredText</p></li>
-<li><p>docs structure</p></li>
-<li><p>api docs</p>
-<ul>
-<li><p>napoleon</p></li>
-<li><p>Numpy-style</p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html">https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html</a></p></li>
+<li><p><a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">https://numpydoc.readthedocs.io/en/latest/format.html</a></p></li>
 </ul>
-</li>
-<li><p>examples</p></li>
-<li><p>references</p></li>
-<li><p>see also</p></li>
-</ul>
+<p>To include a new function or class in the documentation,
+it should be added to the API docstring in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> of the main package it belongs to.</p>
+<p>For example, if you add a function somewhere in the geometry package,
+make sure to include it in the docstring of <code class="docutils literal notranslate"><span class="pre">compas.geometry.__init__.py</span></code>.</p>
+</div>
+<div class="section" id="type-hints">
+<h2>Type hints</h2>
+<p>Type hints should be added to stub files at the public API level
+of the main packages (see <span class="xref std std-ref">code_structure</span>).
+This allows the type hints to be written using Python 3 style
+annotations while maintaining compatibility with Python 2.7 for Rhino/GH.</p>
+<p>For example, the type hints for <code class="docutils literal notranslate"><span class="pre">compas.datastructures</span></code> should be defined in
+<code class="docutils literal notranslate"><span class="pre">compas.datastructures.__init__.pyi</span></code>.</p>
 </div>
 <div class="section" id="code-structure">
-<h2>Code structure</h2>
+<span id="id1"></span><h2>Code structure</h2>
 <p>Each of the core packages is divided into subpackages that group functionality into logical components.
 For example, <a class="reference internal" href="api/compas.html#module-compas" title="compas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a> is divided into:</p>
 <ul class="simple">
@@ -227,8 +261,21 @@ Per package, the APIs of the contained module are collected in the <code class="
 </code></pre></div>
 </div>
 </div>
+<div class="section" id="dependencies">
+<h2>Dependencies</h2>
+<p>More info coming soon…</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing</h2>
+<p>Although we still have a significant backlog of existing functionality
+not yet covered by unit tests, at least all newly added functionality
+should have a corresponding test.</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> as a testing framework.
+The tests are in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder at the root of the repo.</p>
+<p>More info coming soon…</p>
+</div>
 <div class="section" id="plugins">
-<span id="id1"></span><h2>Plugins</h2>
+<span id="id2"></span><h2>Plugins</h2>
 <p>COMPAS has an extensible architecture based on plugins that allows to
 customize and extend the functionality of the core framework.</p>
 <p>For a plugin to work, there needs to exist a counterpart to be connected to.
@@ -367,12 +414,6 @@ accordingly:</p>
 </div>
 </div>
 </div>
-<div class="section" id="multiple-implementations">
-<h2>Multiple implementations</h2>
-</div>
-<div class="section" id="testing">
-<h2>Testing</h2>
-</div>
 </div>
 
         
@@ -417,8 +458,13 @@ accordingly:</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#setup-installation">Setup/Installation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#submitting-a-pr">Submitting a PR</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#style-guide">Style guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#naming-conventions">Naming conventions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#quotes">Quotes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#documentation">Documentation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#type-hints">Type hints</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#code-structure">Code structure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#dependencies">Dependencies</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#testing">Testing</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#plugins">Plugins</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#why-are-plugins-important">Why are plugins important?</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#how-to-make-plugins-discoverable">How to make plugins discoverable?</a></li>
@@ -431,8 +477,6 @@ accordingly:</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#advanced-options">Advanced options</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#multiple-implementations">Multiple implementations</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#testing">Testing</a></li>
 </ul>
 </li>
 </ul>
@@ -477,9 +521,9 @@ accordingly:</p>
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
-          <nav class="nav justify-content-center my-4">
-            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
-          </nav>
+          <!-- <nav class="nav justify-content-center my-4">
+            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav> -->
           <nav class="nav justify-content-center pb-3">
             <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>

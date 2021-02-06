@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - RobotModel.compute_transformations</title>
+  
+  <title> - RobotModel.compute_transformations</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="RobotModel.find_children_joints" href="compas.robots.RobotModel.find_children_joints.html" />
+    <link rel="next" title="RobotModel.ensure_geometry" href="compas.robots.RobotModel.ensure_geometry.html" />
   
   
   
@@ -106,9 +108,9 @@
           
           <div class="detail section" id="robotmodel-compute-transformations">
 <h1>RobotModel.compute_transformations</h1>
-<dl class="method">
+<dl class="py method">
 <dt id="compas.robots.RobotModel.compute_transformations">
-<code class="sig-prename descclassname">RobotModel.</code><code class="sig-name descname">compute_transformations</code><span class="sig-paren">(</span><em class="sig-param">joint_state</em>, <em class="sig-param">link=None</em>, <em class="sig-param">parent_transformation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/robots/model/robot.html#RobotModel.compute_transformations"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">RobotModel.</code><code class="sig-name descname">compute_transformations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">joint_state</span></em>, <em class="sig-param"><span class="n">link</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent_transformation</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L702"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Recursive function to calculate the transformations of each joint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -212,10 +214,10 @@ meters (depending on the joint type).</p></li>
       
 
       
-        <a href="compas.robots.RobotModel.find_children_joints.html" title="RobotModel.find_children_joints" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.robots.RobotModel.ensure_geometry.html" title="RobotModel.ensure_geometry" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            RobotModel.find_children_joints
+            RobotModel.ensure_geometry
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -233,9 +235,9 @@ meters (depending on the joint type).</p></li>
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
-          <nav class="nav justify-content-center my-4">
-            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
-          </nav>
+          <!-- <nav class="nav justify-content-center my-4">
+            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav> -->
           <nav class="nav justify-content-center pb-3">
             <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>
