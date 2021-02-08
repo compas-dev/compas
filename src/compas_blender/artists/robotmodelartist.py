@@ -22,7 +22,7 @@ class RobotModelArtist(BaseRobotModelArtist):
         super(RobotModelArtist, self).__init__(model)
 
     def transform(self, native_mesh, transformation):
-        native_mesh.matrix_world @= mathutils.Matrix(transformation.matrix)
+        native_mesh.matrix_world = mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world
 
     def create_geoemetry(self, geometry, name=None, color=None):
         # Imported colors take priority over a the parameter color
