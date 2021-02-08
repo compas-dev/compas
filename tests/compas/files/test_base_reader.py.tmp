@@ -25,7 +25,7 @@ def faces_obj():
 
 @pytest.fixture
 def url_to_faces_obj():
-    return "https://raw.githubusercontent.com/compas-dev/compas/master/data/faces.obj"
+    return "https://raw.githubusercontent.com/compas-dev/compas/main/data/faces.obj"
 
 
 @pytest.fixture

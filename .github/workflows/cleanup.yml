@@ -1,11 +1,11 @@
 name: cleanup
 
-# triggered whenever a PR submitted to master is merged or closed
+# triggered whenever a PR submitted to main is merged or closed
 on:
   pull_request:
-    types: [closed]   
+    types: [closed]
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -40,6 +40,6 @@ jobs:
         with:
           target_branch: gh-pages
           build_dir: ./
-          keep_history: false  
+          keep_history: false
         env:
           GH_PAT: ${{ secrets.GH_PAT }}

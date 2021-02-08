@@ -26,12 +26,12 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         Name of the support package containing URDF, Meshes
         and additional assets, e.g. 'abb_irb4400_support'
     branch : str
-        Branch name, defaults to ``master``.
+        Branch name, defaults to ``main``.
     """
 
     HOST = 'https://raw.githubusercontent.com'
 
-    def __init__(self, repository, support_package, branch='master'):
+    def __init__(self, repository, support_package, branch='main'):
         super(GithubPackageMeshLoader, self).__init__()
         self.repository = repository
         self.support_package = support_package
