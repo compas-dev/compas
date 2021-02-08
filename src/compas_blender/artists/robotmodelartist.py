@@ -48,7 +48,7 @@ class RobotModelArtist(BaseRobotModelArtist):
         native_mesh.hide_set(True)
         return native_mesh
 
-    def redraw(self, timeout=None):
+    def redraw(self, timeout=0.0):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1, time_limit=timeout)
 
     def draw_visual(self):
