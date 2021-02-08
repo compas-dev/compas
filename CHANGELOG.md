@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in parameter list of function `mesh_bounding_box` bound as method `Mesh.bounding_box`.
+* Fixed bug in `RobotModel/RobotModelArtist.update` which raised an error when the geometry had not been loaded.
 * Changed exception type when subdivide scheme argument is incorrect on `mesh_subdivide`.
 * The `compas_rhino.artist.RobotModelArtist` functions `draw_visual` and `draw_collision` now return list of newly created Rhino object guids.
 * Added ability of `RobotModel.add_link` to accept primitives in addition to meshes.
