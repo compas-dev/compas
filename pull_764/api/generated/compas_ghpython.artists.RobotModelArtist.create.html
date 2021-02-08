@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="RobotModelArtist.detach_tool_model" href="compas_ghpython.artists.RobotModelArtist.detach_tool_model.html" />
+    <link rel="next" title="RobotModelArtist.create_geoemetry" href="compas_ghpython.artists.RobotModelArtist.create_geoemetry.html" />
   
   
   
@@ -110,9 +110,9 @@
 <h1>RobotModelArtist.create</h1>
 <dl class="py method">
 <dt id="compas_ghpython.artists.RobotModelArtist.create">
-<code class="sig-prename descclassname">RobotModelArtist.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">link</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">context</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/master/src/compas/robots/base_artist/_artist.py#L117"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">RobotModelArtist.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">link</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">context</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/base_artist/_artist.py#L117"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Recursive function that triggers the drawing of the robot model’s geometry.</p>
-<p>This method delegates the geometry drawing to the <a class="reference internal" href="compas_ghpython.artists.RobotModelArtist.draw_geometry.html#compas_ghpython.artists.RobotModelArtist.draw_geometry" title="compas_ghpython.artists.RobotModelArtist.draw_geometry"><code class="xref py py-meth docutils literal notranslate"><span class="pre">draw_geometry()</span></code></a>
+<p>This method delegates the geometry drawing to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_geometry()</span></code>
 method. It transforms the geometry based on the saved initial
 transformation from the robot model.</p>
 <dl class="field-list simple">
@@ -201,10 +201,10 @@ transformation from the robot model.</p>
       
 
       
-        <a href="compas_ghpython.artists.RobotModelArtist.detach_tool_model.html" title="RobotModelArtist.detach_tool_model" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_ghpython.artists.RobotModelArtist.create_geoemetry.html" title="RobotModelArtist.create_geoemetry" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            RobotModelArtist.detach_tool_model
+            RobotModelArtist.create_geoemetry
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
