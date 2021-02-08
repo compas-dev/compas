@@ -16,12 +16,9 @@ class RobotModelArtist(BaseRobotModelArtist):
     ----------
     model : :class:`compas.robots.RobotModel`
         Robot model.
-    layer : str, optional
-        The name of the layer that will contain the robot meshes.
     """
 
-    def __init__(self, model, layer=None):
-        self.layer = layer
+    def __init__(self, model):
         super(RobotModelArtist, self).__init__(model)
 
     def transform(self, native_mesh, transformation):
@@ -39,12 +36,8 @@ class RobotModelArtist(BaseRobotModelArtist):
         else:
             color = (1., 1., 1.)
 
-        if self.layer:
-            collection = bpy.data.collections.new(self.layer)
-            bpy.context.scene.collection.children.link(collection)
-
         v, f = geometry.to_vertices_and_faces()
-        native_mesh = compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, layer=self.layer)
+        native_mesh = compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False)
         native_mesh.hide_set(True)
         return native_mesh
 
