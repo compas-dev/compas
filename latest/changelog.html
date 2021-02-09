@@ -109,6 +109,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">RobotModel.remove_link</span></code>, <code class="docutils literal notranslate"><span class="pre">RobotModel.remove_joint</span></code>, <code class="docutils literal notranslate"><span class="pre">RobotModel.to_urdf_string</span></code>, and <code class="docutils literal notranslate"><span class="pre">RobotModel.ensure_geometry</span></code>.</p></li>
+<li><p>Added Blender Python-example to the documentation section: Tutorials -&gt; Robots</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.unload_modules</span></code>.</p></li>
 </ul>
 </div>
@@ -123,6 +124,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed bug regarding the computation of <code class="docutils literal notranslate"><span class="pre">Joint.current_origin</span></code>.</p></li>
 <li><p>Fixed bug regarding a repeated call to <code class="docutils literal notranslate"><span class="pre">RobotModel.add_joint</span></code>.</p></li>
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_slice_plane</span></code>.</p></li>
+<li><p>Fixed bug where initialising a <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.Robotmodelartist</span></code> would create a new collection for each mesh and then also not put the mesh iton the created collection.</p></li>
+<li><p>Changed the initialisation of <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.Robotmodelartist</span></code> to include a <code class="docutils literal notranslate"><span class="pre">collection</span></code>-parameter instead of a <code class="docutils literal notranslate"><span class="pre">layer</span></code>-parameter to be more consistent with Blender’s nomenclature.</p></li>
+<li><p>Used a utility function from <code class="docutils literal notranslate"><span class="pre">compas_blender.utilities</span></code> to create the collection if none exists instead of using a new call to a bpy-method.</p></li>
 </ul>
 </div>
 <div class="section" id="removed">
