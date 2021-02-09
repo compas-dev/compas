@@ -196,10 +196,9 @@ it can be used as a scaffolding for code to be run in a Python script editor wit
 .. code-block:: python
 
     import compas
-    from compas.robots import GithubPackageMeshLoader
     from compas.robots import RobotModel
     import compas_blender
-    from compas_blender.artists import RobotModelArtist, BaseArtist
+    from compas_blender.artists import RobotModelArtist
 
     compas_blender.clear()  # Delete all objects in the Blender scene
 
