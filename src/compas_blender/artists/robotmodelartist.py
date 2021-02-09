@@ -20,8 +20,9 @@ class RobotModelArtist(BaseRobotModelArtist):
         The name of the layer that will contain the robot meshes.
     """
 
-    def __init__(self, model, layer=None):
-        self.layer = layer
+    def __init__(self, model, collection=None, layer=None):
+        self.view_layer = layer
+        self.collection = collection
         super(RobotModelArtist, self).__init__(model)
 
     def transform(self, native_mesh, transformation):
@@ -29,6 +30,7 @@ class RobotModelArtist(BaseRobotModelArtist):
 
     def draw_geometry(self, geometry, name=None, color=None):
         # Imported colors take priority over a the parameter color
+
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']
 
@@ -39,12 +41,12 @@ class RobotModelArtist(BaseRobotModelArtist):
         else:
             color = [1., 1., 1.]
 
-        if self.layer:
-            collection = bpy.data.collections.new(self.layer)
-            bpy.context.scene.collection.children.link(collection)
+        if self.collection:
+            if self.collection not in bpy.data.collections.keys():
+                compas_blender.utilities.create_collection(self.collection)
 
         v, f = geometry.to_vertices_and_faces()
-        return compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, layer=self.layer)
+        return compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, collection=self.collection)
 
     def redraw(self, timeout=None):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
