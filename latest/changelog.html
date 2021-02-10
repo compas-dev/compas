@@ -123,6 +123,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added ability of <code class="docutils literal notranslate"><span class="pre">RobotModel.add_link</span></code> to accept primitives in addition to meshes.</p></li>
 <li><p>Fixed bug regarding the computation of <code class="docutils literal notranslate"><span class="pre">Joint.current_origin</span></code>.</p></li>
 <li><p>Fixed bug regarding a repeated call to <code class="docutils literal notranslate"><span class="pre">RobotModel.add_joint</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_blender.RobotModelArtist.update</span></code>.</p></li>
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_slice_plane</span></code>.</p></li>
 <li><p>Fixed bug where initialising a <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.Robotmodelartist</span></code> would create a new collection for each mesh and then also not put the mesh iton the created collection.</p></li>
 <li><p>Changed the initialisation of <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.Robotmodelartist</span></code> to include a <code class="docutils literal notranslate"><span class="pre">collection</span></code>-parameter instead of a <code class="docutils literal notranslate"><span class="pre">layer</span></code>-parameter to be more consistent with Blender’s nomenclature.</p></li>
@@ -764,14 +765,17 @@ attribute <code class="docutils literal notranslate"><span class="pre">Proxy.max
 <li><p>Split up network and mesh naming conventions.</p></li>
 <li><p>Reworked network face cycle finding.</p></li>
 <li><p>Updated mesh from lines.</p></li>
-<li><p>Updated network plotter in correspondance with network.</p></li>
+<li><p>Updated network plotter in correspondence with network.</p></li>
 <li><p>Integrated mixin functionality and removed mixins.</p></li>
+<li><p>Meshes are now initially hidden in <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.RobotModelArtist</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compas_blender.artists.RobotModelArtist.draw_visual</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.RobotModelArtist.draw_collision</span></code> now show those meshes.</p></li>
+<li><p>Renamed the method <code class="docutils literal notranslate"><span class="pre">draw_geometry</span></code> of <code class="docutils literal notranslate"><span class="pre">compas.robots.base_artist.RobotModelBaseArtist</span></code> to <code class="docutils literal notranslate"><span class="pre">create_geometry</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="id104">
 <h3>Removed</h3>
 <ul class="simple">
-<li><p>Removed parallelisation from network algorithms.</p></li>
+<li><p>Removed parallelization from network algorithms.</p></li>
 <li><p>Removed numba based dr implementations.</p></li>
 </ul>
 </div>
