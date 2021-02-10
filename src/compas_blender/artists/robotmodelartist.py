@@ -18,7 +18,8 @@ class RobotModelArtist(BaseRobotModelArtist):
         Robot model.
     """
 
-    def __init__(self, model):
+    def __init__(self, model, collection=None):
+        self.collection = collection
         super(RobotModelArtist, self).__init__(model)
 
     def transform(self, native_mesh, transformation):
@@ -36,8 +37,11 @@ class RobotModelArtist(BaseRobotModelArtist):
         else:
             color = (1., 1., 1.)
 
+        if self.collection and self.collection not in bpy.data.collections.keys():
+            compas_blender.utilities.create_collection(self.collection)
+
         v, f = geometry.to_vertices_and_faces()
-        native_mesh = compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False)
+        native_mesh = compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, collection=self.collection)
         native_mesh.hide_set(True)
         return native_mesh
 
