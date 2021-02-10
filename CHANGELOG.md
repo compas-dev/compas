@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added ability of `RobotModel.add_link` to accept primitives in addition to meshes.
 * Fixed bug regarding the computation of `Joint.current_origin`.
 * Fixed bug regarding a repeated call to `RobotModel.add_joint`.
+* Fixed bug in `compas_blender.RobotModelArtist.update`.
 * Fixed bug in `compas.datastructures.mesh_slice_plane`.
 * Fixed bug where initialising a `compas_blender.artists.Robotmodelartist` would create a new collection for each mesh and then also not put the mesh iton the created collection. 
 * Changed the initialisation of `compas_blender.artists.Robotmodelartist` to include a `collection`-parameter instead of a `layer`-parameter to be more consistent with Blender's nomenclature. 
@@ -528,12 +529,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Split up network and mesh naming conventions.
 * Reworked network face cycle finding.
 * Updated mesh from lines.
-* Updated network plotter in correspondance with network.
+* Updated network plotter in correspondence with network.
 * Integrated mixin functionality and removed mixins.
+* Meshes are now initially hidden in `compas_blender.artists.RobotModelArtist`.
+* `compas_blender.artists.RobotModelArtist.draw_visual` and `compas_blender.artists.RobotModelArtist.draw_collision` now show those meshes.
+* Renamed the method `draw_geometry` of `compas.robots.base_artist.RobotModelBaseArtist` to `create_geometry`.
 
 ### Removed
 
-* Removed parallelisation from network algorithms.
+* Removed parallelization from network algorithms.
 * Removed numba based dr implementations.
 
 ## [0.15.0] 2020-01-24
