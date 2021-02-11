@@ -8,7 +8,7 @@ from compas.geometry import Frame
 from compas.geometry import Scale
 from compas.geometry import Transformation
 from compas.robots import Geometry
-
+from compas.utilities import add_observer
 
 __all__ = [
     'BaseRobotModelArtist'
@@ -75,6 +75,8 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         self.create()
         self.scale_factor = 1.
         self.attached_tool_model = None
+
+        add_observer(self.model, 'updated_transformations', lambda _ctx: self.create())
 
     def attach_tool_model(self, tool_model):
         """Attach a tool to the robot artist.

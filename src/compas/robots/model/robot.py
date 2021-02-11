@@ -28,7 +28,7 @@ from compas.robots.model.link import Link
 from compas.robots.model.link import Visual
 from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
-
+from compas.utilities import observable
 
 __all__ = ['RobotModel']
 
@@ -79,7 +79,7 @@ class RobotModel(Base):
         self.root = None
         self._rcf = None
         self._rebuild_tree()
-        self._create(self.root, self._root_transformation)
+        self.update_transformations()
         self._scale_factor = 1.
 
     def get_urdf_element(self):
@@ -607,7 +607,7 @@ class RobotModel(Base):
         else:
             self._rcf = frame.copy()
 
-        self._create(self.root, self._root_transformation)
+        self.update_transformations()
 
     @property
     def _root_transformation(self):
@@ -792,6 +792,11 @@ class RobotModel(Base):
             self.scale(relative_factor, child_joint.child_link)
 
         self._scale_factor = factor
+
+    @observable(event_name='updated_transformations')
+    def update_transformations(self):
+        """"""
+        self._create(self.root, self._root_transformation)
 
     def compute_transformations(self, joint_state, link=None, parent_transformation=None):
         """Recursive function to calculate the transformations of each joint.
@@ -1004,7 +1009,7 @@ class RobotModel(Base):
         # Must build the tree structure, if adding the first link to an empty robot
         if len(self.links) == 1:
             self._rebuild_tree()
-            self._create(self.root, self._root_transformation)
+            self.update_transformations()
 
         return link
 
@@ -1095,7 +1100,7 @@ class RobotModel(Base):
         self._joints[joint.name] = joint
         self._adjacency[joint.name] = [child_link.name]
 
-        self._create(self.root, self._root_transformation)
+        self.update_transformations()
 
         return joint
 
