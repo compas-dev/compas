@@ -153,6 +153,7 @@ def _run_post_execution_steps(steps_generator):
 
     return True
 
+
 @compas.plugins.plugin(category='install', pluggable_name='installable_rhino_packages', tryfirst=True)
 def default_installable_rhino_packages():
     # While this list could obviously be hard-coded, I think
