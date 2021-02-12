@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `RobotModel.remove_link`, `RobotModel.remove_joint`, `RobotModel.to_urdf_string`, and `RobotModel.ensure_geometry`.
 * Added Blender Python-example to the documentation section: Tutorials -> Robots
 * Added `compas_blender.unload_modules`.
+* Added `after_rhino_install` and `after_rhino_uninstall` pluggable interfaces to extend the install/uninstall with arbitrary steps.
 
 ### Changed
 
