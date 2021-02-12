@@ -101,11 +101,12 @@ def uninstall(version=None, packages=None):
         if status != 'OK':
             exit_code = -1
 
-    if len(uninstalled_packages):
+    if exit_code == 0 and len(uninstalled_packages):
         print()
         print('Running post-uninstallation steps...')
         print()
-        _run_post_execution_steps(after_rhino_uninstall(uninstalled_packages))
+        if not _run_post_execution_steps(after_rhino_uninstall(uninstalled_packages)):
+            exit_code = -1
 
     print('\nUninstall completed.')
     if exit_code != 0:

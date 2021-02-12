@@ -115,11 +115,12 @@ def install(version=None, packages=None):
         if status != 'OK':
             exit_code = -1
 
-    if len(installed_packages):
+    if exit_code == 0 and len(installed_packages):
         print()
         print('Running post-installation steps...')
         print()
-        _run_post_execution_steps(after_rhino_install(installed_packages))
+        if not _run_post_execution_steps(after_rhino_install(installed_packages)):
+            exit_code = -1
 
     print('\nCompleted.')
     if exit_code != 0:
@@ -148,6 +149,9 @@ def _run_post_execution_steps(steps_generator):
         for error in post_execution_errors:
             print('   - {}'.format(repr(error)))
 
+        return False
+
+    return True
 
 @compas.plugins.plugin(category='install', pluggable_name='installable_rhino_packages', tryfirst=True)
 def default_installable_rhino_packages():
