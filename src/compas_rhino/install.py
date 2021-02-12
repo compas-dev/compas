@@ -16,7 +16,6 @@ __all__ = [
     'install',
     'installable_rhino_packages',
     'after_rhino_install',
-    'after_rhino_uninstall',
 ]
 
 
@@ -126,6 +125,7 @@ def install(version=None, packages=None):
     if exit_code != 0:
         sys.exit(exit_code)
 
+
 def _run_post_execution_steps(steps_generator):
     post_execution_errors = []
     for result in steps_generator:
@@ -209,6 +209,7 @@ def after_rhino_install(installed_packages):
         List containing a 3-tuple with component name, message and ``True``/``False`` success flag.
     """
     pass
+
 
 def _update_bootstrapper(install_path, packages):
     # Take either the CONDA environment directory or the current Python executable's directory

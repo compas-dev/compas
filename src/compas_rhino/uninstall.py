@@ -12,7 +12,10 @@ import compas_rhino
 from compas_rhino.install import _run_post_execution_steps
 from compas_rhino.install import installable_rhino_packages
 
-__all__ = ['uninstall']
+__all__ = [
+    'uninstall',
+    'after_rhino_uninstall',
+]
 
 
 def uninstall(version=None, packages=None):
