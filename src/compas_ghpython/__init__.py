@@ -22,7 +22,7 @@ if compas.RHINO:
 __version__ = '1.0.0'
 
 
-def _get_grasshopper_library_path(version):
+def get_grasshopper_library_path(version):
     if compas.WINDOWS:
         grasshopper_library_path = os.path.join(os.getenv('APPDATA'), 'Grasshopper', 'Libraries')
     elif compas.OSX:
