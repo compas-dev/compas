@@ -128,7 +128,9 @@ def install(version=None, packages=None):
 
 
 def _run_post_execution_steps(steps_generator):
+    all_steps_succeeded = True
     post_execution_errors = []
+
     for result in steps_generator:
         if isinstance(result, Exception):
             post_execution_errors.append(result)
@@ -138,6 +140,8 @@ def _run_post_execution_steps(steps_generator):
             try:
                 package, message, success = item
                 status = 'OK' if success else 'ERROR'
+                if not success:
+                    all_steps_succeeded = False
                 print('   {} {}: {}'.format(package.ljust(20), status, message))
             except ValueError:
                 post_execution_errors.append(ValueError('Step successful, but result is wrongly formatted: {}'.format(str(item))))
@@ -149,9 +153,9 @@ def _run_post_execution_steps(steps_generator):
         for error in post_execution_errors:
             print('   - {}'.format(repr(error)))
 
-        return False
+        all_steps_succeeded = False
 
-    return True
+    return all_steps_succeeded
 
 
 @compas.plugins.plugin(category='install', pluggable_name='installable_rhino_packages', tryfirst=True)
