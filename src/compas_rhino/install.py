@@ -140,7 +140,7 @@ def _run_post_execution_steps(steps_generator):
                 status = 'OK' if success else 'ERROR'
                 print('   {} {}: {}'.format(package.ljust(20), status, message))
             except ValueError:
-                post_execution_errors.append(ValueError('Step successful, but result is wrongly formatted: {}'.format(str(result))))
+                post_execution_errors.append(ValueError('Step successful, but result is wrongly formatted: {}'.format(str(item))))
 
     if post_execution_errors:
         print()
