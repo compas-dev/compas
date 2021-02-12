@@ -12,7 +12,11 @@ import compas_rhino
 import compas._os
 import compas.plugins
 
-__all__ = ['install']
+__all__ = [
+    'install',
+    'installable_rhino_packages',
+    'after_rhino_install',
+]
 
 
 def install(version=None, packages=None):
@@ -84,8 +88,13 @@ def install(version=None, packages=None):
     symlinks = [(link['source_path'], link['link']) for link in symlinks_to_install]
     install_results = compas._os.create_symlinks(symlinks)
 
+    installed_packages = []
     for install_data, success in zip(symlinks_to_install, install_results):
-        result = 'OK' if success else 'ERROR: Cannot create symlink, try to run as administrator.'
+        if success:
+            installed_packages.append(install_data['name'])
+            result = 'OK'
+        else:
+            result = 'ERROR: Cannot create symlink, try to run as administrator.'
         results.append((install_data['name'], result))
 
     if not all(install_results):
@@ -106,9 +115,47 @@ def install(version=None, packages=None):
         if status != 'OK':
             exit_code = -1
 
+    if exit_code == 0 and len(installed_packages):
+        print()
+        print('Running post-installation steps...')
+        print()
+        if not _run_post_execution_steps(after_rhino_install(installed_packages)):
+            exit_code = -1
+
     print('\nCompleted.')
     if exit_code != 0:
         sys.exit(exit_code)
+
+
+def _run_post_execution_steps(steps_generator):
+    all_steps_succeeded = True
+    post_execution_errors = []
+
+    for result in steps_generator:
+        if isinstance(result, Exception):
+            post_execution_errors.append(result)
+            continue
+
+        for item in result:
+            try:
+                package, message, success = item
+                status = 'OK' if success else 'ERROR'
+                if not success:
+                    all_steps_succeeded = False
+                print('   {} {}: {}'.format(package.ljust(20), status, message))
+            except ValueError:
+                post_execution_errors.append(ValueError('Step ran without errors but result is wrongly formatted: {}'.format(str(item))))
+
+    if post_execution_errors:
+        print()
+        print('One or more errors occurred:')
+        print()
+        for error in post_execution_errors:
+            print('   - {}'.format(repr(error)))
+
+        all_steps_succeeded = False
+
+    return all_steps_succeeded
 
 
 @compas.plugins.plugin(category='install', pluggable_name='installable_rhino_packages', tryfirst=True)
@@ -139,6 +186,36 @@ def installable_rhino_packages():
     -------
     :obj:`list` of :obj:`str`
         List of package names to make available inside Rhino.
+    """
+    pass
+
+
+@compas.plugins.pluggable(category='install', selector='collect_all')
+def after_rhino_install(installed_packages):
+    """Allows extensions to execute actions after install to Rhino is done.
+
+    Extensions providing Rhino or Grasshopper features
+    can implement this pluggable interface to perform
+    additional steps after an installation to Rhino has
+    been completed.
+
+    Parameters
+    ----------
+    installed_packages : :obj:`list` of :obj:`str`
+        List of packages that have been installed successfully.
+
+    Examples
+    --------
+    >>> import compas.plugins
+    >>> @compas.plugins.plugin(category='install')
+    ... def after_rhino_install(installed_packages):
+    ...    # Do something after package is installed to Rhino, eg, copy components, etc
+    ...    return [('compas_ghpython', 'GH Components installed', True)]
+
+    Returns
+    -------
+    :obj:`list` of 3-tuple (str, str, bool)
+        List containing a 3-tuple with component name, message and ``True``/``False`` success flag.
     """
     pass
 

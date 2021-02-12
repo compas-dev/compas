@@ -288,7 +288,11 @@ def pluggable(pluggable_method=None, category=None, selector='first_match', doma
                 results = []
 
                 for plugin_impl in _collect_plugins(extension_point_url):
-                    results.append(plugin_impl.method(*args, **kwargs))
+                    try:
+                        result = plugin_impl.method(*args, **kwargs)
+                        results.append(result)
+                    except Exception as e:
+                        results.append(e)
 
                 return results
             else:
