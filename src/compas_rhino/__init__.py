@@ -211,4 +211,5 @@ __all__ = [name for name in dir() if not name.startswith('_')]
 __all_plugins__ = [
     'compas_rhino.geometry.booleans',
     'compas_rhino.install',
+    'compas_rhino.uninstall',
 ]

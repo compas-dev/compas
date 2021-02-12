@@ -24,9 +24,13 @@ Category: ``booleans``
 Category: ``install``
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. currentmodule:: compas_rhino.install
+.. currentmodule::
 
 * :func:`installable_rhino_packages`
+* :func:`after_rhino_install`
+
+.. currentmodule:: compas_rhino.uninstall
+* :func:`after_rhino_uninstall`
 
 
 Category: ``intersections``
