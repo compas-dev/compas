@@ -285,12 +285,16 @@ def pluggable(pluggable_method=None, category=None, selector='first_match', doma
 
             # Collect all matching plugins
             elif selector == 'collect_all':
+                results = []
+
                 for plugin_impl in _collect_plugins(extension_point_url):
                     try:
                         result = plugin_impl.method(*args, **kwargs)
-                        yield result
+                        results.append(result)
                     except Exception as e:
-                        yield e
+                        results.append(e)
+
+                return results
             else:
                 raise ValueError('Unexpected selector type. Must be either: first_match or collect_all')
 
