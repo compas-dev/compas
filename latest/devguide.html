@@ -99,7 +99,7 @@
         
           
           <div class="section" id="developer-guide">
-<h1>Developer Guide</h1>
+<h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
 <p>This guide is intended for people who want to contribute
 to the code, documentation, and test coverage of the core COMPAS packages:</p>
 <ul class="simple">
@@ -111,7 +111,7 @@ to the code, documentation, and test coverage of the core COMPAS packages:</p>
 </ul>
 <p>Note, however, that the general procedure is applicable to all COMPAS package development.</p>
 <div class="section" id="setup-installation">
-<h2>Setup/Installation</h2>
+<h2>Setup/Installation<a class="headerlink" href="#setup-installation" title="Permalink to this headline">¶</a></h2>
 <p>To set up a developer environment</p>
 <ol class="arabic">
 <li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork.</p></li>
@@ -143,7 +143,7 @@ invoke <span class="nb">test</span>
 </ol>
 </div>
 <div class="section" id="submitting-a-pr">
-<h2>Submitting a PR</h2>
+<h2>Submitting a PR<a class="headerlink" href="#submitting-a-pr" title="Permalink to this headline">¶</a></h2>
 <p>Once you are done making changes, you have to submit your contribution through a pull request (PR).
 The procedure for submitting a PR is the following.</p>
 <ol class="arabic">
@@ -161,7 +161,7 @@ invoke docs
 </ol>
 </div>
 <div class="section" id="style-guide">
-<h2>Style guide</h2>
+<h2>Style guide<a class="headerlink" href="#style-guide" title="Permalink to this headline">¶</a></h2>
 <p>The command <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> runs the entire codebase through <code class="docutils literal notranslate"><span class="pre">flake8</span></code>.
 As described in the <a class="reference external" href="https://flake8.pycqa.org/en/latest/manpage.html">docs</a>,
 <code class="docutils literal notranslate"><span class="pre">flake8</span></code> includes lint checks provided by the PyFlakes project,
@@ -174,7 +174,7 @@ and McCabe complexity checking provided by the McCabe project.</p>
 <p>Note that the maximum line length is set to 180 rather 79 in the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> of the repo.</p>
 </div>
 <div class="section" id="naming-conventions">
-<h2>Naming conventions</h2>
+<h2>Naming conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h2>
 <p>We (intend to) use the following naming conventions.</p>
 <ol class="arabic simple">
 <li><p>variables, functions, methods, attributes use “snake_case”:
@@ -187,7 +187,7 @@ and with spaces between words replaced by underscores.</p></li>
 </ol>
 </div>
 <div class="section" id="quotes">
-<h2>Quotes</h2>
+<h2>Quotes<a class="headerlink" href="#quotes" title="Permalink to this headline">¶</a></h2>
 <p>Ideally, we would use the following conventions for quotes.</p>
 <ol class="arabic simple">
 <li><p>Double quotation marks for multiline statements and docstrings.
@@ -199,7 +199,7 @@ For examples, <code class="docutils literal notranslate"><span class="pre">messa
 </ol>
 </div>
 <div class="section" id="documentation">
-<h2>Documentation</h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>The documentation of COMPAS is generated with Sphinx.
 This means that code docstrings and general documentation pages
 have to be written in RestructuredText.</p>
@@ -216,7 +216,7 @@ it should be added to the API docstring in <code class="docutils literal notrans
 make sure to include it in the docstring of <code class="docutils literal notranslate"><span class="pre">compas.geometry.__init__.py</span></code>.</p>
 </div>
 <div class="section" id="type-hints">
-<h2>Type hints</h2>
+<h2>Type hints<a class="headerlink" href="#type-hints" title="Permalink to this headline">¶</a></h2>
 <p>Type hints should be added to stub files at the public API level
 of the main packages (see <span class="xref std std-ref">code_structure</span>).
 This allows the type hints to be written using Python 3 style
@@ -225,7 +225,7 @@ annotations while maintaining compatibility with Python 2.7 for Rhino/GH.</p>
 <code class="docutils literal notranslate"><span class="pre">compas.datastructures.__init__.pyi</span></code>.</p>
 </div>
 <div class="section" id="code-structure">
-<span id="id1"></span><h2>Code structure</h2>
+<span id="id1"></span><h2>Code structure<a class="headerlink" href="#code-structure" title="Permalink to this headline">¶</a></h2>
 <p>Each of the core packages is divided into subpackages that group functionality into logical components.
 For example, <a class="reference internal" href="api/compas.html#module-compas" title="compas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a> is divided into:</p>
 <ul class="simple">
@@ -262,11 +262,11 @@ Per package, the APIs of the contained module are collected in the <code class="
 </div>
 </div>
 <div class="section" id="dependencies">
-<h2>Dependencies</h2>
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>More info coming soon…</p>
 </div>
 <div class="section" id="testing">
-<h2>Testing</h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <p>Although we still have a significant backlog of existing functionality
 not yet covered by unit tests, at least all newly added functionality
 should have a corresponding test.</p>
@@ -275,7 +275,7 @@ The tests are in the <code class="docutils literal notranslate"><span class="pre
 <p>More info coming soon…</p>
 </div>
 <div class="section" id="plugins">
-<span id="id2"></span><h2>Plugins</h2>
+<span id="id2"></span><h2>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h2>
 <p>COMPAS has an extensible architecture based on plugins that allows to
 customize and extend the functionality of the core framework.</p>
 <p>For a plugin to work, there needs to exist a counterpart to be connected to.
@@ -301,7 +301,7 @@ as the counterpart for plugins to connect to.</p></li>
 call the function <code class="docutils literal notranslate"><span class="pre">do_hard_stuff</span></code> and the appropriate plugin
 implementation using <code class="docutils literal notranslate"><span class="pre">numpy</span></code> would be called automatically.</p>
 <div class="section" id="why-are-plugins-important">
-<h3>Why are plugins important?</h3>
+<h3>Why are plugins important?<a class="headerlink" href="#why-are-plugins-important" title="Permalink to this headline">¶</a></h3>
 <p>The example above is just a single code block, but the power of plugins comes
 from the ability to split those two parts -the <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a>
 and the <a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a>- into completely different files, folders
@@ -313,7 +313,7 @@ another one using <em>Rhino SDK</em> and have the correct one automatically sele
 based on where your script is executing.</p>
 </div>
 <div class="section" id="how-to-make-plugins-discoverable">
-<h3>How to make plugins discoverable?</h3>
+<h3>How to make plugins discoverable?<a class="headerlink" href="#how-to-make-plugins-discoverable" title="Permalink to this headline">¶</a></h3>
 <p>COMPAS plugin discovery is based on naming conventions. This is mainly due to
 the need to support IronPython inside Rhino, which lacks <code class="docutils literal notranslate"><span class="pre">setuptools</span></code>
 infrastructure. For more details, check
@@ -334,7 +334,7 @@ listed are analyzed to look for functions decorated with the <a class="reference
 decorator.</p>
 </div>
 <div class="section" id="two-kinds-of-extension-points">
-<h3>Two kinds of extension points</h3>
+<h3>Two kinds of extension points<a class="headerlink" href="#two-kinds-of-extension-points" title="Permalink to this headline">¶</a></h3>
 <p>An extension point, or <em>pluggable</em> interface can be declared as being one of two types
 based on how they select which implementation to pick if there are multiple available.</p>
 <ul class="simple">
@@ -347,10 +347,10 @@ point: <code class="xref py py-meth docutils literal notranslate"><span class="p
 </ul>
 </div>
 <div class="section" id="a-complete-example">
-<h3>A complete example</h3>
+<h3>A complete example<a class="headerlink" href="#a-complete-example" title="Permalink to this headline">¶</a></h3>
 <p>Let’s explore a complete example to gain a better understanding.</p>
 <div class="section" id="extension-point">
-<h4>Extension point</h4>
+<h4>Extension point<a class="headerlink" href="#extension-point" title="Permalink to this headline">¶</a></h4>
 <p>For the sake of example, we are going to assume that <code class="docutils literal notranslate"><span class="pre">compas</span></code> core defines
 the following <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface in</p>
 <p><strong>compas/geometry/booleans/__init__.py</strong></p>
@@ -361,7 +361,7 @@ the following <a class="reference internal" href="api/generated/compas.plugins.p
 </div>
 </div>
 <div class="section" id="plugin">
-<h4>Plugin</h4>
+<h4>Plugin<a class="headerlink" href="#plugin" title="Permalink to this headline">¶</a></h4>
 <p>Now let’s write a plugin that implements this interface:</p>
 <p><strong>compas_plugin_sample/__init__.py</strong></p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">__all_plugins__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;compas_plugin_sample.boolean_trimesh&#39;</span><span class="p">]</span>
@@ -387,7 +387,7 @@ the following <a class="reference internal" href="api/generated/compas.plugins.p
 </div>
 </div>
 <div class="section" id="advanced-options">
-<h3>Advanced options</h3>
+<h3>Advanced options<a class="headerlink" href="#advanced-options" title="Permalink to this headline">¶</a></h3>
 <p>There are a few additional options that plugins can use:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">requires</span></code>: List of required python modules. COMPAS will filter out plugins if their

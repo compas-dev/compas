@@ -101,14 +101,14 @@
         
           
           <div class="section" id="robots">
-<span id="id1"></span><h1>Robots</h1>
+<span id="id1"></span><h1>Robots<a class="headerlink" href="#robots" title="Permalink to this headline">¶</a></h1>
 <p class="lead">COMPAS provides several fundamental structures and features that simplify working
 with robots models, kinematic chains and coordinate frames. On top of this,
 the <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/">COMPAS FAB</a> extension
 package provides additional functionality to connect these models with planning
 and execution tools and libraries.</p>
 <div class="section" id="coordinate-frames">
-<h2>Coordinate frames</h2>
+<h2>Coordinate frames<a class="headerlink" href="#coordinate-frames" title="Permalink to this headline">¶</a></h2>
 <p>One of the most basic concepts related to robotics that COMPAS provides are
 coordinate frames, which are described using the <a class="reference internal" href="../api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a> class.</p>
 <p>In any robotic setup, there exist multiple coordinate frames, and each one is defined
@@ -122,7 +122,7 @@ in relation to the next. Examples of typical coordinate frames are:</p>
 </ul>
 <div class="figure align-default" id="id3">
 <img alt="../_images/coordinate_frames.jpg" class="figure-img img-fluid" src="../_images/coordinate_frames.jpg" />
-<p class="caption"><span class="caption-text">Coordinate frame convention of a robotic setup.</span></p>
+<p class="caption"><span class="caption-text">Coordinate frame convention of a robotic setup.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 <p>A coordinate frame is defined as a point and two orthonormal base vectors
 (<code class="docutils literal notranslate"><span class="pre">xaxis</span></code>, <code class="docutils literal notranslate"><span class="pre">yaxis</span></code>). Both the point and the vectors can be defined
@@ -185,7 +185,7 @@ a local coordinate frame using the <code class="docutils literal notranslate"><s
 </div>
 </div>
 <div class="section" id="robot-models">
-<h2>Robot models</h2>
+<h2>Robot models<a class="headerlink" href="#robot-models" title="Permalink to this headline">¶</a></h2>
 <p>Robotic arms, like those typically used in digital fabrication, are fundamentally
 kinematic chains of rigid bodies, i.e. <strong>links</strong>, connected by <strong>joints</strong> to
 provide constrained motion. Kinematics is a subdomain of mechanics, and contrary
@@ -196,14 +196,14 @@ on the joint type.</p>
 <p>COMPAS supports robot models defined in a standard robot description format
 called <code class="docutils literal notranslate"><span class="pre">URDF</span></code>, which originates in the ROS community.</p>
 <div class="section" id="links">
-<h3>Links</h3>
+<h3>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
 <p>Links are the rigid bodies in a robot model. They can have zero or more
 geometries associated. Associated geometry can serve visual or collision purposes.
 Collision geometry is generally a simplified version of visual geometry to speed up
 the collision checking process.</p>
 </div>
 <div class="section" id="joints">
-<h3>Joints</h3>
+<h3>Joints<a class="headerlink" href="#joints" title="Permalink to this headline">¶</a></h3>
 <p>Joints are the connecting elements between links. There are four main types
 of joints:</p>
 <ul class="simple">
@@ -218,7 +218,7 @@ are locked.</p></li>
 </div>
 </div>
 <div class="section" id="visualizing-robots">
-<h2>Visualizing Robots</h2>
+<h2>Visualizing Robots<a class="headerlink" href="#visualizing-robots" title="Permalink to this headline">¶</a></h2>
 <p>Before jumping into how to build a robot model, let’s first see how to visualize
 one. This can be done with Blender, Rhino or Grasshopper using one of COMPAS’s
 artists.  The basic procedure is the same in
@@ -272,7 +272,7 @@ it can be used as a scaffolding for code to be run in a Python script editor wit
 </div><p>See below for a complete example of how to programmatically create a Robotmodel.</p>
 </div>
 <div class="section" id="building-robots-models">
-<h2>Building robots models</h2>
+<h2>Building robots models<a class="headerlink" href="#building-robots-models" title="Permalink to this headline">¶</a></h2>
 <p>Robot models are represented by the <a class="reference internal" href="../api/generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> class.
 There are various ways to construct a robot model. The following snippet
 shows how to construct one programmatically:</p>
@@ -482,7 +482,7 @@ The following snippet shows how to load the robot model currently active in ROS:
 </div>
 </div>
 <div class="section" id="fk-ik-path-planning">
-<h2>FK, IK &amp; Path Planning</h2>
+<h2>FK, IK &amp; Path Planning<a class="headerlink" href="#fk-ik-path-planning" title="Permalink to this headline">¶</a></h2>
 <p>Robot models are the base for a large number of additional features that are
 provided via extension packages. In particular, features such as
 forward and inverse kinematic solvers and path planning are built on top of

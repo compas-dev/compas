@@ -101,13 +101,13 @@
         
           
           <div class="section" id="grasshopper">
-<span id="gs-grasshopper"></span><h1>Grasshopper</h1>
+<span id="gs-grasshopper"></span><h1>Grasshopper<a class="headerlink" href="#grasshopper" title="Permalink to this headline">¶</a></h1>
 <p>To get COMPAS working in Grasshopper, you first have to install COMPAS for Rhino.
 In Grasshopper, COMPAS is imported from within a GhPython component. Rhino for
 Mac and Rhino 6+ all come with their own GhPython interpreter, but if you use
 Rhino 5 on Windows, please download and install GhPython <a class="reference external" href="https://www.food4rhino.com/app/ghpython">here</a>.</p>
 <div class="section" id="verify-setup">
-<h2>Verify setup</h2>
+<h2>Verify setup<a class="headerlink" href="#verify-setup" title="Permalink to this headline">¶</a></h2>
 <p>To verify that everything is working properly, simply create a GhPython
 component on your Grasshopper canvas, paste the following script and hit <cite>OK</cite>.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
@@ -124,7 +124,7 @@ component on your Grasshopper canvas, paste the following script and hit <cite>O
 </div>
 </div>
 <div class="section" id="reloading-changed-libraries">
-<h2>Reloading changed libraries</h2>
+<h2>Reloading changed libraries<a class="headerlink" href="#reloading-changed-libraries" title="Permalink to this headline">¶</a></h2>
 <p>If you change a Python library during a running Rhino application, which is
 imported in a GhPython component (e.g. via <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">compas_fab</span></code>),
 it is necessary to reload the library so that the GhPython interpreter

@@ -101,13 +101,13 @@
         
           
           <div class="section" id="meshes">
-<h1>Meshes</h1>
+<h1>Meshes<a class="headerlink" href="#meshes" title="Permalink to this headline">¶</a></h1>
 <p class="lead">Meshes are everywhere in geometry processing, computer graphics,
 additive manufacturing processes, Finite Element Analysis etc.
 COMPAS meshes are polygon meshes with support for n-sided polygonal faces.
 They can represent manifold, open or closed, polygonal surfaces.</p>
 <div class="section" id="data-structure">
-<h2>Data structure</h2>
+<h2>Data structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
 <p>In COMPAS meshes are presented using a half-edge data structure. In a
 half-edge data structure, each edge is composed of two half-edges with
 opposite orientation. Each half-edge is part of exactly one face, unless
@@ -118,7 +118,7 @@ n-sided polygon. The ordering of the vertices determines the direction
 of its normal.</p>
 </div>
 <div class="section" id="building-a-mesh">
-<h2>Building a Mesh</h2>
+<h2>Building a Mesh<a class="headerlink" href="#building-a-mesh" title="Permalink to this headline">¶</a></h2>
 <p>Meshes can be built from scratch by adding vertices and faces.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 
@@ -134,7 +134,7 @@ of its normal.</p>
 </div>
 </div>
 <div class="section" id="constructors">
-<h2>Constructors</h2>
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
 <p>Building a mesh vertex per vertex and face per face is fine for very simple meshes,
 but quickly becomes tedious for meshes of relevant size.
 Alternative constructors can be used to simplify this process based on specific inputs.</p>
@@ -157,7 +157,7 @@ This process is only successful if the input lines form a planar graph.
 </div>
 </div>
 <div class="section" id="geometry-formats">
-<h2>Geometry Formats</h2>
+<h2>Geometry Formats<a class="headerlink" href="#geometry-formats" title="Permalink to this headline">¶</a></h2>
 <p>The mesh also supports constructors based on common geometry formats for 3D polygon mesh geometry.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_off</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
@@ -174,7 +174,7 @@ This process is only successful if the input lines form a planar graph.
 </div>
 </div>
 <div class="section" id="vertices-faces-edges">
-<h2>Vertices, Faces, Edges</h2>
+<h2>Vertices, Faces, Edges<a class="headerlink" href="#vertices-faces-edges" title="Permalink to this headline">¶</a></h2>
 <p>To access the vertices, faces, and edges of the mesh data structure, use the corresponding methods.
 Note that these methods return generator objects that have to be consumed by iteration.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
@@ -226,7 +226,7 @@ when converting a sequence of identifiers to a list. The ordering of these ident
 </div>
 </div>
 <div class="section" id="topology">
-<h2>Topology</h2>
+<h2>Topology<a class="headerlink" href="#topology" title="Permalink to this headline">¶</a></h2>
 <p>Through its half-edge data structure, a mesh can answer several topological questions
 about itself and its components.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -250,7 +250,7 @@ about itself and its components.</p>
 </div>
 </div>
 <div class="section" id="geometry">
-<h2>Geometry</h2>
+<h2>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_normal</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_laplacian</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
@@ -272,7 +272,7 @@ about itself and its components.</p>
 </div>
 </div>
 <div class="section" id="attributes">
-<h2>Attributes</h2>
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -285,7 +285,7 @@ about itself and its components.</p>
 </div>
 </div>
 <div class="section" id="selections">
-<h2>Selections</h2>
+<h2>Selections<a class="headerlink" href="#selections" title="Permalink to this headline">¶</a></h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)})</span>
 </code></pre></div>
 </div>
@@ -296,13 +296,13 @@ about itself and its components.</p>
 </div>
 </div>
 <div class="section" id="serialization">
-<h2>Serialization</h2>
+<h2>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="algorithms">
-<h2>Algorithms</h2>
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="plugins">
-<h2>Plugins</h2>
+<h2>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

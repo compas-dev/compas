@@ -101,7 +101,7 @@
         
           
           <div class="section" id="blender">
-<span id="gs-blender"></span><h1>Blender</h1>
+<span id="gs-blender"></span><h1>Blender<a class="headerlink" href="#blender" title="Permalink to this headline">¶</a></h1>
 <p>Blender ships with its own embedded version of Python. Therefore, the simplest
 (and recommended) way to install COMPAS for Blender is to replace the embedded
 Python by the Python of a <cite>conda</cite> environment that already has COMPAS installed.</p>
@@ -109,7 +109,7 @@ Python by the Python of a <cite>conda</cite> environment that already has COMPAS
 the version of Python that was originally shipped with Blender. For Blender 2.8x and 2.9x
 this is Python 3.7x.</p>
 <div class="section" id="installation">
-<h2>Installation</h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>If you don’t have an environment yet with Python 3.7 and COMPAS you can create one with <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
 conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
@@ -156,7 +156,7 @@ python -m compas_blender.install ~/Blender/2.91
 </div>
 </div></div>
 <div class="section" id="verify-setup">
-<h2>Verify setup</h2>
+<h2>Verify setup<a class="headerlink" href="#verify-setup" title="Permalink to this headline">¶</a></h2>
 <p>In Blender, at the interactive Python prompt (&gt;&gt;&gt;) import the following packages</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas_blender</span>
@@ -166,7 +166,7 @@ python -m compas_blender.install ~/Blender/2.91
 </div>
 </div>
 <div class="section" id="install-python-packages">
-<h2>Install Python packages</h2>
+<h2>Install Python packages<a class="headerlink" href="#install-python-packages" title="Permalink to this headline">¶</a></h2>
 <p>After replacing the embedded version of Python with the one in the virutual
 environment, as instructed above, it is not necessary to activate the environment
 before using Blender. However, when you want to update the installed packages,
@@ -183,7 +183,7 @@ you simply have to activate that environment and follow the same procedure descr
 </div>
 </div>
 <div class="section" id="start-blender">
-<h2>Start Blender</h2>
+<h2>Start Blender<a class="headerlink" href="#start-blender" title="Permalink to this headline">¶</a></h2>
 <p>Blender uses the command window of your system to display error messages and other text output.
 On Windows, the output window can be brought to the front directly from the “Window” menu.
 On Mac or Linux, you should start Blender from the command line.</p>
@@ -216,7 +216,7 @@ Just add the following to your <code class="docutils literal notranslate"><span 
 </div>
 </div>
 <div class="section" id="scripting-interface">
-<h2>Scripting Interface</h2>
+<h2>Scripting Interface<a class="headerlink" href="#scripting-interface" title="Permalink to this headline">¶</a></h2>
 <p>To switch to the scripting interface, simply select the “Scripting” tab of the main window.</p>
 <p>The scripting interface has an embedded interactive Python terminal, which is located in the bottom half of the main window on the left.
 If COMPAS was successfully installed you can use it to directly access the <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment from where the installation was executed.</p>
@@ -233,7 +233,7 @@ they can be turned on with toggle buttons at the top right of the area.
 Further customisation of the editor appearance is possible by opening the sidebar from the “View” menu of the editor.</p>
 </div>
 <div class="section" id="basic-usage">
-<h2>Basic Usage</h2>
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
 <p>One of the main advantages of working in Blender is that Blender Python is CPython, and not IronPython like in Rhino and Grasshopper.
 This means that all cool Python libraries are directly available and do not need to be accessed through remote procedure calls (RPC).
 Especially for code that relies heavily on libraries such as Numpy and Scipy this simplifies the development process quite significantly.</p>
@@ -251,7 +251,7 @@ Especially for code that relies heavily on libraries such as Numpy and Scipy thi
 </code></pre></div>
 </div>
 <div class="section" id="data-blocks">
-<h3>Data Blocks</h3>
+<h3>Data Blocks<a class="headerlink" href="#data-blocks" title="Permalink to this headline">¶</a></h3>
 <p>Something worth explaining is the use of <code class="docutils literal notranslate"><span class="pre">compas_blender.clear()</span></code> in this script.
 Blender uses (and re-uses) something called “data blocks”.
 Objects in the scene have instances of these data blocks assigned to them.
@@ -264,17 +264,17 @@ you will accumulate the data blocks from previous runs and after a while Blender
 If somehow you still experience a slowdown, restarting Blender will help (all unused data blocks are then automatically removed).</p>
 </div>
 <div class="section" id="layers">
-<h3>Layers</h3>
+<h3>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h3>
 <p>There are no real layers in Blender; at least not like the layers in, for example, Rhino.
 Therefore, the Blender artists have no optional <code class="docutils literal notranslate"><span class="pre">layer</span></code> parameter and no <code class="docutils literal notranslate"><span class="pre">clear_layer</span></code> method.
 Instead, objects are grouped in collections, which can be turned on and off in the Blender UI similar to layers in Rhino.</p>
 </div>
 <div class="section" id="collections">
-<h3>Collections</h3>
+<h3>Collections<a class="headerlink" href="#collections" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="limitations">
-<h2>Limitations</h2>
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">compas_blender</span></code> is not yet as well developed as, <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_ghpython</span></code>.
 For example, COMPAS geometry objects do not yet have a corresponding artist in <code class="docutils literal notranslate"><span class="pre">compas_blender</span></code>.
 Artists are currently only available for data structures and robots.</p>

@@ -101,17 +101,17 @@
         
           
           <div class="section" id="freecad">
-<span id="gs-freecad"></span><h1>FreeCAD</h1>
+<span id="gs-freecad"></span><h1>FreeCAD<a class="headerlink" href="#freecad" title="Permalink to this headline">¶</a></h1>
 <p class="lead">Although there is no official support package for FreeCAD, working with COMPAS in FreeCAD is actually quite simple.</p>
 <div class="section" id="install-freecad">
-<h2>Install FreeCAD</h2>
+<h2>Install FreeCAD<a class="headerlink" href="#install-freecad" title="Permalink to this headline">¶</a></h2>
 <p>If FreeCAD is installed using <code class="docutils literal notranslate"><span class="pre">conda</span></code>, the Python interpreter in FreeCAD automagically has access to all the packages installed in the same environment.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n CAD <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 freecad COMPAS -c conda-forge --yes
 </code></pre></div>
 </div>
 </div>
 <div class="section" id="launch-freecad">
-<h2>Launch FreeCAD</h2>
+<h2>Launch FreeCAD<a class="headerlink" href="#launch-freecad" title="Permalink to this headline">¶</a></h2>
 <p>To activate this mechanism, you have to launch FreeCAD from the environment it is installed in.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate CAD
 freecad
@@ -119,7 +119,7 @@ freecad
 </div>
 </div>
 <div class="section" id="basic-usage">
-<h2>Basic Usage</h2>
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Mesh</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span> <span class="k">as</span> <span class="n">cMesh</span>
