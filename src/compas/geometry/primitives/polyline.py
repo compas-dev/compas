@@ -258,6 +258,47 @@ class Polyline(Primitive):
             self.points[index].y = point[1]
             self.points[index].z = point[2]
 
+    def split_at_corners(self, angle_threshold):
+        """Splits a polyline at corners larger than the given angle_threshold
+
+        Parameters:
+        -----------
+        angle_threshold: radians
+
+        Returns
+        -------
+        list of polylines
+
+        """
+
+        corner_ids = []
+        split_polylines = []
+        points = self.points
+        seg_ids = list(range(len(self.lines)))
+
+        if self.is_closed():
+            seg_ids.append(0)
+
+        for seg1, seg2 in pairwise(seg_ids):
+            angle = self.lines[seg1].vector.angle(self.lines[seg2].vector)
+            if angle >= angle_threshold:
+                corner_ids.append(seg1+1)
+
+        if self.is_closed() and len(corner_ids)>0:
+            if corner_ids[-1]!=len(points):
+                corner_ids = [corner_ids[-1]] + corner_ids
+        else:
+            corner_ids = [0] + corner_ids + [len(points)]
+
+        for id1, id2 in pairwise(corner_ids):
+            if id1 < id2:
+                split_polylines.append(Polyline(points[id1:id2+1]))
+            else:
+                looped_pts = [points[i] for i in range(id1, len(points))] + points[0:id2+1]
+                split_polylines.append(Polyline(looped_pts))
+
+        return split_polylines
+
 
 # ==============================================================================
 # Main
