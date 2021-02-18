@@ -7,6 +7,7 @@ from compas.geometry import transform_points
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Line
+from compas.geometry.predicates import is_point_on_line
 
 from compas.utilities import pairwise
 
@@ -284,8 +285,8 @@ class Polyline(Primitive):
             if angle >= angle_threshold:
                 corner_ids.append(seg1+1)
 
-        if self.is_closed() and len(corner_ids)>0:
-            if corner_ids[-1]!=len(points):
+        if self.is_closed() and len(corner_ids) > 0:
+            if corner_ids[-1] != len(points):
                 corner_ids = [corner_ids[-1]] + corner_ids
         else:
             corner_ids = [0] + corner_ids + [len(points)]
@@ -299,6 +300,20 @@ class Polyline(Primitive):
 
         return split_polylines
 
+    def tangent_at_point_on_polyline(self, point):
+        """Calculates the tangent vector of a point on a polyline
+
+        Parameters:
+        -----------
+        point: :class:`compas.geometry.Primitives.Point`
+
+        Returns
+        -------
+        Vector
+        """
+        for line in self.lines:
+            if is_point_on_line(point, line):
+                return line.direction
 
 # ==============================================================================
 # Main
