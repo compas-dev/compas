@@ -295,7 +295,7 @@ class Polyline(Primitive):
             if id1 < id2:
                 split_polylines.append(Polyline(points[id1:id2+1]))
             else:
-                looped_pts = [points[i] for i in range(id1, len(points))] + points[0:id2+1]
+                looped_pts = [points[i] for i in range(id1, len(points))] + points[1:id2+1]
                 split_polylines.append(Polyline(looped_pts))
 
         return split_polylines
