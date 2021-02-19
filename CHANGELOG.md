@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-* Added `Polyline.split_at_corners` and `.Polyline.tangent_at_point_on_polyline`.
+* Added `divide_polyline`, `divide_polyline_by_length`, `Polyline.split_at_corners` and `.Polyline.tangent_at_point_on_polyline`.
 
 ### Changed
 
