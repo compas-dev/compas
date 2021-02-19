@@ -315,6 +315,73 @@ class Polyline(Primitive):
             if is_point_on_line(point, line):
                 return line.direction
 
+    def divide_polyline(self, num_segments):
+        """Divide a polyline in equal segments
+
+        Parameters:
+        -----------
+        num_segments: int
+
+        Returns
+        -------
+        list
+            list of points :class:`compas.geometry.Primitives.Point`
+        """
+        segment_length = self.length/num_segments
+
+        num_pts = int(round(self.length/segment_length))
+        total_length = [0, 0]
+        division_pts = [self.points[0]]
+        new_polyline = self
+        for i in range(num_pts):
+            for i_ln, line in enumerate(new_polyline.lines):
+                total_length.append(total_length[-1] + line.length)
+                if total_length[-1] > segment_length:
+                    amp = (segment_length - total_length[-2]) / line.length
+                    new_pt = line.start + line.vector.scaled(amp)
+                    division_pts.append(new_pt)
+                    total_length = [0, 0]
+                    remaining_pts = new_polyline.points[i_ln+2:]
+                    new_polyline = Polyline([new_pt, line.end] + remaining_pts)
+                    break
+            if len(division_pts) == num_pts+1:
+                break
+
+        if len(division_pts) != num_pts+1:
+            division_pts.append(new_polyline.points[-1])
+
+        return division_pts
+
+    def divide_polyline_by_length(self, length):
+        """Splits a polyline in segments of a given length
+
+        Parameters:
+        -----------
+        length: float
+
+        Returns
+        -------
+        list
+            list of points :class:`compas.geometry.Primitives.Point`
+        """
+        num_pts = int(round(self.length/length))
+        total_length = [0, 0]
+        division_pts = [self.points[0]]
+        new_polyline = self
+        for i in range(num_pts):
+            for i_ln, line in enumerate(new_polyline.lines):
+                total_length.append(total_length[-1] + line.length)
+                if total_length[-1] > length:
+                    amp = (length - total_length[-2]) / line.length
+                    new_pt = line.start + line.vector.scaled(amp)
+                    division_pts.append(new_pt)
+                    total_length = [0, 0]
+                    remaining_pts = new_polyline.points[i_ln+2:]
+                    new_polyline = Polyline([new_pt, line.end] + remaining_pts)
+                    break
+            if len(division_pts) == num_pts+1:
+                break
+        return division_pts
 # ==============================================================================
 # Main
 # ==============================================================================
