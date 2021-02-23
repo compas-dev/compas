@@ -155,6 +155,19 @@ python -m compas_blender.install ~/Blender/2.91
 </div></div>
 </div>
 </div></div>
+<div class="section" id="add-ons">
+<h2>Add-ons<a class="headerlink" href="#add-ons" title="Permalink to this headline">¶</a></h2>
+<p>For some Blender add-ons, not only the version of Python has to match, but also the version of Numpy.
+For example, <a class="reference external" href="http://nortikin.github.io/sverchok/">Sverchok</a>, a Grasshopper-type visual programming tool for Blender,
+will not work with the version of Numpy included in the latest COMPAS releases, even though Blender will.</p>
+<p>In those cases, you can simply revert to an earlier version of Numpy that is still compatible with COMPAS
+in the environment you use with Blender. For Sverchok, this would be version <code class="docutils literal notranslate"><span class="pre">1.17.5</span></code>,
+which is the one shipped with Blender originally. To revert simply do</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+conda install <span class="nv">numpy</span><span class="o">=</span><span class="m">1</span>.17.5
+</code></pre></div>
+</div>
+</div>
 <div class="section" id="verify-setup">
 <h2>Verify setup<a class="headerlink" href="#verify-setup" title="Permalink to this headline">¶</a></h2>
 <p>In Blender, at the interactive Python prompt (&gt;&gt;&gt;) import the following packages</p>
@@ -331,6 +344,7 @@ Therefore, COMPAS Blender development is somewhat limited to individual scripts.
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Blender</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#installation">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#add-ons">Add-ons</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#verify-setup">Verify setup</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#install-python-packages">Install Python packages</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#start-blender">Start Blender</a></li>
