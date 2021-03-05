@@ -305,7 +305,7 @@ class Polyline(Primitive):
 
         Parameters:
         -----------
-        point: :class:`compas.geometry.Primitives.Point`
+        point: :class:`compas.geometry.Point`
 
         Returns
         -------
