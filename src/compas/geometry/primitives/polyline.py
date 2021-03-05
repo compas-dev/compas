@@ -298,7 +298,9 @@ class Polyline(Primitive):
             else:
                 looped_pts = [points[i] for i in range(id1, len(points))] + points[1:id2+1]
                 split_polylines.append(Polyline(looped_pts))
-
+if self.is_closed() and not corner_ids:
+    return [Polyline(self.points)]
+    
         return split_polylines
 
     def tangent_at_point_on_polyline(self, point):
