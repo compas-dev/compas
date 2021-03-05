@@ -310,7 +310,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
         """
         for line in self.lines:
             if is_point_on_line(point, line):
