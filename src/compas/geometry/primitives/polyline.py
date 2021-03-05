@@ -318,7 +318,7 @@ class Polyline(Primitive):
         for line in self.lines:
             if is_point_on_line(point, line):
                 return line.direction
-            raise Exception('{} not found!'.format(point))
+        raise Exception('{} not found!'.format(point))
 
     def divide_polyline(self, num_segments):
         """Divide a polyline in equal segments.
