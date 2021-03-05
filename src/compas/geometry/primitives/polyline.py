@@ -264,7 +264,8 @@ class Polyline(Primitive):
 
         Parameters:
         -----------
-        angle_threshold: radians
+        angle_threshold : float
+            In radians.
 
         Returns
         -------
