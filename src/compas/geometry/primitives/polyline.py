@@ -269,7 +269,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        list of polylines
+        list of :class:`compas.geometry.Polyline`
 
         """
 
