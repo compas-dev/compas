@@ -321,7 +321,7 @@ class Polyline(Primitive):
             raise Exception('{} not found!'.format(point))
 
     def divide_polyline(self, num_segments):
-        """Divide a polyline in equal segments
+        """Divide a polyline in equal segments.
 
         Parameters:
         -----------
@@ -334,28 +334,26 @@ class Polyline(Primitive):
         """
         segment_length = self.length/num_segments
 
-        return self.divide_polyline_by_length(segment_length)
+        return self.divide_polyline_by_length(segment_length, False)
 
-    def divide_polyline_by_length(self, length):
+    def divide_polyline_by_length(self, length, strict=True):
         """Splits a polyline in segments of a given length
 
         Parameters:
         -----------
         length: float
 
+        strit: boolean
+            If set to False, the remainder segment will be added even if it is smaller than the desired length
+
         Returns
         -------
         list
             list of points :class:`compas.geometry.Primitives.Point`
         """
-        num_pts = int(round(self.length/length))
+        num_pts = int(self.length/length)
         total_length = [0, 0]
-        if hasattr(self, 'points'):
-            division_pts = [self.points[0]]
-            new_polyline = self
-        else:
-            division_pts = [self.start]
-            new_polyline = Polyline([self.start, self.end])
+        division_pts = [self.points[0]]
         new_polyline = self
         for i in range(num_pts):
             for i_ln, line in enumerate(new_polyline.lines):
@@ -368,8 +366,18 @@ class Polyline(Primitive):
                     remaining_pts = new_polyline.points[i_ln+2:]
                     new_polyline = Polyline([new_pt, line.end] + remaining_pts)
                     break
+                elif total_length[-1] == length:
+                    total_length = [0, 0]
+                    division_pts.append(line.end)
+
             if len(division_pts) == num_pts+1:
                 break
+
+        if strict == False and not self.is_closed() and len(division_pts) < num_pts+1:
+            division_pts.append(new_polyline.points[-1])
+        elif strict == False and division_pts[-1] != self.points[-1]:
+            division_pts.append(self.points[-1])
+
         return division_pts
 # ==============================================================================
 # Main
