@@ -317,6 +317,7 @@ if self.is_closed() and not corner_ids:
         for line in self.lines:
             if is_point_on_line(point, line):
                 return line.direction
+            raise Exception('{} not found!'.format(point))
 
     def divide_polyline(self, num_segments):
         """Divide a polyline in equal segments
