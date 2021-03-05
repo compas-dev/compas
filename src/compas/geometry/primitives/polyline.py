@@ -332,8 +332,13 @@ class Polyline(Primitive):
 
         num_pts = int(round(self.length/segment_length))
         total_length = [0, 0]
-        division_pts = [self.points[0]]
-        new_polyline = self
+        if hasattr(self, 'points'):
+            division_pts = [self.points[0]]
+            new_polyline = self
+        else:
+            division_pts = [self.start]
+            new_polyline = Polyline([self.start, self.end])
+
         for i in range(num_pts):
             for i_ln, line in enumerate(new_polyline.lines):
                 total_length.append(total_length[-1] + line.length)
