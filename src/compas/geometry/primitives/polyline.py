@@ -373,9 +373,9 @@ class Polyline(Primitive):
             if len(division_pts) == num_pts+1:
                 break
 
-        if strict == False and not self.is_closed() and len(division_pts) < num_pts+1:
+        if strict is False and not self.is_closed() and len(division_pts) < num_pts+1:
             division_pts.append(new_polyline.points[-1])
-        elif strict == False and division_pts[-1] != self.points[-1]:
+        elif strict is False and division_pts[-1] != self.points[-1]:
             division_pts.append(self.points[-1])
 
         return division_pts
