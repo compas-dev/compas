@@ -298,9 +298,10 @@ class Polyline(Primitive):
             else:
                 looped_pts = [points[i] for i in range(id1, len(points))] + points[1:id2+1]
                 split_polylines.append(Polyline(looped_pts))
-if self.is_closed() and not corner_ids:
-    return [Polyline(self.points)]
-    
+
+        if self.is_closed() and not corner_ids:
+            return [Polyline(self.points)]
+
         return split_polylines
 
     def tangent_at_point_on_polyline(self, point):
@@ -332,33 +333,7 @@ if self.is_closed() and not corner_ids:
         """
         segment_length = self.length/num_segments
 
-        num_pts = int(round(self.length/segment_length))
-        total_length = [0, 0]
-        if hasattr(self, 'points'):
-            division_pts = [self.points[0]]
-            new_polyline = self
-        else:
-            division_pts = [self.start]
-            new_polyline = Polyline([self.start, self.end])
-
-        for i in range(num_pts):
-            for i_ln, line in enumerate(new_polyline.lines):
-                total_length.append(total_length[-1] + line.length)
-                if total_length[-1] > segment_length:
-                    amp = (segment_length - total_length[-2]) / line.length
-                    new_pt = line.start + line.vector.scaled(amp)
-                    division_pts.append(new_pt)
-                    total_length = [0, 0]
-                    remaining_pts = new_polyline.points[i_ln+2:]
-                    new_polyline = Polyline([new_pt, line.end] + remaining_pts)
-                    break
-            if len(division_pts) == num_pts+1:
-                break
-
-        if len(division_pts) != num_pts+1:
-            division_pts.append(new_polyline.points[-1])
-
-        return division_pts
+        return self.divide_polyline_by_length(segment_length)
 
     def divide_polyline_by_length(self, length):
         """Splits a polyline in segments of a given length
@@ -374,7 +349,12 @@ if self.is_closed() and not corner_ids:
         """
         num_pts = int(round(self.length/length))
         total_length = [0, 0]
-        division_pts = [self.points[0]]
+        if hasattr(self, 'points'):
+            division_pts = [self.points[0]]
+            new_polyline = self
+        else:
+            division_pts = [self.start]
+            new_polyline = Polyline([self.start, self.end])
         new_polyline = self
         for i in range(num_pts):
             for i_ln, line in enumerate(new_polyline.lines):
