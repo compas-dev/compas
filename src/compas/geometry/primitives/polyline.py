@@ -325,12 +325,12 @@ class Polyline(Primitive):
 
         Parameters:
         -----------
-        num_segments: int
+        num_segments : int
 
         Returns
         -------
         list
-            list of points :class:`compas.geometry.Primitives.Point`
+            list of :class:`compas.geometry.Point`
         """
         segment_length = self.length/num_segments
 
@@ -341,15 +341,15 @@ class Polyline(Primitive):
 
         Parameters:
         -----------
-        length: float
+        length : float
 
-        strit: boolean
-            If set to False, the remainder segment will be added even if it is smaller than the desired length
+        strict : bool
+            If set to ``False``, the remainder segment will be added even if it is smaller than the desired length
 
         Returns
         -------
         list
-            list of points :class:`compas.geometry.Primitives.Point`
+            list of :class:`compas.geometry.Point`
         """
         num_pts = int(self.length/length)
         total_length = [0, 0]
