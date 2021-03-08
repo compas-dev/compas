@@ -108,7 +108,7 @@
 <h1>Polyline<a class="headerlink" href="#polyline" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="compas.geometry.Polyline">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">Polyline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polyline.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas.geometry.Polyline" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">Polyline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polyline.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas.geometry.Polyline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></p>
 <p>A polyline is a sequence of points connected by line segments.</p>
 <p>A polyline is a piecewise linear element.
@@ -157,6 +157,12 @@ Each consecutive pair of points forms a segment of the polyline.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.copy.html#compas.geometry.Polyline.copy" title="compas.geometry.Polyline.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
 <td><p>Makes a copy of this primitive.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_polyline.html#compas.geometry.Polyline.divide_polyline" title="compas.geometry.Polyline.divide_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_polyline</span></code></a>(num_segments)</p></td>
+<td><p>Divide a polyline in equal segments.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_polyline_by_length.html#compas.geometry.Polyline.divide_polyline_by_length" title="compas.geometry.Polyline.divide_polyline_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_polyline_by_length</span></code></a>(length[, strict])</p></td>
+<td><p>Splits a polyline in segments of a given length</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.from_data.html#compas.geometry.Polyline.from_data" title="compas.geometry.Polyline.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a polyline from a data dict.</p></td>
 </tr>
@@ -171,6 +177,12 @@ Each consecutive pair of points forms a segment of the polyline.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.point.html#compas.geometry.Polyline.point" title="compas.geometry.Polyline.point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point</span></code></a>(t[, snap])</p></td>
 <td><p>Point on the polyline at a specific normalized parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.split_at_corners.html#compas.geometry.Polyline.split_at_corners" title="compas.geometry.Polyline.split_at_corners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_at_corners</span></code></a>(angle_threshold)</p></td>
+<td><p>Splits a polyline at corners larger than the given angle_threshold</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.tangent_at_point_on_polyline.html#compas.geometry.Polyline.tangent_at_point_on_polyline" title="compas.geometry.Polyline.tangent_at_point_on_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at_point_on_polyline</span></code></a>(point)</p></td>
+<td><p>Calculates the tangent vector of a point on a polyline</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.to_data.html#compas.geometry.Polyline.to_data" title="compas.geometry.Polyline.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Returns the data dictionary that represents the primitive.</p></td>
