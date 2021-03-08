@@ -135,3 +135,13 @@ def test___str__():
     angle = 0.7854
     R = Rotation.from_axis_and_angle(axes, angle, point=trans)
     assert s == str(R)
+
+
+def test___eq__():
+    i1 = Transformation()
+    i2 = Transformation()
+    t = Translation.from_vector([1, 0, 0])
+    assert i1 == i2
+    assert not (i1 != i2)
+    assert i1 != t
+    assert not (i1 == t)

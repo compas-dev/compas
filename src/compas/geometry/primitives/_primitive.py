@@ -18,6 +18,10 @@ class Primitive(Base):
     def __init__(self):
         super(Primitive, self).__init__()
 
+    def __ne__(self, other):
+        # this is not obvious to ironpython
+        return not self.__eq__(other)
+
     @classmethod
     def from_json(cls, filepath):
         """Construct a primitive from structured data contained in a json file.

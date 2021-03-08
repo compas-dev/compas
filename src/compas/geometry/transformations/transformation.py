@@ -97,6 +97,10 @@ class Transformation(Base):
         except BaseException:
             return False
 
+    def __ne__(self, other):
+        # this is not obvious to ironpython
+        return not self.__eq__(other)
+
     def __repr__(self):
         return "Transformation({})".format(self.matrix)
 
