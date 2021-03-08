@@ -13,6 +13,16 @@ def test_point_operators():
     pass
 
 
+def test_point_equality():
+    p1 = Point(1, 1, 1)
+    p2 = Point(1, 1, 1)
+    p3 = Point(0, 0, 0)
+    assert p1 == p2
+    assert not (p1 != p2)
+    assert p1 != p3
+    assert not (p1 == p3)
+
+
 def test_point_inplace_operators():
     pass
 
