@@ -84,7 +84,7 @@ jobs:
 
       - name: update doc versions
         run: |
-          >doc_versions.txt
+          echo latest > doc_versions.txt
           CURRENT_MINOR=${CURRENT_PATCH%.*}
           echo current patch: $CURRENT_PATCH current minor: $CURRENT_MINOR
           for folder in $(ls -rd */ | tr -d '/')
