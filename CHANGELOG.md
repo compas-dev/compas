@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug where mimic joints were considered configurable.
+* Fixed bug where `!=` gave incorrect results in Rhino for compas objects.
 
 ### Removed
 
