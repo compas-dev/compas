@@ -63,10 +63,6 @@ class Base(object):
         self._guid = None
         self._name = None
 
-    def __ne__(self, other):
-        # this is not obvious to ironpython
-        return not self.__eq__(other)
-
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` : The schema of the data of this object."""
