@@ -71,7 +71,7 @@ jobs:
 
   docVersions:
     needs: build
-    if: needs.build.outputs.commit_type == "tag"
+    if: needs.build.outputs.commit_type == 'tag'
     name: update doc versions
     runs-on: ubuntu-latest
     env:
