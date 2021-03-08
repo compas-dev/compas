@@ -38,7 +38,7 @@ def test_polyline_divide_length_strict2(coords, expected):
     assert expected == Polyline(coords).divide_polyline_by_length(80, False)
 
 
-@pytest.mark.parametrize('coords, input, expected', [
+@pytest.mark.parametrize('coords,input,expected', [
     ([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]], math.pi/2, [Polyline([[0.0, 0.0, 0.0], [1, 0.0, 0.0]]),
                                                                                                         Polyline([[1, 0.0, 0.0], [1, 1, 0.0]]), Polyline([[1, 1, 0.0], [0.0, 1, 0.0]]), Polyline([[0.0, 1, 0.0], [0.0, 0.0, 0.0]])]),
 ])
@@ -46,7 +46,7 @@ def test_polyline_split_at_corners(coords, input, expected):
     assert expected == Polyline(coords).split_at_corners(input)
 
 
-@pytest.mark.parametrize('coords, input, expected', [
+@pytest.mark.parametrize('coords,input,expected', [
     ([[0.0, 0.0, 0.0], [100.0, 0.0, 0.0]], [50, 0, 0], [1.0, 0.0, 0.0]),
     ([[0.0, 0.0, 0.0], [50.0, 0.0, 0.0], [100.0, 100.0, 0.0]], [50, 0, 0], [1.0, 0.0, 0.0]),
 ])
