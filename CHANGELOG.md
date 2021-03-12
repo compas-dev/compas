@@ -10,13 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Added `divide_polyline`, `divide_polyline_by_length`, `Polyline.split_at_corners` and `Polyline.tangent_at_point_on_polyline`.
-
 * Added the magic method `__str__` to `compas.geoemetry.Transformation`.
+* Added `redraw` flag to the `compas_rhino` methods `delete_object`, `delete_objects` and `purge_objects`.
 
 ### Changed
 
 * Fixed bug where mimic joints were considered configurable.
 * Fixed bug where `!=` gave incorrect results in Rhino for some compas objects.
+* Fixed bug where `compas_rhino.BaseArtist.redraw` did not trigger a redraw.
 
 ### Removed
 
