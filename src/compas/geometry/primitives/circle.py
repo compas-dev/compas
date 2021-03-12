@@ -145,7 +145,7 @@ class Circle(Primitive):
         try:
             other_plane = other[0]
             other_radius = other[1]
-        except Exception:
+        except:  # noqa: E722
             return False
         return self.plane == other_plane and self.radius == other_radius
 
