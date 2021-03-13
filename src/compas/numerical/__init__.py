@@ -88,25 +88,103 @@ Utilities
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import compas
 
 if not compas.IPY:
-    from .linalg import *  # noqa: F401 F403
-    from .matrices import *  # noqa: F401 F403
-    from .operators import *  # noqa: F401 F403
-    from .utilities import *  # noqa: F401 F403
+    from .linalg import (
+        nullspace,
+        rank,
+        dof,
+        pivots,
+        nonpivots,
+        rref,
+        rref_sympy,
+        rref_matlab,
+        uvw_lengths,
+        normrow,
+        normalizerow,
+        rot90,
+        solve_with_known,
+        spsolve_with_known,
+        chofactor,
+        lufactorized
+    )
+    from .matrices import (
+        adjacency_matrix,
+        degree_matrix,
+        connectivity_matrix,
+        laplacian_matrix,
+        face_matrix,
+        mass_matrix,
+        stiffness_matrix,
+        equilibrium_matrix,
+    )
+    from .operators import (
+        grad,
+        div,
+        curl
+    )
+    from .utilities import (
+        float_formatter,
+        set_array_print_precision,
+        unset_array_print_precision
+    )
 
-from .topop import *  # noqa: F401 F403
-from .pca import *  # noqa: F401 F403
-from .ga import *  # noqa: F401 F403
-from .fd import *  # noqa: F401 F403
-# from .drx import *  # noqa: F401 F403
-from .dr import *  # noqa: F401 F403
-from .devo import *  # noqa: F401 F403
-from .isolines import *  # noqa: F401 F403
+if not compas.IPY:
+    from .descent import descent_numpy
+    from .topop import topop_numpy
+    from .pca import pca_numpy
+    from .ga import ga, moga
+    from .fd import fd_numpy
+    from .dr import dr_numpy
+    from .devo import devo_numpy
+    from .isolines import scalarfield_contours_numpy
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = []
+
+if not compas.IPY:
+    __all__ += [
+        'nullspace',
+        'rank',
+        'dof',
+        'pivots',
+        'nonpivots',
+        'rref',
+        'rref_sympy',
+        'rref_matlab',
+        'uvw_lengths',
+        'normrow',
+        'normalizerow',
+        'rot90',
+        'solve_with_known',
+        'spsolve_with_known',
+        'chofactor',
+        'lufactorized',
+        'adjacency_matrix',
+        'degree_matrix',
+        'connectivity_matrix',
+        'laplacian_matrix',
+        'face_matrix',
+        'mass_matrix',
+        'stiffness_matrix',
+        'equilibrium_matrix',
+        'grad',
+        'div',
+        'curl',
+        'float_formatter',
+        'set_array_print_precision',
+        'unset_array_print_precision',
+    ]
+    __all__ += [
+        'descent_numpy',
+        'topop_numpy',
+        'pca_numpy',
+        'ga',
+        'moga',
+        'devo_numpy',
+        'fd_numpy',
+        'dr_numpy',
+        'scalarfield_contours_numpy'
+    ]
