@@ -27,16 +27,7 @@ __all__ = [
     'network_is_planar',
     'network_is_planar_embedding',
     'network_embed_in_plane',
-
-    'network_embed_in_plane_proxy',
 ]
-
-
-def network_embed_in_plane_proxy(data, fixed=None, straightline=True):
-    from compas.datastructures import Network
-    network = Network.from_data(data)
-    network_embed_in_plane(network, fixed=fixed, straightline=straightline)
-    return network.to_data()
 
 
 def network_is_crossed(network):
