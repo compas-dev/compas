@@ -37,19 +37,7 @@ class Mesh(BaseMesh):
 
     """
 
-    def bounding_box(self):
-        """Compute the axis-aligned bounding box of the mesh.
-
-        Returns
-        -------
-        box: tuple of 8 points.
-            The corners of the bounding box.
-            The first 4 points are the corners of the bottom face, in counter clockwise direction wrt the positive Z-axis.
-            The last 4 points are the corners of the top face, in counter clockwise direction wrt the positive Z-axis.
-
-        """
-        return mesh_bounding_box(self)
-
+    bounding_box = mesh_bounding_box
     bounding_box_xy = mesh_bounding_box_xy
     collapse_edge = mesh_collapse_edge
     connected_components = mesh_connected_components

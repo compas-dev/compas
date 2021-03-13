@@ -131,6 +131,7 @@ import compas
 
 from .datastructure import Datastructure
 from .network import (
+    Graph,
     Network,
     network_join_edges,
     network_polylines,
@@ -149,10 +150,12 @@ from .network import (
     network_is_planar_embedding,
     network_embed_in_plane,
     network_smooth_centroid,
-    network_transform, network_transformed,
+    network_transform,
+    network_transformed,
     network_shortest_path
 )
 from .mesh import (
+    HalfEdge,
     Mesh,
     trimesh_collapse_edge,
     mesh_add_vertex_to_face_edge,
@@ -229,6 +232,7 @@ if not compas.IPY:
 __all__ = [
     'Datastructure',
 
+    'Graph',
     'Network',
     'network_join_edges',
     'network_polylines',
@@ -251,6 +255,7 @@ __all__ = [
     'network_transformed',
     'network_shortest_path',
 
+    'HalfEdge',
     'Mesh',
     'trimesh_collapse_edge',
     'mesh_add_vertex_to_face_edge',
