@@ -103,7 +103,7 @@
         
           
           <span class="target" id="module-compas_rhino.geometry"></span><div class="section" id="geometry">
-<h1>geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h1>
+<h1>geometry</h1>
 <p class="lead">Wrappers for Rhino objects that can be used to convert Rhino geometry and data to COMPAS objects.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas_rhino</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="kn">import</span> <span class="n">RhinoMesh</span>
@@ -113,10 +113,10 @@
 </code></pre></div>
 </div>
 <div class="section" id="baserhinogeometry">
-<h2>BaseRhinoGeometry<a class="headerlink" href="#baserhinogeometry" title="Permalink to this headline">¶</a></h2>
+<h2>BaseRhinoGeometry</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.BaseRhinoGeometry">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">BaseRhinoGeometry</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.BaseRhinoGeometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">BaseRhinoGeometry</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for Rhino geometry objects.</p>
 <dl class="field-list simple">
@@ -126,12 +126,12 @@
 </dl>
 <dl class="py method">
 <dt id="compas_rhino.geometry.BaseRhinoGeometry.from_geometry">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.BaseRhinoGeometry.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.BaseRhinoGeometry.from_guid">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_guid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.BaseRhinoGeometry.from_guid" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_guid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guid</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a Rhino object wrapper from the GUID of an existing Rhino object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -145,7 +145,7 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.BaseRhinoGeometry.from_object">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_object</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.BaseRhinoGeometry.from_object" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_object</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a Rhino object wrapper from an existing Rhino object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -159,17 +159,17 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.BaseRhinoGeometry.from_selection">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.BaseRhinoGeometry.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.BaseRhinoGeometry.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.BaseRhinoGeometry.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.BaseRhinoGeometry.transform">
-<code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L110"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.BaseRhinoGeometry.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L110"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Transform the Rhino object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -186,10 +186,10 @@
 </div>
 <hr class="docutils" />
 <div class="section" id="rhinopoint">
-<h2>RhinoPoint<a class="headerlink" href="#rhinopoint" title="Permalink to this headline">¶</a></h2>
+<h2>RhinoPoint</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.RhinoPoint">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoPoint</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/point.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoPoint" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoPoint</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/point.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wrapper for Rhino point objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -203,7 +203,7 @@
 </dl>
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoPoint.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoPoint.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a point wrapper from an existing geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -217,7 +217,7 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoPoint.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoPoint.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Construct as point wrapper from a selected point object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -231,7 +231,7 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoPoint.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/point.py#L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoPoint.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/point.py#L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert the wrapper to a COMPAS point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -245,10 +245,10 @@
 </div>
 <hr class="docutils" />
 <div class="section" id="rhinovector">
-<h2>RhinoVector<a class="headerlink" href="#rhinovector" title="Permalink to this headline">¶</a></h2>
+<h2>RhinoVector</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.RhinoVector">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoVector</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/vector.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoVector" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoVector</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/vector.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wrapper for a Rhino vector objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -262,7 +262,7 @@
 </dl>
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoVector.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoVector.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a vector wrapper from an existing geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -276,7 +276,7 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoVector.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoVector.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Construct as point wrapper from a selected point object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -290,7 +290,7 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoVector.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/vector.py#L57"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoVector.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/vector.py#L57"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert the wrapper to a COMPAS object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -304,10 +304,10 @@
 </div>
 <hr class="docutils" />
 <div class="section" id="rhinoline">
-<h2>RhinoLine<a class="headerlink" href="#rhinoline" title="Permalink to this headline">¶</a></h2>
+<h2>RhinoLine</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.RhinoLine">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoLine</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/line.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoLine" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoLine</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/line.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wrapper for a Rhino line objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -319,7 +319,7 @@
 </dl>
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoLine.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoLine.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a line from an existing Rhino line geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -330,7 +330,7 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoLine.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoLine.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Construct a line wrapper by selecting an existing Rhino line object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -344,7 +344,7 @@
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoLine.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/line.py#L75"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoLine.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/line.py#L75"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert the line to a COMPAS geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -358,10 +358,10 @@
 </div>
 <hr class="docutils" />
 <div class="section" id="rhinoplane">
-<h2>RhinoPlane<a class="headerlink" href="#rhinoplane" title="Permalink to this headline">¶</a></h2>
+<h2>RhinoPlane</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.RhinoPlane">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoPlane</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/plane.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoPlane" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoPlane</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/plane.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wrapper for a Rhino plane objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -378,7 +378,7 @@
 Therefore, the COMPAS conversion function of this class returns a frame object instead of a plane.</p>
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoPlane.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoPlane.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a plane wrapper from an existing geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -392,12 +392,12 @@ Therefore, the COMPAS conversion function of this class returns a frame object i
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoPlane.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoPlane.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoPlane.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/plane.py#L92"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoPlane.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/plane.py#L92"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert to a COMPAS geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -411,10 +411,10 @@ Therefore, the COMPAS conversion function of this class returns a frame object i
 </div>
 <hr class="docutils" />
 <div class="section" id="rhinomesh">
-<h2>RhinoMesh<a class="headerlink" href="#rhinomesh" title="Permalink to this headline">¶</a></h2>
+<h2>RhinoMesh</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.RhinoMesh">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoMesh</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/mesh.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoMesh" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoMesh</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/mesh.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wrapper for Rhino mesh objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -429,7 +429,7 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 </dl>
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoMesh.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoMesh.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a mesh wrapper from an existing Rhino geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -443,7 +443,7 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoMesh.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoMesh.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Construct a mesh wrapper by selecting an existing Rhino mesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -457,7 +457,7 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoMesh.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/mesh.py#L89"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoMesh.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/mesh.py#L89"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert a Rhino mesh to a COMPAS mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -474,10 +474,10 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 </div>
 <hr class="docutils" />
 <div class="section" id="rhinocurve">
-<h2>RhinoCurve<a class="headerlink" href="#rhinocurve" title="Permalink to this headline">¶</a></h2>
+<h2>RhinoCurve</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.RhinoCurve">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoCurve</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curve.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoCurve" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoCurve</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curve.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wrapper for Rhino curve objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -506,12 +506,12 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 </div>
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoCurve.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoCurve.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoCurve.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoCurve.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Construct a curve wrapper by selecting an existing Rhino curve object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -525,7 +525,7 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoCurve.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curve.py#L85"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoCurve.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curve.py#L85"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert the curve to an equivalent geometry object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -544,24 +544,24 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 </div>
 <hr class="docutils" />
 <div class="section" id="rhinosurface">
-<h2>RhinoSurface<a class="headerlink" href="#rhinosurface" title="Permalink to this headline">¶</a></h2>
+<h2>RhinoSurface</h2>
 <dl class="py class">
 <dt id="compas_rhino.geometry.RhinoSurface">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoSurface</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/surface.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoSurface" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></code><code class="sig-name descname"><span class="pre">RhinoSurface</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/surface.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wrapper for Rhino surface objects.</p>
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoSurface.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoSurface.from_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_geometry</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoSurface.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compas_rhino.geometry.RhinoSurface.from_selection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="compas_rhino.geometry.RhinoSurface.to_compas">
-<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/surface.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_rhino.geometry.RhinoSurface.to_compas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_compas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/surface.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert the surface b-rep loops to a COMPAS mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

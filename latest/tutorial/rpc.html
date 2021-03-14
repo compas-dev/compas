@@ -101,7 +101,7 @@
         
           
           <div class="section" id="remote-procedure-calls">
-<h1>Remote Procedure Calls<a class="headerlink" href="#remote-procedure-calls" title="Permalink to this headline">¶</a></h1>
+<h1>Remote Procedure Calls</h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a></p></li>
 </ul>
@@ -121,7 +121,7 @@ that handles all requests. The advantage is that once the server is started,
 no additional processes have to be launched and the server can handle the requests
 without any overhead. Therefore, the response time is much faster than with <code class="docutils literal notranslate"><span class="pre">XFunc</span></code>.</p>
 <div class="section" id="basic-usage">
-<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
+<h2>Basic Usage</h2>
 <p>The basic usage of RPC is simple.
 For example, consider a CPython script using the Force Density method.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">fd_numpy</span>
@@ -158,7 +158,7 @@ for the requested function.</p>
 <p>Note that Numpy arrays are automatically converted to lists.</p>
 </div>
 <div class="section" id="supported-data-types">
-<h2>Supported data types<a class="headerlink" href="#supported-data-types" title="Permalink to this headline">¶</a></h2>
+<h2>Supported data types</h2>
 <p><a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a> uses JSON serialization to transfer data between the “client”
 (your script) and the server running the selected CPython environment.</p>
 <p>All COMPAS objects (primitives, shapes, data structures, etc.) support JSON
@@ -172,7 +172,7 @@ side of the RPC communication network.</p>
 data types and COMPAS objects. Numpy arrays are automatically converted to lists.</p>
 </div>
 <div class="section" id="starting-and-stopping">
-<h2>Starting and Stopping<a class="headerlink" href="#starting-and-stopping" title="Permalink to this headline">¶</a></h2>
+<h2>Starting and Stopping</h2>
 <p>Once a server is started it will keep running “as long as possible”.
 There are many reasons to stop and (re)start the server during its lifetime.
 For example, to load functionality from a different conda environment, or to
@@ -194,7 +194,7 @@ When used in this way, RPC behaves much like its predecessor <code class="docuti
 </div>
 </div>
 <div class="section" id="starting-an-rpc-server-manually">
-<h2>Starting an RPC server manually<a class="headerlink" href="#starting-an-rpc-server-manually" title="Permalink to this headline">¶</a></h2>
+<h2>Starting an RPC server manually</h2>
 <p><code class="docutils literal notranslate"><span class="pre">Proxy</span></code> will try to start an RPC server automatically
 if no server is already running, but very often it is recommended
 to start it manually from the command-line.</p>

@@ -99,14 +99,14 @@
         
           
           <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<h1>Installation</h1>
 <p class="lead">COMPAS can be easily installed on multiple platforms,
 using popular package managers such as conda or pip.</p>
 <div class="figure align-default">
 <img alt="_images/installation.gif" class="figure-img img-fluid mx-auto" src="_images/installation.gif" />
 </div>
 <div class="section" id="install-with-conda">
-<h2>Install with conda<a class="headerlink" href="#install-with-conda" title="Permalink to this headline">¶</a></h2>
+<h2>Install with conda</h2>
 <p>The recommended way to install COMPAS is with <a class="reference external" href="https://conda.io/docs/">conda</a>.
 For example, create an environment named <code class="docutils literal notranslate"><span class="pre">research</span></code> and install COMPAS.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
@@ -126,7 +126,7 @@ Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clan
 </code></pre></div>
 </div>
 <div class="section" id="installation-options">
-<h3>Installation options<a class="headerlink" href="#installation-options" title="Permalink to this headline">¶</a></h3>
+<h3>Installation options</h3>
 <p>Install COMPAS in an environment with a specific version of Python.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n research <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
 </code></pre></div>
@@ -138,7 +138,7 @@ Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clan
 </div>
 </div>
 <div class="section" id="install-with-pip">
-<h2>Install with pip<a class="headerlink" href="#install-with-pip" title="Permalink to this headline">¶</a></h2>
+<h2>Install with pip</h2>
 <p>Install COMPAS using <code class="docutils literal notranslate"><span class="pre">pip</span></code> from the Python Package Index.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
 pip install COMPAS
@@ -156,7 +156,7 @@ pip install -e .
 </div>
 </div>
 <div class="section" id="update-with-conda">
-<h2>Update with conda<a class="headerlink" href="#update-with-conda" title="Permalink to this headline">¶</a></h2>
+<h2>Update with conda</h2>
 <p>To update COMPAS to the latest version with <code class="docutils literal notranslate"><span class="pre">conda</span></code></p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda update -n research COMPAS
 </code></pre></div>
@@ -167,7 +167,7 @@ pip install -e .
 </div>
 </div>
 <div class="section" id="update-with-pip">
-<h2>Update with pip<a class="headerlink" href="#update-with-pip" title="Permalink to this headline">¶</a></h2>
+<h2>Update with pip</h2>
 <p>If you installed COMPAS with <code class="docutils literal notranslate"><span class="pre">pip</span></code> the update command is the following</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install --upgrade COMPAS
 </code></pre></div>
@@ -178,11 +178,11 @@ pip install -e .
 </div>
 </div>
 <div class="section" id="known-issues">
-<h2>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h2>
+<h2>Known Issues</h2>
 <p>If you encounter a problem that is not described here,
 please file an issue using the <a class="reference external" href="https://github.com/compas-dev/compas/issues">Issue Tracker</a>.</p>
 <div class="section" id="installing-planarity">
-<h3>Installing Planarity<a class="headerlink" href="#installing-planarity" title="Permalink to this headline">¶</a></h3>
+<h3>Installing Planarity</h3>
 <p>The installation process with <code class="docutils literal notranslate"><span class="pre">pip</span></code> can fail while installing <code class="docutils literal notranslate"><span class="pre">planarity</span></code>, because <code class="docutils literal notranslate"><span class="pre">cython</span></code> is not installed.
 If this is the case, install <code class="docutils literal notranslate"><span class="pre">cython</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (or <code class="docutils literal notranslate"><span class="pre">conda</span></code>), before installing COMPAS.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
@@ -191,7 +191,7 @@ pip install COMPAS
 </div>
 </div>
 <div class="section" id="microsoft-visual-c-build-tools">
-<h3>Microsoft Visual C++ Build Tools<a class="headerlink" href="#microsoft-visual-c-build-tools" title="Permalink to this headline">¶</a></h3>
+<h3>Microsoft Visual C++ Build Tools</h3>
 <p>The installation with <code class="docutils literal notranslate"><span class="pre">pip</span></code> can fail because “Microsoft Visual C++ Build Tools are missing”.
 To install the Microsoft Visual C++ Build Tools choose one of the options provided
 here: <a class="reference external" href="https://www.scivision.dev/python-windows-visual-c-14-required/">https://www.scivision.dev/python-windows-visual-c-14-required/</a>
@@ -199,7 +199,7 @@ and just follow the instructions.
 Then run the <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation commands again.</p>
 </div>
 <div class="section" id="runtimeerror-the-current-numpy-installation-fails-to-pass-a-sanity-check">
-<h3>RuntimeError: The current Numpy installation (…) fails to pass a sanity check<a class="headerlink" href="#runtimeerror-the-current-numpy-installation-fails-to-pass-a-sanity-check" title="Permalink to this headline">¶</a></h3>
+<h3>RuntimeError: The current Numpy installation (…) fails to pass a sanity check</h3>
 <p>If you see this error, it means latest Numpy 1.19.4 could not init due to a bug from windows.
 To avoid it, simply downgrade Numpy by <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpy==1.19.3</span></code>
 See the detail of the bug here: <a class="reference external" href="https://github.com/numpy/numpy/issues/17726">https://github.com/numpy/numpy/issues/17726</a></p>
