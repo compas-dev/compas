@@ -492,16 +492,16 @@ from ._core import (
     vector_component_xy,
     vector_average,
     vector_variance,
-    vector_standard_deviation,
-
-    KDTree,
-
+    vector_standard_deviation
+)
+from ._core import (
     circle_evaluate,
     ellipse_evaluate,
     archimedean_spiral_evaluate,
     logarithmic_spiral_evaluate,
-    helix_evaluate,
-
+    helix_evaluate
+)
+from ._core import (
     angles_vectors,
     angles_vectors_xy,
     angles_points,
@@ -511,13 +511,13 @@ from ._core import (
     angle_vectors_xy,
     angle_points,
     angle_points_xy,
-    angle_planes,
-
+    angle_planes
+)
+from ._core import (
     midpoint_point_point,
     midpoint_point_point_xy,
     midpoint_line,
     midpoint_line_xy,
-
     centroid_points,
     centroid_points_weighted,
     centroid_points_xy,
@@ -527,11 +527,13 @@ from ._core import (
     centroid_polygon_vertices_xy,
     centroid_polygon_edges,
     centroid_polygon_edges_xy,
-    centroid_polyhedron,
-
+    centroid_polyhedron
+)
+from ._core import (
     circle_from_points,
-    circle_from_points_xy,
-
+    circle_from_points_xy
+)
+from ._core import (
     distance_point_point,
     distance_point_point_xy,
     distance_point_point_sqrd,
@@ -543,7 +545,6 @@ from ._core import (
     distance_point_plane,
     distance_point_plane_signed,
     distance_line_line,
-
     closest_point_in_cloud,
     closest_point_in_cloud_xy,
     closest_point_on_line,
@@ -553,25 +554,30 @@ from ._core import (
     closest_point_on_polyline,
     closest_point_on_polyline_xy,
     closest_point_on_plane,
-    closest_line_to_point,
-
+    closest_line_to_point
+)
+from ._core import KDTree
+from ._core import (
     normal_polygon,
     normal_triangle,
-    normal_triangle_xy,
-
+    normal_triangle_xy
+)
+from ._core import (
     quaternion_norm,
     quaternion_unitize,
     quaternion_is_unit,
     quaternion_multiply,
     quaternion_canonize,
-    quaternion_conjugate,
-
+    quaternion_conjugate
+)
+from ._core import (
     area_polygon,
     area_polygon_xy,
     area_triangle,
     area_triangle_xy,
-    volume_polyhedron,
-
+    volume_polyhedron
+)
+from ._core import (
     tangent_points_to_circle_xy
 )
 from .predicates import (
@@ -588,7 +594,6 @@ from .predicates import (
     is_polygon_in_polygon_xy,
     is_intersection_line_line_xy,
     is_intersection_segment_segment_xy,
-
     is_colinear,
     is_colinear_line_line,
     is_coplanar,
@@ -624,7 +629,6 @@ from .intersections import (
     intersection_sphere_line,
     intersection_sphere_sphere,
     intersection_segment_polyline,
-
     intersection_line_line_xy,
     intersection_segment_segment_xy,
     intersection_line_segment_xy,
@@ -638,9 +642,7 @@ from .transformations import (
     matrix_inverse,
     decompose_matrix,
     compose_matrix,
-
     identity_matrix,
-
     matrix_from_frame,
     matrix_from_frame_to_frame,
     matrix_from_change_of_basis,
@@ -657,60 +659,46 @@ from .transformations import (
     matrix_from_shear,
     matrix_from_scale_factors,
     matrix_from_quaternion,
-
     euler_angles_from_matrix,
     euler_angles_from_quaternion,
-
     axis_and_angle_from_matrix,
     axis_angle_vector_from_matrix,
     axis_angle_from_quaternion,
-
     quaternion_from_matrix,
     quaternion_from_euler_angles,
     quaternion_from_axis_angle,
-
     basis_vectors_from_matrix,
     translation_from_matrix,
-
     local_axes,
     orthonormalize_axes,
-
     transform_points,
     transform_vectors,
     transform_frames,
-
     local_to_world_coordinates,
     world_to_local_coordinates,
-
     translate_points,
     translate_points_xy,
-
     scale_points,
     scale_points_xy,
-
     rotate_points,
     rotate_points_xy,
-
     mirror_vector_vector,
     mirror_points_point,
     mirror_points_point_xy,
     mirror_points_line,
     mirror_points_line_xy,
     mirror_points_plane,
-
     project_point_plane,
-
     project_points_plane,
     project_point_line,
     project_point_line_xy,
     project_points_line,
     project_points_line_xy,
-
     reflect_line_plane,
     reflect_line_triangle,
-
-    orient_points,
-
+    orient_points
+)
+from .transformations import (
     Projection,
     Reflection,
     Rotation,
@@ -754,21 +742,14 @@ from .shapes import (  # noqa: E402
     Sphere,
     Torus
 )
-
-# from .collections import *  # noqa: F401 F403
-from .bbox import (  # noqa: E402
-    bounding_box,
-    bounding_box_xy
-)
+from .bbox import bounding_box, bounding_box_xy  # noqa: E402
 if not compas.IPY:
     from .bbox import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
         oabb_numpy
     )
-from .bestfit import (  # noqa: E402
-    bestfit_plane
-)
+from .bestfit import bestfit_plane  # noqa: E402
 if not compas.IPY:
     from .bestfit import (
         bestfit_plane_numpy,
@@ -781,40 +762,21 @@ from .booleans import (  # noqa: E402
     boolean_difference_mesh_mesh,
     boolean_intersection_mesh_mesh
 )
-from .hull import (  # noqa: E402
-    convex_hull,
-    convex_hull_xy
-)
+from .hull import convex_hull, convex_hull_xy  # noqa: E402
 if not compas.IPY:
-    from .hull import (
-        convex_hull_numpy,
-        convex_hull_xy_numpy
-    )
+    from .hull import convex_hull_numpy, convex_hull_xy_numpy
 from .interpolation import (  # noqa: E402
     barycentric_coordinates,
     discrete_coons_patch,
     tween_points,
     tween_points_distance
 )
-from .offset import (  # noqa: E402
-    offset_line,
-    offset_polyline,
-    offset_polygon
-)
-from .pointclouds import (  # noqa: E402
-    Pointcloud
-)
-from .quadmesh import (  # noqa: E402
-    quadmesh_planarize
-)
-from .triangulation import (  # noqa: E402
-    delaunay_from_points
-)
+from .offset import offset_line, offset_polyline, offset_polygon  # noqa: E402
+from .pointclouds import Pointcloud  # noqa: E402
+from .quadmesh import quadmesh_planarize  # noqa: E402
+from .triangulation import delaunay_from_points  # noqa: E402
 if not compas.IPY:
-    from .triangulation import (
-        delaunay_from_points_numpy,
-        voronoi_from_points_numpy
-    )
+    from .triangulation import delaunay_from_points_numpy, voronoi_from_points_numpy
 from .trimesh import (  # noqa: E402
     trimesh_gaussian_curvature,
     trimesh_principal_curvature,
@@ -830,9 +792,7 @@ from .trimesh import (  # noqa: E402
 )
 
 if not compas.IPY:
-    from .icp import (
-        icp_numpy
-    )
+    from .icp import icp_numpy
 
 __all__ = [
     'close',
@@ -1089,8 +1049,9 @@ __all__ = [
     'trimesh_remesh',
     'trimesh_remesh_constrained',
     'trimesh_remesh_along_isoline',
-    'trimesh_slice',
-
+    'trimesh_slice'
+]
+__all__ += [
     'KDTree',
     'Pointcloud',
     'Primitive',
