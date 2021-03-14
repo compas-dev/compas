@@ -152,7 +152,7 @@ __all__ = [
     'yellow',
     'cyan',
     'white',
-    'black'
+    'black',
     'timestamp',
     'now',
     'abstractstaticmethod',
