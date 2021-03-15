@@ -13,8 +13,8 @@ from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
 
 from compas.geometry.primitives import Line
-from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 
 from compas.utilities import pairwise
