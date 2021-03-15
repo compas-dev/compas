@@ -180,6 +180,8 @@ class Frame(Primitive):
         return iter([self.point, self.xaxis, self.yaxis])
 
     def __eq__(self, other, tol=1e-05):
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+            return False
         for v1, v2 in zip(self, other):
             for a, b in zip(v1, v2):
                 if math.fabs(a - b) > tol:

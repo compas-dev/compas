@@ -147,7 +147,7 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polygon({})".format(", ".join(["{}".format(point) for point in self.points]))
+        return "Polygon([{}])".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -156,12 +156,15 @@ class Polygon(Primitive):
         return self.points[key]
 
     def __setitem__(self, key, value):
-        self.points[key] = value
+        self.points[key] = Point(*value)
+        self._lines = None
 
     def __iter__(self):
         return iter(self.points)
 
     def __eq__(self, other):
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+            return False
         return all(a == b for a, b in zip(self, other))
 
     # ==========================================================================

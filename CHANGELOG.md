@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug where mimic joints were considered configurable.
 * Fixed bug where `!=` gave incorrect results in Rhino for some compas objects.
 * Fixed bug where `compas_rhino.BaseArtist.redraw` did not trigger a redraw.
+* Fixed minor bugs in `compas.geometry.Polyline` and `compas.geometry.Polygon`.
+* Fixed very minor bugs in `compas.geometry.Frame` and `compas.geometry.Quaternion`.
 
 ### Removed
 

@@ -217,6 +217,8 @@ class Quaternion(Primitive):
         raise KeyError
 
     def __eq__(self, other, tol=1e-05):
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+            return False
         for v1, v2 in zip(self, other):
             if math.fabs(v1 - v2) > tol:
                 return False
@@ -224,6 +226,9 @@ class Quaternion(Primitive):
 
     def __iter__(self):
         return iter(self.wxyz)
+
+    def __len__(self):
+        return 4
 
     def __repr__(self):
         return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(self.w, self.x, self.y, self.z, prec=3)
