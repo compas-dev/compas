@@ -2,12 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry import allclose
 from compas.geometry import transform_points
 
+from compas.geometry.predicates import is_point_on_line
+from compas.geometry.primitives import Line
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
-from compas.geometry.primitives import Line
-from compas.geometry.predicates import is_point_on_line
 
 from compas.utilities import pairwise
 
@@ -109,7 +110,7 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polyline({})".format(", ".join(["{}".format(point) for point in self.points]))
+        return "Polyline([{}])".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -118,13 +119,16 @@ class Polyline(Primitive):
         return self.points[key]
 
     def __setitem__(self, key, value):
-        self.points[key] = value
+        self.points[key] = Point(*value)
+        self._lines = None
 
     def __iter__(self):
         return iter(self.points)
 
     def __eq__(self, other):
-        return all(a == b for a, b in zip(self, other))
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+            return False
+        return allclose(self, other)
 
     # ==========================================================================
     # constructors

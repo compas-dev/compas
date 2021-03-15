@@ -4,17 +4,18 @@ from __future__ import division
 
 import math
 
+from compas.geometry import allclose
+from compas.geometry import area_polygon
 from compas.geometry import cross_vectors
 from compas.geometry import centroid_polygon
-from compas.geometry import area_polygon
 from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Point
-from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Line
+from compas.geometry.primitives import Point
+from compas.geometry.primitives import Primitive
+from compas.geometry.primitives import Vector
 
 from compas.utilities import pairwise
 
@@ -147,7 +148,7 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polygon({})".format(", ".join(["{}".format(point) for point in self.points]))
+        return "Polygon([{}])".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -156,13 +157,16 @@ class Polygon(Primitive):
         return self.points[key]
 
     def __setitem__(self, key, value):
-        self.points[key] = value
+        self.points[key] = Point(*value)
+        self._lines = None
 
     def __iter__(self):
         return iter(self.points)
 
     def __eq__(self, other):
-        return all(a == b for a, b in zip(self, other))
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+            return False
+        return allclose(self, other)
 
     # ==========================================================================
     # constructors
