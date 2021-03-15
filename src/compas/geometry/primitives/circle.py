@@ -141,6 +141,14 @@ class Circle(Primitive):
     def __iter__(self):
         return iter([self.plane, self.radius])
 
+    def __eq__(self, other):
+        try:
+            other_plane = other[0]
+            other_radius = other[1]
+        except:  # noqa: E722
+            return False
+        return self.plane == other_plane and self.radius == other_radius
+
     # ==========================================================================
     # constructors
     # ==========================================================================
