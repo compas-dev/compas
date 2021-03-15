@@ -29,12 +29,13 @@ Classes
 
 """
 
-from ._artist import *  # noqa: F401 F403
+from ._artist import BaseArtist
 
-from .networkartist import *  # noqa: F401 F403
-from .meshartist import *  # noqa: F401 F403
-from .robotmodelartist import *  # noqa: F401 F403
-# from .volmeshartist import *  # noqa: F401 F403
+from .networkartist import NetworkArtist
+from .meshartist import MeshArtist
+from .robotmodelartist import BaseRobotModelArtist, RobotModelArtist
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'BaseArtist', 'NetworkArtist', 'MeshArtist', 'BaseRobotModelArtist', 'RobotModelArtist'
+]
