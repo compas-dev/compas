@@ -35,6 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas_rhino.objects.NetworkObject.modify`.
 * Fixed bug in `compas_rhino.objects.NetworkObject.modify_vertices`.
 * Fixed bug in `compas_rhino.objects.NetworkObject.modify_edges`.
+* Changed `compas_rhino.objects.inspect` to `compas_rhino.objects.inspectors`.
+* Changed `compas_rhino.objects.select` to `compas_rhino.objects._select`.
+* Changed `compas_rhino.objects.modify` to `compas_rhino.objects._modify`.
 
 ### Removed
 
