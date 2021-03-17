@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - dr</title>
+  <title> - &lt;no title&gt;</title>
   
 
   <meta charset="utf-8" />
@@ -97,64 +97,14 @@
             
               <li class="breadcrumb-item"><a href="../compas.numerical.html">numerical</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">dr</li>
+            <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="dr">
-<h1>dr</h1>
-<dl class="py function">
-<dt id="compas.numerical.dr">
-<code class="sig-prename descclassname"><span class="pre">compas.numerical.</span></code><code class="sig-name descname"><span class="pre">dr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qpre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fpre</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lpre</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/numerical/dr/dr.py#L93"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Implementation of dynamic relaxation with RK integration scheme in pure Python.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list</em>) – XYZ coordinates of the vertices.</p></li>
-<li><p><strong>edges</strong> (<em>list</em>) – Connectivity of the vertices.</p></li>
-<li><p><strong>fixed</strong> (<em>list</em>) – Indices of the fixed vertices.</p></li>
-<li><p><strong>loads</strong> (<em>list</em>) – XYZ components of the loads on the vertices.</p></li>
-<li><p><strong>qpre</strong> (<em>list</em>) – Prescribed force densities in the edges.</p></li>
-<li><p><strong>fpre</strong> (<em>list, optional</em>) – Prescribed forces in the edges.</p></li>
-<li><p><strong>lpre</strong> (<em>list, optional</em>) – Prescribed lengths of the edges.</p></li>
-<li><p><strong>linit</strong> (<em>list, optoional</em>) – Initial length of the edges.</p></li>
-<li><p><strong>E</strong> (<em>list, optional</em>) – Stiffness of the edges.</p></li>
-<li><p><strong>radius</strong> (<em>list, optional</em>) – Radius of the edges.</p></li>
-<li><p><strong>kmax</strong> (<em>int, optional</em>) – Maximum number of iterations.</p></li>
-<li><p><strong>dt</strong> (<em>float, optional</em>) – The time step.</p></li>
-<li><p><strong>tol1</strong> (<em>float, optional</em>) – Convergence criterion for the residual forces.</p></li>
-<li><p><strong>tol2</strong> (<em>float, optional</em>) – Convergence criterion for the displacements in between interations.</p></li>
-<li><p><strong>c</strong> (<em>float, optional</em>) – Damping factor for viscous damping.</p></li>
-<li><p><strong>callback</strong> (<em>callable, optional</em>) – A user-defined callback that is called after every iteration.
-The callback will be called with <code class="docutils literal notranslate"><span class="pre">k</span></code> the current iteration,
-<code class="docutils literal notranslate"><span class="pre">X</span></code> the coordinates at iteration <code class="docutils literal notranslate"><span class="pre">k</span></code>,
-<code class="docutils literal notranslate"><span class="pre">crit1,</span> <span class="pre">crit2</span></code> the values of the stoppage criteria at iteration <code class="docutils literal notranslate"><span class="pre">k</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">callback_args</span></code> the optional additional arguments.</p></li>
-<li><p><strong>callback_args</strong> (<em>tuple, optional</em>) – Additional arguments to be passed to the callback.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>xyz</strong> (<em>array</em>) – XYZ coordinates of the equilibrium geometry.</p></li>
-<li><p><strong>q</strong> (<em>array</em>) – Force densities in the edges.</p></li>
-<li><p><strong>f</strong> (<em>array</em>) – Forces in the edges.</p></li>
-<li><p><strong>l</strong> (<em>array</em>) – Lengths of the edges</p></li>
-<li><p><strong>r</strong> (<em>array</em>) – Residual forces.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
-</dd></dl>
-
-</div>
-
+          <span class="target" id="module-compas.numerical.dr"></span>
         
       </main>
       <!-- content -->
@@ -171,30 +121,12 @@ and <code class="docutils literal notranslate"><span class="pre">callback_args</
         
         
         <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column active">
+          <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../index.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../installation.html">Installation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.plugins.html">plugins</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.robots.html">robots</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../api.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
@@ -210,8 +142,7 @@ and <code class="docutils literal notranslate"><span class="pre">callback_args</
       <!-- toc -->
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
-        <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">dr</a></li>
+        <ul class="simple">
 </ul>
 
       </div>
