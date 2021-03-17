@@ -15,9 +15,11 @@ Object-oriented convenience wrappers for native Blender geometry.
 
 """
 from ._geometry import BaseBlenderGeometry
-
 from .curve import BlenderCurve
 from .mesh import BlenderMesh
 
-
-__all__ = ['BaseBlenderGeometry', 'BlenderCurve', 'BlenderMesh']
+__all__ = [
+    'BaseBlenderGeometry',
+    'BlenderCurve',
+    'BlenderMesh'
+]

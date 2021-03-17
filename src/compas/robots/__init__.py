@@ -116,18 +116,40 @@ the processing of these resources.
 from __future__ import absolute_import
 
 from .model import (
-    Geometry, Box, Cylinder, Sphere, Capsule, MeshDescriptor,
-    Color, Texture, Material, Origin
+    Axis,
+    Box,
+    Calibration,
+    Capsule,
+    ChildLink,
+    Collision,
+    Color,
+    Cylinder,
+    Dynamics,
+    Geometry,
+    Inertia,
+    Inertial,
+    Joint,
+    Limit,
+    Link,
+    Mass,
+    Material,
+    MeshDescriptor,
+    Mimic,
+    Origin,
+    ParentLink,
+    RobotModel,
+    SafetyController,
+    Sphere,
+    Texture,
+    ToolModel,
+    Visual
 )
-from .model import (
-    Joint, ParentLink, ChildLink, Calibration, Dynamics,
-    Limit, Axis, Mimic, SafetyController
+from .resources import (
+    AbstractMeshLoader,
+    DefaultMeshLoader,
+    GithubPackageMeshLoader,
+    LocalPackageMeshLoader
 )
-from .model import Link, Inertial, Visual, Collision, Mass, Inertia
-from .model import RobotModel, ToolModel
-
-from .resources import AbstractMeshLoader, DefaultMeshLoader, LocalPackageMeshLoader
-from .resources import GithubPackageMeshLoader
 
 __all__ = [
     'Geometry',
@@ -161,6 +183,8 @@ __all__ = [
     'RobotModel',
     'ToolModel',
 
-    'AbstractMeshLoader', 'DefaultMeshLoader', 'LocalPackageMeshLoader',
+    'AbstractMeshLoader',
+    'DefaultMeshLoader',
+    'LocalPackageMeshLoader',
     'GithubPackageMeshLoader'
 ]

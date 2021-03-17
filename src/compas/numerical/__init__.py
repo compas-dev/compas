@@ -176,8 +176,7 @@ if not compas.IPY:
         'float_formatter',
         'set_array_print_precision',
         'unset_array_print_precision',
-    ]
-    __all__ += [
+
         'descent_numpy',
         'topop_numpy',
         'pca_numpy',

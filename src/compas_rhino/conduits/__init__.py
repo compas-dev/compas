@@ -87,5 +87,9 @@ from .lines import LinesConduit
 from .points import PointsConduit
 
 __all__ = [
-    'BaseConduit', 'FacesConduit', 'LabelsConduit', 'LinesConduit', 'PointsConduit'
+    'BaseConduit',
+    'FacesConduit',
+    'LabelsConduit',
+    'LinesConduit',
+    'PointsConduit'
 ]

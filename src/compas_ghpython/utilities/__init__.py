@@ -70,7 +70,10 @@ from .drawing import (
     draw_network,
     draw_circles
 )
-from .sets import list_to_ghtree, ghtree_to_list
+from .sets import (
+    list_to_ghtree,
+    ghtree_to_list
+)
 from .timer import update_component
 
 __all__ = [

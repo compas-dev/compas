@@ -4,7 +4,15 @@ from .utilities import (
     width_to_dict,
     size_to_sizedict
 )
-from .helpers import Axes2D, Axes3D, Bounds, Box, Cloud2D, Cloud3D, Hull
+from .helpers import (
+    Axes2D,
+    Axes3D,
+    Bounds,
+    Box,
+    Cloud2D,
+    Cloud3D,
+    Hull
+)
 from .drawing import (
     create_axes_xy,
     create_axes_3d,
@@ -25,7 +33,13 @@ __all__ = [
     'assert_axes_dimension',
     'width_to_dict',
     'size_to_sizedict',
-    'Axes2D', 'Axes3D', 'Bounds', 'Box', 'Cloud2D', 'Cloud3D', 'Hull',
+    'Axes2D',
+    'Axes3D',
+    'Bounds',
+    'Box',
+    'Cloud2D',
+    'Cloud3D',
+    'Hull',
     'create_axes_xy',
     'create_axes_3d',
     'draw_points_xy',

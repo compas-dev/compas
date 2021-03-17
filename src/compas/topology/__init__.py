@@ -71,14 +71,26 @@ from .traversal import (
     dijkstra_distances,
     dijkstra_path
 )
-from .combinatorics import vertex_coloring, connected_components
-from .orientation import face_adjacency, unify_cycles
+from .combinatorics import (
+    vertex_coloring,
+    connected_components
+)
+from .orientation import (
+    face_adjacency,
+    unify_cycles
+)
 from .connectivity import adjacency_from_edges
 
 if compas.IPY:
-    from .orientation_rhino import face_adjacency_rhino, unify_cycles_rhino
+    from .orientation_rhino import (
+        face_adjacency_rhino,
+        unify_cycles_rhino
+    )
 else:
-    from .orientation_numpy import face_adjacency_numpy, unify_cycles_numpy
+    from .orientation_numpy import (
+        face_adjacency_numpy,
+        unify_cycles_numpy
+    )
 
 
 __all__ = [
@@ -90,16 +102,20 @@ __all__ = [
     'astar_shortest_path',
     'dijkstra_distances',
     'dijkstra_path',
-    'vertex_coloring', 'connected_components',
-    'face_adjacency', 'unify_cycles',
+    'vertex_coloring',
+    'connected_components',
+    'face_adjacency',
+    'unify_cycles',
     'adjacency_from_edges'
 ]
 
 if compas.IPY:
     __all__ += [
-        'face_adjacency_rhino', 'unify_cycles_rhino',
+        'face_adjacency_rhino',
+        'unify_cycles_rhino',
     ]
 else:
     __all__ += [
-        'face_adjacency_numpy', 'unify_cycles_numpy',
+        'face_adjacency_numpy',
+        'unify_cycles_numpy',
     ]

@@ -29,13 +29,16 @@ Classes
 
 """
 
-from ._artist import BaseArtist
-
-from .networkartist import NetworkArtist
+from ._artist import BaseArtist  # noqa: F401
 from .meshartist import MeshArtist
-from .robotmodelartist import BaseRobotModelArtist, RobotModelArtist
-
+from .networkartist import NetworkArtist
+from .robotmodelartist import (  # noqa: F401
+    BaseRobotModelArtist,
+    RobotModelArtist
+)
 
 __all__ = [
-    'BaseArtist', 'NetworkArtist', 'MeshArtist', 'BaseRobotModelArtist', 'RobotModelArtist'
+    'NetworkArtist',
+    'MeshArtist',
+    'RobotModelArtist'
 ]

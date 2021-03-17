@@ -48,7 +48,12 @@ except Exception:
 
 
 __all__ = [
-    'BaseForm', 'BrowserForm', 'ChartForm', 'SliderForm', 'ImageForm', 'TextForm'
+    'BaseForm',
+    'BrowserForm',
+    'ChartForm',
+    'SliderForm',
+    'ImageForm',
+    'TextForm'
 ]
 
 try:
@@ -57,4 +62,7 @@ try:
 except Exception:
     pass
 else:
-    __all__ += ['PropertyListForm', 'SettingsForm']
+    __all__ += [
+        'PropertyListForm',
+        'SettingsForm'
+    ]

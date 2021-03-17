@@ -83,8 +83,16 @@ from .volmeshartist import VolMeshArtist
 from .robotmodelartist import RobotModelArtist
 
 __all__ = [
-    'BaseArtist', 'PrimitiveArtist', 'ShapeArtist',
-    'CircleArtist', 'FrameArtist', 'LineArtist', 'PointArtist', 'PolylineArtist',
-    'MeshArtist', 'NetworkArtist', 'VolMeshArtist',
+    'BaseArtist',
+    'PrimitiveArtist',
+    'ShapeArtist',
+    'CircleArtist',
+    'FrameArtist',
+    'LineArtist',
+    'PointArtist',
+    'PolylineArtist',
+    'MeshArtist',
+    'NetworkArtist',
+    'VolMeshArtist',
     'RobotModelArtist'
 ]

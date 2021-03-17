@@ -304,12 +304,12 @@ __all__ = [
 
 if not compas.IPY:
     __all__ += [
+        # Networks
         'network_adjacency_matrix',
         'network_degree_matrix',
         'network_connectivity_matrix',
         'network_laplacian_matrix',
-    ]
-    __all__ += [
+        # Meshes
         'mesh_adjacency_matrix',
         'mesh_connectivity_matrix',
         'mesh_degree_matrix',
