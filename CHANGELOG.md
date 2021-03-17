@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `redraw` flag to the `compas_rhino` methods `delete_object`, `delete_objects` and `purge_objects`.
 * Added the `__eq__` method for `compas.geometry.Circle` and `compas.geometry.Line`.
 * Added support for Pylance through static API definitions.
+* Added `halfedge_strip` method to `compas.datastructures.HalfEdge`.
 
 ### Changed
 
