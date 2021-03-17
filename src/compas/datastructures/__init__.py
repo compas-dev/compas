@@ -149,6 +149,7 @@ from .network import (
     network_is_planar,
     network_is_planar_embedding,
     network_embed_in_plane,
+    network_embed_in_plane_proxy,
     network_smooth_centroid,
     network_transform,
     network_transformed,
@@ -231,7 +232,7 @@ if not compas.IPY:
 
 __all__ = [
     'Datastructure',
-
+    # Networks
     'Graph',
     'Network',
     'network_join_edges',
@@ -250,11 +251,12 @@ __all__ = [
     'network_is_planar',
     'network_is_planar_embedding',
     'network_embed_in_plane',
+    'network_embed_in_plane_proxy',
     'network_smooth_centroid',
     'network_transform',
     'network_transformed',
     'network_shortest_path',
-
+    # Meshes
     'HalfEdge',
     'Mesh',
     'trimesh_collapse_edge',
@@ -293,7 +295,7 @@ __all__ = [
     'mesh_flatness',
     'mesh_planarize_faces',
     'trimesh_remesh',
-
+    # Volumetric Meshes
     'VolMesh',
     'volmesh_bounding_box',
     'volmesh_transform',
