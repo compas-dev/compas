@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 * Added `divide_polyline`, `divide_polyline_by_length`, `Polyline.split_at_corners` and `Polyline.tangent_at_point_on_polyline`.
 * Added the magic method `__str__` to `compas.geoemetry.Transformation`.
 * Added `redraw` flag to the `compas_rhino` methods `delete_object`, `delete_objects` and `purge_objects`.
 * Added the `__eq__` method for `compas.geometry.Circle` and `compas.geometry.Line`.
+* Added support for Pylance through static API definitions.
 
 ### Changed
 
