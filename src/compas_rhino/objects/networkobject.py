@@ -8,11 +8,12 @@ from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from ._object import Object
-from .modify import network_update_attributes
-from .modify import network_update_node_attributes
-from .modify import network_update_edge_attributes
-from .modify import network_move_node
+from ._modify import network_update_attributes
+from ._modify import network_update_node_attributes
+from ._modify import network_update_edge_attributes
+from ._modify import network_move_node
+
+from ._object import BaseObject
 
 
 __all__ = ['NetworkObject']
@@ -47,12 +48,8 @@ class NetworkObject(Object):
         'show.edgelabels': False,
     }
 
-    modify = network_update_attributes
-    modify_nodes = network_update_node_attributes
-    modify_edges = network_update_edge_attributes
-
-    def __init__(self, network, scene=None, name=None, visible=True, layer=None, **kwargs):
-        super(NetworkObject, self).__init__(network, scene, name, visible, layer)
+    def __init__(self, network, scene=None, name=None, layer=None, visible=True, settings=None):
+        super(NetworkObject, self).__init__(network, scene, name, layer, visible)
         self._guid_node = {}
         self._guid_edge = {}
         self._guid_nodelabel = {}
@@ -267,6 +264,56 @@ class NetworkObject(Object):
         guids = compas_rhino.select_lines()
         edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
         return edges
+
+    def modify(self):
+        """Update the attributes of the network.
+
+        Returns
+        -------
+        bool
+            ``True`` if the update was successful.
+            ``False`` otherwise.
+        """
+        return network_update_attributes(self.network)
+
+    def modify_nodes(self, nodes, names=None):
+        """Update the attributes of the nodes.
+
+        Parameters
+        ----------
+        nodes : list
+            The identifiers of the nodes to update.
+        names : list, optional
+            The names of the atrtibutes to update.
+            Default is to update all attributes.
+
+        Returns
+        -------
+        bool
+            ``True`` if the update was successful.
+            ``False`` otherwise.
+
+        """
+        return network_update_node_attributes(self.network, nodes, names=names)
+
+    def modify_edges(self, edges, names=None):
+        """Update the attributes of the edges.
+
+        Parameters
+        ----------
+        edges : list
+            The identifiers of the edges to update.
+        names : list, optional
+            The names of the atrtibutes to update.
+            Default is to update all attributes.
+
+        Returns
+        -------
+        bool
+            ``True`` if the update was successful.
+            ``False`` otherwise.
+        """
+        return network_update_edge_attributes(self.network, edges, names=names)
 
     def move(self):
         """Move the entire mesh object to a different location."""
