@@ -6,12 +6,16 @@ import itertools
 import os
 import sys
 
+import compas._os
+import compas.plugins
 import compas_rhino
+from compas_rhino.install import _run_post_execution_steps
 from compas_rhino.install import installable_rhino_packages
 
-import compas._os
-
-__all__ = ['uninstall']
+__all__ = [
+    'uninstall',
+    'after_rhino_uninstall',
+]
 
 
 def uninstall(version=None, packages=None):
@@ -68,8 +72,13 @@ def uninstall(version=None, packages=None):
     symlinks = [link['link'] for link in symlinks_to_uninstall]
     uninstall_results = compas._os.remove_symlinks(symlinks)
 
+    uninstalled_packages = []
     for uninstall_data, success in zip(symlinks_to_uninstall, uninstall_results):
-        result = 'OK' if success else 'ERROR: Cannot remove symlink, try to run as administrator.'
+        if success:
+            uninstalled_packages.append(uninstall_data['name'])
+            result = 'OK'
+        else:
+            result = 'ERROR: Cannot remove symlink, try to run as administrator.'
         results.append((uninstall_data['name'], result))
 
     if not all(uninstall_results):
@@ -90,6 +99,13 @@ def uninstall(version=None, packages=None):
         print('   {} {}'.format(package.ljust(20), status))
 
         if status != 'OK':
+            exit_code = -1
+
+    if exit_code == 0 and len(uninstalled_packages):
+        print()
+        print('Running post-uninstallation steps...')
+        print()
+        if not _run_post_execution_steps(after_rhino_uninstall(uninstalled_packages)):
             exit_code = -1
 
     print('\nUninstall completed.')
@@ -124,6 +140,36 @@ def _filter_installed_packages(version, packages):
             packages.extend(legacy_packages)
 
     return packages
+
+
+@compas.plugins.pluggable(category='install', selector='collect_all')
+def after_rhino_uninstall(uninstalled_packages):
+    """Allows extensions to execute actions after uninstall from Rhino is done.
+
+    Extensions providing Rhino or Grasshopper features
+    can implement this pluggable interface to perform
+    additional steps after the uninstall from Rhino has
+    been completed.
+
+    Parameters
+    ----------
+    uninstalled_packages : :obj:`list` of :obj:`str`
+        List of packages that have been uninstalled.
+
+    Examples
+    --------
+    >>> import compas.plugins
+    >>> @compas.plugins.plugin(category='install')
+    ... def after_rhino_uninstall(uninstalled_packages):
+    ...    # Do something cleanup, eg remove copied files.
+    ...    return [('compas_ghpython', 'GH Components uninstalled', True)]
+
+    Returns
+    -------
+    :obj:`list` of 3-tuple (str, str, bool)
+        List containing a 3-tuple with component name, message and ``True``/``False`` success flag.
+    """
+    pass
 
 
 # ==============================================================================

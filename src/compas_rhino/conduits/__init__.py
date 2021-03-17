@@ -79,11 +79,17 @@ Labels Conduit
 """
 from __future__ import absolute_import
 
-from .base import *  # noqa: F401 E402 F403
+from .base import BaseConduit
 
-from .faces import *  # noqa: F401 E402 F403
-from .labels import *  # noqa: F401 E402 F403
-from .lines import *  # noqa: F401 E402 F403
-from .points import *  # noqa: F401 E402 F403
+from .faces import FacesConduit
+from .labels import LabelsConduit
+from .lines import LinesConduit
+from .points import PointsConduit
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'BaseConduit',
+    'FacesConduit',
+    'LabelsConduit',
+    'LinesConduit',
+    'PointsConduit'
+]

@@ -835,7 +835,7 @@ class Joint(Base):
 
     def is_configurable(self):
         """Returns ``True`` if the joint can be configured, otherwise ``False``."""
-        return self.type != Joint.FIXED
+        return self.type != Joint.FIXED and self.mimic is None
 
     def is_scalable(self):
         """Returns ``True`` if the joint can be scaled, otherwise ``False``."""

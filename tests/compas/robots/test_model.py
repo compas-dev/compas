@@ -604,6 +604,11 @@ def test_unknown_axis_attribute_data(urdf_with_unknown_attr):
     assert r.joints[0].axis.attr['rpy'] == '0 0 0'
 
 
+def test_get_configurable_joint_names(urdf_file):
+    model = RobotModel.from_urdf_file(urdf_file)
+    assert 'panda_finger_joint2' not in model.get_configurable_joint_names()
+
+
 def test_ensure_geometry(urdf_file, urdf_file_with_shapes_only):
     robot = RobotModel.from_urdf_file(urdf_file)
     with pytest.raises(Exception):

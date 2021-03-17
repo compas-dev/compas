@@ -14,10 +14,12 @@ Object-oriented convenience wrappers for native Blender geometry.
     BlenderMesh
 
 """
-from ._geometry import BaseBlenderGeometry  # noqa: F401
+from ._geometry import BaseBlenderGeometry
+from .curve import BlenderCurve
+from .mesh import BlenderMesh
 
-from .curve import BlenderCurve  # noqa: F401
-from .mesh import BlenderMesh  # noqa: F401
-
-
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'BaseBlenderGeometry',
+    'BlenderCurve',
+    'BlenderMesh'
+]

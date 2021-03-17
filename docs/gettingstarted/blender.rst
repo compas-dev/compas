@@ -92,6 +92,21 @@ Note that the path ``~/Blender/2.91`` might be different for your setup.
     </div>
     </div>
 
+Add-ons
+=======
+
+For some Blender add-ons, not only the version of Python has to match, but also the version of Numpy.
+For example, `Sverchok <http://nortikin.github.io/sverchok/>`_, a Grasshopper-type visual programming tool for Blender,
+will not work with the version of Numpy included in the latest COMPAS releases, even though Blender will.
+
+In those cases, you can simply revert to an earlier version of Numpy that is still compatible with COMPAS
+in the environment you use with Blender. For Sverchok, this would be version ``1.17.5``,
+which is the one shipped with Blender originally. To revert simply do
+
+.. code-block:: bash
+
+    conda activate blender
+    conda install numpy=1.17.5
 
 Verify setup
 ============
@@ -104,7 +119,6 @@ In Blender, at the interactive Python prompt (>>>) import the following packages
     >>> import compas_blender
     >>> import numpy
     >>> import scipy
-
 
 Install Python packages
 =======================
@@ -124,7 +138,6 @@ Otherwise, the changes will not have any effect.
 
     If you want to use blender with a different environment,
     you simply have to activate that environment and follow the same procedure described above.
-
 
 Start Blender
 =============
@@ -232,7 +245,6 @@ Especially for code that relies heavily on libraries such as Numpy and Scipy thi
     artist = MeshArtist(mesh)
     artist.draw_mesh()
 
-
 Data Blocks
 -----------
 
@@ -249,7 +261,6 @@ you will accumulate the data blocks from previous runs and after a while Blender
 ``compas_blender.clear()`` attempts to clean up not only the scene objects but also the data blocks.
 If somehow you still experience a slowdown, restarting Blender will help (all unused data blocks are then automatically removed).
 
-
 Layers
 ------
 
@@ -257,10 +268,8 @@ There are no real layers in Blender; at least not like the layers in, for exampl
 Therefore, the Blender artists have no optional ``layer`` parameter and no ``clear_layer`` method.
 Instead, objects are grouped in collections, which can be turned on and off in the Blender UI similar to layers in Rhino.
 
-
 Collections
 -----------
-
 
 Limitations
 ===========

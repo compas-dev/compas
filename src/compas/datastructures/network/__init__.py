@@ -12,6 +12,7 @@ from .explode import *  # noqa: F401 F403
 from .planarity import *  # noqa: F401 F403
 from .smoothing import *  # noqa: F401 F403
 from .transformations import *  # noqa: F401 F403
+from .traversal import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

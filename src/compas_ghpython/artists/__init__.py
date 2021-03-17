@@ -66,20 +66,33 @@ Base Classes
 """
 from __future__ import absolute_import
 
-from ._artist import *  # noqa: F401 F403
-from ._primitiveartist import *  # noqa: F401 F403
-from ._shapeartist import *  # noqa: F401 F403
+from ._artist import BaseArtist
+from ._primitiveartist import PrimitiveArtist
+from ._shapeartist import ShapeArtist
 
-from .circleartist import *  # noqa: F401 F403
-from .frameartist import *  # noqa: F401 F403
-from .lineartist import *  # noqa: F401 F403
-from .pointartist import *  # noqa: F401 F403
-from .polylineartist import *  # noqa: F401 F403
+from .circleartist import CircleArtist
+from .frameartist import FrameArtist
+from .lineartist import LineArtist
+from .pointartist import PointArtist
+from .polylineartist import PolylineArtist
 
-from .meshartist import *  # noqa: F401 F403
-from .networkartist import *  # noqa: F401 F403
-from .volmeshartist import *  # noqa: F401 F403
+from .meshartist import MeshArtist
+from .networkartist import NetworkArtist
+from .volmeshartist import VolMeshArtist
 
-from .robotmodelartist import *  # noqa: F401 F403
+from .robotmodelartist import RobotModelArtist
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'BaseArtist',
+    'PrimitiveArtist',
+    'ShapeArtist',
+    'CircleArtist',
+    'FrameArtist',
+    'LineArtist',
+    'PointArtist',
+    'PolylineArtist',
+    'MeshArtist',
+    'NetworkArtist',
+    'VolMeshArtist',
+    'RobotModelArtist'
+]

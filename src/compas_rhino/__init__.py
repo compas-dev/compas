@@ -29,7 +29,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 PURGE_ON_DELETE = True
@@ -211,4 +211,5 @@ __all__ = [name for name in dir() if not name.startswith('_')]
 __all_plugins__ = [
     'compas_rhino.geometry.booleans',
     'compas_rhino.install',
+    'compas_rhino.uninstall',
 ]

@@ -70,4 +70,9 @@ Object.register(Mesh, MeshObject)
 Object.register(Network, NetworkObject)
 Object.register(VolMesh, VolMeshObject)
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'BaseObject',
+    'MeshObject',
+    'NetworkObject',
+    'VolMeshObject'
+]

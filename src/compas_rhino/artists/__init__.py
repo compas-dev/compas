@@ -156,4 +156,27 @@ Artist.register(VolMesh, VolMeshArtist)
 Artist.register(RobotModel, RobotModelArtist)
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'BaseArtist',
+    'PrimitiveArtist',
+    'ShapeArtist',
+    'CircleArtist',
+    'FrameArtist',
+    'LineArtist',
+    'PlaneArtist',
+    'PointArtist',
+    'PolygonArtist',
+    'PolylineArtist',
+    'VectorArtist',
+    'BoxArtist',
+    'CapsuleArtist',
+    'ConeArtist',
+    'CylinderArtist',
+    'PolyhedronArtist',
+    'SphereArtist',
+    'TorusArtist',
+    'MeshArtist',
+    'NetworkArtist',
+    'VolMeshArtist',
+    'RobotModelArtist'
+]

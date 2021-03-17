@@ -2242,6 +2242,34 @@ class HalfEdge(Datastructure):
             edges.append((u, v))
         return edges
 
+    def halfedge_strip(self, edge):
+        """Find all edges on the same strip as a given halfedge.
+
+        Parameters
+        ----------
+        edge : tuple of int
+            The identifier of the starting edge.
+
+        Returns
+        -------
+        list of tuple of int
+            The edges on the same strip as the given halfedge.
+        """
+        u, v = edge
+        edges = [(u, v)]
+        while True:
+            face = self.halfedge[u][v]
+            if face is None:
+                break
+            vertices = self.face_vertices(face)
+            if len(vertices) != 4:
+                break
+            i = vertices.index(u)
+            u = vertices[i - 1]
+            v = vertices[i - 2]
+            edges.append((u, v))
+        return edges
+
     # --------------------------------------------------------------------------
     # face topology
     # --------------------------------------------------------------------------
