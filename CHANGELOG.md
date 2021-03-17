@@ -24,6 +24,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug where `compas_rhino.BaseArtist.redraw` did not trigger a redraw.
 * Fixed minor bugs in `compas.geometry.Polyline` and `compas.geometry.Polygon`.
 * Fixed very minor bugs in `compas.geometry.Frame` and `compas.geometry.Quaternion`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_edges`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_faces`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_edges`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_faces`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify_edges`.
 
 ### Removed
 

@@ -53,9 +53,10 @@ VolMeshObject
 """
 from __future__ import absolute_import
 
-from .select import *  # noqa : F401 F403
-from .modify import *  # noqa : F401 F403
-from .inspect import *  # noqa : F401 F403
+from ._select import *  # noqa : F401 F403
+from ._modify import *  # noqa : F401 F403
+
+from .inspectors import *  # noqa : F401 F403
 
 from ._object import BaseObject
 from .meshobject import MeshObject
