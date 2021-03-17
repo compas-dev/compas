@@ -25,13 +25,12 @@ from .core import *  # noqa: F401 F403
 from .artists import *  # noqa: F401 F403
 
 from .geometryplotter import GeometryPlotter
-from .plotter import Plotter
+from .plotter import Plotter  # noqa: F401
 from .networkplotter import NetworkPlotter
 from .meshplotter import MeshPlotter
 
 
 __all__ = [
-    'Plotter',
     'GeometryPlotter',
     'NetworkPlotter',
     'MeshPlotter'
