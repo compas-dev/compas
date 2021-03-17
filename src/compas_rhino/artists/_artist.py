@@ -27,8 +27,8 @@ class BaseArtist(object):
         self._guids = []
 
     @staticmethod
-    def register(item_type, artist_type):
-        _ITEM_ARTIST[item_type] = artist_type
+    def draw_collection(collection):
+        raise NotImplementedError
 
     @staticmethod
     def build(item, **kwargs):
