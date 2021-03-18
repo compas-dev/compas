@@ -609,26 +609,28 @@ from .predicates import (
     is_intersection_plane_plane
 )
 from .intersections import (
-    intersection_line_line,
-    intersection_segment_segment,
-    intersection_line_segment,
-    intersection_line_plane,
-    intersection_polyline_plane,
-    intersection_line_triangle,
-    intersection_segment_plane,
-    intersection_plane_circle,
-    intersection_plane_plane,
-    intersection_plane_plane_plane,
-    intersection_sphere_line,
-    intersection_sphere_sphere,
-    intersection_segment_polyline,
-    intersection_line_line_xy,
-    intersection_segment_segment_xy,
-    intersection_line_segment_xy,
-    intersection_line_box_xy,
     intersection_circle_circle_xy,
     intersection_ellipse_line_xy,
-    intersection_segment_polyline_xy
+    intersection_line_box_xy,
+    intersection_line_line_xy,
+    intersection_line_line,
+    intersection_line_plane,
+    intersection_line_segment_xy,
+    intersection_line_segment,
+    intersection_line_triangle,
+    intersection_mesh_mesh,
+    intersection_plane_circle,
+    intersection_plane_plane_plane,
+    intersection_plane_plane,
+    intersection_polyline_plane,
+    intersection_ray_mesh,
+    intersection_segment_plane,
+    intersection_segment_polyline_xy,
+    intersection_segment_polyline,
+    intersection_segment_segment_xy,
+    intersection_segment_segment,
+    intersection_sphere_line,
+    intersection_sphere_sphere,
 )
 from .transformations import (
     matrix_determinant,
@@ -714,6 +716,7 @@ if not compas.IPY:
     )
 from .primitives import (  # noqa: E402
     Primitive,
+    Bezier,
     Circle,
     Ellipse,
     Frame,
@@ -780,7 +783,13 @@ from .offset import (  # noqa: E402
 )
 from .pointclouds import Pointcloud  # noqa: E402
 from .quadmesh import quadmesh_planarize  # noqa: E402
-from .triangulation import delaunay_from_points  # noqa: E402
+from .triangulation import (   # noqa: E402
+    conforming_delaunay_triangulation,
+    constrained_delaunay_triangulation,
+    delaunay_from_points,
+    delaunay_triangulation
+)
+
 if not compas.IPY:
     from .triangulation import (
         delaunay_from_points_numpy,
@@ -801,6 +810,16 @@ from .trimesh import (  # noqa: E402
 )
 if not compas.IPY:
     from .icp import icp_numpy
+
+from .collections import (
+    Collection,
+    PointCollection,
+)
+if not compas.IPY:
+    from .collections import (
+        CollectionNumpy,
+        PointCollectionNumpy
+    )
 
 __all__ = [
     'close',
@@ -930,26 +949,28 @@ __all__ = [
     'discrete_coons_patch',
     'tween_points',
     'tween_points_distance',
-    'intersection_line_line',
-    'intersection_segment_segment',
-    'intersection_line_segment',
-    'intersection_line_plane',
-    'intersection_polyline_plane',
-    'intersection_line_triangle',
-    'intersection_segment_plane',
-    'intersection_plane_circle',
-    'intersection_plane_plane',
-    'intersection_plane_plane_plane',
-    'intersection_sphere_line',
-    'intersection_sphere_sphere',
-    'intersection_segment_polyline',
-    'intersection_line_line_xy',
-    'intersection_segment_segment_xy',
-    'intersection_line_segment_xy',
-    'intersection_line_box_xy',
     'intersection_circle_circle_xy',
     'intersection_ellipse_line_xy',
+    'intersection_line_box_xy',
+    'intersection_line_line_xy',
+    'intersection_line_line',
+    'intersection_line_plane',
+    'intersection_line_segment_xy',
+    'intersection_line_segment',
+    'intersection_line_triangle',
+    'intersection_mesh_mesh',
+    'intersection_plane_circle',
+    'intersection_plane_plane_plane',
+    'intersection_plane_plane',
+    'intersection_polyline_plane',
+    'intersection_ray_mesh',
+    'intersection_segment_plane',
     'intersection_segment_polyline_xy',
+    'intersection_segment_polyline',
+    'intersection_segment_segment_xy',
+    'intersection_segment_segment',
+    'intersection_sphere_line',
+    'intersection_sphere_sphere',
     'offset_line',
     'offset_polyline',
     'offset_polygon',
@@ -1047,7 +1068,11 @@ __all__ = [
     'reflect_line_plane',
     'reflect_line_triangle',
     'orient_points',
+    'conforming_delaunay_triangulation',
+    'constrained_delaunay_triangulation',
     'delaunay_from_points',
+    'delaunay_from_points',
+    'delaunay_triangulation',
     'trimesh_gaussian_curvature',
     'trimesh_principal_curvature',
     'trimesh_geodistance',
@@ -1064,6 +1089,7 @@ __all__ = [
 
     'Pointcloud',
     'Primitive',
+    'Bezier',
     'Circle',
     'Ellipse',
     'Frame',
@@ -1091,6 +1117,9 @@ __all__ = [
     'Shear',
     'Transformation',
     'Translation',
+
+    'Collection',
+    'PointCollection',
 ]
 
 if not compas.IPY:
@@ -1115,4 +1144,6 @@ if not compas.IPY:
         'local_to_world_coordinates_numpy',
         'delaunay_from_points_numpy',
         'voronoi_from_points_numpy',
+        'CollectionNumpy',
+        'PointCollectionNumpy'
     ]
