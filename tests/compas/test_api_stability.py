@@ -38,7 +38,11 @@ def compas_api():
 
 
 def compas_api_filename():
-    return os.path.join(os.path.dirname(__file__), 'compas_api.json')
+    if compas.IPY:
+        filename = 'compas_api_ipy.json'
+    else:
+        filename = 'compas_api.json'
+    return os.path.join(os.path.dirname(__file__), filename)
 
 
 def parse_version(ver):
