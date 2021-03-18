@@ -6,10 +6,8 @@ from functools import partial
 import compas_rhino
 
 from compas.utilities import color_to_colordict
-from compas.utilities import pairwise
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
-from compas.geometry import centroid_polygon
 from compas.geometry import centroid_points
 
 from ._artist import Artist
@@ -58,7 +56,6 @@ class MeshArtist(Artist):
         artist.draw_faces(join_faces=True)
         artist.draw_vertices(color={key: '#ff0000' for key in mesh.vertices_on_boundary()})
         artist.draw_edges()
-        artist.redraw()
 
     """
 
@@ -153,23 +150,9 @@ class MeshArtist(Artist):
         vertex_xyz = self.vertex_xyz
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
         faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
-        new_faces = []
-        for face in faces:
-            f = len(face)
-            if f == 3:
-                new_faces.append(face + face[-1:])
-            elif f == 4:
-                new_faces.append(face)
-            elif f > 4:
-                centroid = len(vertices)
-                vertices.append(centroid_polygon([vertices[index] for index in face]))
-                for a, b in pairwise(face + face[0:1]):
-                    new_faces.append([centroid, a, b, b])
-            else:
-                continue
         layer = self.layer
         name = "{}".format(self.mesh.name)
-        guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint, clear=False, redraw=False)
+        guid = compas_rhino.draw_mesh(vertices, faces, layer=layer, name=name, color=color, disjoint=disjoint, clear=False, redraw=False)
         return [guid]
 
     def draw_vertices(self, vertices=None, color=None):
@@ -459,11 +442,3 @@ class MeshArtist(Artist):
                 'color': edge_color[edge],
                 'text': edge_text[edge]})
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass
