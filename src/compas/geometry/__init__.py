@@ -811,6 +811,16 @@ from .trimesh import (  # noqa: E402
 if not compas.IPY:
     from .icp import icp_numpy
 
+from .collections import (
+    Collection,
+    PointCollection,
+)
+if not compas.IPY:
+    from .collections import (
+        CollectionNumpy,
+        PointCollectionNumpy
+    )
+
 __all__ = [
     'close',
     'allclose',
@@ -1107,6 +1117,9 @@ __all__ = [
     'Shear',
     'Transformation',
     'Translation',
+
+    'Collection',
+    'PointCollection',
 ]
 
 if not compas.IPY:
@@ -1131,4 +1144,6 @@ if not compas.IPY:
         'local_to_world_coordinates_numpy',
         'delaunay_from_points_numpy',
         'voronoi_from_points_numpy',
+        'CollectionNumpy',
+        'PointCollectionNumpy'
     ]
