@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_on": "20210318",
-    "compas_version": "1.0.0"
+    "compas_version": "1.0.0",
+    "generated_on": "20210318"
   },
   "modules": {
     "compas": [

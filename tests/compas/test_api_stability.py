@@ -101,6 +101,6 @@ if __name__ == '__main__':
 
     fname = compas_api_filename()
     with open(fname, 'w') as f:
-        json.dump(compas_api, f, indent=2)
+        json.dump(compas_api, f, indent=2, sort_keys=True)
 
     print('Generated API file: ' + fname)
