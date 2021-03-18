@@ -75,14 +75,11 @@ class Scene(BaseScene):
         compas_rhino.rs.EnableRedraw(True)
         compas_rhino.rs.Redraw()
 
-    def redraw(self):
+    def update(self):
         """Redraw the entire scene."""
         compas_rhino.rs.EnableRedraw(False)
-        try:
-            for guid in self.objects:
-                self.objects[guid].draw()
-        except Exception:
-            pass
+        for guid in self.objects:
+            self.objects[guid].draw()
         compas_rhino.rs.EnableRedraw(True)
         compas_rhino.rs.Redraw()
 

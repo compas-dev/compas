@@ -80,7 +80,7 @@ from ._modify import (  # noqa : F401 F403
 )
 from .inspectors import MeshVertexInspector  # noqa : F401 F403
 
-from ._object import Object
+from .object import Object
 from .meshobject import MeshObject
 from .networkobject import NetworkObject
 from .volmeshobject import VolMeshObject
@@ -94,7 +94,7 @@ Object.register(Network, NetworkObject)
 Object.register(VolMesh, VolMeshObject)
 
 __all__ = [
-    'BaseObject',
+    'Object',
     'MeshObject',
     'NetworkObject',
     'VolMeshObject'

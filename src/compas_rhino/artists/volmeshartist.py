@@ -16,7 +16,7 @@ colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 __all__ = ['VolMeshArtist']
 
 
-class VolMeshArtist(BaseArtist):
+class VolMeshArtist(Artist):
     """Artist for drawing volmesh data structures.
 
     Parameters

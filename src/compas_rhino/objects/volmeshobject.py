@@ -16,7 +16,7 @@ from ._modify import mesh_move_vertex
 from ._modify import mesh_move_vertices
 from ._modify import mesh_move_face
 
-from ._object import BaseObject
+from .object import Object
 
 
 __all__ = ['VolMeshObject']
@@ -57,12 +57,7 @@ class VolMeshObject(Object):
         'show.celllabels': False,
     }
 
-    # modify = mesh_update_attributes
-    # modify_vertices = mesh_update_vertex_attributes
-    # modify_faces = mesh_update_face_attributes
-    # modify_edges = mesh_update_edge_attributes
-
-    def __init__(self, volmesh, scene=None, name=None, visible=True, layer=None, **kwargs):
+    def __init__(self, volmesh, scene=None, name=None, visible=True, layer=None, settings=None):
         super(VolMeshObject, self).__init__(volmesh, scene, name, visible, layer)
         self._guids = []
         self._guid_vertex = {}
@@ -78,7 +73,8 @@ class VolMeshObject(Object):
         self._scale = None
         self._rotation = None
         self.settings.update(type(self).SETTINGS)
-        self.settings.update(kwargs)
+        if settings:
+            self.settings.update(settings)
 
     @property
     def volmesh(self):

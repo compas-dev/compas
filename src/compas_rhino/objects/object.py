@@ -2,17 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from uuid import uuid4
-from compas_rhino.artists import BaseArtist
+from compas.scene import BaseObject
 
 
-__all__ = ['BaseObject']
+__all__ = ['Object']
 
 
-_ITEM_OBJECT = {}
-
-
-class BaseObject(object):
+class Object(BaseObject):
     """Abstract base class for COMPAS Rhino objects.
 
     Parameters
@@ -47,7 +43,7 @@ class BaseObject(object):
 
     """
 
-    def __init__(self, item, scene=None, name=None, visible=True, layer=None, **kwargs):
+    def __init__(self, item, scene=None, name=None, visible=True, layer=None):
         super(Object, self).__init__(item, scene, name, visible)
         self.settings = {}
         self.layer = layer
@@ -67,19 +63,6 @@ class BaseObject(object):
     # ==========================================================================
     # Methods
     # ==========================================================================
-
-    @staticmethod
-    def register(item_type, object_type):
-        _ITEM_OBJECT[item_type] = object_type
-
-    @staticmethod
-    def registered_object_types():
-        return [_ITEM_OBJECT[item_type] for item_type in _ITEM_OBJECT]
-
-    @staticmethod
-    def build(item, **kwargs):
-        object_type = _ITEM_OBJECT[type(item)]
-        return object_type(item, **kwargs)
 
     def clear(self):
         """Clear all previously created Rhino objects."""

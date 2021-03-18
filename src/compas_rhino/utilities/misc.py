@@ -260,6 +260,7 @@ def unload_modules(top_level_module_name):
     -------
     list
         List of unloaded module names.
+
     """
     modules = filter(lambda m: m.startswith(top_level_module_name), sys.modules)
 

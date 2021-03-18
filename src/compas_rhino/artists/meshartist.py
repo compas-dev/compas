@@ -20,7 +20,7 @@ colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(BaseArtist):
+class MeshArtist(Artist):
     """Artists for drawing mesh data structures.
 
     Parameters
@@ -169,7 +169,7 @@ class MeshArtist(BaseArtist):
                 continue
         layer = self.layer
         name = "{}".format(self.mesh.name)
-        guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
+        guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint, clear=False, redraw=False)
         return [guid]
 
     def draw_vertices(self, vertices=None, color=None):

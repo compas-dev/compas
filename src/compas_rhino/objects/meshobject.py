@@ -22,7 +22,7 @@ from ._modify import mesh_move_vertex
 from ._modify import mesh_move_vertices
 from ._modify import mesh_move_face
 
-from ._object import BaseObject
+from .object import Object
 
 
 __all__ = ['MeshObject']
@@ -53,10 +53,10 @@ class MeshObject(Object):
         'color.edges': (0, 0, 0),
         'color.faces': (0, 0, 0),
         'color.mesh': (0, 0, 0),
-        'show.mesh': True,
+        'show.mesh': False,
         'show.vertices': True,
         'show.edges': True,
-        'show.faces': False,
+        'show.faces': True,
         'show.vertexlabels': False,
         'show.facelabels': False,
         'show.edgelabels': False,
@@ -64,8 +64,8 @@ class MeshObject(Object):
         'show.facenormals': False,
     }
 
-    def __init__(self, mesh, scene=None, name=None, layer=None, visible=True, settings=None):
-        super(MeshObject, self).__init__(mesh, scene, name, layer, visible)
+    def __init__(self, mesh, scene=None, name=None, visible=True, layer=None, settings=None):
+        super(MeshObject, self).__init__(mesh, scene, name, visible, layer)
         self._guids = []
         self._guid_vertex = {}
         self._guid_edge = {}
@@ -80,7 +80,8 @@ class MeshObject(Object):
         self._scale = None
         self._rotation = None
         self.settings.update(type(self).SETTINGS)
-        self.settings.update(kwargs)
+        if settings:
+            self.settings.update(settings)
 
     @property
     def mesh(self):
@@ -330,7 +331,7 @@ class MeshObject(Object):
                 guids = self.artist.draw_edgelabels(text=text, color=self.settings['color.edges'])
                 self.guid_edgelabel = zip(guids, edges)
 
-        self.redraw()
+        # self.redraw()
 
     def select(self):
         # there is currently no "general" selection method

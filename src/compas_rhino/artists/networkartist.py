@@ -15,7 +15,7 @@ colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(BaseArtist):
+class NetworkArtist(Artist):
     """Artist for drawing network data structures.
 
     Parameters
