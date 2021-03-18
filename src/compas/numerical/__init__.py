@@ -135,16 +135,18 @@ if not compas.IPY:
     from .descent import descent_numpy
     from .topop import topop_numpy
     from .pca import pca_numpy
-    from .ga import ga, moga
     from .fd import fd_numpy
     from .dr import dr_numpy
     from .devo import devo_numpy
     from .isolines import scalarfield_contours_numpy
 
 from .dr import dr
+from .ga import ga, moga
 
 __all__ = [
     'dr',
+    'ga',
+    'moga',
 ]
 
 if not compas.IPY:
@@ -183,8 +185,6 @@ if not compas.IPY:
         'descent_numpy',
         'topop_numpy',
         'pca_numpy',
-        'ga',
-        'moga',
         'devo_numpy',
         'fd_numpy',
         'dr_numpy',
