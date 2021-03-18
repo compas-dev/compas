@@ -16,7 +16,7 @@ from ._modify import mesh_move_vertex
 from ._modify import mesh_move_vertices
 from ._modify import mesh_move_face
 
-from .object import Object
+from ._object import Object
 
 
 __all__ = ['VolMeshObject']

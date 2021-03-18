@@ -22,7 +22,7 @@ from ._modify import mesh_move_vertex
 from ._modify import mesh_move_vertices
 from ._modify import mesh_move_face
 
-from .object import Object
+from ._object import Object
 
 
 __all__ = ['MeshObject']
@@ -572,11 +572,3 @@ class MeshObject(Object):
         self.anchor = anchor
         self.location = vertex_xyz[anchor]
         return True
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

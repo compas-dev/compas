@@ -13,7 +13,7 @@ from ._modify import network_update_node_attributes
 from ._modify import network_update_edge_attributes
 from ._modify import network_move_node
 
-from .object import Object
+from ._object import Object
 
 
 __all__ = ['NetworkObject']

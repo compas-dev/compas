@@ -80,7 +80,7 @@ from ._modify import (  # noqa : F401 F403
 )
 from .inspectors import MeshVertexInspector  # noqa : F401 F403
 
-from .object import Object
+from ._object import Object
 from .meshobject import MeshObject
 from .networkobject import NetworkObject
 from .volmeshobject import VolMeshObject
