@@ -130,11 +130,3 @@ class BaseObject(object):
     def move(self):
         """Move the item represented by the object."""
         raise NotImplementedError
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

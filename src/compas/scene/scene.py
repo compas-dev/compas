@@ -88,13 +88,8 @@ class BaseScene(object):
         raise NotImplementedError
 
     def update(self):
-        """Redraw the entire scene."""
+        """Update the scene by redrawing all objects."""
         raise NotImplementedError
-
-    # def update(self):
-    #     """Clear the scene and redraw."""
-    #     self.clear()
-    #     self.redraw()
 
     def save(self):
         """Save the scene."""
@@ -107,11 +102,3 @@ class BaseScene(object):
     def redo(self):
         """Redo scene updates."""
         raise NotImplementedError
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass
