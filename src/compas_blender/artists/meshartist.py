@@ -20,15 +20,17 @@ class MeshArtist(Artist):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
-    settings : dict, optional
-        A dict with custom visualisation settings.
 
     Attributes
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The COMPAS mesh associated with the artist.
-    settings : dict
-        Default settings for color, scale, tolerance, ...
+    color_vertices : 3-tuple
+        Default color of the vertices.
+    color_edges : 3-tuple
+        Default color of the edges.
+    color_faces : 3-tuple
+        Default color of the faces.
 
     Examples
     --------
@@ -39,8 +41,8 @@ class MeshArtist(Artist):
         from compas_blender.artists import MeshArtist
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        MeshArtist(mesh).draw()
+        artist = MeshArtist(mesh)
+        artist.draw()
 
     """
 
@@ -246,11 +248,3 @@ class MeshArtist(Artist):
         objects = compas_blender.draw_lines(lines, self.edgecollection)
         self.object_edge = zip(objects, edges)
         return objects
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass
