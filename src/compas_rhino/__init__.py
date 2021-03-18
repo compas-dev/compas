@@ -42,6 +42,11 @@ def clear():
     delete_objects(guids, purge=True)  # noqa: F405
 
 
+def redraw():
+    rs.EnableRedraw()
+    rs.Redraw()
+
+
 def _check_rhino_version(version):
     supported_versions = ['5.0', '6.0', '7.0']
 
