@@ -2,17 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import abc
-from uuid import uuid4
 from .object import BaseObject
-
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
 __all__ = ['BaseScene']
 
 
-class BaseScene(ABC):
+class BaseScene(object):
     """A base class for all CAD scenes.
 
     Attributes
@@ -44,10 +40,9 @@ class BaseScene(ABC):
         uuid
             The identifier of the created object.
         """
-        guid = uuid4()
         obj = BaseObject.build(item, scene=self, name=name, visible=visible, **kwargs)
-        self.objects[guid] = obj
-        return guid
+        self.objects[obj.guid] = obj
+        return obj.guid
 
     def find(self, guid):
         """Find an object using its GUID.
@@ -58,7 +53,7 @@ class BaseScene(ABC):
 
         Returns
         -------
-        :class:`compas.base.Base`
+        :class:`compas.scene.BaseObject`
         """
         if guid in self.objects:
             return self.objects[guid]
@@ -72,7 +67,7 @@ class BaseScene(ABC):
 
         Returns
         -------
-        list of :class:`compas.base.Base`
+        list of :class:`compas.scene.BaseObject`
         """
         objects = []
         for obj in self.objects.values():
@@ -80,52 +75,38 @@ class BaseScene(ABC):
                 objects.append(obj)
         return objects
 
-    @abc.abstractmethod
+    # abstract methods
+    # would be cool to use ABCs
+    # but not possible because of ipy bug
+
     def purge(self):
         """Clear all objects from the scene."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def clear(self):
         """Clear all objects from the scene."""
-        pass
-
-    @abc.abstractmethod
-    def redraw(self):
-        """Redraw the entire scene."""
+        raise NotImplementedError
 
     def update(self):
-        """Clear the scene and redraw."""
-        self.clear()
-        self.redraw()
+        """Redraw the entire scene."""
+        raise NotImplementedError
 
-    # @abc.abstractmethod
-    # def save(self):
-    #     """Save the scene."""
+    # def update(self):
+    #     """Clear the scene and redraw."""
+    #     self.clear()
+    #     self.redraw()
 
-    # @abc.abstractmethod
-    # def undo(self):
-    #     """Undo scene updates.
+    def save(self):
+        """Save the scene."""
+        raise NotImplementedError
 
-    #     Returns
-    #     -------
-    #     bool
-    #         False if there is nothing (more) to undo.
-    #         True if undo was successful.
-    #     """
-    #     pass
+    def undo(self):
+        """Undo scene updates."""
+        raise NotImplementedError
 
-    # @abc.abstractmethod
-    # def redo(self):
-    #     """Redo scene updates.
-
-    #     Returns
-    #     -------
-    #     bool
-    #         False if there is nothing (more) to redo.
-    #         True if redo was successful.
-    #     """
-    #     pass
+    def redo(self):
+        """Redo scene updates."""
+        raise NotImplementedError
 
 
 # ==============================================================================

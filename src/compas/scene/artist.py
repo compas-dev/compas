@@ -2,9 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import abc
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-
 
 __all__ = ["BaseArtist"]
 
@@ -12,12 +9,9 @@ __all__ = ["BaseArtist"]
 _ITEM_ARTIST = {}
 
 
-class BaseArtist(ABC):
+class BaseArtist(object):
     """Base class for all scene artists.
     """
-
-    # def __init__(self):
-    #     pass
 
     @staticmethod
     def register(item_type, artist_type):
@@ -43,17 +37,14 @@ class BaseArtist(ABC):
         artist = artist_type(item, **kwargs)
         return artist
 
-    @abc.abstractmethod
     def draw(self):
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def redraw(self):
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def clear(self):
-        pass
+        raise NotImplementedError
 
 
 # ==============================================================================

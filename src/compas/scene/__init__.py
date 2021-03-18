@@ -26,4 +26,8 @@ from .artist import BaseArtist  # noqa: F401 F403
 from .object import BaseObject  # noqa: F401 F403
 from .scene import BaseScene  # noqa: F401 F403
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'BaseArtist',
+    'BaseObject',
+    'BaseScene'
+]

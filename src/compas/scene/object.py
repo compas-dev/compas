@@ -2,10 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import abc
 from uuid import uuid4
 from .artist import BaseArtist
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
 __all__ = ['BaseObject']
@@ -14,32 +12,34 @@ __all__ = ['BaseObject']
 _ITEM_OBJECT = {}
 
 
-class BaseObject(ABC):
+class BaseObject(object):
     """Base class for all scene objects.
 
     Parameters
     ----------
-    item : :class:`compas.base.Base`
+    item: :class:`compas.base.Base`
         A COMPAS object.
-    scene : :class:`compas.scene.BaseScene`, optional
+    scene: :class:`compas.scene.BaseScene`, optional
         A scene object.
-    name : str, optional
+    name: str, optional
         The name of the object.
-    visible : bool, optional
+    visible: bool, optional
         Toggle for the visibility of the object.
 
     Attributes
     ----------
-    item : :class:`compas.base.Base`
+    item: :class:`compas.base.Base`
         A COMPAS object.
-    scene : :class:`compas.scene.BaseScene`
+    scene: :class:`compas.scene.BaseScene`
         A scene object.
-    artist : :class:`compas.scene.BaseArtist`
+    artist: :class:`compas.scene.BaseArtist`
         The artist matching the type of ``item``.
-    name : str
+    guid: str
+        The unique identifier of the object.
+    name: str
         The name of the object.
         This is an alias for the name of ``item``.
-    visible : bool
+    visible: bool
         Toggle for the visibility of the object in the scene.
 
     """
@@ -47,7 +47,7 @@ class BaseObject(ABC):
     def __init__(self, item, scene=None, name=None, visible=True):
         super(BaseObject, self).__init__()
         self._item = None
-        self._id = None
+        self._guid = None
         self._scene = None
         self._artist = None
         self.scene = scene
@@ -81,10 +81,10 @@ class BaseObject(ABC):
         return self._artist
 
     @property
-    def id(self):
-        if not self._id:
-            self._id = uuid4()
-        return self._id
+    def guid(self):
+        if not self._guid:
+            self._guid = str(uuid4())
+        return self._guid
 
     @property
     def name(self):
@@ -111,30 +111,25 @@ class BaseObject(ABC):
         object_type = _ITEM_OBJECT[type(item)]
         return object_type(item, **kwargs)
 
-    @abc.abstractmethod
     def clear(self):
         """Clear all previously created Rhino objects."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def draw(self):
         """Draw the object representing the item."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def select(self):
         """Select the object representing the item."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def modify(self):
         """Modify the item represented by the object."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def move(self):
         """Move the item represented by the object."""
-        pass
+        raise NotImplementedError
 
 
 # ============================================================================
