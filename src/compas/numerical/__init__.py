@@ -141,8 +141,11 @@ if not compas.IPY:
     from .devo import devo_numpy
     from .isolines import scalarfield_contours_numpy
 
+from .dr import dr
 
-__all__ = []
+__all__ = [
+    'dr',
+]
 
 if not compas.IPY:
     __all__ += [
