@@ -131,6 +131,7 @@ import compas
 
 from .datastructure import Datastructure
 from .network import (
+    BaseNetwork,               # NOTE: this class being in the stable API is something we should deprecate before 2.x release
     Graph,
     Network,
     network_join_edges,
@@ -156,6 +157,7 @@ from .network import (
     network_shortest_path
 )
 from .mesh import (
+    BaseMesh,                  # NOTE: this class being in the stable API is something we should deprecate before 2.x release
     HalfEdge,
     Mesh,
     trimesh_collapse_edge,
@@ -196,6 +198,8 @@ from .mesh import (
     trimesh_remesh
 )
 from .volmesh import (
+    BaseVolMesh,               # NOTE: this class being in the stable API is something we should deprecate before 2.x release
+    HalfFace,
     VolMesh,
     volmesh_bounding_box,
     volmesh_transform,
@@ -233,6 +237,7 @@ if not compas.IPY:
 __all__ = [
     'Datastructure',
     # Networks
+    'BaseNetwork',
     'Graph',
     'Network',
     'network_join_edges',
@@ -257,6 +262,7 @@ __all__ = [
     'network_transformed',
     'network_shortest_path',
     # Meshes
+    'BaseMesh',
     'HalfEdge',
     'Mesh',
     'trimesh_collapse_edge',
@@ -296,6 +302,8 @@ __all__ = [
     'mesh_planarize_faces',
     'trimesh_remesh',
     # Volumetric Meshes
+    'BaseVolMesh',
+    'HalfFace',
     'VolMesh',
     'volmesh_bounding_box',
     'volmesh_transform',
