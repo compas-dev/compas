@@ -811,7 +811,7 @@ from .trimesh import (  # noqa: E402
 if not compas.IPY:
     from .icp import icp_numpy
 
-from .collections import (
+from .collections import (  # noqa: E402
     Collection,
     PointCollection,
 )

@@ -140,8 +140,8 @@ if not compas.IPY:
     from .devo import devo_numpy
     from .isolines import scalarfield_contours_numpy
 
-from .dr import dr
-from .ga import ga, moga
+from .dr import dr  # noqa: E402
+from .ga import ga, moga  # noqa: E402
 
 __all__ = [
     'dr',
