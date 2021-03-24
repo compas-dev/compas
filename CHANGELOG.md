@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added a `invert` and `inverted` method `compas.geometry.Vector`.
+* Added unetary `__neg__` operator for `compas.geometry.Vector`
+
 ### Changed
 
 ### Removed
