@@ -9,7 +9,7 @@ robots
 Model
 =====
 
-.. inheritance-diagram:: RobotModel Joint Link ToolModel
+.. inheritance-diagram:: RobotModel Joint Link ToolModel Configuration
     :parts: 1
 
 The root of the model is the :class:`RobotModel` class, which
@@ -24,6 +24,7 @@ elements connecting the links together.
     Joint
     Link
     ToolModel
+    Configuration
 
 
 Geometric description
@@ -115,6 +116,10 @@ the processing of these resources.
 """
 from __future__ import absolute_import
 
+from .configuration import (
+    Configuration,
+    FixedLengthList
+)
 from .model import (
     Axis,
     Box,
@@ -186,5 +191,8 @@ __all__ = [
     'AbstractMeshLoader',
     'DefaultMeshLoader',
     'LocalPackageMeshLoader',
-    'GithubPackageMeshLoader'
+    'GithubPackageMeshLoader',
+
+    'Configuration',
+    'FixedLengthList'
 ]

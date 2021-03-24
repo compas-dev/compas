@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import itertools
 import json
+import random
 
 from compas.base import Base
 from compas.datastructures import Mesh
@@ -488,6 +489,21 @@ class RobotModel(Base):
         joints = self.get_configurable_joints()
         return [joint.type for joint in joints]
 
+    def get_joint_types_by_names(self, names):
+        """Get a list of joint types given a list of joint names.
+
+        Parameters
+        ----------
+        names : :obj:`list` of :obj:`str`
+            The names of the joints.
+
+        Returns
+        -------
+        :obj:`list` of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
+            List of joint types.
+        """
+        return [self.get_joint_by_name(n).type for n in names]
+
     def get_configurable_joint_names(self):
         """Returns the configurable joint names.
 
@@ -552,6 +568,52 @@ class RobotModel(Base):
         """
         joints = self.get_configurable_joints()
         return joints[0].parent.link
+
+    def zero_configuration(self):
+        """Get the zero joint configuration.
+
+        If zero is out of joint limits ``(upper, lower)`` then
+        ``(upper + lower) / 2`` is used as joint value.
+
+        Examples
+        --------
+        >>> robot.zero_configuration()
+        Configuration((0.000, 0.000, 0.000, 0.000, 0.000, 0.000), (0, 0, 0, 0, 0, 0), \
+            ('shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint'))
+        """
+        values = []
+        joint_names = []
+        joint_types = []
+        for joint in self.get_configurable_joints():
+            if joint.limit and not (0 <= joint.limit.upper and 0 >= joint.limit.lower):
+                values.append((joint.limit.upper + joint.limit.lower)/2.)
+            else:
+                values.append(0)
+            joint_names.append(joint.name)
+            joint_types.append(joint.type)
+        return Configuration(values, joint_types, joint_names)
+
+    def random_configuration(self):
+        """Get a random configuration.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+
+        Note
+        ----
+        No collision checking is involved, the configuration may be invalid.
+        """
+        configurable_joints = self.get_configurable_joints()
+        values = []
+        for joint in configurable_joints:
+            if joint.limit:
+                values.append(joint.limit.lower + (joint.limit.upper - joint.limit.lower) * random.random())
+            else:
+                values.append(0)
+        joint_names = self.get_configurable_joint_names()
+        joint_types = self.get_joint_types_by_names(joint_names)
+        return Configuration(values, joint_types, joint_names)
 
     def load_geometry(self, *resource_loaders, **kwargs):
         """Load external geometry resources, such as meshes.
@@ -1034,7 +1096,7 @@ if __name__ == '__main__':
     import doctest
     from compas import HERE
     from compas.geometry import Sphere  # noqa: F401
-    from compas.robots import GithubPackageMeshLoader  # noqa: F401
+    from compas.robots import GithubPackageMeshLoader, Configuration  # noqa: F401
 
     ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')
 
