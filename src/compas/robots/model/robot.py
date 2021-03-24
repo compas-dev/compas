@@ -766,7 +766,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        joint_state : dict or :class:`compas.robots.Configuration`
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
         link : :class:`compas.robots.Link`
@@ -781,10 +781,8 @@ class RobotModel(Base):
 
         Examples
         --------
-        >>> names = robot.get_configurable_joint_names()
-        >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
-        >>> joint_state = dict(zip(names, values))
-        >>> transformations = robot.compute_transformations(joint_state)
+        >>> config = robot.random_configuration()
+        >>> transformations = robot.compute_transformations(config)
         """
         if link is None:
             link = self.root
@@ -814,7 +812,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        joint_state : dict or :class:`compas.robots.Configuration`
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
 
@@ -839,7 +837,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        joint_state : dict or :class:`compas.robots.Configuration`
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
 
@@ -863,7 +861,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        joint_state : dict or :class:`compas.robots.Configuration`
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
         link_name : str, optional
@@ -877,10 +875,8 @@ class RobotModel(Base):
 
         Examples
         --------
-        >>> names = robot.get_configurable_joint_names()
-        >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
-        >>> joint_state = dict(zip(names, values))
-        >>> frame_WCF = robot.forward_kinematics(joint_state)
+        >>> config = robot.random_configuration()
+        >>> frame_WCF = robot.forward_kinematics(config)
         """
         if link_name is None:
             ee_link = self.get_end_effector_link()
