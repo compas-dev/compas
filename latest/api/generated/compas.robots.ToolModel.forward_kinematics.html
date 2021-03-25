@@ -110,12 +110,12 @@
 <h1>ToolModel.forward_kinematics</h1>
 <dl class="py method">
 <dt id="compas.robots.ToolModel.forward_kinematics">
-<code class="sig-prename descclassname"><span class="pre">ToolModel.</span></code><code class="sig-name descname"><span class="pre">forward_kinematics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L799"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<code class="sig-prename descclassname"><span class="pre">ToolModel.</span></code><code class="sig-name descname"><span class="pre">forward_kinematics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L859"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculate the robot’s forward kinematic.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>joint_state</strong> (<em>dict</em>) – A dictionary with the joint names as keys and values in radians and
+<li><p><strong>:class:`compas.robots.Configuration` or joint_state</strong> (<em>dict</em>) – A dictionary with the joint names as keys and values in radians and
 meters (depending on the joint type).</p></li>
 <li><p><strong>link_name</strong> (<em>str, optional</em>) – The name of the link we want to calculate the forward kinematics for.
 Defaults to the end-effector link name.</p></li>
@@ -126,10 +126,8 @@ Defaults to the end-effector link name.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">names</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_configurable_joint_names</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.238</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.153</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.174</span><span class="p">,</span> <span class="mf">0.185</span><span class="p">,</span> <span class="mf">0.667</span><span class="p">,</span> <span class="mf">0.000</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">joint_state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">frame_WCF</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">forward_kinematics</span><span class="p">(</span><span class="n">joint_state</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">random_configuration</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame_WCF</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">forward_kinematics</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </dd></dl>

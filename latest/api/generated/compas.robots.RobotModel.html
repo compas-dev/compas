@@ -108,7 +108,7 @@
 <h1>RobotModel</h1>
 <dl class="py class">
 <dt id="compas.robots.RobotModel">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.robots.</span></code><code class="sig-name descname"><span class="pre">RobotModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.robots.</span></code><code class="sig-name descname"><span class="pre">RobotModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L37"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></p>
 <p>RobotModel is the root element of the model.</p>
 <p>Instances of this class represent an entire robot as defined in an URDF
@@ -188,29 +188,35 @@ this model, ruling out all parallel robots.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_joint_types.html#compas.robots.RobotModel.get_joint_types" title="compas.robots.RobotModel.get_joint_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_joint_types</span></code></a>()</p></td>
 <td><p>Returns the joint types of the configurable joints.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_link_by_name.html#compas.robots.RobotModel.get_link_by_name" title="compas.robots.RobotModel.get_link_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_link_by_name</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_joint_types_by_names.html#compas.robots.RobotModel.get_joint_types_by_names" title="compas.robots.RobotModel.get_joint_types_by_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_joint_types_by_names</span></code></a>(names)</p></td>
+<td><p>Get a list of joint types given a list of joint names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_link_by_name.html#compas.robots.RobotModel.get_link_by_name" title="compas.robots.RobotModel.get_link_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_link_by_name</span></code></a>(name)</p></td>
 <td><p>Get a link in a robot model matching by its name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_urdf_element.html#compas.robots.RobotModel.get_urdf_element" title="compas.robots.RobotModel.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_urdf_element.html#compas.robots.RobotModel.get_urdf_element" title="compas.robots.RobotModel.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_chain.html#compas.robots.RobotModel.iter_chain" title="compas.robots.RobotModel.iter_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_chain</span></code></a>([start, end])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_chain.html#compas.robots.RobotModel.iter_chain" title="compas.robots.RobotModel.iter_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_chain</span></code></a>([start, end])</p></td>
 <td><p>Iterator over the chain of all elements between a pair of start and end elements.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joint_chain.html#compas.robots.RobotModel.iter_joint_chain" title="compas.robots.RobotModel.iter_joint_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joint_chain</span></code></a>([link_start_name, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joint_chain.html#compas.robots.RobotModel.iter_joint_chain" title="compas.robots.RobotModel.iter_joint_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joint_chain</span></code></a>([link_start_name, …])</p></td>
 <td><p>Iterator over the chain of joints between a pair of start and end links.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joints.html#compas.robots.RobotModel.iter_joints" title="compas.robots.RobotModel.iter_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joints</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joints.html#compas.robots.RobotModel.iter_joints" title="compas.robots.RobotModel.iter_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joints</span></code></a>()</p></td>
 <td><p>Iterator over the joints that starts with the root link’s children joints.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_link_chain.html#compas.robots.RobotModel.iter_link_chain" title="compas.robots.RobotModel.iter_link_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_link_chain</span></code></a>([link_start_name, link_end_name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_link_chain.html#compas.robots.RobotModel.iter_link_chain" title="compas.robots.RobotModel.iter_link_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_link_chain</span></code></a>([link_start_name, link_end_name])</p></td>
 <td><p>Iterator over the chain of links between a pair of start and end links.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_links.html#compas.robots.RobotModel.iter_links" title="compas.robots.RobotModel.iter_links"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_links</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_links.html#compas.robots.RobotModel.iter_links" title="compas.robots.RobotModel.iter_links"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_links</span></code></a>()</p></td>
 <td><p>Iterator over the links that starts with the root link.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.load_geometry.html#compas.robots.RobotModel.load_geometry" title="compas.robots.RobotModel.load_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_geometry</span></code></a>(*resource_loaders, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.load_geometry.html#compas.robots.RobotModel.load_geometry" title="compas.robots.RobotModel.load_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_geometry</span></code></a>(*resource_loaders, **kwargs)</p></td>
 <td><p>Load external geometry resources, such as meshes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.random_configuration.html#compas.robots.RobotModel.random_configuration" title="compas.robots.RobotModel.random_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_configuration</span></code></a>()</p></td>
+<td><p>Get a random configuration.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.remove_joint.html#compas.robots.RobotModel.remove_joint" title="compas.robots.RobotModel.remove_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_joint</span></code></a>(name)</p></td>
 <td><p>Removes a joint to the robot model.</p></td>
@@ -244,6 +250,9 @@ this model, ruling out all parallel robots.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_json.html#compas.robots.RobotModel.validate_json" title="compas.robots.RobotModel.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.zero_configuration.html#compas.robots.RobotModel.zero_configuration" title="compas.robots.RobotModel.zero_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_configuration</span></code></a>()</p></td>
+<td><p>Get the zero joint configuration.</p></td>
 </tr>
 </tbody>
 </table>
