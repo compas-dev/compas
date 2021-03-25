@@ -117,8 +117,7 @@ the processing of these resources.
 from __future__ import absolute_import
 
 from .configuration import (
-    Configuration,
-    FixedLengthList
+    Configuration
 )
 from .model import (
     Axis,
@@ -193,6 +192,5 @@ __all__ = [
     'LocalPackageMeshLoader',
     'GithubPackageMeshLoader',
 
-    'Configuration',
-    'FixedLengthList'
+    'Configuration'
 ]

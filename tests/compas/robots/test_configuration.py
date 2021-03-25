@@ -3,7 +3,7 @@ import pytest
 
 from compas.robots import Joint
 from compas.robots import Configuration
-from compas.robots import FixedLengthList
+from compas.robots.configuration import FixedLengthList
 
 
 def test_bool():
