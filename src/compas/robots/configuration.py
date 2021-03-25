@@ -605,10 +605,3 @@ class Configuration(Base):
         joint_types = [_type_dict[name] for name in joint_names]
 
         return Configuration(joint_values, joint_types, joint_names)
-
-
-if __name__ == "__main__":
-    import math  # noqa F401
-    from compas.geometry import allclose   # noqa F401
-    import doctest
-    doctest.testmod(globs=globals())

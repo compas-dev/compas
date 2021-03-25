@@ -766,7 +766,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict or :class:`compas.robots.Configuration`
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
         link : :class:`compas.robots.Link`
@@ -812,7 +812,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict or :class:`compas.robots.Configuration`
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
 
@@ -837,7 +837,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict or :class:`compas.robots.Configuration`
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
 
@@ -861,7 +861,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict or :class:`compas.robots.Configuration`
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
         link_name : str, optional
