@@ -46,7 +46,7 @@ source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
-templates_path = ["_templates", ]
+templates_path = ["_templates"]
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
 pygments_style = "sphinx"
@@ -73,6 +73,7 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
     "nbsphinx",
+    "sphinx.ext.autodoc.typehints"
 ]
 
 # autodoc options
