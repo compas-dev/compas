@@ -303,6 +303,32 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
     True
 
+    The algorithm supports "integer creasing" as described in
+    Subdivision Surfaces in Character Animation [1]_.
+    Creases are supported through the optional edge attribute ``'crease'``,
+    which can be set to an integer value that defines how sharp the crease is wrt
+    the number of subdivision steps.
+
+    To add an infinitely sharp crease to an edge, set the ``'crease'`` attribute of the edge
+    to a number higher than the number of subdivision steps.
+
+    >>> from compas.geometry import Box, dot_vectors
+    >>> from compas.datastructures import Mesh
+
+    >>> cage = Mesh.from_shape(Box.from_width_height_depth(1, 1, 1))
+    >>> cage.update_default_edge_attributes({'crease': 0})
+    >>> top = sorted(cage.faces(), key=lambda face: dot_vectors(cage.face_normal(face), [0, 0, 1]))[-1]
+    >>> cage.edges_attribute('crease', 5, keys=list(cage.face_halfedges(top)))
+
+    >>> subd = cage.subdivide(k=4)
+
+    References
+    ----------
+    .. [1] Tony DeRose, Michael Kass and Tien Truong.
+           Subdivision Surfaces in Character Animation.
+           Pixar Animation Studios.
+           see https://graphics.pixar.com/library/Geri/paper.pdf
+
     """
     cls = type(mesh)
     if not fixed:
