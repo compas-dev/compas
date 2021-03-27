@@ -58,21 +58,64 @@ Traversal
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import compas
 
-from .traversal import *  # noqa: F401 F403
-from .combinatorics import *  # noqa: F401 F403
-from .orientation import *  # noqa: F401 F403
+from .traversal import (
+    depth_first_ordering,
+    breadth_first_ordering,
+    breadth_first_traverse,
+    breadth_first_paths,
+    shortest_path,
+    astar_shortest_path,
+    dijkstra_distances,
+    dijkstra_path
+)
+from .combinatorics import (
+    vertex_coloring,
+    connected_components
+)
+from .orientation import (
+    face_adjacency,
+    unify_cycles
+)
+from .connectivity import adjacency_from_edges
 
 if compas.IPY:
-    from .orientation_rhino import *  # noqa: F401 F403
+    from .orientation_rhino import (
+        face_adjacency_rhino,
+        unify_cycles_rhino
+    )
 else:
-    from .orientation_numpy import *  # noqa: F401 F403
+    from .orientation_numpy import (
+        face_adjacency_numpy,
+        unify_cycles_numpy
+    )
 
-from .connectivity import *  # noqa: F401 F403
 
+__all__ = [
+    'depth_first_ordering',
+    'breadth_first_ordering',
+    'breadth_first_traverse',
+    'breadth_first_paths',
+    'shortest_path',
+    'astar_shortest_path',
+    'dijkstra_distances',
+    'dijkstra_path',
+    'vertex_coloring',
+    'connected_components',
+    'face_adjacency',
+    'unify_cycles',
+    'adjacency_from_edges'
+]
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+if compas.IPY:
+    __all__ += [
+        'face_adjacency_rhino',
+        'unify_cycles_rhino',
+    ]
+else:
+    __all__ += [
+        'face_adjacency_numpy',
+        'unify_cycles_numpy',
+    ]

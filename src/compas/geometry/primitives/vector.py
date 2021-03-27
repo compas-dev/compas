@@ -255,6 +255,9 @@ class Vector(Primitive):
         """
         return Vector(self.x ** n, self.y ** n, self.z ** n)
 
+    def __neg__(self):
+        return self.scaled(-1.0)
+
     def __iadd__(self, other):
         """Add the components of the other vector to this vector.
 
@@ -675,6 +678,41 @@ class Vector(Primitive):
         v = self.copy()
         v.unitize()
         return v
+
+    def invert(self):
+        """Invert the direction of this vector
+
+        Note
+        ____
+        a negation of a vector is similar to inverting a vector
+
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = u.copy()
+        >>> u.invert()
+        >>> u == v
+        False
+        >>> u.invert()
+        >>> u == v
+        True
+        >>> v == --v
+        True
+        """
+        self.scale(-1.)
+
+    def inverted(self):
+        """Returns a inverted copy of this vector
+
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = u.inverted()
+        >>> w = u + v
+        >>> w.length
+        0.0
+        """
+        return self.scaled(-1.)
 
     def scale(self, n):
         """Scale this vector by a factor n.

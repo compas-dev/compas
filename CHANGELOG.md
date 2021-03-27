@@ -10,10 +10,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added crease handling to catmull-clark subdivision scheme.
+* Added Python 3.9 support
+
+### Changed
+
+* Fixed box scaling.
+
+### Removed
+
+
+## [1.3.0] 2021-03-26
+
+### Added
+
+* Added a `invert` and `inverted` method `compas.geometry.Vector`.
+* Added unetary `__neg__` operator for `compas.geometry.Vector`.
+* Added `compas.robots.Configuration`, moved from `compas_fab`.
+
+### Changed
+
+* Fixed rhino packages installation to remove duplicates
+
+### Removed
+
+
+## [1.2.1] 2021-03-19
+
+### Added
+
+### Changed
+
+### Removed
+
+* Fixed API removals from 1.0.0 -> 1.2.0
+
+
+## [1.2.0] 2021-03-18
+
+### Added
+
+* Added `divide_polyline`, `divide_polyline_by_length`, `Polyline.split_at_corners` and `Polyline.tangent_at_point_on_polyline`.
+* Added the magic method `__str__` to `compas.geoemetry.Transformation`.
+* Added `redraw` flag to the `compas_rhino` methods `delete_object`, `delete_objects` and `purge_objects`.
+* Added the `__eq__` method for `compas.geometry.Circle` and `compas.geometry.Line`.
+* Added support for Pylance through static API definitions.
+* Added `halfedge_strip` method to `compas.datastructures.HalfEdge`.
+
 ### Changed
 
 * Fixed bug where mimic joints were considered configurable.
-* Fixed box scaling.
+* Fixed bug where `!=` gave incorrect results in Rhino for some compas objects.
+* Fixed bug where `compas_rhino.BaseArtist.redraw` did not trigger a redraw.
+* Fixed minor bugs in `compas.geometry.Polyline` and `compas.geometry.Polygon`.
+* Fixed very minor bugs in `compas.geometry.Frame` and `compas.geometry.Quaternion`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_edges`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_faces`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_edges`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_faces`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify_edges`.
+* Changed `compas_rhino.objects.inspect` to `compas_rhino.objects.inspectors`.
+* Changed `compas_rhino.objects.select` to `compas_rhino.objects._select`.
+* Changed `compas_rhino.objects.modify` to `compas_rhino.objects._modify`.
 
 ### Removed
 

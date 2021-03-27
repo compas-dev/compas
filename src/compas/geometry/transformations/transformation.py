@@ -97,8 +97,19 @@ class Transformation(Base):
         except BaseException:
             return False
 
+    def __ne__(self, other):
+        # this is not obvious to ironpython
+        return not self.__eq__(other)
+
     def __repr__(self):
         return "Transformation({})".format(self.matrix)
+
+    def __str__(self):
+        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
+        s += " [%s]]\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
+        return s
 
     def __len__(self):
         return len(self.matrix)

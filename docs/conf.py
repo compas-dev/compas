@@ -38,7 +38,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "1.1.0"
+release = "1.3.0"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -342,6 +342,7 @@ html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
 html_show_sourcelink = False
+html_permalinks = False
 html_add_permalinks = ""
 html_experimental_html5_writer = True
 html_compact_lists = True

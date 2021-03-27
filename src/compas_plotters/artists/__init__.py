@@ -41,4 +41,13 @@ Artist.register(Circle, CircleArtist)
 Artist.register(Ellipse, EllipseArtist)
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'Artist',
+    'PointArtist',
+    'VectorArtist',
+    'LineArtist',
+    'PolylineArtist',
+    'PolygonArtist',
+    'CircleArtist',
+    'EllipseArtist'
+]

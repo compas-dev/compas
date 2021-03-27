@@ -108,10 +108,40 @@ def test_list():
     assert T.list == [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
 
 
-def concatenate():
+def test_concatenated():
     trans1 = [1, 2, 3]
     angle1 = [-2.142, 1.141, -0.142]
     T1 = Translation.from_vector(trans1)
     R1 = Rotation.from_euler_angles(angle1)
-    M1 = T1.concatenate(R1)
+    M1 = T1.concatenated(R1)
     assert allclose(M1, T1 * R1)
+
+
+def test___repr__():
+    trans = [1, 2, 3]
+    axes = [-2.142, 1.141, -0.142]
+    angle = 0.7854
+    R = Rotation.from_axis_and_angle(axes, angle, point=trans)
+    assert R == eval(repr(R))
+
+
+def test___str__():
+    s = '[[    0.9345,   -0.0798,    0.3469,   -0.8157],\n' + \
+        ' [   -0.1624,    0.7716,    0.6150,   -1.2258],\n' + \
+        ' [   -0.3168,   -0.6311,    0.7081,    2.4546],\n' + \
+        ' [    0.0000,    0.0000,    0.0000,    1.0000]]\n'
+    trans = [1, 2, 3]
+    axes = [-2.142, 1.141, -0.142]
+    angle = 0.7854
+    R = Rotation.from_axis_and_angle(axes, angle, point=trans)
+    assert s == str(R)
+
+
+def test___eq__():
+    i1 = Transformation()
+    i2 = Transformation()
+    t = Translation.from_vector([1, 0, 0])
+    assert i1 == i2
+    assert not (i1 != i2)
+    assert i1 != t
+    assert not (i1 == t)

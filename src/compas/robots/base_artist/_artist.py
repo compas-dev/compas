@@ -230,7 +230,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict`
+        joint_state : :obj:`dict` or :class:`compas.robots.Configuration`
             A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
             ``True`` if the visual geometry should be also updated, otherwise ``False``.
@@ -264,7 +264,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict`, optional
+        joint_state : :obj:`dict`or :class:`compas.robots.Configuration`, optional
             A dictionary with joint names as keys and joint positions as values.
             Defaults to an empty dictionary.
         transformation : :class:`compas.geometry.Transformation`, optional
