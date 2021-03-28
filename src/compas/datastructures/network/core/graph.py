@@ -1271,10 +1271,12 @@ class Graph(Datastructure):
             if i == ring:
                 break
             temp = []
-            for key in nbrs:
-                temp += self.neighbors(key)
+            for nbr in nbrs:
+                temp += self.neighbors(nbr)
             nbrs.update(temp)
             i += 1
+        if key in nbrs:
+            nbrs.remove(key)
         return list(nbrs)
 
     def neighbors_out(self, key):
