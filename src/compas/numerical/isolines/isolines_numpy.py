@@ -118,39 +118,3 @@ def scalarfield_contours_numpy(xy, s, levels=50, density=100):
     plt.close(fig)
 
     return levels, contours
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas.geometry import centroid_points
-    from compas.geometry import distance_point_point
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    centroid = centroid_points(points)
-    distances = [distance_point_point(point, centroid) for point in points]
-
-    xy = [point[0:2] for point in points]
-
-    levels, contours = scalarfield_contours_numpy(xy, distances)
-
-    # xy = [mesh.vertex_attributes(key, 'xy') for key in mesh.vertices()]
-    # z = [mesh.vertex_attribute(key, 'z') for key in mesh.vertices()]
-    # levels, contours = scalarfield_contours_numpy(xy, z)
-
-    # levels, contours = mesh_contours_numpy(mesh)
-
-    for i in range(len(contours)):
-        level = levels[i]
-        contour = contours[i]
-        print(level)
-        for path in contour:
-            for polygon in path:
-                print([point.tolist() for point in polygon])

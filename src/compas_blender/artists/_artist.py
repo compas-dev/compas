@@ -74,12 +74,3 @@ class BaseArtist(abc.ABC):
             return
         compas_blender.delete_objects(self.objects)
         self.objects = []
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass
