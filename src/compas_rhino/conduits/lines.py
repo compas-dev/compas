@@ -135,11 +135,3 @@ class LinesConduit(BaseConduit):
                 e.Display.DrawLines(lines, self._default_color, self._default_thickness)
         except Exception as e:
             print(e)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

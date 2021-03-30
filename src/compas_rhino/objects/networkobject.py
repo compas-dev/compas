@@ -335,11 +335,3 @@ class NetworkObject(BaseObject):
             False otherwise.
         """
         return network_move_node(self.network, node)
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

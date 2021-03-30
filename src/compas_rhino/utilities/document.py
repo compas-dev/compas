@@ -77,12 +77,3 @@ def get_document_dirname():
     if not filepath:
         return None
     return os.path.dirname(filepath)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    pass

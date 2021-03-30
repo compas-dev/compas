@@ -77,11 +77,3 @@ class CircleArtist(PrimitiveArtist):
         guids += compas_rhino.draw_circles(circles, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

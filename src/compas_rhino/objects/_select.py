@@ -284,11 +284,3 @@ def network_select_edges(network, message="Select edges."):
                         v = ast.literal_eval(v)
                         keys.append((u, v))
     return keys
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

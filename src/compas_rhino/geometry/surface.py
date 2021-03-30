@@ -395,11 +395,3 @@ class RhinoSurface(BaseRhinoGeometry):
 
     def closest_points_on_boundaries(self, points):
         return [self.closest_point_on_boundaries(point) for point in points]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

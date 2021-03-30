@@ -68,12 +68,3 @@ class PolylineArtist(PrimitiveArtist):
         guids = compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

@@ -91,12 +91,3 @@ class FrameArtist(PrimitiveArtist):
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

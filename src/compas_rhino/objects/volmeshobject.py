@@ -492,11 +492,3 @@ class VolMeshObject(BaseObject):
             False otherwise.
         """
         return mesh_move_face(self.volmesh, face)
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

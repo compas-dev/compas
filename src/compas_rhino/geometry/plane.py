@@ -98,11 +98,3 @@ class RhinoPlane(BaseRhinoGeometry):
             A COMPAS frame object.
         """
         return Frame(self.point, self.xaxis, self.yaxis)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

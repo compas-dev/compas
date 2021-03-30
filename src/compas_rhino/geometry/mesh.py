@@ -148,11 +148,3 @@ class RhinoMesh(BaseRhinoGeometry):
             The XYZ coordinates of the closest points.
         """
         return [self.closest_point(point, maxdist) for point in points]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

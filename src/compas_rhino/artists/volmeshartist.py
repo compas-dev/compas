@@ -376,11 +376,3 @@ class VolMeshArtist(BaseArtist):
                 'color': cell_color[cell],
                 'text': cell_text[cell]})
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

@@ -572,11 +572,3 @@ class MeshObject(BaseObject):
         self.anchor = anchor
         self.location = vertex_xyz[anchor]
         return True
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

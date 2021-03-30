@@ -431,11 +431,3 @@ class RhinoCurve(BaseRhinoGeometry):
         grip.Select(True, True)
         sc.doc.Views.Redraw()
         return grip
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

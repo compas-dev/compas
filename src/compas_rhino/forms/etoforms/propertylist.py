@@ -78,11 +78,3 @@ class PropertyListForm(Eto.Forms.Dialog[bool]):
 
     def show(self):
         return self.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

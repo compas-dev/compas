@@ -135,39 +135,3 @@ class RhinoPoint(BaseRhinoGeometry):
 
         """
         return self.xyz
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    from compas.geometry import Translation
-    from compas.geometry import Rotation
-
-    point = RhinoPoint.from_selection()
-    # point = RhinoPoint.from_geometry(Point3d(0, 0, 0))
-    # point = RhinoPoint.from_geometry(Point(0, 0, 0))
-
-    print(point.guid)
-    print(point.object)
-    print(point.geometry)
-    print(point.type)
-    print(point.name)
-
-    print(point.xyz)
-
-    p = point.to_compas()
-
-    print(p)
-
-    T = Translation([1.0, 1.0, 0.0])
-    R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], 0.5 * 3.14159)
-    X = R * T
-
-    point.transform(X)
-
-    p = point.to_compas()
-
-    print(p)

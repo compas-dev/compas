@@ -81,11 +81,3 @@ class RhinoLine(BaseRhinoGeometry):
             The equivalent COMPAS geometry line.
         """
         return Line(self.start, self.end)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass
