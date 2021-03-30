@@ -6,7 +6,7 @@ from math import sqrt
 from compas.geometry import transform_points
 from compas.utilities import pairwise
 
-from ._shape import Shape
+from compas.geometry.shapes._shape import Shape
 
 
 __all__ = ['Polyhedron']

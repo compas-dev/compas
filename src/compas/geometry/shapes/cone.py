@@ -15,7 +15,7 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Plane
 
-from ._shape import Shape
+from compas.geometry.shapes._shape import Shape
 
 
 __all__ = ['Cone']

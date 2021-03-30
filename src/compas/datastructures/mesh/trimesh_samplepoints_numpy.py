@@ -11,7 +11,7 @@ from numpy.linalg import norm
 from numpy import clip
 from numpy import finfo
 
-from .core import BaseMesh
+from compas.datastructures.mesh.core import BaseMesh
 
 
 __all__ = [

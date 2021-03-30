@@ -6,20 +6,20 @@ from math import fabs
 
 from compas.utilities import window
 
-from .._core import subtract_vectors
-from .._core import cross_vectors
-from .._core import dot_vectors
-from .._core import normalize_vector
-from .._core import centroid_points
-from .._core import normal_polygon
-from .._core import length_vector_sqrd
+from compas.geometry._core import subtract_vectors
+from compas.geometry._core import cross_vectors
+from compas.geometry._core import dot_vectors
+from compas.geometry._core import normalize_vector
+from compas.geometry._core import centroid_points
+from compas.geometry._core import normal_polygon
+from compas.geometry._core import length_vector_sqrd
 
-from .._core import distance_point_point
-from .._core import distance_point_plane
-from .._core import distance_point_line
-from .._core import closest_point_on_segment
+from compas.geometry._core import distance_point_point
+from compas.geometry._core import distance_point_plane
+from compas.geometry._core import distance_point_line
+from compas.geometry._core import closest_point_on_segment
 
-from .._core import area_triangle
+from compas.geometry._core import area_triangle
 
 
 __all__ = [

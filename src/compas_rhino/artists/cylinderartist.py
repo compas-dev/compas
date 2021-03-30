@@ -4,7 +4,7 @@ from __future__ import division
 
 from compas.utilities import pairwise
 import compas_rhino
-from ._shapeartist import ShapeArtist
+from compas_rhino.artists._shapeartist import ShapeArtist
 
 
 class CylinderArtist(ShapeArtist):

@@ -12,7 +12,7 @@ from compas.geometry import offset_polygon
 from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
-from .core import BaseMesh
+from compas.datastructures.mesh.core import BaseMesh
 
 
 __all__ = [
@@ -41,7 +41,7 @@ def mesh_fast_copy(other):
 
 class SubdMesh(BaseMesh):
 
-    from .core import mesh_split_edge
+    from compas.datastructures.mesh.core import mesh_split_edge
 
     _add_vertex = BaseMesh.add_vertex
     _add_face = BaseMesh.add_face

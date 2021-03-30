@@ -8,7 +8,7 @@ from compas.geometry import Transformation
 from compas.geometry import Frame
 from compas.geometry import Vector
 
-from ._shape import Shape
+from compas.geometry.shapes._shape import Shape
 
 
 __all__ = ['Box']

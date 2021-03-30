@@ -1,7 +1,7 @@
 import bpy
 from typing import List, Iterable, Text
 
-from .data import delete_unused_data
+from compas_blender.utilities.data import delete_unused_data
 
 
 __all__ = [

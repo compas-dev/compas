@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from ._shapeartist import ShapeArtist
+from compas_rhino.artists._shapeartist import ShapeArtist
 
 
 class BoxArtist(ShapeArtist):
