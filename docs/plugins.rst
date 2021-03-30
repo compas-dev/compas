@@ -30,6 +30,7 @@ Category: ``install``
 * :func:`after_rhino_install`
 
 .. currentmodule:: compas_rhino.uninstall
+
 * :func:`after_rhino_uninstall`
 
 
