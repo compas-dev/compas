@@ -266,8 +266,8 @@ class Polyline(Primitive):
     def split_at_corners(self, angle_threshold):
         """Splits a polyline at corners larger than the given angle_threshold
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         angle_threshold : float
             In radians.
 
