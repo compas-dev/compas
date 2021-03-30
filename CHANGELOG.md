@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed box scaling.
 * Fixed a bug in `Polyline.divide_polyline_by_length` related to a floating point rounding error.
+* Fixed bug in `RobotModel.zero_configuration`.
 
 ### Removed
 
