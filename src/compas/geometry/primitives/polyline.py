@@ -311,8 +311,8 @@ class Polyline(Primitive):
     def tangent_at_point_on_polyline(self, point):
         """Calculates the tangent vector of a point on a polyline
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         point: :class:`compas.geometry.Point`
 
         Returns
@@ -327,8 +327,8 @@ class Polyline(Primitive):
     def divide_polyline(self, num_segments):
         """Divide a polyline in equal segments.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         num_segments : int
 
         Returns
@@ -343,8 +343,8 @@ class Polyline(Primitive):
     def divide_polyline_by_length(self, length, strict=True):
         """Splits a polyline in segments of a given length
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length : float
 
         strict : bool
