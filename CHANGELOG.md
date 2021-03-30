@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added crease handling to catmull-clark subdivision scheme.
-* Added Python 3.9 support
+* Added Python 3.9 support.
+* Added direction option for mesh thickening.
+* Added check for closed meshes.
 
 ### Changed
 
