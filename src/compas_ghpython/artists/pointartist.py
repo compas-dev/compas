@@ -37,12 +37,3 @@ class PointArtist(PrimitiveArtist):
     @staticmethod
     def _get_args(primitive):
         return {'pos': list(primitive)}
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

@@ -73,12 +73,3 @@ class FrameArtist(PrimitiveArtist):
             {'start': origin, 'end': y, 'color': color_yaxis, 'arrow': 'end'},
             {'start': origin, 'end': z, 'color': color_zaxis, 'arrow': 'end'}]
         return point, lines
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass
