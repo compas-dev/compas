@@ -145,7 +145,7 @@ Type hints
 ==========
 
 Type hints should be added to stub files at the public API level
-of the main packages (see :ref:`code_structure`).
+of the main packages (see :ref:`code-structure`).
 This allows the type hints to be written using Python 3 style
 annotations while maintaining compatibility with Python 2.7 for Rhino/GH.
 
