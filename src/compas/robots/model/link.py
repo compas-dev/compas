@@ -522,10 +522,3 @@ URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/
 URDFParser.install_parser(Material, 'robot/link/visual/material')
 URDFParser.install_parser(Color, 'robot/link/visual/material/color')
 URDFParser.install_parser(Texture, 'robot/link/visual/material/texture')
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

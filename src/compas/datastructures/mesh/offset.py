@@ -76,13 +76,3 @@ def mesh_thicken(mesh, thickness=1.0):
             thickened_mesh.add_face([u, v, v + n, u + n])
 
     return thickened_mesh
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

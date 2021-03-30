@@ -533,15 +533,3 @@ def mesh_conway_bevel(mesh):
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_truncate(mesh_conway_ambo(mesh))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    from compas.datastructures import Mesh  # noqa: F401
-
-    doctest.testmod(globs=globals())

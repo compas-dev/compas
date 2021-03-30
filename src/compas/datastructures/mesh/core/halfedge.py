@@ -2560,13 +2560,3 @@ class HalfEdge(Datastructure):
         face = self.halfedge_face(u, v)
         t = self.face_vertex_before(face, u)
         return t, u
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

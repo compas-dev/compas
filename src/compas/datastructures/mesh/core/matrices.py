@@ -488,19 +488,3 @@ def trimesh_vertexarea_matrix(mesh):
         b = bincount(tris[:, i], a3)
         area[:len(b)] += b
     return spdiags(area, 0, xyz.shape[0], xyz.shape[0])
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    import compas
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    doctest.testmod()

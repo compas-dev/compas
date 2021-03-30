@@ -154,14 +154,3 @@ class IntersectionMeshPlane(object):
                 u, v = split
                 self.mesh.split_face(fkey, u, v)
         return self.positive, self.negative
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

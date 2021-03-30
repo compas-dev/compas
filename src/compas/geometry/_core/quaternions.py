@@ -200,12 +200,3 @@ def quaternion_conjugate(q):
     .. _mathworld quaternion conjugate: http://mathworld.wolfram.com/QuaternionConjugate.html
     """
     return [q[0], -q[1], -q[2], -q[3]]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod(globs=globals())

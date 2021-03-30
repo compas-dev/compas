@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Quaternion
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -462,16 +468,3 @@ class Quaternion(Primitive):
         """
         qc = quaternion_conjugate(self)
         return Quaternion(*qc)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import allclose  # noqa: F401
-
-    doctest.testmod(globs=globals())

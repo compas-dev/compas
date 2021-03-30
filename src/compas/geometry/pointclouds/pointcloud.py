@@ -162,16 +162,3 @@ class Pointcloud(Primitive):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    # import doctest
-    # doctest.testmod(globs=globals())
-
-    # from compas.geometry import Pointcloud
-
-    pcl = Pointcloud.from_bounds(10, 5, 3, 100)

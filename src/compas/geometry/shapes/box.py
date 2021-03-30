@@ -560,17 +560,3 @@ class Box(Shape):
         self.xsize *= Sc[0, 0]
         self.ysize *= Sc[1, 1]
         self.zsize *= Sc[2, 2]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-
-if __name__ == '__main__':
-
-    import doctest
-
-    from compas.geometry import Transformation  # noqa : F401
-
-    doctest.testmod(globs=globals())

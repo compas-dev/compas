@@ -346,14 +346,3 @@ class Proxy(object):
 
         self.profile = result['profile']
         return result['data']
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

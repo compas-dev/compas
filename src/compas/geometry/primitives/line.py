@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Line
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -292,21 +298,3 @@ class Line(Primitive):
         """
         self.start.transform(T)
         self.end.transform(T)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-
-    from math import sqrt     # noqa F401
-    from math import radians  # noqa F401
-
-    from compas.geometry import Rotation  # noqa F401
-    from compas.geometry import Point     # noqa F401
-    from compas.geometry import Vector    # noqa F401
-
-    doctest.testmod(globs=globals())

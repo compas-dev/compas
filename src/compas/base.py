@@ -187,11 +187,3 @@ class Base(object):
         jsonschema.validate(data, schema=self.JSONSCHEMA)
         self.data = data
         return self.DATASCHEMA.validate(self.data)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

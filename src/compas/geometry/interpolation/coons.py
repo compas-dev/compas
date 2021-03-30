@@ -103,13 +103,3 @@ def discrete_coons_patch(ab, bc, dc, ad):
         for j in range(m - 1):
             faces.append([i * m + j, i * m + j + 1, (i + 1) * m + j + 1, (i + 1) * m + j])
     return vertices, faces
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

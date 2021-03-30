@@ -979,13 +979,3 @@ def intersection_ellipse_line_xy(ellipse, line):
 #     p1 = [x0 + b * m, y0 - a * m, 0]
 #     p2 = [x0 - b * m, y0 + a * m, 0]
 #     return p1, p2
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    import doctest
-    from compas.geometry import Point    # noqa: F401
-    doctest.testmod(globs=globals())

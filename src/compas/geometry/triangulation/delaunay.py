@@ -216,13 +216,3 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 #         voronoi.vertex[key]['z'] = center[2]
 
 #     return voronoi
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

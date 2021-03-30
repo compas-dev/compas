@@ -763,17 +763,3 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     subd2 = cls.from_data(subd.data)
     return subd2
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    import compas  # noqa: F401
-    from compas.datastructures import mesh_quads_to_triangles  # noqa: F401
-    from compas.datastructures import Mesh  # noqa: F401
-    from compas.geometry import Box  # noqa: F401
-    doctest.testmod(globs=globals())

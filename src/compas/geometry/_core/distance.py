@@ -912,12 +912,3 @@ def closest_line_to_point(point, lines):
         cloud.append(closest_point_on_segment(point, segment))
 
     return lines[closest_point_in_cloud(point, cloud)[2]]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-
-if __name__ == "__main__":
-    pass

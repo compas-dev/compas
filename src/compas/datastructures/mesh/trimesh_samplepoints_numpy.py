@@ -132,14 +132,3 @@ def trimesh_samplepoints_numpy(mesh: BaseMesh, num_points: int = 1000, return_no
         return samples_points, samples_points_normals
 
     return samples_points
-
-
-if __name__ == '__main__':
-
-    import doctest
-    import compas
-    from compas.datastructures import Mesh
-
-    hypar = Mesh.from_obj(compas.get('hypar.obj'))
-
-    doctest.testmod(optionflags=doctest.ELLIPSIS)

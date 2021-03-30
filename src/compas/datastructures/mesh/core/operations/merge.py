@@ -78,9 +78,3 @@ def mesh_merge_faces(mesh, faces):
         if u == v:
             mesh.face[key].remove(v)
     return key
-
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

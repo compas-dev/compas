@@ -97,14 +97,3 @@ class Scale(Transformation):
         else:
             S.matrix = matrix_from_scale_factors(factors)
         return S
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    from compas.geometry import Point, Frame  # noqa: F811, F401
-    doctest.testmod(globs=globals())

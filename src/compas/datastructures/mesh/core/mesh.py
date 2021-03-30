@@ -1413,13 +1413,3 @@ class BaseMesh(HalfEdge):
             if faces:
                 facegroups.append(faces)
         return facegroups
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

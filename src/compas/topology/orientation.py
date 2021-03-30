@@ -140,14 +140,3 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
                         break
         adjacency[face] = nbrs
     return adjacency
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

@@ -102,17 +102,3 @@ class Shear(Transformation):
         >>> S = Shear.from_entries([1, 2, 3])
         """
         return cls(matrix_from_shear_entries(shear_entries))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import Shear  # noqa: F401 F811
-    from compas.geometry import cross_vectors  # noqa: F401
-
-    doctest.testmod(globs=globals())

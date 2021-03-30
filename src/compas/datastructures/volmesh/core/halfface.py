@@ -2251,13 +2251,3 @@ class HalfFace(Datastructure):
         for face in self.halffaces_on_boundaries():
             cells.add(self.halfface_cell(face))
         return list(cells)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

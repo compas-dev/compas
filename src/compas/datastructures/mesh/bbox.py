@@ -57,18 +57,3 @@ def mesh_bounding_box_xy(mesh):
     """
     xyz = mesh.vertices_attributes('xyz')
     return bounding_box_xy(xyz)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    import compas
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    doctest.testmod()

@@ -262,20 +262,3 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
     """
     frames = dehomogenize_numpy(points_and_vectors)
     return frames.reshape((int(frames.shape[0]/3.), 3, 3))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    import numpy  # noqa: F401
-    import math  # noqa: F401
-    from compas.geometry import Frame  # noqa: F401
-    from compas.geometry import Point  # noqa: F401
-    from compas.geometry import matrix_from_axis_and_angle  # noqa: F401
-
-    doctest.testmod(globs=globals())

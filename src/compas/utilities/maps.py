@@ -126,15 +126,3 @@ def geometric_key_xy(xy, precision=None, sanitize=True):
         if "{0:.{1}}".format(y, precision) == minzero:
             y = 0.0
     return '{0:.{2}},{1:.{2}}'.format(x, y, precision)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    from math import pi  # noqa: F401
-
-    import doctest
-    doctest.testmod(globs=globals())

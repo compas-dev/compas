@@ -56,13 +56,3 @@ class Mesh(BaseMesh):
     transformed = mesh_transformed
     unify_cycles = mesh_unify_cycles
     quads_to_triangles = mesh_quads_to_triangles
-
-
-# =============================================================================
-# Main
-# =============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

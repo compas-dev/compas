@@ -798,8 +798,3 @@ class Geometry(Base):
                 meshes = (meshes,)
 
         return meshes
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod(globs=globals())

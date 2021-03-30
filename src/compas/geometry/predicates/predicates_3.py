@@ -703,13 +703,3 @@ def is_point_in_polyhedron(point, polyhedron):
     polygons = [[vertices[index] for index in face] for face in faces]
     planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
     return all(is_point_behind_plane(point, plane) for plane in planes)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

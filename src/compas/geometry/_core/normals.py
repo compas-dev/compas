@@ -130,12 +130,3 @@ def normal_triangle_xy(triangle, unitized=True):
         return n
     lvec = length_vector_xy(n)
     return n[0] / lvec, n[1] / lvec, n[2] / lvec
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

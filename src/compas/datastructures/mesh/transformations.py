@@ -70,13 +70,3 @@ def mesh_transformed(mesh, transformation):
     mesh_copy = mesh.copy()
     mesh_transform(mesh_copy, transformation)
     return mesh_copy
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

@@ -116,11 +116,3 @@ class DataDecoder(json.JSONDecoder):
             raise DecoderError("The data type can't be found in the specified module.")
 
         return cls.from_data(o['value'])
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

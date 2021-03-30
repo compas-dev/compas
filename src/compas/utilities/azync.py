@@ -150,11 +150,3 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
         return dict_values
 
     return return_value + (dict_values,)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

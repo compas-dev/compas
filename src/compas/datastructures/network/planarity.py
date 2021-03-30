@@ -313,13 +313,3 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
             network.node_attributes(key, 'xy', pos[key])
 
     return True
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

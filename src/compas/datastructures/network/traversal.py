@@ -29,14 +29,3 @@ def network_shortest_path(network, start, end):
     >>>
     """
     return shortest_path(network.adjacency, start, end)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

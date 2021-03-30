@@ -69,13 +69,3 @@ def volmesh_transformed(volmesh, transformation):
     volmesh_copy = volmesh.copy()
     volmesh_transform(volmesh_copy, transformation)
     return volmesh_copy
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

@@ -1128,18 +1128,3 @@ def orient_points(points, reference_plane, target_plane):
     points = translate_points(points, vector)
 
     return points
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import allclose  # noqa: F401
-    from compas.geometry import Point  # noqa: F401
-    from compas.geometry import Frame  # noqa: F401
-
-    doctest.testmod(globs=globals())

@@ -665,13 +665,3 @@ class BaseVolMesh(HalfFace):
         cell_faces = self.cell_faces(cell)
         vectors = [self.face_normal(face) for face in self.vertex_faces(vertex) if face in cell_faces]
         return normalize_vector(centroid_points(vectors))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

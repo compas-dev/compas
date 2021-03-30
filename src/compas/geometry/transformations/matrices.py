@@ -1439,17 +1439,3 @@ def axis_angle_from_quaternion(q):
     m = matrix_from_quaternion(q)
     axis, angle = axis_and_angle_from_matrix(m)
     return axis, angle
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import Frame  # noqa: F401
-    from compas.geometry import Transformation  # noqa: F401
-
-    doctest.testmod(globs=globals())

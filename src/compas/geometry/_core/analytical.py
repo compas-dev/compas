@@ -156,12 +156,3 @@ def helix_evaluate(t, a, b):
                Available at: http://mathworld.wolfram.com/Helix.html.
     """
     return [a * cos(t), a * sin(t), b * t]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    pass

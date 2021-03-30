@@ -196,13 +196,3 @@ class DAEParser(object):
 #                 self.file.write("        vertex {0} {1} {2}\n".format(* vertex_xyz[vertex]))
 #             self.file.write("    endloop\n")
 #             self.file.write("endfacet\n")
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

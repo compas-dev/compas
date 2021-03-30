@@ -150,14 +150,3 @@ class Projection(Transformation):
         P = cls()
         P.matrix = matrix_from_perspective_entries(perspective_entries)
         return P
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    from compas.geometry import Plane  # noqa: F401
-    doctest.testmod(globs=globals())

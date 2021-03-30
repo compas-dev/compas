@@ -47,34 +47,3 @@ def mesh_is_connected(mesh):
 
 def mesh_connected_components(mesh):
     return connected_components(mesh.adjacency)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas.datastructures import meshes_join
-    from compas.geometry import translate_points_xy
-
-    m1 = Mesh.from_obj(compas.get('faces.obj'))
-    m2 = m1.copy()
-
-    points = m2.vertices_attributes('xyz')
-    x, y, z = zip(*points)
-    xmin = min(x)
-    xmax = max(x)
-    points = translate_points_xy(points, [1.5 * (xmax - xmin), 0, 0])
-    for key, attr in m2.vertices(True):
-        attr['x'] = points[key][0]
-        attr['y'] = points[key][1]
-        attr['z'] = points[key][2]
-
-    m3 = meshes_join([m1, m2])
-
-    doctest.testmod()

@@ -1085,21 +1085,3 @@ URDFParser.install_parser(RobotModel, 'robot')
 URDFParser.install_parser(Material, 'robot/material')
 URDFParser.install_parser(Color, 'robot/material/color')
 URDFParser.install_parser(Texture, 'robot/material/texture')
-
-
-if __name__ == '__main__':
-    import os
-    import doctest
-    from compas import HERE
-    from compas.geometry import Sphere  # noqa: F401
-    from compas.robots import GithubPackageMeshLoader, Configuration  # noqa: F401
-
-    ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')
-
-    robot = RobotModel("robot", links=[], joints=[])
-    link0 = robot.add_link("world")
-    link1 = robot.add_link("link1")
-    link2 = robot.add_link("link2")
-    robot.add_joint("joint1", Joint.CONTINUOUS, link0, link1, Frame.worldXY(), (0, 0, 1))
-    robot.add_joint("joint2", Joint.CONTINUOUS, link1, link2, Frame.worldXY(), (0, 0, 1))
-    doctest.testmod(globs=globals())

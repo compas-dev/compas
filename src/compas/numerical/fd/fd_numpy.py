@@ -77,14 +77,3 @@ def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
     r = p - Ct.dot(Q).dot(C).dot(xyz)
 
     return xyz, q, f, l, r
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-
-    doctest.testmod(globs=globals())

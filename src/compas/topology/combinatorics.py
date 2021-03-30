@@ -90,14 +90,3 @@ def connected_components(adjacency):
         tovisit -= visited
         components.append(list(visited))
     return components
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

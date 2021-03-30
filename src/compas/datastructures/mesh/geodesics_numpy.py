@@ -113,13 +113,3 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     phi -= phi.min()
 
     return phi
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

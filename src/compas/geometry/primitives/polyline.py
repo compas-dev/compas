@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Polyline
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -383,12 +389,3 @@ class Polyline(Primitive):
             division_pts.append(self.points[-1])
 
         return division_pts
-# ==============================================================================
-# Main
-# ==============================================================================
-
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())
