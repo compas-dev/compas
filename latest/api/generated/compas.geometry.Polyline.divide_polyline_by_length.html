@@ -110,16 +110,18 @@
 <h1>Polyline.divide_polyline_by_length</h1>
 <dl class="py method">
 <dt id="compas.geometry.Polyline.divide_polyline_by_length">
-<code class="sig-prename descclassname"><span class="pre">Polyline.</span></code><code class="sig-name descname"><span class="pre">divide_polyline_by_length</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polyline.py#L343"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Splits a polyline in segments of a given length</p>
-<p>length : float</p>
-<dl class="simple">
-<dt>strict<span class="classifier">bool</span></dt><dd><p>If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, the remainder segment will be added even if it is smaller than the desired length</p>
-</dd>
-</dl>
+<code class="sig-prename descclassname"><span class="pre">Polyline.</span></code><code class="sig-name descname"><span class="pre">divide_polyline_by_length</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polyline.py#L343"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Splits a polyline in segments of a given length.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>list</em> – list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a></p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> (<em>float</em>)</p></li>
+<li><p><strong>strict</strong> (<em>bool</em>) – If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, the remainder segment will be added even if it is smaller than the desired length</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – floating point error tolerance</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
