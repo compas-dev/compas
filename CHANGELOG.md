@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-* Fixed a bug in `Polyline.divide_polyline_by_length` related to a floating point rounding error.
+
 ### Added
 
 * Added Python 3.9 support.
@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed box scaling.
+* Fixed a bug in `Polyline.divide_polyline_by_length` related to a floating point rounding error.
 
 ### Removed
 
