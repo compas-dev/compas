@@ -1,5 +1,5 @@
-import re
 import os
+import re
 
 import pytest
 
@@ -123,6 +123,12 @@ def test_remove_joint(urdf_file):
 def test_ur5_urdf(ur5_file):
     r = RobotModel.from_urdf_file(ur5_file)
     assert r.name == 'ur5'
+    assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
+
+
+def test_zero_configuration(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    assert r.zero_configuration().joint_values == [0.0] * 6
     assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
 
 
@@ -625,8 +631,9 @@ if __name__ == '__main__':
     import os
     from zipfile import ZipFile
     try:
-        from StringIO import StringIO as ReaderIO
         from urllib import urlopen
+
+        from StringIO import StringIO as ReaderIO
     except ImportError:
         from io import BytesIO as ReaderIO
         from urllib.request import urlopen
