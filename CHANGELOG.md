@@ -8,15 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
 ### Added
 
+* Added Python 3.9 support.
 * Added crease handling to catmull-clark subdivision scheme.
-* Added Python 3.9 support
 * Added `compas_ghpython.get_grasshopper_userobjects_path` to retrieve User Objects target folder.
+* Added direction option for mesh thickening.
+* Added check for closed meshes.
 
 ### Changed
 
 * Fixed box scaling.
+* Fixed a bug in `Polyline.divide_polyline_by_length` related to a floating point rounding error.
+* Fixed bug in `RobotModel.zero_configuration`.
 
 ### Removed
 

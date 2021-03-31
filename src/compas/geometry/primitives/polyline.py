@@ -346,8 +346,8 @@ class Polyline(Primitive):
 
         return self.divide_polyline_by_length(segment_length, False)
 
-    def divide_polyline_by_length(self, length, strict=True):
-        """Splits a polyline in segments of a given length
+    def divide_polyline_by_length(self, length, strict=True, tol=1e-06):
+        """Splits a polyline in segments of a given length.
 
         Parameters
         ----------
@@ -355,6 +355,9 @@ class Polyline(Primitive):
 
         strict : bool
             If set to ``False``, the remainder segment will be added even if it is smaller than the desired length
+
+        tol : float
+            floating point error tolerance
 
         Returns
         -------
@@ -385,7 +388,7 @@ class Polyline(Primitive):
 
         if strict is False and not self.is_closed() and len(division_pts) < num_pts+1:
             division_pts.append(new_polyline.points[-1])
-        elif strict is False and division_pts[-1] != self.points[-1]:
+        elif strict is False and division_pts[-1].distance_to_point(self.points[-1]) > tol:
             division_pts.append(self.points[-1])
 
         return division_pts
