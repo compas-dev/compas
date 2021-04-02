@@ -9,6 +9,7 @@ from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
 from compas.geometry import Polygon
 from compas.geometry import Translation
+from compas.geometry import allclose
 
 
 @pytest.fixture
@@ -585,7 +586,7 @@ def test_face_coordinates():
 
 def test_face_normal():
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    assert mesh.face_normal(0) == [0.5435358481001584, -0.16248515023849733, 0.8235091728584537]
+    assert allclose(mesh.face_normal(0), [0.5435358481001584, -0.16248515023849733, 0.8235091728584537], tol=1e-6)
 
 
 def test_face_centroid():
