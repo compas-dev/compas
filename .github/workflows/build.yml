@@ -24,4 +24,4 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: actions/compas-actions.build@v1
+      - uses: compas-dev/compas-actions.build@v1
