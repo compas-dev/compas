@@ -1,0 +1,16 @@
+<map id="inheritancebd9f8de152" name="inheritancebd9f8de152">
+<area shape="rect" id="node1" title="Abstract base class for all COMPAS objects." alt="" coords="8,402,121,440"/>
+<area shape="rect" id="node2" title="Base class for all 3D shapes." alt="" coords="196,196,327,233"/>
+<area shape="rect" id="node5" title="Color represented in RGBA." alt="" coords="205,290,318,327"/>
+<area shape="rect" id="node8" title="Base class for geometric primitives." alt="" coords="205,365,318,402"/>
+<area shape="rect" id="node9" title="Geometrical description of the shape of a link." alt="" coords="203,440,320,477"/>
+<area shape="rect" id="node10" title="Material description." alt="" coords="205,515,318,552"/>
+<area shape="rect" id="node14" title="Texture description." alt="" coords="205,590,318,627"/>
+<area shape="rect" id="node3" title="3D shape primitive representing a box." alt="" coords="429,8,542,46"/>
+<area shape="rect" id="node4" title="3D shape primitive representing a capsule." alt="" coords="429,83,542,121"/>
+<area shape="rect" id="node6" title="3D shape primitive representing a cylinder." alt="" coords="429,158,542,196"/>
+<area shape="rect" id="node11" title="Description of a mesh." alt="" coords="402,233,569,271"/>
+<area shape="rect" id="node13" title="3D shape primitive representing a sphere." alt="" coords="429,308,542,346"/>
+<area shape="rect" id="node7" title="A frame is defined by a base point and two orthonormal base vectors." alt="" coords="429,383,542,421"/>
+<area shape="rect" id="node12" title="Reference frame represented by an instance of :class:`Frame`." alt="" coords="644,383,756,421"/>
+</map>
