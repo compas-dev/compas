@@ -100,14 +100,14 @@
   
         
           
-          <div class="section" id="robots">
+          <section id="robots">
 <span id="id1"></span><h1>Robots</h1>
 <p class="lead">COMPAS provides several fundamental structures and features that simplify working
 with robots models, kinematic chains and coordinate frames. On top of this,
 the <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/">COMPAS FAB</a> extension
 package provides additional functionality to connect these models with planning
 and execution tools and libraries.</p>
-<div class="section" id="coordinate-frames">
+<section id="coordinate-frames">
 <h2>Coordinate frames</h2>
 <p>One of the most basic concepts related to robotics that COMPAS provides are
 coordinate frames, which are described using the <a class="reference internal" href="../api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a> class.</p>
@@ -120,10 +120,12 @@ in relation to the next. Examples of typical coordinate frames are:</p>
 <li><p>Tool coordinate frame (<code class="docutils literal notranslate"><span class="pre">TCF</span></code>)</p></li>
 <li><p>Object coordinate frame (<code class="docutils literal notranslate"><span class="pre">OCF</span></code>)</p></li>
 </ul>
-<div class="figure align-default" id="id3">
+<figure class="figure align-default" id="id3">
 <img alt="../_images/coordinate_frames.jpg" class="figure-img img-fluid" src="../_images/coordinate_frames.jpg" />
-<p class="caption"><span class="caption-text">Coordinate frame convention of a robotic setup.</span></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Coordinate frame convention of a robotic setup.</span></p>
+</figcaption>
+</figure>
 <p>A coordinate frame is defined as a point and two orthonormal base vectors
 (<code class="docutils literal notranslate"><span class="pre">xaxis</span></code>, <code class="docutils literal notranslate"><span class="pre">yaxis</span></code>). Both the point and the vectors can be defined
 using simple lists of XYZ components or using classes. Frames are
@@ -183,8 +185,8 @@ a local coordinate frame using the <code class="docutils literal notranslate"><s
 <span class="go">Point(-120.000, -15.000, -70.000)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="robot-models">
+</section>
+<section id="robot-models">
 <h2>Robot models</h2>
 <p>Robotic arms, like those typically used in digital fabrication, are fundamentally
 kinematic chains of rigid bodies, i.e. <strong>links</strong>, connected by <strong>joints</strong> to
@@ -195,14 +197,14 @@ joint has a coordinate frame around which it rotates or translates, depending
 on the joint type.</p>
 <p>COMPAS supports robot models defined in a standard robot description format
 called <code class="docutils literal notranslate"><span class="pre">URDF</span></code>, which originates in the ROS community.</p>
-<div class="section" id="links">
+<section id="links">
 <h3>Links</h3>
 <p>Links are the rigid bodies in a robot model. They can have zero or more
 geometries associated. Associated geometry can serve visual or collision purposes.
 Collision geometry is generally a simplified version of visual geometry to speed up
 the collision checking process.</p>
-</div>
-<div class="section" id="joints">
+</section>
+<section id="joints">
 <h3>Joints</h3>
 <p>Joints are the connecting elements between links. There are four main types
 of joints:</p>
@@ -215,9 +217,9 @@ range specified by the upper and lower limits.</p></li>
 <li><p><strong>Fixed</strong>: Not really a joint because it cannot move, all degrees of freedom
 are locked.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="visualizing-robots">
+</section>
+</section>
+<section id="visualizing-robots">
 <h2>Visualizing Robots</h2>
 <p>Before jumping into how to build a robot model, let’s first see how to visualize
 one. This can be done with Blender, Rhino or Grasshopper using one of COMPAS’s
@@ -270,8 +272,8 @@ it can be used as a scaffolding for code to be run in a Python script editor wit
 </div></div>
 </div>
 </div><p>See below for a complete example of how to programmatically create a Robotmodel.</p>
-</div>
-<div class="section" id="building-robots-models">
+</section>
+<section id="building-robots-models">
 <h2>Building robots models</h2>
 <p>Robot models are represented by the <a class="reference internal" href="../api/generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> class.
 There are various ways to construct a robot model. The following snippet
@@ -330,9 +332,9 @@ and is useful, outside of a CAD environment.</p>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<div class="figure align-default">
+<figure class="figure align-default">
 <img alt="../_images/boxy_1.png" class="figure-img img-fluid" src="../_images/boxy_1.png" />
-</div>
+</figure>
 <p>As can be seen, this has added a box of dimensions <code class="docutils literal notranslate"><span class="pre">1</span></code> x <code class="docutils literal notranslate"><span class="pre">2</span></code> x <code class="docutils literal notranslate"><span class="pre">.5</span></code>
 whose geometric center and orientation coincides with the world XY frame.
 The <code class="docutils literal notranslate"><span class="pre">visual_meshes</span></code> argument can be given a list containing COMPAS
@@ -356,9 +358,9 @@ of the box.  The box is also shifted slightly forward in the y-direction:</p>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<div class="figure align-default">
+<figure class="figure align-default">
 <img alt="../_images/boxy_2.png" class="figure-img img-fluid" src="../_images/boxy_2.png" />
-</div>
+</figure>
 <p>A link may have more than one geometric element associated to it.  Now
 there is a stack of two boxes:</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
@@ -375,9 +377,9 @@ there is a stack of two boxes:</p>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<div class="figure align-default">
+<figure class="figure align-default">
 <img alt="../_images/boxy_3.png" class="figure-img img-fluid" src="../_images/boxy_3.png" />
-</div>
+</figure>
 <p>Remember that the frame of the box is the geometric center of the box relative
 to the link’s origin (which, in this case, happens to be the world XY frame).
 So to stack the boxes, the center of <code class="docutils literal notranslate"><span class="pre">box_2</span></code> must be placed at a height of
@@ -412,9 +414,9 @@ a cylindrical second link as well as a joint connecting the two.</p>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<div class="figure align-default">
+<figure class="figure align-default">
 <img alt="../_images/jointy.png" class="figure-img img-fluid" src="../_images/jointy.png" />
-</div>
+</figure>
 <p>There’s a lot going on in this snippet, so let’s break it down.  First, the link
 containing the stacked boxes is added, but the geometry has been shifted to the
 side <code class="docutils literal notranslate"><span class="pre">2</span></code> units in the x-direction.  Second, a cylindrical link is added.
@@ -437,9 +439,9 @@ Here, the joint will rotate about the joint origin’s x-axis.</p>
 <p>Adding a bit more geometry and a few links with fixed joints and we arrive at a rough
 model of the classic drinking bird toy (full code
 <a class="reference download internal" download="" href="../_downloads/c079c85f54e5ac91ef4c4789c083747a/drinking_bird.py"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>).</p>
-<div class="figure align-default">
+<figure class="figure align-default">
 <img alt="../_images/drinking_bird.png" class="figure-img img-fluid" src="../_images/drinking_bird.png" />
-</div>
+</figure>
 <p>While it can be useful to programmatically create a robot, more often than not, robot
 models are loaded from URDF files. To load a URDF into a robot model, use the
 <code class="docutils literal notranslate"><span class="pre">from_urdf_file</span></code> method:</p>
@@ -480,8 +482,8 @@ The following snippet shows how to load the robot model currently active in ROS:
 <span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="fk-ik-path-planning">
+</section>
+<section id="fk-ik-path-planning">
 <h2>FK, IK &amp; Path Planning</h2>
 <p>Robot models are the base for a large number of additional features that are
 provided via extension packages. In particular, features such as
@@ -490,8 +492,8 @@ these robot models, but are integrated into
 <a class="reference external" href="https://gramaziokohler.github.io/compas_fab/latest/">COMPAS FAB</a>.</p>
 <p>For further details about these features, check the detailed examples in
 COMPAS FAB documentation.</p>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
