@@ -10,9 +10,7 @@ Tutorial
     tutorial/meshes
     tutorial/volmeshes
     tutorial/robots
-    tutorial/rhino
-    tutorial/grasshopper
-    tutorial/blender
+    tutorial/numericaldata
     tutorial/rpc
     tutorial/geomaps
     tutorial/serialization

@@ -1,5 +1,0 @@
-.. _tut-grasshopper:
-
-***********
-Grasshopper
-***********

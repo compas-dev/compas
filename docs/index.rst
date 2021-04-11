@@ -40,12 +40,13 @@ Table of Contents
    plugins
    devguide
    changelog
+   releases
    license
    citing
 
 
-.. Indices and tables
-   ==================
-   * :ref:`genindex`
-   * :ref:`modindex`
-   * :ref:`search`
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`

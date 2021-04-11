@@ -9,6 +9,7 @@ from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
 from compas.geometry import Polygon
 from compas.geometry import Translation
+from compas.geometry import allclose
 
 
 @pytest.fixture
@@ -80,6 +81,23 @@ def triangleboundarychain():
 # --------------------------------------------------------------------------
 # constructors
 # --------------------------------------------------------------------------
+
+def test_constructor():
+    mesh = Mesh()
+    a = mesh.add_vertex()
+    b = mesh.add_vertex(x=1.0)
+    c = mesh.add_vertex(x=1.0, y=1.0)
+    d = mesh.add_vertex(y=1.0)
+    mesh.add_face([a, b, c, d])
+    assert mesh.vertex_coordinates(a) == [0.0, 0.0, 0.0]
+    assert mesh.vertex_coordinates(b) == [1.0, 0.0, 0.0]
+    assert mesh.vertex_coordinates(c) == [1.0, 1.0, 0.0]
+    assert mesh.vertex_coordinates(d) == [0.0, 1.0, 0.0]
+    assert mesh.vertex_coordinates(a) == mesh.vertex_attributes(a, 'xyz')
+    assert mesh.vertex_coordinates(b) == mesh.vertex_attributes(b, 'xyz')
+    assert mesh.vertex_coordinates(c) == mesh.vertex_attributes(c, 'xyz')
+    assert mesh.vertex_coordinates(d) == mesh.vertex_attributes(d, 'xyz')
+
 
 def test_from_obj():
     mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -568,7 +586,7 @@ def test_face_coordinates():
 
 def test_face_normal():
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    assert mesh.face_normal(0) == [0.5435358481001584, -0.16248515023849733, 0.8235091728584537]
+    assert allclose(mesh.face_normal(0), [0.5435358481001584, -0.16248515023849733, 0.8235091728584537], tol=1e-6)
 
 
 def test_face_centroid():

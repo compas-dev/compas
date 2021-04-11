@@ -144,7 +144,12 @@ class Line(Primitive):
         return iter([self.start, self.end])
 
     def __eq__(self, other):
-        raise NotImplementedError
+        try:
+            other_start = other[0]
+            other_end = other[1]
+        except:  # noqa: E722
+            return False
+        return self.start == other_start and self.end == other_end
 
     # ==========================================================================
     # constructors

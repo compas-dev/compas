@@ -148,7 +148,7 @@ class Base(object):
         raise NotImplementedError
 
     def __getstate__(self):
-        """Return the object data for state state serialisation with older pickle protocols."""
+        """Return the object data for state serialisation with older pickle protocols."""
         return {'__dict__': self.__dict__.copy(), 'dtype': self.dtype, 'data': self.data}
 
     def __setstate__(self, state):

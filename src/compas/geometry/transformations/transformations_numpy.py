@@ -25,7 +25,6 @@ __all__ = [
 
     'world_to_local_coordinates_numpy',
     'local_to_world_coordinates_numpy',
-
 ]
 
 

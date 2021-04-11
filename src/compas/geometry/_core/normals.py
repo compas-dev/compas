@@ -67,7 +67,7 @@ def normal_polygon(polygon, unitized=True):
         nz += n[2]
 
     if not unitized:
-        return nx, ny, nz
+        return [0.5 * nx, 0.5 * ny, 0.5 * nz]
 
     return normalize_vector([nx, ny, nz])
 
@@ -97,9 +97,9 @@ def normal_triangle(triangle, unitized=True):
     ac = subtract_vectors(c, a)
     n = cross_vectors(ab, ac)
     if not unitized:
-        return n
-    lvec = length_vector(n)
-    return n[0] / lvec, n[1] / lvec, n[2] / lvec
+        return [0.5 * n[0], 0.5 * n[1], 0.5 * n[2]]
+    lvec = 1 / length_vector(n)
+    return [lvec * n[0], lvec * n[1], lvec * n[2]]
 
 
 def normal_triangle_xy(triangle, unitized=True):
@@ -127,15 +127,6 @@ def normal_triangle_xy(triangle, unitized=True):
     ac = subtract_vectors_xy(c, a)
     n = cross_vectors_xy(ab, ac)
     if not unitized:
-        return n
-    lvec = length_vector_xy(n)
-    return n[0] / lvec, n[1] / lvec, n[2] / lvec
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass
+        return [0.5 * n[0], 0.5 * n[1], 0]
+    lvec = 1 / length_vector_xy(n)
+    return [lvec * n[0], lvec * n[1], 0]

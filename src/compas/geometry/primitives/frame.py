@@ -1,25 +1,24 @@
 from __future__ import print_function
 
-import math
-
-from compas.geometry import cross_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import matrix_from_basis_vectors
-from compas.geometry import basis_vectors_from_matrix
-from compas.geometry import quaternion_from_matrix
-from compas.geometry import matrix_from_quaternion
-from compas.geometry import axis_angle_vector_from_matrix
-from compas.geometry import matrix_from_axis_angle_vector
-from compas.geometry import euler_angles_from_matrix
-from compas.geometry import matrix_from_euler_angles
-from compas.geometry import decompose_matrix
-from compas.geometry import Transformation
+from compas.geometry import allclose
 from compas.geometry import argmax
+from compas.geometry import axis_angle_vector_from_matrix
+from compas.geometry import basis_vectors_from_matrix
+from compas.geometry import cross_vectors
+from compas.geometry import decompose_matrix
+from compas.geometry import euler_angles_from_matrix
+from compas.geometry import matrix_from_axis_angle_vector
+from compas.geometry import matrix_from_basis_vectors
+from compas.geometry import matrix_from_euler_angles
+from compas.geometry import matrix_from_quaternion
+from compas.geometry import quaternion_from_matrix
+from compas.geometry import subtract_vectors
+from compas.geometry import Transformation
 
-from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
-from compas.geometry.primitives import Vector
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Quaternion
+from compas.geometry.primitives import Vector
 
 __all__ = ['Frame']
 
@@ -65,7 +64,7 @@ class Frame(Primitive):
     >>> from compas.geometry import Point
     >>> from compas.geometry import Vector
     >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-    >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
+    >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
     """
 
     def __init__(self, point, xaxis, yaxis):
@@ -180,11 +179,9 @@ class Frame(Primitive):
         return iter([self.point, self.xaxis, self.yaxis])
 
     def __eq__(self, other, tol=1e-05):
-        for v1, v2 in zip(self, other):
-            for a, b in zip(v1, v2):
-                if math.fabs(a - b) > tol:
-                    return False
-        return True
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+            return False
+        return allclose(self, other)
 
     # ==========================================================================
     # constructors
@@ -742,5 +739,4 @@ class Frame(Primitive):
 if __name__ == '__main__':
 
     import doctest
-    from compas.geometry import allclose  # noqa: F401
     doctest.testmod(globs=globals())

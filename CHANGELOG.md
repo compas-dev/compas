@@ -5,11 +5,160 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## Unreleased
 
 ### Added
 
 ### Changed
+
+### Removed
+
+
+## [1.4.0] 2021-04-09
+
+### Added
+
+* Added Python 3.9 support.
+* Added crease handling to catmull-clark subdivision scheme.
+* Added `compas_ghpython.get_grasshopper_userobjects_path` to retrieve User Objects target folder.
+* Added direction option for mesh thickening.
+* Added check for closed meshes.
+* Added 'loop' and 'frames' to schemes of `compas.datastructures.mesh.subdivision.mesh_subdivide`.
+
+### Changed
+
+* Fixed box scaling.
+* Fixed a bug in `Polyline.divide_polyline_by_length` related to a floating point rounding error.
+* Fixed bug in `RobotModel.zero_configuration`.
+* Fixed bug in `compas.geometry.normals`.
+* Fixed bug in `compas.datastructures.mesh.subdivision.mesh_subdivide_frames`.
+
+### Removed
+
+
+## [1.3.0] 2021-03-26
+
+### Added
+
+* Added a `invert` and `inverted` method `compas.geometry.Vector`.
+* Added unetary `__neg__` operator for `compas.geometry.Vector`.
+* Added `compas.robots.Configuration`, moved from `compas_fab`.
+
+### Changed
+
+* Fixed rhino packages installation to remove duplicates
+
+### Removed
+
+
+## [1.2.1] 2021-03-19
+
+### Added
+
+### Changed
+
+### Removed
+
+* Fixed API removals from 1.0.0 -> 1.2.0
+
+
+## [1.2.0] 2021-03-18
+
+### Added
+
+* Added `divide_polyline`, `divide_polyline_by_length`, `Polyline.split_at_corners` and `Polyline.tangent_at_point_on_polyline`.
+* Added the magic method `__str__` to `compas.geoemetry.Transformation`.
+* Added `redraw` flag to the `compas_rhino` methods `delete_object`, `delete_objects` and `purge_objects`.
+* Added the `__eq__` method for `compas.geometry.Circle` and `compas.geometry.Line`.
+* Added support for Pylance through static API definitions.
+* Added `halfedge_strip` method to `compas.datastructures.HalfEdge`.
+
+### Changed
+
+* Fixed bug where mimic joints were considered configurable.
+* Fixed bug where `!=` gave incorrect results in Rhino for some compas objects.
+* Fixed bug where `compas_rhino.BaseArtist.redraw` did not trigger a redraw.
+* Fixed minor bugs in `compas.geometry.Polyline` and `compas.geometry.Polygon`.
+* Fixed very minor bugs in `compas.geometry.Frame` and `compas.geometry.Quaternion`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_edges`.
+* Fixed bug in `compas_rhino.objects.MeshObject.modify_faces`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_edges`.
+* Fixed bug in `compas_rhino.objects.VolMeshObject.modify_faces`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify_vertices`.
+* Fixed bug in `compas_rhino.objects.NetworkObject.modify_edges`.
+* Changed `compas_rhino.objects.inspect` to `compas_rhino.objects.inspectors`.
+* Changed `compas_rhino.objects.select` to `compas_rhino.objects._select`.
+* Changed `compas_rhino.objects.modify` to `compas_rhino.objects._modify`.
+
+### Removed
+
+
+## [1.1.0] 2021-02-12
+
+### Added
+
+* Added `RobotModel.remove_link`, `RobotModel.remove_joint`, `RobotModel.to_urdf_string`, and `RobotModel.ensure_geometry`.
+* Added Blender Python-example to the documentation section: Tutorials -> Robots
+* Added `compas_blender.unload_modules`.
+* Added `after_rhino_install` and `after_rhino_uninstall` pluggable interfaces to extend the install/uninstall with arbitrary steps.
+
+### Changed
+
+* Fixed bug in parameter list of function `mesh_bounding_box` bound as method `Mesh.bounding_box`.
+* Fixed bug in `RobotModel/RobotModelArtist.update` which raised an error when the geometry had not been loaded.
+* Changed exception type when subdivide scheme argument is incorrect on `mesh_subdivide`.
+* The `compas_rhino.artist.RobotModelArtist` functions `draw_visual` and `draw_collision` now return list of newly created Rhino object guids.
+* Added ability of `RobotModel.add_link` to accept primitives in addition to meshes.
+* Fixed bug regarding the computation of `Joint.current_origin`.
+* Fixed bug regarding a repeated call to `RobotModel.add_joint`.
+* Fixed bug in `compas_blender.RobotModelArtist.update`.
+* Fixed bug in `compas.datastructures.mesh_slice_plane`.
+* Fixed bug where initialising a `compas_blender.artists.Robotmodelartist` would create a new collection for each mesh and then also not put the mesh iton the created collection. 
+* Changed the initialisation of `compas_blender.artists.Robotmodelartist` to include a `collection`-parameter instead of a `layer`-parameter to be more consistent with Blender's nomenclature. 
+* Used a utility function from `compas_blender.utilities` to create the collection if none exists instead of using a new call to a bpy-method. 
+
+### Removed
+
+
+## [1.0.0] 2021-01-18
+
+### Added
+
+* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
+
+### Changed
+
+* Fix Rhino7 Mac installation path
+* Separate `compas.robots.Joint.origin` into the static parent-relative `origin` and the dynamic world-relative `current_origin`.
+* Separate `compas.robots.Joint.axis` into the static parent-relative `axis` and the dynamic world-relative `current_axis`.
+* Fixed support to convert back and forth between `compas.datastructures.Graph` and NetworkX `DiGraph`.
+
+### Removed
+
+
+## [0.19.3] 2020-12-17
+
+### Added
+
+### Changed
+* Fix bug in `compas.datastructures.Network.neighborhood`.
+
+### Removed
+
+
+## [0.19.2] 2020-12-17
+
+### Added
+
+### Changed
+
+* Changed `compas._os.prepare_environment` to prepend environment paths (fixes problem with RPC on windows).
 
 ### Removed
 
@@ -475,12 +624,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Split up network and mesh naming conventions.
 * Reworked network face cycle finding.
 * Updated mesh from lines.
-* Updated network plotter in correspondance with network.
+* Updated network plotter in correspondence with network.
 * Integrated mixin functionality and removed mixins.
+* Meshes are now initially hidden in `compas_blender.artists.RobotModelArtist`.
+* `compas_blender.artists.RobotModelArtist.draw_visual` and `compas_blender.artists.RobotModelArtist.draw_collision` now show those meshes.
+* Renamed the method `draw_geometry` of `compas.robots.base_artist.RobotModelBaseArtist` to `create_geometry`.
 
 ### Removed
 
-* Removed parallelisation from network algorithms.
+* Removed parallelization from network algorithms.
 * Removed numba based dr implementations.
 
 ## [0.15.0] 2020-01-24

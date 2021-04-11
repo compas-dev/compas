@@ -727,10 +727,6 @@ class BaseMesh(HalfEdge):
     # polyedge topology
     # --------------------------------------------------------------------------
 
-    # face strips?
-    # edge chains?
-    # ...?
-
     # --------------------------------------------------------------------------
     # face topology
     # --------------------------------------------------------------------------
@@ -790,7 +786,7 @@ class BaseMesh(HalfEdge):
         list
             Coordinates of the vertex.
         """
-        return [self.vertex[key][axis] for axis in axes]
+        return self.vertex_attributes(key, axes)
 
     def vertex_area(self, key):
         """Compute the tributary area of a vertex.
@@ -1253,7 +1249,7 @@ class BaseMesh(HalfEdge):
         boundaries = self.vertices_on_boundaries()
         return boundaries[0] if boundaries else []
 
-    def edges_on_boundary(self, oriented=False):
+    def edges_on_boundary(self):
         """Find the edges on the longest boundary.
 
         Returns

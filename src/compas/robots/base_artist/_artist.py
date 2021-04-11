@@ -22,13 +22,13 @@ class AbstractRobotModelArtist(object):
         Parameters
         ----------
         geometry : object
-            A CAD-specific (i.e. native) geometry object as returned by :meth:`draw_geometry`.
+            A CAD-specific (i.e. native) geometry object as returned by :meth:`create_geometry`.
         transformation : `Transformation`
             **COMPAS** transformation to update the geometry object.
         """
         raise NotImplementedError
 
-    def draw_geometry(self, geometry, name=None, color=None):
+    def create_geoemetry(self, geometry, name=None, color=None):
         """Draw a **COMPAS** geometry in the respective CAD environment.
 
         Note
@@ -60,7 +60,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
     There are two methods that implementers of this base class should provide, one
     is concerned with the actual creation of geometry in the native format of the
-    CAD environment (:meth:`draw_geometry`) and the other is one to apply a transformation
+    CAD environment (:meth:`create_geometry`) and the other is one to apply a transformation
     to geometry (:meth:`transform`).
 
     Attributes
@@ -117,7 +117,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
     def create(self, link=None, context=None):
         """Recursive function that triggers the drawing of the robot model's geometry.
 
-        This method delegates the geometry drawing to the :meth:`draw_geometry`
+        This method delegates the geometry drawing to the :meth:`create_geometry`
         method. It transforms the geometry based on the saved initial
         transformation from the robot model.
 
@@ -150,7 +150,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                     else:
                         mesh_name_components = [self.model.name, mesh_type, context, link.name, str(i)]
                     mesh_name = '.'.join(mesh_name_components)
-                    native_mesh = self.draw_geometry(mesh, name=mesh_name, color=color)
+                    native_mesh = self.create_geoemetry(mesh, name=mesh_name, color=color)
 
                     self.transform(native_mesh, item.init_transformation)
 
@@ -217,8 +217,11 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         -------
         None
         """
-        relative_transformation = transformation * item.current_transformation.inverse()
-        for native_geometry in item.native_geometry:
+        if getattr(item, 'current_transformation'):
+            relative_transformation = transformation * item.current_transformation.inverse()
+        else:
+            relative_transformation = transformation
+        for native_geometry in item.native_geometry or []:
             self.transform(native_geometry, relative_transformation)
         item.current_transformation = transformation
 
@@ -227,7 +230,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict`
+        joint_state : :obj:`dict` or :class:`compas.robots.Configuration`
             A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
             ``True`` if the visual geometry should be also updated, otherwise ``False``.
@@ -261,7 +264,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict`, optional
+        joint_state : :obj:`dict`or :class:`compas.robots.Configuration`, optional
             A dictionary with joint names as keys and joint positions as values.
             Defaults to an empty dictionary.
         transformation : :class:`compas.geometry.Transformation`, optional
@@ -285,22 +288,22 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
     def draw_visual(self):
         """Draws all visual geometry of the robot model."""
-        for native_geometry in self._draw_model_geometry(self.model, 'visual'):
+        for native_geometry in self._iter_geometry(self.model, 'visual'):
             yield native_geometry
         if self.attached_tool_model:
-            for native_geometry in self._draw_model_geometry(self.attached_tool_model, 'visual'):
+            for native_geometry in self._iter_geometry(self.attached_tool_model, 'visual'):
                 yield native_geometry
 
     def draw_collision(self):
         """Draws all collision geometry of the robot model."""
-        for native_geometry in self._draw_model_geometry(self.model, 'collision'):
+        for native_geometry in self._iter_geometry(self.model, 'collision'):
             yield native_geometry
         if self.attached_tool_model:
-            for native_geometry in self._draw_model_geometry(self.attached_tool_model, 'collision'):
+            for native_geometry in self._iter_geometry(self.attached_tool_model, 'collision'):
                 yield native_geometry
 
     @staticmethod
-    def _draw_model_geometry(model, geometry_type):
+    def _iter_geometry(model, geometry_type):
         for link in model.iter_links():
             for item in getattr(link, geometry_type):
                 if item.native_geometry:

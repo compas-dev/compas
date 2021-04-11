@@ -16,4 +16,5 @@ as well as in scriptable CAD software such as Blender, Rhino and Grasshopper.
     gettingstarted/rhino
     gettingstarted/grasshopper
     gettingstarted/blender
+    gettingstarted/freecad
     gettingstarted/rhino5

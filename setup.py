@@ -25,7 +25,7 @@ optional_requirements = {}
 
 setup(
     name='COMPAS',
-    version='0.19.1',
+    version='1.4.0',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -34,7 +34,7 @@ setup(
     author_email='van.mele@arch.ethz.ch',
     license='MIT',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Scientific/Engineering',
         'License :: OSI Approved :: MIT License',
@@ -48,6 +48,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords=['architecture', 'engineering', 'fabrication', 'construction'],

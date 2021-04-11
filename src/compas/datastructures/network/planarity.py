@@ -27,8 +27,7 @@ __all__ = [
     'network_is_planar',
     'network_is_planar_embedding',
     'network_embed_in_plane',
-
-    'network_embed_in_plane_proxy',
+    'network_embed_in_plane_proxy'
 ]
 
 
