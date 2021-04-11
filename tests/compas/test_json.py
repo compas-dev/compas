@@ -62,3 +62,8 @@ def test_json_pretty():
     "a": 12,
     "b": 6565
 }"""
+
+
+def test_json_url():
+    data = compas.json_load('https://raw.githubusercontent.com/compas-dev/compas/main/schemas/graph.json')
+    assert data['$schema'] == 'http://json-schema.org/draft-07/schema#'

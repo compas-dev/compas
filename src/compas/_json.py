@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import json
+from compas import _iotools
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
 
@@ -42,11 +43,9 @@ def json_dump(data, fp, pretty=False):
     >>> data1 == data2
     True
     """
-    kwargs = dict(sort_keys=True, indent=4) if pretty else {}
-    if hasattr(fp, 'write'):
-        return json.dump(data, fp, cls=DataEncoder, **kwargs)
-    with open(fp, 'w') as fp:
-        return json.dump(data, fp, cls=DataEncoder, **kwargs)
+    with _iotools.open_file(fp, 'w') as f:
+        kwargs = dict(sort_keys=True, indent=4) if pretty else {}
+        return json.dump(data, f, cls=DataEncoder, **kwargs)
 
 
 def json_dumps(data, pretty=False):
@@ -83,8 +82,8 @@ def json_load(fp):
 
     Parameters
     ----------
-    fp : file-like object or path
-        A writeable file-like object or the path to a file.
+    fp : file-like object or path or URL string
+        A readable path-like, a file-like object or a URL pointing to a file.
 
     Returns
     -------
@@ -101,10 +100,8 @@ def json_load(fp):
     >>> data1 == data2
     True
     """
-    if hasattr(fp, 'read'):
-        return json.load(fp, cls=DataDecoder)
-    with open(fp, 'r') as fp:
-        return json.load(fp, cls=DataDecoder)
+    with _iotools.open_file(fp, 'r') as f:
+        return json.load(f, cls=DataDecoder)
 
 
 def json_loads(s):
