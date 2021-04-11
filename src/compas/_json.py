@@ -24,7 +24,7 @@ def json_dump(data, fp, pretty=False):
     data : any
         Any JSON serializable object.
         This includes any (combination of) COMPAS object(s).
-    fp : file-like object or path
+    fp : path string or file-like object
         A writeable file-like object or the path to a file.
     pretty : bool, optional
         ``True`` to format the output with indentation, otherwise ``False``.
@@ -82,8 +82,8 @@ def json_load(fp):
 
     Parameters
     ----------
-    fp : file-like object or path or URL string
-        A readable path-like, a file-like object or a URL pointing to a file.
+    fp : path string, file-like object or URL string
+        A readable path, a file-like object or a URL pointing to a file.
 
     Returns
     -------

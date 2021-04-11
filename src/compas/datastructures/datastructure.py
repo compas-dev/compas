@@ -65,8 +65,8 @@ class Datastructure(Base):
 
         Parameters
         ----------
-        filepath : path-like string, file-like object or URL string
-            A path-like, a file-like object or a URL pointing to a file.
+        filepath : path string, file-like object or URL string
+            A path, a file-like object or a URL pointing to a file.
 
         Returns
         -------
@@ -88,8 +88,8 @@ class Datastructure(Base):
 
         Parameters
         ----------
-        filepath : path-like string or file-like object
-            A path-like, a file-like object or a URL pointing to a file.
+        filepath : path string or file-like object
+            A path, a file-like object or a URL pointing to a file.
         """
         compas.json_dump(self.data, filepath, pretty)
 
