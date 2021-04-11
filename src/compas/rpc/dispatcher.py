@@ -65,15 +65,15 @@ class Dispatcher(object):
             Name of the function.
         args : list
             List of positional arguments.
-            The first argument in the list should be the JSON serialised string
+            The first argument in the list should be the JSON serialized string
             representation of the input dictionary. The structure of the input
             dictionary is defined by the caller.
 
         Returns
         -------
         str
-            A JSON serialised string representation of the output dictionary.
-            The output dicmtionary has the following structure:
+            A JSON serialized string representation of the output dictionary.
+            The output dictionary has the following structure:
 
             * `'data'`    : The returned result of the function call.
             * `'error'`   : The error message of any error that may have been thrown in the processes of dispatching to or execution of the API function.

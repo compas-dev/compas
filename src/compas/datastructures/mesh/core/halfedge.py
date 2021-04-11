@@ -181,7 +181,7 @@ class HalfEdge(Datastructure):
 
     @property
     def data(self):
-        """dict : A data dict representing the mesh data structure for serialisation.
+        """dict : A data dict representing the mesh data structure for serialization.
         """
         data = {
             'attributes': self.attributes,
