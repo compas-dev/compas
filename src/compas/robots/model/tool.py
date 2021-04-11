@@ -146,8 +146,8 @@ class ToolModel(RobotModel):
 
         Parameters
         ----------
-        filepath : :obj:`str`
-            Path to the file.
+        filepath : path string or file-like object
+            Path or file where to store the data.
 
         Returns
         -------
