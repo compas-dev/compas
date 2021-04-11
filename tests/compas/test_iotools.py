@@ -72,6 +72,12 @@ def test_open_file_url_text(url_text):
         assert b'COMPAS framework' in file.read()
 
 
+def test_open_file_url_as_write_fails(url_text):
+    with pytest.raises(ValueError):
+        with _iotools.open_file(url_text, mode='w') as _file:
+            pass
+
+
 def test_iter_file_chunks_path_image(path_image):
     CHUNK_SIZE = 30
     chunks = []

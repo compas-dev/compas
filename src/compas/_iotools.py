@@ -42,6 +42,8 @@ def open_file(file_or_filename, mode='r'):
     if not hasattr(file, 'read'):
         # If it's a URL, open and read its response into an in-memory stream
         if hasattr(file, 'startswith') and file.startswith('http'):
+            if mode != 'r':
+                raise ValueError('URLs can only be opened in read mode')
             response = urlopen(file)
             file = io.BytesIO(response.read())
         else:
