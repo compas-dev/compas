@@ -54,3 +54,11 @@ def test_json_mesh():
     assert all(before.has_edge(edge) for edge in after.edges())
     assert all(after.has_edge(edge) for edge in before.edges())
     assert all(before.face_vertices(a) == after.face_vertices(b) for a, b in zip(before.faces(), after.faces()))
+
+
+def test_json_pretty():
+    result = compas.json_dumps(dict(a=12, b=6565), pretty=True)
+    assert result == """{
+    "a": 12,
+    "b": 6565
+}"""

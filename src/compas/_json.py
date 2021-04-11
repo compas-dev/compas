@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-def json_dump(data, fp):
+def json_dump(data, fp, pretty=False):
     """Write a collection of COMPAS object data to a JSON file.
 
     Parameters
@@ -25,6 +25,8 @@ def json_dump(data, fp):
         This includes any (combination of) COMPAS object(s).
     fp : file-like object or path
         A writeable file-like object or the path to a file.
+    pretty : bool, optional
+        ``True`` to format the output with indentation, otherwise ``False``.
 
     Returns
     -------
@@ -40,13 +42,14 @@ def json_dump(data, fp):
     >>> data1 == data2
     True
     """
+    kwargs = dict(sort_keys=True, indent=4) if pretty else {}
     if hasattr(fp, 'write'):
-        return json.dump(data, fp, cls=DataEncoder)
+        return json.dump(data, fp, cls=DataEncoder, **kwargs)
     with open(fp, 'w') as fp:
-        return json.dump(data, fp, cls=DataEncoder)
+        return json.dump(data, fp, cls=DataEncoder, **kwargs)
 
 
-def json_dumps(data):
+def json_dumps(data, pretty=False):
     """Write a collection of COMPAS objects to a JSON string.
 
     Parameters
@@ -54,6 +57,8 @@ def json_dumps(data):
     data : any
         Any JSON serializable object.
         This includes any (combination of) COMPAS object(s).
+    pretty : bool, optional
+        ``True`` to format the output with indentation, otherwise ``False``.
 
     Returns
     -------
@@ -69,7 +74,8 @@ def json_dumps(data):
     >>> data1 == data2
     True
     """
-    return json.dumps(data, cls=DataEncoder)
+    kwargs = dict(sort_keys=True, indent=4) if pretty else {}
+    return json.dumps(data, cls=DataEncoder, **kwargs)
 
 
 def json_load(fp):
