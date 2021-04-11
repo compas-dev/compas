@@ -5,12 +5,12 @@ import tempfile
 
 import pytest
 
-from compas.files import _iotools
+from compas import _iotools
 
 BASE_FOLDER = os.path.dirname(__file__)
 IMAGE_FILE_SIZE = 252391
 TEXT_FILE_SIZE = 747
-REMOTE_IMAGE_FILE_SIZE = 373
+REMOTE_IMAGE_FILE_SIZE = 5430
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ def url_text():
 
 @pytest.fixture
 def url_image():
-    return 'https://via.placeholder.com/150'
+    return 'http://google.com/favicon.ico'
 
 
 def test_open_file_path_binary(path_image):
