@@ -1,7 +1,8 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+from compas import _iotools
 
 __all__ = []
 
@@ -51,7 +52,7 @@ class DXFReader(object):
         self.read()
 
     def read(self):
-        with open(self.filepath, 'rb') as fp:
+        with _iotools.open_file(self.filepath, 'rb') as fp:
             for line in fp:
                 print(line.strip())
 
