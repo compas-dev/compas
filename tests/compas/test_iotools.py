@@ -10,7 +10,7 @@ from compas import _iotools
 BASE_FOLDER = os.path.dirname(__file__)
 IMAGE_FILE_SIZE = 252391
 TEXT_FILE_SIZE = 747
-REMOTE_IMAGE_FILE_SIZE = 5430
+REMOTE_IMAGE_FILE_SIZE = 2734
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ def url_text():
 
 @pytest.fixture
 def url_image():
-    return 'http://google.com/favicon.ico'
+    return 'https://en.wikipedia.org/favicon.ico'
 
 
 def test_open_file_path_binary(path_image):
@@ -56,7 +56,7 @@ def test_open_file_object_text(path_text):
 
 
 def test_open_file_memory_stream():
-    text = b"How many roads must a man walk down?"
+    text = b"All Gaul is divided into three parts, one of which the Belgae inhabit, the Aquitani another, those who in their own language are called Celts, in our Gauls, the third."
     data = io.BytesIO(text)
     with _iotools.open_file(data, mode='rb') as f:
         assert f.read() == text
