@@ -104,12 +104,12 @@
   
         
           
-          <section class="detail" id="robotmodel">
+          <div class="detail section" id="robotmodel">
 <h1>RobotModel</h1>
 <dl class="py class">
 <dt id="compas.robots.RobotModel">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.robots.</span></code><code class="sig-name descname"><span class="pre">RobotModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L37"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="compas.base.Base.html#compas.base.Base" title="compas.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></a></p>
 <p>RobotModel is the root element of the model.</p>
 <p>Instances of this class represent an entire robot as defined in an URDF
 structure.</p>
@@ -159,7 +159,7 @@ this model, ruling out all parallel robots.</p>
 <td><p>Construct the <a class="reference internal" href="#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> from its data representation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_json.html#compas.robots.RobotModel.from_json" title="compas.robots.RobotModel.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct an object from serialised data contained in a JSON file.</p></td>
+<td><p>Deserialize a robot model from a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_urdf_file.html#compas.robots.RobotModel.from_urdf_file" title="compas.robots.RobotModel.from_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_urdf_file</span></code></a>(file)</p></td>
 <td><p>Construct a robot model from a URDF file model description.</p></td>
@@ -231,7 +231,7 @@ this model, ruling out all parallel robots.</p>
 <td><p>Returns the data dictionary that represents the <a class="reference internal" href="#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_json.html#compas.robots.RobotModel.to_json" title="compas.robots.RobotModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
+<td><p>Serialize the robot model to a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_urdf_file.html#compas.robots.RobotModel.to_urdf_file" title="compas.robots.RobotModel.to_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_urdf_file</span></code></a>(file[, prettify])</p></td>
 <td><p>Construct a URDF file model description from a robot model.</p></td>
@@ -258,7 +258,7 @@ this model, ruling out all parallel robots.</p>
 </table>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -283,6 +283,7 @@ this model, ruling out all parallel robots.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -292,6 +293,25 @@ this model, ruling out all parallel robots.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>

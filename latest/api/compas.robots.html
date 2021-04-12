@@ -102,12 +102,14 @@
   
         
           
-          <span class="target" id="module-compas.robots"></span><section id="robots">
+          <span class="target" id="module-compas.robots"></span><div class="section" id="robots">
 <h1>robots</h1>
-<section id="model">
+<div class="section" id="model">
 <h2>Model</h2>
-<div class="graphviz"><img src="../_images/inheritance-0bf19e2de138c6b881672be27ab550836f8d4553.png" alt="Inheritance diagram of RobotModel, Joint, Link, ToolModel, Configuration" class="inheritance graphviz" /></div>
-<p>The root of the model is the <a class="reference internal" href="generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a> class, which
+<div class="graphviz"><img src="../_images/inheritance-b18d1e30be6790e7f655e5ee5201fb791579c8ec.png" alt="Inheritance diagram of RobotModel, Joint, Link, ToolModel, Configuration" usemap="#inheritance259b377964" class="inheritance graphviz" /></div>
+<map id="inheritance259b377964" name="inheritance259b377964">
+<area shape="rect" id="node1" href="generated/compas.base.Base.html#compas.base.Base" target="_top" title="Abstract base class for all COMPAS objects." alt="" coords="8,121,121,158"/>
+</map><p>The root of the model is the <a class="reference internal" href="generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a> class, which
 describes a robot consisting of a set of link elements, and a set of joint
 elements connecting the links together.</p>
 <table class="longtable docutils align-default">
@@ -133,11 +135,13 @@ elements connecting the links together.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="geometric-description">
+</div>
+<div class="section" id="geometric-description">
 <h2>Geometric description</h2>
-<div class="graphviz"><img src="../_images/inheritance-d1ee9befea05094231e37add9a4fc7e9b75bb9b1.png" alt="Inheritance diagram of Origin, Geometry, Box, Cylinder, Sphere, Capsule, MeshDescriptor, Material, Texture, Color" class="inheritance graphviz" /></div>
-<p>The robot itself as well as its links can be geometrically described
+<div class="graphviz"><img src="../_images/inheritance-67dedadcb29b3c629c344f52b2c995355607fbe4.png" alt="Inheritance diagram of Origin, Geometry, Box, Cylinder, Sphere, Capsule, MeshDescriptor, Material, Texture, Color" usemap="#inheritancebd9f8de152" class="inheritance graphviz" /></div>
+<map id="inheritancebd9f8de152" name="inheritancebd9f8de152">
+<area shape="rect" id="node1" href="generated/compas.base.Base.html#compas.base.Base" target="_top" title="Abstract base class for all COMPAS objects." alt="" coords="8,402,121,440"/>
+</map><p>The robot itself as well as its links can be geometrically described
 using the following classes.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -177,11 +181,13 @@ using the following classes.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="link">
+</div>
+<div class="section" id="link">
 <h2>Link</h2>
-<div class="graphviz"><img src="../_images/inheritance-044add106f90ffd0fd3d82e12d2e4270e0f57778.png" alt="Inheritance diagram of Visual, Collision, Inertial, Mass, Inertia" class="inheritance graphviz" /></div>
-<p>The link is described as a rigid body with inertial, visual and collision values.</p>
+<div class="graphviz"><img src="../_images/inheritance-9558fa848ddb1dd5bf68d5758b894d8be1c5683e.png" alt="Inheritance diagram of Visual, Collision, Inertial, Mass, Inertia" usemap="#inheritanceef3b640450" class="inheritance graphviz" /></div>
+<map id="inheritanceef3b640450" name="inheritanceef3b640450">
+<area shape="rect" id="node1" href="generated/compas.base.Base.html#compas.base.Base" target="_top" title="Abstract base class for all COMPAS objects." alt="" coords="8,158,121,196"/>
+</map><p>The link is described as a rigid body with inertial, visual and collision values.</p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -205,11 +211,13 @@ using the following classes.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="joint">
+</div>
+<div class="section" id="joint">
 <h2>Joint</h2>
-<div class="graphviz"><img src="../_images/inheritance-e23f08656ddbe8b569807080d02739b4c981da71.png" alt="Inheritance diagram of ParentLink, ChildLink, Calibration, Dynamics, Limit, Axis, Mimic, SafetyController" class="inheritance graphviz" /></div>
-<p>The joint describes the kinematics and dynamics of the robot’s joint.</p>
+<div class="graphviz"><img src="../_images/inheritance-1861d357792d99a5553fa0d485b7883f61253d15.png" alt="Inheritance diagram of ParentLink, ChildLink, Calibration, Dynamics, Limit, Axis, Mimic, SafetyController" usemap="#inheritanceffff3f7e20" class="inheritance graphviz" /></div>
+<map id="inheritanceffff3f7e20" name="inheritanceffff3f7e20">
+<area shape="rect" id="node2" href="generated/compas.base.Base.html#compas.base.Base" target="_top" title="Abstract base class for all COMPAS objects." alt="" coords="8,271,121,308"/>
+</map><p>The joint describes the kinematics and dynamics of the robot’s joint.</p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -242,8 +250,8 @@ using the following classes.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="resources">
+</div>
+<div class="section" id="resources">
 <h2>Resources</h2>
 <div class="graphviz"><img src="../_images/inheritance-99d8ceaa5fe4f3960884ca4be8003c640a64af62.png" alt="Inheritance diagram of AbstractMeshLoader, DefaultMeshLoader, GithubPackageMeshLoader, LocalPackageMeshLoader" class="inheritance graphviz" /></div>
 <p>Model descriptions usually do not contain embedded geometry information but only
@@ -270,8 +278,8 @@ the processing of these resources.</p>
 </tr>
 </tbody>
 </table>
-</section>
-</section>
+</div>
+</div>
 
         
       </main>
@@ -296,6 +304,7 @@ the processing of these resources.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas.base.html">base</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.geometry.html">geometry</a></li>
@@ -305,6 +314,25 @@ the processing of these resources.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>

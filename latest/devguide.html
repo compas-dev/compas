@@ -98,7 +98,7 @@
   
         
           
-          <section id="developer-guide">
+          <div class="section" id="developer-guide">
 <h1>Developer Guide</h1>
 <p>This guide is intended for people who want to contribute
 to the code, documentation, and test coverage of the core COMPAS packages:</p>
@@ -110,7 +110,7 @@ to the code, documentation, and test coverage of the core COMPAS packages:</p>
 <li><p><a class="reference internal" href="api/compas_rhino.html#module-compas_rhino" title="compas_rhino"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_rhino</span></code></a></p></li>
 </ul>
 <p>Note, however, that the general procedure is applicable to all COMPAS package development.</p>
-<section id="setup-installation">
+<div class="section" id="setup-installation">
 <h2>Setup/Installation</h2>
 <p>To set up a developer environment</p>
 <ol class="arabic">
@@ -141,8 +141,8 @@ invoke <span class="nb">test</span>
 </li>
 <li><p>Start making changes!</p></li>
 </ol>
-</section>
-<section id="submitting-a-pr">
+</div>
+<div class="section" id="submitting-a-pr">
 <h2>Submitting a PR</h2>
 <p>Once you are done making changes, you have to submit your contribution through a pull request (PR).
 The procedure for submitting a PR is the following.</p>
@@ -159,8 +159,8 @@ invoke docs
 <li><p>Commit your changes and push your branch to GitHub.</p></li>
 <li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a>.</p></li>
 </ol>
-</section>
-<section id="style-guide">
+</div>
+<div class="section" id="style-guide">
 <h2>Style guide</h2>
 <p>The command <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> runs the entire codebase through <code class="docutils literal notranslate"><span class="pre">flake8</span></code>.
 As described in the <a class="reference external" href="https://flake8.pycqa.org/en/latest/manpage.html">docs</a>,
@@ -172,8 +172,8 @@ and McCabe complexity checking provided by the McCabe project.</p>
 <p>The PEP-0008 style guide is available here:
 <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">https://www.python.org/dev/peps/pep-0008/</a></p>
 <p>Note that the maximum line length is set to 180 rather 79 in the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> of the repo.</p>
-</section>
-<section id="naming-conventions">
+</div>
+<div class="section" id="naming-conventions">
 <h2>Naming conventions</h2>
 <p>We (intend to) use the following naming conventions.</p>
 <ol class="arabic simple">
@@ -185,8 +185,8 @@ and spaces between words removed.</p></li>
 <li><p>module or package level variables are in uppercase
 and with spaces between words replaced by underscores.</p></li>
 </ol>
-</section>
-<section id="quotes">
+</div>
+<div class="section" id="quotes">
 <h2>Quotes</h2>
 <p>Ideally, we would use the following conventions for quotes.</p>
 <ol class="arabic simple">
@@ -197,8 +197,8 @@ For example, <code class="docutils literal notranslate"><span class="pre">config
 <li><p>Double quotation marks for strings that are meant to be used as text.
 For examples, <code class="docutils literal notranslate"><span class="pre">message</span> <span class="pre">=</span> <span class="pre">&quot;Select</span> <span class="pre">one</span> <span class="pre">or</span> <span class="pre">more</span> <span class="pre">points.&quot;</span></code></p></li>
 </ol>
-</section>
-<section id="documentation">
+</div>
+<div class="section" id="documentation">
 <h2>Documentation</h2>
 <p>The documentation of COMPAS is generated with Sphinx.
 This means that code docstrings and general documentation pages
@@ -214,8 +214,8 @@ and prefer Numpy-style docstring formatting rules.</p>
 it should be added to the API docstring in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> of the main package it belongs to.</p>
 <p>For example, if you add a function somewhere in the geometry package,
 make sure to include it in the docstring of <code class="docutils literal notranslate"><span class="pre">compas.geometry.__init__.py</span></code>.</p>
-</section>
-<section id="type-hints">
+</div>
+<div class="section" id="type-hints">
 <h2>Type hints</h2>
 <p>Type hints should be added to stub files at the public API level
 of the main packages (see <span class="xref std std-ref">code_structure</span>).
@@ -223,8 +223,8 @@ This allows the type hints to be written using Python 3 style
 annotations while maintaining compatibility with Python 2.7 for Rhino/GH.</p>
 <p>For example, the type hints for <code class="docutils literal notranslate"><span class="pre">compas.datastructures</span></code> should be defined in
 <code class="docutils literal notranslate"><span class="pre">compas.datastructures.__init__.pyi</span></code>.</p>
-</section>
-<section id="code-structure">
+</div>
+<div class="section" id="code-structure">
 <span id="id1"></span><h2>Code structure</h2>
 <p>Each of the core packages is divided into subpackages that group functionality into logical components.
 For example, <a class="reference internal" href="api/compas.html#module-compas" title="compas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a> is divided into:</p>
@@ -260,12 +260,12 @@ Per package, the APIs of the contained module are collected in the <code class="
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
 </code></pre></div>
 </div>
-</section>
-<section id="dependencies">
+</div>
+<div class="section" id="dependencies">
 <h2>Dependencies</h2>
 <p>More info coming soon…</p>
-</section>
-<section id="testing">
+</div>
+<div class="section" id="testing">
 <h2>Testing</h2>
 <p>Although we still have a significant backlog of existing functionality
 not yet covered by unit tests, at least all newly added functionality
@@ -273,8 +273,8 @@ should have a corresponding test.</p>
 <p>We use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> as a testing framework.
 The tests are in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder at the root of the repo.</p>
 <p>More info coming soon…</p>
-</section>
-<section id="plugins">
+</div>
+<div class="section" id="plugins">
 <span id="id2"></span><h2>Plugins</h2>
 <p>COMPAS has an extensible architecture based on plugins that allows to
 customize and extend the functionality of the core framework.</p>
@@ -300,7 +300,7 @@ as the counterpart for plugins to connect to.</p></li>
 <p>Once these parts are implemented, the program could simply
 call the function <code class="docutils literal notranslate"><span class="pre">do_hard_stuff</span></code> and the appropriate plugin
 implementation using <code class="docutils literal notranslate"><span class="pre">numpy</span></code> would be called automatically.</p>
-<section id="why-are-plugins-important">
+<div class="section" id="why-are-plugins-important">
 <h3>Why are plugins important?</h3>
 <p>The example above is just a single code block, but the power of plugins comes
 from the ability to split those two parts -the <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a>
@@ -311,8 +311,8 @@ for its current execution context. For instance, one could have two implementati
 of the same <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> definition, one using <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and
 another one using <em>Rhino SDK</em> and have the correct one automatically selected
 based on where your script is executing.</p>
-</section>
-<section id="how-to-make-plugins-discoverable">
+</div>
+<div class="section" id="how-to-make-plugins-discoverable">
 <h3>How to make plugins discoverable?</h3>
 <p>COMPAS plugin discovery is based on naming conventions. This is mainly due to
 the need to support IronPython inside Rhino, which lacks <code class="docutils literal notranslate"><span class="pre">setuptools</span></code>
@@ -332,8 +332,8 @@ available through the <code class="docutils literal notranslate"><span class="pr
 <p>Once a package is found, the metadata in <code class="docutils literal notranslate"><span class="pre">__all_plugins__</span></code> is read and all modules
 listed are analyzed to look for functions decorated with the <a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a>
 decorator.</p>
-</section>
-<section id="two-kinds-of-extension-points">
+</div>
+<div class="section" id="two-kinds-of-extension-points">
 <h3>Two kinds of extension points</h3>
 <p>An extension point, or <em>pluggable</em> interface can be declared as being one of two types
 based on how they select which implementation to pick if there are multiple available.</p>
@@ -345,11 +345,11 @@ collect all plugin implementations and execute them all, collecting the return
 values into a list. An example of this is the Rhino install extension
 point: <code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_rhino.install.installable_rhino_packages()</span></code>.</p></li>
 </ul>
-</section>
-<section id="a-complete-example">
+</div>
+<div class="section" id="a-complete-example">
 <h3>A complete example</h3>
 <p>Let’s explore a complete example to gain a better understanding.</p>
-<section id="extension-point">
+<div class="section" id="extension-point">
 <h4>Extension point</h4>
 <p>For the sake of example, we are going to assume that <code class="docutils literal notranslate"><span class="pre">compas</span></code> core defines
 the following <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface in</p>
@@ -359,8 +359,8 @@ the following <a class="reference internal" href="api/generated/compas.plugins.p
     <span class="k">pass</span>
 </code></pre></div>
 </div>
-</section>
-<section id="plugin">
+</div>
+<div class="section" id="plugin">
 <h4>Plugin</h4>
 <p>Now let’s write a plugin that implements this interface:</p>
 <p><strong>compas_plugin_sample/__init__.py</strong></p>
@@ -384,9 +384,9 @@ the following <a class="reference internal" href="api/generated/compas.plugins.p
 </code></pre></div>
 </div>
 <p>Voilà! We have a trimesh-based boolean union plugin!</p>
-</section>
-</section>
-<section id="advanced-options">
+</div>
+</div>
+<div class="section" id="advanced-options">
 <h3>Advanced options</h3>
 <p>There are a few additional options that plugins can use:</p>
 <ul class="simple">
@@ -412,9 +412,9 @@ accordingly:</p>
 <span class="n">plugin_manager</span><span class="o">.</span><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
         
       </main>
