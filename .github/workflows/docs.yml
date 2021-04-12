@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: compas.dev/compas-actions.docs@main
+      - uses: compas-dev/compas-actions.docs@main
         with:
           dest: deploy
           build-to-subfolder: true
