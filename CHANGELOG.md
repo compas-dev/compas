@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Added support for file-like objects, path strings and URLs to most of the methods previously accepting only file paths, eg. `compas.datastructures.Datastructure`, `compas.json_dump`, `compas.json_load`, etc.
+* Added `pretty` parameter to `compas.json_dump` and `compas.json_dumps`
+
+### Changed
+
+### Removed
+
+
+## [1.4.0] 2021-04-09
 
 ### Added
 
@@ -16,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_ghpython.get_grasshopper_userobjects_path` to retrieve User Objects target folder.
 * Added direction option for mesh thickening.
 * Added check for closed meshes.
+* Added 'loop' and 'frames' to schemes of `compas.datastructures.mesh.subdivision.mesh_subdivide`.
 
 ### Changed
 
@@ -23,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed a bug in `Polyline.divide_polyline_by_length` related to a floating point rounding error.
 * Fixed bug in `RobotModel.zero_configuration`.
 * Fixed bug in `compas.geometry.normals`.
+* Fixed bug in `compas.datastructures.mesh.subdivision.mesh_subdivide_frames`.
 
 ### Removed
 
@@ -179,7 +192,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `is_windows` to work for CPython and IronPython.
 * Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
-* Fixed data serialisation in `compas.datastructures.HalfFace`.
+* Fixed data serialization in `compas.datastructures.HalfFace`.
 
 ### Removed
 
@@ -577,7 +590,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added optional class parameter to `RhinoMesh.to_compas`.
-* Added max int key to serialisation of graph.
+* Added max int key to serialization of graph.
 
 ### Changed
 
@@ -771,8 +784,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Indirectly changed mesh serialisation to JSON (by changing key conversion and moving conversion into JSON methods).
-* Moved conversion of int keys of mesh data to strings for json serialisation to from/to json.
+* Indirectly changed mesh serialization to JSON (by changing key conversion and moving conversion into JSON methods).
+* Moved conversion of int keys of mesh data to strings for json serialization to from/to json.
 * Moved from/to methods for mesh into mesh definition.
 * Subdivision algorithms use fast mesh copy.
 

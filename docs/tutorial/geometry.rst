@@ -421,7 +421,7 @@ For a complete overview of available algorithms, see :mod:`compas.geometry`.
 Serialization
 =============
 
-All geometry objects (primitives, shapes, transformations) can be serialised to JSON format,
-and unserialised from such a representation to reconstruct an equivalent object without loss
-of information. The serialisation mechanism relies on the underlying data model.
+All geometry objects (primitives, shapes, transformations) can be serialized to JSON format,
+and deserialized from such a representation to reconstruct an equivalent object without loss
+of information. The serialization mechanism relies on the underlying data model.
 

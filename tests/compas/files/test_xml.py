@@ -19,6 +19,11 @@ def basic_file():
 
 
 @pytest.fixture
+def basic_file_url():
+    return 'https://raw.githubusercontent.com/compas-dev/compas/main/tests/compas/files/fixtures/xml/basic.xml'
+
+
+@pytest.fixture
 def default_nested_namespace_file():
     return os.path.join(BASE_FOLDER, 'fixtures', 'xml', 'default_nested_namespace.xml')
 
@@ -30,6 +35,11 @@ def namespaces_file():
 
 def test_xml_from_file(basic_file):
     xml = XML.from_file(basic_file)
+    assert xml.root.tag == 'Tests'
+
+
+def test_xml_from_url(basic_file_url):
+    xml = XML.from_file(basic_file_url)
     assert xml.root.tag == 'Tests'
 
 

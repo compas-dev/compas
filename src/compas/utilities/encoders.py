@@ -41,7 +41,7 @@ class DecoderError(Exception):
 
 
 class DataEncoder(json.JSONEncoder):
-    """Data encoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives.
+    """Data encoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.
 
     Notes
     -----
@@ -94,7 +94,7 @@ class DataEncoder(json.JSONEncoder):
 
 
 class DataDecoder(json.JSONDecoder):
-    """Data decoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives."""
+    """Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives."""
 
     def __init__(self, *args, **kwargs):
         super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)

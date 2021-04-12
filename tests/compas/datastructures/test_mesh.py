@@ -133,8 +133,7 @@ def test_from_off():
 
 
 def test_from_lines():
-    with open(compas.get('lines.json'), 'r') as fo:
-        lines = json.load(fo)
+    lines = compas.json_load(compas.get('lines.json'))
     mesh = Mesh.from_lines(lines)
     assert mesh.number_of_faces() == 10
     assert mesh.number_of_vertices() == 32
