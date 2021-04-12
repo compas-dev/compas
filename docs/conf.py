@@ -306,14 +306,20 @@ def linkcode_resolve(domain, info):
 
     if len(parts) == 1:
         obj = getattr(module, info['fullname'])
-        filename = inspect.getmodule(obj).__name__.replace('.', '/')
+        mod = inspect.getmodule(obj)
+        if not mod:
+            return None
+        filename = mod.__name__.replace('.', '/')
         lineno = inspect.getsourcelines(obj)[1]
     elif len(parts) == 2:
         obj_name, attr_name = parts
         obj = getattr(module, obj_name)
         attr = getattr(obj, attr_name)
         if inspect.isfunction(attr):
-            filename = inspect.getmodule(attr).__name__.replace('.', '/')
+            mod = inspect.getmodule(attr)
+            if not mod:
+                return None
+            filename = mod.__name__.replace('.', '/')
             lineno = inspect.getsourcelines(attr)[1]
         else:
             return None
