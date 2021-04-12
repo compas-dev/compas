@@ -28,7 +28,7 @@ The "from" methods are class methods (``@classmethod``) and act as alternative c
 The "to" methods are their counterparts that produce compatible data from object instances.
 
 
-Explicit serialisation
+Explicit serialization
 ======================
 
 Create a mesh, convert it do its data representation, and construct a new mesh from that data.
@@ -56,7 +56,7 @@ Create a mesh, convert it do its data representation, and construct a new mesh f
     mesh2 = Mesh.from_data(data)
 
 
-Implicit serialisation
+Implicit serialization
 ======================
 
 .. code-block:: python

@@ -54,3 +54,15 @@ def test_json_mesh():
     assert all(before.has_edge(edge) for edge in after.edges())
     assert all(after.has_edge(edge) for edge in before.edges())
     assert all(before.face_vertices(a) == after.face_vertices(b) for a, b in zip(before.faces(), after.faces()))
+
+
+def test_json_pretty():
+    result = compas.json_dumps(dict(a=12, b=6565), pretty=True)
+    # strip some spacing to make the test pass on ironpython
+    result = '\n'.join([l.strip() for l in result.split('\n')])
+    assert result == """{\n"a": 12,\n"b": 6565\n}"""
+
+
+def test_json_url():
+    data = compas.json_load('https://raw.githubusercontent.com/compas-dev/compas/main/schemas/graph.json')
+    assert data['$schema'] == 'http://json-schema.org/draft-07/schema#'

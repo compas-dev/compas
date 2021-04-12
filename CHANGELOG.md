@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added support for file-like objects, path strings and URLs to most of the methods previously accepting only file paths, eg. `compas.datastructures.Datastructure`, `compas.json_dump`, `compas.json_load`, etc.
+* Added `pretty` parameter to `compas.json_dump` and `compas.json_dumps`
+
 ### Changed
 
 ### Removed
@@ -189,7 +192,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `is_windows` to work for CPython and IronPython.
 * Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
-* Fixed data serialisation in `compas.datastructures.HalfFace`.
+* Fixed data serialization in `compas.datastructures.HalfFace`.
 
 ### Removed
 
@@ -587,7 +590,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added optional class parameter to `RhinoMesh.to_compas`.
-* Added max int key to serialisation of graph.
+* Added max int key to serialization of graph.
 
 ### Changed
 
@@ -781,8 +784,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Indirectly changed mesh serialisation to JSON (by changing key conversion and moving conversion into JSON methods).
-* Moved conversion of int keys of mesh data to strings for json serialisation to from/to json.
+* Indirectly changed mesh serialization to JSON (by changing key conversion and moving conversion into JSON methods).
+* Moved conversion of int keys of mesh data to strings for json serialization to from/to json.
 * Moved from/to methods for mesh into mesh definition.
 * Subdivision algorithms use fast mesh copy.
 
