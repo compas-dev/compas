@@ -2,22 +2,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-
+import compas
 from compas.base import Base
 from compas.files import URDFElement
 from compas.files import URDFParser
-from compas.geometry import Vector
-from compas.geometry import transform_vectors
 from compas.geometry import Rotation
 from compas.geometry import Transformation
 from compas.geometry import Translation
-
+from compas.geometry import Vector
+from compas.geometry import transform_vectors
 from compas.robots.model.geometry import Origin
-from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _attr_from_data
+from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _parse_floats
-
 
 __all__ = [
     'Joint',
@@ -64,13 +61,11 @@ class ParentLink(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class ChildLink(Base):
@@ -105,13 +100,11 @@ class ChildLink(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Calibration(Base):
@@ -157,13 +150,11 @@ class Calibration(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Dynamics(Base):
@@ -208,13 +199,11 @@ class Dynamics(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Limit(Base):
@@ -276,13 +265,11 @@ class Limit(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
@@ -342,13 +329,11 @@ class Mimic(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     def calculate_position(self, mimicked_joint_position):
         return self.multiplier * mimicked_joint_position + self.offset
@@ -401,13 +386,11 @@ class SafetyController(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Axis(Base):
@@ -467,13 +450,11 @@ class Axis(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     def copy(self):
         """Create a copy of the axis instance."""
@@ -673,13 +654,11 @@ class Joint(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     @property
     def current_transformation(self):
