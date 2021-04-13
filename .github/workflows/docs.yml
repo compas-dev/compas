@@ -20,7 +20,7 @@ jobs:
         id: docs
         with:
           dest: deploy
-          build-to-subfolder: true
+          build_to_subfolder: true
 
       - name: Deploy docs
         if: success() && steps.docs.outputs.commit_type != 'pull'
@@ -48,7 +48,7 @@ jobs:
 
       - uses: compas-dev/compas-actions.docversions@main
         with:
-          current-patch: ${{ needs.build.outputs.current_patch }}
+          current_patch: ${{ needs.build.outputs.current_patch }}
 
       # - name: Deploy docs
       #   if: success()
