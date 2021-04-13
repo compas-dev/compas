@@ -38,7 +38,7 @@ jobs:
   
   docVersions:
     needs: build
-    # if: needs.build.outputs.commit_type == 'tag'
+    if: needs.build.outputs.commit_type == 'tag'
     name: update doc versions
     runs-on: ubuntu-latest
     steps:
@@ -50,12 +50,12 @@ jobs:
         with:
           current_patch: ${{ needs.build.outputs.current_patch }}
 
-      # - name: Deploy docs
-      #   if: success()
-      #   uses: crazy-max/ghaction-github-pages@v2
-      #   with:
-      #     target_branch: gh-pages
-      #     build_dir: ./
-      #     keep_history: false
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy docs
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: ./
+          keep_history: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
