@@ -38,43 +38,24 @@ jobs:
   
   docVersions:
     needs: build
-    if: needs.build.outputs.commit_type == 'tag'
+    # if: needs.build.outputs.commit_type == 'tag'
     name: update doc versions
     runs-on: ubuntu-latest
-    env:
-      CURRENT_PATCH: ${{needs.build.outputs.current_patch}}
     steps:
       - uses: actions/checkout@v2
         with:
           ref: gh-pages
 
-      - name: update doc versions
-        run: |
-          echo latest > doc_versions.txt
-          CURRENT_MINOR=${CURRENT_PATCH%.*}
-          echo current patch: $CURRENT_PATCH current minor: $CURRENT_MINOR
-          for folder in $(ls -rd */ | tr -d '/')
-          do
-              if [[ $folder =~ ^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}$ ]]; then
-                  PATCH=$folder
-                  MINOR=${folder%.*}
-                  if [[ $PATCH != $CURRENT_PATCH && $MINOR = $CURRENT_MINOR ]]; then
-                      echo $PATCH will be deleted
-                      rm -Rf $PATCH
-                  else
-                      echo $PATCH  >> doc_versions.txt
-                  fi
-              fi
-          done
-          echo updated doc versions:
-          cat doc_versions.txt
-
-      - name: Deploy docs
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+      - uses: compas-dev/compas-actions.docversions@main
         with:
-          target_branch: gh-pages
-          build_dir: ./
-          keep_history: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          current-patch: ${{ needs.build.outputs.current_patch }}
+
+      # - name: Deploy docs
+      #   if: success()
+      #   uses: crazy-max/ghaction-github-pages@v2
+      #   with:
+      #     target_branch: gh-pages
+      #     build_dir: ./
+      #     keep_history: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
