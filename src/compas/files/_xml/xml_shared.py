@@ -2,17 +2,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import io
 import xml.etree.ElementTree as ET
+
+from compas import _iotools
 
 
 def shared_xml_from_file(source, tree_parser, http_response_type):
     target = TreeBuilderWithNamespaces()
-    # If the source is an http_response_type (`addinfourl` or `HttpResponse`)
-    # it cannot be read twice, so we first read the response into a byte stream.
-    if isinstance(source, http_response_type):
-        source = io.BytesIO(source.read())
-    tree = ET.parse(source, tree_parser(target=target))
+    with _iotools.open_file(source, 'r') as f:
+        tree = ET.parse(f, tree_parser(target=target))
     return tree.getroot()
 
 

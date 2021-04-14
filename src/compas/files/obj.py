@@ -1,17 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from collections import OrderedDict
 
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
-
 import compas
+from compas import _iotools
 from compas.utilities import geometric_key
-
 
 __all__ = [
     'OBJ',
@@ -82,8 +77,8 @@ class OBJReader(object):
 
     Parameters
     ----------
-    filepath : str
-        Path to the file.
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
 
     Attributes
     ----------
@@ -146,24 +141,22 @@ class OBJReader(object):
         self.groups = {}
         self.objects = {}
         self.group = None
-        # open file path and read
-        # self.open()
-        # self.pre()
-        # self.read()
-        # self.post()
 
     def open(self):
-        if self.filepath.startswith('http'):
-            resp = urlopen(self.filepath)
-            self.content = iter(resp.read().decode('utf-8').split('\n'))
-        else:
-            with open(self.filepath, 'r') as fh:
-                self.content = iter(fh.readlines())
+        with _iotools.open_file(self.filepath, 'r') as f:
+            self.content = f.readlines()
 
     def pre(self):
         lines = []
         is_continuation = False
+        needs_decode = None
+
         for line in self.content:
+            # Check this only one time
+            if needs_decode is None:
+                needs_decode = hasattr(line, 'decode')
+            if needs_decode:
+                line = line.decode('utf-8')
             line = line.rstrip()
             if not line:
                 continue
@@ -397,7 +390,7 @@ class OBJWriter(object):
         self.file = None
 
     def write(self):
-        with open(self.filepath, 'w') as self.file:
+        with _iotools.open_file(self.filepath, 'w') as self.file:
             self.write_header()
             if self.unweld:
                 self.write_vertices_and_faces()
@@ -453,6 +446,7 @@ class OBJWriter(object):
 if __name__ == '__main__':
 
     import os
+
     from compas.datastructures import Mesh
     from compas_plotters import MeshPlotter
 

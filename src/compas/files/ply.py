@@ -1,10 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import struct
-import compas
 
+import compas
+from compas import _iotools
 
 __all__ = [
     'PLY',
@@ -172,7 +173,7 @@ class PLYReader(object):
         # read it as text
         # otherwise file.tell() can't be used reliably
         # to figure out where the header ends
-        with open(self.filepath) as file:
+        with _iotools.open_file(self.filepath) as file:
             file.seek(0)
 
             line = file.readline().rstrip()
@@ -254,7 +255,7 @@ class PLYReader(object):
     def read_data(self):
         if not self.end_header:
             raise Exception('header has not been read, or the file is not valid')
-        with open(self.filepath) as self.file:
+        with _iotools.open_file(self.filepath) as self.file:
             self.file.seek(self.end_header)
             for section in self.sections:
                 if section == 'vertex':
@@ -270,7 +271,7 @@ class PLYReader(object):
     def read_data_binary(self):
         if not self.end_header:
             raise Exception('header has not been read, or the file is not valid')
-        with open(self.filepath, 'rb') as self.file:
+        with _iotools.open_file(self.filepath, 'rb') as self.file:
             self.file.seek(self.end_header)
             for section in self.sections:
                 if section == 'vertex':
@@ -482,7 +483,7 @@ class PLYWriter(object):
         self.file = None
 
     def write(self):
-        with open(self.filepath, 'w') as self.file:
+        with _iotools.open_file(self.filepath, 'w') as self.file:
             self.write_header()
             self.write_vertices()
             self.write_faces()
@@ -524,6 +525,7 @@ class PLYWriter(object):
 if __name__ == "__main__":
 
     import os
+
     from compas.datastructures import Mesh
 
     FILE = os.path.join(compas.DATA, 'tubemesh.ply')

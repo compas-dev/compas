@@ -316,7 +316,7 @@ class Proxy(object):
 
         Warnings
         --------
-        The `args` and `kwargs` have to be JSON-serialisable.
+        The `args` and `kwargs` have to be JSON-serializable.
         This means that, currently, only native Python objects are supported.
         The returned results will also always be in the form of built-in Python objects.
         """
