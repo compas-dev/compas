@@ -2,11 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
+import compas
 from copy import deepcopy
 from compas.base import Base
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
 
 
 __all__ = ['Primitive']
@@ -17,6 +15,10 @@ class Primitive(Base):
 
     def __init__(self):
         super(Primitive, self).__init__()
+
+    def __ne__(self, other):
+        # this is not obvious to ironpython
+        return not self.__eq__(other)
 
     @classmethod
     def from_json(cls, filepath):
@@ -37,8 +39,7 @@ class Primitive(Base):
         This constructor method is meant to be used in conjunction with the
         corresponding *to_json* method.
         """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp, cls=DataDecoder)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_data(self):
@@ -52,15 +53,14 @@ class Primitive(Base):
         return self.data
 
     def to_json(self, filepath):
-        """Serialise the structured data representing the primitive to json.
+        """Serialize the structured data representing the primitive to json.
 
         Parameters
         ----------
         filepath : str
             The path to the json file.
         """
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f, cls=DataEncoder)
+        compas.json_dump(self.data, filepath)
 
     def copy(self):
         """Makes a copy of this primitive.

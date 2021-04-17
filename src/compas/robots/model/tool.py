@@ -2,8 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-
+import compas
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots.model.robot import RobotModel
@@ -122,8 +121,8 @@ class ToolModel(RobotModel):
 
         Parameters
         ----------
-        filepath : str
-            Path to the file containing the data.
+        filepath : path string, file-like object or URL string
+            Path, file or URL to the file containing the data.
 
         Returns
         -------
@@ -137,17 +136,16 @@ class ToolModel(RobotModel):
         >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
         >>> tool = ToolModel.from_json(filepath)
         """
-        with open(filepath, 'r') as f:
-            data = json.load(f)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        """Serialise the data dictionary representing the tool to JSON and store in a file.
+        """Serialize the data dictionary representing the tool to JSON and store in a file.
 
         Parameters
         ----------
-        filepath : :obj:`str`
-            Path to the file.
+        filepath : path string or file-like object
+            Path or file where to store the data.
 
         Returns
         -------
@@ -165,8 +163,7 @@ class ToolModel(RobotModel):
         >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
         >>> tool.to_json(filepath)
         """
-        with open(filepath, 'w') as f:
-            json.dump(self.data, f, indent=4, sort_keys=True)
+        compas.json_dump(self.data, filepath, pretty=True)
 
     def from_tcf_to_t0cf(self, frames_tcf):
         """Converts a list of frames at the robot's tool tip (tcf frame) to frames at the robot's flange (tool0 frame).

@@ -2,11 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry import allclose
 from compas.geometry import transform_points
 
+from compas.geometry.predicates import is_point_on_line
+from compas.geometry.primitives import Line
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
-from compas.geometry.primitives import Line
 
 from compas.utilities import pairwise
 
@@ -108,7 +110,7 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polyline({})".format(", ".join(["{}".format(point) for point in self.points]))
+        return "Polyline([{}])".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -117,13 +119,16 @@ class Polyline(Primitive):
         return self.points[key]
 
     def __setitem__(self, key, value):
-        self.points[key] = value
+        self.points[key] = Point(*value)
+        self._lines = None
 
     def __iter__(self):
         return iter(self.points)
 
     def __eq__(self, other):
-        return all(a == b for a, b in zip(self, other))
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+            return False
+        return allclose(self, other)
 
     # ==========================================================================
     # constructors
@@ -257,6 +262,130 @@ class Polyline(Primitive):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
+
+    def split_at_corners(self, angle_threshold):
+        """Splits a polyline at corners larger than the given angle_threshold
+
+        Parameters
+        -----------
+        angle_threshold : float
+            In radians.
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Polyline`
+
+        """
+
+        corner_ids = []
+        split_polylines = []
+        points = self.points
+        seg_ids = list(range(len(self.lines)))
+
+        if self.is_closed():
+            seg_ids.append(0)
+
+        for seg1, seg2 in pairwise(seg_ids):
+            angle = self.lines[seg1].vector.angle(self.lines[seg2].vector)
+            if angle >= angle_threshold:
+                corner_ids.append(seg1+1)
+
+        if self.is_closed() and len(corner_ids) > 0:
+            if corner_ids[-1] != len(points):
+                corner_ids = [corner_ids[-1]] + corner_ids
+        else:
+            corner_ids = [0] + corner_ids + [len(points)]
+
+        for id1, id2 in pairwise(corner_ids):
+            if id1 < id2:
+                split_polylines.append(Polyline(points[id1:id2+1]))
+            else:
+                looped_pts = [points[i] for i in range(id1, len(points))] + points[1:id2+1]
+                split_polylines.append(Polyline(looped_pts))
+
+        if self.is_closed() and not corner_ids:
+            return [Polyline(self.points)]
+
+        return split_polylines
+
+    def tangent_at_point_on_polyline(self, point):
+        """Calculates the tangent vector of a point on a polyline
+
+        Parameters
+        -----------
+        point: :class:`compas.geometry.Point`
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+        """
+        for line in self.lines:
+            if is_point_on_line(point, line):
+                return line.direction
+        raise Exception('{} not found!'.format(point))
+
+    def divide_polyline(self, num_segments):
+        """Divide a polyline in equal segments.
+
+        Parameters
+        -----------
+        num_segments : int
+
+        Returns
+        -------
+        list
+            list of :class:`compas.geometry.Point`
+        """
+        segment_length = self.length/num_segments
+
+        return self.divide_polyline_by_length(segment_length, False)
+
+    def divide_polyline_by_length(self, length, strict=True, tol=1e-06):
+        """Splits a polyline in segments of a given length.
+
+        Parameters
+        -----------
+        length : float
+
+        strict : bool
+            If set to ``False``, the remainder segment will be added even if it is smaller than the desired length
+
+        tol : float
+            floating point error tolerance
+
+        Returns
+        -------
+        list
+            list of :class:`compas.geometry.Point`
+        """
+        num_pts = int(self.length/length)
+        total_length = [0, 0]
+        division_pts = [self.points[0]]
+        new_polyline = self
+        for i in range(num_pts):
+            for i_ln, line in enumerate(new_polyline.lines):
+                total_length.append(total_length[-1] + line.length)
+                if total_length[-1] > length:
+                    amp = (length - total_length[-2]) / line.length
+                    new_pt = line.start + line.vector.scaled(amp)
+                    division_pts.append(new_pt)
+                    total_length = [0, 0]
+                    remaining_pts = new_polyline.points[i_ln+2:]
+                    new_polyline = Polyline([new_pt, line.end] + remaining_pts)
+                    break
+                elif total_length[-1] == length:
+                    total_length = [0, 0]
+                    division_pts.append(line.end)
+
+            if len(division_pts) == num_pts+1:
+                break
+
+        if strict is False and not self.is_closed() and len(division_pts) < num_pts+1:
+            division_pts.append(new_polyline.points[-1])
+        elif strict is False and division_pts[-1].distance_to_point(self.points[-1]) > tol:
+            division_pts.append(self.points[-1])
+
+        return division_pts
 
 
 # ==============================================================================

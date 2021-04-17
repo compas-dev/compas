@@ -55,10 +55,42 @@ misc
 """
 from __future__ import absolute_import
 
-from compas_rhino.utilities import unload_modules  # noqa : F401
+from compas_rhino.utilities import unload_modules
+from .drawing import (
+    draw_frame,
+    draw_points,
+    draw_lines,
+    draw_geodesics,
+    draw_polylines,
+    draw_faces,
+    draw_cylinders,
+    draw_pipes,
+    draw_spheres,
+    draw_mesh,
+    draw_network,
+    draw_circles
+)
+from .sets import (
+    list_to_ghtree,
+    ghtree_to_list
+)
+from .timer import update_component
 
-from .drawing import *  # noqa : F401 F403
-from .sets import *  # noqa : F401 F403
-from .timer import *  # noqa : F401 F403
-
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'unload_modules',
+    'draw_frame',
+    'draw_points',
+    'draw_lines',
+    'draw_geodesics',
+    'draw_polylines',
+    'draw_faces',
+    'draw_cylinders',
+    'draw_pipes',
+    'draw_spheres',
+    'draw_mesh',
+    'draw_network',
+    'draw_circles',
+    'list_to_ghtree',
+    'ghtree_to_list',
+    'update_component'
+]

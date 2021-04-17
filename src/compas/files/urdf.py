@@ -3,9 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
-import json
 import sys
 
+import compas
 from compas.base import Base
 from compas.files.xml import XML
 from compas.files.xml import XMLElement
@@ -367,13 +367,11 @@ class URDFGenericElement(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class URDFElement(XMLElement):

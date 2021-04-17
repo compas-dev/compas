@@ -2,22 +2,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-
+import compas
 from compas.base import Base
 from compas.files import URDFElement
 from compas.files import URDFParser
-from compas.geometry import Vector
-from compas.geometry import transform_vectors
 from compas.geometry import Rotation
 from compas.geometry import Transformation
 from compas.geometry import Translation
-
+from compas.geometry import Vector
+from compas.geometry import transform_vectors
 from compas.robots.model.geometry import Origin
-from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _attr_from_data
+from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _parse_floats
-
 
 __all__ = [
     'Joint',
@@ -64,13 +61,11 @@ class ParentLink(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class ChildLink(Base):
@@ -105,13 +100,11 @@ class ChildLink(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Calibration(Base):
@@ -157,13 +150,11 @@ class Calibration(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Dynamics(Base):
@@ -181,7 +172,6 @@ class Dynamics(Base):
             'friction': self.friction,
         }
         attributes.update(self.attr)
-        attributes = dict(filter(lambda x: x[1], attributes.items()))
         return URDFElement('dynamics', attributes)
 
     @property
@@ -209,13 +199,11 @@ class Dynamics(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Limit(Base):
@@ -277,13 +265,11 @@ class Limit(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
@@ -343,13 +329,11 @@ class Mimic(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     def calculate_position(self, mimicked_joint_position):
         return self.multiplier * mimicked_joint_position + self.offset
@@ -402,13 +386,11 @@ class SafetyController(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Axis(Base):
@@ -468,13 +450,11 @@ class Axis(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     def copy(self):
         """Create a copy of the axis instance."""
@@ -609,6 +589,10 @@ class Joint(Base):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
+        # The following are world-relative frames representing the origin and the axis, which change with
+        # the joint state, while `origin` and `axis` above are parent-relative and static.
+        self.current_origin = self.origin.copy()
+        self.current_axis = self.axis.copy()
 
     def get_urdf_element(self):
         attributes = {
@@ -670,21 +654,16 @@ class Joint(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     @property
     def current_transformation(self):
         """Current transformation of the joint."""
-        if self.origin:
-            return Transformation.from_frame(self.origin)
-        else:
-            return Transformation()
+        return Transformation.from_frame(self.current_origin)
 
     def transform(self, transformation):
         """Transform the joint in place.
@@ -698,10 +677,8 @@ class Joint(Base):
         -------
         None
         """
-        if self.origin:
-            self.origin.transform(transformation)
-        if self.axis:
-            self.axis.transform(transformation)
+        self.current_origin.transform(transformation)
+        self.current_axis.transform(transformation)
 
     def _create(self, transformation):
         """Internal method to initialize the transformation tree.
@@ -715,10 +692,8 @@ class Joint(Base):
         -------
         None
         """
-        if self.origin:
-            self.origin.transform(transformation)
-        if self.axis:
-            self.axis.transform(self.current_transformation)
+        self.current_origin = self.origin.transformed(transformation)
+        self.current_axis.transform(self.current_transformation)
 
     def calculate_revolute_transformation(self, position):
         """Returns a transformation of a revolute joint.
@@ -758,7 +733,7 @@ class Joint(Base):
         :class:`Rotation`
             Transformation of type rotation for the continuous joint.
         """
-        return Rotation.from_axis_and_angle(self.axis.vector, position, self.origin.point)
+        return Rotation.from_axis_and_angle(self.current_axis.vector, position, self.current_origin.point)
 
     def calculate_prismatic_transformation(self, position):
         """Returns a transformation of a prismatic joint.
@@ -781,7 +756,7 @@ class Joint(Base):
             raise ValueError('Prismatic joints are required to define a limit')
 
         position = max(min(position, self.limit.upper), self.limit.lower)
-        return Translation.from_vector(self.axis.vector * position)
+        return Translation.from_vector(self.current_axis.vector * position)
 
     # does this ever happen?
     def calculate_fixed_transformation(self, position):
@@ -839,7 +814,7 @@ class Joint(Base):
 
     def is_configurable(self):
         """Returns ``True`` if the joint can be configured, otherwise ``False``."""
-        return self.type != Joint.FIXED
+        return self.type != Joint.FIXED and self.mimic is None
 
     def is_scalable(self):
         """Returns ``True`` if the joint can be scaled, otherwise ``False``."""
@@ -857,7 +832,7 @@ class Joint(Base):
         -------
         None
         """
-        self.origin.scale(factor)
+        self.current_origin.scale(factor)
         if self.is_scalable():
             self.limit.scale(factor)
 

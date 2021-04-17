@@ -76,22 +76,141 @@ maps
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from .azync import *  # noqa: F401 F403
-from .coercing import *  # noqa: F401 F403
-from .colors import *  # noqa: F401 F403
-from .datetime import *  # noqa: F401 F403
-from .decorators import *  # noqa: F401 F403
-from .descriptors import *  # noqa: F401 F403
-from .encoders import *  # noqa: F401 F403
-from .images import *  # noqa: F401 F403
-from .itertools import *  # noqa: F401 F403
-from .maps import *  # noqa: F401 F403
-from .remote import *  # noqa: F401 F403
-from .ssh import *  # noqa: F401 F403
-from .xfunc import *  # noqa: F401 F403
+from .azync import await_callback
+from .coercing import (
+    coerce_sequence_of_list,
+    coerce_sequence_of_tuple,
+    is_item_iterable,
+    is_sequence_of_dict,
+    is_sequence_of_float,
+    is_sequence_of_int,
+    is_sequence_of_iterable,
+    is_sequence_of_list,
+    is_sequence_of_str,
+    is_sequence_of_tuple
+)
+from .colors import (
+    Colormap,
+    black,
+    blue,
+    color_to_colordict,
+    color_to_rgb,
+    cyan,
+    green,
+    hex_to_rgb,
+    i_to_black,
+    i_to_blue,
+    i_to_green,
+    i_to_red,
+    i_to_rgb,
+    i_to_white,
+    is_color_hex,
+    is_color_light,
+    is_color_rgb,
+    red,
+    rgb_to_hex,
+    rgb_to_rgb,
+    white,
+    yellow
+)
+from .datetime import (
+    now,
+    timestamp
+)
+from .decorators import (
+    abstractclassmethod,
+    abstractstaticmethod,
+    memoize,
+    print_profile
+)
+from .descriptors import (
+    Float,
+    RGBColour
+)
+from .encoders import (
+    DataDecoder,
+    DataEncoder
+)
+from .images import gif_from_images
+from .itertools import (
+    flatten,
+    grouper,
+    iterable_like,
+    linspace,
+    meshgrid,
+    normalize_values,
+    pairwise,
+    remap_values,
+    window
+)
+from .maps import (
+    geometric_key,
+    geometric_key_xy,
+    reverse_geometric_key
+)
+from .remote import download_file_from_remote
+from .ssh import SSH
+from .xfunc import XFunc
 
-
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'await_callback',
+    'is_sequence_of_str',
+    'is_sequence_of_int',
+    'is_sequence_of_float',
+    'is_sequence_of_tuple',
+    'is_sequence_of_list',
+    'is_sequence_of_dict',
+    'is_sequence_of_iterable',
+    'is_item_iterable',
+    'coerce_sequence_of_tuple',
+    'coerce_sequence_of_list',
+    'i_to_rgb',
+    'i_to_red',
+    'i_to_green',
+    'i_to_blue',
+    'i_to_white',
+    'i_to_black',
+    'is_color_rgb',
+    'is_color_hex',
+    'is_color_light',
+    'rgb_to_hex',
+    'rgb_to_rgb',
+    'hex_to_rgb',
+    'color_to_colordict',
+    'color_to_rgb',
+    'Colormap',
+    'red',
+    'green',
+    'blue',
+    'yellow',
+    'cyan',
+    'white',
+    'black',
+    'timestamp',
+    'now',
+    'abstractstaticmethod',
+    'abstractclassmethod',
+    'memoize',
+    'print_profile',
+    'Float',
+    'RGBColour',
+    'DataDecoder',
+    'DataEncoder',
+    'gif_from_images',
+    'normalize_values',
+    'remap_values',
+    'meshgrid',
+    'linspace',
+    'flatten',
+    'pairwise',
+    'window',
+    'iterable_like',
+    'grouper',
+    'geometric_key',
+    'reverse_geometric_key',
+    'geometric_key_xy',
+    'download_file_from_remote',
+    'SSH',
+    'XFunc'
+]

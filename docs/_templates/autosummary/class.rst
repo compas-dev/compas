@@ -8,6 +8,7 @@
 .. autoclass:: {{ objname }}
 
     {% block methods %}
+
     {% if methods %}
     .. rubric:: Methods
 
@@ -18,4 +19,5 @@
         ~{{ name }}.{{ item }}
     {%- endfor %}
     {% endif %}
+
     {% endblock %}

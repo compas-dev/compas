@@ -34,7 +34,9 @@ class Mesh(BaseMesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
+
     """
+
     bounding_box = mesh_bounding_box
     bounding_box_xy = mesh_bounding_box_xy
     collapse_edge = mesh_collapse_edge
@@ -54,10 +56,6 @@ class Mesh(BaseMesh):
     transformed = mesh_transformed
     unify_cycles = mesh_unify_cycles
     quads_to_triangles = mesh_quads_to_triangles
-
-    def transform_numpy(self, M):
-        from compas.datastructures.mesh.transformations_numpy import mesh_transform_numpy
-        mesh_transform_numpy(self, M)
 
 
 # =============================================================================

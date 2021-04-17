@@ -1,3 +1,4 @@
+# flake8: noqa
 # -*- coding: utf-8 -*-
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -6,12 +7,30 @@
 
 import sys
 import os
-
-from sphinx.ext.napoleon.docstring import NumpyDocstring
+import inspect
+import importlib
+import m2r2
 
 import sphinx_compas_theme
+from sphinx.ext.napoleon.docstring import NumpyDocstring
 
-sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../src'))
+
+# patches
+
+current_m2r2_setup = m2r2.setup
+
+def patched_m2r2_setup(app):
+    try:
+        return current_m2r2_setup(app)
+    except (AttributeError):
+        app.add_source_suffix(".md", "markdown")
+        app.add_source_parser(m2r2.M2RParser)
+    return dict(
+        version=m2r2.__version__, parallel_read_safe=True, parallel_write_safe=True,
+    )
+
+m2r2.setup = patched_m2r2_setup
 
 # -- General configuration ------------------------------------------------
 
@@ -19,7 +38,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "0.19.3"
+release = "1.4.0"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -45,13 +64,14 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
+    "sphinx.ext.linkcode",
+    "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
     "sphinx.ext.inheritance_diagram",
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
-    "m2r",
+    "m2r2",
     "nbsphinx",
 ]
 
@@ -79,6 +99,17 @@ autodoc_member_order = "groupwise"
 
 autoclass_content = "class"
 
+
+def skip(app, what, name, obj, would_skip, options):
+    if name.startswith('_'):
+        return True
+    return would_skip
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", skip)
+
+
 # autosummary options
 
 autosummary_generate = True
@@ -97,8 +128,8 @@ autosummary_mock_imports = [
 
 # graph options
 
-inheritance_graph_attrs = dict(rankdir="TB", size='"16.0, 10.0"', ratio="auto", resolution=150)
-inheritance_node_attrs = dict(fontsize=10)
+inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
+inheritance_node_attrs = dict(fontsize=8)
 
 # napoleon options
 
@@ -141,6 +172,7 @@ NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
 # assigned to the _section dict
 def patched_parse(self):
     self._sections["keys"] = self._parse_keys_section
+    self._sections["attributes"] = self._parse_attributes_section
     self._sections["class attributes"] = self._parse_class_attributes_section
     self._unpatched_parse()
 
@@ -255,6 +287,50 @@ intersphinx_mapping = {
     "compas": ("https://compas.dev/compas/latest/", None),
 }
 
+# linkcode
+
+def linkcode_resolve(domain, info):
+    if domain != 'py':
+        return None
+    if not info['module']:
+        return None
+    if not info['fullname']:
+        return None
+
+    package = info['module'].split('.')[0]
+    if not package.startswith('compas'):
+        return None
+
+    module = importlib.import_module(info['module'])
+    parts = info['fullname'].split('.')
+
+    if len(parts) == 1:
+        obj = getattr(module, info['fullname'])
+        mod = inspect.getmodule(obj)
+        if not mod:
+            return None
+        filename = mod.__name__.replace('.', '/')
+        lineno = inspect.getsourcelines(obj)[1]
+    elif len(parts) == 2:
+        obj_name, attr_name = parts
+        obj = getattr(module, obj_name)
+        attr = getattr(obj, attr_name)
+        if inspect.isfunction(attr):
+            mod = inspect.getmodule(attr)
+            if not mod:
+                return None
+            filename = mod.__name__.replace('.', '/')
+            lineno = inspect.getsourcelines(attr)[1]
+        else:
+            return None
+    else:
+        return None
+
+    return f"https://github.com/compas-dev/compas/blob/main/src/{filename}.py#L{lineno}"
+
+# extlinks
+
+extlinks = {}
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -268,10 +344,11 @@ html_theme_options = {
 }
 html_context = {}
 html_static_path = []
-html_extra_path = [".nojekyll"]
+html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
 html_show_sourcelink = False
+html_permalinks = False
 html_add_permalinks = ""
 html_experimental_html5_writer = True
 html_compact_lists = True

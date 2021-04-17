@@ -10,6 +10,7 @@ Tutorial
     tutorial/meshes
     tutorial/volmeshes
     tutorial/robots
+    tutorial/numericaldata
     tutorial/rpc
     tutorial/geomaps
     tutorial/serialization

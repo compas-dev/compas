@@ -2,8 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-
+import compas
 import compas.geometry
 from compas.base import Base
 from compas.datastructures import Mesh
@@ -176,13 +175,11 @@ class BaseShape(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Box(BaseShape):
@@ -234,6 +231,10 @@ class Box(BaseShape):
         box = cls('1 1 1')
         box.data = data
         return box
+
+    @classmethod
+    def from_geometry(cls, geometry):
+        return cls(' '.join([str(geometry.xsize), str(geometry.ysize), str(geometry.zsize)]))
 
 
 class Cylinder(BaseShape):
@@ -295,6 +296,10 @@ class Cylinder(BaseShape):
         cyl.data = data
         return cyl
 
+    @classmethod
+    def from_geometry(cls, geometry):
+        return cls(geometry.radius, geometry.height)
+
 
 class Sphere(BaseShape):
     """3D shape primitive representing a sphere.
@@ -346,6 +351,10 @@ class Sphere(BaseShape):
         sph.data = data
         return sph
 
+    @classmethod
+    def from_geometry(cls, geometry):
+        return cls(geometry.radius)
+
 
 class Capsule(BaseShape):
     """3D shape primitive representing a capsule.
@@ -396,6 +405,10 @@ class Capsule(BaseShape):
         cap = cls(data['radius'], data['length'])
         cap.data = data
         return cap
+
+    @classmethod
+    def from_geometry(cls, geometry):
+        return cls(geometry.radius, geometry.length)
 
 
 class MeshDescriptor(BaseShape):
@@ -508,13 +521,11 @@ class Color(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Texture(Base):
@@ -562,13 +573,11 @@ class Texture(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
 
 class Material(Base):
@@ -629,13 +638,11 @@ class Material(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     def get_color(self):
         """Get the RGBA color array of the material.
@@ -743,13 +750,11 @@ class Geometry(Base):
 
     @classmethod
     def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        data = compas.json_load(filepath)
         return cls.from_data(data)
 
     def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+        compas.json_dump(self.data, filepath)
 
     @property
     def geo(self):

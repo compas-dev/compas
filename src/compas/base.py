@@ -53,7 +53,7 @@ class Base(object):
     DATASCHEMA : :class:`schema.Schema`
         The schema of the data dict.
     JSONSCHEMA : dict
-        The schema of the serialised data dict.
+        The schema of the serialized data dict.
     data : dict
         The fundamental data describing the object.
         The structure of the data dict is defined by the implementing classes.
@@ -128,12 +128,12 @@ class Base(object):
 
     @classmethod
     def from_json(cls, filepath):
-        """Construct an object from serialised data contained in a JSON file.
+        """Construct an object from serialized data contained in a JSON file.
 
         Parameters
         ----------
-        filepath : str
-            The path to the file for serialisation.
+        filepath : path string, file-like object or URL string
+            The path, file or URL to the file for serialization.
         """
         raise NotImplementedError
 
@@ -142,17 +142,17 @@ class Base(object):
 
         Parameters
         ----------
-        filepath : str
-            The path to the file containing the data.
+        filepath : path string or file-like object
+            The path or file-like object to the file containing the data.
         """
         raise NotImplementedError
 
     def __getstate__(self):
-        """Return the object data for state state serialisation with older pickle protocols."""
+        """Return the object data for state serialization with older pickle protocols."""
         return {'__dict__': self.__dict__.copy(), 'dtype': self.dtype, 'data': self.data}
 
     def __setstate__(self, state):
-        """Assign an unserialised state to the object data to support older pickle protocols."""
+        """Assign a deserialized state to the object data to support older pickle protocols."""
         self.__dict__.update(state['__dict__'])
         self.data = state['data']
 

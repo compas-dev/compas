@@ -9,7 +9,7 @@ robots
 Model
 =====
 
-.. inheritance-diagram:: RobotModel Joint Link ToolModel
+.. inheritance-diagram:: RobotModel Joint Link ToolModel Configuration
     :parts: 1
 
 The root of the model is the :class:`RobotModel` class, which
@@ -24,6 +24,7 @@ elements connecting the links together.
     Joint
     Link
     ToolModel
+    Configuration
 
 
 Geometric description
@@ -113,12 +114,83 @@ the processing of these resources.
     LocalPackageMeshLoader
 
 """
-
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from .model import *  # noqa: F401 F403
-from .resources import *  # noqa: F401 F403
+from .configuration import (
+    Configuration
+)
+from .model import (
+    Axis,
+    Box,
+    Calibration,
+    Capsule,
+    ChildLink,
+    Collision,
+    Color,
+    Cylinder,
+    Dynamics,
+    Geometry,
+    Inertia,
+    Inertial,
+    Joint,
+    Limit,
+    Link,
+    Mass,
+    Material,
+    MeshDescriptor,
+    Mimic,
+    Origin,
+    ParentLink,
+    RobotModel,
+    SafetyController,
+    Sphere,
+    Texture,
+    ToolModel,
+    Visual
+)
+from .resources import (
+    AbstractMeshLoader,
+    DefaultMeshLoader,
+    GithubPackageMeshLoader,
+    LocalPackageMeshLoader
+)
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    'Geometry',
+    'Box',
+    'Cylinder',
+    'Sphere',
+    'Capsule',
+    'MeshDescriptor',
+    'Color',
+    'Texture',
+    'Material',
+    'Origin',
+
+    'Joint',
+    'ParentLink',
+    'ChildLink',
+    'Calibration',
+    'Dynamics',
+    'Limit',
+    'Axis',
+    'Mimic',
+    'SafetyController',
+
+    'Link',
+    'Inertial',
+    'Visual',
+    'Collision',
+    'Mass',
+    'Inertia',
+
+    'RobotModel',
+    'ToolModel',
+
+    'AbstractMeshLoader',
+    'DefaultMeshLoader',
+    'LocalPackageMeshLoader',
+    'GithubPackageMeshLoader',
+
+    'Configuration'
+]

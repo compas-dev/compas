@@ -107,7 +107,7 @@ class Capsule(Shape):
 
     @property
     def length(self):
-        self.line.length
+        return self.line.length
 
     @property
     def volume(self):

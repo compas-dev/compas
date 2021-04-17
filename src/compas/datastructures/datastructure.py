@@ -1,13 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import json
 from copy import deepcopy
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
-from compas.base import Base
 
+import compas
+from compas.base import Base
 
 __all__ = ['Datastructure']
 
@@ -66,8 +65,8 @@ class Datastructure(Base):
 
         Parameters
         ----------
-        filepath : str
-            The path to the json file.
+        filepath : path string, file-like object or URL string
+            A path, a file-like object or a URL pointing to a file.
 
         Returns
         -------
@@ -79,25 +78,20 @@ class Datastructure(Base):
         This constructor method is meant to be used in conjunction with the
         corresponding *to_json* method.
         """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp, cls=DataDecoder)
+        data = compas.json_load(filepath)
         datastructure = cls()
         datastructure.data = data
         return datastructure
 
     def to_json(self, filepath, pretty=False):
-        """Serialise the structured data representing the datastructure to json.
+        """Serialize the structured data representing the datastructure to json.
 
         Parameters
         ----------
-        filepath : str
-            The path to the json file.
+        filepath : path string or file-like object
+            A path, a file-like object or a URL pointing to a file.
         """
-        with open(filepath, 'w+') as f:
-            if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4, cls=DataEncoder)
-            else:
-                json.dump(self.data, f, cls=DataEncoder)
+        compas.json_dump(self.data, filepath, pretty)
 
     def copy(self, cls=None):
         """Make an independent copy of the datastructure object.
