@@ -1,12 +1,9 @@
 """
 ********************************************************************************
-base
+data
 ********************************************************************************
 
-.. deprecated:: 1.5
-    Use `compas.data` instead
-
-.. currentmodule:: compas.base
+.. currentmodule:: compas.data
 
 Classes
 =======
@@ -15,25 +12,21 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    Base
+    Data
+    DataEncoder
+    DataDecoder
 
 """
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import warnings
-
-from compas.data import Data
-
-Base = Data
+from .encoders import DataEncoder
+from .encoders import DataDecoder
+from .data import Data
 
 __all__ = [
-    'Base',
+    'Data',
+    'DataEncoder',
+    'DataDecoder'
 ]
-
-warnings.warn(
-    "The base module is deprecated. Use the data module instead",
-    DeprecationWarning,
-    stacklevel=2
-)

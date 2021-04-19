@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas
-from compas.base import Base
+from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Rotation
@@ -29,7 +29,7 @@ __all__ = [
 ]
 
 
-class ParentLink(Base):
+class ParentLink(Data):
     """Describes a parent relation between a joint its parent link."""
 
     def __init__(self, link):
@@ -68,7 +68,7 @@ class ParentLink(Base):
         compas.json_dump(self.data, filepath)
 
 
-class ChildLink(Base):
+class ChildLink(Data):
     """Describes a child relation between a joint and its child link."""
 
     def __init__(self, link):
@@ -107,7 +107,7 @@ class ChildLink(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Calibration(Base):
+class Calibration(Data):
     """Reference positions of the joint, used to calibrate the absolute position."""
 
     def __init__(self, rising=0.0, falling=0.0, reference_position=0.0):
@@ -157,7 +157,7 @@ class Calibration(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Dynamics(Base):
+class Dynamics(Data):
     """Physical properties of the joint used for simulation of dynamics."""
 
     def __init__(self, damping=0.0, friction=0.0, **kwargs):
@@ -206,7 +206,7 @@ class Dynamics(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Limit(Base):
+class Limit(Data):
     """Joint limit properties.
 
     Attributes
@@ -287,7 +287,7 @@ class Limit(Base):
         self.upper *= factor
 
 
-class Mimic(Base):
+class Mimic(Data):
     """Description of joint mimic."""
 
     def __init__(self, joint, multiplier=1.0, offset=0.):
@@ -339,7 +339,7 @@ class Mimic(Base):
         return self.multiplier * mimicked_joint_position + self.offset
 
 
-class SafetyController(Base):
+class SafetyController(Data):
     """Safety controller properties."""
 
     def __init__(self, k_velocity, k_position=0.0, soft_lower_limit=0.0, soft_upper_limit=0.0):
@@ -393,7 +393,7 @@ class SafetyController(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Axis(Base):
+class Axis(Data):
     """Representation of an axis or vector.
 
     Attributes
@@ -501,7 +501,7 @@ class Axis(Base):
         return "[%.3f, %.3f, %.3f]" % (self.x, self.y, self.z)
 
 
-class Joint(Base):
+class Joint(Data):
     """Representation of the kinematics and dynamics of a joint and its safety limits.
 
     Attributes

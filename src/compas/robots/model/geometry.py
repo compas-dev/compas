@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import compas
 import compas.geometry
-from compas.base import Base
+from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files.urdf import URDFElement
 from compas.files.urdf import URDFGenericElement
@@ -145,7 +145,7 @@ class Origin(Frame):
         self.point = self.point * factor
 
 
-class BaseShape(Base):
+class BaseShape(Data):
     """Base class for all 3D shapes.
 
     Attributes
@@ -472,7 +472,7 @@ class MeshDescriptor(BaseShape):
         return md
 
 
-class Color(Base):
+class Color(Data):
     """Color represented in RGBA.
 
     Parameters
@@ -528,7 +528,7 @@ class Color(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Texture(Base):
+class Texture(Data):
     """Texture description.
 
     Parameters
@@ -580,7 +580,7 @@ class Texture(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Material(Base):
+class Material(Data):
     """Material description.
 
     Parameters
@@ -676,7 +676,7 @@ TYPE_CLASS_ENUM = {
 }
 
 
-class Geometry(Base):
+class Geometry(Data):
     """Geometrical description of the shape of a link.
 
     Parameters

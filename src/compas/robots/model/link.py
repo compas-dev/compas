@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas
-from compas.base import Base
+from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Plane
@@ -48,7 +48,7 @@ def _get_geometry_and_origin(primitive):
     return geometry, origin
 
 
-class Mass(Base):
+class Mass(Data):
     """Represents a value of mass usually related to a link."""
 
     def __init__(self, value):
@@ -86,7 +86,7 @@ class Mass(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Inertia(Base):
+class Inertia(Data):
     """Rotational inertia matrix (3x3) represented in the inertia frame.
 
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
@@ -150,7 +150,7 @@ class Inertia(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Inertial(Base):
+class Inertial(Data):
     """Inertial properties of a link.
 
     Attributes
@@ -207,7 +207,7 @@ class Inertial(Base):
         compas.json_dump(self.data, filepath)
 
 
-class Visual(Base):
+class Visual(Data):
     """Visual description of a link.
 
     Attributes
@@ -315,7 +315,7 @@ class Visual(Base):
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Collision(Base):
+class Collision(Data):
     """Collidable description of a link.
 
     Attributes
@@ -403,7 +403,7 @@ class Collision(Base):
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Link(Base):
+class Link(Data):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
     Attributes

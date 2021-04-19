@@ -6,7 +6,7 @@ import itertools
 import random
 
 import compas
-from compas.base import Base
+from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files import URDF
 from compas.files import URDFElement
@@ -34,7 +34,7 @@ from compas.topology import shortest_path
 __all__ = ['RobotModel']
 
 
-class RobotModel(Base):
+class RobotModel(Data):
     """RobotModel is the root element of the model.
 
     Instances of this class represent an entire robot as defined in an URDF
