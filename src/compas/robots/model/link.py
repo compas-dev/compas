@@ -74,17 +74,6 @@ class Mass(Data):
     def from_data(cls, data):
         return cls(**data)
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 class Inertia(Data):
     """Rotational inertia matrix (3x3) represented in the inertia frame.
@@ -138,17 +127,6 @@ class Inertia(Data):
     def from_data(cls, data):
         return cls(**data)
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 class Inertial(Data):
     """Inertial properties of a link.
@@ -188,23 +166,6 @@ class Inertial(Data):
         self.origin = Origin.from_data(data['origin']) if data['origin'] else None
         self.mass = Mass.from_data(data['mass']) if data['mass'] else None
         self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
-
-    @classmethod
-    def from_data(cls, data):
-        inertial = cls()
-        inertial.data = data
-        return inertial
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
 
 class Visual(Data):
@@ -282,17 +243,6 @@ class Visual(Data):
         visual = cls(Geometry.from_data(data['geometry']))
         visual.data = data
         return visual
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
     def get_color(self):
         """Get the RGBA color array assigned to the link.
@@ -386,17 +336,6 @@ class Collision(Data):
         visual.data = data
         return visual
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
     @classmethod
     def from_primitive(cls, primitive, **kwargs):
         geometry, origin = _get_geometry_and_origin(primitive)
@@ -476,17 +415,6 @@ class Link(Data):
         link.data = data
         return link
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 URDFParser.install_parser(Link, 'robot/link')
 URDFParser.install_parser(Inertial, 'robot/link/inertial')
@@ -507,10 +435,3 @@ URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/
 URDFParser.install_parser(Material, 'robot/link/visual/material')
 URDFParser.install_parser(Color, 'robot/link/visual/material/color')
 URDFParser.install_parser(Texture, 'robot/link/visual/material/texture')
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

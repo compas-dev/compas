@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots.model.robot import RobotModel
@@ -92,9 +91,6 @@ class ToolModel(RobotModel):
         self.name = self.name or 'attached_tool'
         self.link_name = data['link_name'] if 'link_name' in data else None
 
-    def to_data(self):
-        return self.data
-
     @classmethod
     def from_data(cls, data):
         """Construct a `ToolModel` from its data representation.  To be used
@@ -114,56 +110,6 @@ class ToolModel(RobotModel):
         tool = cls(None, None)
         tool.data = data
         return tool
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct a `ToolModel` from the data contained in a JSON file.
-
-        Parameters
-        ----------
-        filepath : path string, file-like object or URL string
-            Path, file or URL to the file containing the data.
-
-        Returns
-        -------
-        :class:`ToolModel`
-            The tool.
-
-        Examples
-        --------
-        >>> import os
-        >>> import compas
-        >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
-        >>> tool = ToolModel.from_json(filepath)
-        """
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        """Serialize the data dictionary representing the tool to JSON and store in a file.
-
-        Parameters
-        ----------
-        filepath : path string or file-like object
-            Path or file where to store the data.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        >>> import os
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> from compas.geometry import Frame
-        >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
-        >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
-        >>> tool = ToolModel(mesh, frame)
-        >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
-        >>> tool.to_json(filepath)
-        """
-        compas.json_dump(self.data, filepath, pretty=True)
 
     def from_tcf_to_t0cf(self, frames_tcf):
         """Converts a list of frames at the robot's tool tip (tcf frame) to frames at the robot's flange (tool0 frame).

@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
 from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
@@ -56,17 +55,6 @@ class ParentLink(Data):
     def from_data(cls, data):
         return cls(data['link'])
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 class ChildLink(Data):
     """Describes a child relation between a joint and its child link."""
@@ -94,17 +82,6 @@ class ChildLink(Data):
     @classmethod
     def from_data(cls, data):
         return cls(data['link'])
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
 
 class Calibration(Data):
@@ -139,23 +116,6 @@ class Calibration(Data):
         self.falling = data['falling']
         self.reference_position = data['reference_position']
 
-    @classmethod
-    def from_data(cls, data):
-        calibration = cls()
-        calibration.data = data
-        return calibration
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 class Dynamics(Data):
     """Physical properties of the joint used for simulation of dynamics."""
@@ -187,23 +147,6 @@ class Dynamics(Data):
         self.damping = data['damping']
         self.friction = data['friction']
         self.attr = _attr_from_data(data['attr'])
-
-    @classmethod
-    def from_data(cls, data):
-        dynamics = cls()
-        dynamics.data = data
-        return dynamics
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
 
 class Limit(Data):
@@ -253,23 +196,6 @@ class Limit(Data):
         self.velocity = data['velocity']
         self.lower = data['lower']
         self.upper = data['upper']
-
-    @classmethod
-    def from_data(cls, data):
-        limit = cls()
-        limit.data = data
-        return limit
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
@@ -324,17 +250,6 @@ class Mimic(Data):
         mimic.data = data
         return mimic
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
     def calculate_position(self, mimicked_joint_position):
         return self.multiplier * mimicked_joint_position + self.offset
 
@@ -380,17 +295,6 @@ class SafetyController(Data):
         sc = cls(data['k_velocity'])
         sc.data = data
         return sc
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
 
 class Axis(Data):
@@ -438,23 +342,6 @@ class Axis(Data):
         self.y = data['y']
         self.z = data['z']
         self.attr = _attr_from_data(data['attr'])
-
-    @classmethod
-    def from_data(cls, data):
-        axis = cls()
-        axis.data = data
-        return axis
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
     def copy(self):
         """Create a copy of the axis instance."""
@@ -648,17 +535,6 @@ class Joint(Data):
         )
         joint.data = data
         return joint
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
     @property
     def current_transformation(self):

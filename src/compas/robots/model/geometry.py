@@ -170,17 +170,6 @@ class BaseShape(Data):
     def from_data(cls, data):
         raise NotImplementedError
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 class Box(BaseShape):
     """3D shape primitive representing a box.
@@ -516,17 +505,6 @@ class Color(Data):
         color.data = data
         return color
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 class Texture(Data):
     """Texture description.
@@ -567,17 +545,6 @@ class Texture(Data):
     @classmethod
     def from_data(cls, data):
         return cls(**data)
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
 
 class Material(Data):
@@ -626,23 +593,6 @@ class Material(Data):
         self.name = data['name']
         self.color = Color.from_data(data['color'])
         self.texture = Texture.from_data(data['texture']) if data['texture'] else None
-
-    @classmethod
-    def from_data(cls, data):
-        material = cls()
-        material.data = data
-        return material
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
     def get_color(self):
         """Get the RGBA color array of the material.
@@ -744,17 +694,6 @@ class Geometry(Data):
         geo = cls(box=class_.from_data(data['shape']))
         geo.data = data
         return geo
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
     @property
     def geo(self):

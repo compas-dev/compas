@@ -5,7 +5,6 @@ from __future__ import print_function
 import itertools
 import random
 
-import compas
 from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files import URDF
@@ -112,17 +111,6 @@ class RobotModel(Data):
 
         self._rebuild_tree()
 
-    def to_data(self):
-        """Returns the data dictionary that represents the :class:`RobotModel`.
-        To be used in conjunction with :meth:`compas.robot.RobotModel.from_data()`.
-
-        Returns
-        -------
-        dict
-            The RobotModel's data.
-        """
-        return self.data
-
     @classmethod
     def from_data(cls, data):
         """Construct the :class:`compas.robots.RobotModel` from its data representation.
@@ -131,33 +119,6 @@ class RobotModel(Data):
         robot_model = cls(data['name'])
         robot_model.data = data
         return robot_model
-
-    def to_json(self, filepath):
-        """Serialize the robot model to a JSON file.
-
-        Parameters
-        ----------
-        filepath : path string or file-like object
-            A writeable file-like object or the path to a file.
-        """
-        compas.json_dump(self.data, filepath)
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Deserialize a robot model from a JSON file.
-
-        Parameters
-        ----------
-        filepath : path string, file-like object or URL string
-            A readable path, a file-like object or a URL pointing to a file.
-
-        Returns
-        -------
-        :class:`compas.robots.RobotModel`
-            Newly created instance of robot model.
-        """
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
