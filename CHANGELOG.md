@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `compas.utilities.DataDecoder` to `compas.data`.
 * Changed base object of `compas.datastructures.Datastructure` to `compas.data.Data`.
 * Changed base object of `compas.geometry.Primitive` to `compas.data.Data`.
+* Renamed `Base` to `Data` for all data based classes.
 
 ### Removed
 
