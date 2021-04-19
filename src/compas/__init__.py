@@ -9,7 +9,7 @@ compas
     :maxdepth: 1
     :titlesonly:
 
-    compas.base
+    compas.data
     compas.datastructures
     compas.files
     compas.geometry
