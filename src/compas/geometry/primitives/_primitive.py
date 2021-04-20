@@ -2,15 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
-from copy import deepcopy
-from compas.base import Base
+from compas.data import Data
 
 
 __all__ = ['Primitive']
 
 
-class Primitive(Base):
+class Primitive(Data):
     """Base class for geometric primitives."""
 
     def __init__(self):
@@ -19,59 +17,6 @@ class Primitive(Base):
     def __ne__(self, other):
         # this is not obvious to ironpython
         return not self.__eq__(other)
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct a primitive from structured data contained in a json file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjunction with the
-        corresponding *to_json* method.
-        """
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_data(self):
-        """Returns the data dictionary that represents the primitive.
-
-        Returns
-        -------
-        dict
-            The object's data.
-        """
-        return self.data
-
-    def to_json(self, filepath):
-        """Serialize the structured data representing the primitive to json.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-        """
-        compas.json_dump(self.data, filepath)
-
-    def copy(self):
-        """Makes a copy of this primitive.
-
-        Returns
-        -------
-        Primitive
-            The copy.
-        """
-        cls = type(self)
-        return cls.from_data(deepcopy(self.data))
 
     def transform(self, transformation):
         """Transform the primitive.

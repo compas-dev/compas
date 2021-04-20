@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from math import pi
 
-from compas.base import Base
+from compas.data import Data
 
 __all__ = [
     'Configuration',
@@ -75,7 +75,7 @@ class FixedLengthList(list):
     def clear(self): raise TypeError('Cannot change length of FixedLengthList')
 
 
-class Configuration(Base):
+class Configuration(Data):
     """Represents the configuration of a robot based on the state of its joints.
     If the names of joints are also provided, the configuration behaves as a
     dictionary of joint name-value pairs.

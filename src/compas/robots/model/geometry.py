@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import compas
 import compas.geometry
-from compas.base import Base
+from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files.urdf import URDFElement
 from compas.files.urdf import URDFGenericElement
@@ -145,7 +145,7 @@ class Origin(Frame):
         self.point = self.point * factor
 
 
-class BaseShape(Base):
+class BaseShape(Data):
     """Base class for all 3D shapes.
 
     Attributes
@@ -169,17 +169,6 @@ class BaseShape(Base):
     @classmethod
     def from_data(cls, data):
         raise NotImplementedError
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
 
 class Box(BaseShape):
@@ -472,7 +461,7 @@ class MeshDescriptor(BaseShape):
         return md
 
 
-class Color(Base):
+class Color(Data):
     """Color represented in RGBA.
 
     Parameters
@@ -516,19 +505,8 @@ class Color(Base):
         color.data = data
         return color
 
-    def to_data(self):
-        return self.data
 
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
-
-class Texture(Base):
+class Texture(Data):
     """Texture description.
 
     Parameters
@@ -568,19 +546,8 @@ class Texture(Base):
     def from_data(cls, data):
         return cls(**data)
 
-    def to_data(self):
-        return self.data
 
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
-
-class Material(Base):
+class Material(Data):
     """Material description.
 
     Parameters
@@ -627,23 +594,6 @@ class Material(Base):
         self.color = Color.from_data(data['color'])
         self.texture = Texture.from_data(data['texture']) if data['texture'] else None
 
-    @classmethod
-    def from_data(cls, data):
-        material = cls()
-        material.data = data
-        return material
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
     def get_color(self):
         """Get the RGBA color array of the material.
 
@@ -676,7 +626,7 @@ TYPE_CLASS_ENUM = {
 }
 
 
-class Geometry(Base):
+class Geometry(Data):
     """Geometrical description of the shape of a link.
 
     Parameters
@@ -744,17 +694,6 @@ class Geometry(Base):
         geo = cls(box=class_.from_data(data['shape']))
         geo.data = data
         return geo
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
 
     @property
     def geo(self):

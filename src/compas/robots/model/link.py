@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas
-from compas.base import Base
+from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Plane
@@ -48,7 +48,7 @@ def _get_geometry_and_origin(primitive):
     return geometry, origin
 
 
-class Mass(Base):
+class Mass(Data):
     """Represents a value of mass usually related to a link."""
 
     def __init__(self, value):
@@ -74,19 +74,8 @@ class Mass(Base):
     def from_data(cls, data):
         return cls(**data)
 
-    def to_data(self):
-        return self.data
 
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
-
-class Inertia(Base):
+class Inertia(Data):
     """Rotational inertia matrix (3x3) represented in the inertia frame.
 
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
@@ -138,19 +127,8 @@ class Inertia(Base):
     def from_data(cls, data):
         return cls(**data)
 
-    def to_data(self):
-        return self.data
 
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
-
-class Inertial(Base):
+class Inertial(Data):
     """Inertial properties of a link.
 
     Attributes
@@ -189,25 +167,8 @@ class Inertial(Base):
         self.mass = Mass.from_data(data['mass']) if data['mass'] else None
         self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
 
-    @classmethod
-    def from_data(cls, data):
-        inertial = cls()
-        inertial.data = data
-        return inertial
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
-
-class Visual(Base):
+class Visual(Data):
     """Visual description of a link.
 
     Attributes
@@ -283,17 +244,6 @@ class Visual(Base):
         visual.data = data
         return visual
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
     def get_color(self):
         """Get the RGBA color array assigned to the link.
 
@@ -315,7 +265,7 @@ class Visual(Base):
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Collision(Base):
+class Collision(Data):
     """Collidable description of a link.
 
     Attributes
@@ -386,24 +336,13 @@ class Collision(Base):
         visual.data = data
         return visual
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
     @classmethod
     def from_primitive(cls, primitive, **kwargs):
         geometry, origin = _get_geometry_and_origin(primitive)
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Link(Base):
+class Link(Data):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
     Attributes
@@ -476,17 +415,6 @@ class Link(Base):
         link.data = data
         return link
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        compas.json_dump(self.data, filepath)
-
 
 URDFParser.install_parser(Link, 'robot/link')
 URDFParser.install_parser(Inertial, 'robot/link/inertial')
@@ -507,10 +435,3 @@ URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/
 URDFParser.install_parser(Material, 'robot/link/visual/material')
 URDFParser.install_parser(Color, 'robot/link/visual/material/color')
 URDFParser.install_parser(Texture, 'robot/link/visual/material/texture')
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

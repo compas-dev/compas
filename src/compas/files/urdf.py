@@ -6,7 +6,7 @@ import inspect
 import sys
 
 import compas
-from compas.base import Base
+from compas.data import Data
 from compas.files.xml import XML
 from compas.files.xml import XMLElement
 from compas.utilities import memoize
@@ -322,7 +322,7 @@ class URDFParser(object):
         return result
 
 
-class URDFGenericElement(Base):
+class URDFGenericElement(Data):
     """Generic representation for all URDF elements that
     are not explicitly supported."""
 
