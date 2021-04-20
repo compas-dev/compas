@@ -191,14 +191,14 @@ def test_area_square(square, R):
 
 
 def test_area_triangle(triangle, R):
-    assert close(area_polygon(triangle), 0.5)
-    assert close(area_polygon_xy(triangle), 0.5)
-    assert close(area_triangle(triangle), 0.5)
-    assert close(area_triangle_xy(triangle), 0.5)
+    assert close(area_polygon(triangle.points), 0.5)
+    assert close(area_polygon_xy(triangle.points), 0.5)
+    assert close(area_triangle(triangle.points), 0.5)
+    assert close(area_triangle_xy(triangle.points), 0.5)
     assert close(triangle.area, 0.5)
     triangle.transform(R)
-    assert close(area_polygon(triangle), 0.5)
-    assert close(area_polygon_xy(triangle), 0.0)
-    assert close(area_triangle(triangle), 0.5)
-    assert close(area_triangle_xy(triangle), 0.0)
+    assert close(area_polygon(triangle.points), 0.5)
+    assert close(area_polygon_xy(triangle.points), 0.0)
+    assert close(area_triangle(triangle.points), 0.5)
+    assert close(area_triangle_xy(triangle.points), 0.0)
     assert close(triangle.area, 0.5)
