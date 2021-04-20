@@ -200,8 +200,8 @@ is also unit-length.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.conjugated.html#compas.geometry.Quaternion.conjugated" title="compas.geometry.Quaternion.conjugated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugated</span></code></a>()</p></td>
 <td><p>Returns a conjugate quaternion.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.copy.html#compas.geometry.Quaternion.copy" title="compas.geometry.Quaternion.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Makes a copy of this primitive.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.copy.html#compas.geometry.Quaternion.copy" title="compas.geometry.Quaternion.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_data.html#compas.geometry.Quaternion.from_data" title="compas.geometry.Quaternion.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a quaternion from a data dict.</p></td>
@@ -210,7 +210,7 @@ is also unit-length.</p>
 <td><p>Creates a quaternion object from a frame.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_json.html#compas.geometry.Quaternion.from_json" title="compas.geometry.Quaternion.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a primitive from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix" title="compas.geometry.Quaternion.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(M)</p></td>
 <td><p>Create a <a class="reference internal" href="#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a> from a transformation matrix.</p></td>
@@ -219,10 +219,10 @@ is also unit-length.</p>
 <td><p>Create a <a class="reference internal" href="#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a> from a <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Rotatation</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_data.html#compas.geometry.Quaternion.to_data" title="compas.geometry.Quaternion.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns the data dictionary that represents the primitive.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_json.html#compas.geometry.Quaternion.to_json" title="compas.geometry.Quaternion.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialize the structured data representing the primitive to json.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_json.html#compas.geometry.Quaternion.to_json" title="compas.geometry.Quaternion.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.transform.html#compas.geometry.Quaternion.transform" title="compas.geometry.Quaternion.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
 <td><p>Transform the primitive.</p></td>
@@ -271,7 +271,7 @@ is also unit-length.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>

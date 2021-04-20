@@ -192,8 +192,8 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.copy.html#compas.geometry.Point.copy" title="compas.geometry.Point.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Makes a copy of this primitive.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.copy.html#compas.geometry.Point.copy" title="compas.geometry.Point.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.distance_to_line.html#compas.geometry.Point.distance_to_line" title="compas.geometry.Point.distance_to_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_line</span></code></a>(line)</p></td>
 <td><p>Compute the distance to a line.</p></td>
@@ -208,7 +208,7 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 <td><p>Construct a point from a data dict.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.from_json.html#compas.geometry.Point.from_json" title="compas.geometry.Point.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a primitive from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.in_circle.html#compas.geometry.Point.in_circle" title="compas.geometry.Point.in_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_circle</span></code></a>(circle)</p></td>
 <td><p>Determine if the point lies inside the given circle.</p></td>
@@ -235,10 +235,10 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 <td><p>Determine if the point lies on the given segment.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.to_data.html#compas.geometry.Point.to_data" title="compas.geometry.Point.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns the data dictionary that represents the primitive.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.to_json.html#compas.geometry.Point.to_json" title="compas.geometry.Point.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialize the structured data representing the primitive to json.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.to_json.html#compas.geometry.Point.to_json" title="compas.geometry.Point.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.transform.html#compas.geometry.Point.transform" title="compas.geometry.Point.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform this point.</p></td>
@@ -287,7 +287,7 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>

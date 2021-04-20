@@ -109,7 +109,7 @@
 <dl class="py class">
 <dt id="compas.geometry.Transformation">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">Transformation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformation.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas.base.Base.html#compas.base.Base" title="compas.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.data.Data</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> represents a 4x4 transformation matrix.</p>
 <p>It is the base class for transformations like <a class="reference internal" href="compas.geometry.Rotation.html#compas.geometry.Rotation" title="compas.geometry.Rotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a>,
 <a class="reference internal" href="compas.geometry.Translation.html#compas.geometry.Translation" title="compas.geometry.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a>, <a class="reference internal" href="compas.geometry.Scale.html#compas.geometry.Scale" title="compas.geometry.Scale"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scale</span></code></a>, <a class="reference internal" href="compas.geometry.Reflection.html#compas.geometry.Reflection" title="compas.geometry.Reflection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reflection</span></code></a>,
@@ -188,7 +188,7 @@ x, y, z are in the right column of the matrix, i.e. <code class="docutils litera
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.to_data.html#compas.geometry.Transformation.to_data" title="compas.geometry.Transformation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.to_json.html#compas.geometry.Transformation.to_json" title="compas.geometry.Transformation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Transformation.to_json.html#compas.geometry.Transformation.to_json" title="compas.geometry.Transformation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Transformation.transpose.html#compas.geometry.Transformation.transpose" title="compas.geometry.Transformation.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
@@ -232,7 +232,7 @@ x, y, z are in the right column of the matrix, i.e. <code class="docutils litera
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>

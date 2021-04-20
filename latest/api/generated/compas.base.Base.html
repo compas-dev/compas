@@ -19,11 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Base.from_data" href="compas.base.Base.from_data.html" />
   
-  
-  
-    <link rel="prev" title="base" href="../compas.base.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -91,12 +87,6 @@
           <ol class="breadcrumb mb-3 bg-white px-0">
             <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
             
-              <li class="breadcrumb-item"><a href="../../api.html">API Reference</a></li>
-            
-              <li class="breadcrumb-item"><a href="../compas.html">compas</a></li>
-            
-              <li class="breadcrumb-item"><a href="../compas.base.html">base</a></li>
-            
             <li class="breadcrumb-item active" aria-current="page">Base</li>
           </ol>
         </nav>
@@ -106,48 +96,10 @@
           
           <div class="detail section" id="base">
 <h1>Base</h1>
-<dl class="py class">
+<dl class="py attribute">
 <dt id="compas.base.Base">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.base.</span></code><code class="sig-name descname"><span class="pre">Base</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/base.py#L48"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Abstract base class for all COMPAS objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>DATASCHEMA</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">schema.Schema</span></code>) – The schema of the data dict.</p></li>
-<li><p><strong>JSONSCHEMA</strong> (<em>dict</em>) – The schema of the serialized data dict.</p></li>
-<li><p><strong>data</strong> (<em>dict</em>) – The fundamental data describing the object.
-The structure of the data dict is defined by the implementing classes.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.base.Base.from_data.html#compas.base.Base.from_data" title="compas.base.Base.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.base.Base.from_json.html#compas.base.Base.from_json" title="compas.base.Base.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.base.Base.to_data.html#compas.base.Base.to_data" title="compas.base.Base.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.base.Base.to_json.html#compas.base.Base.to_json" title="compas.base.Base.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.base.Base.validate_data.html#compas.base.Base.validate_data" title="compas.base.Base.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
-<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.base.Base.validate_json.html#compas.base.Base.validate_json" title="compas.base.Base.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
-<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
-</tr>
-</tbody>
-</table>
+<code class="sig-prename descclassname"><span class="pre">compas.base.</span></code><code class="sig-name descname"><span class="pre">Base</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.data.Data</span></code></p>
 </dd></dl>
 
 </div>
@@ -168,50 +120,12 @@ The structure of the data dict is defined by the implementing classes.</p></li>
         
         
         <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column active">
+          <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../index.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../installation.html">Installation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.plugins.html">plugins</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.robots.html">robots</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../api.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
@@ -240,23 +154,7 @@ The structure of the data dict is defined by the implementing classes.</p></li>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="../compas.base.html" title="base" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
-          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
-          <div class="nav-title flex-grow-1 align-self-center">
-            <div class="nav-direction small font-weight-light">Previous</div>
-            base
-          </div>
-        </a>
-      
 
-      
-        <a href="compas.base.Base.from_data.html" title="Base.from_data" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
-          <div class="nav-title footer-link flex-grow-1 align-self-center">
-            <div class="nav-direction small font-weight-light">Next</div>
-            Base.from_data
-          </div>
-          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
-        </a>
       
     </nav>  
   </footer>

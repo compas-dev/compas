@@ -133,7 +133,7 @@
 <td><p>Return the edges connected to a node.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.copy.html#compas.datastructures.Network.copy" title="compas.datastructures.Network.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
-<td><p>Make an independent copy of the datastructure object.</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.degree.html#compas.datastructures.Network.degree" title="compas.datastructures.Network.degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></a>(key)</p></td>
 <td><p>Return the number of neighbors of a node.</p></td>
@@ -190,13 +190,13 @@
 <td><p>Get edges for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.from_data.html#compas.datastructures.Network.from_data" title="compas.datastructures.Network.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct a datastructure from structured data.</p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.from_edges.html#compas.datastructures.Network.from_edges" title="compas.datastructures.Network.from_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_edges</span></code></a>(edges)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.from_json.html#compas.datastructures.Network.from_json" title="compas.datastructures.Network.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a datastructure from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.from_lines.html#compas.datastructures.Network.from_lines" title="compas.datastructures.Network.from_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code></a>(lines[, precision])</p></td>
 <td><p>Construct a network from a set of lines represented by their start and end point coordinates.</p></td>
@@ -322,10 +322,10 @@
 <td><p>Print a summary of the graph.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_data.html#compas.datastructures.Network.to_data" title="compas.datastructures.Network.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns a dictionary of structured data representing the data structure.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_json.html#compas.datastructures.Network.to_json" title="compas.datastructures.Network.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
-<td><p>Serialize the structured data representing the datastructure to json.</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_lines.html#compas.datastructures.Network.to_lines" title="compas.datastructures.Network.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>()</p></td>
 <td><p>Return the lines of the network as pairs of start and end point coordinates.</p></td>
@@ -404,7 +404,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>

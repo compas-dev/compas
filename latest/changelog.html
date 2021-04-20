@@ -109,11 +109,19 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added support for file-like objects, path strings and URLs to most of the methods previously accepting only file paths, eg. <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Datastructure</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.json_dump</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.json_load</span></code>, etc.</p></li>
-<li><p>Added <code class="docutils literal notranslate"><span class="pre">pretty</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">compas.json_dump</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.json_dumps</span></code></p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">pretty</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">compas.json_dump</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.json_dumps</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.data.Data</span></code> as base object for all data objects (geometry, data structures, …).</p></li>
 </ul>
 </div>
 <div class="section" id="changed">
 <h3>Changed</h3>
+<ul class="simple">
+<li><p>Moved <code class="docutils literal notranslate"><span class="pre">compas.utilities.DataEncoder</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.data</span></code>.</p></li>
+<li><p>Moved <code class="docutils literal notranslate"><span class="pre">compas.utilities.DataDecoder</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.data</span></code>.</p></li>
+<li><p>Changed base object of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Datastructure</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.data.Data</span></code>.</p></li>
+<li><p>Changed base object of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.data.Data</span></code>.</p></li>
+<li><p>Renamed <code class="docutils literal notranslate"><span class="pre">Base</span></code> to <code class="docutils literal notranslate"><span class="pre">Data</span></code> for all data based classes.</p></li>
+</ul>
 </div>
 <div class="section" id="removed">
 <h3>Removed</h3>

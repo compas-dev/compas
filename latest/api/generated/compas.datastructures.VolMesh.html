@@ -203,7 +203,7 @@
 <td><p>Clear all the volmesh data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.copy.html#compas.datastructures.VolMesh.copy" title="compas.datastructures.VolMesh.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
-<td><p>Make an independent copy of the datastructure object.</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.cull_vertices.html#compas.datastructures.VolMesh.cull_vertices" title="compas.datastructures.VolMesh.cull_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_vertices</span></code></a>()</p></td>
 <td><p>Remove all unused vertices from the volmesh object.</p></td>
@@ -296,10 +296,10 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.from_data.html#compas.datastructures.VolMesh.from_data" title="compas.datastructures.VolMesh.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct a datastructure from structured data.</p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.from_json.html#compas.datastructures.VolMesh.from_json" title="compas.datastructures.VolMesh.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a datastructure from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.from_obj.html#compas.datastructures.VolMesh.from_obj" title="compas.datastructures.VolMesh.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a>(filepath[, precision])</p></td>
 <td><p>Construct a volmesh object from the data described in an OBJ file.</p></td>
@@ -419,10 +419,10 @@
 <td><p>Remove all unused vertices from the volmesh object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.to_data.html#compas.datastructures.VolMesh.to_data" title="compas.datastructures.VolMesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns a dictionary of structured data representing the data structure.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.to_json.html#compas.datastructures.VolMesh.to_json" title="compas.datastructures.VolMesh.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
-<td><p>Serialize the structured data representing the datastructure to json.</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.to_obj.html#compas.datastructures.VolMesh.to_obj" title="compas.datastructures.VolMesh.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a>(filepath[, precision])</p></td>
 <td><p>Write the volmesh to an OBJ file.</p></td>
@@ -552,7 +552,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>

@@ -135,8 +135,8 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.copy.html#compas.robots.Origin.copy" title="compas.robots.Origin.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Makes a copy of this primitive.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.copy.html#compas.robots.Origin.copy" title="compas.robots.Origin.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.euler_angles.html#compas.robots.Origin.euler_angles" title="compas.robots.Origin.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a>([static, axes])</p></td>
 <td><p>The Euler angles from the rotation given by the frame.</p></td>
@@ -151,7 +151,7 @@
 <td><p>Construct a frame from a rotation represented by Euler angles.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.from_json.html#compas.robots.Origin.from_json" title="compas.robots.Origin.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a primitive from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_list.html#compas.robots.Origin.from_list" title="compas.robots.Origin.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(values)</p></td>
 <td><p>Construct a frame from a list of 12 or 16 float values.</p></td>
@@ -187,10 +187,10 @@
 <td><p>Scale the origin by a given factor.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.to_data.html#compas.robots.Origin.to_data" title="compas.robots.Origin.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns the data dictionary that represents the primitive.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.to_json.html#compas.robots.Origin.to_json" title="compas.robots.Origin.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialize the structured data representing the primitive to json.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.to_json.html#compas.robots.Origin.to_json" title="compas.robots.Origin.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.to_local_coordinates.html#compas.robots.Origin.to_local_coordinates" title="compas.robots.Origin.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a>(object_in_wcf)</p></td>
 <td><p>Returns the object’s coordinates in the local coordinate system of the frame.</p></td>
@@ -248,7 +248,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>

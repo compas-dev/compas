@@ -161,8 +161,8 @@ The cycle directions of the faces are such that face normals point outwards.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.contains.html#compas.geometry.Box.contains" title="compas.geometry.Box.contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a>(point)</p></td>
 <td><p>Verify if the box contains a given point.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.copy.html#compas.geometry.Box.copy" title="compas.geometry.Box.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Makes a copy of this primitive.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.copy.html#compas.geometry.Box.copy" title="compas.geometry.Box.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.from_bounding_box.html#compas.geometry.Box.from_bounding_box" title="compas.geometry.Box.from_bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bounding_box</span></code></a>(bbox)</p></td>
 <td><p>Construct a box from the result of a bounding box calculation.</p></td>
@@ -177,16 +177,16 @@ The cycle directions of the faces are such that face normals point outwards.</p>
 <td><p>Construct a box from its main diagonal.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.from_json.html#compas.geometry.Box.from_json" title="compas.geometry.Box.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a primitive from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.from_width_height_depth.html#compas.geometry.Box.from_width_height_depth" title="compas.geometry.Box.from_width_height_depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_width_height_depth</span></code></a>(width, height, depth)</p></td>
 <td><p>Construct a box from its width, height and depth.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_data.html#compas.geometry.Box.to_data" title="compas.geometry.Box.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns the data dictionary that represents the primitive.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_json.html#compas.geometry.Box.to_json" title="compas.geometry.Box.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialize the structured data representing the primitive to json.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_json.html#compas.geometry.Box.to_json" title="compas.geometry.Box.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces" title="compas.geometry.Box.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a>()</p></td>
 <td><p>Returns a list of vertices and faces.</p></td>
@@ -232,7 +232,7 @@ The cycle directions of the faces are such that face normals point outwards.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.base.html">base</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
