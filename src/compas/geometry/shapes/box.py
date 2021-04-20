@@ -555,6 +555,11 @@ class Box(Shape):
 
         """
         self.frame.transform(transformation)
+        # Always local scaling, non-uniform scaling based on frame not yet considered.
+        Sc, _, _, _, _ = transformation.decomposed()
+        self.xsize *= Sc[0, 0]
+        self.ysize *= Sc[1, 1]
+        self.zsize *= Sc[2, 2]
 
 
 # ==============================================================================

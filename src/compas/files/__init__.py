@@ -150,7 +150,8 @@ from .xml import (
     XML,
     XMLElement,
     XMLReader,
-    XMLWriter
+    XMLWriter,
+    prettify_string
 )
 
 __all__ = [
@@ -196,5 +197,6 @@ __all__ = [
     'XML',
     'XMLElement',
     'XMLReader',
-    'XMLWriter'
+    'XMLWriter',
+    'prettify_string',
 ]

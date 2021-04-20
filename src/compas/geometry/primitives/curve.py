@@ -146,14 +146,14 @@ class Bezier(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Curve`
-            The constructed curve.
+        :class:`compas.geometry.Bezier`
+            The constructed bezier curve.
 
         Examples
         --------
-        >>> from compas.geometry import Curve
+        >>> from compas.geometry import Bezier
         >>> data = {'points': [[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]]}
-        >>> curve = Curve.from_data(data)
+        >>> curve = Bezier.from_data(data)
         """
         return cls(data['points'])
 

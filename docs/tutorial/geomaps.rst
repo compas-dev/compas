@@ -25,11 +25,9 @@ a match as soon as the distance is below a tolerance value.
 
 .. code-block:: python
 
-    import json
     import compas
 
-    with open(compas.get('lines.json'), 'r') as f:
-        lines = json.load(f)
+    lines = compas.json_load(compas.get('lines.json'))
 
     print(len(lines))
 
@@ -95,11 +93,9 @@ A better way is to use a geometric map.
 
 .. code-block:: python
 
-    import json
     import compas
 
-    with open(compas.get('lines.json'), 'r') as f:
-        lines = json.load(f)
+    lines = compas.json_load(compas.get('lines.json'))
 
     print(len(lines))
 

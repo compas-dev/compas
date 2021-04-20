@@ -138,12 +138,12 @@ class Graph(Datastructure):
         self.attributes['name'] = value
 
     # --------------------------------------------------------------------------
-    # serialisation
+    # serialization
     # --------------------------------------------------------------------------
 
     @property
     def data(self):
-        """Return a data dict of this data structure for serialisation.
+        """Return a data dict of this data structure for serialization.
         """
         version = LooseVersion(compas.__version__)
         meta = {
@@ -1304,8 +1304,8 @@ class Graph(Datastructure):
             if i == ring:
                 break
             temp = []
-            for key in nbrs:
-                temp += self.neighbors(key)
+            for nbr in nbrs:
+                temp += self.neighbors(nbr)
             nbrs.update(temp)
             i += 1
         if key in nbrs:

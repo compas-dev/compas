@@ -100,7 +100,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
     ----------
     mesh : Mesh
         A mesh object.
-    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin'}, optional
+    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'}, optional
         The scheme according to which the mesh should be subdivided.
         Default is ``'catmullclark'``.
     options : dict
@@ -127,6 +127,10 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
         return mesh_subdivide_catmullclark(mesh, **options)
     if scheme == 'doosabin':
         return mesh_subdivide_doosabin(mesh, **options)
+    if scheme == 'frames':
+        return mesh_subdivide_frames(mesh, **options)
+    if scheme == 'loop':
+        return trimesh_subdivide_loop(mesh, **options)
 
     raise ValueError('Scheme is not supported')
 
@@ -303,6 +307,32 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
     True
 
+    The algorithm supports "integer creasing" as described in
+    Subdivision Surfaces in Character Animation [1]_.
+    Creases are supported through the optional edge attribute ``'crease'``,
+    which can be set to an integer value that defines how sharp the crease is wrt
+    the number of subdivision steps.
+
+    To add an infinitely sharp crease to an edge, set the ``'crease'`` attribute of the edge
+    to a number higher than the number of subdivision steps.
+
+    >>> from compas.geometry import Box, dot_vectors
+    >>> from compas.datastructures import Mesh
+
+    >>> cage = Mesh.from_shape(Box.from_width_height_depth(1, 1, 1))
+    >>> cage.update_default_edge_attributes({'crease': 0})
+    >>> top = sorted(cage.faces(), key=lambda face: dot_vectors(cage.face_normal(face), [0, 0, 1]))[-1]
+    >>> cage.edges_attribute('crease', 5, keys=list(cage.face_halfedges(top)))
+
+    >>> subd = cage.subdivide(k=4)
+
+    References
+    ----------
+    .. [1] Tony DeRose, Michael Kass and Tien Truong.
+           Subdivision Surfaces in Character Animation.
+           Pixar Animation Studios.
+           see https://graphics.pixar.com/library/Geri/paper.pdf
+
     """
     cls = type(mesh)
     if not fixed:
@@ -313,9 +343,6 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         subd = mesh_fast_copy(mesh)
 
         # keep track of original connectivity and vertex locations
-
-        bkeys = set(subd.vertices_on_boundary())
-        bkey_edgepoints = {key: [] for key in bkeys}
 
         # apply quad meshivision scheme
         # keep track of the created edge points that are not on the boundary
@@ -330,17 +357,14 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         for u, v in mesh.edges():
 
             w = subd.split_edge(u, v, allow_boundary=True)
+            crease = mesh.edge_attribute((u, v), 'crease') or 0
 
-            # document why this is necessary
-            # everything else in this loop is just quad subdivision
-            if u in bkeys and v in bkeys:
-
-                bkey_edgepoints[u].append(w)
-                bkey_edgepoints[v].append(w)
-
-                continue
-
-            edgepoints.append(w)
+            if crease:
+                edgepoints.append([w, True])
+                subd.edge_attribute((u, w), 'crease', crease - 1)
+                subd.edge_attribute((w, v), 'crease', crease - 1)
+            else:
+                edgepoints.append([w, False])
 
         fkey_xyz = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
 
@@ -370,12 +394,12 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         # move each edge point to the average of the neighboring centroids and
         # the original end points
 
-        for w in edgepoints:
-            x, y, z = centroid_points([key_xyz[nbr] for nbr in subd.halfedge[w]])
-
-            subd.vertex[w]['x'] = x
-            subd.vertex[w]['y'] = y
-            subd.vertex[w]['z'] = z
+        for w, crease in edgepoints:
+            if not crease:
+                x, y, z = centroid_points([key_xyz[nbr] for nbr in subd.halfedge[w]])
+                subd.vertex[w]['x'] = x
+                subd.vertex[w]['y'] = y
+                subd.vertex[w]['z'] = z
 
         # move each vertex to the weighted average of itself, the neighboring
         # centroids and the neighboring mipoints
@@ -384,32 +408,43 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             if key in fixed:
                 continue
 
-            if key in bkeys:
-                nbrs = set(bkey_edgepoints[key])
-                nbrs = [key_xyz[nbr] for nbr in nbrs]
-                e = 0.5
-                v = 0.5
-                E = [coord * e for coord in centroid_points(nbrs)]
-                V = [coord * v for coord in key_xyz[key]]
-                x, y, z = [E[_] + V[_] for _ in range(3)]
+            nbrs = mesh.vertex_neighbors(key)
+            creases = mesh.edges_attribute('crease', keys=[(key, nbr) for nbr in nbrs])
 
-            else:
+            C = sum(1 if crease else 0 for crease in creases)
+
+            if C < 2:
                 fnbrs = [mesh.face_centroid(fkey) for fkey in mesh.vertex_faces(key) if fkey is not None]
-                nbrs = [key_xyz[nbr] for nbr in subd.halfedge[key]]
-                n = float(len(nbrs))
-                f = 1.0 / n
-                e = 2.0 / n
-                v = (n - 3.0) / n
+                enbrs = [key_xyz[nbr] for nbr in subd.halfedge[key]]  # this should be the location of the original neighbour
+                n = len(enbrs)
+                v = n - 3.0
                 F = centroid_points(fnbrs)
-                E = centroid_points(nbrs)
+                E = centroid_points(enbrs)
                 V = key_xyz[key]
-                x = f * F[0] + e * E[0] + v * V[0]
-                y = f * F[1] + e * E[1] + v * V[1]
-                z = f * F[2] + e * E[2] + v * V[2]
+                x = (F[0] + 2.0 * E[0] + v * V[0]) / n
+                y = (F[1] + 2.0 * E[1] + v * V[1]) / n
+                z = (F[2] + 2.0 * E[2] + v * V[2]) / n
+                subd.vertex[key]['x'] = x
+                subd.vertex[key]['y'] = y
+                subd.vertex[key]['z'] = z
 
-            subd.vertex[key]['x'] = x
-            subd.vertex[key]['y'] = y
-            subd.vertex[key]['z'] = z
+            elif C == 2:
+                V = key_xyz[key]
+                E = [0, 0, 0]
+                for nbr, crease in zip(nbrs, creases):
+                    if crease:
+                        x, y, z = key_xyz[nbr]
+                        E[0] += x
+                        E[1] += y
+                        E[2] += z
+                x = (6 * V[0] + E[0]) / 8
+                y = (6 * V[1] + E[1]) / 8
+                z = (6 * V[2] + E[2]) / 8
+                subd.vertex[key]['x'] = x
+                subd.vertex[key]['y'] = y
+                subd.vertex[key]['z'] = z
+            else:
+                pass
 
         mesh = subd
 
@@ -553,6 +588,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     >>>
 
     """
+    cls = type(mesh)
 
     subd = SubdMesh()
 
@@ -595,7 +631,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
         if add_windows:
             subd.add_face(window)
 
-    return subd
+    return cls.from_data(subd.data)
 
 
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
@@ -730,8 +766,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
             del subd.face[fkey]
 
-    subd2 = cls.from_data(subd.data)
-    return subd2
+    return cls.from_data(subd.data)
 
 
 # ==============================================================================
@@ -746,23 +781,3 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh  # noqa: F401
     from compas.geometry import Box  # noqa: F401
     doctest.testmod(globs=globals())
-
-    # from compas.datastructures import Mesh
-    # from compas.geometry import Box
-    # from compas.utilities import print_profile
-    # from compas_viewers.multimeshviewer import MultiMeshViewer
-
-    # subdivide = print_profile(mesh_subdivide_quad)
-
-    # box = Box.from_width_height_depth(10.0, 10.0, 10.0)
-    # mesh = Mesh.from_shape(box)
-    # mesh.default_face_attributes.update(path=[])
-    # subd = subdivide(mesh, k=3)
-
-    # print(subd.face_attribute(subd.get_any_face(), 'path'))
-
-    # # print(mesh.number_of_faces())
-
-    # viewer = MultiMeshViewer()
-    # viewer.meshes = [subd]
-    # viewer.show()

@@ -3,23 +3,24 @@ from __future__ import division
 from __future__ import print_function
 
 import itertools
-import json
+import random
 
-from compas.base import Base
+from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files import URDF
-from compas.files import URDFParser
 from compas.files import URDFElement
+from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
+from compas.robots import Configuration
 from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Texture
-from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _attr_from_data
+from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
 from compas.robots.model.joint import Limit
@@ -29,11 +30,10 @@ from compas.robots.model.link import Visual
 from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
 
-
 __all__ = ['RobotModel']
 
 
-class RobotModel(Base):
+class RobotModel(Data):
     """RobotModel is the root element of the model.
 
     Instances of this class represent an entire robot as defined in an URDF
@@ -111,17 +111,6 @@ class RobotModel(Base):
 
         self._rebuild_tree()
 
-    def to_data(self):
-        """Returns the data dictionary that represents the :class:`RobotModel`.
-        To be used in conjunction with :meth:`compas.robot.RobotModel.from_data()`.
-
-        Returns
-        -------
-        dict
-            The RobotModel's data.
-        """
-        return self.data
-
     @classmethod
     def from_data(cls, data):
         """Construct the :class:`compas.robots.RobotModel` from its data representation.
@@ -130,16 +119,6 @@ class RobotModel(Base):
         robot_model = cls(data['name'])
         robot_model.data = data
         return robot_model
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -488,6 +467,21 @@ class RobotModel(Base):
         joints = self.get_configurable_joints()
         return [joint.type for joint in joints]
 
+    def get_joint_types_by_names(self, names):
+        """Get a list of joint types given a list of joint names.
+
+        Parameters
+        ----------
+        names : :obj:`list` of :obj:`str`
+            The names of the joints.
+
+        Returns
+        -------
+        :obj:`list` of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
+            List of joint types.
+        """
+        return [self.get_joint_by_name(n).type for n in names]
+
     def get_configurable_joint_names(self):
         """Returns the configurable joint names.
 
@@ -552,6 +546,52 @@ class RobotModel(Base):
         """
         joints = self.get_configurable_joints()
         return joints[0].parent.link
+
+    def zero_configuration(self):
+        """Get the zero joint configuration.
+
+        If zero is out of joint limits ``(upper, lower)`` then
+        ``(upper + lower) / 2`` is used as joint value.
+
+        Examples
+        --------
+        >>> robot.zero_configuration()
+        Configuration((0.000, 0.000, 0.000, 0.000, 0.000, 0.000), (0, 0, 0, 0, 0, 0), \
+            ('shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint'))
+        """
+        values = []
+        joint_names = []
+        joint_types = []
+        for joint in self.get_configurable_joints():
+            if joint.limit and not (0 <= joint.limit.upper and 0 >= joint.limit.lower):
+                values.append((joint.limit.upper + joint.limit.lower)/2.)
+            else:
+                values.append(0)
+            joint_names.append(joint.name)
+            joint_types.append(joint.type)
+        return Configuration(values, joint_types, joint_names)
+
+    def random_configuration(self):
+        """Get a random configuration.
+
+        Returns
+        -------
+        :class:`compas.robots.Configuration`
+
+        Note
+        ----
+        No collision checking is involved, the configuration may be invalid.
+        """
+        configurable_joints = self.get_configurable_joints()
+        values = []
+        for joint in configurable_joints:
+            if joint.limit:
+                values.append(joint.limit.lower + (joint.limit.upper - joint.limit.lower) * random.random())
+            else:
+                values.append(0)
+        joint_names = self.get_configurable_joint_names()
+        joint_types = self.get_joint_types_by_names(joint_names)
+        return Configuration(values, joint_types, joint_names)
 
     def load_geometry(self, *resource_loaders, **kwargs):
         """Load external geometry resources, such as meshes.
@@ -704,7 +744,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
         link : :class:`compas.robots.Link`
@@ -719,10 +759,8 @@ class RobotModel(Base):
 
         Examples
         --------
-        >>> names = robot.get_configurable_joint_names()
-        >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
-        >>> joint_state = dict(zip(names, values))
-        >>> transformations = robot.compute_transformations(joint_state)
+        >>> config = robot.random_configuration()
+        >>> transformations = robot.compute_transformations(config)
         """
         if link is None:
             link = self.root
@@ -752,7 +790,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
 
@@ -777,7 +815,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
 
@@ -801,7 +839,7 @@ class RobotModel(Base):
 
         Parameters
         ----------
-        joint_state : dict
+        :class:`compas.robots.Configuration` or joint_state : dict
             A dictionary with the joint names as keys and values in radians and
             meters (depending on the joint type).
         link_name : str, optional
@@ -815,10 +853,8 @@ class RobotModel(Base):
 
         Examples
         --------
-        >>> names = robot.get_configurable_joint_names()
-        >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
-        >>> joint_state = dict(zip(names, values))
-        >>> frame_WCF = robot.forward_kinematics(joint_state)
+        >>> config = robot.random_configuration()
+        >>> frame_WCF = robot.forward_kinematics(config)
         """
         if link_name is None:
             ee_link = self.get_end_effector_link()
@@ -1027,21 +1063,3 @@ URDFParser.install_parser(RobotModel, 'robot')
 URDFParser.install_parser(Material, 'robot/material')
 URDFParser.install_parser(Color, 'robot/material/color')
 URDFParser.install_parser(Texture, 'robot/material/texture')
-
-
-if __name__ == '__main__':
-    import os
-    import doctest
-    from compas import HERE
-    from compas.geometry import Sphere  # noqa: F401
-    from compas.robots import GithubPackageMeshLoader  # noqa: F401
-
-    ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')
-
-    robot = RobotModel("robot", links=[], joints=[])
-    link0 = robot.add_link("world")
-    link1 = robot.add_link("link1")
-    link2 = robot.add_link("link2")
-    robot.add_joint("joint1", Joint.CONTINUOUS, link0, link1, Frame.worldXY(), (0, 0, 1))
-    robot.add_joint("joint2", Joint.CONTINUOUS, link1, link2, Frame.worldXY(), (0, 0, 1))
-    doctest.testmod(globs=globals())
