@@ -18,7 +18,7 @@ def after_rhino_uninstall(uninstalled_packages):
     userobjects = [os.path.basename(ghuser) for ghuser in glob.glob(os.path.join(srcdir, '*.ghuser'))]
     uninstalled_objects = uninstall_userobjects(userobjects)
 
-    uninstall_errors = [uo[0] for uo in uninstalled_objects if uo[1] == False]
-    error_msg = '' if len(uninstall_errors) == 0 else 'and {} failed to uninstall'.format(len(uninstall_errors))
+    uninstall_errors = [uo[0] for uo in uninstalled_objects if not uo[1]]
+    error_msg = '' if not uninstall_errors else 'and {} failed to uninstall'.format(len(uninstall_errors))
 
     return [('compas_ghpython', 'Uninstalled {} GH User Objects {}'.format(len(uninstalled_objects), error_msg), True)]
