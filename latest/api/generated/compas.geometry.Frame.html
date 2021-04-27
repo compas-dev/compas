@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Frame.__init__" href="compas.geometry.Frame.__init__.html" />
+    <link rel="next" title="Frame.copy" href="compas.geometry.Frame.copy.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <section class="detail" id="frame">
+          <div class="detail section" id="frame">
 <h1>Frame</h1>
-<dl class="class">
+<dl class="py class">
 <dt id="compas.geometry.Frame">
-<em class="property">class </em><code class="sig-prename descclassname">compas.geometry.</code><code class="sig-name descname">Frame</code><span class="sig-paren">(</span><em class="sig-param">point</em>, <em class="sig-param">xaxis</em>, <em class="sig-param">yaxis</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/primitives/frame.html#Frame"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">Frame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/frame.py#L26"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></p>
 <p>A frame is defined by a base point and two orthonormal base vectors.</p>
 <dl class="field-list simple">
@@ -139,7 +139,7 @@ vector as starting point.</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -149,89 +149,86 @@ vector as starting point.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.__init__.html#compas.geometry.Frame.__init__" title="compas.geometry.Frame.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(point, xaxis, yaxis)</p></td>
-<td><p>Initialize self.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.copy.html#compas.geometry.Frame.copy" title="compas.geometry.Frame.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.copy.html#compas.geometry.Frame.copy" title="compas.geometry.Frame.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Makes a copy of this primitive.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles" title="compas.geometry.Frame.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a>([static, axes])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles" title="compas.geometry.Frame.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a>([static, axes])</p></td>
 <td><p>The Euler angles from the rotation given by the frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a>(axis_angle_vector[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a>(axis_angle_vector[, …])</p></td>
 <td><p>Construct a frame from an axis-angle vector representing the rotation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_data.html#compas.geometry.Frame.from_data" title="compas.geometry.Frame.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_data.html#compas.geometry.Frame.from_data" title="compas.geometry.Frame.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a frame from its data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles" title="compas.geometry.Frame.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles" title="compas.geometry.Frame.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, …])</p></td>
 <td><p>Construct a frame from a rotation represented by Euler angles.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_json.html#compas.geometry.Frame.from_json" title="compas.geometry.Frame.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a primitive from structured data contained in a json file.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_json.html#compas.geometry.Frame.from_json" title="compas.geometry.Frame.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_list.html#compas.geometry.Frame.from_list" title="compas.geometry.Frame.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(values)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_list.html#compas.geometry.Frame.from_list" title="compas.geometry.Frame.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(values)</p></td>
 <td><p>Construct a frame from a list of 12 or 16 float values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_matrix.html#compas.geometry.Frame.from_matrix" title="compas.geometry.Frame.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_matrix.html#compas.geometry.Frame.from_matrix" title="compas.geometry.Frame.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
 <td><p>Construct a frame from a matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_plane.html#compas.geometry.Frame.from_plane" title="compas.geometry.Frame.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a>(plane)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_plane.html#compas.geometry.Frame.from_plane" title="compas.geometry.Frame.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a>(plane)</p></td>
 <td><p>Constructs a frame from a plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_points.html#compas.geometry.Frame.from_points" title="compas.geometry.Frame.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a>(point, point_xaxis, point_xyplane)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_points.html#compas.geometry.Frame.from_points" title="compas.geometry.Frame.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a>(point, point_xaxis, point_xyplane)</p></td>
 <td><p>Constructs a frame from 3 points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_quaternion.html#compas.geometry.Frame.from_quaternion" title="compas.geometry.Frame.from_quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_quaternion</span></code></a>(quaternion[, point])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_quaternion.html#compas.geometry.Frame.from_quaternion" title="compas.geometry.Frame.from_quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_quaternion</span></code></a>(quaternion[, point])</p></td>
 <td><p>Construct a frame from a rotation represented by quaternion coefficients.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_rotation.html#compas.geometry.Frame.from_rotation" title="compas.geometry.Frame.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a>(rotation[, point])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_rotation.html#compas.geometry.Frame.from_rotation" title="compas.geometry.Frame.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a>(rotation[, point])</p></td>
 <td><p>Constructs a frame from a <code class="docutils literal notranslate"><span class="pre">Rotation</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation" title="compas.geometry.Frame.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation" title="compas.geometry.Frame.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a>(transformation)</p></td>
 <td><p>Constructs a frame from a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.local_to_local_coordinates.html#compas.geometry.Frame.local_to_local_coordinates" title="compas.geometry.Frame.local_to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_to_local_coordinates</span></code></a>(frame1, frame2, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.local_to_local_coordinates.html#compas.geometry.Frame.local_to_local_coordinates" title="compas.geometry.Frame.local_to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_to_local_coordinates</span></code></a>(frame1, frame2, …)</p></td>
 <td><p>Returns the object’s coordinates in frame1 in the local coordinates of frame2.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_data.html#compas.geometry.Frame.to_data" title="compas.geometry.Frame.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns the data dictionary that represents the primitive.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_data.html#compas.geometry.Frame.to_data" title="compas.geometry.Frame.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_json.html#compas.geometry.Frame.to_json" title="compas.geometry.Frame.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialise the structured data representing the primitive to json.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_json.html#compas.geometry.Frame.to_json" title="compas.geometry.Frame.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates" title="compas.geometry.Frame.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a>(object_in_wcf)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates" title="compas.geometry.Frame.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a>(object_in_wcf)</p></td>
 <td><p>Returns the object’s coordinates in the local coordinate system of the frame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates" title="compas.geometry.Frame.to_world_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_world_coordinates</span></code></a>(object_in_lcf)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates" title="compas.geometry.Frame.to_world_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_world_coordinates</span></code></a>(object_in_lcf)</p></td>
 <td><p>Returns the object’s coordinates in the global coordinate frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.transform.html#compas.geometry.Frame.transform" title="compas.geometry.Frame.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.transform.html#compas.geometry.Frame.transform" title="compas.geometry.Frame.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform the frame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.transformed.html#compas.geometry.Frame.transformed" title="compas.geometry.Frame.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.transformed.html#compas.geometry.Frame.transformed" title="compas.geometry.Frame.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.validate_data.html#compas.geometry.Frame.validate_data" title="compas.geometry.Frame.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.validate_data.html#compas.geometry.Frame.validate_data" title="compas.geometry.Frame.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.validate_json.html#compas.geometry.Frame.validate_json" title="compas.geometry.Frame.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.validate_json.html#compas.geometry.Frame.validate_json" title="compas.geometry.Frame.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY" title="compas.geometry.Frame.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY" title="compas.geometry.Frame.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a>()</p></td>
 <td><p>Construct the world XY frame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.worldYZ.html#compas.geometry.Frame.worldYZ" title="compas.geometry.Frame.worldYZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldYZ</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.worldYZ.html#compas.geometry.Frame.worldYZ" title="compas.geometry.Frame.worldYZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldYZ</span></code></a>()</p></td>
 <td><p>Construct the world YZ frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.worldZX.html#compas.geometry.Frame.worldZX" title="compas.geometry.Frame.worldZX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldZX</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.worldZX.html#compas.geometry.Frame.worldZX" title="compas.geometry.Frame.worldZX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldZX</span></code></a>()</p></td>
 <td><p>Construct the world ZX frame.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -256,6 +253,7 @@ vector as starting point.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -265,6 +263,25 @@ vector as starting point.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -311,10 +328,10 @@ vector as starting point.</p>
       
 
       
-        <a href="compas.geometry.Frame.__init__.html" title="Frame.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Frame.copy.html" title="Frame.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Frame.__init__
+            Frame.copy
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -360,7 +377,7 @@ vector as starting point.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

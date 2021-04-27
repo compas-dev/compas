@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <section class="detail" id="convex-hull-numpy">
+          <div class="detail section" id="convex-hull-numpy">
 <h1>convex_hull_numpy</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="compas.geometry.convex_hull_numpy">
-<code class="sig-prename descclassname">compas.geometry.</code><code class="sig-name descname">convex_hull_numpy</code><span class="sig-paren">(</span><em class="sig-param">points</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/hull/hull_numpy.html#convex_hull_numpy"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">convex_hull_numpy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/hull/hull_numpy.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the convex hull of a set of points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -125,50 +125,12 @@ cycle directions. To obtain a mesh with consistent cycle directions, construct
 a mesh from the returned vertices, this function should be used in combination
 with <a class="reference internal" href="compas.topology.unify_cycles.html#compas.topology.unify_cycles" title="compas.topology.unify_cycles"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.topology.unify_cycles()</span></code></a>.</p>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">random</span>
-
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">convex_hull_numpy</span>
-<span class="kn">from</span> <span class="nn">compas.topology</span> <span class="kn">import</span> <span class="n">unify_cycles</span>
-
-<span class="kn">from</span> <span class="nn">compas_viewers</span> <span class="kn">import</span> <span class="n">MeshViewer</span>
-
-<span class="n">radius</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
-<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span>
-    <span class="n">pt</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
-
-    <span class="k">if</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">pt</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">radius</span><span class="p">:</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
-        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-
-<span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">convex_hull_numpy</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-
-<span class="n">i_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">)}</span>
-
-<span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
-<span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i_index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
-<span class="n">faces</span> <span class="o">=</span> <span class="n">unify_cycles</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-
-<span class="n">viewer</span> <span class="o">=</span> <span class="n">MeshViewer</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-<span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
-<span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
 </div>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -193,6 +155,7 @@ with <a class="reference internal" href="compas.topology.unify_cycles.html#compa
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -202,6 +165,25 @@ with <a class="reference internal" href="compas.topology.unify_cycles.html#compa
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -297,7 +279,7 @@ with <a class="reference internal" href="compas.topology.unify_cycles.html#compa
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

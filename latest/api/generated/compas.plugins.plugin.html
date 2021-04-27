@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <section class="detail" id="plugin">
+          <div class="detail section" id="plugin">
 <h1>plugin</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="compas.plugins.plugin">
-<code class="sig-prename descclassname">compas.plugins.</code><code class="sig-name descname">plugin</code><span class="sig-paren">(</span><em class="sig-param">method=None</em>, <em class="sig-param">category=None</em>, <em class="sig-param">requires=None</em>, <em class="sig-param">tryfirst=False</em>, <em class="sig-param">trylast=False</em>, <em class="sig-param">pluggable_name=None</em>, <em class="sig-param">domain='https://plugins.compas.dev/'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/plugins.html#plugin"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname"><span class="pre">compas.plugins.</span></code><code class="sig-name descname"><span class="pre">plugin</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requires</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tryfirst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trylast</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pluggable_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://plugins.compas.dev/'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/plugins.py#L309"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Decorator to declare a plugin.</p>
 <p>A plugin decorator marks a method as a plugin for a specified
 <a class="reference internal" href="compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pluggable()</span></code></a> extension point. Plugins are matched to their pluggable
@@ -137,7 +137,7 @@ of different packages.</p></li>
 </dl>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -162,6 +162,7 @@ of different packages.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -171,6 +172,25 @@ of different packages.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -266,7 +286,7 @@ of different packages.</p></li>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

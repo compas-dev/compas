@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,16 +104,16 @@
   
         
           
-          <section class="detail" id="pluginnotinstallederror">
+          <div class="detail section" id="pluginnotinstallederror">
 <h1>PluginNotInstalledError</h1>
-<dl class="exception">
+<dl class="py exception">
 <dt id="compas.plugins.PluginNotInstalledError">
-<em class="property">exception </em><code class="sig-prename descclassname">compas.plugins.</code><code class="sig-name descname">PluginNotInstalledError</code><a class="reference internal" href="../../_modules/compas/plugins.html#PluginNotInstalledError"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">compas.plugins.</span></code><code class="sig-name descname"><span class="pre">PluginNotInstalledError</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/plugins.py#L68"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Exception raised when an extension point is invoked but no plugin is available.</p>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -138,6 +138,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -147,6 +148,25 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -242,7 +262,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

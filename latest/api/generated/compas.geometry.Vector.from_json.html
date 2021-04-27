@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -106,26 +106,23 @@
   
         
           
-          <section class="detail" id="vector-from-json">
+          <div class="detail section" id="vector-from-json">
 <h1>Vector.from_json</h1>
-<dl class="method">
+<dl class="py method">
 <dt id="compas.geometry.Vector.from_json">
-<em class="property">classmethod </em><code class="sig-prename descclassname">Vector.</code><code class="sig-name descname">from_json</code><span class="sig-paren">(</span><em class="sig-param">filepath</em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a primitive from structured data contained in a json file.</p>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-prename descclassname"><span class="pre">Vector.</span></code><code class="sig-name descname"><span class="pre">from_json</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Construct an object from serialized data contained in a JSON file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – The path to the json file.</p>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>path string, file-like object or URL string</em>) – The path, file or URL to the file for serialization.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>object</em> – An object of the type of <code class="docutils literal notranslate"><span class="pre">cls</span></code>.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a> – An object of the type of <code class="docutils literal notranslate"><span class="pre">cls</span></code>.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>This constructor method is meant to be used in conjunction with the
-corresponding <em>to_json</em> method.</p>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -150,6 +147,7 @@ corresponding <em>to_json</em> method.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -159,6 +157,25 @@ corresponding <em>to_json</em> method.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -254,7 +271,7 @@ corresponding <em>to_json</em> method.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

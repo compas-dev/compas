@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,13 +100,13 @@
   
         
           
-          <section id="grasshopper">
+          <div class="section" id="grasshopper">
 <span id="gs-grasshopper"></span><h1>Grasshopper</h1>
 <p>To get COMPAS working in Grasshopper, you first have to install COMPAS for Rhino.
 In Grasshopper, COMPAS is imported from within a GhPython component. Rhino for
 Mac and Rhino 6+ all come with their own GhPython interpreter, but if you use
 Rhino 5 on Windows, please download and install GhPython <a class="reference external" href="https://www.food4rhino.com/app/ghpython">here</a>.</p>
-<section id="verify-setup">
+<div class="section" id="verify-setup">
 <h2>Verify setup</h2>
 <p>To verify that everything is working properly, simply create a GhPython
 component on your Grasshopper canvas, paste the following script and hit <cite>OK</cite>.</p>
@@ -119,11 +119,11 @@ component on your Grasshopper canvas, paste the following script and hit <cite>O
 <span class="n">a</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<figure class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/gh_verify.jpg" class="figure-img img-fluid" src="../_images/gh_verify.jpg" />
-</figure>
-</section>
-<section id="reloading-changed-libraries">
+</div>
+</div>
+<div class="section" id="reloading-changed-libraries">
 <h2>Reloading changed libraries</h2>
 <p>If you change a Python library during a running Rhino application, which is
 imported in a GhPython component (e.g. via <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">compas_fab</span></code>),
@@ -135,8 +135,8 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
 <span class="n">unload_modules</span><span class="p">(</span><span class="s1">&#39;compas_fab&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
         
       </main>
@@ -259,7 +259,7 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

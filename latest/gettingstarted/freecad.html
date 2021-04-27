@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,25 +100,25 @@
   
         
           
-          <section id="freecad">
+          <div class="section" id="freecad">
 <span id="gs-freecad"></span><h1>FreeCAD</h1>
 <p class="lead">Although there is no official support package for FreeCAD, working with COMPAS in FreeCAD is actually quite simple.</p>
-<section id="install-freecad">
+<div class="section" id="install-freecad">
 <h2>Install FreeCAD</h2>
 <p>If FreeCAD is installed using <code class="docutils literal notranslate"><span class="pre">conda</span></code>, the Python interpreter in FreeCAD automagically has access to all the packages installed in the same environment.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n CAD <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 freecad COMPAS -c conda-forge --yes
 </code></pre></div>
 </div>
-</section>
-<section id="launch-freecad">
+</div>
+<div class="section" id="launch-freecad">
 <h2>Launch FreeCAD</h2>
 <p>To activate this mechanism, you have to launch FreeCAD from the environment it is installed in.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate CAD
 freecad
 </code></pre></div>
 </div>
-</section>
-<section id="basic-usage">
+</div>
+<div class="section" id="basic-usage">
 <h2>Basic Usage</h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Mesh</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
@@ -131,8 +131,8 @@ freecad
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Mesh</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">freemesh</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
         
       </main>
@@ -256,7 +256,7 @@ freecad
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

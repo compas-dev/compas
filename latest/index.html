@@ -52,7 +52,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -96,14 +96,14 @@
   
         
           
-          <section id="compas-docs">
+          <div class="section" id="compas-docs">
 <h1>COMPAS Docs</h1>
 <p class="lead">This is the documentation of the main library of COMPAS,
 an open source framework for research and collaboration
 in Architecture, Engineering, Fabrication, and Construction.</p>
-<figure class="figure align-default">
+<div class="figure align-default">
 <img alt="_images/COMPAS.png" class="figure-img img-fluid" src="_images/COMPAS.png" />
-</figure>
+</div>
 <p>The core package of COMPAS (<a class="reference internal" href="api/compas.html#module-compas" title="compas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a>) defines all functionality for geometry processing,
 data structures, topology, numerical methods, robotics, the plugin mechanism, remote procedure calls …
 and can be used independently of CAD systems in any environment that supports Python programming.</p>
@@ -113,7 +113,7 @@ of COMPAS geometry and data structures, and for basic user inter interaction
 in Blender, Rhino, and Grasshopper.</p>
 <p>The package for 2D visualisation (<a class="reference internal" href="api/compas_plotters.html#module-compas_plotters" title="compas_plotters"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_plotters</span></code></a>)
 simplifies “plotting” of COMPAS geometry objects and data structures.</p>
-<section id="table-of-contents">
+<div class="section" id="table-of-contents">
 <h2>Table of Contents</h2>
 <div class="toctree-wrapper compound">
 <ul class="current">
@@ -142,6 +142,7 @@ simplifies “plotting” of COMPAS geometry objects and data structures.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/compas.html">compas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/compas.data.html">data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/compas.datastructures.html">datastructures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/compas.files.html">files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/compas.geometry.html">geometry</a></li>
@@ -151,6 +152,25 @@ simplifies “plotting” of COMPAS geometry objects and data structures.</p>
 <li class="toctree-l3"><a class="reference internal" href="api/compas.rpc.html">rpc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/compas.topology.html">topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/compas.utilities.html">utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.json_dump.html">json_dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.json_dumps.html">json_dumps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.json_load.html">json_load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.json_loads.html">json_loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.set_precision.html">set_precision</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.WINDOWS.html">WINDOWS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.LINUX.html">LINUX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.OSX.html">OSX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.MONO.html">MONO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.IPY.html">IPY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.RHINO.html">RHINO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.BLENDER.html">BLENDER</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.is_windows.html">is_windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.is_linux.html">is_linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.is_osx.html">is_osx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.is_mono.html">is_mono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.is_ironpython.html">is_ironpython</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.is_rhino.html">is_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generated/compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/compas_rhino.html">compas_rhino</a><ul>
@@ -190,8 +210,15 @@ simplifies “plotting” of COMPAS geometry objects and data structures.</p>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 </ul>
 </div>
-</section>
-</section>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables</h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
 
         
       </main>
@@ -233,6 +260,7 @@ simplifies “plotting” of COMPAS geometry objects and data structures.</p>
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">COMPAS Docs</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
 </ul>
@@ -297,7 +325,7 @@ simplifies “plotting” of COMPAS geometry objects and data structures.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

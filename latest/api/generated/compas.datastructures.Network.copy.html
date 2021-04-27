@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -106,24 +106,24 @@
   
         
           
-          <section class="detail" id="network-copy">
+          <div class="detail section" id="network-copy">
 <h1>Network.copy</h1>
-<dl class="method">
+<dl class="py method">
 <dt id="compas.datastructures.Network.copy">
-<code class="sig-prename descclassname">Network.</code><code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">cls=None</em><span class="sig-paren">)</span></dt>
-<dd><p>Make an independent copy of the datastructure object.</p>
+<code class="sig-prename descclassname"><span class="pre">Network.</span></code><code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L163"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Make an independent copy of the data object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cls</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructure.Datastructure</span></code>, optional) – The type of datastructure to return.
-Defaults to the type of the current datastructure.</p>
+<dd class="field-odd"><p><strong>cls</strong> (<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>, optional) – The type of data object to return.
+Defaults to the type of the current data object.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructure.Datastructure</span></code> – A separate, but identical datastructure object.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a> – A separate, but identical data object.</p>
 </dd>
 </dl>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -148,6 +148,7 @@ Defaults to the type of the current datastructure.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -157,6 +158,25 @@ Defaults to the type of the current datastructure.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -252,7 +272,7 @@ Defaults to the type of the current datastructure.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

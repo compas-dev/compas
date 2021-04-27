@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,7 +100,7 @@
   
         
           
-          <section id="blender">
+          <div class="section" id="blender">
 <span id="gs-blender"></span><h1>Blender</h1>
 <p>Blender ships with its own embedded version of Python. Therefore, the simplest
 (and recommended) way to install COMPAS for Blender is to replace the embedded
@@ -108,7 +108,7 @@ Python by the Python of a <cite>conda</cite> environment that already has COMPAS
 <p>It is important that the version of Python installed in the <cite>conda</cite> environment matches
 the version of Python that was originally shipped with Blender. For Blender 2.8x and 2.9x
 this is Python 3.7x.</p>
-<section id="installation">
+<div class="section" id="installation">
 <h2>Installation</h2>
 <p>If you don’t have an environment yet with Python 3.7 and COMPAS you can create one with <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
@@ -154,8 +154,21 @@ python -m compas_blender.install ~/Blender/2.91
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.91</span></code> might be different for your setup.</p>
 </div></div>
 </div>
-</div></section>
-<section id="verify-setup">
+</div></div>
+<div class="section" id="add-ons">
+<h2>Add-ons</h2>
+<p>For some Blender add-ons, not only the version of Python has to match, but also the version of Numpy.
+For example, <a class="reference external" href="http://nortikin.github.io/sverchok/">Sverchok</a>, a Grasshopper-type visual programming tool for Blender,
+will not work with the version of Numpy included in the latest COMPAS releases, even though Blender will.</p>
+<p>In those cases, you can simply revert to an earlier version of Numpy that is still compatible with COMPAS
+in the environment you use with Blender. For Sverchok, this would be version <code class="docutils literal notranslate"><span class="pre">1.17.5</span></code>,
+which is the one shipped with Blender originally. To revert simply do</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+conda install <span class="nv">numpy</span><span class="o">=</span><span class="m">1</span>.17.5
+</code></pre></div>
+</div>
+</div>
+<div class="section" id="verify-setup">
 <h2>Verify setup</h2>
 <p>In Blender, at the interactive Python prompt (&gt;&gt;&gt;) import the following packages</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
@@ -164,8 +177,8 @@ python -m compas_blender.install ~/Blender/2.91
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy</span>
 </code></pre></div>
 </div>
-</section>
-<section id="install-python-packages">
+</div>
+<div class="section" id="install-python-packages">
 <h2>Install Python packages</h2>
 <p>After replacing the embedded version of Python with the one in the virutual
 environment, as instructed above, it is not necessary to activate the environment
@@ -181,8 +194,8 @@ conda install ...
 <p>If you want to use blender with a different environment,
 you simply have to activate that environment and follow the same procedure described above.</p>
 </div>
-</section>
-<section id="start-blender">
+</div>
+<div class="section" id="start-blender">
 <h2>Start Blender</h2>
 <p>Blender uses the command window of your system to display error messages and other text output.
 On Windows, the output window can be brought to the front directly from the “Window” menu.
@@ -214,8 +227,8 @@ Just add the following to your <code class="docutils literal notranslate"><span 
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>blender
 </code></pre></div>
 </div>
-</section>
-<section id="scripting-interface">
+</div>
+<div class="section" id="scripting-interface">
 <h2>Scripting Interface</h2>
 <p>To switch to the scripting interface, simply select the “Scripting” tab of the main window.</p>
 <p>The scripting interface has an embedded interactive Python terminal, which is located in the bottom half of the main window on the left.
@@ -231,8 +244,8 @@ If COMPAS was successfully installed you can use it to directly access the <code
 Line numbers and syntax highlighting should be on by default, but if that is not the case,
 they can be turned on with toggle buttons at the top right of the area.
 Further customisation of the editor appearance is possible by opening the sidebar from the “View” menu of the editor.</p>
-</section>
-<section id="basic-usage">
+</div>
+<div class="section" id="basic-usage">
 <h2>Basic Usage</h2>
 <p>One of the main advantages of working in Blender is that Blender Python is CPython, and not IronPython like in Rhino and Grasshopper.
 This means that all cool Python libraries are directly available and do not need to be accessed through remote procedure calls (RPC).
@@ -250,7 +263,7 @@ Especially for code that relies heavily on libraries such as Numpy and Scipy thi
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<section id="data-blocks">
+<div class="section" id="data-blocks">
 <h3>Data Blocks</h3>
 <p>Something worth explaining is the use of <code class="docutils literal notranslate"><span class="pre">compas_blender.clear()</span></code> in this script.
 Blender uses (and re-uses) something called “data blocks”.
@@ -262,26 +275,26 @@ even if you delete the scene objects between consecutive runs,
 you will accumulate the data blocks from previous runs and after a while Blender will become very slow.</p>
 <p><code class="docutils literal notranslate"><span class="pre">compas_blender.clear()</span></code> attempts to clean up not only the scene objects but also the data blocks.
 If somehow you still experience a slowdown, restarting Blender will help (all unused data blocks are then automatically removed).</p>
-</section>
-<section id="layers">
+</div>
+<div class="section" id="layers">
 <h3>Layers</h3>
 <p>There are no real layers in Blender; at least not like the layers in, for example, Rhino.
 Therefore, the Blender artists have no optional <code class="docutils literal notranslate"><span class="pre">layer</span></code> parameter and no <code class="docutils literal notranslate"><span class="pre">clear_layer</span></code> method.
 Instead, objects are grouped in collections, which can be turned on and off in the Blender UI similar to layers in Rhino.</p>
-</section>
-<section id="collections">
+</div>
+<div class="section" id="collections">
 <h3>Collections</h3>
-</section>
-</section>
-<section id="limitations">
+</div>
+</div>
+<div class="section" id="limitations">
 <h2>Limitations</h2>
 <p><code class="docutils literal notranslate"><span class="pre">compas_blender</span></code> is not yet as well developed as, <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_ghpython</span></code>.
 For example, COMPAS geometry objects do not yet have a corresponding artist in <code class="docutils literal notranslate"><span class="pre">compas_blender</span></code>.
 Artists are currently only available for data structures and robots.</p>
 <p>There is also no official system yet for making custom COMPAS tools in Blender.
 Therefore, COMPAS Blender development is somewhat limited to individual scripts.</p>
-</section>
-</section>
+</div>
+</div>
 
         
       </main>
@@ -331,6 +344,7 @@ Therefore, COMPAS Blender development is somewhat limited to individual scripts.
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Blender</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#installation">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#add-ons">Add-ons</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#verify-setup">Verify setup</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#install-python-packages">Install Python packages</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#start-blender">Start Blender</a></li>
@@ -414,7 +428,7 @@ Therefore, COMPAS Blender development is somewhat limited to individual scripts.
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="OFFWriter.__init__" href="compas.files.OFFWriter.__init__.html" />
+    <link rel="next" title="OFFWriter.write" href="compas.files.OFFWriter.write.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <section class="detail" id="offwriter">
+          <div class="detail section" id="offwriter">
 <h1>OFFWriter</h1>
-<dl class="class">
+<dl class="py class">
 <dt id="compas.files.OFFWriter">
-<em class="property">class </em><code class="sig-prename descclassname">compas.files.</code><code class="sig-name descname">OFFWriter</code><span class="sig-paren">(</span><em class="sig-param">filepath</em>, <em class="sig-param">mesh</em>, <em class="sig-param">author=None</em>, <em class="sig-param">email=None</em>, <em class="sig-param">date=None</em>, <em class="sig-param">precision=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/files/off.html#OFFWriter"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.files.</span></code><code class="sig-name descname"><span class="pre">OFFWriter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/off.py#L178"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -117,26 +117,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFFWriter.__init__.html#compas.files.OFFWriter.__init__" title="compas.files.OFFWriter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(filepath, mesh[, author, email, …])</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.OFFWriter.write.html#compas.files.OFFWriter.write" title="compas.files.OFFWriter.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFFWriter.write.html#compas.files.OFFWriter.write" title="compas.files.OFFWriter.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFFWriter.write_faces.html#compas.files.OFFWriter.write_faces" title="compas.files.OFFWriter.write_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_faces</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.OFFWriter.write_faces.html#compas.files.OFFWriter.write_faces" title="compas.files.OFFWriter.write_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_faces</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.OFFWriter.write_header.html#compas.files.OFFWriter.write_header" title="compas.files.OFFWriter.write_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_header</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFFWriter.write_header.html#compas.files.OFFWriter.write_header" title="compas.files.OFFWriter.write_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_header</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFFWriter.write_vertices.html#compas.files.OFFWriter.write_vertices" title="compas.files.OFFWriter.write_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_vertices</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.OFFWriter.write_vertices.html#compas.files.OFFWriter.write_vertices" title="compas.files.OFFWriter.write_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_vertices</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -161,6 +158,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -170,6 +168,25 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -216,10 +233,10 @@
       
 
       
-        <a href="compas.files.OFFWriter.__init__.html" title="OFFWriter.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.OFFWriter.write.html" title="OFFWriter.write" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            OFFWriter.__init__
+            OFFWriter.write
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -265,7 +282,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

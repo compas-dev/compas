@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="LocalPackageMeshLoader.__init__" href="compas.robots.LocalPackageMeshLoader.__init__.html" />
+    <link rel="next" title="LocalPackageMeshLoader.build_path" href="compas.robots.LocalPackageMeshLoader.build_path.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <section class="detail" id="localpackagemeshloader">
+          <div class="detail section" id="localpackagemeshloader">
 <h1>LocalPackageMeshLoader</h1>
-<dl class="class">
+<dl class="py class">
 <dt id="compas.robots.LocalPackageMeshLoader">
-<em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">LocalPackageMeshLoader</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">support_package</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/robots/resources/basic.html#LocalPackageMeshLoader"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.robots.</span></code><code class="sig-name descname"><span class="pre">LocalPackageMeshLoader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">support_package</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/resources/basic.py#L150"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.resources.basic.AbstractMeshLoader</span></code></p>
 <p>Loads suport package resources stored locally.</p>
 <dl class="field-list simple">
@@ -127,26 +127,23 @@ and additional assets, e.g. ‘abb_irb4400_support’</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.__init__.html#compas.robots.LocalPackageMeshLoader.__init__" title="compas.robots.LocalPackageMeshLoader.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, support_package)</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.build_path.html#compas.robots.LocalPackageMeshLoader.build_path" title="compas.robots.LocalPackageMeshLoader.build_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_path</span></code></a>(*path_parts)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.build_path.html#compas.robots.LocalPackageMeshLoader.build_path" title="compas.robots.LocalPackageMeshLoader.build_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_path</span></code></a>(*path_parts)</p></td>
 <td><p>Returns the building path.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.can_load_mesh.html#compas.robots.LocalPackageMeshLoader.can_load_mesh" title="compas.robots.LocalPackageMeshLoader.can_load_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">can_load_mesh</span></code></a>(url)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.can_load_mesh.html#compas.robots.LocalPackageMeshLoader.can_load_mesh" title="compas.robots.LocalPackageMeshLoader.can_load_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">can_load_mesh</span></code></a>(url)</p></td>
 <td><p>Determine whether this loader can load a given mesh URL.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.load_mesh.html#compas.robots.LocalPackageMeshLoader.load_mesh" title="compas.robots.LocalPackageMeshLoader.load_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_mesh</span></code></a>(url)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.load_mesh.html#compas.robots.LocalPackageMeshLoader.load_mesh" title="compas.robots.LocalPackageMeshLoader.load_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_mesh</span></code></a>(url)</p></td>
 <td><p>Loads a mesh from local storage.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.load_urdf.html#compas.robots.LocalPackageMeshLoader.load_urdf" title="compas.robots.LocalPackageMeshLoader.load_urdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_urdf</span></code></a>(file)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.LocalPackageMeshLoader.load_urdf.html#compas.robots.LocalPackageMeshLoader.load_urdf" title="compas.robots.LocalPackageMeshLoader.load_urdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_urdf</span></code></a>(file)</p></td>
 <td><p>Load a URDF file from local storage.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -171,6 +168,7 @@ and additional assets, e.g. ‘abb_irb4400_support’</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -180,6 +178,25 @@ and additional assets, e.g. ‘abb_irb4400_support’</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -226,10 +243,10 @@ and additional assets, e.g. ‘abb_irb4400_support’</p></li>
       
 
       
-        <a href="compas.robots.LocalPackageMeshLoader.__init__.html" title="LocalPackageMeshLoader.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.robots.LocalPackageMeshLoader.build_path.html" title="LocalPackageMeshLoader.build_path" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            LocalPackageMeshLoader.__init__
+            LocalPackageMeshLoader.build_path
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -275,7 +292,7 @@ and additional assets, e.g. ‘abb_irb4400_support’</p></li>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

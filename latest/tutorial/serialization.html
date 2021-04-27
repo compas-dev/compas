@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,7 +100,7 @@
   
         
           
-          <section id="data-serialization">
+          <div class="section" id="data-serialization">
 <span id="tut-serialization"></span><h1>Data Serialization</h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -114,15 +114,15 @@ or even store information about entire work sessions during iterative processes.
 All COMPAS data objects (geometry and data structures) implement the interface provided by <code class="docutils literal notranslate"><span class="pre">compas.base.Base</span></code>,
 which forces them to define the methods and properties that form the backbone of the serialization infrastructure.</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.base.Base.to_data.html#compas.base.Base.to_data" title="(in COMPAS v1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.to_data()</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.base.Base.from_data.html#compas.base.Base.from_data" title="(in COMPAS v1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.from_data()</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.base.Base.to_json.html#compas.base.Base.to_json" title="(in COMPAS v1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.to_json()</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.base.Base.from_json.html#compas.base.Base.from_json" title="(in COMPAS v1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.from_json()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.base.Base.to_data.html#compas.base.Base.to_data" title="compas.base.Base.to_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.to_data()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.base.Base.from_data.html#compas.base.Base.from_data" title="compas.base.Base.from_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.from_data()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.base.Base.to_json.html#compas.base.Base.to_json" title="compas.base.Base.to_json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.to_json()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.base.Base.from_json.html#compas.base.Base.from_json" title="compas.base.Base.from_json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.base.Base.from_json()</span></code></a></p></li>
 </ul>
 <p>The “from” methods are class methods (<code class="docutils literal notranslate"><span class="pre">&#64;classmethod</span></code>) and act as alternative constructors.
 The “to” methods are their counterparts that produce compatible data from object instances.</p>
-<section id="explicit-serialisation">
-<h2>Explicit serialisation</h2>
+<div class="section" id="explicit-serialization">
+<h2>Explicit serialization</h2>
 <p>Create a mesh, convert it do its data representation, and construct a new mesh from that data.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># to data</span>
 
@@ -145,9 +145,9 @@ The “to” methods are their counterparts that produce compatible data from ob
 <span class="n">mesh2</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</section>
-<section id="implicit-serialisation">
-<h2>Implicit serialisation</h2>
+</div>
+<div class="section" id="implicit-serialization">
+<h2>Implicit serialization</h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># to json</span>
 
 <span class="kn">import</span> <span class="nn">math</span>
@@ -186,8 +186,8 @@ The “to” methods are their counterparts that produce compatible data from ob
 <span class="nb">print</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
         
       </main>
@@ -239,8 +239,8 @@ The “to” methods are their counterparts that produce compatible data from ob
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Data Serialization</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#explicit-serialisation">Explicit serialisation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#implicit-serialisation">Implicit serialisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#explicit-serialization">Explicit serialization</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#implicit-serialization">Implicit serialization</a></li>
 </ul>
 </li>
 </ul>
@@ -313,7 +313,7 @@ The “to” methods are their counterparts that produce compatible data from ob
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

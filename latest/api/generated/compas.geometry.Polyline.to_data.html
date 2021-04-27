@@ -23,7 +23,7 @@
   
   
   
-    <link rel="prev" title="Polyline.point" href="compas.geometry.Polyline.point.html" />
+    <link rel="prev" title="Polyline.tangent_at_point_on_polyline" href="compas.geometry.Polyline.tangent_at_point_on_polyline.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -106,20 +106,20 @@
   
         
           
-          <section class="detail" id="polyline-to-data">
+          <div class="detail section" id="polyline-to-data">
 <h1>Polyline.to_data</h1>
-<dl class="method">
+<dl class="py method">
 <dt id="compas.geometry.Polyline.to_data">
-<code class="sig-prename descclassname">Polyline.</code><code class="sig-name descname">to_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Returns the data dictionary that represents the primitive.</p>
+<code class="sig-prename descclassname"><span class="pre">Polyline.</span></code><code class="sig-name descname"><span class="pre">to_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L123"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Convert an object to its native data representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>dict</em> – The object’s data.</p>
+<dd class="field-odd"><p><em>dict</em> – The data representation of the object as described by the schema.</p>
 </dd>
 </dl>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -144,6 +144,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -153,6 +154,25 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -189,11 +209,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.Polyline.point.html" title="Polyline.point" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.Polyline.tangent_at_point_on_polyline.html" title="Polyline.tangent_at_point_on_polyline" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            Polyline.point
+            Polyline.tangent_at_point_on_polyline
           </div>
         </a>
       
@@ -248,7 +268,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

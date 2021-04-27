@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,20 +104,25 @@
   
         
           
-          <section class="detail" id="purge-objects">
+          <div class="detail section" id="purge-objects">
 <h1>purge_objects</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="compas_rhino.utilities.purge_objects">
-<code class="sig-prename descclassname">compas_rhino.utilities.</code><code class="sig-name descname">purge_objects</code><span class="sig-paren">(</span><em class="sig-param">guids</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/utilities/objects.html#purge_objects"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname"><span class="pre">compas_rhino.utilities.</span></code><code class="sig-name descname"><span class="pre">purge_objects</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redraw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/utilities/objects.py#L200"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Purge objects from memory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>guids</strong> (<em>list of GUID</em>)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>guids</strong> (<em>list of GUID</em>)</p></li>
+<li><p><strong>redraw</strong> (<em>bool, optional</em>) – If True, redrawing will be enabled and enacted.
+If False, redrawing will be disabled.
+Default is True.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -243,7 +248,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist.__init__" href="compas_ghpython.artists.MeshArtist.__init__.html" />
+    <link rel="next" title="MeshArtist.draw" href="compas_ghpython.artists.MeshArtist.draw.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <section class="detail" id="meshartist">
+          <div class="detail section" id="meshartist">
 <h1>MeshArtist</h1>
-<dl class="class">
+<dl class="py class">
 <dt id="compas_ghpython.artists.MeshArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_ghpython.artists.</code><code class="sig-name descname">MeshArtist</code><span class="sig-paren">(</span><em class="sig-param">mesh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></code><code class="sig-name descname"><span class="pre">MeshArtist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/meshartist.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists._artist.BaseArtist</span></code></p>
 <p>A mesh artist defines functionality for visualising COMPAS meshes in GhPython.</p>
 <dl class="field-list simple">
@@ -144,26 +144,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.__init__.html#compas_ghpython.artists.MeshArtist.__init__" title="compas_ghpython.artists.MeshArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mesh)</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw.html#compas_ghpython.artists.MeshArtist.draw" title="compas_ghpython.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw.html#compas_ghpython.artists.MeshArtist.draw" title="compas_ghpython.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([color])</p></td>
 <td><p>Draw the mesh as a RhinoMesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_edges.html#compas_ghpython.artists.MeshArtist.draw_edges" title="compas_ghpython.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_edges.html#compas_ghpython.artists.MeshArtist.draw_edges" title="compas_ghpython.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_faces.html#compas_ghpython.artists.MeshArtist.draw_faces" title="compas_ghpython.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color, join_faces])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_faces.html#compas_ghpython.artists.MeshArtist.draw_faces" title="compas_ghpython.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color, join_faces])</p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_vertices.html#compas_ghpython.artists.MeshArtist.draw_vertices" title="compas_ghpython.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_vertices.html#compas_ghpython.artists.MeshArtist.draw_vertices" title="compas_ghpython.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -236,10 +233,10 @@
       
 
       
-        <a href="compas_ghpython.artists.MeshArtist.__init__.html" title="MeshArtist.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_ghpython.artists.MeshArtist.draw.html" title="MeshArtist.draw" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            MeshArtist.__init__
+            MeshArtist.draw
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -285,7 +282,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="URDFParser.__init__" href="compas.files.URDFParser.__init__.html" />
+    <link rel="next" title="URDFParser.build_kwargs_by_type" href="compas.files.URDFParser.build_kwargs_by_type.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <section class="detail" id="urdfparser">
+          <div class="detail section" id="urdfparser">
 <h1>URDFParser</h1>
-<dl class="class">
+<dl class="py class">
 <dt id="compas.files.URDFParser">
-<em class="property">class </em><code class="sig-prename descclassname">compas.files.</code><code class="sig-name descname">URDFParser</code><a class="reference internal" href="../../_modules/compas/files/urdf.html#URDFParser"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.files.</span></code><code class="sig-name descname"><span class="pre">URDFParser</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/urdf.py#L198"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Parse URDF elements into an object graph.</p>
 <p class="rubric">Methods</p>
@@ -118,29 +118,26 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFParser.__init__.html#compas.files.URDFParser.__init__" title="compas.files.URDFParser.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a></p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFParser.build_kwargs_by_type.html#compas.files.URDFParser.build_kwargs_by_type" title="compas.files.URDFParser.build_kwargs_by_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_kwargs_by_type</span></code></a>(elements, parser_type, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFParser.build_kwargs_by_type.html#compas.files.URDFParser.build_kwargs_by_type" title="compas.files.URDFParser.build_kwargs_by_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_kwargs_by_type</span></code></a>(elements, parser_type, …)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFParser.filter_elements.html#compas.files.URDFParser.filter_elements" title="compas.files.URDFParser.filter_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_elements</span></code></a>(elements, type)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFParser.filter_elements.html#compas.files.URDFParser.filter_elements" title="compas.files.URDFParser.filter_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_elements</span></code></a>(elements, type)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFParser.from_generic_urdf.html#compas.files.URDFParser.from_generic_urdf" title="compas.files.URDFParser.from_generic_urdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_generic_urdf</span></code></a>(parser_type[, attributes, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFParser.from_generic_urdf.html#compas.files.URDFParser.from_generic_urdf" title="compas.files.URDFParser.from_generic_urdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_generic_urdf</span></code></a>(parser_type[, attributes, …])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFParser.install_parser.html#compas.files.URDFParser.install_parser" title="compas.files.URDFParser.install_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">install_parser</span></code></a>(parser_type, *tags)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFParser.install_parser.html#compas.files.URDFParser.install_parser" title="compas.files.URDFParser.install_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">install_parser</span></code></a>(parser_type, *tags)</p></td>
 <td><p>Installs an URDF parser type for a defined tag.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFParser.parse_element.html#compas.files.URDFParser.parse_element" title="compas.files.URDFParser.parse_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_element</span></code></a>(element[, path, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFParser.parse_element.html#compas.files.URDFParser.parse_element" title="compas.files.URDFParser.parse_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_element</span></code></a>(element[, path, …])</p></td>
 <td><p>Recursively parse URDF element and its children.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -165,6 +162,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -174,6 +172,25 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -220,10 +237,10 @@
       
 
       
-        <a href="compas.files.URDFParser.__init__.html" title="URDFParser.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.URDFParser.build_kwargs_by_type.html" title="URDFParser.build_kwargs_by_type" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            URDFParser.__init__
+            URDFParser.build_kwargs_by_type
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -269,7 +286,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

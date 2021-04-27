@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="DataEncoder.__init__" href="compas.utilities.DataEncoder.__init__.html" />
+    <link rel="next" title="DataEncoder.default" href="compas.utilities.DataEncoder.default.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,13 +104,13 @@
   
         
           
-          <section class="detail" id="dataencoder">
+          <div class="detail section" id="dataencoder">
 <h1>DataEncoder</h1>
-<dl class="class">
+<dl class="py class">
 <dt id="compas.utilities.DataEncoder">
-<em class="property">class </em><code class="sig-prename descclassname">compas.utilities.</code><code class="sig-name descname">DataEncoder</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">skipkeys=False</em>, <em class="sig-param">ensure_ascii=True</em>, <em class="sig-param">check_circular=True</em>, <em class="sig-param">allow_nan=True</em>, <em class="sig-param">sort_keys=False</em>, <em class="sig-param">indent=None</em>, <em class="sig-param">separators=None</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/utilities/encoders.html#DataEncoder"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.utilities.</span></code><code class="sig-name descname"><span class="pre">DataEncoder</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/encoders.py#L43"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">json.encoder.JSONEncoder</span></code></p>
-<p>Data encoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives.</p>
+<p>Data encoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.</p>
 <p class="rubric">Notes</p>
 <p>In the context of Remote Procedure Calls,</p>
 <p class="rubric">Methods</p>
@@ -120,23 +120,20 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.__init__.html#compas.utilities.DataEncoder.__init__" title="compas.utilities.DataEncoder.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*[, skipkeys, ensure_ascii, …])</p></td>
-<td><p>Constructor for JSONEncoder, with sensible defaults.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.default.html#compas.utilities.DataEncoder.default" title="compas.utilities.DataEncoder.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a>(o)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.default.html#compas.utilities.DataEncoder.default" title="compas.utilities.DataEncoder.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a>(o)</p></td>
 <td><p>Implement this method in a subclass such that it returns a serializable object for <code class="docutils literal notranslate"><span class="pre">o</span></code>, or calls the base implementation (to raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.encode.html#compas.utilities.DataEncoder.encode" title="compas.utilities.DataEncoder.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(o)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.encode.html#compas.utilities.DataEncoder.encode" title="compas.utilities.DataEncoder.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(o)</p></td>
 <td><p>Return a JSON string representation of a Python data structure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.iterencode.html#compas.utilities.DataEncoder.iterencode" title="compas.utilities.DataEncoder.iterencode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterencode</span></code></a>(o[, _one_shot])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.iterencode.html#compas.utilities.DataEncoder.iterencode" title="compas.utilities.DataEncoder.iterencode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterencode</span></code></a>(o[, _one_shot])</p></td>
 <td><p>Encode the given object and yield each string representation as available.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -161,6 +158,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -170,6 +168,25 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -216,10 +233,10 @@
       
 
       
-        <a href="compas.utilities.DataEncoder.__init__.html" title="DataEncoder.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.utilities.DataEncoder.default.html" title="DataEncoder.default" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            DataEncoder.__init__
+            DataEncoder.default
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -265,7 +282,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
