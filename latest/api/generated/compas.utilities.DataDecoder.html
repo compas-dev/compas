@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="DataDecoder.decode" href="compas.utilities.DataDecoder.decode.html" />
+    <link rel="next" title="DataDecoder.__init__" href="compas.utilities.DataDecoder.__init__.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,13 +104,13 @@
   
         
           
-          <div class="detail section" id="datadecoder">
+          <section class="detail" id="datadecoder">
 <h1>DataDecoder</h1>
-<dl class="py class">
+<dl class="class">
 <dt id="compas.utilities.DataDecoder">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.utilities.</span></code><code class="sig-name descname"><span class="pre">DataDecoder</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/encoders.py#L96"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas.utilities.</code><code class="sig-name descname">DataDecoder</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/utilities/encoders.html#DataDecoder"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">json.decoder.JSONDecoder</span></code></p>
-<p>Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.</p>
+<p>Data decoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives.</p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -118,20 +118,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataDecoder.decode.html#compas.utilities.DataDecoder.decode" title="compas.utilities.DataDecoder.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(s[, _w])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataDecoder.__init__.html#compas.utilities.DataDecoder.__init__" title="compas.utilities.DataDecoder.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">object_hook</span></code>, if specified, will be called with the result of every JSON object decoded and its return value will be used in place of the given <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.utilities.DataDecoder.decode.html#compas.utilities.DataDecoder.decode" title="compas.utilities.DataDecoder.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(s[, _w])</p></td>
 <td><p>Return the Python representation of <code class="docutils literal notranslate"><span class="pre">s</span></code> (a <code class="docutils literal notranslate"><span class="pre">str</span></code> instance containing a JSON document).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.utilities.DataDecoder.object_hook.html#compas.utilities.DataDecoder.object_hook" title="compas.utilities.DataDecoder.object_hook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_hook</span></code></a>(o)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataDecoder.object_hook.html#compas.utilities.DataDecoder.object_hook" title="compas.utilities.DataDecoder.object_hook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_hook</span></code></a>(o)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataDecoder.raw_decode.html#compas.utilities.DataDecoder.raw_decode" title="compas.utilities.DataDecoder.raw_decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_decode</span></code></a>(s[, idx])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.utilities.DataDecoder.raw_decode.html#compas.utilities.DataDecoder.raw_decode" title="compas.utilities.DataDecoder.raw_decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_decode</span></code></a>(s[, idx])</p></td>
 <td><p>Decode a JSON document from <code class="docutils literal notranslate"><span class="pre">s</span></code> (a <code class="docutils literal notranslate"><span class="pre">str</span></code> beginning with a JSON document) and return a 2-tuple of the Python representation and the index in <code class="docutils literal notranslate"><span class="pre">s</span></code> where the document ended.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -156,7 +159,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -166,25 +168,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -231,10 +214,10 @@
       
 
       
-        <a href="compas.utilities.DataDecoder.decode.html" title="DataDecoder.decode" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.utilities.DataDecoder.__init__.html" title="DataDecoder.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            DataDecoder.decode
+            DataDecoder.__init__
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -280,7 +263,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

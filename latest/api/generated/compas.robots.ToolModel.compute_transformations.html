@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="ToolModel.copy" href="compas.robots.ToolModel.copy.html" />
+    <link rel="next" title="ToolModel.find_children_joints" href="compas.robots.ToolModel.find_children_joints.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -106,16 +106,16 @@
   
         
           
-          <div class="detail section" id="toolmodel-compute-transformations">
+          <section class="detail" id="toolmodel-compute-transformations">
 <h1>ToolModel.compute_transformations</h1>
-<dl class="py method">
+<dl class="method">
 <dt id="compas.robots.ToolModel.compute_transformations">
-<code class="sig-prename descclassname"><span class="pre">ToolModel.</span></code><code class="sig-name descname"><span class="pre">compute_transformations</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L742"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<code class="sig-prename descclassname">ToolModel.</code><code class="sig-name descname">compute_transformations</code><span class="sig-paren">(</span><em class="sig-param">joint_state</em>, <em class="sig-param">link=None</em>, <em class="sig-param">parent_transformation=None</em><span class="sig-paren">)</span></dt>
 <dd><p>Recursive function to calculate the transformations of each joint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>:class:`compas.robots.Configuration` or joint_state</strong> (<em>dict</em>) – A dictionary with the joint names as keys and values in radians and
+<li><p><strong>joint_state</strong> (<em>dict</em>) – A dictionary with the joint names as keys and values in radians and
 meters (depending on the joint type).</p></li>
 <li><p><strong>link</strong> (<a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a>) – Link instance to calculate the child joint’s transformation.</p></li>
 <li><p><strong>parent_transformation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code>) – The transfomation of the parent joint.</p></li>
@@ -126,13 +126,15 @@ meters (depending on the joint type).</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">random_configuration</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transformations</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">compute_transformations</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">names</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_configurable_joint_names</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.238</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.153</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.174</span><span class="p">,</span> <span class="mf">0.185</span><span class="p">,</span> <span class="mf">0.667</span><span class="p">,</span> <span class="mf">0.000</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">joint_state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformations</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">compute_transformations</span><span class="p">(</span><span class="n">joint_state</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -157,7 +159,6 @@ meters (depending on the joint type).</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -167,25 +168,6 @@ meters (depending on the joint type).</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -232,10 +214,10 @@ meters (depending on the joint type).</p></li>
       
 
       
-        <a href="compas.robots.ToolModel.copy.html" title="ToolModel.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.robots.ToolModel.find_children_joints.html" title="ToolModel.find_children_joints" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            ToolModel.copy
+            ToolModel.find_children_joints
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -281,7 +263,7 @@ meters (depending on the joint type).</p></li>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

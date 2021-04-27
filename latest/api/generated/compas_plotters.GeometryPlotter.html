@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="GeometryPlotter.add" href="compas_plotters.GeometryPlotter.add.html" />
+    <link rel="next" title="GeometryPlotter.__init__" href="compas_plotters.GeometryPlotter.__init__.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -102,11 +102,11 @@
   
         
           
-          <div class="detail section" id="geometryplotter">
+          <section class="detail" id="geometryplotter">
 <h1>GeometryPlotter</h1>
-<dl class="py class">
+<dl class="class">
 <dt id="compas_plotters.GeometryPlotter">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_plotters.</span></code><code class="sig-name descname"><span class="pre">GeometryPlotter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[(-</span> <span class="pre">8,</span> <span class="pre">16),</span> <span class="pre">(-</span> <span class="pre">5,</span> <span class="pre">10)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(8,</span> <span class="pre">5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bgcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_plotters/geometryplotter.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_plotters.</code><code class="sig-name descname">GeometryPlotter</code><span class="sig-paren">(</span><em class="sig-param">view=[(-8, 16), (-5, 10)], figsize=(8, 5), dpi=100, bgcolor=(1.0, 1.0, 1.0), show_axes=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_plotters/geometryplotter.html#GeometryPlotter"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Plotter for the visualisation of COMPAS geometry.</p>
 <dl class="field-list simple">
@@ -128,44 +128,47 @@ Default is <code class="docutils literal notranslate"><span class="pre">(8,</spa
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.add.html#compas_plotters.GeometryPlotter.add" title="compas_plotters.GeometryPlotter.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(item[, artist])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.__init__.html#compas_plotters.GeometryPlotter.__init__" title="compas_plotters.GeometryPlotter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([view, figsize, dpi, bgcolor, …])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.add.html#compas_plotters.GeometryPlotter.add" title="compas_plotters.GeometryPlotter.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(item[, artist])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.add_as.html#compas_plotters.GeometryPlotter.add_as" title="compas_plotters.GeometryPlotter.add_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_as</span></code></a>(item, artist_type, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.add_as.html#compas_plotters.GeometryPlotter.add_as" title="compas_plotters.GeometryPlotter.add_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_as</span></code></a>(item, artist_type, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.add_from_list.html#compas_plotters.GeometryPlotter.add_from_list" title="compas_plotters.GeometryPlotter.add_from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_from_list</span></code></a>(items, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.add_from_list.html#compas_plotters.GeometryPlotter.add_from_list" title="compas_plotters.GeometryPlotter.add_from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_from_list</span></code></a>(items, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.draw.html#compas_plotters.GeometryPlotter.draw" title="compas_plotters.GeometryPlotter.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([pause])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.draw.html#compas_plotters.GeometryPlotter.draw" title="compas_plotters.GeometryPlotter.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([pause])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.find.html#compas_plotters.GeometryPlotter.find" title="compas_plotters.GeometryPlotter.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(item)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.find.html#compas_plotters.GeometryPlotter.find" title="compas_plotters.GeometryPlotter.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(item)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.pause.html#compas_plotters.GeometryPlotter.pause" title="compas_plotters.GeometryPlotter.pause"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pause</span></code></a>(pause)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.pause.html#compas_plotters.GeometryPlotter.pause" title="compas_plotters.GeometryPlotter.pause"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pause</span></code></a>(pause)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.redraw.html#compas_plotters.GeometryPlotter.redraw" title="compas_plotters.GeometryPlotter.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([pause])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.redraw.html#compas_plotters.GeometryPlotter.redraw" title="compas_plotters.GeometryPlotter.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([pause])</p></td>
 <td><p>Updates and pauses the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.register_listener.html#compas_plotters.GeometryPlotter.register_listener" title="compas_plotters.GeometryPlotter.register_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_listener</span></code></a>(listener)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.register_listener.html#compas_plotters.GeometryPlotter.register_listener" title="compas_plotters.GeometryPlotter.register_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_listener</span></code></a>(listener)</p></td>
 <td><p>Register a listener for pick events.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.save.html#compas_plotters.GeometryPlotter.save" title="compas_plotters.GeometryPlotter.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(filepath, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.save.html#compas_plotters.GeometryPlotter.save" title="compas_plotters.GeometryPlotter.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(filepath, **kwargs)</p></td>
 <td><p>Saves the plot to a file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.show.html#compas_plotters.GeometryPlotter.show" title="compas_plotters.GeometryPlotter.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.show.html#compas_plotters.GeometryPlotter.show" title="compas_plotters.GeometryPlotter.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
 <td><p>Displays the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.zoom_extents.html#compas_plotters.GeometryPlotter.zoom_extents" title="compas_plotters.GeometryPlotter.zoom_extents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoom_extents</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.GeometryPlotter.zoom_extents.html#compas_plotters.GeometryPlotter.zoom_extents" title="compas_plotters.GeometryPlotter.zoom_extents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoom_extents</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -239,10 +242,10 @@ Default is <code class="docutils literal notranslate"><span class="pre">(8,</spa
       
 
       
-        <a href="compas_plotters.GeometryPlotter.add.html" title="GeometryPlotter.add" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_plotters.GeometryPlotter.__init__.html" title="GeometryPlotter.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            GeometryPlotter.add
+            GeometryPlotter.__init__
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -288,7 +291,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">(8,</spa
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

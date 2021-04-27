@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="TextForm.on_cancel" href="compas_rhino.forms.TextForm.on_cancel.html" />
+    <link rel="next" title="TextForm.__init__" href="compas_rhino.forms.TextForm.__init__.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,12 +104,13 @@
   
         
           
-          <div class="detail section" id="textform">
+          <section class="detail" id="textform">
 <h1>TextForm</h1>
-<dl class="py class">
+<dl class="class">
 <dt id="compas_rhino.forms.TextForm">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.forms.</span></code><code class="sig-name descname"><span class="pre">TextForm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/forms/etoforms/text.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Eto.Forms.Dialog.</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.forms.</code><code class="sig-name descname">TextForm</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">title='Message'</em>, <em class="sig-param">width=800</em>, <em class="sig-param">height=600</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/forms/text.html#TextForm"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.forms.base.BaseForm</span></code></p>
+<p>A form for text.</p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -117,20 +118,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.TextForm.on_cancel.html#compas_rhino.forms.TextForm.on_cancel" title="compas_rhino.forms.TextForm.on_cancel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_cancel</span></code></a>(sender, e)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.TextForm.__init__.html#compas_rhino.forms.TextForm.__init__" title="compas_rhino.forms.TextForm.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(text[, title, width, height])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.TextForm.init.html#compas_rhino.forms.TextForm.init" title="compas_rhino.forms.TextForm.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.TextForm.on_ok.html#compas_rhino.forms.TextForm.on_ok" title="compas_rhino.forms.TextForm.on_ok"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_ok</span></code></a>(sender, e)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.TextForm.on_form_closed.html#compas_rhino.forms.TextForm.on_form_closed" title="compas_rhino.forms.TextForm.on_form_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_form_closed</span></code></a>(sender, eargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.TextForm.show.html#compas_rhino.forms.TextForm.show" title="compas_rhino.forms.TextForm.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.TextForm.show.html#compas_rhino.forms.TextForm.show" title="compas_rhino.forms.TextForm.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
+<td><p>Show the form as a modal dialog.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -207,10 +211,10 @@
       
 
       
-        <a href="compas_rhino.forms.TextForm.on_cancel.html" title="TextForm.on_cancel" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.forms.TextForm.__init__.html" title="TextForm.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            TextForm.on_cancel
+            TextForm.__init__
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -256,7 +260,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

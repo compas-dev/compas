@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Collision.copy" href="compas.robots.Collision.copy.html" />
+    <link rel="next" title="Collision.__init__" href="compas.robots.Collision.__init__.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,12 +104,12 @@
   
         
           
-          <div class="detail section" id="collision">
+          <section class="detail" id="collision">
 <h1>Collision</h1>
-<dl class="py class">
+<dl class="class">
 <dt id="compas.robots.Collision">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.robots.</span></code><code class="sig-name descname"><span class="pre">Collision</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/link.py#L268"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.data.Data</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">Collision</code><span class="sig-paren">(</span><em class="sig-param">geometry</em>, <em class="sig-param">origin=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/robots/model/link.html#Collision"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></p>
 <p>Collidable description of a link.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -129,38 +129,35 @@ to the reference frame of the link.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.copy.html#compas.robots.Collision.copy" title="compas.robots.Collision.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
-<td><p>Make an independent copy of the data object.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.__init__.html#compas.robots.Collision.__init__" title="compas.robots.Collision.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(geometry[, origin, name])</p></td>
+<td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Collision.from_data.html#compas.robots.Collision.from_data" title="compas.robots.Collision.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.from_json.html#compas.robots.Collision.from_json" title="compas.robots.Collision.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
+<td><p>Construct an object from serialised data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Collision.from_primitive.html#compas.robots.Collision.from_primitive" title="compas.robots.Collision.from_primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_primitive</span></code></a>(primitive, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Collision.get_urdf_element.html#compas.robots.Collision.get_urdf_element" title="compas.robots.Collision.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.get_urdf_element.html#compas.robots.Collision.get_urdf_element" title="compas.robots.Collision.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Collision.to_data.html#compas.robots.Collision.to_data" title="compas.robots.Collision.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.to_data.html#compas.robots.Collision.to_data" title="compas.robots.Collision.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.to_json.html#compas.robots.Collision.to_json" title="compas.robots.Collision.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Collision.to_json.html#compas.robots.Collision.to_json" title="compas.robots.Collision.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Collision.validate_data.html#compas.robots.Collision.validate_data" title="compas.robots.Collision.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.validate_data.html#compas.robots.Collision.validate_data" title="compas.robots.Collision.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Collision.validate_json.html#compas.robots.Collision.validate_json" title="compas.robots.Collision.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Collision.validate_json.html#compas.robots.Collision.validate_json" title="compas.robots.Collision.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -185,7 +182,6 @@ to the reference frame of the link.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -195,25 +191,6 @@ to the reference frame of the link.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -260,10 +237,10 @@ to the reference frame of the link.</p></li>
       
 
       
-        <a href="compas.robots.Collision.copy.html" title="Collision.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.robots.Collision.__init__.html" title="Collision.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Collision.copy
+            Collision.__init__
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -309,7 +286,7 @@ to the reference frame of the link.</p></li>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

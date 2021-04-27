@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - Graph</title>
+  
+  <title> - Graph</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -83,10 +85,26 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../api.html">API Reference</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.html">compas</a></li>
+            
+              <li class="breadcrumb-item"><a href="../compas.datastructures.html">datastructures</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">Graph</li>
+          </ol>
+        </nav>
+        
+  
         
           
-          <div class="detail section" id="graph">
+          <section class="detail" id="graph">
 <h1>Graph</h1>
 <dl class="class">
 <dt id="compas.datastructures.Graph">
@@ -190,7 +208,7 @@ processes.</p></li>
 <td><p>Construct a datastructure from structured data contained in a json file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_networkx.html#compas.datastructures.Graph.from_networkx" title="compas.datastructures.Graph.from_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_networkx</span></code></a>(graph)</p></td>
-<td><p>Create a new graph instance from a NetworkX DiGraph instance.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.get_any_edge.html#compas.datastructures.Graph.get_any_edge" title="compas.datastructures.Graph.get_any_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_edge</span></code></a>()</p></td>
 <td><p>Get the identifier of a random edge.</p></td>
@@ -277,7 +295,7 @@ processes.</p></li>
 <td><p>Serialise the structured data representing the datastructure to json.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_networkx.html#compas.datastructures.Graph.to_networkx" title="compas.datastructures.Graph.to_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_networkx</span></code></a>()</p></td>
-<td><p>Create a new NetworkX graph instance from a graph.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.unset_edge_attribute.html#compas.datastructures.Graph.unset_edge_attribute" title="compas.datastructures.Graph.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a>(key, name)</p></td>
 <td><p>Unset the attribute of an edge.</p></td>
@@ -310,7 +328,7 @@ processes.</p></li>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -382,7 +400,7 @@ processes.</p></li>
       
         <a href="compas.datastructures.Network.validate_json.html" title="Network.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
-          <div class="nav-title flex-grow-1 h4 align-self-center">
+          <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
             Network.validate_json
           </div>
@@ -391,7 +409,7 @@ processes.</p></li>
 
       
         <a href="compas.datastructures.Graph.__init__.html" title="Graph.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
-          <div class="nav-title footer-link flex-grow-1 h4 align-self-center">
+          <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
             Graph.__init__
           </div>
@@ -401,6 +419,7 @@ processes.</p></li>
     </nav>  
   </footer>
   <!-- footer -->
+  <!-- below -->
   <div class="below py-5">
     <div class="container">
       <div class="row flex-column">
@@ -410,9 +429,9 @@ processes.</p></li>
             A computational framework for collaboration and research
             in Architecture, Engineering, Fabrication, and Construction.
           </p>
-          <nav class="nav justify-content-center my-4">
-            <a href="https://news.ethz.ch/d?o000w2ty00ilxw0qk0000l3i000000000000e40roenrqovbzt6ceqdlt6i881" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
-          </nav>
+          <!-- <nav class="nav justify-content-center my-4">
+            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav> -->
           <nav class="nav justify-content-center pb-3">
             <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
               <span class="fab fa-github fa-1x"></span>
@@ -428,12 +447,13 @@ processes.</p></li>
       </div>
       <div class="row">
         <div class="col text-center">
-          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2020 compas-dev</p>
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
         </div>
       </div>
     </div>
   </div>
-
+  <!-- below -->
+  <!-- scripts -->
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
@@ -485,20 +505,7 @@ processes.</p></li>
     })
   }
   </script>
-
-  <script>
-  // var prevScrollpos = window.pageYOffset;
-  // window.onscroll = function() {
-  // var currentScrollPos = window.pageYOffset;
-  // if (prevScrollpos > currentScrollPos) {
-  //     document.getElementById("header").style.top = "0";
-  // } else {
-  //     document.getElementById("header").style.top = "-58px";
-  // }
-  // prevScrollpos = currentScrollPos;
-  // }
-  </script>
-
+  <!-- scripts -->
   
   
 </body>

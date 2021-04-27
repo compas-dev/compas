@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,12 +100,12 @@
   
         
           
-          <div class="section" id="geometry">
+          <section id="geometry">
 <h1>Geometry</h1>
 <p>This tutorial provides a quick tour of the functionality in <a class="reference internal" href="../api/compas.geometry.html#module-compas.geometry" title="compas.geometry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code></a>.
 For a complete overview, visit the API Reference:
 <a class="reference external" href="https://compas.dev/compas/latest/api/compas.geometry.html">https://compas.dev/compas/latest/api/compas.geometry.html</a></p>
-<div class="section" id="points-and-vectors">
+<section id="points-and-vectors">
 <h2>Points and Vectors</h2>
 <p>In Python, the simplest way to represent a point or a vector is through a list of XYZ components.
 To retrieve or modify one of the components, simply access the corresponding index in the list</p>
@@ -215,8 +215,8 @@ However, the result type is not always the same as the type of the inputs</p>
 </code></pre></div>
 </div>
 <p>For an overview of all functionality, see <em>Points and Vectors</em> in the API Reference.</p>
-</div>
-<div class="section" id="other-primitives">
+</section>
+<section id="other-primitives">
 <h2>Other Primitives</h2>
 <p>In addition to points and vectors, COMPAS provides <a class="reference internal" href="../api/generated/compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a>,
 <a class="reference internal" href="../api/generated/compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polyline</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Ellipse.html#compas.geometry.Ellipse" title="compas.geometry.Ellipse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ellipse</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>, and <a class="reference internal" href="../api/generated/compas.geometry.Quaternion.html#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a>.</p>
@@ -315,11 +315,11 @@ many primitives provide “alternative constructors”.</p>
 <p><a class="reference internal" href="../api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a> and <a class="reference internal" href="../api/generated/compas.geometry.Quaternion.html#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a> are special primitives that play an important role
 in transformations (see <a class="reference internal" href="#transformations">Transformations</a>).
 A frame defines a local coordinate system and quaternions provide an alternative formulation for rotations.</p>
-</div>
-<div class="section" id="predicates">
+</section>
+<section id="predicates">
 <h2>Predicates</h2>
-</div>
-<div class="section" id="intersections">
+</section>
+<section id="intersections">
 <h2>Intersections</h2>
 <p>To compute intersections between primitives and/or shapes, use the intersection functions.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
@@ -340,8 +340,8 @@ A frame defines a local coordinate system and quaternions provide an alternative
 <span class="go">Point(1.000, 1.000, 0.000)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="transformations">
+</section>
+<section id="transformations">
 <h2>Transformations</h2>
 <p>All transformations of geometric objects are based on <a class="reference internal" href="../api/generated/compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a>,
 which defines a general projective or affine transformation in eucledian space,
@@ -369,7 +369,7 @@ define specific transformations</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span>
 </code></pre></div>
 </div>
-<p>All primitives support transformations through the methods <code class="xref py py-func docutils literal notranslate"><span class="pre">Primitive.transform()</span></code> and  <code class="xref py py-func docutils literal notranslate"><span class="pre">Primitive.transformed()</span></code>.
+<p>All primitives support transformations through the methods <a class="reference internal" href="../api/generated/compas.geometry.Primitive.transform.html#compas.geometry.Primitive.transform" title="compas.geometry.Primitive.transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">Primitive.transform()</span></code></a> and  <a class="reference internal" href="../api/generated/compas.geometry.Primitive.transformed.html#compas.geometry.Primitive.transformed" title="compas.geometry.Primitive.transformed"><code class="xref py py-func docutils literal notranslate"><span class="pre">Primitive.transformed()</span></code></a>.
 The former modifies the object in place, whereas the latter returns a new object</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
@@ -413,8 +413,8 @@ we get a different result, because the translation component is ignored</p>
 <span class="go">False</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="shapes">
+</section>
+<section id="shapes">
 <h2>Shapes</h2>
 <p>“Shapes” (or “Solids”) extend the primitives with volumetric geometries.
 <a class="reference internal" href="../api/generated/compas.geometry.Box.html#compas.geometry.Box" title="compas.geometry.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Capsule.html#compas.geometry.Capsule" title="compas.geometry.Capsule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Capsule</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Cone.html#compas.geometry.Cone" title="compas.geometry.Cone"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cone</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Cylinder.html#compas.geometry.Cylinder" title="compas.geometry.Cylinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cylinder</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Polyhedron.html#compas.geometry.Polyhedron" title="compas.geometry.Polyhedron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polyhedron</span></code></a>, <a class="reference internal" href="../api/generated/compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sphere</span></code></a>, and <a class="reference internal" href="../api/generated/compas.geometry.Torus.html#compas.geometry.Torus" title="compas.geometry.Torus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Torus</span></code></a>
@@ -430,23 +430,93 @@ or modify their geometry, use transformations</p>
 <span class="go">True</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="boolean-operations">
+</section>
+<section id="boolean-operations">
 <h2>Boolean Operations</h2>
 <p>3D boolean operations are not supported in COMPAS by default,
 but are available through the plugin mechanism if <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_cgal</span></code> is installed</p>
-</div>
-<div class="section" id="algorithms">
+</section>
+<section id="algorithms">
 <h2>Algorithms</h2>
 <p>For a complete overview of available algorithms, see <a class="reference internal" href="../api/compas.geometry.html#module-compas.geometry" title="compas.geometry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code></a>.</p>
-</div>
-<div class="section" id="serialization">
+</section>
+<section id="serialization">
 <h2>Serialization</h2>
-<p>All geometry objects (primitives, shapes, transformations) can be serialized to JSON format,
-and deserialized from such a representation to reconstruct an equivalent object without loss
-of information. The serialization mechanism relies on the underlying data model.</p>
+<p>All geometry objects (primitives, shapes, transformations) can be serialised to JSON format,
+and unserialised from such a representation to reconstruct an equivalent object without loss
+of information. The serialisation mechanism relies on the underlying data model.</p>
+</section>
+<section id="notes">
+<h2>Notes</h2>
+<p>The following representations of primitives can be used
+interchangeably as input in methods and functions.
+The representations using native Python objects also correspond to the required input
+parameters of the default constructor functions of the corresponding COMPAS objects.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 27%" />
+<col style="width: 62%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Object</p></td>
+<td><p>COMPAS</p></td>
+<td><p>Python</p></td>
+</tr>
+<tr class="row-even"><td><p>point</p></td>
+<td><p>Point(float, float, float)</p></td>
+<td><p>[float, float, float]</p></td>
+</tr>
+<tr class="row-odd"><td><p>vector</p></td>
+<td><p>Vector(float, float, float)</p></td>
+<td><p>[float, float, float]</p></td>
+</tr>
+<tr class="row-even"><td><p>line</p></td>
+<td><p>Line(point, point)</p></td>
+<td><p>[[float, float, float], [float, float, float]]</p></td>
+</tr>
+<tr class="row-odd"><td><p>plane</p></td>
+<td><p>Plane(point, vector)</p></td>
+<td><p>[[float, float, float], [float, float, float]]</p></td>
+</tr>
+<tr class="row-even"><td><p>circle</p></td>
+<td><p>Circle(plane, float)</p></td>
+<td><p>[[[float, float, float], [float, float, float]], float]</p></td>
+</tr>
+<tr class="row-odd"><td><p>polygon</p></td>
+<td><p>Polygon(points)</p></td>
+<td><p>[[float, float, float], … [float, float, float]]</p></td>
+</tr>
+<tr class="row-even"><td><p>polyline</p></td>
+<td><p>Polyline(points)</p></td>
+<td><p>[[float, float, float], … [float, float, float]]</p></td>
+</tr>
+<tr class="row-odd"><td><p>ellipse</p></td>
+<td><p>Ellipse(plane, float, float)</p></td>
+<td><p>[[[float, float, float], [float, float, float]], float, float]</p></td>
+</tr>
+<tr class="row-even"><td><p>frame</p></td>
+<td><p>Frame(point, vector,  vector)</p></td>
+<td><p>[[float, float, float], [float, float, float], [float, float, float]]</p></td>
+</tr>
+</tbody>
+</table>
+<p>COMPAS primitives also support indexing, assignment, and iteration according to the above
+equivalency.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
 </div>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">plane</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">n</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
 </div>
+</section>
+</section>
 
         
       </main>
@@ -507,6 +577,7 @@ of information. The serialization mechanism relies on the underlying data model.
 <li class="nav-item"><a class="nav-link reference internal" href="#boolean-operations">Boolean Operations</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#serialization">Serialization</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
@@ -579,7 +650,7 @@ of information. The serialization mechanism relies on the underlying data model.
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

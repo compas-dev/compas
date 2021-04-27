@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="RobotModelArtist.create_geoemetry" href="compas_blender.artists.RobotModelArtist.create_geoemetry.html" />
+    <link rel="next" title="RobotModelArtist.detach_tool_model" href="compas_blender.artists.RobotModelArtist.detach_tool_model.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.4.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -106,13 +106,13 @@
   
         
           
-          <div class="detail section" id="robotmodelartist-create">
+          <section class="detail" id="robotmodelartist-create">
 <h1>RobotModelArtist.create</h1>
-<dl class="py method">
+<dl class="method">
 <dt id="compas_blender.artists.RobotModelArtist.create">
-<code class="sig-prename descclassname"><span class="pre">RobotModelArtist.</span></code><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/base_artist/_artist.py#L117"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<code class="sig-prename descclassname">RobotModelArtist.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">link=None</em>, <em class="sig-param">context=None</em><span class="sig-paren">)</span></dt>
 <dd><p>Recursive function that triggers the drawing of the robot model’s geometry.</p>
-<p>This method delegates the geometry drawing to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_geometry()</span></code>
+<p>This method delegates the geometry drawing to the <a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_geometry.html#compas_blender.artists.RobotModelArtist.draw_geometry" title="compas_blender.artists.RobotModelArtist.draw_geometry"><code class="xref py py-meth docutils literal notranslate"><span class="pre">draw_geometry()</span></code></a>
 method. It transforms the geometry based on the saved initial
 transformation from the robot model.</p>
 <dl class="field-list simple">
@@ -128,7 +128,7 @@ transformation from the robot model.</p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -203,10 +203,10 @@ transformation from the robot model.</p>
       
 
       
-        <a href="compas_blender.artists.RobotModelArtist.create_geoemetry.html" title="RobotModelArtist.create_geoemetry" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_blender.artists.RobotModelArtist.detach_tool_model.html" title="RobotModelArtist.detach_tool_model" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            RobotModelArtist.create_geoemetry
+            RobotModelArtist.detach_tool_model
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -252,7 +252,7 @@ transformation from the robot model.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.4.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

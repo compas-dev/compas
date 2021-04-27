@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="SliderForm.init" href="compas_rhino.forms.SliderForm.init.html" />
+    <link rel="next" title="SliderForm.__init__" href="compas_rhino.forms.SliderForm.__init__.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,12 +104,12 @@
   
         
           
-          <div class="detail section" id="sliderform">
+          <section class="detail" id="sliderform">
 <h1>SliderForm</h1>
-<dl class="py class">
+<dl class="class">
 <dt id="compas_rhino.forms.SliderForm">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.forms.</span></code><code class="sig-name descname"><span class="pre">SliderForm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/forms/slider.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">System.Windows.Forms.</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.forms.</code><code class="sig-name descname">SliderForm</code><span class="sig-paren">(</span><em class="sig-param">minval</em>, <em class="sig-param">maxval</em>, <em class="sig-param">step</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/forms/slider.html#SliderForm"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.forms.base.BaseForm</span></code></p>
 <p>A form for sliders.</p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -118,26 +118,29 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.init.html#compas_rhino.forms.SliderForm.init" title="compas_rhino.forms.SliderForm.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.__init__.html#compas_rhino.forms.SliderForm.__init__" title="compas_rhino.forms.SliderForm.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(minval, maxval, step, value)</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.init.html#compas_rhino.forms.SliderForm.init" title="compas_rhino.forms.SliderForm.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_form_closed.html#compas_rhino.forms.SliderForm.on_form_closed" title="compas_rhino.forms.SliderForm.on_form_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_form_closed</span></code></a>(sender, eargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_form_closed.html#compas_rhino.forms.SliderForm.on_form_closed" title="compas_rhino.forms.SliderForm.on_form_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_form_closed</span></code></a>(sender, eargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_scroll.html#compas_rhino.forms.SliderForm.on_scroll" title="compas_rhino.forms.SliderForm.on_scroll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_scroll</span></code></a>(sender, e)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_scroll.html#compas_rhino.forms.SliderForm.on_scroll" title="compas_rhino.forms.SliderForm.on_scroll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_scroll</span></code></a>(sender, e)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_textchanged.html#compas_rhino.forms.SliderForm.on_textchanged" title="compas_rhino.forms.SliderForm.on_textchanged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_textchanged</span></code></a>(sender, e)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_textchanged.html#compas_rhino.forms.SliderForm.on_textchanged" title="compas_rhino.forms.SliderForm.on_textchanged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_textchanged</span></code></a>(sender, e)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.show.html#compas_rhino.forms.SliderForm.show" title="compas_rhino.forms.SliderForm.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.show.html#compas_rhino.forms.SliderForm.show" title="compas_rhino.forms.SliderForm.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
 <td><p>Show the form as a modal dialog.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -214,10 +217,10 @@
       
 
       
-        <a href="compas_rhino.forms.SliderForm.init.html" title="SliderForm.init" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.forms.SliderForm.__init__.html" title="SliderForm.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            SliderForm.init
+            SliderForm.__init__
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -263,7 +266,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

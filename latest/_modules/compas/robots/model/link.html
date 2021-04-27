@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - compas.robots.model.link</title>
+  
+  <title> - compas.robots.model.link</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -48,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.0.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -125,9 +127,9 @@
 <div class="viewcode-block" id="Mass"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Mass.html#compas.robots.Mass">[docs]</a><span class="k">class</span> <span class="nc">Mass</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a value of mass usually related to a link.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Mass.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Mass.__init__.html#compas.robots.Mass.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Mass</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -170,14 +172,14 @@
 <span class="sd">    ``ixx``, ``ixy``, ``ixz``, ``iyy``, ``iyz``, ``izz``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixx</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ixy</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ixz</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">iyy</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">iyz</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">izz</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+<div class="viewcode-block" id="Inertia.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Inertia.__init__.html#compas.robots.Inertia.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixx</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ixy</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ixz</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">iyy</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">iyz</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">izz</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Inertia</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ixx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ixx</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ixy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ixy</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ixz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ixz</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iyy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">iyy</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iyz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">iyz</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">izz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">izz</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">izz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">izz</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Inertia.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Inertia.get_urdf_element.html#compas.robots.Inertia.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
@@ -243,11 +245,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inertia</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Inertial.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Inertial.__init__.html#compas.robots.Inertial.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inertia</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Inertial</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="n">mass</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inertia</span> <span class="o">=</span> <span class="n">inertia</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inertia</span> <span class="o">=</span> <span class="n">inertia</span></div>
 
 <div class="viewcode-block" id="Inertial.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Inertial.get_urdf_element.html#compas.robots.Inertial.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inertia</span><span class="p">]</span>
@@ -306,7 +308,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Visual.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Visual.__init__.html#compas.robots.Visual.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Visual</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
@@ -316,7 +318,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">init_transformation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the init transformation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_transformation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the current transformation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">native_geometry</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the link&#39;s CAD native geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">native_geometry</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the link&#39;s CAD native geometry</span></div>
 
 <div class="viewcode-block" id="Visual.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Visual.get_urdf_element.html#compas.robots.Visual.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
@@ -409,7 +411,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Collision.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Collision.__init__.html#compas.robots.Collision.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Collision</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
@@ -418,7 +420,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">init_transformation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the init transformation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_transformation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the current transformation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">native_geometry</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the link&#39;s CAD native geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">native_geometry</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the link&#39;s CAD native geometry</span></div>
 
 <div class="viewcode-block" id="Collision.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Collision.get_urdf_element.html#compas.robots.Collision.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
@@ -502,7 +504,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visual</span><span class="o">=</span><span class="p">[],</span> <span class="n">collision</span><span class="o">=</span><span class="p">[],</span> <span class="n">inertial</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Link.__init__.html#compas.robots.Link.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visual</span><span class="o">=</span><span class="p">[],</span> <span class="n">collision</span><span class="o">=</span><span class="p">[],</span> <span class="n">inertial</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Link</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
@@ -511,7 +513,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">inertial</span> <span class="o">=</span> <span class="n">inertial</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">joints</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent_joint</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_joint</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="Link.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Link.get_urdf_element.html#compas.robots.Link.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
@@ -681,7 +683,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.0.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

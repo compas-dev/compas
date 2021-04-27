@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="GLTFMesh.from_data" href="compas.files.GLTFMesh.from_data.html" />
+    <link rel="next" title="GLTFMesh.__init__" href="compas.files.GLTFMesh.__init__.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -104,11 +104,11 @@
   
         
           
-          <div class="detail section" id="gltfmesh">
+          <section class="detail" id="gltfmesh">
 <h1>GLTFMesh</h1>
-<dl class="py class">
+<dl class="class">
 <dt id="compas.files.GLTFMesh">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.files.</span></code><code class="sig-name descname"><span class="pre">GLTFMesh</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitive_data_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/gltf/gltf_mesh.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas.files.</code><code class="sig-name descname">GLTFMesh</code><span class="sig-paren">(</span><em class="sig-param">primitive_data_list</em>, <em class="sig-param">context</em>, <em class="sig-param">mesh_name=None</em>, <em class="sig-param">weights=None</em>, <em class="sig-param">extras=None</em>, <em class="sig-param">extensions=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/files/gltf/gltf_mesh.html#GLTFMesh"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Object containing mesh data in a format compatible with the glTF standard.</p>
 <dl class="field-list simple">
@@ -134,35 +134,38 @@ representing faces of the mesh.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_data.html#compas.files.GLTFMesh.from_data" title="compas.files.GLTFMesh.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(mesh, context, primitive_data_list)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.__init__.html#compas.files.GLTFMesh.__init__" title="compas.files.GLTFMesh.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(primitive_data_list, context[, …])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_data.html#compas.files.GLTFMesh.from_data" title="compas.files.GLTFMesh.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(mesh, context, primitive_data_list)</p></td>
 <td><p>Creates a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> from a glTF node dictionary and inserts it in the provided context.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_mesh.html#compas.files.GLTFMesh.from_mesh" title="compas.files.GLTFMesh.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a>(context, mesh)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_mesh.html#compas.files.GLTFMesh.from_mesh" title="compas.files.GLTFMesh.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a>(context, mesh)</p></td>
 <td><p>Construct a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from a compas mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_vertices_and_faces.html#compas.files.GLTFMesh.from_vertices_and_faces" title="compas.files.GLTFMesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a>(context, vertices, faces)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_vertices_and_faces.html#compas.files.GLTFMesh.from_vertices_and_faces" title="compas.files.GLTFMesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a>(context, vertices, faces)</p></td>
 <td><p>Construct a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from lists of vertices and faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.group_indices.html#compas.files.GLTFMesh.group_indices" title="compas.files.GLTFMesh.group_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_indices</span></code></a>(indices, group_size)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.group_indices.html#compas.files.GLTFMesh.group_indices" title="compas.files.GLTFMesh.group_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_indices</span></code></a>(indices, group_size)</p></td>
 <td><p>Returns a list of the elements of <code class="docutils literal notranslate"><span class="pre">indices</span></code> grouped into tuples of size <code class="docutils literal notranslate"><span class="pre">group_size</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.shift_indices.html#compas.files.GLTFMesh.shift_indices" title="compas.files.GLTFMesh.shift_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shift_indices</span></code></a>(indices, shift)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.shift_indices.html#compas.files.GLTFMesh.shift_indices" title="compas.files.GLTFMesh.shift_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shift_indices</span></code></a>(indices, shift)</p></td>
 <td><p>Given a list of indices, returns a list of indices, all shifted by <code class="docutils literal notranslate"><span class="pre">shift</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.to_data.html#compas.files.GLTFMesh.to_data" title="compas.files.GLTFMesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>(primitives)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.to_data.html#compas.files.GLTFMesh.to_data" title="compas.files.GLTFMesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>(primitives)</p></td>
 <td><p>Returns a JSONable dictionary object in accordance with glTF specifications.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_faces.html#compas.files.GLTFMesh.validate_faces" title="compas.files.GLTFMesh.validate_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_faces</span></code></a>(faces)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_faces.html#compas.files.GLTFMesh.validate_faces" title="compas.files.GLTFMesh.validate_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_faces</span></code></a>(faces)</p></td>
 <td><p>Raises an exception if not all faces in <code class="docutils literal notranslate"><span class="pre">faces</span></code> are defining either all triangles, lines or points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_vertices.html#compas.files.GLTFMesh.validate_vertices" title="compas.files.GLTFMesh.validate_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_vertices</span></code></a>(vertices)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_vertices.html#compas.files.GLTFMesh.validate_vertices" title="compas.files.GLTFMesh.validate_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_vertices</span></code></a>(vertices)</p></td>
 <td><p>Raise an exception if there are either too many vertices, or the vertices do not represent points in 3-space.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -187,7 +190,6 @@ representing faces of the mesh.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -197,25 +199,6 @@ representing faces of the mesh.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dump.html">json_dump</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_dumps.html">json_dumps</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_load.html">json_load</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.json_loads.html">json_loads</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.set_precision.html">set_precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.WINDOWS.html">WINDOWS</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.LINUX.html">LINUX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.OSX.html">OSX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.MONO.html">MONO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.IPY.html">IPY</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.RHINO.html">RHINO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.BLENDER.html">BLENDER</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_windows.html">is_windows</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_linux.html">is_linux</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_osx.html">is_osx</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_mono.html">is_mono</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_ironpython.html">is_ironpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_rhino.html">is_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
@@ -262,10 +245,10 @@ representing faces of the mesh.</p></li>
       
 
       
-        <a href="compas.files.GLTFMesh.from_data.html" title="GLTFMesh.from_data" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.GLTFMesh.__init__.html" title="GLTFMesh.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            GLTFMesh.from_data
+            GLTFMesh.__init__
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -311,7 +294,7 @@ representing faces of the mesh.</p></li>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="data" href="compas.data.html" />
+    <link rel="next" title="datastructures" href="compas.datastructures.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            0.19.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,11 +100,10 @@
   
         
           
-          <span class="target" id="module-compas"></span><div class="section" id="compas">
+          <span class="target" id="module-compas"></span><section id="compas">
 <h1>compas</h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="compas.data.html">data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.datastructures.html">datastructures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.files.html">files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.geometry.html">geometry</a></li>
@@ -116,100 +115,7 @@
 <li class="toctree-l1"><a class="reference internal" href="compas.utilities.html">utilities</a></li>
 </ul>
 </div>
-<div class="section" id="utility-functions">
-<h2>Utility functions</h2>
-<div class="section" id="json-handling">
-<h3>JSON handling</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.json_dump.html#compas.json_dump" title="compas.json_dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_dump</span></code></a></p></td>
-<td><p>Write a collection of COMPAS object data to a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.json_dumps.html#compas.json_dumps" title="compas.json_dumps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_dumps</span></code></a></p></td>
-<td><p>Write a collection of COMPAS objects to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.json_load.html#compas.json_load" title="compas.json_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_load</span></code></a></p></td>
-<td><p>Read COMPAS object data from a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.json_loads.html#compas.json_loads" title="compas.json_loads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_loads</span></code></a></p></td>
-<td><p>Read COMPAS object data from a JSON string.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="precision">
-<h3>Precision</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.set_precision.html#compas.set_precision" title="compas.set_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_precision</span></code></a></p></td>
-<td><p>Set the precision used by geometric maps.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="execution-context">
-<h3>Execution context</h3>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.WINDOWS.html#compas.WINDOWS" title="compas.WINDOWS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WINDOWS</span></code></a></p></td>
-<td><p>bool(x) -&gt; bool</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.LINUX.html#compas.LINUX" title="compas.LINUX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LINUX</span></code></a></p></td>
-<td><p>bool(x) -&gt; bool</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.OSX.html#compas.OSX" title="compas.OSX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OSX</span></code></a></p></td>
-<td><p>bool(x) -&gt; bool</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.MONO.html#compas.MONO" title="compas.MONO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MONO</span></code></a></p></td>
-<td><p>bool(x) -&gt; bool</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.IPY.html#compas.IPY" title="compas.IPY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IPY</span></code></a></p></td>
-<td><p>bool(x) -&gt; bool</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.RHINO.html#compas.RHINO" title="compas.RHINO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RHINO</span></code></a></p></td>
-<td><p>bool(x) -&gt; bool</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.BLENDER.html#compas.BLENDER" title="compas.BLENDER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BLENDER</span></code></a></p></td>
-<td><p>bool(x) -&gt; bool</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.is_windows.html#compas.is_windows" title="compas.is_windows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_windows</span></code></a></p></td>
-<td><p>Check if the operating system is Windows.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.is_linux.html#compas.is_linux" title="compas.is_linux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_linux</span></code></a></p></td>
-<td><p>Check if the operating system is Linux.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.is_osx.html#compas.is_osx" title="compas.is_osx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_osx</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.is_mono.html#compas.is_mono" title="compas.is_mono"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_mono</span></code></a></p></td>
-<td><p>Check if the operating system is running on Mono.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.is_ironpython.html#compas.is_ironpython" title="compas.is_ironpython"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_ironpython</span></code></a></p></td>
-<td><p>Check if the Python implementation is IronPython.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.is_rhino.html#compas.is_rhino" title="compas.is_rhino"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_rhino</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.is_blender.html#compas.is_blender" title="compas.is_blender"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_blender</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
+</section>
 
         
       </main>
@@ -234,7 +140,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">compas</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.geometry.html">geometry</a></li>
@@ -244,25 +149,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="compas.rpc.html">rpc</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_dump.html">json_dump</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_dumps.html">json_dumps</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_load.html">json_load</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.json_loads.html">json_loads</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.set_precision.html">set_precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.WINDOWS.html">WINDOWS</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.LINUX.html">LINUX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.OSX.html">OSX</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.MONO.html">MONO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.IPY.html">IPY</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.RHINO.html">RHINO</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.BLENDER.html">BLENDER</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_windows.html">is_windows</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_linux.html">is_linux</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_osx.html">is_osx</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_mono.html">is_mono</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_ironpython.html">is_ironpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_rhino.html">is_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="generated/compas.is_blender.html">is_blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
@@ -287,15 +173,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#utility-functions">Utility functions</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#json-handling">JSON handling</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#precision">Precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#execution-context">Execution context</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas</a></li>
 </ul>
 
       </div>
@@ -317,10 +195,10 @@
       
 
       
-        <a href="compas.data.html" title="data" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.datastructures.html" title="datastructures" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            data
+            datastructures
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -366,7 +244,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '0.19.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
