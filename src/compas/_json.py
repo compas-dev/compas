@@ -4,8 +4,8 @@ from __future__ import division
 
 import json
 from compas import _iotools
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
+from compas.data import DataEncoder
+from compas.data import DataDecoder
 
 
 __all__ = [
