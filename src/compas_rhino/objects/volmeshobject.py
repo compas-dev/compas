@@ -8,14 +8,15 @@ from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from compas_rhino.objects._object import BaseObject
-from compas_rhino.objects.modify import mesh_update_attributes
-from compas_rhino.objects.modify import mesh_update_vertex_attributes
-from compas_rhino.objects.modify import mesh_update_face_attributes
-from compas_rhino.objects.modify import mesh_update_edge_attributes
-from compas_rhino.objects.modify import mesh_move_vertex
-from compas_rhino.objects.modify import mesh_move_vertices
-from compas_rhino.objects.modify import mesh_move_face
+from ._modify import mesh_update_attributes
+from ._modify import mesh_update_vertex_attributes
+from ._modify import mesh_update_face_attributes
+from ._modify import mesh_update_edge_attributes
+from ._modify import mesh_move_vertex
+from ._modify import mesh_move_vertices
+from ._modify import mesh_move_face
+
+from ._object import BaseObject
 
 
 __all__ = ['VolMeshObject']
@@ -56,10 +57,10 @@ class VolMeshObject(BaseObject):
         'show.celllabels': False,
     }
 
-    modify = mesh_update_attributes
-    modify_vertices = mesh_update_vertex_attributes
-    modify_faces = mesh_update_face_attributes
-    modify_edges = mesh_update_edge_attributes
+    # modify = mesh_update_attributes
+    # modify_vertices = mesh_update_vertex_attributes
+    # modify_faces = mesh_update_face_attributes
+    # modify_edges = mesh_update_edge_attributes
 
     def __init__(self, volmesh, scene=None, name=None, layer=None, visible=True, settings=None):
         super(VolMeshObject, self).__init__(volmesh, scene, name, layer, visible)
@@ -87,12 +88,6 @@ class VolMeshObject(BaseObject):
     @volmesh.setter
     def volmesh(self, volmesh):
         self.item = volmesh
-
-    # def __getstate__(self):
-    #     pass
-
-    # def __setstate__(self, state):
-    #     pass
 
     @property
     def anchor(self):
@@ -373,6 +368,77 @@ class VolMeshObject(BaseObject):
         guids = compas_rhino.select_lines(message=message)
         edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
         return edges
+
+    def modify(self):
+        """Update the attributes of the volmesh.
+
+        Returns
+        -------
+        bool
+            ``True`` if the update was successful.
+            ``False`` otherwise.
+        """
+        return mesh_update_attributes(self.volmesh)
+
+    def modify_vertices(self, vertices, names=None):
+        """Update the attributes of selected vertices.
+
+        Parameters
+        ----------
+        vertices : list
+            The vertices of the vertices of which the attributes should be updated.
+        names : list, optional
+            The names of the attributes that should be updated.
+            Default is to update all available attributes.
+
+        Returns
+        -------
+        bool
+            True if the attributes were successfully updated.
+            False otherwise.
+
+        """
+        return mesh_update_vertex_attributes(self.volmesh, vertices, names=names)
+
+    def modify_edges(self, edges, names=None):
+        """Update the attributes of the edges.
+
+        Parameters
+        ----------
+        edges : list
+            The edges to update.
+        names : list, optional
+            The names of the atrtibutes to update.
+            Default is to update all attributes.
+
+        Returns
+        -------
+        bool
+            ``True`` if the update was successful.
+            ``False`` otherwise.
+
+        """
+        return mesh_update_edge_attributes(self.volmesh, edges, names=names)
+
+    def modify_faces(self, faces, names=None):
+        """Update the attributes of selected faces.
+
+        Parameters
+        ----------
+        vertices : list
+            The vertices of the vertices of which the attributes should be updated.
+        names : list, optional
+            The names of the attributes that should be updated.
+            Default is to update all available attributes.
+
+        Returns
+        -------
+        bool
+            True if the attributes were successfully updated.
+            False otherwise.
+
+        """
+        return mesh_update_face_attributes(self.volmesh, faces, names=names)
 
     def move(self):
         """Move the entire volmesh object to a different location."""

@@ -1,8 +1,10 @@
-from math import pi
+from math import pi, radians, sqrt
 
 import pytest
 
 from compas.geometry import Polyhedron
+from compas.geometry import Polygon
+from compas.geometry import Rotation
 from compas.geometry import allclose
 from compas.geometry import angle_vectors
 from compas.geometry import angle_planes
@@ -13,6 +15,26 @@ from compas.geometry import close
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import volume_polyhedron
+from compas.geometry import area_polygon
+from compas.geometry import area_polygon_xy
+from compas.geometry import area_triangle
+from compas.geometry import area_triangle_xy
+
+
+@pytest.fixture
+def R():
+    return Rotation.from_axis_and_angle([0, 1, 0], radians(-90))
+
+
+@pytest.fixture
+def square():
+    return Polygon.from_sides_and_radius_xy(4, sqrt(0.5 ** 2 + 0.5 ** 2))
+
+
+@pytest.fixture
+def triangle():
+    return Polygon([[0, 0, 0], [1, 0, 0], [0, 1, 0]])
+
 
 # ==============================================================================
 # angles
@@ -156,3 +178,27 @@ def test_volume_polyhedron(polyhedron, volume):
         volume = L * L * L
     V = volume_polyhedron(polyhedron)
     assert close(V, volume)
+
+
+def test_area_square(square, R):
+    assert close(area_polygon(square.points), 1)
+    assert close(area_polygon_xy(square.points), 1)
+    assert close(square.area, 1)
+    square.transform(R)
+    assert close(area_polygon(square.points), 1)
+    assert close(area_polygon_xy(square.points), 0)
+    assert close(square.area, 1)
+
+
+def test_area_triangle(triangle, R):
+    assert close(area_polygon(triangle.points), 0.5)
+    assert close(area_polygon_xy(triangle.points), 0.5)
+    assert close(area_triangle(triangle.points), 0.5)
+    assert close(area_triangle_xy(triangle.points), 0.5)
+    assert close(triangle.area, 0.5)
+    triangle.transform(R)
+    assert close(area_polygon(triangle.points), 0.5)
+    assert close(area_polygon_xy(triangle.points), 0.0)
+    assert close(area_triangle(triangle.points), 0.5)
+    assert close(area_triangle_xy(triangle.points), 0.0)
+    assert close(triangle.area, 0.5)

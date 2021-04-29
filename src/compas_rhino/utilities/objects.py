@@ -142,7 +142,7 @@ def get_objects(name=None, color=None, layer=None, type=None):
     return guids
 
 
-def delete_object(guid, purge=None):
+def delete_object(guid, purge=None, redraw=True):
     """Delete Rhino object.
 
     Parameters
@@ -153,16 +153,20 @@ def delete_object(guid, purge=None):
         If True, purge the object from history after deleting.
         If False, delete but don't purge.
         Default is None.
+    redraw : bool, optional
+        If True, redrawing will be enabled and enacted.
+        If False, redrawing will be disabled.
+        Default is True.
     """
     if purge is None:
         purge = compas_rhino.PURGE_ON_DELETE
     if purge and purge_object:
-        purge_objects([guid])
+        purge_objects([guid], redraw=redraw)
     else:
-        delete_objects([guid], purge)
+        delete_objects([guid], purge, redraw=redraw)
 
 
-def delete_objects(guids, purge=None):
+def delete_objects(guids, purge=None, redraw=True):
     """Delete multiple Rhino objects.
 
     Parameters
@@ -173,27 +177,36 @@ def delete_objects(guids, purge=None):
         If True, purge the objects from history after deleting.
         If False, delete but don't purge.
         Default is None.
+    redraw : bool, optional
+        If True, redrawing will be enabled and enacted.
+        If False, redrawing will be disabled.
+        Default is True.
     """
     if purge is None:
         purge = compas_rhino.PURGE_ON_DELETE
     if purge and purge_object:
-        purge_objects(guids)
+        purge_objects(guids, redraw=redraw)
     else:
         rs.EnableRedraw(False)
         for guid in guids:
             if rs.IsObjectHidden(guid):
                 rs.ShowObject(guid)
         rs.DeleteObjects(guids)
-        rs.EnableRedraw(True)
-        sc.doc.Views.Redraw()
+        if redraw:
+            rs.EnableRedraw(True)
+            sc.doc.Views.Redraw()
 
 
-def purge_objects(guids):
+def purge_objects(guids, redraw=True):
     """Purge objects from memory.
 
     Parameters
     ----------
     guids : list of GUID
+    redraw : bool, optional
+        If True, redrawing will be enabled and enacted.
+        If False, redrawing will be disabled.
+        Default is True.
     """
     if not purge_object:
         raise RuntimeError('Cannot purge outside Rhino script context')
@@ -204,8 +217,9 @@ def purge_objects(guids):
                 rs.ShowObject(guid)
             o = find_object(guid)
             purge_object(o.RuntimeSerialNumber)
-    rs.EnableRedraw(True)
-    sc.doc.Views.Redraw()
+    if redraw:
+        rs.EnableRedraw(True)
+        sc.doc.Views.Redraw()
 
 
 def get_object_layers(guids):

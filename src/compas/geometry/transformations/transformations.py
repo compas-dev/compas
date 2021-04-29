@@ -56,6 +56,7 @@ __all__ = [
     'mirror_points_point_xy',
     'mirror_points_line',
     'mirror_points_line_xy',
+    'mirror_point_plane',
     'mirror_points_plane',
 
     'project_point_plane',

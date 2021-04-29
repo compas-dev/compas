@@ -1,5 +1,6 @@
 import os
 import re
+import tempfile
 
 import pytest
 
@@ -124,6 +125,12 @@ def test_remove_joint(urdf_file):
 def test_ur5_urdf(ur5_file):
     r = RobotModel.from_urdf_file(ur5_file)
     assert r.name == 'ur5'
+    assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
+
+
+def test_zero_configuration(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    assert r.zero_configuration().joint_values == [0.0] * 6
     assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
 
 
@@ -717,12 +724,30 @@ def test_unknown_axis_attribute_data(urdf_with_unknown_attr):
     assert r.joints[0].axis.attr['rpy'] == '0 0 0'
 
 
+def test_get_configurable_joint_names(urdf_file):
+    model = RobotModel.from_urdf_file(urdf_file)
+    assert 'panda_finger_joint2' not in model.get_configurable_joint_names()
+
+
 def test_ensure_geometry(urdf_file, urdf_file_with_shapes_only):
     robot = RobotModel.from_urdf_file(urdf_file)
     with pytest.raises(Exception):
         robot.ensure_geometry()
     robot = RobotModel.from_urdf_file(urdf_file_with_shapes_only)
     robot.ensure_geometry()
+
+
+def test_json_serialization(urdf_file):
+    robot = RobotModel.from_urdf_file(urdf_file)
+    with tempfile.TemporaryFile('w+') as f:
+        robot.to_json(f)
+
+        f.seek(0)
+        robot_copy = RobotModel.from_json(f)
+
+        assert robot_copy.name == 'panda'
+        assert len(robot_copy.links) == 12
+        assert robot_copy.root.name == 'panda_link0'
 
 
 # ==============================================================================

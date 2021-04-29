@@ -181,7 +181,7 @@ class HalfEdge(Datastructure):
 
     @property
     def data(self):
-        """dict : A data dict representing the mesh data structure for serialisation.
+        """dict : A data dict representing the mesh data structure for serialization.
         """
         data = {
             'attributes': self.attributes,
@@ -1739,16 +1739,33 @@ class HalfEdge(Datastructure):
         return not any(4 != len(self.face_vertices(fkey)) for fkey in self.faces())
 
     def is_empty(self):
-        """Boolean whether the mesh is empty.
+        """Verify that the mesh is empty.
 
         Returns
         -------
         bool
-            True if no vertices. False otherwise.
+            True if the mesh has no vertices.
+            False otherwise.
         """
         if self.number_of_vertices() == 0:
             return True
         return False
+
+    def is_closed(self):
+        """Verify that the mesh is closed.
+
+        Returns
+        -------
+        bool
+            True if the mesh is not empty and has no naked edges.
+            False otherwise.
+        """
+        if self.is_empty():
+            return False
+        for edge in self.edges():
+            if self.is_edge_on_boundary(*edge):
+                return False
+        return True
 
     def euler(self):
         """Calculate the Euler characteristic.
@@ -2229,6 +2246,34 @@ class HalfEdge(Datastructure):
             v = vertices[i - 2]
         edges[:] = [(u, v) for v, u in edges[::-1]]
         u, v = edge
+        while True:
+            face = self.halfedge[u][v]
+            if face is None:
+                break
+            vertices = self.face_vertices(face)
+            if len(vertices) != 4:
+                break
+            i = vertices.index(u)
+            u = vertices[i - 1]
+            v = vertices[i - 2]
+            edges.append((u, v))
+        return edges
+
+    def halfedge_strip(self, edge):
+        """Find all edges on the same strip as a given halfedge.
+
+        Parameters
+        ----------
+        edge : tuple of int
+            The identifier of the starting edge.
+
+        Returns
+        -------
+        list of tuple of int
+            The edges on the same strip as the given halfedge.
+        """
+        u, v = edge
+        edges = [(u, v)]
         while True:
             face = self.halfedge[u][v]
             if face is None:

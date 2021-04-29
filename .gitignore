@@ -138,3 +138,6 @@ data/ctralie
 *.DS_Store
 
 .vscode
+
+# Grasshopper generated objects
+src/compas_ghpython/components/*.ghuser

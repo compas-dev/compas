@@ -2,76 +2,21 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-from copy import deepcopy
-from compas.base import Base
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
+from compas.data import Data
 
 
 __all__ = ['Primitive']
 
 
-class Primitive(Base):
+class Primitive(Data):
     """Base class for geometric primitives."""
 
     def __init__(self):
         super(Primitive, self).__init__()
 
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct a primitive from structured data contained in a json file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjunction with the
-        corresponding *to_json* method.
-        """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp, cls=DataDecoder)
-        return cls.from_data(data)
-
-    def to_data(self):
-        """Returns the data dictionary that represents the primitive.
-
-        Returns
-        -------
-        dict
-            The object's data.
-        """
-        return self.data
-
-    def to_json(self, filepath):
-        """Serialise the structured data representing the primitive to json.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-        """
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f, cls=DataEncoder)
-
-    def copy(self):
-        """Makes a copy of this primitive.
-
-        Returns
-        -------
-        Primitive
-            The copy.
-        """
-        cls = type(self)
-        return cls.from_data(deepcopy(self.data))
+    def __ne__(self, other):
+        # this is not obvious to ironpython
+        return not self.__eq__(other)
 
     def transform(self, transformation):
         """Transform the primitive.

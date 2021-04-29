@@ -14,42 +14,42 @@ BASE_FOLDER = os.path.dirname(__file__)
 
 @pytest.fixture
 def simple_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleMeshes.gltf')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleMeshes.gltf')
 
 
 @pytest.fixture
 def embedded_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleMeshesEmbedded.gltf')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleMeshesEmbedded.gltf')
 
 
 @pytest.fixture
 def interleaved_glb():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'BoxInterleaved.glb')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'BoxInterleaved.glb')
 
 
 @pytest.fixture
 def indexless_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'TriangleWithoutIndices.gltf')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'TriangleWithoutIndices.gltf')
 
 
 @pytest.fixture
 def morph_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleMorph.gltf')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleMorph.gltf')
 
 
 @pytest.fixture
 def sparse_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleSparseAccessor.gltf')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleSparseAccessor.gltf')
 
 
 @pytest.fixture
 def animated_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'AnimatedMorphCube.glb')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'AnimatedMorphCube.glb')
 
 
 @pytest.fixture
 def textured_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'BoxTextured.glb')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'BoxTextured.glb')
 
 
 def test_simple_gltf(simple_gltf):

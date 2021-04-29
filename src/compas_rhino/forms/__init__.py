@@ -33,24 +33,36 @@ Base Classes
 """
 from __future__ import absolute_import
 
-from .base import BaseForm  # noqa: F401 E402
+from .base import BaseForm
 
-from .browser import BrowserForm  # noqa: F401 E402
-from .chart import ChartForm  # noqa: F401 E402
-from .slider import SliderForm  # noqa: F401 E402
+from .browser import BrowserForm
+from .chart import ChartForm
+from .slider import SliderForm
 
 try:
-    from .etoforms import ImageForm  # noqa: F401 E402
-    from .etoforms import TextForm  # noqa: F401 E402
+    from .etoforms import ImageForm
+    from .etoforms import TextForm
 except Exception:
-    from .image import ImageForm  # noqa: F401 E402
-    from .text import TextForm  # noqa: F401 E402
+    from .image import ImageForm
+    from .text import TextForm
+
+
+__all__ = [
+    'BaseForm',
+    'BrowserForm',
+    'ChartForm',
+    'SliderForm',
+    'ImageForm',
+    'TextForm'
+]
 
 try:
-    from .etoforms import PropertyListForm  # noqa: F401 E402
-    from .etoforms import SettingsForm  # noqa: F401 E402
+    from .etoforms import PropertyListForm
+    from .etoforms import SettingsForm
 except Exception:
     pass
-
-
-__all__ = [name for name in dir() if not name.startswith('_')]
+else:
+    __all__ += [
+        'PropertyListForm',
+        'SettingsForm'
+    ]

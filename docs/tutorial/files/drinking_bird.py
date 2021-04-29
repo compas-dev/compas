@@ -7,6 +7,7 @@ from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Sphere
 from compas.geometry import Vector
+from compas_rhino.artists import RobotModelArtist
 
 model = RobotModel('drinking_bird')
 
@@ -32,7 +33,7 @@ model.add_joint(
 )
 
 head = Sphere([0, 0, 0], 1)
-beak = Cylinder(Circle(Plane([0, 1, -.3], [-1, 0, 0]), .3), 1.5)
+beak = Cylinder(Circle(Plane([0, 1, -.3], [0, 1, 0]), .3), 1.5)
 head_link = model.add_link('head', visual_meshes=[head, beak])
 neck_joint_origin = Frame([0, 0, 4], [1, 0, 0], [0, 1, 0])
 model.add_joint('neck_joint', Joint.FIXED, torso_link, head_link, origin=neck_joint_origin)
@@ -47,3 +48,7 @@ brim = Cylinder(Circle(Plane([0, 0, -1.5/2], [0, 0, 1]), 1.4), .1)
 hat_link = model.add_link('hat', visual_meshes=[hat, brim])
 hat_joint_origin = Frame([0, 0, 1 - .3 + 1.5/2], [1, 0, 0], [0, 1, 0])
 model.add_joint('hat_joint', Joint.FIXED, head_link, hat_link, origin=hat_joint_origin)
+
+artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
+artist.clear_layer()
+artist.draw_visual()
