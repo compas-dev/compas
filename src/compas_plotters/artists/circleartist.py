@@ -58,4 +58,3 @@ class CircleArtist(Artist):
         self._mpl_circle.set_edgecolor(self.edgecolor)
         self._mpl_circle.set_facecolor(self.facecolor)
         self.update_data()
-

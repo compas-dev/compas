@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-import os
-
 from compas.files.gltf.gltf_exporter import GLTFExporter
 from compas.files.gltf.gltf_parser import GLTFParser
 from compas.files.gltf.gltf_reader import GLTFReader
