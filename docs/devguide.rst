@@ -239,8 +239,9 @@ so after the first installation, it is usually not required to reinstall them, o
 
 .. note::
 
-    This step requires IronPython to be available on the system, ie. `ipy` should be callable from the command line.
-    On Mac, it might be needed to define an alias to invoke it using `Mono`.
+    This step requires IronPython version < 3.0 to be available on the system.  The default behavior is to run the command
+    `ipy`.  If this command is not available or is the wrong version, the optional `ironpython` argument will replace it, eg
+    `invoke build-ghuser-components --ironpython="mono path/to/ipy.exe"`.
 
 .. _plugins:
 
