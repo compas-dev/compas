@@ -274,6 +274,30 @@ should have a corresponding test.</p>
 The tests are in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder at the root of the repo.</p>
 <p>More info coming soon…</p>
 </div>
+<div class="section" id="grasshopper-components">
+<h2>Grasshopper components</h2>
+<p>Grasshopper user objects need to be built using <a class="reference external" href="https://github.com/compas-dev/compas-actions.ghpython_components">COMPAS Github Action componentizer</a>.</p>
+<ol class="arabic">
+<li><p>Apply your changes to the component source code (<code class="docutils literal notranslate"><span class="pre">src/compas_ghpython/components</span></code>).</p></li>
+<li><p>Rebuild them:</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke build-ghuser-components
+</code></pre></div>
+</div>
+</li>
+<li><p>Install them on Rhino/Grasshopper as usual:</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_rhino.install
+</code></pre></div>
+</div>
+</li>
+</ol>
+<p>The install step does not copy them, but creates a symlink to the location in which they are built,
+so after the first installation, it is usually not required to reinstall them, only rebuild them (unless a new component is added).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This step requires IronPython to be available on the system, ie. <cite>ipy</cite> should be callable from the command line.
+On Mac, it might be needed to define an alias to invoke it using <cite>Mono</cite>.</p>
+</div>
+</div>
 <div class="section" id="plugins">
 <span id="id2"></span><h2>Plugins</h2>
 <p>COMPAS has an extensible architecture based on plugins that allows to
@@ -465,6 +489,7 @@ accordingly:</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#code-structure">Code structure</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#dependencies">Dependencies</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#testing">Testing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#grasshopper-components">Grasshopper components</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#plugins">Plugins</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#why-are-plugins-important">Why are plugins important?</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#how-to-make-plugins-discoverable">How to make plugins discoverable?</a></li>
