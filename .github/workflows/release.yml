@@ -58,8 +58,8 @@ jobs:
       - name: 🦗 Build grasshopper components
         uses: compas-dev/compas-actions.ghpython_components@v1
         with:
-          source: src/compas_fab/ghpython/components
-          target: src/compas_fab/ghpython/components
+          source: src/compas_ghpython/components
+          target: src/compas_ghpython/components
       - name: 💃 Build release
         if: success() && startsWith(github.ref, 'refs/tags')
         run: |
