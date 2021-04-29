@@ -1,14 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
+from __future__ import print_function
 
 import compas
-
+from compas import _iotools
 
 __all__ = [
     'OFF',
@@ -59,8 +54,8 @@ class OFFReader(object):
 
     Parameters
     ----------
-    filepath : str
-        Path to the file.
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
 
     Attributes
     ----------
@@ -88,17 +83,20 @@ class OFFReader(object):
         self.e = 0
 
     def open(self):
-        if self.filepath.startswith('http'):
-            resp = urlopen(self.filepath)
-            self.content = iter(resp.read().decode('utf-8').split('\n'))
-        else:
-            with open(self.filepath, 'r') as fh:
-                self.content = iter(fh.readlines())
+        with _iotools.open_file(self.filepath, 'r') as f:
+            self.content = f.readlines()
 
     def pre(self):
         lines = []
         is_continuation = False
+        needs_decode = None
+
         for line in self.content:
+            # Check this only one time
+            if needs_decode is None:
+                needs_decode = hasattr(line, 'decode')
+            if needs_decode:
+                line = line.decode('utf-8')
             line = line.rstrip()
             if not line:
                 continue
@@ -193,7 +191,7 @@ class OFFWriter(object):
         self.file = None
 
     def write(self):
-        with open(self.filepath, 'w') as self.file:
+        with _iotools.open_file(self.filepath, 'w') as self.file:
             self.write_header()
             self.write_vertices()
             self.write_faces()

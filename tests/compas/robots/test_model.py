@@ -1,5 +1,6 @@
 import os
 import re
+import tempfile
 
 import pytest
 
@@ -621,6 +622,19 @@ def test_ensure_geometry(urdf_file, urdf_file_with_shapes_only):
         robot.ensure_geometry()
     robot = RobotModel.from_urdf_file(urdf_file_with_shapes_only)
     robot.ensure_geometry()
+
+
+def test_json_serialization(urdf_file):
+    robot = RobotModel.from_urdf_file(urdf_file)
+    with tempfile.TemporaryFile('w+') as f:
+        robot.to_json(f)
+
+        f.seek(0)
+        robot_copy = RobotModel.from_json(f)
+
+        assert robot_copy.name == 'panda'
+        assert len(robot_copy.links) == 12
+        assert robot_copy.root.name == 'panda_link0'
 
 
 # ==============================================================================

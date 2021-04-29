@@ -154,7 +154,7 @@ class XFunc(object):
         A list of paths to be added to the ``PYTHONPATH`` by the subprocess.
         Default is ``None``.
     serializer : {'json', 'pickle'}, optional
-        The serialisation mechnanism to be used to pass data between the caller and the subprocess.
+        The serialization mechnanism to be used to pass data between the caller and the subprocess.
         Default is ``'json'``.
 
     Attributes
@@ -302,7 +302,7 @@ class XFunc(object):
 
     @property
     def serializer(self):
-        """{'json', 'pickle'}: Which serialisation mechanism to use."""
+        """{'json', 'pickle'}: Which serialization mechanism to use."""
         return self._serializer
 
     @serializer.setter

@@ -100,7 +100,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
     ----------
     mesh : Mesh
         A mesh object.
-    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin'}, optional
+    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'}, optional
         The scheme according to which the mesh should be subdivided.
         Default is ``'catmullclark'``.
     options : dict
@@ -127,6 +127,10 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
         return mesh_subdivide_catmullclark(mesh, **options)
     if scheme == 'doosabin':
         return mesh_subdivide_doosabin(mesh, **options)
+    if scheme == 'frames':
+        return mesh_subdivide_frames(mesh, **options)
+    if scheme == 'loop':
+        return trimesh_subdivide_loop(mesh, **options)
 
     raise ValueError('Scheme is not supported')
 
@@ -584,6 +588,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     >>>
 
     """
+    cls = type(mesh)
 
     subd = SubdMesh()
 
@@ -626,7 +631,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
         if add_windows:
             subd.add_face(window)
 
-    return subd
+    return cls.from_data(subd.data)
 
 
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
@@ -761,5 +766,4 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
             del subd.face[fkey]
 
-    subd2 = cls.from_data(subd.data)
-    return subd2
+    return cls.from_data(subd.data)

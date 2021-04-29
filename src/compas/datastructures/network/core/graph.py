@@ -138,12 +138,12 @@ class Graph(Datastructure):
         self.attributes['name'] = value
 
     # --------------------------------------------------------------------------
-    # serialisation
+    # serialization
     # --------------------------------------------------------------------------
 
     @property
     def data(self):
-        """Return a data dict of this data structure for serialisation.
+        """Return a data dict of this data structure for serialization.
         """
         version = LooseVersion(compas.__version__)
         meta = {

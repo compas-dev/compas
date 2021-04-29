@@ -9,7 +9,6 @@ from compas.utilities import pairwise
 from compas.geometry._core import subtract_vectors
 from compas.geometry._core import subtract_vectors_xy
 from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_xy
 from compas.geometry._core import cross_vectors
 from compas.geometry._core import cross_vectors_xy
 from compas.geometry._core import dot_vectors
@@ -128,7 +127,7 @@ def area_triangle_xy(triangle):
         The area of the triangle.
 
     """
-    return 0.5 * length_vector_xy(normal_triangle_xy(triangle, False))
+    return 0.5 * length_vector(normal_triangle_xy(triangle, False))
 
 
 def volume_polyhedron(polyhedron):

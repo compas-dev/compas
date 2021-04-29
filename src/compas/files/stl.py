@@ -1,12 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import struct
+
 import compas
+from compas import _iotools
 from compas.geometry import Translation
 from compas.utilities import geometric_key
-
 
 __all__ = [
     'STL',
@@ -66,7 +67,7 @@ class STLReader(object):
 
     def read(self):
         is_binary = False
-        with open(self.filepath, 'rb') as file:
+        with _iotools.open_file(self.filepath, 'rb') as file:
             line = file.readline().strip()
             if b'solid' in line:
                 is_binary = False
@@ -103,7 +104,7 @@ class STLReader(object):
     # ==========================================================================
 
     def read_ascii(self):
-        with open(self.filepath, 'r') as file:
+        with _iotools.open_file(self.filepath, 'r') as file:
             self.file = file
             self.file.seek(0)
             self.facets = self.read_solids_ascii()
@@ -182,7 +183,7 @@ class STLReader(object):
         return struct.unpack('<I', bytes_)[0]
 
     def read_binary(self):
-        with open(self.filepath, 'rb') as file:
+        with _iotools.open_file(self.filepath, 'rb') as file:
             self.file = file
             self.file.seek(0)
             self.header = self.read_header_binary()
@@ -276,12 +277,12 @@ class STLWriter(object):
         if not self.mesh.is_trimesh():
             raise ValueError('Mesh must be triangular to be encoded in STL.')
         if not self.binary:
-            with open(self.filepath, 'w') as self.file:
+            with _iotools.open_file(self.filepath, 'w') as self.file:
                 self.write_header()
                 self.write_faces()
                 self.write_footer()
         else:
-            with open(self.filepath, 'wb') as self.file:
+            with _iotools.open_file(self.filepath, 'wb') as self.file:
                 self.file.seek(0)
                 self.write_binary_header()
                 self.write_binary_num_faces()

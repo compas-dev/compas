@@ -2,15 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-
 import compas
-from compas.base import Base
+from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Plane
 from compas.geometry import Transformation
-
 from compas.robots.model.geometry import Box
 from compas.robots.model.geometry import Capsule
 from compas.robots.model.geometry import Color
@@ -21,8 +18,8 @@ from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Sphere
 from compas.robots.model.geometry import Texture
-from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _attr_from_data
+from compas.robots.model.geometry import _attr_to_data
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
@@ -51,7 +48,7 @@ def _get_geometry_and_origin(primitive):
     return geometry, origin
 
 
-class Mass(Base):
+class Mass(Data):
     """Represents a value of mass usually related to a link."""
 
     def __init__(self, value):
@@ -77,21 +74,8 @@ class Mass(Base):
     def from_data(cls, data):
         return cls(**data)
 
-    def to_data(self):
-        return self.data
 
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
-
-class Inertia(Base):
+class Inertia(Data):
     """Rotational inertia matrix (3x3) represented in the inertia frame.
 
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
@@ -143,21 +127,8 @@ class Inertia(Base):
     def from_data(cls, data):
         return cls(**data)
 
-    def to_data(self):
-        return self.data
 
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
-
-class Inertial(Base):
+class Inertial(Data):
     """Inertial properties of a link.
 
     Attributes
@@ -196,27 +167,8 @@ class Inertial(Base):
         self.mass = Mass.from_data(data['mass']) if data['mass'] else None
         self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
 
-    @classmethod
-    def from_data(cls, data):
-        inertial = cls()
-        inertial.data = data
-        return inertial
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
-
-class Visual(Base):
+class Visual(Data):
     """Visual description of a link.
 
     Attributes
@@ -292,19 +244,6 @@ class Visual(Base):
         visual.data = data
         return visual
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
     def get_color(self):
         """Get the RGBA color array assigned to the link.
 
@@ -326,7 +265,7 @@ class Visual(Base):
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Collision(Base):
+class Collision(Data):
     """Collidable description of a link.
 
     Attributes
@@ -397,26 +336,13 @@ class Collision(Base):
         visual.data = data
         return visual
 
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
     @classmethod
     def from_primitive(cls, primitive, **kwargs):
         geometry, origin = _get_geometry_and_origin(primitive)
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Link(Base):
+class Link(Data):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
     Attributes
@@ -488,19 +414,6 @@ class Link(Base):
         link = cls(data['name'])
         link.data = data
         return link
-
-    def to_data(self):
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
 
 
 URDFParser.install_parser(Link, 'robot/link')

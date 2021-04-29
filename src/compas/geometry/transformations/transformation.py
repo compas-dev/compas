@@ -12,7 +12,7 @@ Ippoliti for providing code and documentation.
 """
 import math
 
-from compas.base import Base
+from compas.data import Data
 
 from compas.geometry import multiply_matrices
 from compas.geometry import transpose_matrix
@@ -31,7 +31,7 @@ from compas.geometry.transformations import translation_from_matrix
 __all__ = ['Transformation']
 
 
-class Transformation(Base):
+class Transformation(Data):
     """The ``Transformation`` represents a 4x4 transformation matrix.
 
     It is the base class for transformations like :class:`Rotation`,

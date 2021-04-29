@@ -3,10 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import itertools
-import json
 import random
 
-from compas.base import Base
+from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files import URDF
 from compas.files import URDFElement
@@ -34,7 +33,7 @@ from compas.topology import shortest_path
 __all__ = ['RobotModel']
 
 
-class RobotModel(Base):
+class RobotModel(Data):
     """RobotModel is the root element of the model.
 
     Instances of this class represent an entire robot as defined in an URDF
@@ -112,17 +111,6 @@ class RobotModel(Base):
 
         self._rebuild_tree()
 
-    def to_data(self):
-        """Returns the data dictionary that represents the :class:`RobotModel`.
-        To be used in conjunction with :meth:`compas.robot.RobotModel.from_data()`.
-
-        Returns
-        -------
-        dict
-            The RobotModel's data.
-        """
-        return self.data
-
     @classmethod
     def from_data(cls, data):
         """Construct the :class:`compas.robots.RobotModel` from its data representation.
@@ -131,16 +119,6 @@ class RobotModel(Base):
         robot_model = cls(data['name'])
         robot_model.data = data
         return robot_model
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""

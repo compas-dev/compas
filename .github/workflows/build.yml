@@ -23,19 +23,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install cython --install-option='--no-cython-compile'
-      - name: Install
-        run: |
-          pip install --no-cache-dir -r requirements-dev.txt
-      - name: Lint with flake8
-        run: |
-          invoke lint
-      - name: Test import
-        run: |
-          python -m compas
-      - name: Test with pytest
-        run: |
-          invoke test
+
+      - uses: compas-dev/compas-actions.build@v1.0.0
+        with:
+          test_lint: true
+          test_compas: true

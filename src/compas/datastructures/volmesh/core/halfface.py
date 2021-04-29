@@ -188,7 +188,7 @@ class HalfFace(Datastructure):
 
     @property
     def data(self):
-        """dict: A data dict representing the volmesh data structure for serialisation.
+        """dict: A data dict representing the volmesh data structure for serialization.
         """
         cell = {}
         for c in self._cell:

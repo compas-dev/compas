@@ -14,17 +14,17 @@ BASE_FOLDER = os.path.dirname(__file__)
 
 @pytest.fixture
 def binary_stl_with_ascii_header():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'binary-1.stl')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'stl', 'binary-1.stl')
 
 
 @pytest.fixture
 def binary_stl():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'binary-2.stl')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'stl', 'binary-2.stl')
 
 
 @pytest.fixture
 def ascii_stl():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'ascii.stl')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'stl', 'ascii.stl')
 
 
 def test_binary_detection(ascii_stl, binary_stl, binary_stl_with_ascii_header):

@@ -54,8 +54,8 @@ class BaseNetwork(Graph):
 
         Parameters
         ----------
-        filepath : str
-            Path to the OBJ file.
+        filepath : path string, file-like object or URL string
+            A path, a file-like object or a URL pointing to a file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
 
@@ -167,8 +167,8 @@ class BaseNetwork(Graph):
 
         Parameters
         ----------
-        filepath : str
-            Full path of the file.
+        filepath : path string or file-like object
+            A path or a file-like object pointing to a file.
 
         Examples
         --------
