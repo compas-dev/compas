@@ -12,10 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added infrastructure for building Grasshopper components for compas packages.
 * Added first Grasshopper component: COMPAS Info
+* Added `compas_rhino.utilities.set_object_attributes`.
 
 ### Changed
 
 * Moved json dump and load to data package.
+* Changed paramters and return value of `compas_rhino.utilities.get_object_attributes`.
 
 ### Removed
 
