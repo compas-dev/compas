@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Removed `doctest` execution code from src.
+* Removed `if __name__ == '__main__'` section from src.
+
 ### Removed
 
 
