@@ -101,6 +101,7 @@ def wrap_drawfunc(f):
         res = f(*args, **kwargs)
         if redraw:
             rs.EnableRedraw(True)
+            rs.Redraw()
         if layer:
             rs.CurrentLayer(previous)
         return res
