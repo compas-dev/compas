@@ -611,9 +611,9 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
     Examples
     --------
     >>> color_to_colordict('#ff0000', [0, 1, 2])
-    {0: '#ff0000', 1: '#ff0000', 2: '#ff0000'}
-    >>> color_to_colordict('#ff0000', [0, 1, 2], colorformat='rgb')
     {0: (255, 0, 0), 1: (255, 0, 0), 2: (255, 0, 0)}
+    >>> color_to_colordict('#ff0000', [0, 1, 2], colorformat='hex')
+    {0: '#ff0000', 1: '#ff0000', 2: '#ff0000'}
     >>> color_to_colordict('#ff0000', [0, 1, 2], colorformat='rgb', normalize=True)
     {0: (1.0, 0.0, 0.0), 1: (1.0, 0.0, 0.0), 2: (1.0, 0.0, 0.0)}
     """

@@ -35,6 +35,7 @@ def geometric_key(xyz, precision=None, sanitize=True):
 
     Examples
     --------
+    >>> from math import pi
     >>> geometric_key([pi, pi, pi])
     '3.142,3.142,3.142'
 
@@ -74,6 +75,7 @@ def reverse_geometric_key(gkey):
 
     Examples
     --------
+    >>> from math import pi
     >>> xyz = [pi, pi, pi]
     >>> gkey = geometric_key(xyz)
     >>> reverse_geometric_key(gkey)
@@ -106,6 +108,7 @@ def geometric_key_xy(xy, precision=None, sanitize=True):
 
     Examples
     --------
+    >>> from math import pi
     >>> geometric_key_xy([pi, pi, pi])
     '3.142,3.142'
 
