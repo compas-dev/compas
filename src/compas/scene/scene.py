@@ -80,7 +80,7 @@ class BaseScene(object):
     # but not possible because of ipy bug
 
     def purge(self):
-        """Clear all objects from the scene."""
+        """Clear all objects from the scene and remove the underlying data entirely."""
         raise NotImplementedError
 
     def clear(self):
