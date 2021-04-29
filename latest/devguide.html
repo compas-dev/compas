@@ -294,8 +294,9 @@ The tests are in the <code class="docutils literal notranslate"><span class="pre
 so after the first installation, it is usually not required to reinstall them, only rebuild them (unless a new component is added).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This step requires IronPython to be available on the system, ie. <cite>ipy</cite> should be callable from the command line.
-On Mac, it might be needed to define an alias to invoke it using <cite>Mono</cite>.</p>
+<p>This step requires IronPython version &lt; 3.0 to be available on the system.  The default behavior is to run the command
+<cite>ipy</cite>.  If this command is not available or is the wrong version, the optional <cite>ironpython</cite> argument will replace it, eg
+<cite>invoke build-ghuser-components –ironpython=”mono path/to/ipy.exe”</cite>.</p>
 </div>
 </div>
 <div class="section" id="plugins">
