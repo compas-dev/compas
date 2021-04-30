@@ -9,7 +9,7 @@ name: Create Release
 jobs:
   build:
     name: Create Release
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Get version from tag
         id: tag_name
@@ -40,3 +40,35 @@ jobs:
           body: ${{ steps.changelog_reader.outputs.changes }}
           prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
           draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - uses: compas-dev/compas-actions.build@v1.0.0
+        with:
+          test_lint: true
+          test_compas: true
+      - uses: NuGet/setup-nuget@v1.0.5
+      - name: Install dependencies
+        run: |
+          choco install ironpython --version=2.7.8.1
+
+      - name: 🦗 Build grasshopper components
+        uses: compas-dev/compas-actions.ghpython_components@v1
+        with:
+          source: src/compas_ghpython/components
+          target: src/compas_ghpython/components
+      - name: 💃 Build release
+        if: success() && startsWith(github.ref, 'refs/tags')
+        run: |
+          python setup.py clean --all sdist bdist_wheel
+      - name: 📦 Publish release to PyPI
+        if: success() && startsWith(github.ref, 'refs/tags')
+        run: |
+            twine check dist/*
+            twine upload dist/* --skip-existing
+        with:
+            TWINE_USERNAME: __token__
+            TWINE_PASSWORD: ${{ secrets.PYPI }}
