@@ -521,6 +521,7 @@ class Transformation(Data):
 
         Examples
         --------
+        >>> from compas.geometry import Scale, Translation, Rotation
         >>> trans1 = [1, 2, 3]
         >>> angle1 = [-2.142, 1.141, -0.142]
         >>> scale1 = [0.123, 2, 0.5]

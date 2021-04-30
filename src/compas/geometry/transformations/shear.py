@@ -79,6 +79,7 @@ class Shear(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import cross_vectors
         >>> angle = 0.1
         >>> direction = [0.1, 0.2, 0.3]
         >>> point = [4, 3, 1]

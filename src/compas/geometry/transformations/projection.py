@@ -66,6 +66,7 @@ class Projection(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import Plane
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
         >>> plane = Plane(point, normal)
@@ -94,6 +95,7 @@ class Projection(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import Plane
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
         >>> plane = Plane(point, normal)
@@ -122,6 +124,7 @@ class Projection(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import Plane
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
         >>> plane = Plane(point, normal)
