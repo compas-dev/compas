@@ -152,6 +152,8 @@ def mesh_subdivide_tri(mesh, k=1):
 
     Examples
     --------
+    >>> from compas.geometry import Box
+    >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
     >>> mesh = Mesh.from_shape(box)
     >>> k = 2
@@ -190,6 +192,8 @@ def mesh_subdivide_quad(mesh, k=1):
 
     Examples
     --------
+    >>> from compas.geometry import Box
+    >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
     >>> mesh = Mesh.from_shape(box)
     >>> k = 2
@@ -296,6 +300,8 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Examples
     --------
+    >>> from compas.geometry import Box
+    >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
     >>> mesh = Mesh.from_shape(box)
     >>> k = 2
@@ -471,6 +477,8 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     Examples
     --------
+    >>> from compas.geometry import Box
+    >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
     >>> mesh = Mesh.from_shape(box)
     >>> k = 2
@@ -655,15 +663,20 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     --------
     Make a low poly mesh from a box shape.
     Triangulate the faces.
+
+    >>> from compas.geometry import Box
+    >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
     >>> mesh = Mesh.from_shape(box)
-    >>> mesh_quads_to_triangles(mesh)
+    >>> mesh.quads_to_triangles()
 
     Subdivide 2 times.
+
     >>> k = 2
     >>> subd = trimesh_subdivide_loop(mesh, k=k)
 
     Compare low-poly cage with subdivision mesh.
+
     >>> mesh is subd
     False
     >>> type(mesh) is type(subd)

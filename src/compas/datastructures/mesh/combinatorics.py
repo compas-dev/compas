@@ -32,12 +32,18 @@ def mesh_is_connected(mesh):
 
     Examples
     --------
-    >>> mesh_is_connected(m1)
-    True
-    >>> mesh_is_connected(m2)
-    True
-    >>> mesh_is_connected(m3)
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh()
+    >>> mesh_is_connected(mesh)
     False
+    >>> a = mesh.add_vertex(x=0, y=0, z=0)
+    >>> b = mesh.add_vertex(x=1, y=0, z=0)
+    >>> c = mesh.add_vertex(x=1, y=1, z=0)
+    >>> mesh_is_connected(mesh)
+    False
+    >>> abc = mesh.add_face([a, b, c])
+    >>> mesh_is_connected(mesh)
+    True
     """
     if not mesh.vertex:
         return False

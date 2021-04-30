@@ -130,8 +130,7 @@ def lint(ctx):
 def testdocs(ctx, rebuild=False):
     """Test the examples in the docstrings."""
     log.write('Running doctest...')
-    opts = '-E' if rebuild else ''
-    ctx.run('sphinx-build {} -b doctest docs dist/docs'.format(opts))
+    ctx.run('pytest --doctest-modules')
 
 
 @task()

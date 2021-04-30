@@ -28,6 +28,8 @@ def mesh_bounding_box(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
     >>> mesh_bounding_box(mesh)
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
@@ -51,6 +53,8 @@ def mesh_bounding_box_xy(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
     >>> mesh_bounding_box_xy(mesh)
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 

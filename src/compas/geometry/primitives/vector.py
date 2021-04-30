@@ -443,7 +443,8 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> from compas.geometry import Rotation
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), math.radians(90))
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> vectors = [u]
         >>> Vector.transform_collection(vectors, R)
@@ -475,7 +476,8 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> from compas.geometry import Rotation
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), math.radians(90))
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> vectors = [u]
         >>> vectors = Vector.transformed_collection(vectors, R)
@@ -826,10 +828,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angle(v) == 0.5 * pi
+        >>> u.angle(v) == 0.5 * math.pi
         True
         """
         return angle_vectors(self, other)
@@ -851,12 +852,11 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angle_signed(v, Vector(0.0, 0.0, 1.0)) == 0.5 * pi
+        >>> u.angle_signed(v, Vector(0.0, 0.0, 1.0)) == 0.5 * math.pi
         True
-        >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * pi
+        >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * math.pi
         True
         """
         return angle_vectors_signed(self, other, normal)
@@ -876,10 +876,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angles(v)[0] == 0.5 * pi
+        >>> u.angles(v)[0] == 0.5 * math.pi
         True
         """
         return angles_vectors(self, other)
@@ -894,10 +893,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import radians
         >>> from compas.geometry import Rotation
         >>> u = Vector(1.0, 0.0, 0.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
         >>> u.transform(R)
         >>> u
         Vector(0.000, 1.000, 0.000)
@@ -922,10 +920,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import radians
         >>> from compas.geometry import Rotation
         >>> u = Vector(1.0, 0.0, 0.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
         >>> v = u.transformed(R)
         >>> v
         Vector(0.000, 1.000, 0.000)

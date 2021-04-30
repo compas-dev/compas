@@ -653,7 +653,7 @@ class BaseMesh(HalfEdge):
         >>> from compas.datastructures import Mesh
         >>> a = Box.from_width_height_depth(1, 1, 1)
         >>> b = Box.from_width_height_depth(1, 1, 1)
-        >>> T = Translation([2, 0, 0])
+        >>> T = Translation.from_vector([2, 0, 0])
         >>> b.transform(T)
         >>> a = Mesh.from_shape(a)
         >>> b = Mesh.from_shape(b)

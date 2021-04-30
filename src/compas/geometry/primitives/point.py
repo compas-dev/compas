@@ -415,7 +415,7 @@ class Point(Primitive):
         Examples
         --------
         >>> from compas.geometry import Translation
-        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> T = Translation.from_vector([1.0, 2.0, 3.0])
         >>> a = Point(0.0, 0.0, 0.0)
         >>> points = [a]
         >>> Point.transform_collection(points, T)
@@ -448,7 +448,7 @@ class Point(Primitive):
         Examples
         --------
         >>> from compas.geometry import Translation
-        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> T = Translation.from_vector([1.0, 2.0, 3.0])
         >>> a = Point(0.0, 0.0, 0.0)
         >>> points = [a]
         >>> points = Point.transformed_collection(points, T)
@@ -749,7 +749,7 @@ class Point(Primitive):
         --------
         >>> from compas.geometry import Translation
         >>> point = Point(0.0, 0.0, 0.0)
-        >>> T = Translation([1.0, 1.0, 1.0])
+        >>> T = Translation.from_vector([1.0, 1.0, 1.0])
         >>> point.transform(T)
         >>> point.x == 1.0
         True

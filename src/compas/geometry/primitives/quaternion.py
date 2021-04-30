@@ -309,11 +309,12 @@ class Quaternion(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> from compas.geometry import Frame
         >>> q = [1., -2., 3., -4.]
         >>> F = Frame.from_quaternion(q)
         >>> Q = Quaternion.from_frame(F)
-        >>> allclose(list(Q.canonized()), quaternion_canonize(quaternion_unitize(q)))
+        >>> allclose(Q.canonized(), quaternion_canonize(quaternion_unitize(q)))
         True
         """
         w, x, y, z = frame.quaternion

@@ -423,6 +423,8 @@ class HalfEdge(Datastructure):
 
         Examples
         --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh()
         >>> mesh.add_vertex()
         0
         >>> mesh.add_vertex(x=0, y=0, z=0)
