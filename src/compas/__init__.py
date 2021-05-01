@@ -26,45 +26,51 @@ Utility functions
 JSON handling
 -------------
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. autofunction:: json_dump
 
-    json_dump
-    json_dumps
-    json_load
-    json_loads
+.. autofunction:: json_dumps
+
+.. autofunction:: json_load
+
+.. autofunction:: json_loads
 
 Precision
 ---------
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. autodata:: PRECISION
 
-    set_precision
+.. autofunction:: set_precision
 
 Execution context
 -----------------
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. autodata:: WINDOWS
 
-    WINDOWS
-    LINUX
-    OSX
-    MONO
-    IPY
-    RHINO
-    BLENDER
-    is_windows
-    is_linux
-    is_osx
-    is_mono
-    is_ironpython
-    is_rhino
-    is_blender
+.. autodata:: LINUX
+
+.. autodata:: OSX
+
+.. autodata:: MONO
+
+.. autodata:: IPY
+
+.. autodata:: RHINO
+
+.. autodata:: BLENDER
+
+.. autofunction:: is_windows
+
+.. autofunction:: is_linux
+
+.. autofunction:: is_osx
+
+.. autofunction:: is_mono
+
+.. autofunction:: is_ironpython
+
+.. autofunction:: is_rhino
+
+.. autofunction:: is_blender
 
 """
 from __future__ import print_function
@@ -86,23 +92,59 @@ __version__ = '1.5.0'
 
 
 HERE = os.path.dirname(__file__)
+"""str: Path to the location of the compas package."""
+
 HOME = compas._os.absjoin(HERE, '../..')
+"""str: Path to the root of the local repo."""
+
 DATA = compas._os.absjoin(HERE, '../../data')
+"""str: Path to the data folder of the local repo."""
+
 TEMP = compas._os.absjoin(HERE, '../../temp')
+"""str: Path to the temp folder of the local repo."""
 
 APPDATA = compas._os.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+"""str: Path to the COMPAS directory in APPDATA."""
+
 APPTEMP = compas._os.absjoin(APPDATA, 'temp')
+"""str: Path to a temp folder in the COMPAS directory in APPDATA."""
 
 PRECISION = '3f'
+"""str:
+The precision used by COMPAS for generation of geometric keys,
+for the comparison of point locations,
+for the parsing of geometry files,
+and for the generation of human-readable representations of geometry objects.
+
+The string is in the format used by the Python string formating mini language
+for formatting numbers.
+Float formatting (``'<x>f'``) and integer formatting (``'d'``) specifiers are supported.
+"""
 
 PY3 = compas._os.PY3
+"""bool: True if the current Python version is 3.x, False otherwise."""
+
 WINDOWS = is_windows()
+"""bool: True if the current operating system is Windows, False otherwise."""
+
 LINUX = is_linux()
+"""bool: True if the current operating system is Linux, False otherwise."""
+
 OSX = is_osx()
+"""bool: True if the current operating system is OSX, False otherwise."""
+
 MONO = is_mono()
+"""bool: True if the current operating system is Mono, False otherwise."""
+
 IPY = is_ironpython()
+"""bool: True if the current Python implementation is IronPython, False otherwise."""
+
 RHINO = is_rhino()
+"""bool: True if the current context is Rhino, False otherwise."""
+
 BLENDER = is_blender()
+"""bool: True if the current context is Blender, False otherwise."""
+
 
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
