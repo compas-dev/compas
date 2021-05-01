@@ -909,6 +909,8 @@ class RobotModel(Data):
 
         Examples
         --------
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import Sphere
         >>> sphere = Sphere((0, 0, 0), 1)
         >>> mesh = Mesh.from_shape(sphere)
         >>> robot = RobotModel('robot')
@@ -994,6 +996,7 @@ class RobotModel(Data):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> robot = RobotModel('robot')
         >>> parent_link = robot.add_link('link0')
         >>> child_link = robot.add_link('link1')

@@ -84,7 +84,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     ...
     >>> x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
     >>> bounds = [[-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0]]
-    >>> res = devo_numpy(f, bounds, 200, 1000, polish=False, plot=False, frange=[0, 100], neutrals=0)
+    >>> res = devo_numpy(f, bounds, 200, 1000, polish=False, plot=False, frange=[0, 100], neutrals=0, printout=0)
     """
     if plot:
         from matplotlib import pyplot as plt
