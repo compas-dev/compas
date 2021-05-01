@@ -37,26 +37,12 @@ JSON handling
 Precision
 ---------
 
-.. autodata:: PRECISION
-
 .. autofunction:: set_precision
+
+.. autodata:: PRECISION
 
 Execution context
 -----------------
-
-.. autodata:: WINDOWS
-
-.. autodata:: LINUX
-
-.. autodata:: OSX
-
-.. autodata:: MONO
-
-.. autodata:: IPY
-
-.. autodata:: RHINO
-
-.. autodata:: BLENDER
 
 .. autofunction:: is_windows
 
@@ -71,6 +57,20 @@ Execution context
 .. autofunction:: is_rhino
 
 .. autofunction:: is_blender
+
+.. autodata:: WINDOWS
+
+.. autodata:: LINUX
+
+.. autodata:: OSX
+
+.. autodata:: MONO
+
+.. autodata:: IPY
+
+.. autodata:: RHINO
+
+.. autodata:: BLENDER
 
 """
 from __future__ import print_function
