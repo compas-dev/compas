@@ -4,13 +4,14 @@ import tempfile
 
 import pytest
 
+import compas.geometry
+import compas.robots
 from compas.files import URDF
-from compas.robots import Box
-from compas.robots import Cylinder
+from compas.geometry import Frame
+from compas.geometry import Transformation
 from compas.robots import Joint
 from compas.robots import Link
 from compas.robots import RobotModel
-from compas.robots import Sphere
 
 BASE_FOLDER = os.path.dirname(__file__)
 
@@ -141,6 +142,112 @@ def test_ur5_urdf_to_string(ur5_file):
     assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
 
 
+def test_forward_kinematics(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    f = r.forward_kinematics(dict())
+
+    ftip = Frame((0.817, 0.191, -0.005), (-0.000, 1.000, 0.000), (1.000, 0.000, 0.000))
+    assert str(f) == str(ftip)
+
+    fbase = r.forward_kinematics(dict(), link_name='base_link')
+    assert str(fbase) == str(Frame.worldXY())
+
+
+def test_rcf_on_edge_cases():
+    sphere = compas.geometry.Sphere((0, 0, 0), 1)
+    frcf = Frame((10, 5, 0), (0, 1, 0), (0, 0, 1))
+
+    r = RobotModel('no-links')
+    assert r.rcf == Frame.worldXY()
+    r.rcf = frcf
+    assert r.rcf == frcf
+
+    r = RobotModel('one-link')
+    r.add_link('sphere', [sphere.copy()])
+    assert r.rcf == Frame.worldXY()
+    r.rcf = frcf
+    assert r.rcf == frcf
+
+    r = RobotModel('one-fixed-joint')
+    r.add_joint(
+        name='world_l1',
+        type=Joint.FIXED,
+        parent_link=r.add_link('world'),
+        child_link=r.add_link('l1', [sphere.copy()]),
+        origin=frcf
+    )
+    r.add_joint(
+        name='j1',
+        type=Joint.REVOLUTE,
+        parent_link=r.get_link_by_name('l1'),
+        child_link=r.add_link('l2'),
+    )
+
+    assert r.rcf == frcf
+
+
+def test_rcf_precedence(ur5):
+    frcf1 = Frame((10, 5, 0), (0, 1, 0), (0, 0, 1))
+    frcf2 = Frame((20, 8, 3), (0, 1, 0), (0, 0, 1))
+
+    r = RobotModel('rob')
+    r.rcf = frcf1
+    assert r.rcf == frcf1
+
+    r.add_joint(
+        name='world_l1',
+        type=Joint.FIXED,
+        parent_link=r.add_link('world'),
+        child_link=r.add_link('l1'),
+        origin=frcf2
+    )
+    r.add_joint(
+        name='j1',
+        type=Joint.REVOLUTE,
+        parent_link=r.get_link_by_name('l1'),
+        child_link=r.add_link('l2'),
+    )
+
+    assert r.rcf == frcf2
+    r.remove_joint('world_l1')
+    assert r.rcf == frcf1
+
+
+def test_rcf_on_fixed_joints(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    fbase = r.forward_kinematics(dict(), link_name='base_link')
+    assert str(fbase) == str(Frame.worldXY())
+
+    f = r.forward_kinematics(dict())
+    ftip = Frame((0.817, 0.191, -0.005), (-0.000, 1.000, 0.000), (1.000, 0.000, 0.000))
+    assert str(f) == str(ftip)
+
+    frcf = Frame((1.72, 2.25, 0.53), (0.000, 1.000, 0.000), (1.000, -0.000, 0.000))
+    r.rcf = frcf
+    assert str(r.rcf) == str(frcf)
+    fbase = r.forward_kinematics(dict(), link_name='base_link')
+    assert str(fbase) == str(frcf)
+
+    f = r.forward_kinematics(dict())
+    fexpected = Frame.from_transformation(Transformation.from_frame(frcf) * Transformation.from_frame(ftip))
+    assert str(f.point) == str(fexpected.point)
+
+
+def test_rcf_without_fixed_joint():
+    model = RobotModel("robot")
+    link0 = model.add_link("link0")
+    link1 = model.add_link("link1")
+    link2 = model.add_link("link2")
+    tip = model.add_link("tip")
+
+    model.add_joint("joint1", Joint.CONTINUOUS, link0, link1, origin=Frame((20, 0, 0), (1, 0, 0), (0, 1, 0)))
+    model.add_joint("joint2", Joint.CONTINUOUS, link1, link2, origin=Frame((20, 0, 0), (1, 0, 0), (0, 1, 0)))
+    model.add_joint("joint3", Joint.CONTINUOUS, link2, tip, origin=Frame((11, 0, 0), (1, 0, 0), (0, 1, 0)))
+    assert str(model.forward_kinematics(dict(), 'tip').point) == 'Point(51.000, 0.000, 0.000)'
+
+    model.rcf = Frame((10, 0, 0), (1, 0, 0), (0, 1, 0))
+    assert str(model.forward_kinematics(dict(), 'tip').point) == 'Point(61.000, 0.000, 0.000)'
+
 def test_ur5_urdf_data(ur5_file):
     r_original = RobotModel.from_urdf_file(ur5_file)
     r = RobotModel.from_data(r_original.data)
@@ -198,7 +305,7 @@ def test_robot_default_namespace_creates_box_shape_based_on_tagname():
         """<?xml version="1.0"?><robot xmlns="https://drake.mit.edu" name="Acrobot"><link name="base_link"><visual><geometry><box size="0.2 0.2 0.2"/></geometry></visual></link></robot>""")
     assert r.name == 'Acrobot'
     assert r.links[0].name == 'base_link'
-    assert isinstance(r.links[0].visual[0].geometry.shape, Box)
+    assert isinstance(r.links[0].visual[0].geometry.shape, compas.robots.Box)
 
 
 def test_robot_default_namespace_to_string():
@@ -386,13 +493,16 @@ def test_geometry_parser(urdf_file_with_shapes):
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
-    assert type(r.links[0].collision[0].geometry.shape) == Sphere
+    assert type(r.links[0].collision[0].geometry.shape) == compas.robots.Sphere
+    assert type(r.links[0].collision[0].geometry.geo) == compas.geometry.Sphere
     assert r.links[0].collision[0].geometry.shape.radius == 0.2
 
-    assert type(r.links[1].visual[0].geometry.shape) == Box
+    assert type(r.links[1].visual[0].geometry.shape) == compas.robots.Box
+    assert type(r.links[1].visual[0].geometry.geo) == compas.geometry.Box
     assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
 
-    assert type(r.links[1].collision[0].geometry.shape) == Cylinder
+    assert type(r.links[1].collision[0].geometry.shape) == compas.robots.Cylinder
+    assert type(r.links[1].collision[0].geometry.geo) == compas.geometry.Cylinder
     assert r.links[1].collision[0].geometry.shape.length == 0.6
     assert r.links[1].collision[0].geometry.shape.radius == 0.2
 
@@ -405,13 +515,16 @@ def test_geometry_parser_to_string(urdf_file_with_shapes):
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
-    assert type(r.links[0].collision[0].geometry.shape) == Sphere
+    assert type(r.links[0].collision[0].geometry.shape) == compas.robots.Sphere
+    assert type(r.links[0].collision[0].geometry.geo) == compas.geometry.Sphere
     assert r.links[0].collision[0].geometry.shape.radius == 0.2
 
-    assert type(r.links[1].visual[0].geometry.shape) == Box
+    assert type(r.links[1].visual[0].geometry.shape) == compas.robots.Box
+    assert type(r.links[1].visual[0].geometry.geo) == compas.geometry.Box
     assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
 
-    assert type(r.links[1].collision[0].geometry.shape) == Cylinder
+    assert type(r.links[1].collision[0].geometry.shape) == compas.robots.Cylinder
+    assert type(r.links[1].collision[0].geometry.geo) == compas.geometry.Cylinder
     assert r.links[1].collision[0].geometry.shape.length == 0.6
     assert r.links[1].collision[0].geometry.shape.radius == 0.2
 
@@ -423,13 +536,13 @@ def test_geometry_parser_data(urdf_file_with_shapes):
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
-    assert type(r.links[0].collision[0].geometry.shape) == Sphere
+    assert type(r.links[0].collision[0].geometry.shape) == compas.robots.Sphere
     assert r.links[0].collision[0].geometry.shape.radius == 0.2
 
-    assert type(r.links[1].visual[0].geometry.shape) == Box
+    assert type(r.links[1].visual[0].geometry.shape) == compas.robots.Box
     assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
 
-    assert type(r.links[1].collision[0].geometry.shape) == Cylinder
+    assert type(r.links[1].collision[0].geometry.shape) == compas.robots.Cylinder
     assert r.links[1].collision[0].geometry.shape.length == 0.6
     assert r.links[1].collision[0].geometry.shape.radius == 0.2
 

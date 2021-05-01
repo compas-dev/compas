@@ -367,7 +367,7 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Mesh`
+    :class:`Rhino.Geometry.Mesh`
 
     """
     mesh = Mesh()

@@ -30,6 +30,7 @@ from compas.robots.model.link import Visual
 from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
 
+
 __all__ = ['RobotModel']
 
 
@@ -42,19 +43,30 @@ class RobotModel(Data):
     In line with URDF limitations, only tree structures can be represented by
     this model, ruling out all parallel robots.
 
+    Parameters
+    ----------
+    name : str
+        Unique name of the robot.
+    joints : list of :class:`compas.robots.Joint`
+        List of joint elements.
+    links : list of :class:`compas.robots.Link`
+        List of links of the robot.
+    materials : list of :class:`compas.robots.Material`
+        List of global materials.
+
     Attributes
     ----------
-    name:
+    name : str
         Unique name of the robot.
-    joints:
+    joints : list of :class:`compas.robots.Joint`
         List of joint elements.
-    links:
+    links : list of :class:`compas.robots.Link`
         List of links of the robot.
-    materials:
+    materials : list of :class:`compas.robots.Material`
         List of global materials.
-    root:
+    root : :class:`compas.robots.Link`
         Root link of the model.
-    attr:
+    attr : dict
         Non-standard attributes.
     """
 
@@ -66,8 +78,9 @@ class RobotModel(Data):
         self.materials = list(materials)
         self.attr = kwargs
         self.root = None
+        self._rcf = None
         self._rebuild_tree()
-        self._create(self.root, Transformation())
+        self._create(self.root, self._root_transformation)
         self._scale_factor = 1.
 
     def get_urdf_element(self):
@@ -535,6 +548,9 @@ class RobotModel(Data):
     def get_base_link_name(self):
         """Returns the name of the base link.
 
+        The base link is defined as the parent link of the first
+        configurable joint of the kinematic chain.
+
         Returns
         -------
         str
@@ -544,8 +560,87 @@ class RobotModel(Data):
         >>> robot.get_base_link_name()
         'world'
         """
+        try:
+            for joint in self.iter_joint_chain():
+                if joint.is_configurable():
+                    return joint.parent.link
+        except:  # noqa: E722
+            pass
+
+        # If we cannot get the joint chain, assume ordered joints
+        # as a more or less decent default
         joints = self.get_configurable_joints()
-        return joints[0].parent.link
+        if joints and joints[0].parent:
+            return joints[0].parent.link
+
+        return None
+
+    @property
+    def rcf(self):
+        """Robot Coordinate Frame.
+
+        The RCF can be set either as a fixed joint in the model, or as an explicit frame
+        used to reposition the model. If both are used, the former takes precedence over the latter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            Robot coordinate frame, usually placed at the base of the robot and attached to a ``world`` link.
+        """
+        rcf_joint = self._get_rcf_candidate_joint()
+
+        if rcf_joint:
+            return Frame(rcf_joint.origin.point, rcf_joint.origin.xaxis, rcf_joint.origin.yaxis)
+        else:
+            return self._rcf or Frame.worldXY()
+
+    @rcf.setter
+    def rcf(self, frame):
+        rcf_joint = self._get_rcf_candidate_joint()
+        if rcf_joint:
+            rcf_joint.origin = Origin(frame.point, frame.xaxis, frame.yaxis)
+        else:
+            self._rcf = frame.copy()
+
+        self._create(self.root, self._root_transformation)
+
+    @property
+    def _root_transformation(self):
+        """Internal: root transformation used as base of the kinematic chain.
+
+        If there's no fixed joint to be used as RCF, take the manually configured self.rcf
+        otherwise, use Transformation()
+
+        Returns
+        -------
+        :class:`compas.geometry.Transformation`
+            A transformation describing the root of the chain.
+        """
+        rcf_joint = self._get_rcf_candidate_joint()
+
+        if rcf_joint or not self._rcf:
+            return Transformation()
+
+        return Transformation.from_frame(self._rcf)
+
+    def _get_rcf_candidate_joint(self):
+        """Internal: try to return a fixed joint as candidate for RCF (robot coordinate frame)"""
+        if not self.root or not self.joints or not self.links:
+            return None
+
+        base_link = self.get_link_by_name(self.get_base_link_name())
+        if not base_link:
+            return None
+
+        rcf_candidate = base_link.parent_joint
+
+        if not rcf_candidate:
+            return None
+
+        if rcf_candidate.type != Joint.FIXED:
+            return None
+
+        return rcf_candidate
 
     def zero_configuration(self):
         """Get the zero joint configuration.
@@ -942,10 +1037,12 @@ class RobotModel(Data):
 
         link = Link(name, visual=visuals, collision=collisions, **kwargs)
         self.links.append(link)
+
         # Must build the tree structure, if adding the first link to an empty robot
         if len(self.links) == 1:
             self._rebuild_tree()
-            self._create(self.root, Transformation())
+            self._create(self.root, self._root_transformation)
+
         return link
 
     def remove_link(self, name):
@@ -1035,7 +1132,7 @@ class RobotModel(Data):
         self._joints[joint.name] = joint
         self._adjacency[joint.name] = [child_link.name]
 
-        self._create(self.root, Transformation())
+        self._create(self.root, self._root_transformation)
 
         return joint
 
