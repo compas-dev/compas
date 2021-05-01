@@ -3,24 +3,24 @@ from __future__ import division
 from __future__ import print_function
 
 import itertools
-import json
 import random
 
-from compas.base import Base
+from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files import URDF
-from compas.files import URDFParser
 from compas.files import URDFElement
+from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
+from compas.robots import Configuration
 from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Texture
-from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.geometry import _attr_from_data
+from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
 from compas.robots.model.joint import Limit
@@ -30,11 +30,10 @@ from compas.robots.model.link import Visual
 from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
 
-
 __all__ = ['RobotModel']
 
 
-class RobotModel(Base):
+class RobotModel(Data):
     """RobotModel is the root element of the model.
 
     Instances of this class represent an entire robot as defined in an URDF
@@ -112,17 +111,6 @@ class RobotModel(Base):
 
         self._rebuild_tree()
 
-    def to_data(self):
-        """Returns the data dictionary that represents the :class:`RobotModel`.
-        To be used in conjunction with :meth:`compas.robot.RobotModel.from_data()`.
-
-        Returns
-        -------
-        dict
-            The RobotModel's data.
-        """
-        return self.data
-
     @classmethod
     def from_data(cls, data):
         """Construct the :class:`compas.robots.RobotModel` from its data representation.
@@ -131,16 +119,6 @@ class RobotModel(Base):
         robot_model = cls(data['name'])
         robot_model.data = data
         return robot_model
-
-    def to_json(self, filepath):
-        with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
-
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        return cls.from_data(data)
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -1085,21 +1063,3 @@ URDFParser.install_parser(RobotModel, 'robot')
 URDFParser.install_parser(Material, 'robot/material')
 URDFParser.install_parser(Color, 'robot/material/color')
 URDFParser.install_parser(Texture, 'robot/material/texture')
-
-
-if __name__ == '__main__':
-    import os
-    import doctest
-    from compas import HERE
-    from compas.geometry import Sphere  # noqa: F401
-    from compas.robots import GithubPackageMeshLoader, Configuration  # noqa: F401
-
-    ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')
-
-    robot = RobotModel("robot", links=[], joints=[])
-    link0 = robot.add_link("world")
-    link1 = robot.add_link("link1")
-    link2 = robot.add_link("link2")
-    robot.add_joint("joint1", Joint.CONTINUOUS, link0, link1, Frame.worldXY(), (0, 0, 1))
-    robot.add_joint("joint2", Joint.CONTINUOUS, link1, link2, Frame.worldXY(), (0, 0, 1))
-    doctest.testmod(globs=globals())

@@ -10,6 +10,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added infrastructure for building Grasshopper components for compas packages.
+* Added first Grasshopper component: COMPAS Info
+
+### Changed
+
+### Removed
+
+
+## [1.5.0] 2021-04-20
+
+### Added
+
+* Added support for file-like objects, path strings and URLs to most of the methods previously accepting only file paths, eg. `compas.datastructures.Datastructure`, `compas.json_dump`, `compas.json_load`, etc.
+* Added `pretty` parameter to `compas.json_dump` and `compas.json_dumps`.
+* Added `compas.data.Data` as base object for all data objects (geometry, data structures, ...).
+
+### Changed
+
+* Moved `compas.utilities.DataEncoder` to `compas.data`.
+* Moved `compas.utilities.DataDecoder` to `compas.data`.
+* Changed base object of `compas.datastructures.Datastructure` to `compas.data.Data`.
+* Changed base object of `compas.geometry.Primitive` to `compas.data.Data`.
+* Renamed `Base` to `Data` for all data based classes.
+* Fixed calculation of triangle normals.
+* Fixed calculation of triangle areas.
+
+### Removed
+
+
+## [1.4.0] 2021-04-09
+
+### Added
+
+* Added Python 3.9 support.
+* Added crease handling to catmull-clark subdivision scheme.
+* Added `compas_ghpython.get_grasshopper_userobjects_path` to retrieve User Objects target folder.
+* Added direction option for mesh thickening.
+* Added check for closed meshes.
+* Added 'loop' and 'frames' to schemes of `compas.datastructures.mesh.subdivision.mesh_subdivide`.
+
+### Changed
+
+* Fixed box scaling.
+* Fixed a bug in `Polyline.divide_polyline_by_length` related to a floating point rounding error.
+* Fixed bug in `RobotModel.zero_configuration`.
+* Fixed bug in `compas.geometry.normals`.
+* Fixed bug in `compas.datastructures.mesh.subdivision.mesh_subdivide_frames`.
+
+### Removed
+
+
+## [1.3.0] 2021-03-26
+
+### Added
+
 * Added a `invert` and `inverted` method `compas.geometry.Vector`.
 * Added unetary `__neg__` operator for `compas.geometry.Vector`.
 * Added `compas.robots.Configuration`, moved from `compas_fab`.
@@ -116,6 +171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+* Fix bug in `compas.datastructures.Network.neighborhood`.
 
 ### Removed
 
@@ -157,7 +213,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `is_windows` to work for CPython and IronPython.
 * Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
-* Fixed data serialisation in `compas.datastructures.HalfFace`.
+* Fixed data serialization in `compas.datastructures.HalfFace`.
 
 ### Removed
 
@@ -555,7 +611,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added optional class parameter to `RhinoMesh.to_compas`.
-* Added max int key to serialisation of graph.
+* Added max int key to serialization of graph.
 
 ### Changed
 
@@ -749,8 +805,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Indirectly changed mesh serialisation to JSON (by changing key conversion and moving conversion into JSON methods).
-* Moved conversion of int keys of mesh data to strings for json serialisation to from/to json.
+* Indirectly changed mesh serialization to JSON (by changing key conversion and moving conversion into JSON methods).
+* Moved conversion of int keys of mesh data to strings for json serialization to from/to json.
 * Moved from/to methods for mesh into mesh definition.
 * Subdivision algorithms use fast mesh copy.
 

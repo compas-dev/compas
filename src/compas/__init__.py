@@ -9,7 +9,7 @@ compas
     :maxdepth: 1
     :titlesonly:
 
-    compas.base
+    compas.data
     compas.datastructures
     compas.files
     compas.geometry
@@ -19,6 +19,52 @@ compas
     compas.rpc
     compas.topology
     compas.utilities
+
+Utility functions
+=================
+
+JSON handling
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    json_dump
+    json_dumps
+    json_load
+    json_loads
+
+Precision
+---------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    set_precision
+
+Execution context
+-----------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    WINDOWS
+    LINUX
+    OSX
+    MONO
+    IPY
+    RHINO
+    BLENDER
+    is_windows
+    is_linux
+    is_osx
+    is_mono
+    is_ironpython
+    is_rhino
+    is_blender
 
 """
 from __future__ import print_function
@@ -36,7 +82,7 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '1.2.1'
+__version__ = '1.5.0'
 
 
 HERE = os.path.dirname(__file__)

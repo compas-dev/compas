@@ -9,6 +9,7 @@ from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
 from compas.geometry import Polygon
 from compas.geometry import Translation
+from compas.geometry import allclose
 
 
 @pytest.fixture
@@ -132,8 +133,7 @@ def test_from_off():
 
 
 def test_from_lines():
-    with open(compas.get('lines.json'), 'r') as fo:
-        lines = json.load(fo)
+    lines = compas.json_load(compas.get('lines.json'))
     mesh = Mesh.from_lines(lines)
     assert mesh.number_of_faces() == 10
     assert mesh.number_of_vertices() == 32
@@ -585,7 +585,7 @@ def test_face_coordinates():
 
 def test_face_normal():
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    assert mesh.face_normal(0) == [0.5435358481001584, -0.16248515023849733, 0.8235091728584537]
+    assert allclose(mesh.face_normal(0), [0.5435358481001584, -0.16248515023849733, 0.8235091728584537], tol=1e-6)
 
 
 def test_face_centroid():

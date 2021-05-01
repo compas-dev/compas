@@ -14,101 +14,49 @@ jobs:
   build:
     name: build and deploy docs
     runs-on: ubuntu-latest
-    outputs:
-      commit_type: ${{ steps.docs.outputs.commit_type }}
-      current_patch: ${{ steps.docs.outputs.current_patch }}
-    env:
-      GH_PAT: ${{secrets.GH_PAT}}
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          sudo apt-get install graphviz
-          python -m pip install --upgrade pip
-          python -m pip install cython --install-option="--no-cython-compile"
-      - name: Install
-        run: |
-          python -m pip install --no-cache-dir -r requirements-dev.txt
-      - name: Generate docs
-        if: success()
+
+      - uses: compas-dev/compas-actions.docs@v1.0.0
         id: docs
-        run: |
-          invoke docs
-          # Get branch/tag/latest name from git
-          GITHUB_REF_REGEX="tags/v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}|(pull/[0-9]+)|heads/main"
-          if [[ $GITHUB_REF =~ $GITHUB_REF_REGEX ]]; then
-              if [[ $BASH_REMATCH = pull* ]]; then
-                  echo This is a pull request
-                  FOLDER_NAME=pull_${BASH_REMATCH##*/}
-                  echo "::set-output name=commit_type::pull"
-              elif [[ $BASH_REMATCH = tags/* ]]; then
-                  echo This is a version tag
-                  FOLDER_NAME=${BASH_REMATCH##*/v}
-                  echo "::set-output name=commit_type::tag"
-                  echo "::set-output name=current_patch::$FOLDER_NAME"
-              else
-                  echo This is a commit to main branch
-                  FOLDER_NAME=latest
-                  echo "::set-output name=commit_type::main"
-              fi;
-          fi;
-          echo "Docs will be deployed to https://compas.dev/compas/$FOLDER_NAME"
-          mkdir -p deploy/$BRANCH_OR_TAG && mv -T dist/docs deploy/$FOLDER_NAME/
+        with:
+          dest: deploy
+          build_to_subfolder: true
 
       - name: Deploy docs
-        if: success() && env.GH_PAT != '' && steps.docs.outputs.commit_type != 'pull'
+        if: success() && steps.docs.outputs.commit_type != 'pull'
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
           build_dir: deploy
           keep_history: true
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    outputs:
+      commit_type: ${{ steps.docs.outputs.commit_type }}
+      current_patch: ${{ steps.docs.outputs.current_patch }}
+  
   docVersions:
     needs: build
     if: needs.build.outputs.commit_type == 'tag'
     name: update doc versions
     runs-on: ubuntu-latest
-    env:
-      GH_PAT: ${{secrets.GH_PAT}}
-      CURRENT_PATCH: ${{needs.build.outputs.current_patch}}
     steps:
       - uses: actions/checkout@v2
         with:
           ref: gh-pages
 
-      - name: update doc versions
-        run: |
-          echo latest > doc_versions.txt
-          CURRENT_MINOR=${CURRENT_PATCH%.*}
-          echo current patch: $CURRENT_PATCH current minor: $CURRENT_MINOR
-          for folder in $(ls -rd */ | tr -d '/')
-          do
-              if [[ $folder =~ ^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}$ ]]; then
-                  PATCH=$folder
-                  MINOR=${folder%.*}
-                  if [[ $PATCH != $CURRENT_PATCH && $MINOR = $CURRENT_MINOR ]]; then
-                      echo $PATCH will be deleted
-                      rm -Rf $PATCH
-                  else
-                      echo $PATCH  >> doc_versions.txt
-                  fi
-              fi
-          done
-          echo updated doc versions:
-          cat doc_versions.txt
+      - uses: compas-dev/compas-actions.docversions@v1.0.0
+        with:
+          current_patch: ${{ needs.build.outputs.current_patch }}
 
       - name: Deploy docs
-        if: success() && env.GH_PAT != ''
+        if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
           build_dir: ./
           keep_history: false
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

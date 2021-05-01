@@ -62,6 +62,9 @@ def install(blender_path):
         print('Conda environment not found. The installation into Blender requires an active conda environment with a matching Python version to continue.')
         sys.exit(-1)
 
+    if not os.path.exists(blender_path):
+        raise FileNotFoundError('Blender version folder not found.')
+
     path, version = os.path.split(blender_path)
 
     print('Installing COMPAS for Blender {}'.format(version))

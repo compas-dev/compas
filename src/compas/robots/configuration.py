@@ -4,13 +4,20 @@ from __future__ import print_function
 
 from math import pi
 
-from compas.base import Base
-from compas.robots.model.joint import Joint
+from compas.data import Data
 
 __all__ = [
     'Configuration',
     'FixedLengthList',
 ]
+
+# These joint types known to configuration are a match
+# to the ones defined in `Joint` class, but we redefine here
+# to avoid a circular dependency
+_JOINT_REVOLUTE = 0
+_JOINT_CONTINUOUS = 1
+_JOINT_PRISMATIC = 2
+_JOINT_PLANAR = 5
 
 
 def joint_names_validator(joint_names, key=None, value=None):
@@ -68,7 +75,7 @@ class FixedLengthList(list):
     def clear(self): raise TypeError('Cannot change length of FixedLengthList')
 
 
-class Configuration(Base):
+class Configuration(Data):
     """Represents the configuration of a robot based on the state of its joints.
     If the names of joints are also provided, the configuration behaves as a
     dictionary of joint name-value pairs.
@@ -266,7 +273,7 @@ class Configuration(Base):
         """
         values = list(values)
         joint_names = list(joint_names or [])
-        return cls.from_data({'joint_values': values, 'joint_types': [Joint.REVOLUTE] * len(values), 'joint_names': joint_names})
+        return cls.from_data({'joint_values': values, 'joint_types': [_JOINT_REVOLUTE] * len(values), 'joint_names': joint_names})
 
     @classmethod
     def from_prismatic_and_revolute_values(cls, prismatic_values, revolute_values, joint_names=None):
@@ -291,8 +298,8 @@ class Configuration(Base):
         revolute_values = list(revolute_values)
         joint_names = list(joint_names or [])
         values = prismatic_values + revolute_values
-        joint_types = [Joint.PRISMATIC] * \
-            len(prismatic_values) + [Joint.REVOLUTE] * len(revolute_values)
+        joint_types = [_JOINT_PRISMATIC] * \
+            len(prismatic_values) + [_JOINT_REVOLUTE] * len(revolute_values)
         return cls.from_data({'joint_values': values, 'joint_types': joint_types, 'joint_names': joint_names})
 
     @classmethod
@@ -353,12 +360,12 @@ class Configuration(Base):
 
         E.g. positions on the external axis system.
         """
-        return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == Joint.PRISMATIC]
+        return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == _JOINT_PRISMATIC]
 
     @property
     def revolute_values(self):
         """:obj:`list` of :obj:`float` : Revolute joint values in radians."""
-        return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == Joint.REVOLUTE]
+        return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == _JOINT_REVOLUTE]
 
     def copy(self):
         """Create a copy of this :class:`Configuration`.
@@ -388,7 +395,7 @@ class Configuration(Base):
         values_scaled = []
 
         for value, joint_type in zip(self.joint_values, self.joint_types):
-            if joint_type in (Joint.PLANAR, Joint.PRISMATIC):
+            if joint_type in (_JOINT_PLANAR, _JOINT_PRISMATIC):
                 value *= scale_factor
             values_scaled.append(value)
 
@@ -457,7 +464,7 @@ class Configuration(Base):
 
         for i, (v1, v2) in enumerate(value_pairs):
             diff = v1 - v2
-            if self.joint_types[i] in [Joint.REVOLUTE, Joint.CONTINUOUS]:
+            if self.joint_types[i] in [_JOINT_REVOLUTE, _JOINT_CONTINUOUS]:
                 d1 = diff % (2 * pi)
                 d1 = d1 if diff >= 0 else d1 - 2*pi
                 d2 = d1 - 2*pi if diff >= 0 else d1 + 2*pi
