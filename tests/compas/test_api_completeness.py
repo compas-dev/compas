@@ -1,6 +1,8 @@
 import json
 import os
 import pytest
+import shutil
+import subprocess
 import compas
 
 
@@ -20,9 +22,24 @@ def compas_api_filename():
 
 @pytest.fixture
 def compas_stubs():
+    env = compas._os.prepare_environment()
+
     HERE = os.path.dirname(__file__)
-    STUBS = os.path.join(HERE, '../../docs/api/generated')
-    _, _, filenames = next(os.walk(STUBS))
+    HOME = os.path.abspath(os.path.join(HERE, '../..'))
+    TEMP = os.path.join(HOME, 'temp/stubs')
+    DOCS = os.path.join(HOME, 'docs')
+
+    shutil.rmtree(TEMP, ignore_errors=True)
+
+    commands = [
+        'sphinx-autogen {}/api/compas.**.rst -o {}'.format(DOCS, TEMP)
+    ]
+    subprocess.call(';'.join(commands), shell=True, env=env)
+
+    _, _, filenames = next(os.walk(TEMP))
+
+    shutil.rmtree(TEMP, ignore_errors=True)
+
     stubs = {}
     for name in filenames:
         parts = name.split('.')
@@ -36,6 +53,7 @@ def compas_stubs():
             if packmod not in stubs:
                 stubs[packmod] = []
             stubs[packmod].append(item)
+
     return stubs
 
 
@@ -64,18 +82,17 @@ if __name__ == '__main__':
     # Skip methods of classes
     # Check if all methods in the API dict are also in the list of stub files.
 
-    import shutil
-    import subprocess
-
     env = compas._os.prepare_environment()
 
     HERE = os.path.dirname(__file__)
     HOME = os.path.abspath(os.path.join(HERE, '../..'))
-    TEMP = os.path.join(HOME, 'temp')
-
+    TEMP = os.path.join(HOME, 'temp/stubs')
     DOCS = os.path.join(HOME, 'docs')
-    STUBS = os.path.join(DOCS, 'api/generated')
 
-    shutil.rmtree(STUBS, ignore_errors=True)
+    shutil.rmtree(TEMP, ignore_errors=True)
 
-    subprocess.run('sphinx-build -E {} {}'.format(DOCS, TEMP), env=env)
+    commands = [
+        'sphinx-autogen {}/api/compas.**.rst -o {}'.format(DOCS, TEMP)
+    ]
+
+    subprocess.call(';'.join(commands), shell=True, env=env)
