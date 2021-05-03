@@ -1,14 +1,26 @@
+from __future__ import absolute_import
+
 import os
 import pytest
 import shutil
 import subprocess
+import importlib
+import inspect
 import compas
 
-from test_api_stability import get_names_in_module
+
+def get_names_in_module(module_name):
+    exceptions = ['absolute_import', 'division', 'print_function']
+    module = importlib.import_module(module_name)
+    all_names = module.__all__ if hasattr(module, '__all__') else dir(module)
+    return sorted([i for i in all_names if not i.startswith('_') and i not in exceptions and not inspect.ismodule(getattr(module, i))])
 
 
 @pytest.fixture
 def compas_api():
+    if compas.IPY:
+        return
+
     modules = [
         'compas.data',
         'compas.datastructures',
@@ -29,6 +41,9 @@ def compas_api():
 
 @pytest.fixture
 def compas_stubs():
+    if compas.IPY:
+        return
+
     env = compas._os.prepare_environment()
 
     HERE = os.path.dirname(__file__)
@@ -85,11 +100,3 @@ def test_compas_api_stubs(compas_api, compas_stubs):
             if parts[1] == 'utilities':
                 continue
             assert name in compas_stubs[packmod]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass
