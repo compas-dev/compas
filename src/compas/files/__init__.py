@@ -81,6 +81,7 @@ URDF
 
     URDF
     URDFParser
+    URDFElement
 
 
 XML
@@ -94,6 +95,7 @@ XML
     XMLReader
     XMLWriter
     XMLElement
+    prettify_string
 
 
 """

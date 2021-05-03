@@ -23,6 +23,16 @@ Solvers
     topop_numpy
 
 
+Isolines
+========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    scalarfield_contours_numpy
+
+
 Linalg
 ======
 

@@ -201,9 +201,15 @@ Transformations
     matrix_from_translation
     matrix_inverse
     orthonormalize_axes
+    quaternion_canonize
+    quaternion_conjugate
     quaternion_from_axis_angle
     quaternion_from_euler_angles
     quaternion_from_matrix
+    quaternion_is_unit
+    quaternion_multiply
+    quaternion_norm
+    quaternion_unitize
     transform_frames
     transform_points
     transform_vectors
@@ -355,11 +361,19 @@ Point Sets
     :toctree: generated/
     :nosignatures:
 
+    KDTree
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     bestfit_plane
     bounding_box
     bounding_box_xy
     convex_hull
     convex_hull_xy
+
 
 **CPython**
 

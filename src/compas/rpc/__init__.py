@@ -21,7 +21,20 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    Dispatcher
     Proxy
+    Server
+
+
+Exceptions
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RPCClientError
+    RPCServerError
 
 """
 from __future__ import absolute_import

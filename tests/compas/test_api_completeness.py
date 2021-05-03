@@ -46,11 +46,11 @@ def test_compas_api_stubs(compas_api, compas_stubs):
             continue
         assert packmod in compas_stubs
         for name in compas_api['modules'][packmod]:
-            if name.startswith('Base'):
+            if name in ['BaseMesh', 'BaseNetwork', 'BaseVolMesh', 'Datastructure', 'Graph', 'HalfEdge', 'HalfFace']:
                 continue
-            if name[0].isupper():
+            if parts[1] == 'plugins':
                 continue
-            if parts[1] == 'files':
+            if parts[1] == 'utilities':
                 continue
             assert name in compas_stubs[packmod]
 
