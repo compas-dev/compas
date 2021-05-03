@@ -102,14 +102,14 @@ class RhinoMesh(BaseRhinoGeometry):
         cls = cls or Mesh
         mesh = cls()
 
-        for key, vertex in enumerate(self.geometry.Vertices):
-            mesh.add_vertex(key=key, attr_dict=dict(x=float(vertex.X), y=float(vertex.Y), z=float(vertex.Z)))
+        for vertex in self.geometry.Vertices:
+            mesh.add_vertex(attr_dict=dict(x=float(vertex.X), y=float(vertex.Y), z=float(vertex.Z)))
 
-        for fkey, face in enumerate(self.geometry.Faces):
+        for face in self.geometry.Faces:
             if face.A == face.D or face.C == face.D:
-                mesh.add_face([face.A, face.B, face.C], fkey)
+                mesh.add_face([face.A, face.B, face.C])
             else:
-                mesh.add_face([face.A, face.B, face.C, face.D], fkey)
+                mesh.add_face([face.A, face.B, face.C, face.D])
 
         mesh.name = self.name
 
