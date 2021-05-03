@@ -25,8 +25,14 @@ from .encoders import DataEncoder
 from .encoders import DataDecoder
 from .data import Data
 
+from .json import json_load, json_loads, json_dump, json_dumps
+
 __all__ = [
     'Data',
     'DataEncoder',
-    'DataDecoder'
+    'DataDecoder',
+    'json_load',
+    'json_loads',
+    'json_dump',
+    'json_dumps'
 ]

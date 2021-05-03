@@ -147,6 +147,23 @@ class Data(object):
         data = compas.json_load(filepath)
         return cls.from_data(data)
 
+    @classmethod
+    def from_jsonstring(cls, string):
+        """Construct an object from serialized data contained in a JSON string.
+
+        Parameters
+        ----------
+        string : str
+            The JSON string.
+
+        Returns
+        -------
+        :class:`compas.data.Data`
+            An object of the type of ``cls``.
+        """
+        data = compas.json_loads(string)
+        return cls.from_data(data)
+
     def to_json(self, filepath, pretty=False):
         """Serialize the data representation of an object to a JSON file.
 
@@ -159,6 +176,22 @@ class Data(object):
             Default is ``False``.
         """
         compas.json_dump(self.data, filepath, pretty)
+
+    def to_jsonstring(self, pretty=False):
+        """Serialize the data representation of an object to a JSON string.
+
+        Parameters
+        ----------
+        pretty : bool, optional
+            If ``True`` serialize a pretty representation of the data.
+            Default is ``False``.
+
+        Returns
+        -------
+        str
+            A JSON string representation of the data.
+        """
+        compas.json_dumps(self.data, pretty)
 
     def copy(self, cls=None):
         """Make an independent copy of the data object.
