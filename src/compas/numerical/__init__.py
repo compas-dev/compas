@@ -13,6 +13,7 @@ Solvers
     :toctree: generated/
     :nosignatures:
 
+    descent_numpy
     devo_numpy
     dr
     dr_numpy
