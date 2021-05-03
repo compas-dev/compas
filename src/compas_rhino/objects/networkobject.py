@@ -34,21 +34,16 @@ class NetworkObject(Object):
         The layer for drawing.
     visible : bool, optional
         Toggle for the visibility of the object.
-    settings : dict, optional
-        A dictionary of settings.
 
     """
 
-    SETTINGS = {
-        'color.nodes': (255, 255, 255),
-        'color.edges': (0, 0, 0),
-        'show.nodes': True,
-        'show.edges': True,
-        'show.nodelabels': False,
-        'show.edgelabels': False,
-    }
+    default_nodecolor = (255, 255, 255)
+    default_edgecolor = (0, 0, 0)
 
-    def __init__(self, network, scene=None, name=None, visible=True, layer=None, settings=None):
+    def __init__(self, network, scene=None, name=None, visible=True, layer=None,
+                 show_nodes=False, show_edges=False,
+                 nodetext=None, edgetext=None,
+                 nodecolor=None, edgecolor=None):
         super(NetworkObject, self).__init__(network, scene, name, visible, layer)
         self._guid_node = {}
         self._guid_edge = {}
@@ -58,9 +53,16 @@ class NetworkObject(Object):
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update(type(self).SETTINGS)
-        if settings:
-            self.settings.update(settings)
+        self._vertex_color = None
+        self._edge_color = None
+        self._vertex_text = None
+        self._edge_text = None
+        self.show_nodes = show_nodes
+        self.show_edges = show_edges
+        self.node_color = nodecolor
+        self.edge_color = edgecolor
+        self.node_text = nodetext
+        self.edge_text = edgetext
 
     @property
     def network(self):
@@ -199,6 +201,36 @@ class NetworkObject(Object):
         guids += list(self.guid_edge)
         return guids
 
+    @property
+    def node_color(self):
+        """dict: Dictionary mapping vertices to colors."""
+        if not self._node_color:
+            self._node_color = {node: self.default_nodecolor for node in self.network.nodes()}
+        return self._node_color
+
+    @node_color.setter
+    def node_color(self, node_color):
+        if isinstance(node_color, dict):
+            self._node_color = node_color
+        elif len(node_color) == 3:
+            if all(isinstance(c, (int, float)) for c in node_color):
+                self._node_color = {node: node_color for node in self.network.nodes()}
+
+    @property
+    def edge_color(self):
+        """dict: Dictionary mapping edges to colors."""
+        if not self._edge_color:
+            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
+        return self._edge_color
+
+    @edge_color.setter
+    def edge_color(self, edge_color):
+        if isinstance(edge_color, dict):
+            self._edge_color = edge_color
+        elif len(edge_color) == 3:
+            if all(isinstance(c, (int, float)) for c in edge_color):
+                self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
+
     def clear(self):
         compas_rhino.delete_objects(self.guids, purge=True)
         self._guid_node = {}
@@ -213,29 +245,17 @@ class NetworkObject(Object):
 
         self.artist.node_xyz = self.node_xyz
 
-        if self.settings['show.nodes']:
+        if self.show_nodes:
             nodes = list(self.network.nodes())
-
-            guids = self.artist.draw_nodes(nodes=nodes, color=self.settings['color.nodes'])
+            node_color = self.node_color
+            guids = self.artist.draw_nodes(nodes=nodes, color=node_color)
             self.guid_node = zip(guids, nodes)
-
-            if self.settings['show.nodelabels']:
-                text = {node: str(node) for node in nodes}
-                guids = self.artist.draw_nodelabels(text=text, color=self.settings['color.nodes'])
-                self.guid_nodelabel = zip(guids, nodes)
 
         if self.settings['show.edges']:
             edges = list(self.network.edges())
-
-            guids = self.artist.draw_edges(edges=edges, color=self.settings['color.edges'])
+            edge_color = self.edge_color
+            guids = self.artist.draw_edges(edges=edges, color=edge_color)
             self.guid_edge = zip(guids, edges)
-
-            if self.settings['show.edgelabels']:
-                text = {edge: "{}-{}".format(*edge) for edge in edges}
-                guids = self.artist.draw_edgelabels(text=text, color=self.settings['color.edges'])
-                self.guid_edgelabel = zip(guids, edges)
-
-        self.redraw()
 
     def select(self):
         # there is currently no "general" selection method

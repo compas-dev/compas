@@ -37,27 +37,18 @@ class VolMeshObject(Object):
         The layer for drawing.
     visible : bool, optional
         Toggle for the visibility of the object.
-    settings : dict, optional
-        A dictionary of settings.
 
     """
 
-    SETTINGS = {
-        'color.vertices': (255, 255, 255),
-        'color.edges': (0, 0, 0),
-        'color.faces': (210, 210, 210),
-        'color.cells': (255, 0, 0),
-        'show.vertices': True,
-        'show.edges': True,
-        'show.faces': True,
-        'show.cells': False,
-        'show.vertexlabels': False,
-        'show.facelabels': False,
-        'show.edgelabels': False,
-        'show.celllabels': False,
-    }
+    default_vertexcolor = (255, 255, 255)
+    default_edgecolor = (0, 0, 0)
+    default_facecolor = (210, 210, 210)
+    default_cellcolor = (255, 0, 0)
 
-    def __init__(self, volmesh, scene=None, name=None, visible=True, layer=None, settings=None):
+    def __init__(self, volmesh, scene=None, name=None, visible=True, layer=None,
+                 show_vertices=False, show_edges=False, show_faces=True, show_cells=True,
+                 vertextext=None, edgetext=None, facetext=None, celltext=None,
+                 vertexcolor=None, edgecolor=None, facecolor=None, cellcolor=None):
         super(VolMeshObject, self).__init__(volmesh, scene, name, visible, layer)
         self._guids = []
         self._guid_vertex = {}
@@ -72,9 +63,26 @@ class VolMeshObject(Object):
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update(type(self).SETTINGS)
-        if settings:
-            self.settings.update(settings)
+        self._vertex_color = None
+        self._edge_color = None
+        self._face_color = None
+        self._cell_color = None
+        self._vertex_text = None
+        self._edge_text = None
+        self._face_text = None
+        self._cell_text = None
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
+        self.show_cells = show_cells
+        self.vertex_color = vertexcolor
+        self.edge_color = edgecolor
+        self.face_color = facecolor
+        self.cell_color = cellcolor
+        self.vertex_text = vertextext
+        self.edge_text = edgetext
+        self.face_text = facetext
+        self.cell_text = celltext
 
     @property
     def volmesh(self):
@@ -247,6 +255,66 @@ class VolMeshObject(Object):
         guids += list(self.guid_celllabel)
         return guids
 
+    @property
+    def vertex_color(self):
+        """dict: Dictionary mapping vertices to colors."""
+        if not self._vertex_color:
+            self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.volmesh.vertices()}
+        return self._vertex_color
+
+    @vertex_color.setter
+    def vertex_color(self, vertex_color):
+        if isinstance(vertex_color, dict):
+            self._vertex_color = vertex_color
+        elif len(vertex_color) == 3:
+            if all(isinstance(c, (int, float)) for c in vertex_color):
+                self._vertex_color = {vertex: vertex_color for vertex in self.volmesh.vertices()}
+
+    @property
+    def edge_color(self):
+        """dict: Dictionary mapping edges to colors."""
+        if not self._edge_color:
+            self._edge_color = {edge: self.default_edgecolor for edge in self.volmesh.edges()}
+        return self._edge_color
+
+    @edge_color.setter
+    def edge_color(self, edge_color):
+        if isinstance(edge_color, dict):
+            self._edge_color = edge_color
+        elif len(edge_color) == 3:
+            if all(isinstance(c, (int, float)) for c in edge_color):
+                self._edge_color = {edge: edge_color for edge in self.volmesh.edges()}
+
+    @property
+    def face_color(self):
+        """dict: Dictionary mapping faces to colors."""
+        if not self._face_color:
+            self._face_color = {face: self.default_facecolor for face in self.volmesh.faces()}
+        return self._face_color
+
+    @face_color.setter
+    def face_color(self, face_color):
+        if isinstance(face_color, dict):
+            self._face_color = face_color
+        elif len(face_color) == 3:
+            if all(isinstance(c, (int, float)) for c in face_color):
+                self._face_color = {face: face_color for face in self.volmesh.faces()}
+
+    @property
+    def cell_color(self):
+        """dict: Dictionary mapping cells to colors."""
+        if not self._cell_color:
+            self._cell_color = {cell: self.default_cellcolor for cell in self.volmesh.cells()}
+        return self._cell_color
+
+    @cell_color.setter
+    def cell_color(self, cell_color):
+        if isinstance(cell_color, dict):
+            self._cell_color = cell_color
+        elif len(cell_color) == 3:
+            if all(isinstance(c, (int, float)) for c in cell_color):
+                self._cell_color = {cell: cell_color for cell in self.volmesh.cells()}
+
     def clear(self):
         """Clear all objects previously drawn by this artist.
         """
@@ -269,45 +337,29 @@ class VolMeshObject(Object):
 
         self.artist.vertex_xyz = self.vertex_xyz
 
-        if self.settings['show.vertices']:
+        if self.show_vertices:
             vertices = list(self.volmesh.vertices())
-            guids = self.artist.draw_vertices(vertices=vertices, color=self.settings['color.vertices'])
+            vertex_color = self.vertex_color
+            guids = self.artist.draw_vertices(vertices=vertices, color=vertex_color)
             self.guid_vertex = zip(guids, vertices)
 
-            if self.settings['show.vertexlabels']:
-                text = {vertex: str(vertex) for vertex in vertices}
-                guids = self.artist.draw_vertexlabels(text=text, color=self.settings['color.vertices'])
-                self.guid_vertexlabel = zip(guids, vertices)
-
-        if self.settings['show.faces']:
-            faces = list(self.volmesh.faces())
-            guids = self.artist.draw_faces(faces=faces, color=self.settings['color.faces'])
-            self.guid_face = zip(guids, faces)
-
-            if self.settings['show.facelabels']:
-                text = {face: str(face) for face in faces}
-                guids = self.artist.draw_facelabels(text=text, color=self.settings['color.faces'])
-                self.guid_facelabel = zip(guids, faces)
-
-        if self.settings['show.edges']:
+        if self.show_edges:
             edges = list(self.volmesh.edges())
-            guids = self.artist.draw_edges(edges=edges, color=self.settings['color.edges'])
+            edge_color = self.edge_color
+            guids = self.artist.draw_edges(edges=edges, color=edge_color)
             self.guid_edge = zip(guids, edges)
 
-            if self.settings['show.edgelabels']:
-                text = {edge: "{}-{}".format(*edge) for edge in edges}
-                guids = self.artist.draw_edgelabels(text=text, color=self.settings['color.edges'])
-                self.guid_edgelabel = zip(guids, edges)
+        if self.show_faces:
+            faces = list(self.volmesh.faces())
+            face_color = self.face_color
+            guids = self.artist.draw_faces(faces=faces, color=face_color)
+            self.guid_face = zip(guids, faces)
 
-        if self.settings['show.cells']:
+        if self.show_cells:
             cells = list(self.volmesh.cells())
-            guids = self.artist.draw_cells(cells=cells, color=self.settings['color.cells'])
+            cell_color = self.cell_color
+            guids = self.artist.draw_cells(cells=cells, color=cell_color)
             self.guid_cell = zip(guids, cells)
-
-            if self.settings['show.celllabels']:
-                text = {cell: str(cell) for cell in cells}
-                guids = self.artist.draw_celllabels(text=text, color=self.settings['color.cells'])
-                self.guid_edgelabel = zip(guids, edges)
 
         self.redraw()
 

@@ -2,17 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import Rhino
-from Rhino.Geometry import Point3d
-
 import compas_rhino
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
-from compas.geometry import subtract_vectors
-from compas.geometry import add_vectors
-from compas.geometry import scale_vector
 
 from compas_rhino.objects._modify import mesh_update_attributes
 from compas_rhino.objects._modify import mesh_update_vertex_attributes
@@ -43,28 +37,17 @@ class MeshObject(Object):
         The layer for drawing.
     visible : bool, optional
         Toggle for the visibility of the object.
-    settings : dict, optional
-        A dictionary of settings.
 
     """
 
-    SETTINGS = {
-        'color.vertices': (255, 255, 255),
-        'color.edges': (0, 0, 0),
-        'color.faces': (0, 0, 0),
-        'color.mesh': (0, 0, 0),
-        'show.mesh': False,
-        'show.vertices': True,
-        'show.edges': True,
-        'show.faces': True,
-        'show.vertexlabels': False,
-        'show.facelabels': False,
-        'show.edgelabels': False,
-        'show.vertexnormals': False,
-        'show.facenormals': False,
-    }
+    default_vertexcolor = (255, 255, 255)
+    default_edgecolor = (0, 0, 0)
+    default_facecolor = (0, 0, 0)
 
-    def __init__(self, mesh, scene=None, name=None, visible=True, layer=None, settings=None):
+    def __init__(self, mesh, scene=None, name=None, visible=True, layer=None,
+                 show_faces=True, show_vertices=False, show_edges=False,
+                 vertextext=None, edgetext=None, facetext=None,
+                 vertexcolor=None, edgecolor=None, facecolor=None):
         super(MeshObject, self).__init__(mesh, scene, name, visible, layer)
         self._guids = []
         self._guid_vertex = {}
@@ -79,9 +62,21 @@ class MeshObject(Object):
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update(type(self).SETTINGS)
-        if settings:
-            self.settings.update(settings)
+        self._vertex_color = None
+        self._edge_color = None
+        self._face_color = None
+        self._vertex_text = None
+        self._edge_text = None
+        self._face_text = None
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
+        self.vertex_color = vertexcolor
+        self.edge_color = edgecolor
+        self.face_color = facecolor
+        self.vertex_text = vertextext
+        self.edge_text = edgetext
+        self.face_text = facetext
 
     @property
     def mesh(self):
@@ -263,6 +258,51 @@ class MeshObject(Object):
         guids += list(self.guid_facelabel.keys())
         return guids
 
+    @property
+    def vertex_color(self):
+        """dict: Dictionary mapping vertices to colors."""
+        if not self._vertex_color:
+            self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
+        return self._vertex_color
+
+    @vertex_color.setter
+    def vertex_color(self, vertex_color):
+        if isinstance(vertex_color, dict):
+            self._vertex_color = vertex_color
+        elif len(vertex_color) == 3:
+            if all(isinstance(c, (int, float)) for c in vertex_color):
+                self._vertex_color = {vertex: vertex_color for vertex in self.mesh.vertices()}
+
+    @property
+    def edge_color(self):
+        """dict: Dictionary mapping edges to colors."""
+        if not self._edge_color:
+            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
+        return self._edge_color
+
+    @edge_color.setter
+    def edge_color(self, edge_color):
+        if isinstance(edge_color, dict):
+            self._edge_color = edge_color
+        elif len(edge_color) == 3:
+            if all(isinstance(c, (int, float)) for c in edge_color):
+                self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
+
+    @property
+    def face_color(self):
+        """dict: Dictionary mapping faces to colors."""
+        if not self._face_color:
+            self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
+        return self._face_color
+
+    @face_color.setter
+    def face_color(self, face_color):
+        if isinstance(face_color, dict):
+            self._face_color = face_color
+        elif len(face_color) == 3:
+            if all(isinstance(c, (int, float)) for c in face_color):
+                self._face_color = {face: face_color for face in self.mesh.faces()}
+
     def clear(self):
         """Clear all Rhino objects associated with this object.
         """
@@ -285,53 +325,23 @@ class MeshObject(Object):
             return
         self.artist.vertex_xyz = self.vertex_xyz
 
-        if self.settings['show.vertices']:
+        if self.show_vertices:
             vertices = list(self.mesh.vertices())
-
-            guids = self.artist.draw_vertices(vertices=vertices, color=self.settings['color.vertices'])
+            vertex_color = self.vertex_color
+            guids = self.artist.draw_vertices(vertices=vertices, color=vertex_color)
             self.guid_vertex = zip(guids, vertices)
 
-            if self.settings['show.vertexlabels']:
-                text = {vertex: str(vertex) for vertex in vertices}
-                guids = self.artist.draw_vertexlabels(text=text, color=self.settings['color.vertices'])
-                self.guid_vertexlabel = zip(guids, vertices)
+        if self.show_faces:
+            faces = list(self.mesh.faces())
+            face_color = self.face_color
+            guids = self.artist.draw_faces(faces=faces, join_faces=True, color=face_color)
+            self.guid_face = zip(guids, faces)
 
-            if self.settings['show.vertexnormals']:
-                guids = self.artist.draw_vertexnormals(vertices=vertices, color=self.settings['color.vertices'])
-                self.guid_vertexnormal = zip(guids, vertices)
-
-        if self.settings['show.mesh']:
-            guids = self.artist.draw_mesh(color=self.settings['color.mesh'], disjoint=True)
-            self._guids = guids
-
-        else:
-            if self.settings['show.faces']:
-                faces = list(self.mesh.faces())
-
-                guids = self.artist.draw_faces(faces=faces, color=self.settings['color.faces'])
-                self.guid_face = zip(guids, faces)
-
-                if self.settings['show.facelabels']:
-                    text = {face: str(face) for face in faces}
-                    guids = self.artist.draw_facelabels(text=text, color=self.settings['color.faces'])
-                    self.guid_facelabel = zip(guids, faces)
-
-                if self.settings['show.facenormals']:
-                    guids = self.artist.draw_facenormals(faces=faces, color=self.settings['color.faces'])
-                    self.guid_face = zip(guids, faces)
-
-        if self.settings['show.edges']:
+        if self.show_edges:
             edges = list(self.mesh.edges())
-
-            guids = self.artist.draw_edges(edges=edges, color=self.settings['color.edges'])
+            edge_color = self.edge_color
+            guids = self.artist.draw_edges(edges=edges, color=edge_color)
             self.guid_edge = zip(guids, edges)
-
-            if self.settings['show.edgelabels']:
-                text = {edge: "{}-{}".format(*edge) for edge in edges}
-                guids = self.artist.draw_edgelabels(text=text, color=self.settings['color.edges'])
-                self.guid_edgelabel = zip(guids, edges)
-
-        # self.redraw()
 
     def select(self):
         # there is currently no "general" selection method
@@ -509,66 +519,3 @@ class MeshObject(Object):
             False otherwise.
         """
         return mesh_move_face(self.mesh, face)
-
-    def scale_from_3_points(self, message="Select the base vertex for the scaling operation."):
-        """Scale the mesh object from 3 reference points.
-
-        Note that this does not scale the underlying data structure,
-        but only the scale of the representation in Rhino.
-
-        The first reference point of the scaling operation must be a vertex of the mesh.
-        This vertex will become the new anchor of the object.
-
-        Returns
-        -------
-        bool
-            True if the operation was successful.
-            False otherwise.
-        """
-        def OnDynamicDraw(sender, e):
-            d1 = p0.DistanceTo(p1)
-            d2 = p0.DistanceTo(e.CurrentPoint)
-            ratio = d2 / d1
-            DrawLine = e.Display.DrawDottedLine
-            for vertex in self.diagram.vertices():
-                if vertex == anchor:
-                    continue
-                vector = vertex_vector[vertex]
-                vertex_xyz[vertex] = add_vectors(origin, scale_vector(vector, ratio))
-            for u, v in iter(edges):
-                DrawLine(Point3d(* vertex_xyz[u]), Point3d(* vertex_xyz[v]), color)
-
-        anchor = self.select_vertex(message=message)
-        if anchor is None:
-            return
-
-        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        edges = list(self.diagram.edges())
-        vertex_xyz = self.artist.vertex_xyz
-        vertex_xyz0 = {vertex: vertex_xyz[vertex][:] for vertex in vertex_xyz}
-
-        origin = vertex_xyz0[anchor]
-        vertex_vector = {vertex: subtract_vectors(vertex_xyz0[vertex], origin) for vertex in vertex_xyz}
-        p0 = Point3d(* origin)
-
-        gp = Rhino.Input.Custom.GetPoint()
-        gp.SetCommandPrompt('Select the 1st reference point.')
-        gp.Get()
-        if gp.CommandResult() != Rhino.Commands.Result.Success:
-            return False
-        p1 = gp.Point()
-
-        gp.SetCommandPrompt('Select the 2nd reference point.')
-        gp.DynamicDraw += OnDynamicDraw
-        gp.Get()
-        if gp.CommandResult() != Rhino.Commands.Result.Success:
-            return False
-        p2 = gp.Point()
-
-        d1 = p0.DistanceTo(p1)
-        d2 = p0.DistanceTo(p2)
-        ratio = d2 / d1
-        self.scale *= ratio
-        self.anchor = anchor
-        self.location = vertex_xyz[anchor]
-        return True
