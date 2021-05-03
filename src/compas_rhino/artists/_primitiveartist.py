@@ -53,11 +53,3 @@ class PrimitiveArtist(Artist):
         """Clear the layer containing the artist."""
         if self.layer:
             compas_rhino.clear_layer(self.layer)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

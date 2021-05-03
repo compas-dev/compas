@@ -86,13 +86,3 @@ class Reflection(Transformation):
             point = frame.point
             zaxis = frame.zaxis
         return cls.from_plane((point, zaxis))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

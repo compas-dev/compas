@@ -142,18 +142,3 @@ class SSH(object):
         for line in stderr.readlines():
             print(line)
         print('***** Command executed')
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    ssh = SSH(server='euler.ethz.ch', username='liewa')
-    ssh.server_command(command='ls')
-    # ssh.send_folder(local_folder='/home/al/downloads/test/')
-    # ssh.send_file(local_file='/home/al/downloads/test.py')
-    # ssh.receive_file(remote_file='output.txt', local_file='/home/al/downloads/output.txt')
-    ssh.sync_folder(local_folder='/home/al/downloads/test/', remote_folder='test/')
-    ssh.close()

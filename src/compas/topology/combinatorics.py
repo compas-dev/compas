@@ -39,9 +39,9 @@ def vertex_coloring(adjacency):
     >>> from compas.datastructures import Network
     >>> network = Network.from_obj(compas.get('lines.obj'))
     >>> key_color = vertex_coloring(network.adjacency)
-    >>> key = network.get_any_vertex()
+    >>> key = network.get_any_node()
     >>> color = key_color[key]
-    >>> any(key_color[nbr] == color for nbr in network.vertex_neighbors(key))
+    >>> any(key_color[nbr] == color for nbr in network.neighbors(key))
     False
     """
     key_to_color = {}
@@ -90,14 +90,3 @@ def connected_components(adjacency):
         tovisit -= visited
         components.append(list(visited))
     return components
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

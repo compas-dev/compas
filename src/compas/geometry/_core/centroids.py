@@ -139,7 +139,9 @@ def centroid_points(points):
 
     Examples
     --------
-    >>>
+    >>> points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
+    >>> centroid_points(points)
+    [0.5, 0.5, 0.0]
     """
     p = len(points)
     x, y, z = zip(*points)
@@ -186,7 +188,9 @@ def centroid_points_xy(points):
 
     Examples
     --------
-    >>>
+    >>> points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
+    >>> centroid_points_xy(points)
+    [0.5, 0.5, 0.0]
     """
     p = len(points)
     x, y = list(zip(*points))[:2]
@@ -236,6 +240,7 @@ def centroid_polygon(polygon):
     --------
     >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
     >>> centroid_polygon(polygon)
+    [0.5, 0.5, 0.0]
     """
     p = len(polygon)
 
@@ -243,9 +248,6 @@ def centroid_polygon(polygon):
 
     if p == 3:
         return centroid_points(polygon)
-
-    cx, cy, cz = 0.0, 0.0, 0.0
-    A2 = 0
 
     o = centroid_points(polygon)
     a = polygon[-1]
@@ -257,12 +259,12 @@ def centroid_polygon(polygon):
     x, y, z = centroid_points([o, a, b])
     a2 = length_vector(n0)
 
-    A2 += a2
-    cx += a2 * x
-    cy += a2 * y
-    cz += a2 * z
+    A2 = a2
+    cx = a2 * x
+    cy = a2 * y
+    cz = a2 * z
 
-    for i in range(1, len(polygon)):
+    for i in range(1, p):
         a = b
         b = polygon[i]
 
@@ -328,8 +330,9 @@ def centroid_polygon_xy(polygon):
 
     Examples
     --------
-    >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.1, 0.1, 0.0], [0.0, 1.0, 0.0]]
+    >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
     >>> centroid_polygon_xy(polygon)
+    [0.5, 0.5, 0.0]
     """
     p = len(polygon)
 
@@ -337,9 +340,6 @@ def centroid_polygon_xy(polygon):
 
     if p == 3:
         return centroid_points_xy(polygon)
-
-    cx, cy = 0.0, 0.0
-    A2 = 0
 
     o = centroid_points_xy(polygon)
     a = polygon[-1]
@@ -351,11 +351,11 @@ def centroid_polygon_xy(polygon):
     x, y, z = centroid_points_xy([o, a, b])
     a2 = fabs(n0[2])
 
-    A2 += a2
-    cx += a2 * x
-    cy += a2 * y
+    A2 = a2
+    cx = a2 * x
+    cy = a2 * y
 
-    for i in range(1, len(polygon)):
+    for i in range(1, p):
         a = b
         b = polygon[i]
 
@@ -470,8 +470,8 @@ def centroid_polyhedron(polyhedron):
 
     Examples
     --------
-    >>> from compas.geometry._core import Polyhedron
-    >>> p = Polyhedron.generate(6)
+    >>> from compas.geometry import Polyhedron
+    >>> p = Polyhedron.from_platonicsolid(6)
     >>> centroid_polyhedron(p)
     [0.0, 0.0, 0.0]
     """
@@ -547,13 +547,3 @@ def centroid_polyhedron(polyhedron):
     z *= d
 
     return [x, y, z]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

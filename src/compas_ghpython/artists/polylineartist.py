@@ -36,12 +36,3 @@ class PolylineArtist(PrimitiveArtist):
     @staticmethod
     def _get_args(primitive):
         return {'points': map(list, primitive.points)}
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

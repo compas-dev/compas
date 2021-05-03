@@ -59,35 +59,3 @@ class PointArtist(Artist):
         self._mpl_circle.set_facecolor(self.facecolor)
         self._mpl_circle.set_transform(self._T)
         self.update_data()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    from compas.geometry import Point
-    from compas.geometry import Translation
-    from compas_plotters import GeometryPlotter
-
-    plotter = GeometryPlotter()
-
-    a = Point(0.0, 0.0)
-    b = Point(5.0, 0.0)
-    c = Point(5.0, 5.0)
-
-    T = Translation.from_vector([0.1, 0.0, 0.0])
-
-    plotter.add(a, edgecolor='#ff0000')
-    plotter.add(b, edgecolor='#00ff00')
-    plotter.add(c, edgecolor='#0000ff')
-
-    plotter.zoom_extents()
-    plotter.pause(1.0)
-
-    for i in range(100):
-        a.transform(T)
-        plotter.redraw(pause=0.01)
-
-    plotter.show()

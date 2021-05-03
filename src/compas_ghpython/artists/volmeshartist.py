@@ -149,11 +149,3 @@ class VolMeshArtist(BaseArtist):
                 'color': edge_color[edge],
                 'name': "{}.edge.{}-{}".format(self.volmesh.name, *edge)})
         return compas_ghpython.draw_lines(lines)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

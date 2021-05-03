@@ -15,7 +15,7 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Plane
 
-from ._shape import Shape
+from compas.geometry.shapes._shape import Shape
 
 
 __all__ = ['Cone']
@@ -276,27 +276,3 @@ class Cone(Shape):
 
         """
         self.circle.transform(transformation)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    # from compas.geometry import Transformation
-
-    # cone = Cone(Circle(Plane.worldXY(), 5), 7)
-    # frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    # print(frame.normal)
-    # T = Transformation.from_frame(frame)
-    # cone.transform(T)
-    # print(cone)
-
-    # print(Plane.worldXY().data)
-    # data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-    # cone = Cone.from_data(data)
-    # print(cone)
-
-    import doctest
-    doctest.testmod()

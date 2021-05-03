@@ -347,37 +347,3 @@ class MeshPlotter(Plotter):
             facecolors.append(color_to_rgb(facecolor[fkey], normalize=True))
         self.facecollection.set_paths(polygons)
         self.facecollection.set_facecolor(facecolors)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import compas
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    plotter = MeshPlotter(mesh, figsize=(10, 6))
-
-    plotter.draw_vertices(text='key', radius=0.2, picker=10)
-
-    for text in plotter.axes.texts:
-        text.set_visible(False)
-
-    plotter.draw_edges()
-    plotter.draw_faces()
-
-    def onpick(event):
-        index = event.ind[0]
-        for i, text in enumerate(plotter.axes.texts):
-            if i == index:
-                text.set_visible(True)
-            else:
-                text.set_visible(False)
-        plotter.update()
-
-    plotter.register_listener(onpick)
-    plotter.show()

@@ -208,13 +208,3 @@ def _find_closest_component(point, vertices, triangles, closest_tris, closest_vi
 #     # - u = normalizerow(cross(cross(n, r), n))
 #     # - t = dot(u, r) * u
 #     pass
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

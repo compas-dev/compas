@@ -6,7 +6,7 @@ import collections
 import sys
 from math import pi
 
-from .halfedge import HalfEdge
+from compas.datastructures.mesh.core.halfedge import HalfEdge
 
 from compas.files import OBJ
 from compas.files import OFF
@@ -653,7 +653,7 @@ class BaseMesh(HalfEdge):
         >>> from compas.datastructures import Mesh
         >>> a = Box.from_width_height_depth(1, 1, 1)
         >>> b = Box.from_width_height_depth(1, 1, 1)
-        >>> T = Translation([2, 0, 0])
+        >>> T = Translation.from_vector([2, 0, 0])
         >>> b.transform(T)
         >>> a = Mesh.from_shape(a)
         >>> b = Mesh.from_shape(b)
@@ -1413,13 +1413,3 @@ class BaseMesh(HalfEdge):
             if faces:
                 facegroups.append(faces)
         return facegroups
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

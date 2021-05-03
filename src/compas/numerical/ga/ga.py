@@ -809,11 +809,3 @@ class GA(object):
         elif self.fit_type == 'max':
             indices = self.get_sorting_indices(fit_values, reverse=True)
         self.best_individual_index = indices[0]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

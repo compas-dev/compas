@@ -69,11 +69,3 @@ def volmesh_from_polysurfaces(cls, guids, precision=None):
     vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
     cells = [[[gkey_index[gkey] for gkey in face] for face in cell] for cell in cells]
     return cls.from_vertices_and_cells(vertices, cells)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

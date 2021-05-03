@@ -4,7 +4,7 @@ from __future__ import division
 
 from compas.utilities import pairwise
 import compas_rhino
-from ._shapeartist import ShapeArtist
+from compas_rhino.artists._shapeartist import ShapeArtist
 
 
 class TorusArtist(ShapeArtist):
@@ -94,11 +94,3 @@ class TorusArtist(ShapeArtist):
                 guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

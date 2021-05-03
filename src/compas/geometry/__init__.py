@@ -15,6 +15,8 @@ Primitives
     :toctree: generated/
     :nosignatures:
 
+    Primitive
+    Bezier
     Circle
     Ellipse
     Frame
@@ -23,6 +25,7 @@ Primitives
     Point
     Polygon
     Polyline
+    Pointcloud
     Quaternion
     Vector
 
@@ -34,6 +37,7 @@ Shapes
     :toctree: generated/
     :nosignatures:
 
+    Shape
     Box
     Capsule
     Cone
@@ -41,6 +45,26 @@ Shapes
     Polyhedron
     Sphere
     Torus
+
+
+Collections
+-----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Collection
+    PointCollection
+
+**CPython**
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    CollectionNumpy
+    PointCollectionNumpy
 
 
 Transformations
@@ -71,14 +95,16 @@ Predicates 2D
 
     is_ccw_xy
     is_colinear_xy
-    is_polygon_convex_xy
-    is_point_on_line_xy
-    is_point_on_segment_xy
-    is_point_on_polyline_xy
-    is_point_in_triangle_xy
-    is_point_in_polygon_xy
-    is_point_in_convex_polygon_xy
+    is_intersection_line_line_xy
+    is_intersection_segment_segment_xy
     is_point_in_circle_xy
+    is_point_in_convex_polygon_xy
+    is_point_in_polygon_xy
+    is_point_in_triangle_xy
+    is_point_on_line_xy
+    is_point_on_polyline_xy
+    is_point_on_segment_xy
+    is_polygon_convex_xy
     is_polygon_in_polygon_xy
 
 
@@ -90,14 +116,25 @@ Predicates 3D
     :nosignatures:
 
     is_colinear
+    is_colinear_line_line
     is_coplanar
+    is_intersection_line_line
+    is_intersection_line_plane
+    is_intersection_line_triangle
+    is_intersection_plane_plane
+    is_intersection_segment_plane
+    is_intersection_segment_segment
+    is_polygon_convex
+    is_point_behind_plane
+    is_point_infront_plane
+    is_point_in_circle
     is_point_in_halfspace
     is_point_in_polyhedron
+    is_point_in_triangle
     is_point_on_line
     is_point_on_plane
     is_point_on_polyline
     is_point_on_segment
-    is_polygon_convex
 
 
 Transformations
@@ -107,64 +144,92 @@ Transformations
     :toctree: generated/
     :nosignatures:
 
+    mirror_point_plane
     mirror_points_line
     mirror_points_line_xy
     mirror_points_plane
     mirror_points_point
     mirror_points_point_xy
+    mirror_vector_vector
+    orient_points
+    project_point_line
+    project_point_line_xy
+    project_point_plane
     project_points_line
     project_points_line_xy
     project_points_plane
-    reflect_line_plane
-    reflect_line_triangle
     rotate_points
     rotate_points_xy
+    reflect_line_plane
+    reflect_line_triangle
     scale_points
+    scale_points_xy
     translate_points
     translate_points_xy
 
-**Conversions**
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    axis_and_angle_from_matrix
     axis_angle_vector_from_matrix
     axis_angle_from_quaternion
     basis_vectors_from_matrix
+    compose_matrix
+    decompose_matrix
     euler_angles_from_matrix
     euler_angles_from_quaternion
-    matrix_from_frame
-    matrix_from_euler_angles
+    axis_and_angle_from_matrix
+    identity_matrix
+    local_axes
+    local_to_world_coordinates
+    matrix_determinant
     matrix_from_axis_and_angle
     matrix_from_axis_angle_vector
     matrix_from_basis_vectors
-    matrix_from_translation
+    matrix_from_change_of_basis
+    matrix_from_euler_angles
+    matrix_from_frame
+    matrix_from_frame_to_frame
     matrix_from_orthogonal_projection
     matrix_from_parallel_projection
-    matrix_from_perspective_projection
     matrix_from_perspective_entries
-    matrix_from_shear_entries
-    matrix_from_shear
-    matrix_from_scale_factors
+    matrix_from_perspective_projection
     matrix_from_quaternion
-    quaternion_from_matrix
-    quaternion_from_euler_angles
+    matrix_from_scale_factors
+    matrix_from_shear
+    matrix_from_shear_entries
+    matrix_from_translation
+    matrix_inverse
+    orthonormalize_axes
+    quaternion_canonize
+    quaternion_conjugate
     quaternion_from_axis_angle
+    quaternion_from_euler_angles
+    quaternion_from_matrix
+    quaternion_is_unit
+    quaternion_multiply
+    quaternion_norm
+    quaternion_unitize
+    transform_frames
+    transform_points
+    transform_vectors
+    translation_from_matrix
+    world_to_local_coordinates
 
-**Quaternion math**
+**CPython**
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    quaternion_norm
-    quaternion_unitize
-    quaternion_is_unit
-    quaternion_multiply
-    quaternion_canonize
-    quaternion_conjugate
+    dehomogenize_numpy
+    dehomogenize_and_unflatten_frames_numpy
+    homogenize_numpy
+    homogenize_and_flatten_frames_numpy
+    local_to_world_coordinates_numpy
+    transform_points_numpy
+    transform_vectors_numpy
+    world_to_local_coordinates_numpy
 
 
 Linear algebra
@@ -176,12 +241,18 @@ Linear algebra
 
     add_vectors
     add_vectors_xy
+    allclose
+    argmax
+    argmin
+    close
     cross_vectors
     cross_vectors_xy
+    dehomogenize_vectors
     divide_vectors
     divide_vectors_xy
     dot_vectors
     dot_vectors_xy
+    homogenize_vectors
     length_vector
     length_vector_xy
     length_vector_sqrd
@@ -209,15 +280,29 @@ Linear algebra
     subtract_vectors_xy
     sum_vectors
     transpose_matrix
+    vector_average
     vector_component
     vector_component_xy
-    vector_average
-    vector_variance
     vector_standard_deviation
+    vector_variance
 
 
-Points, Vectors, Lines, Planes
-------------------------------
+Analytical
+----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    archimedean_spiral_evaluate
+    circle_evaluate
+    ellipse_evaluate,
+    helix_evaluate
+    logarithmic_spiral_evaluate
+
+
+Points, Vectors, Lines, Planes, Circles
+---------------------------------------
 
 .. autosummary::
     :toctree: generated/
@@ -236,20 +321,13 @@ Points, Vectors, Lines, Planes
     centroid_points
     centroid_points_xy
     centroid_points_weighted
-    distance_line_line
-    distance_point_line
-    distance_point_line_xy
-    distance_point_line_sqrd
-    distance_point_line_sqrd_xy
-    distance_point_plane
-    distance_point_point
-    distance_point_point_xy
-    distance_point_point_sqrd
-    distance_point_point_sqrd_xy
+    circle_from_points
+    circle_from_points_xy
     midpoint_point_point
     midpoint_point_point_xy
     midpoint_line
     midpoint_line_xy
+    tangent_points_to_circle_xy
 
 
 Polygons & Polyhedrons
@@ -283,12 +361,34 @@ Point Sets
     :toctree: generated/
     :nosignatures:
 
+    KDTree
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    bestfit_plane
     bounding_box
     bounding_box_xy
     convex_hull
-    convex_hull_numpy
     convex_hull_xy
+
+
+**CPython**
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    bestfit_circle_numpy
+    bestfit_frame_numpy
+    bestfit_plane_numpy
+    bestfit_sphere_numpy
+    convex_hull_numpy
     convex_hull_xy_numpy
+    icp_numpy
+    oabb_numpy
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
 
@@ -300,6 +400,7 @@ Distance
     :toctree: generated/
     :nosignatures:
 
+    closest_line_to_point
     closest_point_in_cloud
     closest_point_in_cloud_xy
     closest_point_on_line
@@ -309,6 +410,17 @@ Distance
     closest_point_on_polyline_xy
     closest_point_on_segment
     closest_point_on_segment_xy
+    distance_line_line
+    distance_point_point
+    distance_point_point_xy
+    distance_point_point_sqrd
+    distance_point_point_sqrd_xy
+    distance_point_line
+    distance_point_line_xy
+    distance_point_line_sqrd
+    distance_point_line_sqrd_xy
+    distance_point_plane
+    distance_point_plane_signed
 
 
 Intersections
@@ -319,25 +431,27 @@ Intersections
     :nosignatures:
 
     intersection_circle_circle_xy
-    intersection_line_line
+    intersection_ellipse_line_xy
+    intersection_line_box_xy
     intersection_line_line_xy
+    intersection_line_line
     intersection_line_plane
+    intersection_line_segment_xy
+    intersection_line_segment
     intersection_line_triangle
     intersection_mesh_mesh
-    intersection_plane_plane
+    intersection_plane_circle
     intersection_plane_plane_plane
+    intersection_plane_plane
+    intersection_polyline_plane
     intersection_ray_mesh
+    intersection_segment_plane
+    intersection_segment_polyline
+    intersection_segment_polyline_xy
     intersection_segment_segment
     intersection_segment_segment_xy
-    intersection_segment_plane
-    is_intersection_line_line
-    is_intersection_line_line_xy
-    is_intersection_line_plane
-    is_intersection_line_triangle
-    is_intersection_plane_plane
-    is_intersection_segment_plane
-    is_intersection_segment_segment
-    is_intersection_segment_segment_xy
+    intersection_sphere_line
+    intersection_sphere_sphere
 
 
 Offsets
@@ -365,16 +479,16 @@ Interpolation
     tween_points_distance
 
 
-Fitting
+Offsets
 -------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    bestfit_circle_numpy
-    bestfit_plane
-    bestfit_plane_numpy
+    offset_line
+    offset_polyline
+    offset_polygon
 
 
 Boolean operations
@@ -399,8 +513,15 @@ Triangulation
     conforming_delaunay_triangulation
     constrained_delaunay_triangulation
     delaunay_from_points
-    delaunay_from_points_numpy
     delaunay_triangulation
+
+**CPython**
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    delaunay_from_points_numpy
     voronoi_from_points_numpy
 
 
@@ -420,6 +541,7 @@ Triangle meshes
     trimesh_principal_curvature
     trimesh_remesh
     trimesh_remesh_constrained
+    trimesh_remesh_along_isoline
     trimesh_slice
 
 
@@ -432,15 +554,6 @@ Quad meshes
 
     quadmesh_planarize
 
-
-Pointclouds
------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    icp_numpy
 
 """
 from __future__ import absolute_import

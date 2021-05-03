@@ -71,23 +71,3 @@ class MeshArtist(Artist):
     # def redraw(self):
     #     # self._mpl_vertexcollection.set_...
     #     pass
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    from compas.datastructures import Mesh
-    from compas_plotters import Plotter2
-
-    mesh = Mesh.from_polyhedron(6)
-
-    plotter = Plotter2()
-
-    plotter.add(mesh)
-    plotter.draw()
-
-    plotter.zoom_extents()
-    plotter.show()

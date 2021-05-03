@@ -30,6 +30,7 @@ objects
     get_line_coordinates
     get_objects
     get_object_attributes
+    set_object_attributes
     get_object_attributes_from_name
     get_object_layers
     get_object_types
@@ -110,6 +111,7 @@ from .objects import (
     get_object_names,
     get_object_name,
     get_object_attributes,
+    set_object_attributes,
     get_object_attributes_from_name,
     delete_object,
     delete_objects,
@@ -209,6 +211,7 @@ __all__ = [
     'get_object_names',
     'get_object_name',
     'get_object_attributes',
+    'set_object_attributes',
     'get_object_attributes_from_name',
     'delete_object',
     'delete_objects',

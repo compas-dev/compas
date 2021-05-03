@@ -103,13 +103,3 @@ def mesh_unweld_edges(mesh, edges):
 
         # delete old vertices
         mesh.delete_vertex(vkey)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

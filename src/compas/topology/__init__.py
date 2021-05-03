@@ -36,8 +36,10 @@ Orientation
 
     face_adjacency
     face_adjacency_numpy
+    face_adjacency_rhino
     unify_cycles
     unify_cycles_numpy
+    unify_cycles_rhino
 
 
 Traversal

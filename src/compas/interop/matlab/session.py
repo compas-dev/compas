@@ -116,12 +116,3 @@ class MatlabSession(object):
                 sessions = self.find_sessions()
                 self.session_name = sessions[0]
         print('connected!')
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

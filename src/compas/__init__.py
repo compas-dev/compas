@@ -81,7 +81,7 @@ import decimal
 
 import compas._os
 from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
-from compas._json import json_dump, json_dumps, json_load, json_loads
+from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
 __author__ = 'Tom Van Mele and many others (see AUTHORS.md)'

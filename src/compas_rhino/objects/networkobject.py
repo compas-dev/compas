@@ -8,10 +8,10 @@ from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from ._modify import network_update_attributes
-from ._modify import network_update_node_attributes
-from ._modify import network_update_edge_attributes
-from ._modify import network_move_node
+from compas_rhino.objects._modify import network_update_attributes
+from compas_rhino.objects._modify import network_update_node_attributes
+from compas_rhino.objects._modify import network_update_edge_attributes
+from compas_rhino.objects._modify import network_move_node
 
 from ._object import Object
 
@@ -335,11 +335,3 @@ class NetworkObject(Object):
             False otherwise.
         """
         return network_move_node(self.network, node)
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

@@ -14,13 +14,13 @@ from compas.geometry import subtract_vectors
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
-from ._modify import mesh_update_attributes
-from ._modify import mesh_update_vertex_attributes
-from ._modify import mesh_update_face_attributes
-from ._modify import mesh_update_edge_attributes
-from ._modify import mesh_move_vertex
-from ._modify import mesh_move_vertices
-from ._modify import mesh_move_face
+from compas_rhino.objects._modify import mesh_update_attributes
+from compas_rhino.objects._modify import mesh_update_vertex_attributes
+from compas_rhino.objects._modify import mesh_update_face_attributes
+from compas_rhino.objects._modify import mesh_update_edge_attributes
+from compas_rhino.objects._modify import mesh_move_vertex
+from compas_rhino.objects._modify import mesh_move_vertices
+from compas_rhino.objects._modify import mesh_move_face
 
 from ._object import Object
 

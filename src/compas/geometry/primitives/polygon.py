@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Polygon
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -304,13 +310,3 @@ class Polygon(Primitive):
 
     def contains(self, point):
         pass
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

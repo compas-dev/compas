@@ -1312,13 +1312,3 @@ def orthonormalize_vectors(vectors):
         if any(axis > 1e-10 for axis in e):
             basis.append(normalize_vector(e))
     return basis
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod()

@@ -25,13 +25,3 @@ class Network(BaseNetwork):
     smooth = network_smooth_centroid
     transform = network_transform
     transformed = network_transformed
-
-
-# =============================================================================
-# Main
-# =============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

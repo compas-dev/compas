@@ -9,10 +9,10 @@ from distutils.version import LooseVersion
 
 import compas
 
-from ...datastructure import Datastructure
-from ...attributes import VertexAttributeView
-from ...attributes import EdgeAttributeView
-from ...attributes import FaceAttributeView
+from compas.datastructures.datastructure import Datastructure
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
 
 from compas.utilities import pairwise
 from compas.utilities import window
@@ -423,6 +423,8 @@ class HalfEdge(Datastructure):
 
         Examples
         --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh()
         >>> mesh.add_vertex()
         0
         >>> mesh.add_vertex(x=0, y=0, z=0)
@@ -2577,13 +2579,3 @@ class HalfEdge(Datastructure):
         face = self.halfedge_face(u, v)
         t = self.face_vertex_before(face, u)
         return t, u
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

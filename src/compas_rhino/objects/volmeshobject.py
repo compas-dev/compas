@@ -8,13 +8,13 @@ from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from ._modify import mesh_update_attributes
-from ._modify import mesh_update_vertex_attributes
-from ._modify import mesh_update_face_attributes
-from ._modify import mesh_update_edge_attributes
-from ._modify import mesh_move_vertex
-from ._modify import mesh_move_vertices
-from ._modify import mesh_move_face
+from compas_rhino.objects._modify import mesh_update_attributes
+from compas_rhino.objects._modify import mesh_update_vertex_attributes
+from compas_rhino.objects._modify import mesh_update_face_attributes
+from compas_rhino.objects._modify import mesh_update_edge_attributes
+from compas_rhino.objects._modify import mesh_move_vertex
+from compas_rhino.objects._modify import mesh_move_vertices
+from compas_rhino.objects._modify import mesh_move_face
 
 from ._object import Object
 
@@ -487,11 +487,3 @@ class VolMeshObject(Object):
             False otherwise.
         """
         return mesh_move_face(self.volmesh, face)
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

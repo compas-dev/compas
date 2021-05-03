@@ -212,12 +212,3 @@ class MatlabProcess(object):
         self.process.stdin.write("save('{0}');\n".format(self.ws_filename))
         self._wait_until('__SAVED__')
         loadmat(self.ws_filename, mdict=self.ws_data)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

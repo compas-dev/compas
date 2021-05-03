@@ -156,13 +156,13 @@ def distance_point_point_sqrd_xy(a, b):
 
     Examples
     --------
-    >>> distance([0.0, 0.0], [2.0, 0.0])
+    >>> distance_point_point_sqrd_xy([0.0, 0.0], [2.0, 0.0])
     4.0
 
-    >>> distance([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])
+    >>> distance_point_point_sqrd_xy([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])
     4.0
 
-    >>> distance([0.0, 0.0, 1.0], [2.0, 0.0, 1.0])
+    >>> distance_point_point_sqrd_xy([0.0, 0.0, 1.0], [2.0, 0.0, 1.0])
     4.0
 
     """
@@ -505,7 +505,7 @@ def sort_points(point, cloud):
 
     Examples
     --------
-    >>> sort_points()
+    >>>
 
     """
     minsq = [distance_point_point_sqrd(p, point) for p in cloud]
@@ -602,14 +602,13 @@ def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True
 
     Examples
     --------
-    >>> a = np.random.rand(4, 3)
-    >>> b = np.random.rand(4, 3)
-    >>> indices, distances = closest_points(a, b, distances=True)
-    [1, 2, 0, 3]
-    array([[ 1.03821946,  0.66226402,  0.67964346,  0.98877891],
-           [ 0.4650432 ,  0.54484186,  0.36158995,  0.60385484],
-           [ 0.19562088,  0.73240154,  0.50235761,  0.51439644],
-           [ 0.84680233,  0.85390316,  0.72154983,  0.50432293]])
+    >>> points = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
+    >>> cloud = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
+    >>> closest_points_in_cloud_numpy(points, cloud, distances=True)
+    (array([0, 1, 2, 3]), array([[0.        , 1.        , 1.41421356, 1.        ],
+           [1.        , 0.        , 1.        , 1.41421356],
+           [1.41421356, 1.        , 0.        , 1.        ],
+           [1.        , 1.41421356, 1.        , 0.        ]]))
 
     """
     from numpy import asarray
@@ -878,6 +877,7 @@ def closest_point_on_plane(point, plane):
     >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
     >>> point = [1.0, 2.0, 3.0]
     >>> closest_point_on_plane(point, plane)
+    [1.0, 2.0, 0.0]
 
     """
     base, normal = plane
@@ -912,12 +912,3 @@ def closest_line_to_point(point, lines):
         cloud.append(closest_point_on_segment(point, segment))
 
     return lines[closest_point_in_cloud(point, cloud)[2]]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-
-if __name__ == "__main__":
-    pass

@@ -41,7 +41,7 @@ def unify_cycles_numpy(vertices, faces, root=0):
     --------
     >>> vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]
     >>> faces = [[0, 1, 2], [0, 3, 2]]
-    >>> unify_cycles(vertices, faces)
+    >>> unify_cycles_numpy(vertices, faces)
     [[0, 1, 2], [2, 3, 0]]
     """
     def unify(node, nbr):
@@ -82,7 +82,7 @@ def face_adjacency_numpy(xyz, faces):
     --------
     >>> vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]
     >>> faces = [[0, 1, 2], [0, 3, 2]]
-    >>> face_adjacency(vertices, faces)
+    >>> face_adjacency_numpy(vertices, faces)
     {0: [1], 1: [0]}
     """
     f = len(faces)
@@ -140,12 +140,3 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
                         break
         adjacency[face] = nbrs
     return adjacency
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass
