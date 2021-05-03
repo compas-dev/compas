@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added infrastructure for building Grasshopper components for compas packages.
 * Added first Grasshopper component: COMPAS Info
+* Added Grasshopper components for JSON serialization
 
 ### Changed
 
