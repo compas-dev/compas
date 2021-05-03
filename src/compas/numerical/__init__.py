@@ -56,12 +56,13 @@ Matrices
     :nosignatures:
 
     adjacency_matrix
-    degree_matrix
     connectivity_matrix
-    laplacian_matrix
-    face_matrix
-    mass_matrix
+    degree_matrix
     equilibrium_matrix
+    face_matrix
+    laplacian_matrix
+    mass_matrix
+    stiffness_matrix
 
 
 Operators
@@ -71,6 +72,8 @@ Operators
     :toctree: generated/
     :nosignatures:
 
+    curl
+    div
     grad
 
 
