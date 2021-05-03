@@ -62,6 +62,9 @@ def compas_stubs():
 
 
 def test_compas_api_stubs(compas_api, compas_stubs):
+    if compas.IPY:
+        return
+
     for packmod in compas_api['modules']:
         parts = packmod.split('.')
         if len(parts) != 2:
