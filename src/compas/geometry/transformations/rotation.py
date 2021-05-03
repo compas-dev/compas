@@ -50,6 +50,7 @@ class Rotation(Transformation):
 
     Examples
     --------
+    >>> from compas.geometry import Frame
     >>> f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> R = Rotation.from_frame(f1)
     >>> args = False, 'xyz'
@@ -180,6 +181,7 @@ class Rotation(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = Rotation.from_quaternion(q1)
         >>> q2 = R.quaternion
@@ -203,6 +205,7 @@ class Rotation(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> R = Rotation.from_axis_angle_vector(aav1)
         >>> aav2 = R.axis_angle_vector
@@ -235,12 +238,14 @@ class Rotation(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> ea1 = 1.4, 0.5, 2.3
         >>> args = False, 'xyz'
         >>> R1 = Rotation.from_euler_angles(ea1, *args)
         >>> ea2 = R1.euler_angles(*args)
         >>> allclose(ea1, ea2)
         True
+
         >>> alpha, beta, gamma = ea1
         >>> xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
         >>> Rx = Rotation.from_axis_and_angle(xaxis, alpha)
@@ -262,6 +267,7 @@ class Rotation(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = Rotation.from_quaternion(q1)
         >>> q2 = R.quaternion
@@ -281,6 +287,7 @@ class Rotation(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
         >>> angle1 = 0.1
         >>> R = Rotation.from_axis_and_angle(axis1, angle1)
@@ -304,6 +311,7 @@ class Rotation(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> R = Rotation.from_axis_angle_vector(aav1)
         >>> aav2 = R.axis_angle_vector
@@ -339,6 +347,7 @@ class Rotation(Transformation):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> ea1 = 1.4, 0.5, 2.3
         >>> args = False, 'xyz'
         >>> R1 = Rotation.from_euler_angles(ea1, *args)
@@ -360,17 +369,3 @@ class Rotation(Transformation):
         from compas.geometry import Vector
         xaxis, yaxis = basis_vectors_from_matrix(self.matrix)
         return Vector(*xaxis), Vector(*yaxis)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import Frame  # noqa: F401
-    from compas.geometry import allclose  # noqa: F401 F811
-
-    doctest.testmod(globs=globals())

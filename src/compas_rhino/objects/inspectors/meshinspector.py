@@ -87,11 +87,3 @@ class MeshVertexInspector(BaseConduit):
                     lines.Add(Line(Point3d(* self.vertex_xyz[u]), Point3d(* self.vertex_xyz[v])))
                 draw_arrows(lines, self.linecolor)
                 break
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

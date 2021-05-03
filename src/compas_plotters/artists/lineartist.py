@@ -82,36 +82,3 @@ class LineArtist(Artist):
                 self._mpl_line.set_ydata([y0, y1])
                 self._mpl_line.set_color(self.color)
                 self._mpl_line.set_linewidth(self.linewidth)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    from math import radians
-
-    from compas.geometry import Point
-    from compas.geometry import Vector
-    from compas.geometry import Line
-    from compas.geometry import Rotation
-    from compas_plotters import GeometryPlotter
-
-    plotter = GeometryPlotter()
-
-    a = Point(3.0, 2.0)
-    b = Point(3.0, 5.0)
-
-    line = Line(a, b)
-
-    R = Rotation.from_axis_and_angle(Vector(0.0, 0.0, 1.0), radians(10), point=line.end)
-
-    plotter.add(line, draw_points=True, draw_as_segment=False)
-    plotter.redraw(pause=1.0)
-
-    for i in range(9):
-        line.transform(R)
-        plotter.redraw(pause=0.01)
-
-    plotter.show()

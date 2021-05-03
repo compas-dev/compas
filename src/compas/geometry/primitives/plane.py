@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Plane
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -258,6 +264,7 @@ class Plane(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> Plane.from_frame(frame)
         Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))
@@ -288,14 +295,3 @@ class Plane(Primitive):
         """
         self.point.transform(T)
         self.normal.transform(T)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    from compas.geometry import Frame  # noqa F401
-    doctest.testmod(globs=globals())

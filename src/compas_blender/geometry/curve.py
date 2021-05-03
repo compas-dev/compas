@@ -66,25 +66,3 @@ class BlenderCurve(BaseBlenderGeometry):
 
     def closest_points(self, points, maxdist=None):
         raise NotImplementedError
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    from compas_blender.utilities import draw_points
-    from compas_blender.utilities import get_object_by_name
-
-    object = get_object_by_name(name='BezierCurve')
-
-    curve = BlenderCurve(object=object)
-
-    print(curve)
-    print(curve.control_points())
-    print(curve.control_point_coordinates())
-
-    points = [{'pos': i, 'radius': 0.1} for i in curve.divide(number_of_segments=5)]
-
-    draw_points(points=points)

@@ -39,12 +39,3 @@ class LineArtist(PrimitiveArtist):
         start = list(primitive.start)
         end = list(primitive.end)
         return {'start': start, 'end': end}
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

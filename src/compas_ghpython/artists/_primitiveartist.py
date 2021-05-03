@@ -42,11 +42,3 @@ class PrimitiveArtist(BaseArtist):
     @name.setter
     def name(self, name):
         self.primitive.name = name
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

@@ -25,11 +25,14 @@ def tangent_points_to_circle_xy(circle, point):
 
     Examples
     --------
-    >>> circle = (0, 0, 0), 1.
+    >>> from compas.geometry import allclose
+    >>> circle = (0, 0, 0), 1.0
     >>> point = (2, 4, 0)
     >>> t1, t2 = tangent_points_to_circle_xy(circle, point)
-    >>> Point(*t1), Point(*t2)
-    (Point(-0.772, 0.636, 0.000), Point(0.972, -0.236, 0.000))
+    >>> allclose(t1, [-0.772, 0.636, 0.000], 1e-3)
+    True
+    >>> allclose(t2, [0.972, -0.236, 0.000], 1e-3)
+    True
     """
     m, r = circle[0], circle[1]
     cx, cy = m[0], m[1]
@@ -42,17 +45,6 @@ def tangent_points_to_circle_xy(circle, point):
     b1 = (r**2 - px*a1)/py
     b2 = (r**2 - px*a2)/py
 
-    p1 = (a1 + cx, b1 + cy, 0)
-    p2 = (a2 + cx, b2 + cy, 0)
+    p1 = [a1 + cx, b1 + cy, 0]
+    p2 = [a2 + cx, b2 + cy, 0]
     return p1, p2
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    from compas.geometry import Point    # noqa: F401
-    doctest.testmod(globs=globals())

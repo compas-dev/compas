@@ -493,6 +493,7 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
 
     Examples
     --------
+    >>> from compas.geometry import Frame
     >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
     >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = matrix_from_frame_to_frame(f1, f2)
@@ -1439,17 +1440,3 @@ def axis_angle_from_quaternion(q):
     m = matrix_from_quaternion(q)
     axis, angle = axis_and_angle_from_matrix(m)
     return axis, angle
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import Frame  # noqa: F401
-    from compas.geometry import Transformation  # noqa: F401
-
-    doctest.testmod(globs=globals())

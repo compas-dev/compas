@@ -49,11 +49,3 @@ class Primitive(Data):
         primitive = self.copy()
         primitive.transform(transformation)
         return primitive
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

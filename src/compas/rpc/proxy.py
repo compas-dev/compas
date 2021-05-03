@@ -195,9 +195,9 @@ class Proxy(object):
 
         Examples
         --------
-        >>> p = Proxy()
-        >>> p.stop_server()
-        >>> p.start_server()
+        >>> p = Proxy()  # doctest: +SKIP
+        >>> p.stop_server()  # doctest: +SKIP
+        >>> p.start_server()  # doctest: +SKIP
 
         """
         env = compas._os.prepare_environment()
@@ -257,9 +257,9 @@ class Proxy(object):
 
         Examples
         --------
-        >>> p = Proxy()
-        >>> p.stop_server()
-        >>> p.start_server()
+        >>> p = Proxy()  # doctest: +SKIP
+        >>> p.stop_server()  # doctest: +SKIP
+        >>> p.start_server()  # doctest: +SKIP
         """
         print("Stopping the server proxy.")
         try:
@@ -346,14 +346,3 @@ class Proxy(object):
 
         self.profile = result['profile']
         return result['data']
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

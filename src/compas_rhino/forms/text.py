@@ -37,22 +37,3 @@ class TextForm(BaseForm):
             except Exception as e:
                 textbox.Text = str(e)
         self.Controls.Add(textbox)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    from this import d
-    from this import s
-
-    print(d)
-    print(s)
-
-    zen = ''.join([x if x not in d else d[x] for x in s])
-    zen = zen.split('\n')
-
-    form = TextForm(zen)
-    form.show()

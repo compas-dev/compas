@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Line
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -41,19 +47,15 @@ class Line(Primitive):
     >>> line = Line([0, 0, 0], [1, 1, 1])
     >>> line
     Line(Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 1.000))
+    >>> line.start
+    Point(0.000, 0.000, 0.000)
     >>> line.midpoint
     Point(0.500, 0.500, 0.500)
-    >>> line.length == sqrt(1 + 1 + 1)
+    >>> line.length == math.sqrt(1 + 1 + 1)
     True
     >>> line.direction
     Vector(0.577, 0.577, 0.577)
 
-    >>> type(line.start) == Point
-    True
-    >>> type(line.midpoint) == Point
-    True
-    >>> type(line.direction) == Vector
-    True
     """
 
     __slots__ = ['_start', '_end']
@@ -228,6 +230,7 @@ class Line(Primitive):
         >>> from math import radians
         >>> from compas.geometry import Vector
         >>> from compas.geometry import Point
+        >>> from compas.geometry import Rotation
         >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
         >>> a = Line(Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0))
         >>> lines = [a]
@@ -292,21 +295,3 @@ class Line(Primitive):
         """
         self.start.transform(T)
         self.end.transform(T)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-
-    from math import sqrt     # noqa F401
-    from math import radians  # noqa F401
-
-    from compas.geometry import Rotation  # noqa F401
-    from compas.geometry import Point     # noqa F401
-    from compas.geometry import Vector    # noqa F401
-
-    doctest.testmod(globs=globals())

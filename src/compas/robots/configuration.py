@@ -116,12 +116,10 @@ class Configuration(Data):
     >>> config.joint_values
     [1.5707963267948966, 0.0, 0.0]
 
-    >>> from compas_fab.robots import Configuration
     >>> config = Configuration.from_prismatic_and_revolute_values([8.312], [math.pi/2, 0., 0., 0., 2*math.pi, 0.8])
     >>> str(config)
     'Configuration((8.312, 1.571, 0.000, 0.000, 0.000, 6.283, 0.800), (2, 0, 0, 0, 0, 0, 0))'
 
-    >>> from compas_fab.robots import Configuration
     >>> from compas.robots import Joint
     >>> config = Configuration([math.pi/2, 3., 0.1], [Joint.REVOLUTE, Joint.PRISMATIC, Joint.PLANAR])
     >>> str(config)
@@ -442,6 +440,7 @@ class Configuration(Data):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> c1 = Configuration.from_revolute_values([1, 0, 3])
         >>> c2 = Configuration.from_revolute_values([1, 2 * pi, 4])
         >>> allclose(c1.iter_differences(c2), [0.0, 0.0, -1.0])

@@ -124,24 +124,3 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
     key_index = network.key_index()
     edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
     return laplacian_matrix(edges, normalize=normalize, rtype=rtype)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    # import compas
-
-    # from compas.datastructures import Network
-
-    # network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    # A = network_adjacency_matrix(network)
-    # C = network_connectivity_matrix(network)
-    # L = network_laplacian_matrix(network, normalize=True, rtype='csr')
-    # D = network_degree_matrix(network)
-
-    import doctest
-    doctest.testmod(globs=globals())

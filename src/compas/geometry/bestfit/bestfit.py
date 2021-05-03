@@ -75,13 +75,3 @@ def bestfit_plane(points):
         normal = (a, b, 1.)
 
     return centroid, normalize_vector(normal)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

@@ -35,6 +35,7 @@ def mesh_conway_dual(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> dual = mesh_conway_dual(mesh)
     >>> dual.number_of_vertices() == mesh.number_of_faces()
@@ -77,6 +78,7 @@ def mesh_conway_join(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> join = mesh_conway_join(mesh)
     >>> join.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces()
@@ -125,6 +127,7 @@ def mesh_conway_ambo(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> ambo = mesh_conway_ambo(mesh)
     >>> ambo.number_of_vertices() == mesh.number_of_edges()
@@ -161,6 +164,7 @@ def mesh_conway_kis(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> kis = mesh_conway_kis(mesh)
     >>> kis.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces()
@@ -206,6 +210,7 @@ def mesh_conway_needle(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> needle = mesh_conway_needle(mesh)
     >>> needle.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces()
@@ -242,6 +247,7 @@ def mesh_conway_zip(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> zipp = mesh_conway_zip(mesh)
     >>> zipp.number_of_vertices() == 2 * mesh.number_of_edges()
@@ -279,6 +285,7 @@ def mesh_conway_truncate(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> trun = mesh_conway_truncate(mesh)
     >>> trun.number_of_vertices() == 2 * mesh.number_of_edges()
@@ -316,6 +323,7 @@ def mesh_conway_ortho(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> orth = mesh_conway_ortho(mesh)
     >>> orth.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces() + mesh.number_of_edges()
@@ -352,6 +360,7 @@ def mesh_conway_expand(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> expa = mesh_conway_expand(mesh)
     >>> expa.number_of_vertices() == 2 * mesh.number_of_edges()
@@ -388,6 +397,7 @@ def mesh_conway_gyro(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> gyro = mesh_conway_gyro(mesh)
     >>> gyro.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces() + 2 * mesh.number_of_edges()
@@ -442,6 +452,7 @@ def mesh_conway_snub(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> snub = mesh_conway_snub(mesh)
     >>> snub.number_of_vertices() == 2 * mesh.number_of_edges()
@@ -478,6 +489,7 @@ def mesh_conway_meta(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> meta = mesh_conway_meta(mesh)
     >>> meta.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces() + mesh.number_of_edges()
@@ -514,6 +526,7 @@ def mesh_conway_bevel(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> bevl = mesh_conway_bevel(mesh)
     >>> bevl.number_of_vertices() == 4 * mesh.number_of_edges()
@@ -533,15 +546,3 @@ def mesh_conway_bevel(mesh):
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_truncate(mesh_conway_ambo(mesh))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    from compas.datastructures import Mesh  # noqa: F401
-
-    doctest.testmod(globs=globals())

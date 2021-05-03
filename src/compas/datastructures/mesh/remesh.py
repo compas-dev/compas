@@ -239,13 +239,3 @@ def trimesh_remesh(mesh,
         # callback
         if callback:
             callback(mesh, k, callback_args)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

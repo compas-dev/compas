@@ -84,7 +84,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     ...
     >>> x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
     >>> bounds = [[-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0]]
-    >>> res = devo_numpy(f, bounds, 200, 1000, polish=False, plot=False, frange=[0, 100], neutrals=0)
+    >>> res = devo_numpy(f, bounds, 200, 1000, polish=False, plot=False, frange=[0, 100], neutrals=0, printout=0)
     """
     if plot:
         from matplotlib import pyplot as plt
@@ -229,34 +229,3 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
         plt.show()
 
     return fopt, list(xopt)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    from scipy.optimize import rosen
-
-    def f(u, *args):
-        return rosen(u.ravel())
-
-    x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
-    bounds = [[-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0], [-10.0, 10.0]]
-
-    res = devo_numpy(f, bounds, 200, 1000, polish=False, plot=False, frange=[0, 100], neutrals=0)
-    print(res)
-
-    # def fn(u, *args):
-    #     # Booth's function, fopt=0, uopt=(1, 3)
-    #     x = u[0]
-    #     y = u[1]
-    #     z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
-    #     return z
-
-    # bounds = [(-10, 10), (-15, 15)]
-    # res = devo_numpy(fn=fn, bounds=bounds, population=100, generations=100,
-    #                  polish=False, plot=True, frange=[0, 100], neutrals=0)
-
-    # print(res)

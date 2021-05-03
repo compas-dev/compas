@@ -373,13 +373,3 @@ def grouper(iterable, n, fillvalue=None):
 #     n = len(pool)
 #     indices = sorted(random.randrange(n) for i in range(r))
 #     return tuple(pool[i] for i in indices)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

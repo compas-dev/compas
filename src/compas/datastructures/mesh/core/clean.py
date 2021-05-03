@@ -76,13 +76,3 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
             mesh.halfedge[u][v] = fkey
             if u not in mesh.halfedge[v]:
                 mesh.halfedge[v][u] = None
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod()

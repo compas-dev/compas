@@ -9,11 +9,11 @@ import compas
 
 if not compas.IPY:
     if sys.version_info[0] >= 3 and sys.version_info[1] >= 8:
-        from ._xml import xml_cpython as xml_impl
+        from compas.files._xml import xml_cpython as xml_impl
     else:
-        from ._xml import xml_pre_38 as xml_impl
+        from compas.files._xml import xml_pre_38 as xml_impl
 else:
-    from ._xml import xml_cli as xml_impl
+    from compas.files._xml import xml_cli as xml_impl
 
 
 __all__ = [

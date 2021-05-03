@@ -108,34 +108,3 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
         print('Iteration: {0}  fopt: {1:.3g}  gres: {2:.3g}  step: {3}'.format(i, f1, res, a))
 
     return f1, x0
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    from scipy.optimize import rosen
-
-    def f(u, *args):
-        return rosen(u.ravel())
-
-    x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
-    bounds = [[-2.0, 2.0], [-2.0, 2.0], [-2.0, 2.0], [-2.0, 2.0], [-2.0, 2.0]]
-
-    res = descent_numpy(x0, f, bounds=bounds)
-    print(res)
-
-    # def fn(u, *args):
-    #     # Booth's function, fopt=0, uopt=(1, 3)
-    #     x = u[0]
-    #     y = u[1]
-    #     z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
-    #     return float(z)
-
-    # x0 = [-6., -6.]
-    # bounds = [[0, 2], [2, 4]]
-    # fopt, uopt = descent_numpy(x0, fn, gtol=10**(-4), bounds=bounds)
-
-    # print(uopt)

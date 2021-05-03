@@ -10,7 +10,7 @@ from compas.geometry import angle_vectors
 from compas.geometry import distance_point_point
 from compas.utilities import geometric_key
 
-from ._geometry import BaseRhinoGeometry
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoSurface']
@@ -338,7 +338,7 @@ class RhinoSurface(BaseRhinoGeometry):
         list
             The list of XYZ coordinates of surface boundary kinks.
         """
-        from .curve import RhinoCurve
+        from compas_rhino.geometry.curve import RhinoCurve
         rs = compas_rhino.rs
         kinks = []
         borders = self.borders(border_type=0)
@@ -387,7 +387,7 @@ class RhinoSurface(BaseRhinoGeometry):
             The XYZ coordinates of the closest point on the boundaries of the surface.
 
         """
-        from .curve import RhinoCurve
+        from compas_rhino.geometry.curve import RhinoCurve
         borders = self.borders(type=0)
         proj_dist = {tuple(proj_xyz): distance_point_point(xyz, proj_xyz) for proj_xyz in [RhinoCurve(border).closest_point(xyz) for border in borders]}
         compas_rhino.delete_objects(borders)
@@ -395,11 +395,3 @@ class RhinoSurface(BaseRhinoGeometry):
 
     def closest_points_on_boundaries(self, points):
         return [self.closest_point_on_boundaries(point) for point in points]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass
