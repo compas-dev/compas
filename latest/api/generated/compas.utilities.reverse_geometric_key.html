@@ -108,7 +108,7 @@
 <h1>reverse_geometric_key</h1>
 <dl class="py function">
 <dt id="compas.utilities.reverse_geometric_key">
-<code class="sig-prename descclassname"><span class="pre">compas.utilities.</span></code><code class="sig-name descname"><span class="pre">reverse_geometric_key</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gkey</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/maps.py#L62"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<code class="sig-prename descclassname"><span class="pre">compas.utilities.</span></code><code class="sig-name descname"><span class="pre">reverse_geometric_key</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gkey</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/maps.py#L63"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reverse a geometric key string into xyz coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -119,7 +119,8 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xyz</span> <span class="o">=</span> <span class="p">[</span><span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">]</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xyz</span> <span class="o">=</span> <span class="p">[</span><span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_geometric_key</span><span class="p">(</span><span class="n">gkey</span><span class="p">)</span>
 <span class="go">[3.142, 3.142, 3.142]</span>

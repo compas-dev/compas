@@ -121,7 +121,8 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aav1</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.043</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.254</span><span class="p">,</span> <span class="mf">0.617</span><span class="p">]</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aav1</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.043</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.254</span><span class="p">,</span> <span class="mf">0.617</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_angle_vector</span><span class="p">(</span><span class="n">aav1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aav2</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">axis_angle_vector</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">aav1</span><span class="p">,</span> <span class="n">aav2</span><span class="p">)</span>
