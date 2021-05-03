@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - Line</title>
+  <title> - compas.geometry.Line</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Line.copy" href="compas.geometry.Line.copy.html" />
+    <link rel="next" title="compas.geometry.Plane" href="compas.geometry.Plane.html" />
   
   
   
-    <link rel="prev" title="Frame.worldZX" href="compas.geometry.Frame.worldZX.html" />
+    <link rel="prev" title="compas.geometry.Frame" href="compas.geometry.Frame.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">Line</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.geometry.Line</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="line">
-<h1>Line</h1>
+          <div class="section" id="compas-geometry-line">
+<h1>compas.geometry.Line</h1>
 <dl class="py class">
 <dt id="compas.geometry.Line">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">Line</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/line.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -151,47 +151,92 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.copy.html#compas.geometry.Line.copy" title="compas.geometry.Line.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.copy.html#compas.geometry.Line.copy" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.from_data.html#compas.geometry.Line.from_data" title="compas.geometry.Line.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.from_data.html#compas.geometry.Line.from_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a frame from a data dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.from_json.html#compas.geometry.Line.from_json" title="compas.geometry.Line.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.from_json.html#compas.geometry.Line.from_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.from_jsonstring.html#compas.geometry.Line.from_jsonstring" title="compas.geometry.Line.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.from_jsonstring.html#compas.geometry.Line.from_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.point.html#compas.geometry.Line.point" title="compas.geometry.Line.point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point</span></code></a>(t)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.point.html#compas.geometry.Line.point" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point</span></code></a>(t)</p></td>
 <td><p>A point between start and end at a specific normalized parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.to_data.html#compas.geometry.Line.to_data" title="compas.geometry.Line.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.to_data.html#compas.geometry.Line.to_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.to_json.html#compas.geometry.Line.to_json" title="compas.geometry.Line.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.to_json.html#compas.geometry.Line.to_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.to_jsonstring.html#compas.geometry.Line.to_jsonstring" title="compas.geometry.Line.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.to_jsonstring.html#compas.geometry.Line.to_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.transform.html#compas.geometry.Line.transform" title="compas.geometry.Line.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.transform.html#compas.geometry.Line.transform" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform this line.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.transform_collection.html#compas.geometry.Line.transform_collection" title="compas.geometry.Line.transform_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code></a>(collection, X)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.transform_collection.html#compas.geometry.Line.transform_collection" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code></a>(collection, X)</p></td>
 <td><p>Transform a collection of <code class="docutils literal notranslate"><span class="pre">Line</span></code> objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.transformed.html#compas.geometry.Line.transformed" title="compas.geometry.Line.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.transformed.html#compas.geometry.Line.transformed" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.transformed_collection.html#compas.geometry.Line.transformed_collection" title="compas.geometry.Line.transformed_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code></a>(collection, X)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.transformed_collection.html#compas.geometry.Line.transformed_collection" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code></a>(collection, X)</p></td>
 <td><p>Create a collection of transformed <code class="docutils literal notranslate"><span class="pre">Line</span></code> objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.validate_data.html#compas.geometry.Line.validate_data" title="compas.geometry.Line.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.validate_data.html#compas.geometry.Line.validate_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.validate_json.html#compas.geometry.Line.validate_json" title="compas.geometry.Line.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Line.validate_json.html#compas.geometry.Line.validate_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
+<td><p>The schema of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
+<td><p>The schema of the JSON representation of the data of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>The data dictionary that represents the line.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></p></td>
+<td><p>A unit vector pointing from start and end.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">end</span></code></p></td>
+<td><p>The end point of the line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></p></td>
+<td><p>The length of the vector from start to end.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">midpoint</span></code></p></td>
+<td><p>The midpoint between start and end.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></p></td>
+<td><p>The start point of the line.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector</span></code></p></td>
+<td><p>A vector pointing from start to end.</p></td>
 </tr>
 </tbody>
 </table>
@@ -256,7 +301,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Line</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.geometry.Line</a></li>
 </ul>
 
       </div>
@@ -268,20 +313,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.Frame.worldZX.html" title="Frame.worldZX" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.Frame.html" title="compas.geometry.Frame" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            Frame.worldZX
+            compas.geometry.Frame
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.Line.copy.html" title="Line.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Plane.html" title="compas.geometry.Plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Line.copy
+            compas.geometry.Plane
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

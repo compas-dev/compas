@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - Polygon</title>
+  <title> - compas.geometry.Polygon</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Polygon.contains" href="compas.geometry.Polygon.contains.html" />
+    <link rel="next" title="compas.geometry.Polyline" href="compas.geometry.Polyline.html" />
   
   
   
-    <link rel="prev" title="Point.validate_json" href="compas.geometry.Point.validate_json.html" />
+    <link rel="prev" title="compas.geometry.Point" href="compas.geometry.Point.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">Polygon</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.geometry.Polygon</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="polygon">
-<h1>Polygon</h1>
+          <div class="section" id="compas-geometry-polygon">
+<h1>compas.geometry.Polygon</h1>
 <dl class="py class">
 <dt id="compas.geometry.Polygon">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">Polygon</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polygon.py#L32"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -151,50 +151,95 @@ closing edge is implied.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.contains.html#compas.geometry.Polygon.contains" title="compas.geometry.Polygon.contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a>(point)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.contains.html#compas.geometry.Polygon.contains" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a>(point)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.copy.html#compas.geometry.Polygon.copy" title="compas.geometry.Polygon.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.copy.html#compas.geometry.Polygon.copy" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_data.html#compas.geometry.Polygon.from_data" title="compas.geometry.Polygon.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.from_data.html#compas.geometry.Polygon.from_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a polygon from its data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_json.html#compas.geometry.Polygon.from_json" title="compas.geometry.Polygon.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.from_json.html#compas.geometry.Polygon.from_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_jsonstring.html#compas.geometry.Polygon.from_jsonstring" title="compas.geometry.Polygon.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.from_jsonstring.html#compas.geometry.Polygon.from_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_sides_and_radius_xy.html#compas.geometry.Polygon.from_sides_and_radius_xy" title="compas.geometry.Polygon.from_sides_and_radius_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sides_and_radius_xy</span></code></a>(n, radius)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.from_sides_and_radius_xy.html#compas.geometry.Polygon.from_sides_and_radius_xy" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sides_and_radius_xy</span></code></a>(n, radius)</p></td>
 <td><p>Construct a polygon from a number of sides and a radius.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.is_convex.html#compas.geometry.Polygon.is_convex" title="compas.geometry.Polygon.is_convex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_convex</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.is_convex.html#compas.geometry.Polygon.is_convex" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_convex</span></code></a>()</p></td>
 <td><p>Determine if the polygon is convex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.is_planar.html#compas.geometry.Polygon.is_planar" title="compas.geometry.Polygon.is_planar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_planar</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.is_planar.html#compas.geometry.Polygon.is_planar" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_planar</span></code></a>()</p></td>
 <td><p>Determine if the polygon is planar.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_data.html#compas.geometry.Polygon.to_data" title="compas.geometry.Polygon.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.to_data.html#compas.geometry.Polygon.to_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_json.html#compas.geometry.Polygon.to_json" title="compas.geometry.Polygon.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.to_json.html#compas.geometry.Polygon.to_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_jsonstring.html#compas.geometry.Polygon.to_jsonstring" title="compas.geometry.Polygon.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.to_jsonstring.html#compas.geometry.Polygon.to_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.transform.html#compas.geometry.Polygon.transform" title="compas.geometry.Polygon.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.transform.html#compas.geometry.Polygon.transform" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform this polygon.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.transformed.html#compas.geometry.Polygon.transformed" title="compas.geometry.Polygon.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.transformed.html#compas.geometry.Polygon.transformed" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.validate_data.html#compas.geometry.Polygon.validate_data" title="compas.geometry.Polygon.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.validate_data.html#compas.geometry.Polygon.validate_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.validate_json.html#compas.geometry.Polygon.validate_json" title="compas.geometry.Polygon.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polygon.validate_json.html#compas.geometry.Polygon.validate_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
+<td><p>The schema of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
+<td><p>The schema of the JSON representation of the data of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code></p></td>
+<td><p>The area of the polygon.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroid</span></code></p></td>
+<td><p>The centroid of the polygon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>The data dictionary that represents the polygon.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></p></td>
+<td><p>The length of the boundary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lines</span></code></p></td>
+<td><p>The lines of the polygon.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code></p></td>
+<td><p>The (average) normal of the polygon.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">points</span></code></p></td>
+<td><p>The points of the polygon.</p></td>
 </tr>
 </tbody>
 </table>
@@ -259,7 +304,7 @@ closing edge is implied.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Polygon</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.geometry.Polygon</a></li>
 </ul>
 
       </div>
@@ -271,20 +316,20 @@ closing edge is implied.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.Point.validate_json.html" title="Point.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.Point.html" title="compas.geometry.Point" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            Point.validate_json
+            compas.geometry.Point
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.Polygon.contains.html" title="Polygon.contains" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Polyline.html" title="compas.geometry.Polyline" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Polygon.contains
+            compas.geometry.Polyline
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

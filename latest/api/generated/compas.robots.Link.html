@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - Link</title>
+  <title> - compas.robots.Link</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Link.copy" href="compas.robots.Link.copy.html" />
+    <link rel="next" title="compas.robots.ToolModel" href="compas.robots.ToolModel.html" />
   
   
   
-    <link rel="prev" title="Joint.validate_json" href="compas.robots.Joint.validate_json.html" />
+    <link rel="prev" title="compas.robots.Joint" href="compas.robots.Joint.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.robots.html">robots</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">Link</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.robots.Link</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="link">
-<h1>Link</h1>
+          <div class="section" id="compas-robots-link">
+<h1>compas.robots.Link</h1>
 <dl class="py class">
 <dt id="compas.robots.Link">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.robots.</span></code><code class="sig-name descname"><span class="pre">Link</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inertial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/link.py#L345"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -133,35 +133,62 @@ from the visual properties of a link.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Link.copy.html#compas.robots.Link.copy" title="compas.robots.Link.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.copy.html#compas.robots.Link.copy" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Link.from_data.html#compas.robots.Link.from_data" title="compas.robots.Link.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.from_data.html#compas.robots.Link.from_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Link.from_json.html#compas.robots.Link.from_json" title="compas.robots.Link.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.from_json.html#compas.robots.Link.from_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Link.from_jsonstring.html#compas.robots.Link.from_jsonstring" title="compas.robots.Link.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.from_jsonstring.html#compas.robots.Link.from_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Link.get_urdf_element.html#compas.robots.Link.get_urdf_element" title="compas.robots.Link.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.get_urdf_element.html#compas.robots.Link.get_urdf_element" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Link.to_data.html#compas.robots.Link.to_data" title="compas.robots.Link.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.to_data.html#compas.robots.Link.to_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Link.to_json.html#compas.robots.Link.to_json" title="compas.robots.Link.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.to_json.html#compas.robots.Link.to_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Link.to_jsonstring.html#compas.robots.Link.to_jsonstring" title="compas.robots.Link.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.to_jsonstring.html#compas.robots.Link.to_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Link.validate_data.html#compas.robots.Link.validate_data" title="compas.robots.Link.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.validate_data.html#compas.robots.Link.validate_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Link.validate_json.html#compas.robots.Link.validate_json" title="compas.robots.Link.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.Link.validate_json.html#compas.robots.Link.validate_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
+<td><p>The schema of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
+<td><p>The schema of the JSON representation of the data of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>The representation of the object as native Python data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the object.</p></td>
 </tr>
 </tbody>
 </table>
@@ -226,7 +253,7 @@ from the visual properties of a link.</p></li>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Link</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.robots.Link</a></li>
 </ul>
 
       </div>
@@ -238,20 +265,20 @@ from the visual properties of a link.</p></li>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.robots.Joint.validate_json.html" title="Joint.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.robots.Joint.html" title="compas.robots.Joint" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            Joint.validate_json
+            compas.robots.Joint
           </div>
         </a>
       
 
       
-        <a href="compas.robots.Link.copy.html" title="Link.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.robots.ToolModel.html" title="compas.robots.ToolModel" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Link.copy
+            compas.robots.ToolModel
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Proxy" href="generated/compas.rpc.Proxy.html" />
+    <link rel="next" title="compas.rpc.Dispatcher" href="generated/compas.rpc.Dispatcher.html" />
   
   
   
-    <link rel="prev" title="LocalPackageMeshLoader.load_urdf" href="generated/compas.robots.LocalPackageMeshLoader.load_urdf.html" />
+    <link rel="prev" title="compas.robots.LocalPackageMeshLoader" href="generated/compas.robots.LocalPackageMeshLoader.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -118,8 +118,31 @@ through a <code class="docutils literal notranslate"><span class="pre">Remote</s
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.rpc.Proxy.html#compas.rpc.Proxy" title="compas.rpc.Proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Proxy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.rpc.Dispatcher.html#compas.rpc.Dispatcher" title="compas.rpc.Dispatcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dispatcher</span></code></a></p></td>
+<td><p>Base class for remote services.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.rpc.Proxy.html#compas.rpc.Proxy" title="compas.rpc.Proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Proxy</span></code></a></p></td>
 <td><p>Create a proxy object as intermediary between client code and remote functionality.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.rpc.Server.html#compas.rpc.Server" title="compas.rpc.Server"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Server</span></code></a></p></td>
+<td><p>Version of a <cite>SimpleXMLRPCServer</cite> that can be cleanly terminated from the client side.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.rpc.RPCClientError.html#compas.rpc.RPCClientError" title="compas.rpc.RPCClientError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RPCClientError</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.rpc.RPCServerError.html#compas.rpc.RPCServerError" title="compas.rpc.RPCServerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RPCServerError</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -185,6 +208,7 @@ through a <code class="docutils literal notranslate"><span class="pre">Remote</s
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">rpc</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#exceptions">Exceptions</a></li>
 </ul>
 </li>
 </ul>
@@ -198,20 +222,20 @@ through a <code class="docutils literal notranslate"><span class="pre">Remote</s
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="generated/compas.robots.LocalPackageMeshLoader.load_urdf.html" title="LocalPackageMeshLoader.load_urdf" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="generated/compas.robots.LocalPackageMeshLoader.html" title="compas.robots.LocalPackageMeshLoader" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            LocalPackageMeshLoader.load_urdf
+            compas.robots.LocalPackageMeshLoader
           </div>
         </a>
       
 
       
-        <a href="generated/compas.rpc.Proxy.html" title="Proxy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="generated/compas.rpc.Dispatcher.html" title="compas.rpc.Dispatcher" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Proxy
+            compas.rpc.Dispatcher
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

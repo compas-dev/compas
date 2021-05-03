@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - GLTFMesh</title>
+  <title> - compas.files.GLTFMesh</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="GLTFMesh.from_data" href="compas.files.GLTFMesh.from_data.html" />
+    <link rel="next" title="compas.files.GLTFExporter" href="compas.files.GLTFExporter.html" />
   
   
   
-    <link rel="prev" title="GLTFContent.update_scene_transforms_and_positions" href="compas.files.GLTFContent.update_scene_transforms_and_positions.html" />
+    <link rel="prev" title="compas.files.GLTFContent" href="compas.files.GLTFContent.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.files.html">files</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">GLTFMesh</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.files.GLTFMesh</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="gltfmesh">
-<h1>GLTFMesh</h1>
+          <div class="section" id="compas-files-gltfmesh">
+<h1>compas.files.GLTFMesh</h1>
 <dl class="py class">
 <dt id="compas.files.GLTFMesh">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.files.</span></code><code class="sig-name descname"><span class="pre">GLTFMesh</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitive_data_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/gltf/gltf_mesh.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -134,29 +134,47 @@ representing faces of the mesh.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_data.html#compas.files.GLTFMesh.from_data" title="compas.files.GLTFMesh.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(mesh, context, primitive_data_list)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.from_data.html#compas.files.GLTFMesh.from_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(mesh, context, primitive_data_list)</p></td>
 <td><p>Creates a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> from a glTF node dictionary and inserts it in the provided context.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_mesh.html#compas.files.GLTFMesh.from_mesh" title="compas.files.GLTFMesh.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a>(context, mesh)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.from_mesh.html#compas.files.GLTFMesh.from_mesh" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a>(context, mesh)</p></td>
 <td><p>Construct a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from a compas mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_vertices_and_faces.html#compas.files.GLTFMesh.from_vertices_and_faces" title="compas.files.GLTFMesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a>(context, vertices, faces)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.from_vertices_and_faces.html#compas.files.GLTFMesh.from_vertices_and_faces" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a>(context, vertices, faces)</p></td>
 <td><p>Construct a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from lists of vertices and faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.group_indices.html#compas.files.GLTFMesh.group_indices" title="compas.files.GLTFMesh.group_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_indices</span></code></a>(indices, group_size)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.group_indices.html#compas.files.GLTFMesh.group_indices" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_indices</span></code></a>(indices, group_size)</p></td>
 <td><p>Returns a list of the elements of <code class="docutils literal notranslate"><span class="pre">indices</span></code> grouped into tuples of size <code class="docutils literal notranslate"><span class="pre">group_size</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.shift_indices.html#compas.files.GLTFMesh.shift_indices" title="compas.files.GLTFMesh.shift_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shift_indices</span></code></a>(indices, shift)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.shift_indices.html#compas.files.GLTFMesh.shift_indices" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shift_indices</span></code></a>(indices, shift)</p></td>
 <td><p>Given a list of indices, returns a list of indices, all shifted by <code class="docutils literal notranslate"><span class="pre">shift</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.to_data.html#compas.files.GLTFMesh.to_data" title="compas.files.GLTFMesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>(primitives)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.to_data.html#compas.files.GLTFMesh.to_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>(primitives)</p></td>
 <td><p>Returns a JSONable dictionary object in accordance with glTF specifications.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_faces.html#compas.files.GLTFMesh.validate_faces" title="compas.files.GLTFMesh.validate_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_faces</span></code></a>(faces)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.validate_faces.html#compas.files.GLTFMesh.validate_faces" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_faces</span></code></a>(faces)</p></td>
 <td><p>Raises an exception if not all faces in <code class="docutils literal notranslate"><span class="pre">faces</span></code> are defining either all triangles, lines or points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_vertices.html#compas.files.GLTFMesh.validate_vertices" title="compas.files.GLTFMesh.validate_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_vertices</span></code></a>(vertices)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFMesh.validate_vertices.html#compas.files.GLTFMesh.validate_vertices" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_vertices</span></code></a>(vertices)</p></td>
 <td><p>Raise an exception if there are either too many vertices, or the vertices do not represent points in 3-space.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -221,7 +239,7 @@ representing faces of the mesh.</p></li>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">GLTFMesh</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.files.GLTFMesh</a></li>
 </ul>
 
       </div>
@@ -233,20 +251,20 @@ representing faces of the mesh.</p></li>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.GLTFContent.update_scene_transforms_and_positions.html" title="GLTFContent.update_scene_transforms_and_positions" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.GLTFContent.html" title="compas.files.GLTFContent" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            GLTFContent.update_scene_transforms_and_positions
+            compas.files.GLTFContent
           </div>
         </a>
       
 
       
-        <a href="compas.files.GLTFMesh.from_data.html" title="GLTFMesh.from_data" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.GLTFExporter.html" title="compas.files.GLTFExporter" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            GLTFMesh.from_data
+            compas.files.GLTFExporter
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

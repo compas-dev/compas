@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - Polyline</title>
+  <title> - compas.geometry.Polyline</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Polyline.copy" href="compas.geometry.Polyline.copy.html" />
+    <link rel="next" title="compas.geometry.Pointcloud" href="compas.geometry.Pointcloud.html" />
   
   
   
-    <link rel="prev" title="Polygon.validate_json" href="compas.geometry.Polygon.validate_json.html" />
+    <link rel="prev" title="compas.geometry.Polygon" href="compas.geometry.Polygon.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">Polyline</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.geometry.Polyline</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="polyline">
-<h1>Polyline</h1>
+          <div class="section" id="compas-geometry-polyline">
+<h1>compas.geometry.Polyline</h1>
 <dl class="py class">
 <dt id="compas.geometry.Polyline">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.geometry.</span></code><code class="sig-name descname"><span class="pre">Polyline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polyline.py#L25"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -154,59 +154,95 @@ Each consecutive pair of points forms a segment of the polyline.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.copy.html#compas.geometry.Polyline.copy" title="compas.geometry.Polyline.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.copy.html#compas.geometry.Polyline.copy" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_polyline.html#compas.geometry.Polyline.divide_polyline" title="compas.geometry.Polyline.divide_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_polyline</span></code></a>(num_segments)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.divide_polyline.html#compas.geometry.Polyline.divide_polyline" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_polyline</span></code></a>(num_segments)</p></td>
 <td><p>Divide a polyline in equal segments.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_polyline_by_length.html#compas.geometry.Polyline.divide_polyline_by_length" title="compas.geometry.Polyline.divide_polyline_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_polyline_by_length</span></code></a>(length[, strict, tol])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.divide_polyline_by_length.html#compas.geometry.Polyline.divide_polyline_by_length" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_polyline_by_length</span></code></a>(length[, strict, tol])</p></td>
 <td><p>Splits a polyline in segments of a given length.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.from_data.html#compas.geometry.Polyline.from_data" title="compas.geometry.Polyline.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.from_data.html#compas.geometry.Polyline.from_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a polyline from a data dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.from_json.html#compas.geometry.Polyline.from_json" title="compas.geometry.Polyline.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.from_json.html#compas.geometry.Polyline.from_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.from_jsonstring.html#compas.geometry.Polyline.from_jsonstring" title="compas.geometry.Polyline.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.from_jsonstring.html#compas.geometry.Polyline.from_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.is_closed.html#compas.geometry.Polyline.is_closed" title="compas.geometry.Polyline.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.is_closed.html#compas.geometry.Polyline.is_closed" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
 <td><p>Determine if the polyline is closed.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.is_selfintersecting.html#compas.geometry.Polyline.is_selfintersecting" title="compas.geometry.Polyline.is_selfintersecting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_selfintersecting</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.is_selfintersecting.html#compas.geometry.Polyline.is_selfintersecting" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_selfintersecting</span></code></a>()</p></td>
 <td><p>Determine if the polyline is self-intersecting.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.point.html#compas.geometry.Polyline.point" title="compas.geometry.Polyline.point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point</span></code></a>(t[, snap])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.point.html#compas.geometry.Polyline.point" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point</span></code></a>(t[, snap])</p></td>
 <td><p>Point on the polyline at a specific normalized parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.split_at_corners.html#compas.geometry.Polyline.split_at_corners" title="compas.geometry.Polyline.split_at_corners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_at_corners</span></code></a>(angle_threshold)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.split_at_corners.html#compas.geometry.Polyline.split_at_corners" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_at_corners</span></code></a>(angle_threshold)</p></td>
 <td><p>Splits a polyline at corners larger than the given angle_threshold</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.tangent_at_point_on_polyline.html#compas.geometry.Polyline.tangent_at_point_on_polyline" title="compas.geometry.Polyline.tangent_at_point_on_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at_point_on_polyline</span></code></a>(point)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.tangent_at_point_on_polyline.html#compas.geometry.Polyline.tangent_at_point_on_polyline" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at_point_on_polyline</span></code></a>(point)</p></td>
 <td><p>Calculates the tangent vector of a point on a polyline</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.to_data.html#compas.geometry.Polyline.to_data" title="compas.geometry.Polyline.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.to_data.html#compas.geometry.Polyline.to_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.to_json.html#compas.geometry.Polyline.to_json" title="compas.geometry.Polyline.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.to_json.html#compas.geometry.Polyline.to_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.to_jsonstring.html#compas.geometry.Polyline.to_jsonstring" title="compas.geometry.Polyline.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.to_jsonstring.html#compas.geometry.Polyline.to_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.transform.html#compas.geometry.Polyline.transform" title="compas.geometry.Polyline.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.transform.html#compas.geometry.Polyline.transform" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform this polyline.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.transformed.html#compas.geometry.Polyline.transformed" title="compas.geometry.Polyline.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.transformed.html#compas.geometry.Polyline.transformed" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.validate_data.html#compas.geometry.Polyline.validate_data" title="compas.geometry.Polyline.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.validate_data.html#compas.geometry.Polyline.validate_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.validate_json.html#compas.geometry.Polyline.validate_json" title="compas.geometry.Polyline.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Polyline.validate_json.html#compas.geometry.Polyline.validate_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
+<td><p>The schema of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
+<td><p>The schema of the JSON representation of the data of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>Returns the data dictionary that represents the polyline.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></p></td>
+<td><p>The length of the polyline.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lines</span></code></p></td>
+<td><p>The lines of the polyline.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">points</span></code></p></td>
+<td><p>The points of the polyline.</p></td>
 </tr>
 </tbody>
 </table>
@@ -271,7 +307,7 @@ Each consecutive pair of points forms a segment of the polyline.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Polyline</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.geometry.Polyline</a></li>
 </ul>
 
       </div>
@@ -283,20 +319,20 @@ Each consecutive pair of points forms a segment of the polyline.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.Polygon.validate_json.html" title="Polygon.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.Polygon.html" title="compas.geometry.Polygon" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            Polygon.validate_json
+            compas.geometry.Polygon
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.Polyline.copy.html" title="Polyline.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Pointcloud.html" title="compas.geometry.Pointcloud" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Polyline.copy
+            compas.geometry.Pointcloud
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - MeshDescriptor</title>
+  <title> - compas.robots.MeshDescriptor</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshDescriptor.copy" href="compas.robots.MeshDescriptor.copy.html" />
+    <link rel="next" title="compas.robots.Material" href="compas.robots.Material.html" />
   
   
   
-    <link rel="prev" title="Capsule.validate_json" href="compas.robots.Capsule.validate_json.html" />
+    <link rel="prev" title="compas.robots.Capsule" href="compas.robots.Capsule.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.robots.html">robots</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">MeshDescriptor</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.robots.MeshDescriptor</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="meshdescriptor">
-<h1>MeshDescriptor</h1>
+          <div class="section" id="compas-robots-meshdescriptor">
+<h1>compas.robots.MeshDescriptor</h1>
 <dl class="py class">
 <dt id="compas.robots.MeshDescriptor">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.robots.</span></code><code class="sig-name descname"><span class="pre">MeshDescriptor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1.0</span> <span class="pre">1.0</span> <span class="pre">1.0'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/geometry.py#L403"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -137,35 +137,62 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.copy.html#compas.robots.MeshDescriptor.copy" title="compas.robots.MeshDescriptor.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.copy.html#compas.robots.MeshDescriptor.copy" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.from_data.html#compas.robots.MeshDescriptor.from_data" title="compas.robots.MeshDescriptor.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.from_data.html#compas.robots.MeshDescriptor.from_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.from_json.html#compas.robots.MeshDescriptor.from_json" title="compas.robots.MeshDescriptor.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.from_json.html#compas.robots.MeshDescriptor.from_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.from_jsonstring.html#compas.robots.MeshDescriptor.from_jsonstring" title="compas.robots.MeshDescriptor.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.from_jsonstring.html#compas.robots.MeshDescriptor.from_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.get_urdf_element.html#compas.robots.MeshDescriptor.get_urdf_element" title="compas.robots.MeshDescriptor.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.get_urdf_element.html#compas.robots.MeshDescriptor.get_urdf_element" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.to_data.html#compas.robots.MeshDescriptor.to_data" title="compas.robots.MeshDescriptor.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.to_data.html#compas.robots.MeshDescriptor.to_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.to_json.html#compas.robots.MeshDescriptor.to_json" title="compas.robots.MeshDescriptor.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.to_json.html#compas.robots.MeshDescriptor.to_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.to_jsonstring.html#compas.robots.MeshDescriptor.to_jsonstring" title="compas.robots.MeshDescriptor.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.to_jsonstring.html#compas.robots.MeshDescriptor.to_jsonstring" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.validate_data.html#compas.robots.MeshDescriptor.validate_data" title="compas.robots.MeshDescriptor.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.validate_data.html#compas.robots.MeshDescriptor.validate_data" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.MeshDescriptor.validate_json.html#compas.robots.MeshDescriptor.validate_json" title="compas.robots.MeshDescriptor.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.robots.MeshDescriptor.validate_json.html#compas.robots.MeshDescriptor.validate_json" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
+<td><p>The schema of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
+<td><p>The schema of the JSON representation of the data of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>The representation of the object as native Python data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the object.</p></td>
 </tr>
 </tbody>
 </table>
@@ -230,7 +257,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">MeshDescriptor</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.robots.MeshDescriptor</a></li>
 </ul>
 
       </div>
@@ -242,20 +269,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.robots.Capsule.validate_json.html" title="Capsule.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.robots.Capsule.html" title="compas.robots.Capsule" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            Capsule.validate_json
+            compas.robots.Capsule
           </div>
         </a>
       
 
       
-        <a href="compas.robots.MeshDescriptor.copy.html" title="MeshDescriptor.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.robots.Material.html" title="compas.robots.Material" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            MeshDescriptor.copy
+            compas.robots.Material
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

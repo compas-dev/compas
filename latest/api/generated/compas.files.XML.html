@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - XML</title>
+  <title> - compas.files.XML</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="XML.from_file" href="compas.files.XML.from_file.html" />
+    <link rel="next" title="compas.files.XMLReader" href="compas.files.XMLReader.html" />
   
   
   
-    <link rel="prev" title="URDFParser.parse_element" href="compas.files.URDFParser.parse_element.html" />
+    <link rel="prev" title="compas.files.URDFGenericElement" href="compas.files.URDFGenericElement.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.files.html">files</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">XML</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.files.XML</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="xml">
-<h1>XML</h1>
+          <div class="section" id="compas-files-xml">
+<h1>compas.files.XML</h1>
 <dl class="py class">
 <dt id="compas.files.XML">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.files.</span></code><code class="sig-name descname"><span class="pre">XML</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/xml.py#L30"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -136,23 +136,41 @@ across different Python implementations.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.XML.from_file.html#compas.files.XML.from_file" title="compas.files.XML.from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_file</span></code></a>(source)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.XML.from_file.html#compas.files.XML.from_file" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_file</span></code></a>(source)</p></td>
 <td><p>Read XML from a file path or file-like object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.XML.from_string.html#compas.files.XML.from_string" title="compas.files.XML.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(text)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.XML.from_string.html#compas.files.XML.from_string" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(text)</p></td>
 <td><p>Read XML from a string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.XML.read.html#compas.files.XML.read" title="compas.files.XML.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.XML.read.html#compas.files.XML.read" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>()</p></td>
 <td><p>Read XML from a file path or file-like object, stored in the attribute <code class="docutils literal notranslate"><span class="pre">filepath</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.XML.to_file.html#compas.files.XML.to_file" title="compas.files.XML.to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_file</span></code></a>([prettify])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.XML.to_file.html#compas.files.XML.to_file" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_file</span></code></a>([prettify])</p></td>
 <td><p>Writes the string representation of this XML instance, including all sub-elements, to the file path in the associated XML object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.XML.to_string.html#compas.files.XML.to_string" title="compas.files.XML.to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></a>([encoding, prettify])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.XML.to_string.html#compas.files.XML.to_string" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></a>([encoding, prettify])</p></td>
 <td><p>Generate a string representation of this XML instance, including all sub-elements.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.XML.write.html#compas.files.XML.write" title="compas.files.XML.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>([prettify])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.XML.write.html#compas.files.XML.write" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>([prettify])</p></td>
 <td><p>Writes the string representation of this XML instance, including all sub-elements, to the file path in the associated XML object.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reader</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">root</span></code></p></td>
+<td><p>Root element of the XML tree.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">writer</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -217,7 +235,7 @@ across different Python implementations.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">XML</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.files.XML</a></li>
 </ul>
 
       </div>
@@ -229,20 +247,20 @@ across different Python implementations.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.URDFParser.parse_element.html" title="URDFParser.parse_element" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.URDFGenericElement.html" title="compas.files.URDFGenericElement" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            URDFParser.parse_element
+            compas.files.URDFGenericElement
           </div>
         </a>
       
 
       
-        <a href="compas.files.XML.from_file.html" title="XML.from_file" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.XMLReader.html" title="compas.files.XMLReader" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            XML.from_file
+            compas.files.XMLReader
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

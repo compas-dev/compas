@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - mesh_bounding_box_xy</title>
+  <title> - compas.datastructures.mesh_bounding_box_xy</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="mesh_connected_components" href="compas.datastructures.mesh_connected_components.html" />
+    <link rel="next" title="compas.datastructures.mesh_bounding_box" href="compas.datastructures.mesh_bounding_box.html" />
   
   
   
-    <link rel="prev" title="mesh_bounding_box" href="compas.datastructures.mesh_bounding_box.html" />
+    <link rel="prev" title="compas.datastructures.mesh_add_vertex_to_face_edge" href="compas.datastructures.mesh_add_vertex_to_face_edge.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -97,18 +97,18 @@
             
               <li class="breadcrumb-item"><a href="../compas.datastructures.html">datastructures</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">mesh_bounding_box_xy</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.datastructures.mesh_bounding_box_xy</li>
           </ol>
         </nav>
         
   
         
           
-          <section class="detail" id="mesh-bounding-box-xy">
-<h1>mesh_bounding_box_xy</h1>
-<dl class="function">
+          <div class="section" id="compas-datastructures-mesh-bounding-box-xy">
+<h1>compas.datastructures.mesh_bounding_box_xy</h1>
+<dl class="py function">
 <dt id="compas.datastructures.mesh_bounding_box_xy">
-<code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">mesh_bounding_box_xy</code><span class="sig-paren">(</span><em class="sig-param">mesh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/bbox.html#mesh_bounding_box_xy"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></code><code class="sig-name descname"><span class="pre">mesh_bounding_box_xy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/bbox.py#L41"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the (axis aligned) bounding box of a projection of the mesh in the XY plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -119,13 +119,15 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_bounding_box_xy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_bounding_box_xy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 <span class="go">[[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]</span>
 </code></pre></div>
 </div>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -150,6 +152,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -183,7 +186,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">mesh_bounding_box_xy</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.datastructures.mesh_bounding_box_xy</a></li>
 </ul>
 
       </div>
@@ -195,20 +198,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.datastructures.mesh_bounding_box.html" title="mesh_bounding_box" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.datastructures.mesh_add_vertex_to_face_edge.html" title="compas.datastructures.mesh_add_vertex_to_face_edge" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            mesh_bounding_box
+            compas.datastructures.mesh_add_vertex_to_face_edge
           </div>
         </a>
       
 
       
-        <a href="compas.datastructures.mesh_connected_components.html" title="mesh_connected_components" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.datastructures.mesh_bounding_box.html" title="compas.datastructures.mesh_bounding_box" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            mesh_connected_components
+            compas.datastructures.mesh_bounding_box
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -254,7 +257,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

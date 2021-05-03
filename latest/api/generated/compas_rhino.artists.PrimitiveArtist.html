@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - PrimitiveArtist</title>
+  <title> - compas_rhino.artists.PrimitiveArtist</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="PrimitiveArtist.build" href="compas_rhino.artists.PrimitiveArtist.build.html" />
+    <link rel="next" title="compas_rhino.artists.ShapeArtist" href="compas_rhino.artists.ShapeArtist.html" />
   
   
   
-    <link rel="prev" title="BaseArtist.register" href="compas_rhino.artists.BaseArtist.register.html" />
+    <link rel="prev" title="compas_rhino.artists.BaseArtist" href="compas_rhino.artists.BaseArtist.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas_rhino.artists.html">artists</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">PrimitiveArtist</li>
+            <li class="breadcrumb-item active" aria-current="page">compas_rhino.artists.PrimitiveArtist</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="primitiveartist">
-<h1>PrimitiveArtist</h1>
+          <div class="section" id="compas-rhino-artists-primitiveartist">
+<h1>compas_rhino.artists.PrimitiveArtist</h1>
 <dl class="py class">
 <dt id="compas_rhino.artists.PrimitiveArtist">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></code><code class="sig-name descname"><span class="pre">PrimitiveArtist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/_primitiveartist.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -114,14 +114,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>primitive</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code>) – The geometry of the primitive.</p></li>
+<li><p><strong>primitive</strong> (<a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code></a>) – The geometry of the primitive.</p></li>
 <li><p><strong>color</strong> (<em>3-tuple, optional</em>) – The RGB components of the base color of the primitive.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – The layer in which the primitive should be contained.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>primitive</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code>) – The geometry of the primitive.</p></li>
+<li><p><strong>primitive</strong> (<a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code></a>) – The geometry of the primitive.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – The name of the primitive.</p></li>
 <li><p><strong>color</strong> (<em>tuple</em>) – The RGB components of the base color of the primitive.</p></li>
 <li><p><strong>layer</strong> (<em>str</em>) – The layer in which the primitive should be contained.</p></li>
@@ -135,23 +135,35 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.build.html#compas_rhino.artists.PrimitiveArtist.build" title="compas_rhino.artists.PrimitiveArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_rhino.artists.PrimitiveArtist.build.html#compas_rhino.artists.PrimitiveArtist.build" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.clear.html#compas_rhino.artists.PrimitiveArtist.clear" title="compas_rhino.artists.PrimitiveArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_rhino.artists.PrimitiveArtist.clear.html#compas_rhino.artists.PrimitiveArtist.clear" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.clear_layer.html#compas_rhino.artists.PrimitiveArtist.clear_layer" title="compas_rhino.artists.PrimitiveArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_rhino.artists.PrimitiveArtist.clear_layer.html#compas_rhino.artists.PrimitiveArtist.clear_layer" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
 <td><p>Clear the layer containing the artist.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.draw.html#compas_rhino.artists.PrimitiveArtist.draw" title="compas_rhino.artists.PrimitiveArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_rhino.artists.PrimitiveArtist.draw.html#compas_rhino.artists.PrimitiveArtist.draw" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.redraw.html#compas_rhino.artists.PrimitiveArtist.redraw" title="compas_rhino.artists.PrimitiveArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_rhino.artists.PrimitiveArtist.redraw.html#compas_rhino.artists.PrimitiveArtist.redraw" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.register.html#compas_rhino.artists.PrimitiveArtist.register" title="compas_rhino.artists.PrimitiveArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_rhino.artists.PrimitiveArtist.register.html#compas_rhino.artists.PrimitiveArtist.register" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
 <td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>Reference to the name of the primitive.</p></td>
 </tr>
 </tbody>
 </table>
@@ -212,7 +224,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">PrimitiveArtist</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas_rhino.artists.PrimitiveArtist</a></li>
 </ul>
 
       </div>
@@ -224,20 +236,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_rhino.artists.BaseArtist.register.html" title="BaseArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_rhino.artists.BaseArtist.html" title="compas_rhino.artists.BaseArtist" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            BaseArtist.register
+            compas_rhino.artists.BaseArtist
           </div>
         </a>
       
 
       
-        <a href="compas_rhino.artists.PrimitiveArtist.build.html" title="PrimitiveArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.ShapeArtist.html" title="compas_rhino.artists.ShapeArtist" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            PrimitiveArtist.build
+            compas_rhino.artists.ShapeArtist
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

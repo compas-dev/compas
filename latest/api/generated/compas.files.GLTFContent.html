@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - GLTFContent</title>
+  <title> - compas.files.GLTFContent</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="GLTFContent.add_child_to_node" href="compas.files.GLTFContent.add_child_to_node.html" />
+    <link rel="next" title="compas.files.GLTFMesh" href="compas.files.GLTFMesh.html" />
   
   
   
-    <link rel="prev" title="GLTFParser.parse" href="compas.files.GLTFParser.parse.html" />
+    <link rel="prev" title="compas.files.GLTFParser" href="compas.files.GLTFParser.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.files.html">files</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">GLTFContent</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.files.GLTFContent</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="gltfcontent">
-<h1>GLTFContent</h1>
+          <div class="section" id="compas-files-gltfcontent">
+<h1>compas.files.GLTFContent</h1>
 <dl class="py class">
 <dt id="compas.files.GLTFContent">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.files.</span></code><code class="sig-name descname"><span class="pre">GLTFContent</span></code><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/gltf/gltf_content.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -137,44 +137,56 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_child_to_node.html#compas.files.GLTFContent.add_child_to_node" title="compas.files.GLTFContent.add_child_to_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_child_to_node</span></code></a>(parent_node[, child_name, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.add_child_to_node.html#compas.files.GLTFContent.add_child_to_node" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_child_to_node</span></code></a>(parent_node[, child_name, …])</p></td>
 <td><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFNode</span></code> and adds this node to the children of <code class="docutils literal notranslate"><span class="pre">parent_node</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_mesh.html#compas.files.GLTFContent.add_mesh" title="compas.files.GLTFContent.add_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mesh</span></code></a>(mesh)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.add_mesh.html#compas.files.GLTFContent.add_mesh" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mesh</span></code></a>(mesh)</p></td>
 <td><p>Creates a <a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from a compas mesh, and adds this to the content.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_mesh_to_node.html#compas.files.GLTFContent.add_mesh_to_node" title="compas.files.GLTFContent.add_mesh_to_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mesh_to_node</span></code></a>(node, mesh)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.add_mesh_to_node.html#compas.files.GLTFContent.add_mesh_to_node" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mesh_to_node</span></code></a>(node, mesh)</p></td>
 <td><p>Adds an existing mesh to <code class="docutils literal notranslate"><span class="pre">node</span></code> if <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is a valid mesh key, or through <code class="docutils literal notranslate"><span class="pre">add_mesh</span></code> creates and adds a mesh to <code class="docutils literal notranslate"><span class="pre">node</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_node_to_scene.html#compas.files.GLTFContent.add_node_to_scene" title="compas.files.GLTFContent.add_node_to_scene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node_to_scene</span></code></a>(scene[, node_name, …])</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.add_node_to_scene.html#compas.files.GLTFContent.add_node_to_scene" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node_to_scene</span></code></a>(scene[, node_name, …])</p></td>
 <td><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFNode</span></code> and adds this node to the children of <code class="docutils literal notranslate"><span class="pre">scene</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_scene.html#compas.files.GLTFContent.add_scene" title="compas.files.GLTFContent.add_scene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_scene</span></code></a>([name, extras])</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.add_scene.html#compas.files.GLTFContent.add_scene" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_scene</span></code></a>([name, extras])</p></td>
 <td><p>Adds a scene to the content.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.check_if_forest.html#compas.files.GLTFContent.check_if_forest" title="compas.files.GLTFContent.check_if_forest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_if_forest</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.check_if_forest.html#compas.files.GLTFContent.check_if_forest" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_if_forest</span></code></a>()</p></td>
 <td><p>Raises an exception if <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.files.GLTFContent.nodes</span></code> is not a disjoint union of rooted trees.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.get_node_faces.html#compas.files.GLTFContent.get_node_faces" title="compas.files.GLTFContent.get_node_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_node_faces</span></code></a>(node)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.get_node_faces.html#compas.files.GLTFContent.get_node_faces" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_node_faces</span></code></a>(node)</p></td>
 <td><p>Returns the faces of the mesh at <code class="docutils literal notranslate"><span class="pre">node</span></code>, if any.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.get_node_vertices.html#compas.files.GLTFContent.get_node_vertices" title="compas.files.GLTFContent.get_node_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_node_vertices</span></code></a>(node)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.get_node_vertices.html#compas.files.GLTFContent.get_node_vertices" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_node_vertices</span></code></a>(node)</p></td>
 <td><p>Returns the vertices of the mesh at <code class="docutils literal notranslate"><span class="pre">node</span></code>, if any.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.get_nodes_from_scene.html#compas.files.GLTFContent.get_nodes_from_scene" title="compas.files.GLTFContent.get_nodes_from_scene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_nodes_from_scene</span></code></a>(scene)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.get_nodes_from_scene.html#compas.files.GLTFContent.get_nodes_from_scene" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_nodes_from_scene</span></code></a>(scene)</p></td>
 <td><p>Returns dictionary of nodes in the given scene, without a specified root.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.get_scene_positions_and_edges.html#compas.files.GLTFContent.get_scene_positions_and_edges" title="compas.files.GLTFContent.get_scene_positions_and_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_scene_positions_and_edges</span></code></a>(scene)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.get_scene_positions_and_edges.html#compas.files.GLTFContent.get_scene_positions_and_edges" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_scene_positions_and_edges</span></code></a>(scene)</p></td>
 <td><p>Returns a tuple containing a dictionary of positions and a list of tuples representing edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.remove_orphans.html#compas.files.GLTFContent.remove_orphans" title="compas.files.GLTFContent.remove_orphans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_orphans</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.remove_orphans.html#compas.files.GLTFContent.remove_orphans" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_orphans</span></code></a>()</p></td>
 <td><p>Removes orphaned objects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.update_node_transforms_and_positions.html#compas.files.GLTFContent.update_node_transforms_and_positions" title="compas.files.GLTFContent.update_node_transforms_and_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_node_transforms_and_positions</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.update_node_transforms_and_positions.html#compas.files.GLTFContent.update_node_transforms_and_positions" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_node_transforms_and_positions</span></code></a>()</p></td>
 <td><p>Walks through all nodes and updates their transforms and positions.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.update_scene_transforms_and_positions.html#compas.files.GLTFContent.update_scene_transforms_and_positions" title="compas.files.GLTFContent.update_scene_transforms_and_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_scene_transforms_and_positions</span></code></a>(scene)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.files.GLTFContent.update_scene_transforms_and_positions.html#compas.files.GLTFContent.update_scene_transforms_and_positions" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_scene_transforms_and_positions</span></code></a>(scene)</p></td>
 <td><p>Walks through the scene tree and updates transforms and positions.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_or_first_scene</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -239,7 +251,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">GLTFContent</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.files.GLTFContent</a></li>
 </ul>
 
       </div>
@@ -251,20 +263,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.GLTFParser.parse.html" title="GLTFParser.parse" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.GLTFParser.html" title="compas.files.GLTFParser" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            GLTFParser.parse
+            compas.files.GLTFParser
           </div>
         </a>
       
 
       
-        <a href="compas.files.GLTFContent.add_child_to_node.html" title="GLTFContent.add_child_to_node" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.GLTFMesh.html" title="compas.files.GLTFMesh" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            GLTFContent.add_child_to_node
+            compas.files.GLTFMesh
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

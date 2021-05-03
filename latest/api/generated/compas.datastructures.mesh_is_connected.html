@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - mesh_is_connected</title>
+  <title> - compas.datastructures.mesh_is_connected</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="mesh_isolines_numpy" href="compas.datastructures.mesh_isolines_numpy.html" />
+    <link rel="next" title="compas.datastructures.mesh_merge_faces" href="compas.datastructures.mesh_merge_faces.html" />
   
   
   
-    <link rel="prev" title="mesh_geodesic_distances_numpy" href="compas.datastructures.mesh_geodesic_distances_numpy.html" />
+    <link rel="prev" title="compas.datastructures.mesh_insert_vertex_on_edge" href="compas.datastructures.mesh_insert_vertex_on_edge.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.5.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -97,18 +97,18 @@
             
               <li class="breadcrumb-item"><a href="../compas.datastructures.html">datastructures</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">mesh_is_connected</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.datastructures.mesh_is_connected</li>
           </ol>
         </nav>
         
   
         
           
-          <section class="detail" id="mesh-is-connected">
-<h1>mesh_is_connected</h1>
-<dl class="function">
+          <div class="section" id="compas-datastructures-mesh-is-connected">
+<h1>compas.datastructures.mesh_is_connected</h1>
+<dl class="py function">
 <dt id="compas.datastructures.mesh_is_connected">
-<code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">mesh_is_connected</code><span class="sig-paren">(</span><em class="sig-param">mesh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/combinatorics.html#mesh_is_connected"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></code><code class="sig-name descname"><span class="pre">mesh_is_connected</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/combinatorics.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Verify that the mesh is connected.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -122,17 +122,23 @@ False, otherwise.</p>
 <p class="rubric">Notes</p>
 <p>A mesh is connected if for every two vertices a path exists connecting them.</p>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">m3</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 <span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">abc</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="go">True</span>
 </code></pre></div>
 </div>
 </dd></dl>
 
-</section>
+</div>
 
         
       </main>
@@ -157,6 +163,7 @@ False, otherwise.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -190,7 +197,7 @@ False, otherwise.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">mesh_is_connected</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.datastructures.mesh_is_connected</a></li>
 </ul>
 
       </div>
@@ -202,20 +209,20 @@ False, otherwise.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.datastructures.mesh_geodesic_distances_numpy.html" title="mesh_geodesic_distances_numpy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.datastructures.mesh_insert_vertex_on_edge.html" title="compas.datastructures.mesh_insert_vertex_on_edge" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            mesh_geodesic_distances_numpy
+            compas.datastructures.mesh_insert_vertex_on_edge
           </div>
         </a>
       
 
       
-        <a href="compas.datastructures.mesh_isolines_numpy.html" title="mesh_isolines_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.datastructures.mesh_merge_faces.html" title="compas.datastructures.mesh_merge_faces" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            mesh_isolines_numpy
+            compas.datastructures.mesh_merge_faces
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -261,7 +268,7 @@ False, otherwise.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.5.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

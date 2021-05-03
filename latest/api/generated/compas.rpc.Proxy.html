@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - Proxy</title>
+  <title> - compas.rpc.Proxy</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Proxy.restart_server" href="compas.rpc.Proxy.restart_server.html" />
+    <link rel="next" title="compas.rpc.Server" href="compas.rpc.Server.html" />
   
   
   
-    <link rel="prev" title="rpc" href="../compas.rpc.html" />
+    <link rel="prev" title="compas.rpc.Dispatcher" href="compas.rpc.Dispatcher.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.rpc.html">rpc</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">Proxy</li>
+            <li class="breadcrumb-item active" aria-current="page">compas.rpc.Proxy</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="proxy">
-<h1>Proxy</h1>
+          <div class="section" id="compas-rpc-proxy">
+<h1>compas.rpc.Proxy</h1>
 <dl class="py class">
 <dt id="compas.rpc.Proxy">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas.rpc.</span></code><code class="sig-name descname"><span class="pre">Proxy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">python</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'http://127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1753</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_conn_attempts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoreload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capture_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/rpc/proxy.py#L29"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -160,14 +160,38 @@ server is disposed after using it:</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Proxy.restart_server.html#compas.rpc.Proxy.restart_server" title="compas.rpc.Proxy.restart_server"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restart_server</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.rpc.Proxy.restart_server.html#compas.rpc.Proxy.restart_server" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restart_server</span></code></a>()</p></td>
 <td><p>Restart the server.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Proxy.start_server.html#compas.rpc.Proxy.start_server" title="compas.rpc.Proxy.start_server"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_server</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.rpc.Proxy.start_server.html#compas.rpc.Proxy.start_server" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_server</span></code></a>()</p></td>
 <td><p>Start the remote server.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Proxy.stop_server.html#compas.rpc.Proxy.stop_server" title="compas.rpc.Proxy.stop_server"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_server</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.rpc.Proxy.stop_server.html#compas.rpc.Proxy.stop_server" title="(in COMPAS v1.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_server</span></code></a>()</p></td>
 <td><p>Stop the remote server and terminate/kill the python process that was used to start it.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">address</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">package</span></code></p></td>
+<td><p>The base package from which functionality will be called.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile</span></code></p></td>
+<td><p>A profile of the executed code.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">python</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">service</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -232,7 +256,7 @@ server is disposed after using it:</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Proxy</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas.rpc.Proxy</a></li>
 </ul>
 
       </div>
@@ -244,20 +268,20 @@ server is disposed after using it:</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="../compas.rpc.html" title="rpc" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.rpc.Dispatcher.html" title="compas.rpc.Dispatcher" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            rpc
+            compas.rpc.Dispatcher
           </div>
         </a>
       
 
       
-        <a href="compas.rpc.Proxy.restart_server.html" title="Proxy.restart_server" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.rpc.Server.html" title="compas.rpc.Server" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Proxy.restart_server
+            compas.rpc.Server
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
