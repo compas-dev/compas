@@ -1,7 +1,4 @@
-.. rst-class:: detail
-
-{{ objname }}
-{{ underline }}
+{{ fullname | escape | underline}}
 
 .. currentmodule:: {{ module }}
 

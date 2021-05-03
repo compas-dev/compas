@@ -76,7 +76,7 @@ if __name__ == '__main__':
         'compas.utilities',
     ]
 
-    compas_api = dict(
+    compas_api = dict(  # noqa: F811
         metadata=dict(
             generated_on=datetime.now().strftime("%Y%m%d"),
             compas_version=compas.__version__,
