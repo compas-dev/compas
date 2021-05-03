@@ -355,6 +355,7 @@ Point Sets
     :toctree: generated/
     :nosignatures:
 
+    bestfit_plane
     bounding_box
     bounding_box_xy
     convex_hull
