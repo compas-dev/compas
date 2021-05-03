@@ -324,14 +324,3 @@ def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
 
 def stiffness_matrix():
     raise NotImplementedError
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

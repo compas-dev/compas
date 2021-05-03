@@ -607,11 +607,3 @@ class Plotter:
 
     def update_polygoncollection(self, collection, polygons):
         raise NotImplementedError
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

@@ -48,11 +48,3 @@ class BaseBlenderGeometry:
 
     def closest_points(self, *args, **kwargs):
         raise NotImplementedError
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

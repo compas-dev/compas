@@ -217,21 +217,3 @@ class OFFWriter(object):
             vertices = self.mesh.face_vertices(fkey)
             v = len(vertices)
             self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-if __name__ == '__main__':
-
-    import os
-    from compas.datastructures import Mesh
-
-    FILE = os.path.join(compas.DATA, 'tubemesh.off')
-
-    mesh = Mesh.from_json(compas.get('tubemesh.json'))
-    mesh.to_off(FILE, author="Tom Van Mele")
-
-    off = OFF(FILE)
-    print(len(off.reader.vertices) == off.reader.v)
-    print(len(off.reader.faces) == off.reader.f)

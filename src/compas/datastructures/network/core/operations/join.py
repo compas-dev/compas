@@ -105,13 +105,3 @@ def network_polylines(network, splits=None):
         polylines.append(polyline)
 
     return [[network.node_coordinates(vkey) for vkey in polyline] for polyline in polylines]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

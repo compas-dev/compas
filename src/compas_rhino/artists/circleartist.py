@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.geometry import add_vectors
-from ._primitiveartist import PrimitiveArtist
+from compas_rhino.artists._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['CircleArtist']
@@ -77,11 +77,3 @@ class CircleArtist(PrimitiveArtist):
         guids += compas_rhino.draw_circles(circles, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

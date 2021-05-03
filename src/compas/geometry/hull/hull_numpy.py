@@ -90,14 +90,3 @@ def convex_hull_xy_numpy(points):
     points = points[:, :2]
     hull = ConvexHull(points)
     return hull.vertices, hull.simplices
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

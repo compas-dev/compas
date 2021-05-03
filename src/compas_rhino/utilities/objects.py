@@ -27,6 +27,7 @@ __all__ = [
     'get_object_names',
     'get_object_name',
     'get_object_attributes',
+    'set_object_attributes',
     'get_object_attributes_from_name',
     'delete_object',
     'delete_objects',
@@ -248,27 +249,43 @@ def get_object_name(guid):
     return rs.ObjectName(guid)
 
 
-def get_object_attributes(guids):
-    """Get attributes from object user dictionaries.
+def get_object_attributes(guid):
+    """Get attributes from an object's user dictionary.
 
     Parameters
     ----------
-    guids : list of GUID
+    guid : GUID
 
     Returns
     -------
-    list of dict
+    dict
     """
-    attrs = []
-    for guid in guids:
-        o = find_object(guid)
-        u = o.Attributes.UserDictionary
-        a = {}
-        if u.Count:
-            for key in u.Keys:
-                a[key] = u.Item[key]
-        attrs.append(a)
-    return attrs
+    o = find_object(guid)
+    u = o.Attributes.UserDictionary
+    a = {}
+    if u.Count:
+        for key in u.Keys:
+            a[key] = u.Item[key]
+    return a
+
+
+def set_object_attributes(guid, attr):
+    """Set the custom attributes of a Rhino object.
+
+    Parameters
+    ----------
+    guid : GUID
+        Identifier of a Rhino object.
+    attr : dict
+        A dictionary of attributes.
+    """
+    o = find_object(guid)
+    u = o.Attributes.UserDictionary
+    for name, value in iter(attr.items()):
+        try:
+            u.Set(name, value)
+        except Exception:
+            print("The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(name, value))
 
 
 def get_object_attributes_from_name(guids, prefix=None):
@@ -969,11 +986,3 @@ def get_mesh_edge_vertex_indices(guid):
         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
         vindices.append(temp[0])
     return vindices
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

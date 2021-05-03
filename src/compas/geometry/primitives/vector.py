@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Vector
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -45,6 +51,7 @@ class Vector(Primitive):
 
     Examples
     --------
+
     >>> u = Vector(1, 0, 0)
     >>> v = Vector(0, 1, 0)
     >>> u
@@ -67,6 +74,7 @@ class Vector(Primitive):
     0.0
     >>> u.cross(v)
     Vector(0.000, 0.000, 1.000)
+
     """
 
     __slots__ = ['_x', '_y', '_z']
@@ -435,7 +443,8 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> from compas.geometry import Rotation
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), math.radians(90))
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> vectors = [u]
         >>> Vector.transform_collection(vectors, R)
@@ -467,7 +476,8 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> from compas.geometry import Rotation
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), math.radians(90))
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> vectors = [u]
         >>> vectors = Vector.transformed_collection(vectors, R)
@@ -818,10 +828,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angle(v) == 0.5 * pi
+        >>> u.angle(v) == 0.5 * math.pi
         True
         """
         return angle_vectors(self, other)
@@ -843,12 +852,11 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angle_signed(v, Vector(0.0, 0.0, 1.0)) == 0.5 * pi
+        >>> u.angle_signed(v, Vector(0.0, 0.0, 1.0)) == 0.5 * math.pi
         True
-        >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * pi
+        >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * math.pi
         True
         """
         return angle_vectors_signed(self, other, normal)
@@ -868,10 +876,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angles(v)[0] == 0.5 * pi
+        >>> u.angles(v)[0] == 0.5 * math.pi
         True
         """
         return angles_vectors(self, other)
@@ -886,10 +893,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import radians
         >>> from compas.geometry import Rotation
         >>> u = Vector(1.0, 0.0, 0.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
         >>> u.transform(R)
         >>> u
         Vector(0.000, 1.000, 0.000)
@@ -914,10 +920,9 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> from math import radians
         >>> from compas.geometry import Rotation
         >>> u = Vector(1.0, 0.0, 0.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
         >>> v = u.transformed(R)
         >>> v
         Vector(0.000, 1.000, 0.000)
@@ -925,17 +930,3 @@ class Vector(Primitive):
         vector = self.copy()
         vector.transform(T)
         return vector
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-
-    from math import radians  # noqa F401
-    from compas.geometry import Rotation  # noqa F401
-
-    doctest.testmod(globs=globals())

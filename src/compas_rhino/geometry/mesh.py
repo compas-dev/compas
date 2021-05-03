@@ -7,7 +7,7 @@ import Rhino
 import compas_rhino
 from compas.datastructures import Mesh
 
-from ._geometry import BaseRhinoGeometry
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoMesh']
@@ -151,11 +151,3 @@ class RhinoMesh(BaseRhinoGeometry):
             The XYZ coordinates of the closest points.
         """
         return [self.closest_point(point, maxdist) for point in points]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

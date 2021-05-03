@@ -48,7 +48,7 @@ class MatlabEngine(object):
 
     Examples
     --------
-    >>> matlab = MatlabEngine()
+    >>> matlab = MatlabEngine()  # doctest: +SKIP
     >>> matlab.engine.isprime(37)
     True
 
@@ -100,7 +100,7 @@ class MatlabEngine(object):
 
         Examples
         --------
-        >>> m = MatlabEngine()
+        >>> m = MatlabEngine()  # doctest: +SKIP
         >>> m.double([[1, 2, 3], [4, 5, 6]])
 
         """
@@ -127,7 +127,7 @@ class MatlabEngine(object):
 
         Examples
         --------
-        >>> m = MatlabEngine()
+        >>> m = MatlabEngine()  # doctest: +SKIP
         >>> m.start()
 
         """
@@ -178,12 +178,3 @@ class MatlabEngine(object):
         print('connected to: {0}!'.format(self.session_name))
         print('+' * 80)
         print()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

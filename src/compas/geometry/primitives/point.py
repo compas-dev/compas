@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Point
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -408,7 +414,8 @@ class Point(Primitive):
 
         Examples
         --------
-        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> from compas.geometry import Translation
+        >>> T = Translation.from_vector([1.0, 2.0, 3.0])
         >>> a = Point(0.0, 0.0, 0.0)
         >>> points = [a]
         >>> Point.transform_collection(points, T)
@@ -440,7 +447,8 @@ class Point(Primitive):
 
         Examples
         --------
-        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> from compas.geometry import Translation
+        >>> T = Translation.from_vector([1.0, 2.0, 3.0])
         >>> a = Point(0.0, 0.0, 0.0)
         >>> points = [a]
         >>> points = Point.transformed_collection(points, T)
@@ -741,7 +749,7 @@ class Point(Primitive):
         --------
         >>> from compas.geometry import Translation
         >>> point = Point(0.0, 0.0, 0.0)
-        >>> T = Translation([1.0, 1.0, 1.0])
+        >>> T = Translation.from_vector([1.0, 1.0, 1.0])
         >>> point.transform(T)
         >>> point.x == 1.0
         True
@@ -750,15 +758,3 @@ class Point(Primitive):
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    from compas.geometry import Translation  # noqa F401
-
-    doctest.testmod(globs=globals())

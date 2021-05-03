@@ -111,6 +111,7 @@ class Pointcloud(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import Box
         >>> cloud = Pointcloud.from_box(Box.from_width_height_depth(10, 3, 5), 100)
         >>> all((-5 < x < +5) and (-2.5 < y < +2.5) and (-1.5 < z < +1.5) for x, y, z in cloud.points)
         True
@@ -162,16 +163,3 @@ class Pointcloud(Primitive):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    # import doctest
-    # doctest.testmod(globs=globals())
-
-    # from compas.geometry import Pointcloud
-
-    pcl = Pointcloud.from_bounds(10, 5, 3, 100)

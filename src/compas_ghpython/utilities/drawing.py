@@ -460,11 +460,3 @@ def draw_circles(circles):
         radius = c['radius']
         rg_circles.append(Circle(Plane(Point3d(*point), Vector3d(*normal)), radius))
     return rg_circles
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

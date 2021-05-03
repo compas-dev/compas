@@ -1,23 +1,28 @@
-.. rst-class:: detail
-
-{{ objname }}
-{{ underline }}
+{{ fullname | escape | underline}}
 
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }}
 
-    {% block methods %}
+   {% block methods %}
 
-    {% if methods %}
-    .. rubric:: Methods
+   {% if methods %}
+   .. rubric:: {{ _('Methods') }}
 
-    .. autosummary::
-        :toctree:
+   .. autosummary::
+   {% for item in methods %}
+      ~{{ name }}.{{ item }}
+   {%- endfor %}
+   {% endif %}
+   {% endblock %}
 
-    {% for item in methods %}
-        ~{{ name }}.{{ item }}
-    {%- endfor %}
-    {% endif %}
+   {% block attributes %}
+   {% if attributes %}
+   .. rubric:: {{ _('Attributes') }}
 
-    {% endblock %}
+   .. autosummary::
+   {% for item in attributes %}
+      ~{{ name }}.{{ item }}
+   {%- endfor %}
+   {% endif %}
+   {% endblock %}

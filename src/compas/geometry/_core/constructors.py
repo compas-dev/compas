@@ -117,11 +117,3 @@ def circle_from_points_xy(a, b, c):
     centery = (a * f - c * e) / g
     radius = sqrt((ax - centerx) ** 2 + (ay - centery) ** 2)
     return [centerx, centery, 0.0], radius, [0, 0, 1]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

@@ -38,34 +38,3 @@ class PolylineArtist(Artist):
         self.mpl_line.set_ydata(y)
         self.mpl_line.set_color(self.color)
         self.mpl_line.set_linewidth(self.width)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    from random import uniform
-    from compas.geometry import Box
-    from compas.geometry import Polyline
-    from compas_plotters import GeometryPlotter
-
-    n = 100
-    box = Box.from_width_height_depth(10, 3, 5)
-
-    x, y, _ = zip(* box.points)
-    xmin, xmax = min(x), max(x)
-    ymin, ymax = min(y), max(y)
-    x = [uniform(xmin, xmax) for i in range(n)]
-    y = [uniform(ymin, ymax) for i in range(n)]
-    z = [0] * n
-    points = zip(x, y, z)
-
-    plotter = GeometryPlotter(show_axes=False)
-
-    line = Polyline(points)
-
-    plotter.add(line)
-    plotter.zoom_extents()
-    plotter.show()

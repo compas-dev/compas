@@ -132,21 +132,3 @@ class PointsConduit(BaseConduit):
                 e.Display.DrawPoints(points, Simple, self._default_size, self._default_color)
         except Exception as e:
             print(e)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    from random import randint
-
-    points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-
-    conduit = PointsConduit(points, size=[5, 2, 6, 10, 20], color=['#ffffff', (255, 0, 0), (0, 255, 0), (0, 0, 255)])
-
-    with conduit.enabled():
-        for i in range(20):
-            conduit.points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-            conduit.redraw(pause=0.1)

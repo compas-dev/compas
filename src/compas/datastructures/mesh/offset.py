@@ -5,8 +5,8 @@ from __future__ import print_function
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
-from .orientation import mesh_flip_cycles
-from .join import meshes_join
+from compas.datastructures.mesh.orientation import mesh_flip_cycles
+from compas.datastructures.mesh.join import meshes_join
 
 __all__ = [
     'mesh_offset',
@@ -91,8 +91,6 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
     >>> thick = mesh_thicken(mesh)
     >>> thick.is_closed()
     True
-    >>> all(dist(mesh.vertex_coordinates(a), thick.vertex_coordinates(b)) == 1 for a, b in zip(mesh.vertices(), thick.vertices()))
-    True
 
     """
     if thickness <= 0:
@@ -121,13 +119,3 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
             thickened_mesh.add_face([u, v, v + n, u + n])
 
     return thickened_mesh
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod()

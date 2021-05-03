@@ -63,11 +63,3 @@ class BaseConduit(Rhino.Display.DisplayConduit):
         Rhino.RhinoApp.Wait()
         if pause:
             time.sleep(pause)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

@@ -263,27 +263,3 @@ class Sphere(Shape):
         self.point.transform(transformation)
         Sc, _, _, _, _ = transformation.decomposed()
         self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    # from compas.geometry import Frame
-    # from compas.geometry import Transformation
-    # sphere = Sphere(Point(1, 1, 1), 5)
-    # frame = Frame([5, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    # T = Transformation.from_frame(frame)
-    # sphere.transform(T)
-    # print(sphere)
-
-    # sphere = Sphere(Point(1, 1, 1), 5)
-    # print(sphere.data)
-    # print(sphere)
-    # sphere = Sphere.from_data(sphere.data)
-    # print(sphere)
-
-    import doctest
-    doctest.testmod()

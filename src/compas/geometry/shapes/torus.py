@@ -269,27 +269,3 @@ class Torus(Shape):
 
         """
         self.plane.transform(transformation)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    # from compas.geometry import Transformation
-
-    # torus = Torus(Plane.worldXY(), 5, 2)
-    # frame = Frame([5, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    # T = Transformation.from_frame(frame)
-    # torus.transform(T)
-    # print(torus)
-
-    # torus = Torus(Plane.worldXY(), 5, 2)
-    # print(torus.data)
-    # print(torus)
-    # torus = Torus.from_data(torus.data)
-    # print(torus)
-
-    import doctest
-    doctest.testmod()

@@ -302,12 +302,3 @@ class MatlabClient(object):
                 value = MatlabClient.list_from_matrix(_value, m, n)
         self._renew_lease()
         return value
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

@@ -460,11 +460,3 @@ class MeshArtist(BaseArtist):
                 'color': edge_color[edge],
                 'text': edge_text[edge]})
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass
