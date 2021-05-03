@@ -26,15 +26,19 @@ def compas_stubs():
 
     HERE = os.path.dirname(__file__)
     HOME = os.path.abspath(os.path.join(HERE, '../..'))
-    TEMP = os.path.join(HOME, 'temp/stubs')
-    DOCS = os.path.join(HOME, 'docs')
+    TEMP = os.path.abspath(os.path.join(HOME, 'temp/stubs'))
+    DOCS = os.path.abspath(os.path.join(HOME, 'docs'))
+    API = os.path.abspath(os.path.join(DOCS, 'api'))
 
     shutil.rmtree(TEMP, ignore_errors=True)
 
-    commands = [
-        'sphinx-autogen {}/api/compas.**.rst -o {}'.format(DOCS, TEMP)
-    ]
-    subprocess.call(';'.join(commands), shell=True, env=env)
+    _, _, filenames = next(os.walk(API))
+    stubs = []
+    for name in filenames:
+        if name == 'compas.rst' or not name.startswith('compas.'):
+            continue
+        stub = os.path.abspath(os.path.join(API, name))
+        subprocess.call('sphinx-autogen -o {} {}'.format(TEMP, stub), shell=True, env=env)
 
     _, _, filenames = next(os.walk(TEMP))
 
@@ -86,13 +90,16 @@ if __name__ == '__main__':
 
     HERE = os.path.dirname(__file__)
     HOME = os.path.abspath(os.path.join(HERE, '../..'))
-    TEMP = os.path.join(HOME, 'temp/stubs')
-    DOCS = os.path.join(HOME, 'docs')
+    TEMP = os.path.abspath(os.path.join(HOME, 'temp/stubs'))
+    DOCS = os.path.abspath(os.path.join(HOME, 'docs'))
+    API = os.path.abspath(os.path.join(DOCS, 'api'))
 
     shutil.rmtree(TEMP, ignore_errors=True)
 
-    commands = [
-        'sphinx-autogen {}/api/compas.**.rst -o {}'.format(DOCS, TEMP)
-    ]
-
-    subprocess.call(';'.join(commands), shell=True, env=env)
+    _, _, filenames = next(os.walk(API))
+    stubs = []
+    for name in filenames:
+        if name == 'compas.rst' or not name.startswith('compas.'):
+            continue
+        stub = os.path.abspath(os.path.join(API, name))
+        subprocess.call('sphinx-autogen -o {} {}'.format(TEMP, stub), shell=True, env=env)
