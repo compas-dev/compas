@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-import os
-
 from compas.files.gltf.gltf_exporter import GLTFExporter
 from compas.files.gltf.gltf_parser import GLTFParser
 from compas.files.gltf.gltf_reader import GLTFReader
@@ -91,40 +89,3 @@ class GLTF(object):
         """
         self.exporter.embed_data = embed_data
         self.exporter.export()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import compas
-
-    from compas.datastructures import Mesh, mesh_transformed
-    from compas.utilities import download_file_from_remote
-    from compas_viewers.multimeshviewer import MultiMeshViewer
-
-    source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxInterleaved/glTF-Binary/BoxInterleaved.glb'
-    filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'BoxInterleaved.glb')
-
-    download_file_from_remote(source_glb, filepath_glb, overwrite=False)
-
-    gltf = GLTF(filepath_glb)
-    gltf.read()
-
-    default_scene = gltf.content.default_or_first_scene
-
-    transformed_meshes = []
-
-    for vertex_name, gltf_node in default_scene.nodes.items():
-        if gltf_node.mesh_data is None:
-            continue
-        t = gltf_node.transform
-        m = Mesh.from_vertices_and_faces(gltf_node.vertices, gltf_node.faces)
-        transformed_mesh = mesh_transformed(m, t)
-        transformed_meshes.append(transformed_mesh)
-
-    viewer = MultiMeshViewer()
-    viewer.meshes = transformed_meshes
-    viewer.show()

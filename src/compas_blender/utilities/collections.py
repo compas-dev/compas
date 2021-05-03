@@ -87,12 +87,3 @@ def clear_collections(collections: List[bpy.types.Collection]):
     """Clear the objects from multiple collections."""
     for name in collections:
         clear_collection(name)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

@@ -64,13 +64,3 @@ def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
     b = mesh.add_face([o_vu, o_uv, u])
 
     return a, b
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

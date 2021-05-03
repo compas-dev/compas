@@ -48,13 +48,3 @@ def network_complement(network, cls=None):
     edges = [(u, v) for u, v in combinations(network.nodes(), 2) if not network.has_edge(u, v, directed=False)]
 
     return cls.from_nodes_and_edges(nodes, edges)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

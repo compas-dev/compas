@@ -986,11 +986,3 @@ def get_mesh_edge_vertex_indices(guid):
         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
         vindices.append(temp[0])
     return vindices
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

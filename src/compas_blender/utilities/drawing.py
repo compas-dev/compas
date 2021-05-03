@@ -417,11 +417,3 @@ def draw_mesh(vertices: List[List[float]],
     _set_object_color(obj, color)
     _link_objects([obj], collection=collection)
     return obj
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

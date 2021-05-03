@@ -1,7 +1,7 @@
 import bpy
 from typing import List, Iterable, Text
 
-from .data import delete_unused_data
+from compas_blender.utilities.data import delete_unused_data
 
 
 __all__ = [
@@ -253,12 +253,3 @@ def get_objects_by_names(names: Iterable[str]) -> List[bpy.types.Object]:
 # def set_objects_property(objects, property_name, property_value):
 #     for obj in objects:
 #         obj[property_name] = property_value
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

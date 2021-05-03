@@ -474,12 +474,3 @@ class Rui(object):
 #     rui.add_toolbars(config['toolbars'])
 #     rui.add_toolbargroups(config['toolbargroups'])
 #     rui.write()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

@@ -49,6 +49,8 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_polyhedron(6)
     >>> A = mesh_adjacency_matrix(mesh)
     >>> type(A)
     <class 'numpy.ndarray'>
@@ -80,6 +82,8 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_polyhedron(6)
     >>> C = mesh_connectivity_matrix(mesh)
     >>> type(C)
     <class 'numpy.ndarray'>
@@ -115,6 +119,8 @@ def mesh_degree_matrix(mesh, rtype='array'):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_polyhedron(6)
     >>> D = mesh_degree_matrix(mesh)
     >>> type(D)
     <class 'numpy.ndarray'>
@@ -125,9 +131,7 @@ def mesh_degree_matrix(mesh, rtype='array'):
 
     >>> D = mesh_degree_matrix(mesh)
     >>> D.diagonal()
-    array([2., 3., 3., 3., 3., 2., 3., 4., 4., 4., 4., 3., 3., 4., 4., 4., 4.,
-           3., 3., 4., 4., 4., 4., 3., 3., 4., 4., 4., 4., 3., 2., 3., 3., 3.,
-           3., 2.])
+    array([3., 3., 3., 3., 3., 3., 3., 3.])
 
     """
     key_index = mesh.key_index()
@@ -170,6 +174,8 @@ def mesh_face_matrix(mesh, rtype='array'):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_polyhedron(6)
     >>> F = mesh_face_matrix(mesh)
     >>> type(F)
     <class 'numpy.ndarray'>
@@ -230,6 +236,8 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_polyhedron(6)
     >>> L = mesh_laplacian_matrix(mesh, rtype='array')
     >>> type(L)
     <class 'numpy.ndarray'>
@@ -448,31 +456,11 @@ def trimesh_vertexarea_matrix(mesh):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_quads_to_triangles
-        from compas.datastructures import trimesh_vertexarea_matrix
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        mesh_quads_to_triangles(mesh)
-        A = trimesh_vertexarea_matrix(mesh)
-        area = A.diagonal().tolist()
-
-        plotter = MeshPlotter(mesh, tight=True)
-
-        plotter.draw_vertices(
-            text={key: "{:.1f}".format(area[i]) for i, key in enumerate(mesh.vertices())},
-            radius=0.2
-        )
-        plotter.draw_edges()
-        plotter.draw_faces()
-        plotter.show()
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_polygons([[[0, 0, 0], [1, 0, 0], [0, 1, 0]]])
+    >>> A = trimesh_vertexarea_matrix(mesh)
+    >>> A.diagonal().tolist()
+    [0.1666, 0.1666, 0.1666]
 
     """
     key_index = mesh.key_index()
@@ -488,19 +476,3 @@ def trimesh_vertexarea_matrix(mesh):
         b = bincount(tris[:, i], a3)
         area[:len(b)] += b
     return spdiags(area, 0, xyz.shape[0], xyz.shape[0])
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    import compas
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    doctest.testmod()

@@ -199,11 +199,3 @@ class Hull(object):
         tri_coll = Poly3DCollection(tri)
         tri_coll.set_facecolors([(0.0, 1.0, 0.0) for face in self.faces])
         axes.add_collection3d(tri_coll)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

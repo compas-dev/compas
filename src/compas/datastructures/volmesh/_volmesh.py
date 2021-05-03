@@ -20,13 +20,3 @@ class VolMesh(BaseVolMesh):
     bounding_box = volmesh_bounding_box
     transform = volmesh_transform
     transformed = volmesh_transformed
-
-
-# =============================================================================
-# Main
-# =============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

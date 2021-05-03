@@ -40,6 +40,7 @@ def transform_points_numpy(points, T):
 
     Examples
     --------
+    >>> from compas.geometry import matrix_from_axis_and_angle
     >>> points = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> points_transformed = transform_points_numpy(points, T)
@@ -61,6 +62,7 @@ def transform_vectors_numpy(vectors, T):
 
     Examples
     --------
+    >>> from compas.geometry import matrix_from_axis_and_angle
     >>> vectors = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> vectors_transformed = transform_vectors_numpy(vectors, T)
@@ -82,6 +84,7 @@ def transform_frames_numpy(frames, T):
 
     Examples
     --------
+    >>> from compas.geometry import Frame, matrix_from_axis_and_angle
     >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
     >>> T =  matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames_numpy(frames, T)
@@ -108,7 +111,7 @@ def world_to_local_coordinates_numpy(frame, xyz):
 
     Examples
     --------
-    >>> import numpy as np
+    >>> from compas.geometry import Point, Frame
     >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(2, 3, 5)]
     >>> rst = world_to_local_coordinates_numpy(frame, xyz)
@@ -144,10 +147,11 @@ def local_to_world_coordinates_numpy(frame, rst):
 
     Examples
     --------
+    >>> from compas.geometry import Point, Frame
     >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> rst = [Point(3.726, 4.088, 1.550)]
     >>> xyz = local_to_world_coordinates_numpy(frame, rst)
-    >>> numpy.allclose(xyz, [[2.000, 3.000, 5.000]], rtol=1e-3)
+    >>> np.allclose(xyz, [[2.000, 3.000, 5.000]], rtol=1e-3)
     True
     """
     origin = frame[0]
@@ -179,7 +183,7 @@ def homogenize_numpy(points, w=1.0):
     --------
     >>> points = [[1, 1, 1], [0, 1, 0], [1, 0, 0]]
     >>> res = homogenize_numpy(points, w=1.0)
-    >>> numpy.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 1.0], [1.0, -0.0, 0.0, 1.0]])
+    >>> np.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 1.0], [1.0, -0.0, 0.0, 1.0]])
     True
     """
     points = asarray(points)
@@ -202,7 +206,7 @@ def dehomogenize_numpy(points):
     --------
     >>> points = [[1, 1, 1, 0], [0, 1, 0, 0], [1, 0, 0, 0]]
     >>> res = dehomogenize_numpy(points)
-    >>> numpy.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, -0.0, 0.0]])
+    >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, -0.0, 0.0]])
     True
     """
     def func(a):
@@ -229,9 +233,10 @@ def homogenize_and_flatten_frames_numpy(frames):
 
     Examples
     --------
+    >>> from compas.geometry import Frame
     >>> frames = [Frame((1, 1, 1), (0, 1, 0), (1, 0, 0))]
     >>> res = homogenize_and_flatten_frames_numpy(frames)
-    >>> numpy.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]])
+    >>> np.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]])
     True
     """
     n = len(frames)
@@ -257,25 +262,8 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
     --------
     >>> points_and_vectors = [(1., 1., 1., 1.), (0., 1., 0., 0.), (1., 0., 0., 0.)]
     >>> res = dehomogenize_and_unflatten_frames_numpy(points_and_vectors)
-    >>> numpy.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])
+    >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])
     True
     """
     frames = dehomogenize_numpy(points_and_vectors)
     return frames.reshape((int(frames.shape[0]/3.), 3, 3))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    import numpy  # noqa: F401
-    import math  # noqa: F401
-    from compas.geometry import Frame  # noqa: F401
-    from compas.geometry import Point  # noqa: F401
-    from compas.geometry import matrix_from_axis_and_angle  # noqa: F401
-
-    doctest.testmod(globs=globals())

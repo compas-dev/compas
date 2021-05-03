@@ -266,13 +266,3 @@ class Capsule(Shape):
             The transformation used to transform the capsule.
         """
         self.line.transform(transformation)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

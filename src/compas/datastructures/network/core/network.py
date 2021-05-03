@@ -503,13 +503,3 @@ class BaseNetwork(Graph):
             The direction vector of the edge.
         """
         return normalize_vector(self.edge_vector(u, v))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

@@ -5,7 +5,7 @@ from __future__ import division
 import os
 # import io
 
-import compas
+# import compas
 
 try:
     # from urllib.request import urlopen
@@ -104,22 +104,3 @@ def download_file_from_remote(source, target, overwrite=True):
 #     if show:
 #         image.show()
 #     image.save(target)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    # source = 'http://block.arch.ethz.ch/brg/images/cache/dsc02360_ni-2_cropped_1528706473_624x351.jpg'
-    # target = os.path.join(compas.TEMP, 'theblock.jpg')
-
-    # download_file_from_remote(source, target, True)
-
-    filename = 'faces.obj'
-
-    source = compas.get(filename)
-    target = os.path.join(compas.APPDATA, 'data', filename)
-
-    download_file_from_remote(source, target)

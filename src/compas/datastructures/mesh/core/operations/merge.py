@@ -24,8 +24,11 @@ def mesh_merge_faces(mesh, faces):
     >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
     >>> mesh = mesh.subdivide(scheme='quad')
     >>> mesh_merge_faces(mesh, [1, 2])
+    5
     >>> mesh_merge_faces(mesh, [3, 5])
+    6
     >>> mesh_merge_faces(mesh, [4, 6])
+    7
     >>> mesh.face_vertices(7)
     [3, 5, 0, 4, 1, 6, 2, 7]
     """
@@ -78,9 +81,3 @@ def mesh_merge_faces(mesh, faces):
         if u == v:
             mesh.face[key].remove(v)
     return key
-
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

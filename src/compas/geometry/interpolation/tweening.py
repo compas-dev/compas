@@ -87,31 +87,3 @@ def tween_points_distance(points1, points2, dist, index=None):
     for i in range(len(points1)):
         tweens.append(add_vectors(points1[i], scale_vector(subtract_vectors(points2[i], points1[i]), scale)))
     return tweens
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    # from compas_plotters import Plotter
-
-    # points1 = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
-    # points2 = [[0.0, 0.0, 0.0], [1.0, 3.0, 0.0], [2.0, 1.0, 0.0], [3.0, 0.0, 0.0]]
-
-    # tweens = tween_points(points1, points2, 5)
-
-    # polylines = [{'points': points1, 'width': 1.0}]
-
-    # for points in tweens:
-    #     polylines.append({'points': points, 'width': 0.5})
-
-    # polylines.append({'points': points2, 'width': 1.0})
-
-    # plotter = Plotter(figsize=(10, 7))
-    # plotter.draw_polylines(polylines)
-    # plotter.show()
-
-    import doctest
-    doctest.testmod(globs=globals())

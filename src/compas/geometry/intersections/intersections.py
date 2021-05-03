@@ -559,17 +559,22 @@ def intersection_segment_polyline(segment, polyline, tol=1e-6):
 
     Examples
     --------
-    >>> from compas.geometry._core import is_point_on_polyline
-    >>> from compas.geometry._core import is_point_on_segment
-    >>> from compas.geometry._core import distance_point_point
+    >>> from compas.geometry import is_point_on_polyline
+    >>> from compas.geometry import is_point_on_segment
+    >>> from compas.geometry import distance_point_point
+    >>> from compas.geometry import centroid_points
     >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.5), (2.0, 0.5, 1.0)]
     >>> s = [(0.5, 0.0, 0.0), (0.5, 0.0, 2.0)]
-    >>> intpt = intersection_segment_polyline(s, p)
-    >>> is_point_on_polyline(intpt, p)
+    >>> x1, x2 = intersection_segment_polyline(s, p)
+    >>> x = centroid_points([x1, x2])
+
+    >>> is_point_on_polyline(x, p)
     True
-    >>> is_point_on_segment(intpt, s)
+
+    >>> is_point_on_segment(x, s)
     True
-    >>> distance_point_point((0.5, 0.0, 0.25), intpt) < 1e-6
+
+    >>> distance_point_point((0.5, 0.0, 0.25), x) < 1e-6
     True
     """
     for cd in pairwise(polyline):
@@ -598,11 +603,16 @@ def intersection_sphere_line(sphere, line):
 
     Examples
     --------
+    >>> from compas.geometry import allclose
+
     >>> sphere = (3.0, 7.0, 4.0), 10.0
     >>> line = (1.0, 0, 0.5), (2.0, 1.0, 0.5)
-    >>> ipt1, ipt2 = intersection_sphere_line(sphere, line)
-    >>> Point(*ipt1), Point(*ipt2)
-    (Point(11.634, 10.634, 0.500), Point(-0.634, -1.634, 0.500))
+    >>> x1, x2 = intersection_sphere_line(sphere, line)
+
+    >>> allclose(x1, [11.634, 10.634, 0.500], 1e-3)
+    True
+    >>> allclose(x2, [-0.634, -1.634, 0.50], 1e-3)
+    True
 
     References
     --------
@@ -658,10 +668,12 @@ def intersection_plane_circle(plane, circle):
     Examples
     --------
     >>> plane = (0, 0, 0), (0, 0, 1)
-    >>> circle = ((3.0, 7.0, 4.0), (0, 1, 0)), 10.0
-    >>> ipt1, ipt2 = intersection_plane_circle(plane, circle)
-    >>> Point(*ipt1), Point(*ipt2)
-    (Point(-6.165, 7.000, 0.000), Point(12.165, 7.000, 0.000))
+    >>> circle = ((0, 0, 0), (0, 1, 0)), 10.0
+    >>> x1, x2 = intersection_plane_circle(plane, circle)
+    >>> x1
+    (-10.0, 0.0, 0.0)
+    >>> x2
+    (10.0, 0.0, 0.0)
     """
     circle_plane, circle_radius = circle
     line = intersection_plane_plane(plane, circle_plane)
@@ -755,8 +767,7 @@ def intersection_line_box_xy(line, box, tol=1e-6):
             return [a, c]
         if allclose(b, c, tol=tol):
             return [a, b]
-        return [a, b]
-    return [a, c]
+        return [b, c]
 
 
 def intersection_polyline_box_xy(polyline, box, tol=1e-6):
@@ -888,17 +899,17 @@ def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
 
     Examples
     --------
-    >>> from compas.geometry._core import is_point_on_polyline_xy
-    >>> from compas.geometry._core import is_point_on_segment_xy
-    >>> from compas.geometry._core import distance_point_point
+    >>> from compas.geometry import is_point_on_polyline_xy
+    >>> from compas.geometry import is_point_on_segment_xy
+    >>> from compas.geometry import distance_point_point
     >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]
     >>> s = [(0.5, -0.5, 0.0), (0.5, 0.5, 0.0)]
-    >>> intpt = intersection_segment_polyline_xy(s, p)
-    >>> is_point_on_polyline_xy(intpt, p)
+    >>> x = intersection_segment_polyline_xy(s, p)
+    >>> is_point_on_polyline_xy(x, p)
     True
-    >>> is_point_on_segment_xy(intpt, s)
+    >>> is_point_on_segment_xy(x, s)
     True
-    >>> distance_point_point((0.5, 0.0, 0.0), intpt) < 1e-6
+    >>> distance_point_point((0.5, 0.0, 0.0), x) < 1e-6
     True
     """
     for cd in pairwise(polyline):
@@ -979,13 +990,3 @@ def intersection_ellipse_line_xy(ellipse, line):
 #     p1 = [x0 + b * m, y0 - a * m, 0]
 #     p2 = [x0 - b * m, y0 + a * m, 0]
 #     return p1, p2
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    import doctest
-    from compas.geometry import Point    # noqa: F401
-    doctest.testmod(globs=globals())

@@ -27,8 +27,10 @@ def mesh_transform(mesh, transformation):
 
     Examples
     --------
-    >>> mesh = Mesh.from_obj(compas.get('cube.obj'))
-    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
+    >>> from compas.datastructures import Mesh
+    >>> from compas.geometry import matrix_from_axis_and_angle
+    >>> mesh = Mesh.from_polyhedron(6)
+    >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
     >>> tmesh = mesh.copy()
     >>> mesh_transform(tmesh, T)
 
@@ -62,21 +64,13 @@ def mesh_transformed(mesh, transformation):
 
     Examples
     --------
-    >>> mesh = Mesh.from_obj(compas.get('cube.obj'))
-    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
+    >>> from compas.datastructures import Mesh
+    >>> from compas.geometry import matrix_from_axis_and_angle
+    >>> mesh = Mesh.from_polyhedron(6)
+    >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
     >>> tmesh = mesh_transformed(mesh, T)
 
     """
     mesh_copy = mesh.copy()
     mesh_transform(mesh_copy, transformation)
     return mesh_copy
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

@@ -6,7 +6,7 @@ from math import sqrt
 from compas.geometry import transform_points
 from compas.utilities import pairwise
 
-from ._shape import Shape
+from compas.geometry.shapes._shape import Shape
 
 
 __all__ = ['Polyhedron']
@@ -387,13 +387,3 @@ def icosahedron():
         [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
     ]
     return vertices, faces
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

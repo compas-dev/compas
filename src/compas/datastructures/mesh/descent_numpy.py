@@ -18,13 +18,3 @@ def trimesh_descent(trimesh):
     sfield = V[:, 2].reshape((-1, 1))
     vfield = - G.dot(sfield)
     return vfield.reshape((-1, 3), order='F').tolist()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

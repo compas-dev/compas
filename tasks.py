@@ -107,8 +107,6 @@ def docs(ctx, doctest=False, rebuild=False, check_links=False):
         clean(ctx)
 
     with chdir(BASE_FOLDER):
-        # ctx.run('sphinx-autogen docs/**.rst')
-
         if doctest:
             testdocs(ctx, rebuild=rebuild)
 
@@ -130,8 +128,7 @@ def lint(ctx):
 def testdocs(ctx, rebuild=False):
     """Test the examples in the docstrings."""
     log.write('Running doctest...')
-    opts = '-E' if rebuild else ''
-    ctx.run('sphinx-build {} -b doctest docs dist/docs'.format(opts))
+    ctx.run('pytest --doctest-modules')
 
 
 @task()
@@ -157,7 +154,8 @@ def check(ctx):
 
 
 @task(help={
-      'checks': 'True to run all checks before testing, otherwise False.'})
+      'checks': 'True to run all checks before testing, otherwise False.',
+      'doctest': 'True to run doctest on all modules, otherwise False.'})
 def test(ctx, checks=False, doctest=False):
     """Run all tests."""
     if checks:

@@ -39,11 +39,3 @@ def delete_unused_data():
     #         block.children.unlink(collection)
     #     if block.users == 0:
     #         bpy.data.collections.remove(block)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

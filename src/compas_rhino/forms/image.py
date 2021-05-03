@@ -134,13 +134,3 @@ class ImageForm(BaseForm):
 
     def on_form_closed(self, sender, e):
         self.image.Dispose()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    form = ImageForm('http://block.arch.ethz.ch/brg/images/cache/dsc02360_ni-2_cropped_1528706473_624x351.jpg')
-    form.show()

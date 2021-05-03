@@ -5,7 +5,7 @@ from __future__ import print_function
 import Rhino
 from compas.geometry import Vector
 
-from .point import RhinoPoint
+from compas_rhino.geometry.point import RhinoPoint
 
 
 __all__ = ['RhinoVector']
@@ -63,11 +63,3 @@ class RhinoVector(RhinoPoint):
             The COMPAS vector.
         """
         return Vector(self.x, self.y, self.z)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass
