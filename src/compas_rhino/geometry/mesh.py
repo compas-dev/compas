@@ -100,16 +100,19 @@ class RhinoMesh(BaseRhinoGeometry):
             The equivalent COMPAS mesh.
         """
         cls = cls or Mesh
-        faces = []
-        for face in self.faces:
-            if face[0] == face[-1]:
-                faces.append(face[:-1])
-            elif face[-2] == face[-1]:
-                faces.append(face[:-1])
+        mesh = cls()
+
+        for key, vertex in enumerate(self.geometry.Vertices):
+            mesh.add_vertex(key=key, attr_dict=dict(x=float(vertex.X), y=float(vertex.Y), z=float(vertex.Z)))
+
+        for fkey, face in enumerate(self.geometry.Faces):
+            if face.A == face.D or face.C == face.D:
+                mesh.add_face([face.A, face.B, face.C], fkey)
             else:
-                faces.append(face)
-        mesh = cls.from_vertices_and_faces(self.vertices, faces)
+                mesh.add_face([face.A, face.B, face.C, face.D], fkey)
+
         mesh.name = self.name
+
         return mesh
 
     def closest_point(self, point, maxdist=0.0):
