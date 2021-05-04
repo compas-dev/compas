@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas.datastructures import Mesh
 from ._artist import Artist
 
 __all__ = ['ShapeArtist']
@@ -37,7 +36,6 @@ class ShapeArtist(Artist):
     def __init__(self, shape, color=None, layer=None):
         super(ShapeArtist, self).__init__()
         self._shape = None
-        self._mesh = None
         self.shape = shape
         self.color = color
         self.layer = layer
@@ -50,7 +48,6 @@ class ShapeArtist(Artist):
     @shape.setter
     def shape(self, shape):
         self._shape = shape
-        self._mesh = Mesh.from_shape(shape)
 
     @property
     def name(self):

@@ -1,9 +1,15 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.datastructures import Mesh
-from compas_rhino.objects.meshobject import MeshObject
+from compas_rhino.objects._shapeobject import ShapeObject
 
 
-class BoxObject(MeshObject):
+class BoxObject(ShapeObject):
 
-    def __init__(self, box, **kwargs):
-        super(BoxObject, self).__init__(Mesh.from_shape(box), **kwargs)
-        self._data = box
+    @property
+    def mesh(self):
+        if not self._mesh:
+            self._mesh = Mesh.from_shape(self.shape)
+        return self._mesh

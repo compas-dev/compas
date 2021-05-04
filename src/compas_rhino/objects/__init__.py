@@ -5,50 +5,24 @@ objects
 
 .. currentmodule:: compas_rhino.objects
 
-.. .. rst-class:: lead
 
-.. code-block:: python
+Classes
+=======
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas_rhino.objects import MeshObject
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-    mesh = Mesh.from_off(compas.get('tubemesh.off'))
-
-    meshobject = MeshObject(mesh, name='MeshObject', layer='COMPAS::MeshObject')
-    meshobject.draw()
-
-    vertices = meshobject.select_vertices()
-
-    if vertices and meshobject.modify_vertices(vertices):
-        meshobject.draw()
+    BoxObject
 
 
-NetworkObject
-=============
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-.. autoclass:: NetworkObject
-    :members: clear, draw, select_nodes, select_edges, modify_nodes, modify_edges
-    :no-show-inheritance:
-
-----
-
-MeshObject
-==========
-
-.. autoclass:: MeshObject
-    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
-    :no-show-inheritance:
-
-----
-
-VolMeshObject
-=============
-
-.. autoclass:: VolMeshObject
-    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
-    :no-show-inheritance:
-
+    NetworkObject
+    MeshObject
+    VolMeshObject
 
 """
 from __future__ import absolute_import
@@ -81,25 +55,29 @@ from ._modify import (  # noqa : F401 F403
 from .inspectors import MeshVertexInspector  # noqa : F401 F403
 
 from ._object import Object
+from ._shapeobject import ShapeObject  # noqa: F401
+
+from .boxobject import BoxObject
+
 from .networkobject import NetworkObject
 from .meshobject import MeshObject
 from .volmeshobject import VolMeshObject
 
-from .boxobject import BoxObject
+from compas.geometry import Box
 
 from compas.datastructures import Network
 from compas.datastructures import Mesh
 from compas.datastructures import VolMesh
 
-from compas.geometry import Box
+Object.register(Box, BoxObject)
 
 Object.register(Network, NetworkObject)
 Object.register(Mesh, MeshObject)
 Object.register(VolMesh, VolMeshObject)
-Object.register(Box, BoxObject)
 
 __all__ = [
     'Object',
+    'BoxObject'
     'MeshObject',
     'NetworkObject',
     'VolMeshObject'

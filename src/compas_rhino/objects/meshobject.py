@@ -46,6 +46,7 @@ class MeshObject(Object):
 
     def __init__(self, mesh, scene=None, name=None, visible=True, layer=None,
                  show_faces=True, show_vertices=False, show_edges=False,
+                 join_faces=True,
                  vertextext=None, edgetext=None, facetext=None,
                  vertexcolor=None, edgecolor=None, facecolor=None):
         super(MeshObject, self).__init__(mesh, scene, name, visible, layer)
@@ -71,6 +72,7 @@ class MeshObject(Object):
         self.show_vertices = show_vertices
         self.show_edges = show_edges
         self.show_faces = show_faces
+        self.join_faces = join_faces
         self.vertex_color = vertexcolor
         self.edge_color = edgecolor
         self.face_color = facecolor
@@ -334,7 +336,7 @@ class MeshObject(Object):
         if self.show_faces:
             faces = list(self.mesh.faces())
             face_color = self.face_color
-            guids = self.artist.draw_faces(faces=faces, join_faces=True, color=face_color)
+            guids = self.artist.draw_faces(faces=faces, join_faces=self.join_faces, color=face_color)
             self.guid_face = zip(guids, faces)
 
         if self.show_edges:
