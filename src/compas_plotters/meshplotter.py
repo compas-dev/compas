@@ -4,13 +4,13 @@ from matplotlib.patches import Polygon
 from compas.utilities import color_to_rgb
 from compas.utilities import pairwise
 
-from compas_plotters.plotter import Plotter, valuedict
+from compas_plotters._plotter import BasePlotter, valuedict
 
 
 __all__ = ['MeshPlotter']
 
 
-class MeshPlotter(Plotter):
+class MeshPlotter(BasePlotter):
     """Plotter for the visualisation of COMPAS meshes.
 
     Parameters

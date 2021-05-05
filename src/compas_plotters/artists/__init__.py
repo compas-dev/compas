@@ -13,6 +13,20 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    PointArtist
+    VectorArtist
+    LineArtist
+    PolylineArtist
+    PolygonArtist
+    CircleArtist
+    EllipseArtist
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    MeshArtist
 
 """
 from compas.geometry import Point
@@ -23,6 +37,8 @@ from compas.geometry import Polygon
 from compas.geometry import Circle
 from compas.geometry import Ellipse
 
+from compas.datastructures import Mesh
+
 from .artist import Artist
 from .pointartist import PointArtist
 from .vectorartist import VectorArtist
@@ -32,6 +48,8 @@ from .polygonartist import PolygonArtist
 from .circleartist import CircleArtist
 from .ellipseartist import EllipseArtist
 
+from .meshartist import MeshArtist
+
 Artist.register(Point, PointArtist)
 Artist.register(Vector, VectorArtist)
 Artist.register(Line, LineArtist)
@@ -39,6 +57,8 @@ Artist.register(Polyline, PolylineArtist)
 Artist.register(Polygon, PolygonArtist)
 Artist.register(Circle, CircleArtist)
 Artist.register(Ellipse, EllipseArtist)
+
+Artist.register(Mesh, MeshArtist)
 
 
 __all__ = [
@@ -49,5 +69,6 @@ __all__ = [
     'PolylineArtist',
     'PolygonArtist',
     'CircleArtist',
-    'EllipseArtist'
+    'EllipseArtist',
+    'MeshArtist'
 ]

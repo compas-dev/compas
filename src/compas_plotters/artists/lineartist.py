@@ -3,8 +3,6 @@ from matplotlib.lines import Line2D
 
 from compas.geometry import intersection_line_box_xy
 
-__all__ = ['LineArtist']
-
 
 class LineArtist(Artist):
     """"""
@@ -17,8 +15,8 @@ class LineArtist(Artist):
         self._start_artist = None
         self._end_artist = None
         self._segment_artist = None
-        self._draw_points = draw_points
-        self._draw_as_segment = draw_as_segment
+        self.draw_points = draw_points
+        self.draw_as_segment = draw_as_segment
         self.line = line
         self.linewidth = linewidth
         self.linestyle = linestyle
@@ -36,7 +34,7 @@ class LineArtist(Artist):
         return [self.line.start[:2], self.line.end[:2]]
 
     def draw(self):
-        if self._draw_as_segment:
+        if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
             line2d = Line2D([x0, x1], [y0, y1],
@@ -45,7 +43,7 @@ class LineArtist(Artist):
                             color=self.color,
                             zorder=self.zorder)
             self._mpl_line = self.plotter.axes.add_line(line2d)
-            if self._draw_points:
+            if self.draw_points:
                 self._start_artist = self.plotter.add(self.line.start)
                 self._end_artist = self.plotter.add(self.line.end)
         else:
@@ -60,7 +58,7 @@ class LineArtist(Artist):
                                 color=self.color,
                                 zorder=self.zorder)
                 self._mpl_line = self.plotter.axes.add_line(line2d)
-                if self._draw_points:
+                if self.draw_points:
                     self._start_artist = self.plotter.add(self.line.start)
                     self._end_artist = self.plotter.add(self.line.end)
 

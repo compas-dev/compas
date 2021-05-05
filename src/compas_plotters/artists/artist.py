@@ -1,6 +1,3 @@
-__all__ = ['Artist']
-
-
 _ITEM_ARTIST = {}
 
 

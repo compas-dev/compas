@@ -2,9 +2,6 @@ from compas_plotters.artists import Artist
 from matplotlib.patches import Polygon as PolygonPatch
 
 
-__all__ = ['PolygonArtist']
-
-
 class PolygonArtist(Artist):
     """"""
 
@@ -34,10 +31,10 @@ class PolygonArtist(Artist):
                                zorder=self.zorder,
                                alpha=self.alpha,
                                fill=self.fill)
-        self.mpl_polygon = self.plotter.axes.add_patch(polygon)
+        self._mpl_polygon = self.plotter.axes.add_patch(polygon)
 
     def redraw(self):
-        self.mpl_polygon.set_xy(self.data)
-        self.mpl_polygon.set_facecolor(self.facecolor)
-        self.mpl_polygon.set_edgecolor(self.edgecolor)
-        self.mpl_polygon.set_linewidth(self.linewidth)
+        self._mpl_polygon.set_xy(self.data)
+        self._mpl_polygon.set_facecolor(self.facecolor)
+        self._mpl_polygon.set_edgecolor(self.edgecolor)
+        self._mpl_polygon.set_linewidth(self.linewidth)

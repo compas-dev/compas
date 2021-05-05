@@ -2,8 +2,6 @@ from compas_plotters.artists import Artist
 from matplotlib.patches import Circle as CirclePatch
 # from matplotlib.transforms import ScaledTranslation
 
-__all__ = ['CircleArtist']
-
 
 class CircleArtist(Artist):
     """"""

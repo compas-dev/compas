@@ -1,8 +1,6 @@
 from compas_plotters.artists import Artist
 from matplotlib.patches import Ellipse as EllipsePatch
 
-__all__ = ['EllipseArtist']
-
 
 class EllipseArtist(Artist):
     """"""

@@ -4,8 +4,6 @@ from matplotlib.patches import ArrowStyle
 from compas.geometry import Point
 from compas_plotters.artists import Artist
 
-__all__ = ['VectorArtist']
-
 
 class VectorArtist(Artist):
     """"""
@@ -14,9 +12,9 @@ class VectorArtist(Artist):
 
     def __init__(self, vector, point=None, draw_point=False, color=(0, 0, 0)):
         super(VectorArtist, self).__init__(vector)
-        self._draw_point = draw_point
         self._mpl_vector = None
         self._point_artist = None
+        self.draw_point = draw_point
         self.point = point or Point(0.0, 0.0, 0.0)
         self.vector = vector
         self.color = color
@@ -33,7 +31,7 @@ class VectorArtist(Artist):
                                 facecolor=self.color,
                                 zorder=self.zorder,
                                 mutation_scale=100)
-        if self._draw_point:
+        if self.draw_point:
             self._point_artist = self.plotter.add(self.point)
         self._mpl_vector = self.plotter.axes.add_patch(arrow)
 
