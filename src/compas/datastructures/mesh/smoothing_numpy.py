@@ -30,13 +30,3 @@ def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
             attr['x'] = V[key][0]
             attr['y'] = V[key][1]
             attr['z'] = V[key][2]
-
-
-# =============================================================================
-# Main
-# =============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

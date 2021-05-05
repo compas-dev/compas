@@ -39,12 +39,3 @@ class SegmentArtist(Artist):
         self.mpl_line.set_ydata([self.line.start[1], self.line.end[1]])
         self.mpl_line.set_color(self.color)
         self.mpl_line.set_linewidth(self.width)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    pass

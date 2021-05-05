@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Circle
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -199,12 +205,3 @@ class Circle(Primitive):
         >>> circle.transform(T)
         """
         self.plane.transform(T)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod(globs=globals())

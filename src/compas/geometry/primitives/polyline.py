@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Polyline
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -150,9 +156,8 @@ class Polyline(Primitive):
 
         Examples
         --------
-        >>> polyline = Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
-        >>> polyline
-        Polyline(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000))
+        >>> Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
+        Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
         """
         return cls(data['points'])
 
@@ -267,7 +272,7 @@ class Polyline(Primitive):
         """Splits a polyline at corners larger than the given angle_threshold
 
         Parameters
-        -----------
+        ----------
         angle_threshold : float
             In radians.
 
@@ -312,7 +317,7 @@ class Polyline(Primitive):
         """Calculates the tangent vector of a point on a polyline
 
         Parameters
-        -----------
+        ----------
         point: :class:`compas.geometry.Point`
 
         Returns
@@ -328,7 +333,7 @@ class Polyline(Primitive):
         """Divide a polyline in equal segments.
 
         Parameters
-        -----------
+        ----------
         num_segments : int
 
         Returns
@@ -344,7 +349,7 @@ class Polyline(Primitive):
         """Splits a polyline in segments of a given length.
 
         Parameters
-        -----------
+        ----------
         length : float
 
         strict : bool
@@ -386,13 +391,3 @@ class Polyline(Primitive):
             division_pts.append(self.points[-1])
 
         return division_pts
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

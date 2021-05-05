@@ -38,7 +38,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "1.4.0"
+release = "1.5.0"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -46,7 +46,7 @@ source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
-templates_path = ["_templates", ]
+templates_path = ["_templates"]
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
 pygments_style = "sphinx"
@@ -73,6 +73,7 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
     "nbsphinx",
+    "sphinx.ext.autodoc.typehints"
 ]
 
 # autodoc options

@@ -37,33 +37,3 @@ class PointCollection(Collection):
         collection = self.copy()
         collection.transform(X)
         return collection
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import timeit
-
-    setup = """
-from math import radians
-from compas.geometry import Rotation
-from compas.geometry import Point
-from compas.geometry import PointCollection
-from compas.geometry import Vector
-from compas.geometry import pointcloud
-R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(30))
-collection = PointCollection([Point(*xyz) for xyz in pointcloud(10000, (0, 10), (0, 3), (0, 2))])
-"""
-
-    code = """
-collection.transform(R)
-"""
-
-    number = 100
-
-    result = min(timeit.repeat(code, setup=setup, repeat=10, number=number))
-    print(result)
-    print(result / number)

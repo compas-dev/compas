@@ -7,7 +7,7 @@ import Rhino
 import compas_rhino
 from compas.geometry import Line
 
-from ._geometry import BaseRhinoGeometry
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoLine']
@@ -81,11 +81,3 @@ class RhinoLine(BaseRhinoGeometry):
             The equivalent COMPAS geometry line.
         """
         return Line(self.start, self.end)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

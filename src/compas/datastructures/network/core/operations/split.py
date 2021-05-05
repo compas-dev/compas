@@ -70,32 +70,3 @@ def network_split_edge(network, u, v, t=0.5):
 
     # return the key of the split node
     return w
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    # import compas
-    # from compas.datastructures import Network
-    # from compas_plotters import NetworkPlotter
-
-    # network = Network.from_obj(compas.get('lines.obj'))
-
-    # edges = network.get_any_edges(10)
-    # nodes = []
-
-    # for u, v in edges:
-    #     w = network.split_edge(u, v)
-    #     nodes.append(w)
-
-    # plotter = NetworkPlotter(network, figsize=(8, 5))
-
-    # plotter.draw_nodes(facecolor={key: '#ff0000' for key in nodes})
-    # plotter.draw_edges()
-    # plotter.show()
-
-    import doctest
-    doctest.testmod(globs=globals())

@@ -6,6 +6,18 @@ files
 .. currentmodule:: compas.files
 
 
+DXF
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    DXF
+    DXFReader
+    DXFParser
+
+
 GLTF
 ====
 
@@ -19,6 +31,18 @@ GLTF
     GLTFContent
     GLTFMesh
     GLTFExporter
+
+
+LAS
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    LAS
+    LASReader
+    LASParser
 
 
 OBJ
@@ -81,6 +105,8 @@ URDF
 
     URDF
     URDFParser
+    URDFElement
+    URDFGenericElement
 
 
 XML
@@ -94,6 +120,7 @@ XML
     XMLReader
     XMLWriter
     XMLElement
+    prettify_string
 
 
 """

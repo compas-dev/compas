@@ -204,13 +204,3 @@ def _break_cycles(cycles, breakpoints):
             broken.append(vertices)
 
     return broken
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

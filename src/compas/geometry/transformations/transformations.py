@@ -103,6 +103,7 @@ def orthonormalize_axes(xaxis, yaxis):
 
     Examples
     --------
+    >>> from compas.geometry import allclose
     >>> xaxis = [1, 4, 5]
     >>> yaxis = [1, 0, -2]
     >>> xaxis, yaxis = orthonormalize_axes(xaxis, yaxis)
@@ -186,6 +187,7 @@ def homogenize_and_flatten_frames(frames):
 
     Examples
     --------
+    >>> from compas.geometry import Frame
     >>> frames = [Frame((1, 1, 1), (0, 1, 0), (1, 0, 0))]
     >>> homogenize_and_flatten_frames(frames)
     [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]]
@@ -273,6 +275,7 @@ def transform_frames(frames, T):
 
     Examples
     --------
+    >>> from compas.geometry import Frame, matrix_from_axis_and_angle
     >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames(frames, T)
@@ -299,7 +302,7 @@ def world_to_local_coordinates(frame, xyz):
 
     Examples
     --------
-    >>> import numpy as np
+    >>> from compas.geometry import Point, Frame
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(2, 3, 5)]
     >>> Point(*world_to_local_coordinates(f, xyz)[0])
@@ -328,7 +331,7 @@ def local_to_world_coordinates(frame, xyz):
 
     Examples
     --------
-    >>> import numpy as np
+    >>> from compas.geometry import Point, Frame
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(3.726, 4.088, 1.550)]
     >>> Point(*local_to_world_coordinates(f, xyz)[0])
@@ -1093,27 +1096,25 @@ def orient_points(points, reference_plane, target_plane):
 
     Examples
     --------
+    >>> from compas.geometry import Point
     >>> from compas.geometry import orient_points
     >>> from compas.geometry import intersection_segment_segment_xy
-    >>>
+
     >>> refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
     >>> tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-    >>>
     >>> points = [\
             [0.288675, 0.288675, 1.1547],\
             [0.866025, 0.866025, 0.0],\
             [1.077350, 0.077350, 0.57735],\
             [0.077350, 1.077350, 0.57735]\
         ]
-    >>>
+
     >>> points = orient_points(points, refplane, tarplane)
-    >>>
     >>> ab = points[0], points[1]
     >>> cd = points[2], points[3]
-    >>>
     >>> point = intersection_segment_segment_xy(ab, cd)
-    >>>
     >>> points = orient_points([point], tarplane, refplane)
+
     >>> Point(*points[0])
     Point(0.577, 0.577, 0.577)
     """
@@ -1128,18 +1129,3 @@ def orient_points(points, reference_plane, target_plane):
     points = translate_points(points, vector)
 
     return points
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import allclose  # noqa: F401
-    from compas.geometry import Point  # noqa: F401
-    from compas.geometry import Frame  # noqa: F401
-
-    doctest.testmod(globs=globals())

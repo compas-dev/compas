@@ -12,7 +12,7 @@ Ippoliti for providing code and documentation.
 """
 import math
 
-from compas.base import Base
+from compas.data import Data
 
 from compas.geometry import multiply_matrices
 from compas.geometry import transpose_matrix
@@ -31,7 +31,7 @@ from compas.geometry.transformations import translation_from_matrix
 __all__ = ['Transformation']
 
 
-class Transformation(Base):
+class Transformation(Data):
     """The ``Transformation`` represents a 4x4 transformation matrix.
 
     It is the base class for transformations like :class:`Rotation`,
@@ -521,6 +521,7 @@ class Transformation(Base):
 
         Examples
         --------
+        >>> from compas.geometry import Scale, Translation, Rotation
         >>> trans1 = [1, 2, 3]
         >>> angle1 = [-2.142, 1.141, -0.142]
         >>> scale1 = [0.123, 2, 0.5]
@@ -589,49 +590,3 @@ class Transformation(Base):
         if isinstance(other, cls):
             return cls(multiply_matrices(self.matrix, other.matrix))
         return Transformation(multiply_matrices(self.matrix, other.matrix))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    from compas.geometry import Translation  # noqa: F401
-    from compas.geometry import Rotation  # noqa: F401
-    from compas.geometry import Scale  # noqa: F401
-    from compas.geometry import Frame  # noqa: F401
-
-    import doctest
-    doctest.testmod(globs=globals())
-
-    # world = Frame.worldXY()
-    # frame = Frame([1.0, 1.0, 1.0], [0, 0, -1], [1, 0, 0])
-
-    # X1 = Transformation.from_frame_to_frame(world, frame)
-    # X2 = Transformation.from_frame(frame)
-    # X3 = Transformation.from_change_of_basis(frame, world)
-
-    # print(X1.matrix)
-    # print(X2.matrix)
-    # print(X3.matrix)
-
-    # trans1 = [1, 2, 3]
-    # angle1 = [-2.142, 1.141, -0.142]
-    # scale1 = [0.123, 2, 0.5]
-    # T1 = Translation.from_vector(trans1)
-    # R1 = Rotation.from_euler_angles(angle1)
-    # S1 = Scale.from_factors(scale1)
-    # M = T1 * R1 * S1
-    # S, H, R, T, P = M.decomposed()
-    # print(S1 == S)
-    # print(R1 == R)
-    # print(T1 == T)
-
-    # S, H, R, T, P = X3.decomposed()
-
-    # print(S)
-    # print(H)
-    # print(R)
-    # print(T)
-    # print(P)

@@ -81,11 +81,3 @@ class LabelsConduit(BaseConduit):
                 e.Display.DrawDot(Point3d(*pos), text, color, textcolor)
             else:
                 e.Display.DrawDot(Point3d(*pos), text, self._default_color, self._default_textcolor)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

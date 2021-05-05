@@ -9,7 +9,6 @@ from compas.utilities import pairwise
 from compas.geometry._core import subtract_vectors
 from compas.geometry._core import subtract_vectors_xy
 from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_xy
 from compas.geometry._core import cross_vectors
 from compas.geometry._core import cross_vectors_xy
 from compas.geometry._core import dot_vectors
@@ -128,7 +127,7 @@ def area_triangle_xy(triangle):
         The area of the triangle.
 
     """
-    return 0.5 * length_vector_xy(normal_triangle_xy(triangle, False))
+    return 0.5 * length_vector(normal_triangle_xy(triangle, False))
 
 
 def volume_polyhedron(polyhedron):
@@ -195,41 +194,3 @@ def volume_polyhedron(polyhedron):
             n = cross_vectors(ab, ac)
             V += dot_vectors(a, n)
     return V / 6.
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    from compas.geometry._core import Polyhedron
-
-    cube = Polyhedron.generate(6)
-
-    L = length_vector(subtract_vectors(cube.vertices[0], cube.vertices[1]))
-
-    V1 = L * L * L
-    V2 = volume_polyhedron(cube)
-
-    print(V1 - V2 <= 1e-6)
-
-    # plotter = Plotter(figsize=(10, 7))
-
-    # polygon = [
-    #     [0, 0, 0],
-    #     [1.0, 0, 0],
-    #     [1.0, 1.0, 0],
-    #     [0.5, 0.0, 0],
-    #     [0, 1.0, 0]
-    # ]
-
-    # print(area_polygon(polygon[::-1]))
-
-    # polygons = [{
-    #     'points' : polygon
-    # }]
-
-    # plotter.draw_polygons(polygons)
-
-    # plotter.show()

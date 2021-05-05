@@ -88,11 +88,3 @@ def xtransformed(geo, transformation):
     geo_copy = geo.Duplicate()
     geo_copy.Transform(T)
     return geo_copy
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

@@ -222,13 +222,3 @@ def mesh_split_face(mesh, fkey, u, v):
     del mesh.face[fkey]
 
     return f, g
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

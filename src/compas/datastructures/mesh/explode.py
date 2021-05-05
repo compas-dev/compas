@@ -70,13 +70,3 @@ def mesh_explode(mesh, cls=None):
         faces = [[key_to_index[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in part]
         exploded_meshes.append(cls.from_vertices_and_faces(vertices, faces))
     return exploded_meshes
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

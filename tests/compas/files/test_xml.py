@@ -1,8 +1,6 @@
 import os
-
 import pytest
 
-import compas
 from compas.files import XML
 
 BASE_FOLDER = os.path.dirname(__file__)

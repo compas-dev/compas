@@ -504,11 +504,3 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
         node = min(adjacency[node], key=lambda nbr: dist[nbr] + weight[(node, nbr)])
         path.append(node)
     return path
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

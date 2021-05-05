@@ -28,6 +28,8 @@ def mesh_oriented_bounding_box_numpy(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> hypar = Mesh.from_obj(compas.get('hypar.obj'))
     >>> box = mesh_oriented_bounding_box_numpy(hypar)
     >>> len(box)
     8
@@ -52,25 +54,11 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
     >>> mesh_oriented_bounding_box_xy_numpy(mesh)
     [[10.0, 0.0], [0.0, 0.0], [0.0, 10.0], [10.0, 10.0]]
 
     """
     xyz = mesh.vertices_attributes('xyz')
     return oriented_bounding_box_xy_numpy(xyz)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    import compas
-    from compas.datastructures import Mesh
-
-    hypar = Mesh.from_obj(compas.get('hypar.obj'))
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    doctest.testmod()

@@ -4,7 +4,7 @@ from __future__ import division
 
 from compas.geometry import Point
 import compas_rhino
-from ._primitiveartist import PrimitiveArtist
+from compas_rhino.artists._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['VectorArtist']
@@ -77,12 +77,3 @@ class VectorArtist(PrimitiveArtist):
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

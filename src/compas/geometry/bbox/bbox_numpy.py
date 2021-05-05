@@ -74,10 +74,10 @@ def oriented_bounding_box_numpy(points):
     :math:`x \in [0, 10]`, :math:`y \in [0, 1]` and :math:`z \in [0, 3]`.
     Add the corners of the box such that we now the volume is supposed to be :math:`30.0`.
 
-    >>> points = numpy.random.rand(10000, 3)
-    >>> bottom = numpy.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 1.0, 0.0]])
-    >>> top = numpy.array([[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0]])
-    >>> points = numpy.concatenate((points, bottom, top))
+    >>> points = np.random.rand(10000, 3)
+    >>> bottom = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 1.0, 0.0]])
+    >>> top = np.array([[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0]])
+    >>> points = np.concatenate((points, bottom, top))
     >>> points[:, 0] *= 10
     >>> points[:, 2] *= 3
 
@@ -90,6 +90,7 @@ def oriented_bounding_box_numpy(points):
 
     Compute the volume of the oriented bounding box.
 
+    >>> from compas.geometry import length_vector, subtract_vectors, close
     >>> bbox = oriented_bounding_box_numpy(points)
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))
@@ -254,25 +255,3 @@ def oabb_numpy(points):
     bbox = bounding_box(points)
     bbox = transform_points_numpy(bbox, X.inverse())
     return bbox
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    import numpy  # noqa: F401
-    import math  # noqa: F401
-
-    from compas.geometry import bounding_box  # noqa: F401 F811
-    from compas.geometry import subtract_vectors  # noqa: F401
-    from compas.geometry import length_vector  # noqa: F401
-    from compas.geometry import Rotation  # noqa: F401
-    from compas.geometry import transform_points_numpy  # noqa: F401 F811
-    from compas.geometry import allclose  # noqa: F401
-    from compas.geometry import close  # noqa: F401
-
-    doctest.testmod(globs=globals())

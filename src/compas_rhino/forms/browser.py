@@ -78,13 +78,3 @@ class BrowserForm(BaseForm):
 
     def on_statustext_changed(self, sender, eargs):
         self.status.Text = self.browser.StatusText
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    form = BrowserForm('http://block.arch.ethz.ch')
-    form.show()

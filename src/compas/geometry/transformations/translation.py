@@ -94,13 +94,3 @@ class Translation(Transformation):
         y = self.matrix[1][3]
         z = self.matrix[2][3]
         return Vector(x, y, z)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod()

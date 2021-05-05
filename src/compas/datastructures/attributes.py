@@ -91,13 +91,3 @@ class CellAttributeView(AttributeView):
 
     def __init__(self, defaults, attr, custom_only=False):
         super(CellAttributeView, self).__init__(defaults, attr, custom_only)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

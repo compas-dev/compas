@@ -31,13 +31,3 @@ def volmesh_bounding_box(volmesh):
     """
     xyz = volmesh.vertices_attributes('xyz', vertices=list(volmesh.vertices()))
     return bounding_box(xyz)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

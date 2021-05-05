@@ -6,7 +6,7 @@ import inspect
 import sys
 
 import compas
-from compas.base import Base
+from compas.data import Data
 from compas.files.xml import XML
 from compas.files.xml import XMLElement
 from compas.utilities import memoize
@@ -95,8 +95,7 @@ class URDF(object):
 
         Examples
         --------
-        >>> from compas.files import URDF
-        >>> urdf = URDF.from_file('/urdf/ur5.urdf')
+        >>> urdf = URDF.from_file(compas.get("ur5.xacro"))
         """
         return cls(XML.from_file(source))
 
@@ -111,7 +110,6 @@ class URDF(object):
 
         Examples
         --------
-        >>> from compas.files import URDF
         >>> urdf = URDF.from_string('<robot name="panda"/>')
         """
         return cls(XML.from_string(text))
@@ -127,8 +125,7 @@ class URDF(object):
 
         Examples
         --------
-        >>> from compas.files import URDF
-        >>> urdf = URDF.read('/urdf/ur5.urdf')
+        >>> urdf = URDF.from_file(compas.get("ur5.xacro"))
         """
         return cls.from_file(source)
 
@@ -322,7 +319,7 @@ class URDFParser(object):
         return result
 
 
-class URDFGenericElement(Base):
+class URDFGenericElement(Data):
     """Generic representation for all URDF elements that
     are not explicitly supported."""
 

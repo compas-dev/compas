@@ -194,13 +194,3 @@ def bestfit_sphere_numpy(points):
     t = (C[0]*C[0]) + (C[1]*C[1]) + (C[2]*C[2]) + C[3]
     radius = sqrt(t)
     return [float(C[0][0]), float(C[1][0]), float(C[2][0])], radius
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

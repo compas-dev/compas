@@ -303,14 +303,3 @@ def coerce_sequence_of_list(sequence):
                 item = list(item)
         items.append(item)
     return items
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

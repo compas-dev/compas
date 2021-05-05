@@ -28,8 +28,17 @@ jobs:
       - name: Install dependencies
         run: |
           choco install ironpython --version=2.7.8.1
+          curl -o ironpython-pytest.tar.gz -LJO https://pypi.debian.net/ironpython-pytest/latest
           ipy -X:Frames -m ensurepip
-          ipy -X:Frames -m pip install ironpython-pytest
+          ipy -X:Frames -m pip install --no-deps ironpython-pytest.tar.gz
+      - uses: NuGet/setup-nuget@v1.0.5
+      - name: Install dependencies
+        run: |
+          choco install ironpython --version=2.7.8.1
+      - uses: compas-dev/compas-actions.ghpython_components@v1
+        with:
+          source: src/compas_ghpython/components
+          target: src/compas_ghpython/components
       - name: Test import
         run: |
           ipy -m compas

@@ -41,11 +41,3 @@ def uv_points_from_surface(srf, u_div, v_div):
             uv_points[u][v] = rs.EvaluateSurface(srf, uv[0], uv[1])
 
     return uv_points
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

@@ -83,13 +83,3 @@ def unset_array_print_precision():
 
     """
     set_printoptions(formatter=None)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

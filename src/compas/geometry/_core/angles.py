@@ -52,6 +52,7 @@ def angle_vectors(u, v, deg=False, tol=0.0):
     Examples
     --------
     >>> angle_vectors([0.0, 1.0, 0.0], [1.0, 0.0, 0.0])
+    1.57079
 
     """
     L = length_vector(u) * length_vector(v)
@@ -93,6 +94,7 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
     --------
     >>> normal = [0.0, 0.0, 1.0]
     >>> angle_vectors_signed([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], normal)
+    -1.57079
     """
     angle = angle_vectors(u, v)
     normal_uv = cross_vectors(u, v)
@@ -386,13 +388,3 @@ def angle_planes(a, b, deg=False):
     90.0
     """
     return angle_vectors(a[1], b[1], deg)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod()

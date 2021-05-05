@@ -90,11 +90,3 @@ class FacesConduit(BaseConduit):
                 e.Display.DrawPolygon(points, self.color[i], True)
             else:
                 e.Display.DrawPolygon(points, self._default_color, True)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

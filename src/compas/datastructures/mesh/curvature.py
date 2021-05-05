@@ -64,13 +64,3 @@ def trimesh_gaussian_curvature(mesh):
                 angles.append(angle_points(o, a, b))
         curvature.append(pi2 - sum(angles))
     return curvature
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

@@ -516,25 +516,3 @@ class PLYWriter(object):
             vertices = self.mesh.face_vertices(fkey)
             v = len(vertices)
             self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import os
-
-    from compas.datastructures import Mesh
-
-    FILE = os.path.join(compas.DATA, 'tubemesh.ply')
-
-    mesh = Mesh.from_json(compas.get('tubemesh.json'))
-    mesh.to_ply(FILE, author="Tom Van Mele")
-
-    ply = PLY(FILE)
-    print(len(ply.reader.vertices) == ply.reader.number_of_vertices)
-    print(len(ply.reader.faces) == ply.reader.number_of_faces)
-    print(len(ply.reader.faces))
-    print(ply.reader.number_of_faces)

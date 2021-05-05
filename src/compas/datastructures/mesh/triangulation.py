@@ -26,13 +26,3 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
             # mesh.facedata[t2] = attr.copy()
             if fkey in mesh.facedata:
                 del mesh.facedata[fkey]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())
