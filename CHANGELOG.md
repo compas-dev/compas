@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added first Grasshopper component: COMPAS Info
 * Added `compas_rhino.utilities.set_object_attributes`.
 * Added `from_jsonstring` and `to_jsonstring`.
+* Added `compas_plotters.Plotter`.
+* Added `compas_plotters.artists.MeshArtist`.
 
 ### Changed
 
@@ -22,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `doctest` execution code from src.
 * Removed `if __name__ == '__main__'` section from src.
 * Optimized the conversion of Rhino Meshes to COMPAS meshes.
+* Deprecating `compas_plotters.GeometryPlotter`, `compas_plotters.MeshPlotter`, `compas_plotters.NetworkPlotter`.
 
 ### Removed
 
