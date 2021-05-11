@@ -102,7 +102,7 @@
   
         
           
-          <span class="target" id="module-compas_rhino.objects"></span><div class="section" id="objects">
+          <span class="target" id="module-compas_rhino.objects"></span><section id="objects">
 <h1>objects</h1>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
@@ -119,11 +119,11 @@
     <span class="n">meshobject</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<div class="section" id="networkobject">
+<section id="networkobject">
 <h2>NetworkObject</h2>
 <dl class="py class">
-<dt id="compas_rhino.objects.NetworkObject">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.objects.</span></code><code class="sig-name descname"><span class="pre">NetworkObject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.NetworkObject">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.objects.</span></span><span class="sig-name descname"><span class="pre">NetworkObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Class for representing COMPAS networkes in Rhino.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -138,20 +138,20 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt id="compas_rhino.objects.NetworkObject.clear">
-<code class="sig-name descname"><span class="pre">clear</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L202"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.NetworkObject.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L202"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Clear all previously created Rhino objects.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.NetworkObject.draw">
-<code class="sig-name descname"><span class="pre">draw</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L207"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.NetworkObject.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L207"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the object representing the network.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.NetworkObject.modify_edges">
-<code class="sig-name descname"><span class="pre">modify_edges</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L300"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.NetworkObject.modify_edges">
+<span class="sig-name descname"><span class="pre">modify_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L300"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of the edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -169,8 +169,8 @@ Default is to update all attributes.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.NetworkObject.modify_nodes">
-<code class="sig-name descname"><span class="pre">modify_nodes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L280"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.NetworkObject.modify_nodes">
+<span class="sig-name descname"><span class="pre">modify_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L280"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of the nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -188,8 +188,8 @@ Default is to update all attributes.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.NetworkObject.select_edges">
-<code class="sig-name descname"><span class="pre">select_edges</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L257"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.NetworkObject.select_edges">
+<span class="sig-name descname"><span class="pre">select_edges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L257"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select edges of the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -199,8 +199,8 @@ Default is to update all attributes.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.NetworkObject.select_nodes">
-<code class="sig-name descname"><span class="pre">select_nodes</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L245"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.NetworkObject.select_nodes">
+<span class="sig-name descname"><span class="pre">select_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/networkobject.py#L245"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select nodes of the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -211,13 +211,13 @@ Default is to update all attributes.</p></li>
 
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="meshobject">
+<section id="meshobject">
 <h2>MeshObject</h2>
 <dl class="py class">
-<dt id="compas_rhino.objects.MeshObject">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.objects.</span></code><code class="sig-name descname"><span class="pre">MeshObject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L31"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.objects.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L31"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Class for representing COMPAS meshes in Rhino.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -232,20 +232,20 @@ Default is to update all attributes.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.clear">
-<code class="sig-name descname"><span class="pre">clear</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L266"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L266"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Clear all Rhino objects associated with this object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.draw">
-<code class="sig-name descname"><span class="pre">draw</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L280"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L280"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the object representing the mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.modify_edges">
-<code class="sig-name descname"><span class="pre">modify_edges</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L420"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.modify_edges">
+<span class="sig-name descname"><span class="pre">modify_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L420"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of the edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -263,8 +263,8 @@ Default is to update all attributes.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.modify_faces">
-<code class="sig-name descname"><span class="pre">modify_faces</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L440"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.modify_faces">
+<span class="sig-name descname"><span class="pre">modify_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L440"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of selected faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -282,8 +282,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.modify_vertices">
-<code class="sig-name descname"><span class="pre">modify_vertices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L400"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.modify_vertices">
+<span class="sig-name descname"><span class="pre">modify_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L400"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of selected vertices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -301,8 +301,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.select_edges">
-<code class="sig-name descname"><span class="pre">select_edges</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">edges.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L377"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.select_edges">
+<span class="sig-name descname"><span class="pre">select_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">edges.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L377"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select edges of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -312,8 +312,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.select_faces">
-<code class="sig-name descname"><span class="pre">select_faces</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">faces.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L365"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.select_faces">
+<span class="sig-name descname"><span class="pre">select_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">faces.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L365"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select faces of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -323,8 +323,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.MeshObject.select_vertices">
-<code class="sig-name descname"><span class="pre">select_vertices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">vertices.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L353"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.MeshObject.select_vertices">
+<span class="sig-name descname"><span class="pre">select_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">vertices.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/meshobject.py#L353"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select vertices of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -335,13 +335,13 @@ False otherwise.</p>
 
 </dd></dl>
 
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="volmeshobject">
+<section id="volmeshobject">
 <h2>VolMeshObject</h2>
 <dl class="py class">
-<dt id="compas_rhino.objects.VolMeshObject">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_rhino.objects.</span></code><code class="sig-name descname"><span class="pre">VolMeshObject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volmesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L25"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.objects.</span></span><span class="sig-name descname"><span class="pre">VolMeshObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volmesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L25"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Class for representing COMPAS volmeshes in Rhino.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -356,20 +356,20 @@ False otherwise.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.clear">
-<code class="sig-name descname"><span class="pre">clear</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L255"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L255"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Clear all objects previously drawn by this artist.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.draw">
-<code class="sig-name descname"><span class="pre">draw</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L268"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L268"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the volmesh using the visualisation settings.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.modify_edges">
-<code class="sig-name descname"><span class="pre">modify_edges</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L403"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.modify_edges">
+<span class="sig-name descname"><span class="pre">modify_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L403"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of the edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -387,8 +387,8 @@ Default is to update all attributes.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.modify_faces">
-<code class="sig-name descname"><span class="pre">modify_faces</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L423"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.modify_faces">
+<span class="sig-name descname"><span class="pre">modify_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L423"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of selected faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -406,8 +406,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.modify_vertices">
-<code class="sig-name descname"><span class="pre">modify_vertices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L383"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.modify_vertices">
+<span class="sig-name descname"><span class="pre">modify_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L383"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Update the attributes of selected vertices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -425,8 +425,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.select_edges">
-<code class="sig-name descname"><span class="pre">select_edges</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">edges.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L360"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.select_edges">
+<span class="sig-name descname"><span class="pre">select_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">edges.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L360"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select edges of the volmesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -436,8 +436,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.select_faces">
-<code class="sig-name descname"><span class="pre">select_faces</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">faces.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L348"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.select_faces">
+<span class="sig-name descname"><span class="pre">select_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">faces.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L348"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select faces of the volmesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -447,8 +447,8 @@ False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_rhino.objects.VolMeshObject.select_vertices">
-<code class="sig-name descname"><span class="pre">select_vertices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">vertices.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L336"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas_rhino.objects.VolMeshObject.select_vertices">
+<span class="sig-name descname"><span class="pre">select_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Select</span> <span class="pre">vertices.'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/objects/volmeshobject.py#L336"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Select vertices of the volmesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -459,8 +459,8 @@ False otherwise.</p>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
         
       </main>

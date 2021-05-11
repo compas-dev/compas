@@ -100,7 +100,7 @@
   
         
           
-          <div class="section" id="geometric-maps">
+          <section id="geometric-maps">
 <h1>Geometric Maps</h1>
 <p>Geometric maps provide a simple, but effective way to identify points that can be
 considered equal up to a specified precision. A geometric map basically divides
@@ -112,7 +112,7 @@ coordinate system.</p>
 to an index in a list, a key in another dictionary, or to an actual geometric location.
 The keys of a dictionary form a set. Therefore the keys are unique and lookups in
 a dictionary are very fast.</p>
-<div class="section" id="comparing-distances">
+<section id="comparing-distances">
 <h2>Comparing distances</h2>
 <p>The concept is best explained with an example. Consider a set of line segments defined
 by their start and end point coordinates. To determine how the lines are connected,
@@ -174,8 +174,8 @@ per coordinate axis. This has the advantage that when the points don’t match
 the calculation gets interrupted faster than when calculating the full spatial
 distance.</p>
 </div>
-</div>
-<div class="section" id="geometric-mapping">
+</section>
+<section id="geometric-mapping">
 <h2>Geometric mapping</h2>
 <p>The code above works fine and is fast enough for small sets of lines.
 However, computation time grows exponentially when the number of lines increases.
@@ -208,8 +208,8 @@ Therefore, things slow down pretty quickly…</p>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">edges</span><span class="p">))</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="identifying-elements">
+</section>
+<section id="identifying-elements">
 <h2>Identifying elements</h2>
 <p>Geometric maps are used internally for many things, such as computing the connectivity between geometric objects as illustrated above.
 This is for example the mechanism behind <code class="xref py py-meth docutils literal notranslate"><span class="pre">Network.from_lines()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">Mesh.from_polygons()</span></code>.</p>
@@ -239,8 +239,8 @@ This is for example the mechanism behind <code class="xref py py-meth docutils l
         <span class="c1"># or add a load to it based on the name of the matching point</span>
 </code></pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>

@@ -100,13 +100,13 @@
   
         
           
-          <div class="section" id="meshes">
+          <section id="meshes">
 <h1>Meshes</h1>
 <p class="lead">Meshes are everywhere in geometry processing, computer graphics,
 additive manufacturing processes, Finite Element Analysis etc.
 COMPAS meshes are polygon meshes with support for n-sided polygonal faces.
 They can represent manifold, open or closed, polygonal surfaces.</p>
-<div class="section" id="data-structure">
+<section id="data-structure">
 <h2>Data structure</h2>
 <p>In COMPAS meshes are presented using a half-edge data structure. In a
 half-edge data structure, each edge is composed of two half-edges with
@@ -116,8 +116,8 @@ at most to two. The half-edges of a face form a continuous cycle,
 connecting the vertices of the face in a specific order forming a closed
 n-sided polygon. The ordering of the vertices determines the direction
 of its normal.</p>
-</div>
-<div class="section" id="building-a-mesh">
+</section>
+<section id="building-a-mesh">
 <h2>Building a Mesh</h2>
 <p>Meshes can be built from scratch by adding vertices and faces.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
@@ -132,8 +132,8 @@ of its normal.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="constructors">
+</section>
+<section id="constructors">
 <h2>Constructors</h2>
 <p>Building a mesh vertex per vertex and face per face is fine for very simple meshes,
 but quickly becomes tedious for meshes of relevant size.
@@ -155,8 +155,8 @@ This process is only successful if the input lines form a planar graph.
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="geometry-formats">
+</section>
+<section id="geometry-formats">
 <h2>Geometry Formats</h2>
 <p>The mesh also supports constructors based on common geometry formats for 3D polygon mesh geometry.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
@@ -172,8 +172,8 @@ This process is only successful if the input lines form a planar graph.
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_stl</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="vertices-faces-edges">
+</section>
+<section id="vertices-faces-edges">
 <h2>Vertices, Faces, Edges</h2>
 <p>To access the vertices, faces, and edges of the mesh data structure, use the corresponding methods.
 Note that these methods return generator objects that have to be consumed by iteration.</p>
@@ -224,8 +224,8 @@ when converting a sequence of identifiers to a list. The ordering of these ident
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">key_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="topology">
+</section>
+<section id="topology">
 <h2>Topology</h2>
 <p>Through its half-edge data structure, a mesh can answer several topological questions
 about itself and its components.</p>
@@ -248,8 +248,8 @@ about itself and its components.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">halfedge_prev</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="geometry">
+</section>
+<section id="geometry">
 <h2>Geometry</h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_normal</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
@@ -270,8 +270,8 @@ about itself and its components.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_point</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="attributes">
+</section>
+<section id="attributes">
 <h2>Attributes</h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
@@ -283,8 +283,8 @@ about itself and its components.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">edges_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="s1">&#39;force&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="selections">
+</section>
+<section id="selections">
 <h2>Selections</h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)})</span>
 </code></pre></div>
@@ -294,17 +294,17 @@ about itself and its components.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">))</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="serialization">
+</section>
+<section id="serialization">
 <h2>Serialization</h2>
-</div>
-<div class="section" id="algorithms">
+</section>
+<section id="algorithms">
 <h2>Algorithms</h2>
-</div>
-<div class="section" id="plugins">
+</section>
+<section id="plugins">
 <h2>Plugins</h2>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>

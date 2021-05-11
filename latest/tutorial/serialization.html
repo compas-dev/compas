@@ -100,7 +100,7 @@
   
         
           
-          <div class="section" id="data-serialization">
+          <section id="data-serialization">
 <span id="tut-serialization"></span><h1>Data Serialization</h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -121,7 +121,7 @@ which forces them to define the methods and properties that form the backbone of
 </ul>
 <p>The “from” methods are class methods (<code class="docutils literal notranslate"><span class="pre">&#64;classmethod</span></code>) and act as alternative constructors.
 The “to” methods are their counterparts that produce compatible data from object instances.</p>
-<div class="section" id="explicit-serialization">
+<section id="explicit-serialization">
 <h2>Explicit serialization</h2>
 <p>Create a mesh, convert it do its data representation, and construct a new mesh from that data.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># to data</span>
@@ -145,8 +145,8 @@ The “to” methods are their counterparts that produce compatible data from ob
 <span class="n">mesh2</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="implicit-serialization">
+</section>
+<section id="implicit-serialization">
 <h2>Implicit serialization</h2>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># to json</span>
 
@@ -186,8 +186,8 @@ The “to” methods are their counterparts that produce compatible data from ob
 <span class="nb">print</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
