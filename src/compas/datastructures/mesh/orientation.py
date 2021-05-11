@@ -219,13 +219,3 @@ def mesh_flip_cycles(mesh):
             mesh.halfedge[u][v] = fkey
             if u not in mesh.halfedge[v]:
                 mesh.halfedge[v][u] = None
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

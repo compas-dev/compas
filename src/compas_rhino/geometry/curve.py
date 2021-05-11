@@ -11,7 +11,7 @@ from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Circle
 
-from ._geometry import BaseRhinoGeometry
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoCurve']
@@ -431,11 +431,3 @@ class RhinoCurve(BaseRhinoGeometry):
         grip.Select(True, True)
         sc.doc.Views.Redraw()
         return grip
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

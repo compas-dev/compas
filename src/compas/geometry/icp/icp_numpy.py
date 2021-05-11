@@ -104,13 +104,3 @@ def icp_numpy(source, target, tol=1e-3):
         A = transform_points_numpy(A, X)
 
     return A, X
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

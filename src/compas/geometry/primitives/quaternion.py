@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Quaternion
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -303,11 +309,12 @@ class Quaternion(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
         >>> from compas.geometry import Frame
         >>> q = [1., -2., 3., -4.]
         >>> F = Frame.from_quaternion(q)
         >>> Q = Quaternion.from_frame(F)
-        >>> allclose(list(Q.canonized()), quaternion_canonize(quaternion_unitize(q)))
+        >>> allclose(Q.canonized(), quaternion_canonize(quaternion_unitize(q)))
         True
         """
         w, x, y, z = frame.quaternion
@@ -462,16 +469,3 @@ class Quaternion(Primitive):
         """
         qc = quaternion_conjugate(self)
         return Quaternion(*qc)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    from compas.geometry import allclose  # noqa: F401
-
-    doctest.testmod(globs=globals())

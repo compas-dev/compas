@@ -1,3 +1,9 @@
+"""
+.. testsetup::
+
+    from compas.geometry import Bezier
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -249,13 +255,3 @@ class Bezier(Primitive):
             t = i / divisor
             locus.append(self.point(t))
         return locus
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import doctest
-    doctest.testmod(globs=globals())

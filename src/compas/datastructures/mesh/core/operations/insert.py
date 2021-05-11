@@ -124,13 +124,3 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
             mesh.add_face(face_vertices, fkey)
 
     return vkey
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

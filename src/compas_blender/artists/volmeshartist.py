@@ -19,12 +19,3 @@ class VolMeshArtist(MeshArtist):
     @volmesh.setter
     def volmesh(self, volmesh):
         self.datastructure = volmesh
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

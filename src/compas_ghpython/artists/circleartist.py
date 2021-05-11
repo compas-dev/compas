@@ -40,12 +40,3 @@ class CircleArtist(PrimitiveArtist):
         normal = list(primitive.plane.normal)
         radius = primitive.radius
         return {'plane': [point, normal], 'radius': radius, 'color': None, 'name': primitive.name}
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

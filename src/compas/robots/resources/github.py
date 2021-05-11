@@ -107,11 +107,3 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         # storing a temp file for these urls
         tempfile, _ = urlretrieve(url)
         return _mesh_import(url, tempfile)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

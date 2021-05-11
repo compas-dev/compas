@@ -59,7 +59,7 @@ def test_json_mesh():
 def test_json_pretty():
     result = compas.json_dumps(dict(a=12, b=6565), pretty=True)
     # strip some spacing to make the test pass on ironpython
-    result = '\n'.join([l.strip() for l in result.split('\n')])
+    result = '\n'.join([line.strip() for line in result.split('\n')])
     assert result == """{\n"a": 12,\n"b": 6565\n}"""
 
 

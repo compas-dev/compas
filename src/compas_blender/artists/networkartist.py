@@ -184,11 +184,3 @@ class NetworkArtist(BaseArtist):
         objects = compas_blender.draw_lines(lines, self.edgecollection)
         self.object_edge = zip(objects, edges)
         return objects
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 # import compas_rhino
-from ._primitiveartist import PrimitiveArtist
+from compas_rhino.artists._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['PlaneArtist']
@@ -33,12 +33,3 @@ class PlaneArtist(PrimitiveArtist):
 
         """
         raise NotImplementedError
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

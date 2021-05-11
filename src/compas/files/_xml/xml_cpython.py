@@ -6,8 +6,8 @@ import xml.etree.ElementTree as ET
 from http.client import HTTPResponse
 from xml.dom import minidom
 
-from .xml_shared import shared_xml_from_file
-from .xml_shared import shared_xml_from_string
+from compas.files._xml.xml_shared import shared_xml_from_file
+from compas.files._xml.xml_shared import shared_xml_from_string
 
 __all__ = [
     'xml_from_file',

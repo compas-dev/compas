@@ -69,7 +69,7 @@ def json_dumps(data, pretty=False):
     >>> from compas.geometry import Point, Vector
     >>> data1 = [Point(0, 0, 0), Vector(0, 0, 0)]
     >>> s = compas.json_dumps(data1)
-    >>> data2 compas.json_loads(s)
+    >>> data2 = compas.json_loads(s)
     >>> data1 == data2
     True
     """
@@ -123,7 +123,7 @@ def json_loads(s):
     >>> from compas.geometry import Point, Vector
     >>> data1 = [Point(0, 0, 0), Vector(0, 0, 0)]
     >>> s = compas.json_dumps(data1)
-    >>> data2 = compas.json_loads()
+    >>> data2 = compas.json_loads(s)
     >>> data1 == data2
     True
     """

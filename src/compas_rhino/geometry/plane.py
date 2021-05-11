@@ -7,7 +7,7 @@ import Rhino
 from compas.geometry import Plane
 from compas.geometry import Frame
 
-from ._geometry import BaseRhinoGeometry
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoPlane']
@@ -98,11 +98,3 @@ class RhinoPlane(BaseRhinoGeometry):
             A COMPAS frame object.
         """
         return Frame(self.point, self.xaxis, self.yaxis)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

@@ -36,14 +36,3 @@ def network_is_connected(network):
         return False
     nodes = breadth_first_traverse(network.adjacency, network.get_any_node())
     return len(nodes) == network.number_of_nodes()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-
-    doctest.testmod(globs=globals())

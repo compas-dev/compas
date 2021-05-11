@@ -147,14 +147,3 @@ def convex_hull_xy(points, strict=False):
     # Concatenation of the lower and upper hulls gives the convex hull.
     # Last point of each list is omitted because it is repeated at the beginning of the other list.
     return lower[:-1] + upper[:-1]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

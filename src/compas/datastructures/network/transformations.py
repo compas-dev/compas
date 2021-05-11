@@ -65,13 +65,3 @@ def network_transformed(network, transformation):
     network_copy = network.copy()
     network_transform(network_copy, transformation)
     return network_copy
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

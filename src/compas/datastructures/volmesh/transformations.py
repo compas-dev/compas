@@ -27,8 +27,10 @@ def volmesh_transform(volmesh, transformation):
 
     Examples
     --------
-    >>> volmesh = VolMesh.from_obj(compas.get('cube.obj'))
-    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
+    >>> from compas.datastructures import VolMesh
+    >>> from compas.geometry import Rotation
+    >>> volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
+    >>> T = Rotation.from_axis_and_angle([0, 0, 1], math.pi / 4)
     >>> volmesh_transform(volmesh, T)
 
     """
@@ -61,21 +63,13 @@ def volmesh_transformed(volmesh, transformation):
 
     Examples
     --------
-    >>> volmesh = Mesh.from_obj(compas.get('cube.obj'))
-    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
-    >>> volmesh = volmesh_transformed(volmesh, T)
+    >>> from compas.datastructures import VolMesh
+    >>> from compas.geometry import Rotation
+    >>> volmesh1 = VolMesh.from_obj(compas.get('boxes.obj'))
+    >>> T = Rotation.from_axis_and_angle([0, 0, 1], math.pi / 4)
+    >>> volmesh2 = volmesh_transformed(volmesh1, T)
 
     """
     volmesh_copy = volmesh.copy()
     volmesh_transform(volmesh_copy, transformation)
     return volmesh_copy
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())

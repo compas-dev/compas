@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from ._shapeartist import ShapeArtist
+from compas_rhino.artists._shapeartist import ShapeArtist
 
 
 class PolyhedronArtist(ShapeArtist):
@@ -80,11 +80,3 @@ class PolyhedronArtist(ShapeArtist):
                 guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass
