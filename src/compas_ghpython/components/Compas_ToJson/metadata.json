@@ -26,8 +26,8 @@
         ],
         "outputParameters": [
             {
-                "name": "result",
-                "description": "File-path or JSON string."
+                "name": "json",
+                "description": "JSON file path or JSON string."
             }
         ]
     }

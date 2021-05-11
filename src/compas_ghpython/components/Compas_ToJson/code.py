@@ -8,11 +8,11 @@ import compas
 
 class CompasInfo(component):
     def RunScript(self, data, filepath, pretty):
-        result = filepath
+        json = filepath
 
         if filepath:
             compas.json_dump(data, filepath, pretty)
         else:
-            result = compas.json_dumps(data, pretty)
+            json = compas.json_dumps(data, pretty)
 
-        return result
+        return json

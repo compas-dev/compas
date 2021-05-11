@@ -10,8 +10,8 @@
         "isAdvancedMode": true,
         "inputParameters": [
             {
-                "name": "json_file_or_string",
-                "description": "File path to a JSON file or JSON string.",
+                "name": "json",
+                "description": "JSON file path or JSON string.",
                 "typeHintID": "str"
             }
         ],
