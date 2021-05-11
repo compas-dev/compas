@@ -1,0 +1,25 @@
+{
+    "name": "From JSON",
+    "nickname": "From JSON",
+    "category": "COMPAS",
+    "subcategory": "Data",
+    "description": "Deserializes JSON into COMPAS objects.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "inputParameters": [
+            {
+                "name": "json",
+                "description": "JSON file path or JSON string.",
+                "typeHintID": "str"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "result",
+                "description": "Deserialized objects."
+            }
+        ]
+    }
+}
