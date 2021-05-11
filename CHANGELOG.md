@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `doctest` execution code from src.
 * Removed `if __name__ == '__main__'` section from src.
 * Optimized the conversion of Rhino Meshes to COMPAS meshes.
+* Fix issue with GH User symlink created as directory symlink on some cases.
 
 ### Removed
 
