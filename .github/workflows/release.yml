@@ -69,6 +69,6 @@ jobs:
         run: |
             twine check dist/*
             twine upload dist/* --skip-existing
-        with:
+        env:
             TWINE_USERNAME: __token__
             TWINE_PASSWORD: ${{ secrets.PYPI }}
