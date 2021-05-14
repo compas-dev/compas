@@ -52,16 +52,19 @@ def trimesh_gaussian_curvature(M):
     >>> M = sphere.to_vertices_and_faces()
 
     Compute the discrete Gaussian curvature
-    
+
     >>> K = trimesh_gaussian_curvature(M)
     """
-    # (1) From mesh(list, list) to Rhino.Geometry.Mesh
+    # (1) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
-    for vertices, faces in M:
-        for x, y, z in vertices:
-            mesh.Vertices.Add(x, y, z)
-        for face in faces:
-            mesh.Faces.AddFace(*face)
+    if type(M) != Rhino.Geometry.Mesh:
+        for vertices, faces in M:
+            for x, y, z in vertices:
+                mesh.Vertices.Add(x, y, z)
+            for face in faces:
+                mesh.Faces.AddFace(*face)
+    else:
+        mesh = M
 
     # (2) Prepare ingredient and return list
     pi_2 = 2 * pi
@@ -69,18 +72,20 @@ def trimesh_gaussian_curvature(M):
 
     # (3) Main - loop every vertex for angle defect
     for i in range(mesh.Vertices.Count):
-        vertex_neighbors = mesh.TopologyVertices.ConnectedTopologyVertices(mesh.TopologyVertices.TopologyVertexIndex(i), True)
-        # in case this is not a proper mesh structure
-        if vertex_neighbors is None:
+        vert_neighbors_topo = mesh.TopologyVertices.ConnectedTopologyVertices(mesh.TopologyVertices.TopologyVertexIndex(i), True)
+        vert_neighbors = []
+        if vert_neighbors_topo is None:
             K.append(0)
             continue
+        for vert in vert_neighbors_topo:
+            vert_neighbors.extend(mesh.TopologyVertices.MeshVertexIndices(vert))
         angles = []
-        valence = len(vertex_neighbors)
+        valence = len(vert_neighbors)
         v_i = mesh.Vertices[i]
         # loop every neighbor
         for j in range(valence):
-            v_j = mesh.Vertices[vertex_neighbors[j]]
-            v_k = mesh.Vertices[vertex_neighbors[(j + 1) % valence]]
+            v_j = mesh.Vertices[vert_neighbors[j]]
+            v_k = mesh.Vertices[vert_neighbors[(j + 1) % valence]]
             e_ij = v_j - v_i
             e_ik = v_k - v_i
             angles.append(Rhino.Geometry.Vector3d.VectorAngle(e_ij, e_ik))
