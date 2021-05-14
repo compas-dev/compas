@@ -51,3 +51,24 @@ def trimesh_principal_curvature(M):
     >>>
     """
     raise NotImplementedError
+
+
+@pluggable(category="trimesh")
+def trimesh_mean_curvature(M):
+    """Compute the discrete mean curvature of a triangle mesh.
+
+    Parameters
+    ----------
+    M : (list, list)
+        A mesh represented by a list of vertices and a list of faces.
+
+    Returns
+    -------
+    list
+        The discrete mean curvature per vertex.
+
+    Examples
+    --------
+    >>>
+    """
+    raise NotImplementedError
