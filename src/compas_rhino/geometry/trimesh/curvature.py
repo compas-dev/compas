@@ -12,7 +12,7 @@ from compas.plugins import plugin
 __all__ = [
     'trimesh_gaussian_curvature',
     'trimesh_mean_curvature',
-    'trimesh_principle_curvature',
+    'trimesh_principal_curvature',
 ]
 
 
@@ -195,7 +195,7 @@ def trimesh_principal_curvature(M):
     Description: The discrete principal curvature is computed by mean curvature, Gaussian curvature, and vertex area.
 
     Notation Convention:
-    :math:`\kappa_1, \kappa_2` - The max principle curvature and the min principle curvature
+    :math:`\kappa_1, \kappa_2` - The max principal curvature and the min principal curvature
     :math:`H_i` - the discrete mean curvature of vertex i
     :math:`K_i` - the discrete Gaussian curvature of vertex i
     :math:`A_i` - the vertex area of vertex i
@@ -214,9 +214,9 @@ def trimesh_principal_curvature(M):
     >>> sphere.quads_to_triangles()
     >>> M = sphere.to_vertices_and_faces()
 
-    Compute the discrete principle curvature
+    Compute the discrete principal curvature
 
-    >>> H = trimesh_principle_curvature(M)
+    >>> H = trimesh_principal_curvature(M)
     """
     # (1) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
