@@ -49,6 +49,7 @@ Traversal
     :toctree: generated/
     :nosignatures:
 
+    astar_lightest_path
     astar_shortest_path
     breadth_first_ordering
     breadth_first_traverse
@@ -69,6 +70,7 @@ from .traversal import (
     breadth_first_traverse,
     breadth_first_paths,
     shortest_path,
+    astar_lightest_path,
     astar_shortest_path,
     dijkstra_distances,
     dijkstra_path
@@ -101,6 +103,7 @@ __all__ = [
     'breadth_first_traverse',
     'breadth_first_paths',
     'shortest_path',
+    'astar_lightest_path',
     'astar_shortest_path',
     'dijkstra_distances',
     'dijkstra_path',
