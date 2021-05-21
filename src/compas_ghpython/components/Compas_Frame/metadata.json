@@ -1,0 +1,28 @@
+{
+    "name": "Frame",
+    "nickname": "Frame",
+    "category": "COMPAS",
+    "subcategory": "Display",
+    "description": "Draws a frame or plane",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "inputParameters": [
+            {
+                "name": "plane",
+                "description": "The frame or plane to be drawn."
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "origin",
+                "description": "The drawn origin."
+            },
+            {
+                "name": "axes",
+                "description": "The drawn axes."
+            }
+        ]
+    }
+}
