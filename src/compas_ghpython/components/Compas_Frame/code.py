@@ -3,7 +3,6 @@ Draws a frome or plane.
 """
 from ghpythonlib.componentbase import executingcomponent as component
 
-import compas
 from compas_ghpython.artists import FrameArtist
 from compas_ghpython.components import coerce_frame
 
