@@ -74,13 +74,11 @@ class Circle(Primitive):
 
     @property
     def JSONSCHEMA(self):
-        import compas
-        from distutils.version import LooseVersion
-        version = LooseVersion(compas.__version__)
+        from compas import versionstring
         schema = {
             "$schema": "http://json-schema.org/draft-07/schema#",
             "$id": "https://github.com/compas-dev/compas/schemas/circle.json",
-            "$compas": version.vstring.split('-')[0],
+            "$compas": versionstring,
             "type": "object",
             "properties": {
                 "plane": {
