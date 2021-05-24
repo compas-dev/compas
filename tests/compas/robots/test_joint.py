@@ -1,5 +1,7 @@
 from math import pi
 
+import pytest
+
 
 from compas.geometry import Transformation
 from compas.geometry import Translation
@@ -7,6 +9,15 @@ from compas.robots import Axis
 from compas.robots import Joint
 from compas.robots import Limit
 from compas.robots import Mimic
+
+
+def test_constructor():
+    assert Joint("joint", "revolute", "parent_joint", "child_joint")
+
+
+def test_constructor_type_guard():
+    with pytest.raises(ValueError):
+        Joint("joint", "synovial", "femur", "tibia")
 
 
 def test_revolute_calculate_transformation():
