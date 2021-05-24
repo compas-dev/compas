@@ -128,6 +128,25 @@ class Point(Primitive):
         self.z = z
 
     @property
+    def DATASCHEMA(self):
+        from schema import And, Schema
+        return Schema(And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)))
+
+    @property
+    def JSONSCHEMA(self):
+        from compas import versionstring
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/point.json",
+            "$compas": versionstring,
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {"type": "number"}
+        }
+        return schema
+
+    @property
     def data(self):
         """dict : The data representing the point."""
         return list(self)
