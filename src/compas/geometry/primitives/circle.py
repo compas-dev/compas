@@ -62,6 +62,43 @@ class Circle(Primitive):
         self.radius = radius
 
     @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            "plane": schema.And(
+                lambda x: len(x[0]) == 3 and all(isinstance(i, float) for i in x[0]),
+                lambda x: len(x[1]) == 3 and all(isinstance(i, float) for i in x[1])
+            ),
+            "radius": schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        import compas
+        from distutils.version import LooseVersion
+        version = LooseVersion(compas.__version__)
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/circle.json",
+            "$compas": version.vstring.split('-')[0],
+            "type": "object",
+            "properties": {
+                "plane": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": [
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                    ],
+                },
+                "radius": {"type": "number", "exclusiveMinimum": 0},
+            },
+            "required": ["plane", "radius"]
+        }
+        return schema
+
+    @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
         return {'plane': [list(self.plane.point), list(self.plane.normal)], 'radius': self.radius}
