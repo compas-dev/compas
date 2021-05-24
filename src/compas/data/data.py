@@ -13,7 +13,7 @@ from compas.data.encoders import DataDecoder
 
 
 __all__ = [
-    'Data',
+    'Data'
 ]
 
 # ==============================================================================
@@ -99,7 +99,7 @@ class Data(object):
 
     @data.setter
     def data(self, data):
-        pass
+        raise NotImplementedError
 
     @classmethod
     def from_data(cls, data):
@@ -191,7 +191,7 @@ class Data(object):
         str
             A JSON string representation of the data.
         """
-        compas.json_dumps(self.data, pretty)
+        return compas.json_dumps(self.data, pretty)
 
     def copy(self, cls=None):
         """Make an independent copy of the data object.

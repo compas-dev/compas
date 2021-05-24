@@ -15,9 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Extended `compas.topology.astar_shortest_path` to work on `compas.datastructures.Mesh` and `compas.datastructures.Network`.
+* Fixed `compas.data.Data.to_jsonstring`.
+* Changed `compas.data.Data.data.setter` to raise `NotImplementedError`.
+* Changed annotations of `compas_blender.artists.BaseArtist`.
 
 ### Removed
 
+* Removed duplicate cases from `compas.data.DataEncoder`.
 
 ## [1.6.2] 2021-05-12
 

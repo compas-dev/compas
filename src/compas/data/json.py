@@ -128,13 +128,3 @@ def json_loads(s):
     True
     """
     return json.loads(s, cls=DataDecoder)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    import doctest
-
-    doctest.testmod(globs=globals())
