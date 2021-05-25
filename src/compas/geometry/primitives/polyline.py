@@ -89,7 +89,7 @@ class Polyline(Primitive):
             "$compas": versionstring,
             "type": "object",
             "properties": {
-                "points": {"type": "array", "minItems": 2, "items": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}},
+                "points": {"type": "array", "minItems": 2, "items": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}}
             },
             "required": ["points"]
         }
