@@ -3,8 +3,16 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino
+from Rhino.Geometry.Vector3d import Multiply, CrossProduct
+from Rhino.Geometry.Point3d import FromPoint3f
+
 from math import pi
 from math import sqrt
+from math import atan2
+
+from clr import StrongBox
+from scriptcontext import doc
+from System import Array
 
 from compas.plugins import plugin
 
@@ -159,17 +167,33 @@ def trimesh_mean_curvature(M):
     # (3) Main - loop over all vertices
     for i in range(mesh.Vertices.Count):
         edges = mesh.TopologyVertices.ConnectedEdges(mesh.TopologyVertices.TopologyVertexIndex(i))
+        vertex = FromPoint3f(mesh.Vertices[i])
         if edges is None:
             H.append(0)
             continue
         x = []
+        # (3.1) loop topology edges of such vertex
         for edge in edges:
             l_ij = mesh.TopologyEdges.EdgeLine(edge).Length
-            faces = mesh.TopologyEdges.GetConnectedFaces(edge)
+            orientation = StrongBox[Array[bool]]()
+            faces = mesh.TopologyEdges.GetConnectedFaces(edge, orientation)
             if len(faces) != 2:
                 x.append(0)
                 continue
-            angle = Rhino.Geometry.Vector3d.VectorAngle(faces_normal[faces[0]], faces_normal[faces[1]])
+            # (3.2) to know which face is on left or right
+            orientation = list(orientation.Value)
+            start_pt = mesh.TopologyEdges.EdgeLine(edge).From
+            direction = start_pt.EpsilonEquals(vertex, doc.ModelAbsoluteTolerance)
+            normals = dict(zip(orientation, [faces_normal[faces[0]], faces_normal[faces[1]]]))
+            e = mesh.TopologyEdges.EdgeLine(edge).Direction
+            e.Unitize()
+            n1 = normals[True]
+            n2 = normals[False]
+            if not direction:
+                e.Reverse()
+                n1, n2 = n2, n1
+            # (3.3) calculate dihedral angle
+            angle = dihedral_angle(e, n1, n2)
             x.append(l_ij * angle)
         H.append(1/4 * sum(x))
 
@@ -279,3 +303,14 @@ def trimesh_barycentric_area(mesh):
 
     # (3) output
     return areas
+
+
+def dihedral_angle(e, n1, n2):
+    # Compute the dihedral angle of an edge
+    # e: the vector from vertex i to j
+    # n1: the normal vector of MeshFace on LEFT side
+    # n2: the normal vector of MeshFace on RIGHT side
+
+    cos_theta = Multiply(n1, n2)
+    sin_theta = Multiply(CrossProduct(n1, n2), e)
+    return atan2(sin_theta, cos_theta)
