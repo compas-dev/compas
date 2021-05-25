@@ -69,10 +69,11 @@ class Line(Primitive):
 
     @property
     def DATASCHEMA(self):
-        from schema import And, Schema
+        from schema import Schema
+        from compas.data import is_float3
         return Schema({
-            "start": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)),
-            "end": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x))
+            "start": is_float3,
+            "end": is_float3
         })
 
     @property

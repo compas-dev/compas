@@ -129,8 +129,9 @@ class Point(Primitive):
 
     @property
     def DATASCHEMA(self):
-        from schema import And, Schema
-        return Schema(And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)))
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema(is_float3)
 
     @property
     def JSONSCHEMA(self):

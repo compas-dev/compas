@@ -66,10 +66,11 @@ class Ellipse(Primitive):
     @property
     def DATASCHEMA(self):
         import schema
+        from compas.data import is_float3
         return schema.Schema({
             "plane": schema.And(
-                lambda x: len(x[0]) == 3 and all(isinstance(i, float) for i in x[0]),
-                lambda x: len(x[1]) == 3 and all(isinstance(i, float) for i in x[1])
+                lambda x: is_float3(x[0]),
+                lambda x: is_float3(x[1])
             ),
             "major": schema.And(float, lambda x: x > 0),
             "minor": schema.And(float, lambda x: x > 0),

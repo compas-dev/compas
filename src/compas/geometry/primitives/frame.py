@@ -86,11 +86,12 @@ class Frame(Primitive):
 
     @property
     def DATASCHEMA(self):
-        from schema import And, Schema
+        from schema import Schema
+        from compas.data import is_float3
         return Schema({
-            "point": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)),
-            "xaxis": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)),
-            "yaxis": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x))
+            "point": is_float3,
+            "xaxis": is_float3,
+            "yaxis": is_float3
         })
 
     @property

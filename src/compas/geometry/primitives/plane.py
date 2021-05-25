@@ -58,10 +58,11 @@ class Plane(Primitive):
 
     @property
     def DATASCHEMA(self):
-        from schema import And, Schema
+        from schema import Schema
+        from compas.data import is_float3
         return Schema({
-            "point": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)),
-            "normal": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x))
+            "point": is_float3,
+            "normal": is_float3
         })
 
     @property
