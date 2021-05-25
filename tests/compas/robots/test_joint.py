@@ -12,13 +12,17 @@ from compas.robots import Mimic
 
 
 def test_constructor_joint_type_str():
-    for type_ in Joint.SUPPORTED_TYPES:
-        assert Joint("joint", type_, "parent_joint", "child_joint")
+    assert Joint("joint", 'revolute', "parent_joint", "child_joint")
+    assert Joint("joint", 'continuous', "parent_joint", "child_joint")
+    assert Joint("joint", 'prismatic', "parent_joint", "child_joint")
+    assert Joint("joint", 'fixed', "parent_joint", "child_joint")
 
 
 def test_constructor_joint_type_int():
-    for type_ in range(len(Joint.SUPPORTED_TYPES)):
-        assert Joint("joint", type_, "parent_joint", "child_joint")
+    assert Joint("joint", Joint.REVOLUTE, "parent_joint", "child_joint")
+    assert Joint("joint", Joint.CONTINUOUS, "parent_joint", "child_joint")
+    assert Joint("joint", Joint.PRISMATIC, "parent_joint", "child_joint")
+    assert Joint("joint", Joint.FIXED, "parent_joint", "child_joint")
 
 
 def test_constructor_joint_type_guard_str():
