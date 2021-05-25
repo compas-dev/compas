@@ -116,7 +116,7 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polyline([{}])".format(", ".join(["{}".format(point) for point in self.points]))
+        return "Polyline([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)

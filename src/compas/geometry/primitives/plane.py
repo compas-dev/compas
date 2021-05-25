@@ -130,7 +130,7 @@ class Plane(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Plane({0}, {1})'.format(self.point, self.normal)
+        return 'Plane({0!r}, {1!r})'.format(self.point, self.normal)
 
     def __len__(self):
         return 2

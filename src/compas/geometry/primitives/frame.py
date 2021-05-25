@@ -185,7 +185,7 @@ class Frame(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Frame({0}, {1}, {2})".format(self.point, self.xaxis, self.yaxis)
+        return "Frame({0!r}, {1!r}, {2!r})".format(self.point, self.xaxis, self.yaxis)
 
     def __len__(self):
         return 3

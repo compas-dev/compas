@@ -159,7 +159,7 @@ class Circle(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Circle({0}, {1})'.format(self.plane, self.radius)
+        return 'Circle({0!r}, {1!r})'.format(self.plane, self.radius)
 
     def __len__(self):
         return 2

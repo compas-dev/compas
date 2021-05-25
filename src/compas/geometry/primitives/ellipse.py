@@ -168,7 +168,7 @@ class Ellipse(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Ellipse({0}, {1}, {2})'.format(self.plane, self.major, self.minor)
+        return 'Ellipse({0!r}, {1!r}, {2!r})'.format(self.plane, self.major, self.minor)
 
     def __len__(self):
         return 3

@@ -146,7 +146,7 @@ class Line(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Line({0}, {1})'.format(self.start, self.end)
+        return 'Line({0!r}, {1!r})'.format(self.start, self.end)
 
     def __len__(self):
         return 2
