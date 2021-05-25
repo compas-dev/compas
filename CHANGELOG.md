@@ -15,9 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Extended `compas.topology.astar_shortest_path` to work on `compas.datastructures.Mesh` and `compas.datastructures.Network`.
-* Joint type in the `compas.robots.Joint` constructor can now be be defined as
-  an index of `Joint.SUPPORTED_TYPES` as well as a member of
-  `Joint.SUPPORTED_TYPES`
+* Allow str or int as joint type in `compas.robots.Joint` constructor
 
 ### Removed
 
