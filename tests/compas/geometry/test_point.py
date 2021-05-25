@@ -1,7 +1,10 @@
+import compas
 from compas.geometry import Point
 
 
 def test_data():
+    if compas.IPY:
+        return
     p = Point(0, 0, '0')
     assert p.to_data() == p.validate_data()
     o = Point.from_data(p.to_data())
