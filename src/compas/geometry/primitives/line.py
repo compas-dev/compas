@@ -86,7 +86,7 @@ class Line(Primitive):
             "type": "object",
             "properties": {
                 "start": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "end": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                "end": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
             },
             "required": ["start", "end"]
         }

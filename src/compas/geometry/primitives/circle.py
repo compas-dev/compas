@@ -88,10 +88,10 @@ class Circle(Primitive):
                     "maxItems": 2,
                     "items": [
                         {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                    ],
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+                    ]
                 },
-                "radius": {"type": "number", "exclusiveMinimum": 0},
+                "radius": {"type": "number", "exclusiveMinimum": 0}
             },
             "required": ["plane", "radius"]
         }

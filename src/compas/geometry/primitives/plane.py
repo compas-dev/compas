@@ -75,7 +75,7 @@ class Plane(Primitive):
             "type": "object",
             "properties": {
                 "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "normal": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                "normal": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
             },
             "required": ["point", "normal"]
         }

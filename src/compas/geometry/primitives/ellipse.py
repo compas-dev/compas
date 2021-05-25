@@ -91,11 +91,11 @@ class Ellipse(Primitive):
                     "maxItems": 2,
                     "items": [
                         {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                    ],
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+                    ]
                 },
                 "major": {"type": "number", "exclusiveMinimum": 0},
-                "minor": {"type": "number", "exclusiveMinimum": 0},
+                "minor": {"type": "number", "exclusiveMinimum": 0}
             },
             "required": ["plane", "major", "minor"]
         }
