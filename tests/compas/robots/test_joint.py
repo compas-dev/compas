@@ -31,10 +31,8 @@ def test_constructor_joint_type_guard_str():
 
 
 def test_constructor_joint_type_guard_int():
-    joint_types = [-1, len(Joint.SUPPORTED_TYPES)]  # just outside acceptable range
-    for type_ in joint_types:
-        with pytest.raises(ValueError):
-            Joint("joint", type_, "femur", "tibia")
+    with pytest.raises(ValueError):
+        Joint("weld", 620, "base_metal1", "base_metal2")
 
 
 def test_revolute_calculate_transformation():
