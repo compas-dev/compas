@@ -250,4 +250,5 @@ class Data(object):
         data = json.loads(jsondata, cls=DataDecoder)
         jsonschema.validate(data, schema=self.JSONSCHEMA)
         self.data = data
-        return self.DATASCHEMA.validate(self.data)
+        self.DATASCHEMA.validate(self.data)
+        return jsondata

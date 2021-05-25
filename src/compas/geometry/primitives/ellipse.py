@@ -64,6 +64,43 @@ class Ellipse(Primitive):
         self.minor = minor
 
     @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            "plane": schema.And(
+                lambda x: len(x[0]) == 3 and all(isinstance(i, float) for i in x[0]),
+                lambda x: len(x[1]) == 3 and all(isinstance(i, float) for i in x[1])
+            ),
+            "major": schema.And(float, lambda x: x > 0),
+            "minor": schema.And(float, lambda x: x > 0),
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        from compas import versionstring
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/ellipse.json",
+            "$compas": versionstring,
+            "type": "object",
+            "properties": {
+                "plane": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": [
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                    ],
+                },
+                "major": {"type": "number", "exclusiveMinimum": 0},
+                "minor": {"type": "number", "exclusiveMinimum": 0},
+            },
+            "required": ["plane", "major", "minor"]
+        }
+        return schema
+
+    @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
         return {'plane': [list(self.plane.point), list(self.plane.normal)], 'major': self.major, 'minor': self.minor}

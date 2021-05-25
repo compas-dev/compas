@@ -85,6 +85,32 @@ class Frame(Primitive):
         self.yaxis = yaxis
 
     @property
+    def DATASCHEMA(self):
+        from schema import And, Schema
+        return Schema({
+            "point": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)),
+            "xaxis": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x)),
+            "yaxis": And(len, lambda x: len(x) == 3 and all(isinstance(i, float) for i in x))
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        from compas import versionstring
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/frame.json",
+            "$compas": versionstring,
+            "type": "object",
+            "properties": {
+                "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                "xaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                "yaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+            },
+            "required": ["point", "xaxis", "yaxis"]
+        }
+        return schema
+
+    @property
     def data(self):
         """dict : The data dictionary that represents the frame."""
         return {'point': list(self.point),
