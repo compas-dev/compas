@@ -395,8 +395,8 @@ class Joint(Data):
     ----------
     name : :obj:`str`
         Unique name for the joint.
-    type : :obj:`str`
-        Joint type.
+    type : :obj:`str` or :obj:`int`
+        Joint type either as a string or an index number. See class attributes for named constants and supported types.
     origin : :class:`Origin`
         Transformation from the parent link to the child link frame.
     parent : :class:`ParentLink` or str
@@ -431,38 +431,41 @@ class Joint(Data):
 
     Class Attributes
     ----------------
-    REVOLUTE : :obj:`str`
+    REVOLUTE : :obj:`int`
         Revolute joint type.
-    CONTINUOUS : :obj:`str`
+    CONTINUOUS : :obj:`int`
         Continuous joint type.
-    PRISMATIC : :obj:`str`
+    PRISMATIC : :obj:`int`
         Prismatic joint type.
-    FIXED : :obj:`str`
+    FIXED : :obj:`int`
         Fixed joint type.
-    FLOATING : :obj:`str`
+    FLOATING : :obj:`int`
         Floating joint type.
-    PLANAR : :obj:`str`
+    PLANAR : :obj:`int`
         Planar joint type.
     SUPPORTED_TYPES : :obj:`list` of :obj:`str`
-        List of supported joint types.
+        String representations of the supported joint types.
     """
 
-    REVOLUTE = 'revolute'
-    CONTINUOUS = 'continuous'
-    PRISMATIC = 'prismatic'
-    FIXED = 'fixed'
-    FLOATING = 'floating'
-    PLANAR = 'planar'
+    REVOLUTE = 0
+    CONTINUOUS = 1
+    PRISMATIC = 2
+    FIXED = 3
+    FLOATING = 4
+    PLANAR = 5
 
-    SUPPORTED_TYPES = (REVOLUTE, CONTINUOUS, PRISMATIC, FIXED, FLOATING, PLANAR)
+    SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic', 'fixed',
+                       'floating', 'planar')
 
     def __init__(self, name, type_, parent, child, origin=None, axis=None, calibration=None, dynamics=None, limit=None, safety_controller=None, mimic=None, **kwargs):
-        if type_ not in Joint.SUPPORTED_TYPES:
+        type_idx = Joint.SUPPORTED_TYPES.index(type_) if isinstance(type_, str) else type_
+
+        if type_idx not in range(len(Joint.SUPPORTED_TYPES)):
             raise ValueError('Unsupported joint type: %s' % type)
 
         super(Joint, self).__init__()
         self.name = name
-        self.type = type_
+        self.type = type_idx
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
         self.child = child if isinstance(child, ChildLink) else ChildLink(child)
         self.origin = origin or Origin.from_euler_angles([0., 0., 0.])
@@ -483,7 +486,7 @@ class Joint(Data):
     def get_urdf_element(self):
         attributes = {
             'name': self.name,
-            'type': self.type
+            'type': self.SUPPORTED_TYPES[self.type]
         }
         attributes.update(self.attr)
         elements = [self.parent, self.child, self.axis, self.calibration, self.dynamics,
@@ -494,7 +497,7 @@ class Joint(Data):
     def data(self):
         return {
             'name': self.name,
-            'type': self.type,
+            'type': self.SUPPORTED_TYPES[self.type],
             'parent': self.parent.data,
             'child': self.child.data,
             'origin': self.origin.data if self.origin else None,
@@ -511,7 +514,7 @@ class Joint(Data):
     @data.setter
     def data(self, data):
         self.name = data['name']
-        self.type = data['type']
+        self.type = Joint.SUPPORTED_TYPES.index(data['type'])
         self.parent = ParentLink.from_data(data['parent'])
         self.child = ChildLink.from_data(data['child'])
         self.origin = Origin.from_data(data['origin']) if data['origin'] else None

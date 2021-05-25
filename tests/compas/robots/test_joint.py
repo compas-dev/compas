@@ -11,13 +11,26 @@ from compas.robots import Limit
 from compas.robots import Mimic
 
 
-def test_constructor():
-    assert Joint("joint", "revolute", "parent_joint", "child_joint")
+def test_constructor_type_str():
+    for type_ in Joint.SUPPORTED_TYPES:
+        assert Joint("joint", type_, "parent_joint", "child_joint")
 
 
-def test_constructor_type_guard():
+def test_constructor_type_int():
+    for type_ in range(len(Joint.SUPPORTED_TYPES)):
+        assert Joint("joint", type_, "parent_joint", "child_joint")
+
+
+def test_constructor_type_guard_str():
     with pytest.raises(ValueError):
         Joint("joint", "synovial", "femur", "tibia")
+
+
+def test_constructor_type_guard_int():
+    joint_types = [-1, len(Joint.SUPPORTED_TYPES)]  # just outside acceptable range
+    for type_ in joint_types:
+        with pytest.raises(ValueError):
+            Joint("joint", type_, "femur", "tibia")
 
 
 def test_revolute_calculate_transformation():
