@@ -72,6 +72,9 @@ class Rotation(Transformation):
                 raise ValueError('This is not a proper rotation matrix.')
         super(Rotation, self).__init__(matrix=matrix)
 
+    # def __repr__(self):
+    #     return "Rotation({0})".format(self.matrix)
+
     @classmethod
     def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):
         """Calculates a ``Rotation`` from a rotation axis and an angle and an optional point of rotation.

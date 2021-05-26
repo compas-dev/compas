@@ -54,6 +54,9 @@ class Shear(Transformation):
             pass
         super(Shear, self).__init__(matrix=matrix)
 
+    def __repr__(self):
+        return "Shear({0!r})".format(self.matrix)
+
     @classmethod
     def from_angle_direction_plane(cls, angle, direction, plane):
         """
