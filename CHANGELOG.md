@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `compas.topology.astar_lightest_path`.
+* Added jsonschema definitions for primitives and transformations.
+* Added schema implementation to primitives and transformations.
+* Added jsonschema implementation to primitives and transformations.
+* Added `compas.data.is_int3`, `compas.data.is_float3`, `compas_data.is_float4x4`.
 
 ### Changed
 
@@ -18,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `compas.data.Data.to_jsonstring`.
 * Changed `compas.data.Data.data.setter` to raise `NotImplementedError`.
 * Changed annotations of `compas_blender.artists.BaseArtist`.
+* Fixed `__repr__` for primitives, shapes, transformations.
 
 ### Removed
 
