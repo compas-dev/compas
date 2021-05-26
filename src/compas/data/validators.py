@@ -41,5 +41,5 @@ def validate_data(data, cls):
     SchemaError
     """
     import jsonschema
-    jsonschema.validate(data, schema=cls.get_JSONSCHEMA())
+    jsonschema.validate(data, schema=cls.JSONSCHEMA)
     return cls.DATASCHEMA.validate(data)

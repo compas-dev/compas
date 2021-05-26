@@ -221,7 +221,7 @@ class Data(object):
         self.data = state['data']
 
     def validate_data(self):
-        """Validate the data of this object against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its data schema (`self.DATASCHEMA`).
 
         Returns
         -------
@@ -235,20 +235,19 @@ class Data(object):
         return self.DATASCHEMA.validate(self.data)
 
     def validate_json(self):
-        """Validate the data loaded from a JSON representation of the data of this object against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its json schema (`self.JSONSCHEMA`).
 
         Returns
         -------
-        None
+        str
+            The validated JSON representation of the data.
 
         Raises
         ------
         SchemaError
         """
         import jsonschema
-        jsondata = json.dumps(self.data, cls=DataEncoder)
-        data = json.loads(jsondata, cls=DataDecoder)
-        jsonschema.validate(data, schema=self.JSONSCHEMA)
-        self.data = data
-        self.DATASCHEMA.validate(self.data)
-        return jsondata
+        jsonstring = json.dumps(self.data, cls=DataEncoder)
+        jsondata = json.loads(jsonstring, cls=DataDecoder)
+        jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
+        return jsonstring
