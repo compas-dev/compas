@@ -109,16 +109,27 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.topology.astar_lightest_path</span></code>.</p></li>
+<li><p>Added jsonschema definitions for primitives and transformations.</p></li>
+<li><p>Added schema implementation to primitives and transformations.</p></li>
+<li><p>Added jsonschema implementation to primitives and transformations.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.data.is_int3</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.data.is_float3</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_data.is_float4x4</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Extended <code class="docutils literal notranslate"><span class="pre">compas.topology.astar_shortest_path</span></code> to work on <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code>.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">compas.data.Data.to_jsonstring</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.data.Data.data.setter</span></code> to raise <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>.</p></li>
+<li><p>Changed annotations of <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.BaseArtist</span></code>.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> for primitives, shapes, transformations.</p></li>
 </ul>
 </section>
 <section id="removed">
 <h3>Removed</h3>
+<ul class="simple">
+<li><p>Removed duplicate cases from <code class="docutils literal notranslate"><span class="pre">compas.data.DataEncoder</span></code>.</p></li>
+</ul>
 </section>
 </section>
 <section id="id1">

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - MeshArtist</title>
+  <title> - compas_blender.artists.MeshArtist</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist.build" href="compas_blender.artists.MeshArtist.build.html" />
+    <link rel="next" title="compas_blender.artists.RobotModelArtist" href="compas_blender.artists.RobotModelArtist.html" />
   
   
   
-    <link rel="prev" title="NetworkArtist.register" href="compas_blender.artists.NetworkArtist.register.html" />
+    <link rel="prev" title="compas_blender.artists.NetworkArtist" href="compas_blender.artists.NetworkArtist.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            1.6.2
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -97,19 +97,19 @@
             
               <li class="breadcrumb-item"><a href="../compas_blender.artists.html">artists</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">MeshArtist</li>
+            <li class="breadcrumb-item active" aria-current="page">compas_blender.artists.MeshArtist</li>
           </ol>
         </nav>
         
   
         
           
-          <div class="detail section" id="meshartist">
-<h1>MeshArtist</h1>
+          <section id="compas-blender-artists-meshartist">
+<h1>compas_blender.artists.MeshArtist</h1>
 <dl class="py class">
-<dt id="compas_blender.artists.MeshArtist">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></code><code class="sig-name descname"><span class="pre">MeshArtist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/meshartist.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists._artist.BaseArtist</span></code></p>
+<dt class="sig sig-object py" id="compas_blender.artists.MeshArtist">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/meshartist.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BaseArtist.html#compas_blender.artists.BaseArtist" title="compas_blender.artists._artist.BaseArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists._artist.BaseArtist</span></code></a></p>
 <p>A mesh artist defines functionality for visualising COMPAS meshes in Blender.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -142,38 +142,68 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.build.html#compas_blender.artists.MeshArtist.build" title="compas_blender.artists.MeshArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code>(item, **kwargs)</p></td>
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear.html#compas_blender.artists.MeshArtist.clear" title="compas_blender.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
 <td><p>Clear all objects previously drawn by this artist.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw.html#compas_blender.artists.MeshArtist.draw" title="compas_blender.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code>()</p></td>
 <td><p>Draw the mesh using the chosen visualisation settings.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edges.html#compas_blender.artists.MeshArtist.draw_edges" title="compas_blender.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code>([edges, color])</p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_faces.html#compas_blender.artists.MeshArtist.draw_faces" title="compas_blender.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code>([faces, color])</p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_mesh.html#compas_blender.artists.MeshArtist.draw_mesh" title="compas_blender.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code>()</p></td>
 <td><p>Draw the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_vertices.html#compas_blender.artists.MeshArtist.draw_vertices" title="compas_blender.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code>([vertices, color])</p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.redraw.html#compas_blender.artists.MeshArtist.redraw" title="compas_blender.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code>()</p></td>
 <td><p>Trigger a redraw.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.register.html#compas_blender.artists.MeshArtist.register" title="compas_blender.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code>(item_type, artist_type)</p></td>
 <td><p>Register a type of COMPAS object with a Blender artist.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">collection</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edgecollection</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">facecollection</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_edge</span></code></p></td>
+<td><p>Map between Blender object objects and mesh edge identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_face</span></code></p></td>
+<td><p>Map between Blender object objects and mesh face identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_vertex</span></code></p></td>
+<td><p>Map between Blender object objects and mesh vertex identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertexcollection</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -226,7 +256,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">MeshArtist</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas_blender.artists.MeshArtist</a></li>
 </ul>
 
       </div>
@@ -238,20 +268,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_blender.artists.NetworkArtist.register.html" title="NetworkArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_blender.artists.NetworkArtist.html" title="compas_blender.artists.NetworkArtist" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            NetworkArtist.register
+            compas_blender.artists.NetworkArtist
           </div>
         </a>
       
 
       
-        <a href="compas_blender.artists.MeshArtist.build.html" title="MeshArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_blender.artists.RobotModelArtist.html" title="compas_blender.artists.RobotModelArtist" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            MeshArtist.build
+            compas_blender.artists.RobotModelArtist
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -297,7 +327,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '1.6.2',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
