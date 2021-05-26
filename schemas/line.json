@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://github.com/compas-dev/compas/schemas/frame.json",
+    "$id": "https://github.com/compas-dev/compas/schemas/line.json",
     "$compas": "1.6.2",
 
     "type": "object",
