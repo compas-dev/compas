@@ -19,3 +19,27 @@ def is_float4x4(items):
             all(isinstance(i, float) for i in item) for item in items
         )
     )
+
+
+def validate_data(data, cls):
+    """Validate data against the data and json schemas of an object class.
+
+    Parameters
+    ----------
+    data : dict
+        The data representation of an object.
+    cls : :class:`compas.data.Data`
+        The class of a data object.
+
+    Returns
+    -------
+    dict
+        The validated data.
+
+    Raises
+    ------
+    SchemaError
+    """
+    import jsonschema
+    jsonschema.validate(data, schema=cls.get_JSONSCHEMA())
+    return cls.DATASCHEMA.validate(data)
