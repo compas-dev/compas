@@ -11,8 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added grasshopper component for drawing a frame.
+* Added ``draw_origin`` and ``draw_axes``  to ``compas_ghpython.artists.FrameArtist``.
 
 ### Changed
+
+* ``compas_ghpython.artists.FrameArtist.draw`` now draws a Rhino Plane.
 
 ### Removed
 
