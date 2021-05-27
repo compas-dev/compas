@@ -9,9 +9,8 @@ from compas_ghpython.components import coerce_frame
 
 class CompasFrame(component):
     def RunScript(self, frame):
-        origin = None
-        axes = []
-
+        plane = None
+        
         if frame:
             frame = coerce_frame(frame)
             artist = FrameArtist(frame)
