@@ -8,14 +8,14 @@ from compas_ghpython.components import coerce_frame
 
 
 class CompasFrame(component):
-    def RunScript(self, plane):
+    def RunScript(self, frame):
         origin = None
         axes = []
 
-        if plane:
-            frame = coerce_frame(plane)
+        if frame:
+            frame = coerce_frame(frame)
             artist = FrameArtist(frame)
 
-            origin, axes = artist.draw()
+            plane = artist.draw()
 
-        return origin, axes
+        return plane

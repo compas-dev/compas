@@ -10,18 +10,14 @@
         "isAdvancedMode": true,
         "inputParameters": [
             {
-                "name": "plane",
+                "name": "frame",
                 "description": "The frame or plane to be drawn."
             }
         ],
         "outputParameters": [
             {
-                "name": "origin",
-                "description": "The drawn origin."
-            },
-            {
-                "name": "axes",
-                "description": "The drawn axes."
+                "name": "plane",
+                "description": "The drawn plane."
             }
         ]
     }
