@@ -216,7 +216,7 @@ def set_precision(precision):
 # data
 # ==============================================================================
 
-def get(filename, root=None):
+def get(filename):
     """Get the full path to one of the sample data files.
 
     Parameters
@@ -258,19 +258,17 @@ def get(filename, root=None):
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     """
-    root = root or "data"
-
     filename = filename.strip('/')
 
     if filename.endswith('bunny.ply'):
         return get_bunny()
 
-    localpath = compas._os.absjoin(DATA, os.path.join(root, filename))
+    localpath = compas._os.absjoin(DATA, filename)
 
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://github.com/compas-dev/compas/raw/main/{}/{}".format(root, filename)
+        return "https://github.com/compas-dev/compas/raw/main/data/{}".format(filename)
 
 
 def get_bunny(localstorage=None):

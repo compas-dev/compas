@@ -2,12 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import os
 import json
 from uuid import uuid4
 from copy import deepcopy
 
 import compas
-from compas import _iotools
 
 from compas.data.encoders import DataEncoder
 from compas.data.encoders import DataDecoder
@@ -64,8 +64,9 @@ class Data(object):
     def jsonschema(self):
         """dict : The schema of the JSON representation of the data of this object."""
         if not self._jsonschema:
-            filepath = compas.get("{}.json".format(self.__class__.__name__.lower()), root="schemas")
-            with _iotools.open_file(filepath, 'r') as fp:
+            schemaname = '{}.json'.format(self.__class__.__name__.lower())
+            schemapath = os.path.join(os.path.dirname(__file__), 'schemas', schemaname)
+            with open(schemapath, 'r') as fp:
                 self._jsonschema = json.load(fp)
         return self._jsonschema
 

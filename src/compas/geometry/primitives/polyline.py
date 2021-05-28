@@ -81,21 +81,6 @@ class Polyline(Primitive):
         })
 
     @property
-    def jsonschema(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/polyline.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "points": {"type": "array", "minItems": 2, "items": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}}
-            },
-            "required": ["points"]
-        }
-        return schema
-
-    @property
     def data(self):
         """Returns the data dictionary that represents the polyline.
 
