@@ -72,7 +72,7 @@ class FixedLengthList(list):
         return FixedLengthList(self)
 
     def __deepcopy__(self, memodict={}):
-        return [deepcopy(value, memodict) for value in self]
+        return FixedLengthList([deepcopy(value, memodict) for value in self])
 
     def append(self, item): raise TypeError('Cannot change length of FixedLengthList')
     def extend(self, other): raise TypeError('Cannot change length of FixedLengthList')
@@ -307,37 +307,6 @@ class Configuration(Data):
             len(prismatic_values) + [_JOINT_REVOLUTE] * len(revolute_values)
         return cls.from_data({'joint_values': values, 'joint_types': joint_types, 'joint_names': joint_names})
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a configuration from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`Configuration`
-             An instance of :class:`Configuration`.
-        """
-        config = cls()
-        config.data = data
-        return config
-
-    def to_data(self):
-        """Get the data dictionary that represents the configuration.
-
-        This data can also be used to reconstruct the :class:`Configuration`
-        instance.
-
-        Returns
-        -------
-        :obj:`dict`
-            The data representing the configuration.
-        """
-        return self.data
-
     @property
     def data(self):
         """:obj:`dict` : The data representing the configuration.
@@ -371,17 +340,6 @@ class Configuration(Data):
     def revolute_values(self):
         """:obj:`list` of :obj:`float` : Revolute joint values in radians."""
         return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == _JOINT_REVOLUTE]
-
-    def copy(self):
-        """Create a copy of this :class:`Configuration`.
-
-        Returns
-        -------
-        :class:`Configuration`
-            An instance of :class:`Configuration`
-        """
-        cls = type(self)
-        return cls(self.joint_values[:], self.joint_types[:], self.joint_names[:])
 
     def scale(self, scale_factor):
         """Scales the joint positions of the current configuration.

@@ -154,15 +154,6 @@ def test_fixed_length_list_deepcopy():
     assert fll[0][0] == 1
 
 
-def test_configuration_copy():
-    c = Configuration([1, 2, 3], [0, 0, 0])
-    c_copy = copy.copy(c)
-    assert c_copy.joint_values[0] == 1
-    c_copy.joint_values[0] = 0
-    assert c_copy.joint_values[0] == 0
-    assert c.joint_values[0] == 0
-
-
 def test_configuration_deepcopy():
     c = Configuration([1, 2, 3], [0, 0, 0])
     c_copy = copy.deepcopy(c)
@@ -170,7 +161,6 @@ def test_configuration_deepcopy():
     c_copy.joint_values[0] = 0
     assert c_copy.joint_values[0] == 0
     assert c.joint_values[0] == 1
-
 
 
 def test___setitem__():
