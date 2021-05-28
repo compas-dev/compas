@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://github.com/compas-dev/compas/raw/main/compas/data/schemas/plane.json",
+    "$id": "plane.json",
     "$compas": "1.6.3",
 
     "type": "object",
     "properties": {
-        "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-        "normal": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+        "point": {"$ref": "compas.json#/definitions/point"},
+        "normal": {"$ref": "compas.json#/definitions/vector"}
     },
     "required": ["point", "normal"]
 }

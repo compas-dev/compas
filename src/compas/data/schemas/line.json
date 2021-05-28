@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://github.com/compas-dev/compas/raw/main/compas/data/schemas/line.json",
+    "$id": "line.json",
     "$compas": "1.6.3",
 
     "type": "object",
     "properties": {
-        "start": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-        "end": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+        "start": {"$ref": "compas.json#/definitions/point"},
+        "end": {"$ref": "compas.json#/definitions/point"}
     },
     "required": ["start", "end"]
 }

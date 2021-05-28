@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://github.com/compas-dev/compas/raw/main/compas/data/schemas/circle.json",
+    "$id": "circle.json",
     "$compas": "1.6.3",
 
     "type": "object",
@@ -10,8 +10,8 @@
             "minItems": 2,
             "maxItems": 2,
             "items": [
-                {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+                {"$ref": "compas.json#/definitions/point"},
+                {"$ref": "compas.json#/definitions/vector"}
             ]
         },
         "radius": {"type": "number", "exclusiveMinimum": 0}

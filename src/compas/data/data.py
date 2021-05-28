@@ -49,7 +49,9 @@ class Data(object):
     def __init__(self):
         self._guid = None
         self._name = None
+        self._jsonbase = None
         self._jsonschema = None
+        self._jsonvalidator = None
 
     def __str__(self):
         """Generate a readable representation of the data of the object."""
@@ -69,6 +71,22 @@ class Data(object):
             with open(schemapath, 'r') as fp:
                 self._jsonschema = json.load(fp)
         return self._jsonschema
+
+    @property
+    def jsonbase(self):
+        if not self._jsonbase:
+            schemapath = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
+            with open(schemapath, 'r') as fp:
+                self._jsonbase = json.load(fp)
+        return self._jsonbase
+
+    @property
+    def jsonvalidator(self):
+        if not self._jsonvalidator:
+            from jsonschema import RefResolver, Draft7Validator
+            resolver = RefResolver.from_schema(self.jsonbase)
+            self._jsonvalidator = Draft7Validator(self.jsonschema, resolver=resolver)
+        return self._jsonvalidator
 
     @property
     def guid(self):
@@ -107,6 +125,11 @@ class Data(object):
     @data.setter
     def data(self, data):
         raise NotImplementedError
+
+    @property
+    def jsonstring(self):
+        """str: The representation of the object data in JSON format."""
+        return compas.json_dumps(self.data)
 
     @classmethod
     def from_data(cls, data):
@@ -253,8 +276,7 @@ class Data(object):
         ------
         SchemaError
         """
-        import jsonschema
         jsonstring = json.dumps(self.data, cls=DataEncoder)
         jsondata = json.loads(jsonstring, cls=DataDecoder)
-        jsonschema.validate(jsondata, schema=self.jsonschema)
+        self.jsonvalidator.validate(jsondata)
         return jsonstring

@@ -1,11 +1,11 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://github.com/compas-dev/compas/raw/main/compas/data/schemas/polyline.json",
+    "$id": "polyline.json",
     "$compas": "1.6.3",
 
     "type": "object",
     "properties": {
-        "points": {"type": "array", "minItems": 2, "items": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}}
+        "points": {"type": "array", "minItems": 2, "items": {"$ref": "compas.json#/definitions/point"}}
     },
     "required": ["points"]
 }
