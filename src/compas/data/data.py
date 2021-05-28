@@ -49,7 +49,7 @@ class Data(object):
     def __init__(self):
         self._guid = None
         self._name = None
-        self._jsonbase = None
+        self._jsondefs = None
         self._jsonschema = None
         self._jsonvalidator = None
 
@@ -73,18 +73,20 @@ class Data(object):
         return self._jsonschema
 
     @property
-    def jsonbase(self):
-        if not self._jsonbase:
+    def jsondefs(self):
+        """dict : Reusable schema deinitions."""
+        if not self._jsondefs:
             schemapath = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
             with open(schemapath, 'r') as fp:
-                self._jsonbase = json.load(fp)
-        return self._jsonbase
+                self._jsondefs = json.load(fp)
+        return self._jsondefs
 
     @property
     def jsonvalidator(self):
+        """:class:`jsonschema.Draft7Validator` : JSON schema validator for draft 7."""
         if not self._jsonvalidator:
             from jsonschema import RefResolver, Draft7Validator
-            resolver = RefResolver.from_schema(self.jsonbase)
+            resolver = RefResolver.from_schema(self.jsondefs)
             self._jsonvalidator = Draft7Validator(self.jsonschema, resolver=resolver)
         return self._jsonvalidator
 
