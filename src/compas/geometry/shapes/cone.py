@@ -232,9 +232,10 @@ class Cone(Shape):
 
         vertices = [[0, 0, 0]]
         a = 2 * pi / u
+        radius = self.circle.radius
         for i in range(u):
-            x = self.circle.radius * cos(i * a)
-            y = self.circle.radius * sin(i * a)
+            x = radius * cos(i * a)
+            y = radius * sin(i * a)
             vertices.append([x, y, 0])
         vertices.append([0, 0, self.height])
 

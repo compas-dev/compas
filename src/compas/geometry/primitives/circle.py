@@ -62,7 +62,7 @@ class Circle(Primitive):
         self.radius = radius
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         import schema
         from compas.data import is_float3
         return schema.Schema({
@@ -72,30 +72,6 @@ class Circle(Primitive):
             ),
             "radius": schema.And(float, lambda x: x > 0)
         })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/circle.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "plane": {
-                    "type": "array",
-                    "minItems": 2,
-                    "maxItems": 2,
-                    "items": [
-                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-                    ]
-                },
-                "radius": {"type": "number", "exclusiveMinimum": 0}
-            },
-            "required": ["plane", "radius"]
-        }
-        return schema
 
     @property
     def data(self):

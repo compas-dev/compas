@@ -124,27 +124,9 @@ class Quaternion(Primitive):
         self.z = z
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         from schema import Schema
         return Schema({"w": float, "x": float, "y": float, "z": float})
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/quaternion.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "w": {"type": "number"},
-                "x": {"type": "number"},
-                "y": {"type": "number"},
-                "z": {"type": "number"}
-            },
-            "required": ["w", "x", "y", "z"]
-        }
-        return schema
 
     @property
     def data(self):

@@ -82,6 +82,7 @@ from distutils.version import LooseVersion
 
 import compas._os
 from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
+from compas._os import here
 from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
@@ -177,7 +178,8 @@ __all__ = [
     'is_windows', 'is_linux', 'is_osx', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
     'set_precision',
     'get',
-    'json_dump', 'json_load', 'json_dumps', 'json_loads'
+    'json_dump', 'json_load', 'json_dumps', 'json_loads',
+    'here'
 ]
 
 
@@ -214,7 +216,7 @@ def set_precision(precision):
 # data
 # ==============================================================================
 
-def get(filename):
+def get(filename, root=None):
     """Get the full path to one of the sample data files.
 
     Parameters
@@ -256,17 +258,19 @@ def get(filename):
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     """
+    root = root or "data"
+
     filename = filename.strip('/')
 
     if filename.endswith('bunny.ply'):
         return get_bunny()
 
-    localpath = compas._os.absjoin(DATA, filename)
+    localpath = compas._os.absjoin(DATA, os.path.join(root, filename))
 
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://github.com/compas-dev/compas/raw/main/data/{}".format(filename)
+        return "https://github.com/compas-dev/compas/raw/main/{}/{}".format(root, filename)
 
 
 def get_bunny(localstorage=None):

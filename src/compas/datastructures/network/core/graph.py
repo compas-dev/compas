@@ -52,7 +52,7 @@ class Graph(Datastructure):
     """
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         import schema
         version = LooseVersion(compas.__version__)
         meta = {
@@ -75,7 +75,7 @@ class Graph(Datastructure):
         return schema.Schema(meta)
 
     @property
-    def JSONSCHEMA(self):
+    def jsonschema(self):
         version = LooseVersion(compas.__version__)
         schema = {
             "$schema": "http://json-schema.org/draft-07/schema#",

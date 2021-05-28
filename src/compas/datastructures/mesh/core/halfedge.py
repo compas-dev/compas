@@ -47,7 +47,7 @@ class HalfEdge(Datastructure):
     """
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         import schema
         if LooseVersion(compas.__version__) < LooseVersion('0.16.5'):
             return schema.Schema({
@@ -106,7 +106,7 @@ class HalfEdge(Datastructure):
         })
 
     @property
-    def JSONSCHEMA(self):
+    def jsonschema(self):
         version = LooseVersion(compas.__version__)
         schema = {
             "$schema": "http://json-schema.org/draft-07/schema#",

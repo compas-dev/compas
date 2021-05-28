@@ -68,29 +68,13 @@ class Line(Primitive):
         self.end = p2
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
             "start": is_float3,
             "end": is_float3
         })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/line.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "start": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "end": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-            },
-            "required": ["start", "end"]
-        }
-        return schema
 
     @property
     def data(self):

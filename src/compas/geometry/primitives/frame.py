@@ -85,7 +85,7 @@ class Frame(Primitive):
         self.yaxis = yaxis
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
@@ -93,23 +93,6 @@ class Frame(Primitive):
             "xaxis": is_float3,
             "yaxis": is_float3
         })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/frame.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "xaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "yaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-            },
-            "required": ["point", "xaxis", "yaxis"]
-        }
-        return schema
 
     @property
     def data(self):

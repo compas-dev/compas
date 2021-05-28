@@ -59,7 +59,7 @@ class HalfFace(Datastructure):
         self.default_cell_attributes = {}
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         import schema
         from packaging import version
         if version.parse(compas.__version__) < version.parse('0.17'):
@@ -99,7 +99,7 @@ class HalfFace(Datastructure):
         })
 
     @property
-    def JSONSCHEMA(self):
+    def jsonschema(self):
         from packaging import version
         if version.parse(compas.__version__) < version.parse('0.17'):
             return {

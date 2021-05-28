@@ -73,7 +73,7 @@ class Polyline(Primitive):
         self.points = points
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
@@ -81,7 +81,7 @@ class Polyline(Primitive):
         })
 
     @property
-    def JSONSCHEMA(self):
+    def jsonschema(self):
         from compas import versionstring
         schema = {
             "$schema": "http://json-schema.org/draft-07/schema#",

@@ -7,6 +7,7 @@ from uuid import uuid4
 from copy import deepcopy
 
 import compas
+from compas import _iotools
 
 from compas.data.encoders import DataEncoder
 from compas.data.encoders import DataDecoder
@@ -36,9 +37,9 @@ class Data(object):
 
     Attributes
     ----------
-    DATASCHEMA : :class:`schema.Schema`
+    dataschema : :class:`schema.Schema`
         The schema of the data dict.
-    JSONSCHEMA : dict
+    jsonschema : dict
         The schema of the serialized data dict.
     data : dict
         The fundamental data describing the object.
@@ -48,20 +49,25 @@ class Data(object):
     def __init__(self):
         self._guid = None
         self._name = None
+        self._jsonschema = None
 
     def __str__(self):
         """Generate a readable representation of the data of the object."""
         return json.dumps(self.data, sort_keys=True, indent=4)
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         """:class:`schema.Schema` : The schema of the data of this object."""
         raise NotImplementedError
 
     @property
-    def JSONSCHEMA(self):
+    def jsonschema(self):
         """dict : The schema of the JSON representation of the data of this object."""
-        raise NotImplementedError
+        if not self._jsonschema:
+            filepath = compas.get("{}.json".format(self.__class__.__name__.lower()), root="schemas")
+            with _iotools.open_file(filepath, 'r') as fp:
+                self._jsonschema = json.load(fp)
+        return self._jsonschema
 
     @property
     def guid(self):
@@ -221,7 +227,7 @@ class Data(object):
         self.data = state['data']
 
     def validate_data(self):
-        """Validate the object's data against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its data schema (`self.dataschema`).
 
         Returns
         -------
@@ -232,10 +238,10 @@ class Data(object):
         ------
         SchemaError
         """
-        return self.DATASCHEMA.validate(self.data)
+        return self.dataschema.validate(self.data)
 
     def validate_json(self):
-        """Validate the object's data against its json schema (`self.JSONSCHEMA`).
+        """Validate the object's data against its json schema (`self.jsonschema`).
 
         Returns
         -------
@@ -249,5 +255,5 @@ class Data(object):
         import jsonschema
         jsonstring = json.dumps(self.data, cls=DataEncoder)
         jsondata = json.loads(jsonstring, cls=DataDecoder)
-        jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
+        jsonschema.validate(jsondata, schema=self.jsonschema)
         return jsonstring

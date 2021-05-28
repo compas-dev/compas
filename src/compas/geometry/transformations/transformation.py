@@ -126,35 +126,10 @@ class Transformation(Data):
         return cls(matrix)
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         from schema import Schema
         from compas.data import is_float4x4
         return Schema({"matrix": is_float4x4})
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/transformation.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "matrix": {
-                    "type": "array",
-                    "minItems": 4,
-                    "maxItems": 4,
-                    "items": {
-                        "type": "array",
-                        "minItems": 4,
-                        "maxItems": 4,
-                        "items": {"type": "number"}
-                    }
-                }
-            },
-            "required": ["matrix"]
-        }
-        return schema
 
     @property
     def data(self):

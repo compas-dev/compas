@@ -57,29 +57,13 @@ class Plane(Primitive):
         self.normal = normal
 
     @property
-    def DATASCHEMA(self):
+    def dataschema(self):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
             "point": is_float3,
             "normal": is_float3
         })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/plane.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "normal": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-            },
-            "required": ["point", "normal"]
-        }
-        return schema
 
     @property
     def data(self):
