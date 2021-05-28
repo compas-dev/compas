@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://github.com/compas-dev/compas/schemas/frame.json",
+    "$compas": "1.6.3",
+
+    "type": "object",
+    "properties": {
+        "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+        "xaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+        "yaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+    },
+    "required": ["point", "xaxis", "yaxis"]
+}

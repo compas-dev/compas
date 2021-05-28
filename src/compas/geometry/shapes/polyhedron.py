@@ -83,7 +83,7 @@ class Polyhedron(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polyhedron({0}, {1})'.format(self.vertices, self.faces)
+        return 'Polyhedron({0!r}, {1!r})'.format(self.vertices, self.faces)
 
     def __len__(self):
         return 2
