@@ -1,5 +1,6 @@
 import math
 import pytest
+import copy
 
 from compas.robots import Joint
 from compas.robots import Configuration
@@ -133,6 +134,34 @@ def test_fixed_length():
 def test_fixed_length_list():
     fll = FixedLengthList([1, 2, 3])
     assert len(fll) == 3
+
+
+def test_fixed_length_list_copy():
+    fll = FixedLengthList([[1, 2, 3] for _ in range(3)])
+    fll_copy = copy.copy(fll)
+    assert fll_copy[0][0] == 1
+    fll_copy[0][0] = 0
+    assert fll_copy[0][0] == 0
+    assert fll[0][0] == 0
+
+
+def test_fixed_length_list_deepcopy():
+    fll = FixedLengthList([[1, 2, 3] for _ in range(3)])
+    fll_copy = copy.deepcopy(fll)
+    assert fll_copy[0][0] == 1
+    fll_copy[0][0] = 0
+    assert fll_copy[0][0] == 0
+    assert fll[0][0] == 1
+
+
+def test_configuration_deepcopy():
+    c = Configuration([1, 2, 3], [0, 0, 0])
+    c_copy = copy.deepcopy(c)
+    assert c is not c_copy
+    assert c_copy.joint_values[0] == 1
+    c_copy.joint_values[0] = 0
+    assert c_copy.joint_values[0] == 0
+    assert c.joint_values[0] == 1
 
 
 def test___setitem__():
