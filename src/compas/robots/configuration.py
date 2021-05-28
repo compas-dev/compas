@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from math import pi
+from copy import deepcopy
 
 from compas.data import Data
 
@@ -66,6 +67,12 @@ class FixedLengthList(list):
         if self.validator:
             self.validator(self, slice(i, j), sequence)
         super(FixedLengthList, self).__setslice__(i, j, sequence)
+
+    def __copy__(self):
+        return FixedLengthList(self)
+
+    def __deepcopy__(self, memodict={}):
+        return [deepcopy(value, memodict) for value in self]
 
     def append(self, item): raise TypeError('Cannot change length of FixedLengthList')
     def extend(self, other): raise TypeError('Cannot change length of FixedLengthList')
