@@ -17,9 +17,6 @@ def pytest_ignore_collect(path):
     if "matlab" in str(path):
         return True
 
-    if "robots" in str(path):
-        return True
-
     if str(path).endswith('_cli.py'):
         return True
 

@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Allow str or int as joint type in `compas.robots.Joint` constructor.
+
 ### Removed
 
 
