@@ -157,6 +157,7 @@ def test_fixed_length_list_deepcopy():
 def test_configuration_deepcopy():
     c = Configuration([1, 2, 3], [0, 0, 0])
     c_copy = copy.deepcopy(c)
+    assert c is not c_copy
     assert c_copy.joint_values[0] == 1
     c_copy.joint_values[0] = 0
     assert c_copy.joint_values[0] == 0
