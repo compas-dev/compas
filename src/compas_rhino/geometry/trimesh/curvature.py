@@ -65,6 +65,11 @@ def trimesh_gaussian_curvature(M):
     Compute the discrete Gaussian curvature
 
     >>> K = trimesh_gaussian_curvature(M)
+
+    References
+    ----------
+    .. [1] Formula of Discrete Gaussian Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
+
     """
     # (1) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
@@ -147,6 +152,11 @@ def trimesh_mean_curvature(M):
     Compute the discrete mean curvature
 
     >>> H = trimesh_mean_curvature(M)
+
+    References
+    ----------
+    .. [1] Formula of Discrete Mean Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
+
     """
     # (1) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
@@ -241,6 +251,11 @@ def trimesh_principal_curvature(M):
     Compute the discrete principal curvature
 
     >>> H = trimesh_principal_curvature(M)
+
+    References
+    ----------
+    .. [1] Formula of Discrete Principal Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
+
     """
     # (1) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
