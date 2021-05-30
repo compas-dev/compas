@@ -55,6 +55,15 @@ class Sphere(Shape):
         self.radius = radius
 
     @property
+    def dataschema(self):
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            'point': is_float3,
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
     def data(self):
         """Returns the data dictionary that represents the sphere.
 

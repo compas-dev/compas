@@ -61,8 +61,8 @@ class Plane(Primitive):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
-            "point": is_float3,
-            "normal": is_float3
+            'point': is_float3,
+            'normal': is_float3
         })
 
     @property

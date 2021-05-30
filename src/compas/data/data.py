@@ -109,8 +109,8 @@ class Data(object):
 
     @property
     def dtype(self):
-        """str : The type of the object in the form of a "2-level" import and a class name."""
-        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
+        """str : The type of the object in the form of a '2-level' import and a class name."""
+        return '{}/{}'.format('.'.join(self.__class__.__module__.split('.')[:2]), self.__class__.__name__)
 
     @property
     def data(self):

@@ -62,6 +62,21 @@ class Cylinder(Shape):
         self.height = height
 
     @property
+    def dataschema(self):
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            'circle': {
+                'plane': {
+                    'point': is_float3,
+                    'normal': is_float3
+                },
+                'radius': schema.And(float, lambda x: x > 0)
+            },
+            'height': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
     def data(self):
         """Returns the data dictionary that represents the cylinder.
 

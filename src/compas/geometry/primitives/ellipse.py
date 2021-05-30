@@ -68,12 +68,12 @@ class Ellipse(Primitive):
         import schema
         from compas.data import is_float3
         return schema.Schema({
-            "plane": schema.And(
+            'plane': schema.And(
                 lambda x: is_float3(x[0]),
                 lambda x: is_float3(x[1])
             ),
-            "major": schema.And(float, lambda x: x > 0),
-            "minor": schema.And(float, lambda x: x > 0),
+            'major': schema.And(float, lambda x: x > 0),
+            'minor': schema.And(float, lambda x: x > 0),
         })
 
     @property

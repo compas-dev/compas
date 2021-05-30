@@ -13,6 +13,10 @@ def is_int3(items):
     return len(items) == 3 and all(isinstance(item, int) for item in items)
 
 
+def is_intx(items):
+    return all(isinstance(item, int) for item in items)
+
+
 def is_float3(items):
     return len(items) == 3 and all(isinstance(item, float) for item in items)
 

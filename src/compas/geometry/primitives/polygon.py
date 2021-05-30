@@ -76,7 +76,7 @@ class Polygon(Primitive):
     1.0
     """
 
-    __slots__ = ["_points", "_lines"]
+    __slots__ = ['_points', '_lines']
 
     def __init__(self, points):
         super(Polygon, self).__init__()
@@ -89,7 +89,7 @@ class Polygon(Primitive):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
-            "points": lambda x: [is_float3(i) for i in x]
+            'points': lambda x: [is_float3(i) for i in x]
         })
 
     @property
@@ -162,7 +162,7 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polygon([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
+        return 'Polygon([{0}])'.format(', '.join(['{0!r}'.format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -245,7 +245,7 @@ class Polygon(Primitive):
         >>> dot_vectors(centertofirst, [0.0, 1.0, 0.0]) == 1
         True
         """
-        assert n >= 3, "Supplied number of sides must be at least 3!"
+        assert n >= 3, 'Supplied number of sides must be at least 3!'
         points = []
         side = math.pi * 2 / n
         for i in range(n):

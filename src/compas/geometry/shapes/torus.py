@@ -63,6 +63,19 @@ class Torus(Shape):
         self.radius_pipe = radius_pipe
 
     @property
+    def dataschema(self):
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            'plane': {
+                'point': is_float3,
+                'normal': is_float3
+            },
+            'radius_axis': schema.And(float, lambda x: x > 0),
+            'radius_pipe': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
     def data(self):
         """Returns the data dictionary that represents the torus.
 

@@ -64,7 +64,7 @@ class Polyline(Primitive):
     1.0
     """
 
-    __slots__ = ["_points", "_lines"]
+    __slots__ = ['_points', '_lines']
 
     def __init__(self, points):
         super(Polyline, self).__init__()
@@ -77,7 +77,7 @@ class Polyline(Primitive):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
-            "points": lambda x: [is_float3(i) for i in x]
+            'points': lambda x: [is_float3(i) for i in x]
         })
 
     @property
@@ -124,7 +124,7 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polyline([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
+        return 'Polyline([{0}])'.format(', '.join(['{0!r}'.format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)

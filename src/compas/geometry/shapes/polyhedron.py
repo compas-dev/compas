@@ -62,6 +62,15 @@ class Polyhedron(Shape):
                     yield u, v
 
     @property
+    def dataschema(self):
+        import schema
+        from compas.data import is_float3, is_intx
+        return schema.Schema({
+            'vertices': lambda items: all(is_float3(item) for item in items),
+            'faces': lambda items: all(is_intx(item) for item in items)
+        })
+
+    @property
     def data(self):
         """Returns the data dictionary that represents the polyhedron.
 

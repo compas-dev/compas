@@ -55,7 +55,7 @@ class DataEncoder(json.JSONEncoder):
             if hasattr(o, 'dtype'):
                 dtype = o.dtype
             else:
-                dtype = "{}/{}".format(".".join(o.__class__.__module__.split(".")[:-1]), o.__class__.__name__)
+                dtype = '{}/{}'.format('.'.join(o.__class__.__module__.split('.')[:-1]), o.__class__.__name__)
             return {
                 'dtype': dtype,
                 'value': value
@@ -99,7 +99,7 @@ class DataDecoder(json.JSONDecoder):
             cls = cls_from_dtype(o['dtype'])
 
         except ValueError:
-            raise DecoderError("The data type of the object should be in the following format: '{}/{}'.format(o.__class__.__module__, o.__class__.__name__)")
+            raise DecoderError("The data type of the object should be in the following format: '{}/{}'".format(o.__class__.__module__, o.__class__.__name__))
 
         except ImportError:
             raise DecoderError("The module of the data type can't be found.")

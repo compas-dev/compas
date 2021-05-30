@@ -66,11 +66,11 @@ class Circle(Primitive):
         import schema
         from compas.data import is_float3
         return schema.Schema({
-            "plane": schema.And(
+            'plane': schema.And(
                 lambda x: is_float3(x[0]),
                 lambda x: is_float3(x[1])
             ),
-            "radius": schema.And(float, lambda x: x > 0)
+            'radius': schema.And(float, lambda x: x > 0)
         })
 
     @property

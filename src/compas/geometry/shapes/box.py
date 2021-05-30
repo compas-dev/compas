@@ -74,8 +74,8 @@ class Box(Shape):
 
     """
 
-    def __init__(self, frame, xsize, ysize, zsize):
-        super(Box, self).__init__()
+    def __init__(self, frame, xsize, ysize, zsize, **kwargs):
+        super(Box, self).__init__(**kwargs)
         self._frame = None
         self._xsize = None
         self._ysize = None
@@ -84,6 +84,21 @@ class Box(Shape):
         self.xsize = xsize
         self.ysize = ysize
         self.zsize = zsize
+
+    @property
+    def dataschema(self):
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            'frame': {
+                'point': is_float3,
+                'xaxis': is_float3,
+                'yaxis': is_float3
+            },
+            'xsize': schema.And(float, lambda x: x > 0),
+            'ysize': schema.And(float, lambda x: x > 0),
+            'zsize': schema.And(float, lambda x: x > 0)
+        })
 
     @property
     def data(self):

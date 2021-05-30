@@ -64,6 +64,18 @@ class Capsule(Shape):
         self.radius = radius
 
     @property
+    def dataschema(self):
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            'line': {
+                'start': is_float3,
+                'end': is_float3
+            },
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
     def data(self):
         """Returns the data dictionary that represents the capsule.
 
@@ -184,10 +196,10 @@ class Capsule(Shape):
         Parameters
         ----------
         u : int, optional
-            Number of faces in the "u" direction.
+            Number of faces in the 'u' direction.
             Default is ``10``.
         v : int, optional
-            Number of faces in the "v" direction.
+            Number of faces in the 'v' direction.
             Default is ``10``.
 
         Returns
