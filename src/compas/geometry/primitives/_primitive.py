@@ -11,9 +11,6 @@ __all__ = ['Primitive']
 class Primitive(Data):
     """Base class for geometric primitives."""
 
-    def __init__(self):
-        super(Primitive, self).__init__()
-
     def __ne__(self, other):
         # this is not obvious to ironpython
         return not self.__eq__(other)
