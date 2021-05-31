@@ -70,16 +70,15 @@ class Line(Primitive):
     @property
     def dataschema(self):
         from schema import Schema
-        from compas.data import is_float3
         return Schema({
-            'start': is_float3,
-            'end': is_float3
+            'start': Point.dataschema.fget(None),
+            'end': Point.dataschema.fget(None)
         })
 
     @property
     def data(self):
         """dict : The data dictionary that represents the line."""
-        return {'start': list(self.start), 'end': list(self.end)}
+        return {'start': self.start.data, 'end': self.end.data}
 
     @data.setter
     def data(self, data):

@@ -64,19 +64,18 @@ class Circle(Primitive):
     @property
     def dataschema(self):
         import schema
-        from compas.data import is_float3
         return schema.Schema({
-            'plane': schema.And(
-                lambda x: is_float3(x[0]),
-                lambda x: is_float3(x[1])
-            ),
+            'plane': Plane.dataschema.fget(None),
             'radius': schema.And(float, lambda x: x > 0)
         })
 
     @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
-        return {'plane': [list(self.plane.point), list(self.plane.normal)], 'radius': self.radius}
+        return {
+            'plane': self.plane.data,
+            'radius': self.radius
+        }
 
     @data.setter
     def data(self, data):

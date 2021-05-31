@@ -87,19 +87,18 @@ class Frame(Primitive):
     @property
     def dataschema(self):
         from schema import Schema
-        from compas.data import is_float3
         return Schema({
-            'point': is_float3,
-            'xaxis': is_float3,
-            'yaxis': is_float3
+            'point': Point.dataschema.fget(None),
+            'xaxis': Vector.dataschema.fget(None),
+            'yaxis': Vector.dataschema.fget(None)
         })
 
     @property
     def data(self):
         """dict : The data dictionary that represents the frame."""
-        return {'point': list(self.point),
-                'xaxis': list(self.xaxis),
-                'yaxis': list(self.yaxis)}
+        return {'point': self.point.data,
+                'xaxis': self.xaxis.data,
+                'yaxis': self.yaxis.data}
 
     @data.setter
     def data(self, data):

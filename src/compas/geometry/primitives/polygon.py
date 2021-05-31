@@ -95,7 +95,7 @@ class Polygon(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the polygon."""
-        return {'points': [list(point) for point in self.points]}
+        return {'points': [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):

@@ -66,12 +66,8 @@ class Ellipse(Primitive):
     @property
     def dataschema(self):
         import schema
-        from compas.data import is_float3
         return schema.Schema({
-            'plane': schema.And(
-                lambda x: is_float3(x[0]),
-                lambda x: is_float3(x[1])
-            ),
+            'plane': Plane.dataschema.fget(None),
             'major': schema.And(float, lambda x: x > 0),
             'minor': schema.And(float, lambda x: x > 0),
         })
@@ -79,7 +75,11 @@ class Ellipse(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
-        return {'plane': [list(self.plane.point), list(self.plane.normal)], 'major': self.major, 'minor': self.minor}
+        return {
+            'plane': self.plane.data,
+            'major': self.major,
+            'minor': self.minor
+        }
 
     @data.setter
     def data(self, data):

@@ -89,7 +89,7 @@ class Polyline(Primitive):
         dict
             The polyline's data.
         """
-        return {'points': [list(point) for point in self.points]}
+        return {'points': [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):

@@ -59,17 +59,16 @@ class Plane(Primitive):
     @property
     def dataschema(self):
         from schema import Schema
-        from compas.data import is_float3
         return Schema({
-            'point': is_float3,
-            'normal': is_float3
+            'point': Point.dataschema.fget(None),
+            'normal': Vector.dataschema.fget(None)
         })
 
     @property
     def data(self):
         """dict : The data dictionary that represents the plane."""
-        return {'point': list(self.point),
-                'normal': list(self.normal)}
+        return {'point': self.point.data,
+                'normal': self.normal.data}
 
     @data.setter
     def data(self, data):
