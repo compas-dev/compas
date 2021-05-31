@@ -68,13 +68,9 @@ class Cone(Shape):
     @property
     def dataschema(self):
         import schema
-        from compas.data import is_float3
         return schema.Schema({
             'circle': {
-                'plane': {
-                    'point': is_float3,
-                    'normal': is_float3
-                },
+                'plane': Plane.dataschema.fget(None),
                 'radius': schema.And(float, lambda x: x > 0)
             },
             'height': schema.And(float, lambda x: x > 0)

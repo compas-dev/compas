@@ -65,12 +65,8 @@ class Torus(Shape):
     @property
     def dataschema(self):
         import schema
-        from compas.data import is_float3
         return schema.Schema({
-            'plane': {
-                'point': is_float3,
-                'normal': is_float3
-            },
+            'plane': Plane.dataschema.fget(None),
             'radius_axis': schema.And(float, lambda x: x > 0),
             'radius_pipe': schema.And(float, lambda x: x > 0)
         })
@@ -94,7 +90,7 @@ class Torus(Shape):
         True
 
         """
-        return {'plane': Plane.worldXY().to_data(),
+        return {'plane': self.plane.data,
                 'radius_axis': self.radius_axis,
                 'radius_pipe': self.radius_pipe}
 

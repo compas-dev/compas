@@ -66,12 +66,8 @@ class Capsule(Shape):
     @property
     def dataschema(self):
         import schema
-        from compas.data import is_float3
         return schema.Schema({
-            'line': {
-                'start': is_float3,
-                'end': is_float3
-            },
+            'line': Line.dataschema.fget(None),
             'radius': schema.And(float, lambda x: x > 0)
         })
 

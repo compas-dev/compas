@@ -88,13 +88,8 @@ class Box(Shape):
     @property
     def dataschema(self):
         import schema
-        from compas.data import is_float3
         return schema.Schema({
-            'frame': {
-                'point': is_float3,
-                'xaxis': is_float3,
-                'yaxis': is_float3
-            },
+            'frame': Frame.dataschema.fget(None),
             'xsize': schema.And(float, lambda x: x > 0),
             'ysize': schema.And(float, lambda x: x > 0),
             'zsize': schema.And(float, lambda x: x > 0)
