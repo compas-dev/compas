@@ -93,7 +93,7 @@ class Polyline(Primitive):
 
     @data.setter
     def data(self, data):
-        self.points = data['points']
+        self.points = [Point.from_data(point) for point in data['points']]
 
     @property
     def points(self):

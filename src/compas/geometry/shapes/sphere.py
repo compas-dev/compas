@@ -82,12 +82,11 @@ class Sphere(Shape):
         True
 
         """
-        return {'point': list(self.point),
-                'radius': self.radius}
+        return {'point': self.point.data, 'radius': self.radius}
 
     @data.setter
     def data(self, data):
-        self.point = data['point']
+        self.point = Point.from_data(data['point'])
         self.radius = data['radius']
 
     @property

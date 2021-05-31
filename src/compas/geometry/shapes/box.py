@@ -132,7 +132,7 @@ class Box(Shape):
 
     @frame.setter
     def frame(self, frame):
-        self._frame = Frame(frame[0], frame[1], frame[2])
+        self._frame = Frame(*frame)
 
     @property
     def xsize(self):

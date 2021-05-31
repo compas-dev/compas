@@ -82,8 +82,7 @@ class Cylinder(Shape):
             The cylinder data.
 
         """
-        return {'circle': self.circle.data,
-                'height': self.height}
+        return {'circle': self.circle.data, 'height': self.height}
 
     @data.setter
     def data(self, data):
@@ -97,7 +96,7 @@ class Cylinder(Shape):
 
     @plane.setter
     def plane(self, plane):
-        self.circle.plane = Plane(plane[0], plane[1])
+        self.circle.plane = Plane(*plane)
 
     @property
     def circle(self):
@@ -106,7 +105,7 @@ class Cylinder(Shape):
 
     @circle.setter
     def circle(self, circle):
-        self._circle = Circle(circle[0], circle[1])
+        self._circle = Circle(*circle)
 
     @property
     def radius(self):

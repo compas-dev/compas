@@ -82,8 +82,8 @@ class Line(Primitive):
 
     @data.setter
     def data(self, data):
-        self.start = data['start']
-        self.end = data['end']
+        self.start = Point.from_data(data['start'])
+        self.end = Point.from_data(data['end'])
 
     @property
     def start(self):

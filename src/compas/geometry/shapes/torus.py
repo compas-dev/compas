@@ -107,7 +107,7 @@ class Torus(Shape):
 
     @plane.setter
     def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+        self._plane = Plane(*plane)
 
     @property
     def radius_axis(self):

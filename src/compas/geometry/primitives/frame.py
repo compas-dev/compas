@@ -102,9 +102,9 @@ class Frame(Primitive):
 
     @data.setter
     def data(self, data):
-        self.point = data['point']
-        self.xaxis = data['xaxis']
-        self.yaxis = data['yaxis']
+        self.point = Point.from_data(data['point'])
+        self.xaxis = Vector.from_data(data['xaxis'])
+        self.yaxis = Vector.from_data(data['yaxis'])
 
     @property
     def point(self):

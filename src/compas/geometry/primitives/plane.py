@@ -72,8 +72,8 @@ class Plane(Primitive):
 
     @data.setter
     def data(self, data):
-        self.point = data['point']
-        self.normal = data['normal']
+        self.point = Point.from_data(data['point'])
+        self.normal = Vector.from_data(data['normal'])
 
     @property
     def point(self):

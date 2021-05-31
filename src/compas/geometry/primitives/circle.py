@@ -79,7 +79,7 @@ class Circle(Primitive):
 
     @data.setter
     def data(self, data):
-        self.plane = data['plane']
+        self.plane = Plane.from_data(data['plane'])
         self.radius = data['radius']
 
     @property
@@ -89,7 +89,7 @@ class Circle(Primitive):
 
     @plane.setter
     def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+        self._plane = Plane(*plane)
 
     @property
     def radius(self):

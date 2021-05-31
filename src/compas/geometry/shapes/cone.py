@@ -100,7 +100,7 @@ class Cone(Shape):
 
     @plane.setter
     def plane(self, plane):
-        self.circle.plane = Plane(plane[0], plane[1])
+        self.circle.plane = Plane(*plane)
 
     @property
     def circle(self):
@@ -109,7 +109,7 @@ class Cone(Shape):
 
     @circle.setter
     def circle(self, circle):
-        self._circle = Circle(circle[0], circle[1])
+        self._circle = Circle(*circle)
 
     @property
     def radius(self):
