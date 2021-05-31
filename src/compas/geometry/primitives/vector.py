@@ -79,7 +79,7 @@ class Vector(Primitive):
 
     __slots__ = ['_x', '_y', '_z']
 
-    def __init__(self, x=0.0, y=0.0, z=0.0):
+    def __init__(self, x, y, z=0.0):
         super(Vector, self).__init__()
         self._x = 0.0
         self._y = 0.0
