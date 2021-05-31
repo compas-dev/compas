@@ -175,8 +175,7 @@ class Sphere(Shape):
         >>> sphere = Sphere.from_data(data)
 
         """
-        sphere = cls([0, 0, 0], 1)
-        sphere.data = data
+        sphere = cls(Point.from_data(data['point']), data['radius'])
         return sphere
 
     # ==========================================================================

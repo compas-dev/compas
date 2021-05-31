@@ -215,8 +215,7 @@ class Cone(Shape):
         >>> cone = Cone.from_data(data)
 
         """
-        cone = cls(Circle(Plane.worldXY(), 1), 1)
-        cone.data = data
+        cone = cls(Circle.from_data(data['circle']), data['height'])
         return cone
 
     # ==========================================================================

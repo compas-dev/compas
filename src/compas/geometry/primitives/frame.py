@@ -229,7 +229,7 @@ class Frame(Primitive):
         >>> frame.yaxis
         Vector(0.000, 1.000, 0.000)
         """
-        frame = cls(data['point'], data['xaxis'], data['yaxis'])
+        frame = cls(Point.from_data(data['point']), Vector.from_data(data['xaxis']), Vector.from_data(data['yaxis']))
         return frame
 
     @classmethod

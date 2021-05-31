@@ -75,11 +75,9 @@ class Ellipse(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
-        return {
-            'plane': self.plane.data,
-            'major': self.major,
-            'minor': self.minor
-        }
+        return {'plane': self.plane.data,
+                'major': self.major,
+                'minor': self.minor}
 
     @data.setter
     def data(self, data):
@@ -195,7 +193,7 @@ class Ellipse(Primitive):
         >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'major': 2.0, 'minor': 1.0}
         >>> ellipse = Ellipse.from_data(data)
         """
-        return cls(data['plane'], data['minor'], data['minor'])
+        return cls(Plane.from_data(data['plane']), data['minor'], data['minor'])
 
     # ==========================================================================
     # transformations

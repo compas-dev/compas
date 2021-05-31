@@ -167,7 +167,7 @@ class Polyline(Primitive):
         >>> Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
         Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
         """
-        return cls(data['points'])
+        return cls([Point.from_data(point) for point in data['points']])
 
     # ==========================================================================
     # methods

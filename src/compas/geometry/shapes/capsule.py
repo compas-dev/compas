@@ -178,8 +178,7 @@ class Capsule(Shape):
         :class: `Capsule`
             The constructed capsule.
         """
-        line = Line.from_data(data['line'])
-        capsule = Capsule(line, data['radius'])
+        capsule = Capsule(Line.from_data(data['line']), data['radius'])
         return capsule
 
     # ==========================================================================

@@ -180,7 +180,7 @@ class Line(Primitive):
         >>> line.end
         Point(1.000, 0.000, 0.000)
         """
-        return cls(data['start'], data['end'])
+        return cls(Point.from_data(data['start']), Point.from_data(data['end']))
 
     # ==========================================================================
     # static

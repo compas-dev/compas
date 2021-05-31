@@ -210,8 +210,7 @@ class Cylinder(Shape):
         >>> cylinder = Cylinder.from_data(data)
 
         """
-        cylinder = cls(Circle(Plane.worldXY(), 1), 1)
-        cylinder.data = data
+        cylinder = cls(Circle.from_data(data['circle']), data['height'])
         return cylinder
 
     # ==========================================================================

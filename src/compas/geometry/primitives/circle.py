@@ -72,10 +72,7 @@ class Circle(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
-        return {
-            'plane': self.plane.data,
-            'radius': self.radius
-        }
+        return {'plane': self.plane.data, 'radius': self.radius}
 
     @data.setter
     def data(self, data):
@@ -190,7 +187,7 @@ class Circle(Primitive):
         >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 5.}
         >>> circle = Circle.from_data(data)
         """
-        return cls(data['plane'], data['radius'])
+        return cls(Plane.from_data(data['plane']), data['radius'])
 
     # ==========================================================================
     # methods

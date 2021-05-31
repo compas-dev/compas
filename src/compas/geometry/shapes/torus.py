@@ -199,8 +199,7 @@ class Torus(Shape):
         >>> torus = Torus.from_data(data)
 
         """
-        torus = cls(Plane.worldXY(), 1, 1)
-        torus.data = data
+        torus = cls(Plane.from_data(data['plane']), data['radius_axis'], data['radius_pipe'])
         return torus
 
     # ==========================================================================

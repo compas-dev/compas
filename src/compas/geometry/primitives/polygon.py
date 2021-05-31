@@ -206,7 +206,7 @@ class Polygon(Primitive):
         >>> polygon.points[0]
         Point(0.000, 0.000, 0.000)
         """
-        return cls(data['points'])
+        return cls([Point.from_data(point) for point in data['points']])
 
     @classmethod
     def from_sides_and_radius_xy(cls, n, radius):

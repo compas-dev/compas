@@ -166,7 +166,7 @@ class Plane(Primitive):
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
         """
-        return cls(data['point'], data['normal'])
+        return cls(Point.from_data(data['point']), Vector.from_data(data['normal']))
 
     @classmethod
     def from_three_points(cls, a, b, c):
