@@ -10,15 +10,12 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
-# from compas.utilities import flatten
-# from compas.geometry import allclose
-# from compas.geometry.transformations import decompose_matrix
+from compas.utilities import flatten
+from compas.geometry import allclose
+from compas.geometry.transformations import decompose_matrix
 from compas.geometry.transformations import matrix_from_shear_entries
 from compas.geometry.transformations import matrix_from_shear
 from compas.geometry.transformations import Transformation
-
-
-__all__ = ['Shear']
 
 
 class Shear(Transformation):
@@ -45,17 +42,16 @@ class Shear(Transformation):
     >>>
     """
 
-    def __init__(self, matrix=None):
+    def __init__(self, matrix=None, check=True):
         if matrix:
-            # _, shear, _, _, _ = decompose_matrix(matrix)
-            # check = matrix_from_shear_entries(shear)
-            # if not allclose(flatten(matrix), flatten(check)):
-            #     raise ValueError('This is not a proper shear matrix.')
-            pass
+            _, shear, _, _, _ = decompose_matrix(matrix)
+            if check:
+                if not allclose(flatten(matrix), flatten(matrix_from_shear_entries(shear))):
+                    raise ValueError('This is not a proper shear matrix.')
         super(Shear, self).__init__(matrix=matrix)
 
     def __repr__(self):
-        return "Shear({0!r})".format(self.matrix)
+        return "Shear({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_angle_direction_plane(cls, angle, direction, plane):

@@ -28,9 +28,6 @@ from compas.geometry.transformations import matrix_inverse
 from compas.geometry.transformations import translation_from_matrix
 
 
-__all__ = ['Transformation']
-
-
 class Transformation(Data):
     """The ``Transformation`` represents a 4x4 transformation matrix.
 
