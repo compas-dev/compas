@@ -13,8 +13,6 @@ from compas.geometry import Plane
 
 from compas.geometry.shapes import Shape
 
-__all__ = ['Torus']
-
 
 class Torus(Shape):
     """A torus is defined by a plane and two radii.

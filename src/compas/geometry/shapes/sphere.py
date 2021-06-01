@@ -10,8 +10,6 @@ from compas.geometry import Point
 
 from compas.geometry.shapes import Shape
 
-__all__ = ['Sphere']
-
 
 class Sphere(Shape):
     """A sphere is defined by a point and a radius.

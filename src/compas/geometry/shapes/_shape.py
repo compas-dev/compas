@@ -6,9 +6,6 @@ import abc
 from compas.geometry import Primitive
 
 
-__all__ = ['Shape']
-
-
 class Shape(Primitive):
     """Base class for geometric shapes."""
 

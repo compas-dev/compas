@@ -18,9 +18,6 @@ from compas.geometry import Plane
 from compas.geometry.shapes._shape import Shape
 
 
-__all__ = ['Cone']
-
-
 class Cone(Shape):
     """A cone is defined by a circle and a height.
 

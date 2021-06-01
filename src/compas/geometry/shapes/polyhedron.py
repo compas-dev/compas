@@ -9,9 +9,6 @@ from compas.utilities import pairwise
 from compas.geometry.shapes._shape import Shape
 
 
-__all__ = ['Polyhedron']
-
-
 class Polyhedron(Shape):
     """A polyhedron is defined by its vertices and faces.
 

@@ -11,9 +11,6 @@ from compas.geometry import Vector
 from compas.geometry.shapes._shape import Shape
 
 
-__all__ = ['Box']
-
-
 class Box(Shape):
     """A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.
 

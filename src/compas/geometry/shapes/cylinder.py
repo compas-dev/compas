@@ -14,8 +14,6 @@ from compas.geometry import Plane
 
 from compas.geometry.shapes import Shape
 
-__all__ = ['Cylinder']
-
 
 class Cylinder(Shape):
     """A cylinder is defined by a circle and a height.

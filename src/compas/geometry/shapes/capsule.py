@@ -15,9 +15,6 @@ from compas.geometry import Line
 from compas.geometry.shapes import Shape
 
 
-__all__ = ['Capsule']
-
-
 class Capsule(Shape):
     """A capsule is defined by a line segment and a radius.
 
