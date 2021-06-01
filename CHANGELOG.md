@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`
+* Added pluggable function `trimesh_mean_curvature` in `compas_rhino`
+* Added pluggable function `trimesh_principal_curvature` in `compas_rhino`
+
 ### Changed
 
 ### Removed
@@ -19,15 +23,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`
-* Added pluggable function `trimesh_mean_curvature` in `compas_rhino`
-* Added pluggable function `trimesh_principle_curvature` in `compas_rhino`
-
+* Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
 
 ### Changed
 
+* Allow str or int as joint type in `compas.robots.Joint` constructor.
+
 ### Removed
 
+
+## [1.6.3] 2021-05-26
+
+### Added
+
+* Added `compas.topology.astar_lightest_path`.
+* Added jsonschema definitions for primitives and transformations.
+* Added schema implementation to primitives and transformations.
+* Added jsonschema implementation to primitives and transformations.
+* Added `compas.data.is_int3`, `compas.data.is_float3`, `compas_data.is_float4x4`.
+
+### Changed
+
+* Extended `compas.topology.astar_shortest_path` to work on `compas.datastructures.Mesh` and `compas.datastructures.Network`.
+* Fixed `compas.data.Data.to_jsonstring`.
+* Changed `compas.data.Data.data.setter` to raise `NotImplementedError`.
+* Changed annotations of `compas_blender.artists.BaseArtist`.
+* Fixed `__repr__` for primitives, shapes, transformations.
+
+### Removed
+
+* Removed duplicate cases from `compas.data.DataEncoder`.
 
 ## [1.6.2] 2021-05-12
 
@@ -205,7 +230,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
+* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
 
 ### Changed
 

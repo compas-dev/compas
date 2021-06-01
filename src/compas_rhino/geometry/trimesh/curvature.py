@@ -24,7 +24,7 @@ __all__ = [
 ]
 
 
-@pluggable(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=['Rhino'])
 def trimesh_gaussian_curvature(M):
     """Compute the discrete Gaussian curvature of a triangle mesh.
 
@@ -43,9 +43,9 @@ def trimesh_gaussian_curvature(M):
     Description: The angle defect at a vertex is used to describe the Gaussian curvature in a neighborhood around a vertex.
 
     Notation Convention:
-    :math:`K` - discrete Gaussian curvature
+    :math:`K_{i}` - discrete Gaussian curvature at vertex i
     :math:`j,k` - the vertices from the Star of vertex i
-    :math:`e_{ij}, e_{ik}` - the vector from vertex i to j, i to k
+    :math:`e_{ij}, e_{ik}` - the vectors from vertex i to j and i to k
     :math:`\theta_{i}^{jk}` - interior angle at vertex i of triangle ijk
 
     Formula:
@@ -71,9 +71,9 @@ def trimesh_gaussian_curvature(M):
     .. [1] Formula of Discrete Gaussian Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
 
     """
-    # (1) see if input is already Rhino.Geometry.Mesh
+    # (0) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
-    if type(M) != Rhino.Geometry.Mesh:
+    if not isinstance(M, Rhino.Geometry.Mesh):
         for vertices, faces in M:
             for x, y, z in vertices:
                 mesh.Vertices.Add(x, y, z)
@@ -81,6 +81,10 @@ def trimesh_gaussian_curvature(M):
                 mesh.Faces.AddFace(*face)
     else:
         mesh = M
+
+    # (1) check if it is a trimesh
+    if mesh.Faces.QuadCount > 0:
+        raise ValueError("Mesh is not trimesh.")
 
     # (2) Prepare ingredient and return list
     pi_2 = 2 * pi
@@ -91,7 +95,7 @@ def trimesh_gaussian_curvature(M):
         vert_neighbors_topo = mesh.TopologyVertices.ConnectedTopologyVertices(mesh.TopologyVertices.TopologyVertexIndex(i), True)
         vert_neighbors = []
         if vert_neighbors_topo is None:
-            K.append(0)
+            K.append(None)
             continue
         for vert in vert_neighbors_topo:
             vert_neighbors.extend(mesh.TopologyVertices.MeshVertexIndices(vert))
@@ -110,7 +114,7 @@ def trimesh_gaussian_curvature(M):
     return K
 
 
-@pluggable(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=['Rhino'])
 def trimesh_mean_curvature(M):
     """Compute the discrete mean curvature of a triangle mesh.
 
@@ -129,9 +133,9 @@ def trimesh_mean_curvature(M):
     Description: The discrete mean curvature is computed by edge length and its dihedral angle.
 
     Notation Convention:
-    :math:`H` - discrete mean curvature
-    :math:`E` - all the edges connect vertex i
-    :math:`j` - the vertex connects vertex i
+    :math:`H_{i}` - discrete mean curvature at vertex i
+    :math:`E` - all the edges connected to vertex i
+    :math:`j` - a vertex connected to vertex i
     :math:`l_{ij}` - the length of edge ij
     :math:`\phi_{ij}` - the dihedral angle of edge ij
 
@@ -156,11 +160,12 @@ def trimesh_mean_curvature(M):
     References
     ----------
     .. [1] Formula of Discrete Mean Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
+    .. [2] Formula of dihedral angle available at Keenan Crane's lecture, 04:20-05:43, at https://youtu.be/NlU1m-OfumE
 
     """
-    # (1) see if input is already Rhino.Geometry.Mesh
+    # (0) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
-    if type(M) != Rhino.Geometry.Mesh:
+    if not isinstance(M, Rhino.Geometry.Mesh):
         for vertices, faces in M:
             for x, y, z in vertices:
                 mesh.Vertices.Add(x, y, z)
@@ -168,6 +173,10 @@ def trimesh_mean_curvature(M):
                 mesh.Faces.AddFace(*face)
     else:
         mesh = M
+
+    # (1) check if it is a trimesh
+    if mesh.Faces.QuadCount > 0:
+        raise ValueError("Mesh is not trimesh.")
 
     # (2) Prepare ingredient and return list
     H = []
@@ -179,7 +188,7 @@ def trimesh_mean_curvature(M):
         edges = mesh.TopologyVertices.ConnectedEdges(mesh.TopologyVertices.TopologyVertexIndex(i))
         vertex = FromPoint3f(mesh.Vertices[i])
         if edges is None:
-            H.append(0)
+            H.append(None)
             continue
         x = []
         # (3.1) loop topology edges of such vertex
@@ -211,7 +220,7 @@ def trimesh_mean_curvature(M):
     return H
 
 
-@pluggable(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=['Rhino'])
 def trimesh_principal_curvature(M):
     """Compute the principal curvature of a triangle mesh.
     Parameters
@@ -229,15 +238,15 @@ def trimesh_principal_curvature(M):
     Description: The discrete principal curvature is computed by mean curvature, Gaussian curvature, and vertex area.
 
     Notation Convention:
-    :math:`\kappa_1, \kappa_2` - The max principal curvature and the min principal curvature
-    :math:`H_i` - the discrete mean curvature of vertex i
-    :math:`K_i` - the discrete Gaussian curvature of vertex i
-    :math:`A_i` - the vertex area of vertex i
+    :math:`\kappa^1_i, \kappa^2_i` - The max principal curvature and the min principal curvature at the vertex i
+    :math:`H_i` - the discrete mean curvature at vertex i
+    :math:`K_i` - the discrete Gaussian curvature at vertex i
+    :math:`A_i` - the area of the dual cell centered at vertex i
 
     Formula:
     .. math::
 
-        \frac{H_i}{A_i}\pm\sqrt{( \,\frac{H_i}{A_i})\,^2-\frac{K_i}{A_i}}
+        \kappa^1_i, \kappa^2_i =  \frac{H_i}{A_i}\pm\sqrt{( \,\frac{H_i}{A_i})\,^2-\frac{K_i}{A_i}}
 
     Examples
     --------
@@ -257,9 +266,9 @@ def trimesh_principal_curvature(M):
     .. [1] Formula of Discrete Principal Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
 
     """
-    # (1) see if input is already Rhino.Geometry.Mesh
+    # (0) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
-    if type(M) != Rhino.Geometry.Mesh:
+    if not isinstance(M, Rhino.Geometry.Mesh):
         for vertices, faces in M:
             for x, y, z in vertices:
                 mesh.Vertices.Add(x, y, z)
@@ -267,6 +276,10 @@ def trimesh_principal_curvature(M):
                 mesh.Faces.AddFace(*face)
     else:
         mesh = M
+
+    # (1) check if it is a trimesh
+    if mesh.Faces.QuadCount > 0:
+        raise ValueError("Mesh is not trimesh.")
 
     # (2) Prepare ingredient and return list
     k1 = []
@@ -278,14 +291,15 @@ def trimesh_principal_curvature(M):
     # (3) Main - loop over all vertices
     for i in range(mesh.Vertices.Count):
         if(A[i] == 0):
-            k1.append(0)
-            k2.append(0)
+            k1.append(None)
+            k2.append(None)
             continue
         H_ = H[i] / A[i]
         K_ = K[i] / A[i]
 
-        k1.append(H_ + sqrt(max(0, H_ * H_ - K_)))
-        k2.append(H_ - sqrt(max(0, H_ * H_ - K_)))
+        discriminant = sqrt(max(0, H_ * H_ - K_))
+        k1.append(H_ + discriminant)
+        k2.append(H_ - discriminant)
 
     # (4) Output
     return k1, k2
