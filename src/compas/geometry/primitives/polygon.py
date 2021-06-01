@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Polygon
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -24,9 +18,6 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 
 from compas.utilities import pairwise
-
-
-__all__ = ['Polygon']
 
 
 class Polygon(Primitive):

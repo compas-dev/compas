@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Circle
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -12,9 +6,6 @@ from math import pi
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Plane
-
-
-__all__ = ['Circle']
 
 
 class Circle(Primitive):
@@ -184,7 +175,7 @@ class Circle(Primitive):
         Examples
         --------
         >>> from compas.geometry import Circle
-        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 5.}
+        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'radius': 5.}
         >>> circle = Circle.from_data(data)
         """
         return cls(Plane.from_data(data['plane']), data['radius'])

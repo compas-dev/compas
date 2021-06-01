@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Plane
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -12,9 +6,6 @@ from math import sqrt
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Point
-
-
-__all__ = ['Plane']
 
 
 class Plane(Primitive):

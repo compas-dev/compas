@@ -1,18 +1,9 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Line
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
-
-
-__all__ = ['Line']
 
 
 class Line(Primitive):

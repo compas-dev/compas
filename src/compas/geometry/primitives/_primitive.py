@@ -5,9 +5,6 @@ from __future__ import print_function
 from compas.data import Data
 
 
-__all__ = ['Primitive']
-
-
 class Primitive(Data):
     """Base class for geometric primitives."""
 

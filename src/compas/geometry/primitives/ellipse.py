@@ -1,20 +1,9 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Ellipse
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# from math import pi
-
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Plane
-
-
-__all__ = ['Ellipse']
 
 
 class Ellipse(Primitive):
@@ -190,7 +179,7 @@ class Ellipse(Primitive):
         Examples
         --------
         >>> from compas.geometry import Ellipse
-        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'major': 2.0, 'minor': 1.0}
+        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'major': 2.0, 'minor': 1.0}
         >>> ellipse = Ellipse.from_data(data)
         """
         return cls(Plane.from_data(data['plane']), data['minor'], data['minor'])

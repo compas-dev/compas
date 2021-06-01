@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Quaternion
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -19,9 +13,6 @@ from compas.geometry import quaternion_is_unit
 from compas.geometry import quaternion_from_matrix
 
 from compas.geometry.primitives import Primitive
-
-
-__all__ = ['Quaternion']
 
 
 class Quaternion(Primitive):
