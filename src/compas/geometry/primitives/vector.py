@@ -69,6 +69,16 @@ class Vector(Primitive):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema(is_float3)
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'vector'
+
     __slots__ = ['_x', '_y', '_z']
 
     def __init__(self, x, y, z=0.0):
@@ -79,12 +89,6 @@ class Vector(Primitive):
         self.x = x
         self.y = y
         self.z = z
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        return Schema(is_float3)
 
     @property
     def data(self):

@@ -74,11 +74,15 @@ class Data(object):
         raise NotImplementedError
 
     @property
+    def JSONSCHEMANAME(self):
+        raise NotImplementedError
+
+    @property
     def JSONSCHEMA(self):
         """dict : The schema of the JSON representation of the data of this object."""
         if not self._JSONSCHEMA:
-            schema_name = '{}.json'.format(self.__class__.__name__.lower())
-            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_name)
+            schema_filename = '{}.json'.format(self.JSONSCHEMANAME.lower())
+            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_filename)
             with open(schema_path, 'r') as fp:
                 self._JSONSCHEMA = json.load(fp)
         return self._JSONSCHEMA

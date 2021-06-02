@@ -55,14 +55,6 @@ class Polyline(Primitive):
     1.0
     """
 
-    __slots__ = ['_points', '_lines']
-
-    def __init__(self, points):
-        super(Polyline, self).__init__()
-        self._points = []
-        self._lines = []
-        self.points = points
-
     @property
     def DATASCHEMA(self):
         from schema import Schema
@@ -70,6 +62,18 @@ class Polyline(Primitive):
         return Schema({
             'points': lambda x: [is_float3(i) for i in x]
         })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'polyline'
+
+    __slots__ = ['_points', '_lines']
+
+    def __init__(self, points):
+        super(Polyline, self).__init__()
+        self._points = []
+        self._lines = []
+        self.points = points
 
     @property
     def data(self):

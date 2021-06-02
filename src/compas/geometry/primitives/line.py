@@ -49,6 +49,18 @@ class Line(Primitive):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({
+            'start': Point.DATASCHEMA.fget(None),
+            'end': Point.DATASCHEMA.fget(None)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'line'
+
     __slots__ = ['_start', '_end']
 
     def __init__(self, p1, p2):
@@ -57,14 +69,6 @@ class Line(Primitive):
         self._end = None
         self.start = p1
         self.end = p2
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        return Schema({
-            'start': Point.DATASCHEMA.fget(None),
-            'end': Point.DATASCHEMA.fget(None)
-        })
 
     @property
     def data(self):

@@ -56,6 +56,16 @@ class Transformation(Data):
     >>> Tinv = T.inverse()
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float4x4
+        return Schema({"matrix": is_float4x4})
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'transformation'
+
     def __init__(self, matrix=None):
         """Construct a transformation from a 4x4 transformation matrix.
         """
@@ -121,12 +131,6 @@ class Transformation(Data):
             self.matrix[2][:],
             self.matrix[3][:]]
         return cls(matrix)
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float4x4
-        return Schema({"matrix": is_float4x4})
 
     @property
     def data(self):

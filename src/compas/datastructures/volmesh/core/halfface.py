@@ -37,24 +37,6 @@ class HalfFace(Datastructure):
 
     """
 
-    def __init__(self):
-        super(HalfFace, self).__init__()
-        self._max_vertex = -1
-        self._max_face = -1
-        self._max_cell = -1
-        self._vertex = {}
-        self._halfface = {}
-        self._cell = {}
-        self._plane = {}
-        self._edge_data = {}
-        self._face_data = {}
-        self._cell_data = {}
-        self.attributes = {'name': 'VolMesh'}
-        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.default_edge_attributes = {}
-        self.default_face_attributes = {}
-        self.default_cell_attributes = {}
-
     @property
     def DATASCHEMA(self):
         import schema
@@ -73,6 +55,28 @@ class HalfFace(Datastructure):
             "max_face": schema.And(int, lambda x: x >= -1),
             "max_cell": schema.And(int, lambda x: x >= -1),
         })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'halfface'
+
+    def __init__(self):
+        super(HalfFace, self).__init__()
+        self._max_vertex = -1
+        self._max_face = -1
+        self._max_cell = -1
+        self._vertex = {}
+        self._halfface = {}
+        self._cell = {}
+        self._plane = {}
+        self._edge_data = {}
+        self._face_data = {}
+        self._cell_data = {}
+        self.attributes = {'name': 'VolMesh'}
+        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        self.default_edge_attributes = {}
+        self.default_face_attributes = {}
+        self.default_cell_attributes = {}
 
     # --------------------------------------------------------------------------
     # descriptors

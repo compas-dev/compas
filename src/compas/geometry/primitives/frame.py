@@ -67,15 +67,6 @@ class Frame(Primitive):
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
     """
 
-    def __init__(self, point, xaxis, yaxis):
-        super(Frame, self).__init__()
-        self._point = None
-        self._xaxis = None
-        self._yaxis = None
-        self.point = point
-        self.xaxis = xaxis
-        self.yaxis = yaxis
-
     @property
     def DATASCHEMA(self):
         from schema import Schema
@@ -84,6 +75,19 @@ class Frame(Primitive):
             'xaxis': Vector.DATASCHEMA.fget(None),
             'yaxis': Vector.DATASCHEMA.fget(None)
         })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'frame'
+
+    def __init__(self, point, xaxis, yaxis):
+        super(Frame, self).__init__()
+        self._point = None
+        self._xaxis = None
+        self._yaxis = None
+        self.point = point
+        self.xaxis = xaxis
+        self.yaxis = yaxis
 
     @property
     def data(self):

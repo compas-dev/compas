@@ -48,6 +48,23 @@ class Graph(Datastructure):
     >>>
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            "attributes": dict,
+            "dna": dict,
+            "dea": dict,
+            "node": dict,
+            "edge": dict,
+            "adjacency": dict,
+            "max_node": schema.And(int, lambda x: x >= -1)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'graph'
+
     def __init__(self):
         super(Graph, self).__init__()
         self._max_node = -1
@@ -78,19 +95,6 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
     # serialization
     # --------------------------------------------------------------------------
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            "attributes": dict,
-            "dna": dict,
-            "dea": dict,
-            "node": dict,
-            "edge": dict,
-            "adjacency": dict,
-            "max_node": schema.And(int, lambda x: x >= -1)
-        })
 
     @property
     def data(self):

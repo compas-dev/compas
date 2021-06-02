@@ -101,6 +101,15 @@ class Quaternion(Primitive):
     True
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({'w': float, 'x': float, 'y': float, 'z': float})
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'quaternion'
+
     __slots__ = ['_w', '_x', '_y', '_z']
 
     def __init__(self, w, x, y, z):
@@ -113,11 +122,6 @@ class Quaternion(Primitive):
         self.x = x
         self.y = y
         self.z = z
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        return Schema({'w': float, 'x': float, 'y': float, 'z': float})
 
     @property
     def data(self):

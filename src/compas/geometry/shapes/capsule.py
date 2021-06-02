@@ -51,6 +51,18 @@ class Capsule(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'line': Line.DATASCHEMA.fget(None),
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'capsule'
+
     __slots__ = ['_line', '_radius']
 
     def __init__(self, line, radius):
@@ -59,14 +71,6 @@ class Capsule(Shape):
         self._radius = None
         self.line = line
         self.radius = radius
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'line': Line.DATASCHEMA.fget(None),
-            'radius': schema.And(float, lambda x: x > 0)
-        })
 
     @property
     def data(self):

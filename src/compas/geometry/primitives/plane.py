@@ -38,6 +38,18 @@ class Plane(Primitive):
     Vector(0.000, 0.000, 1.000)
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({
+            'point': Point.DATASCHEMA.fget(None),
+            'normal': Vector.DATASCHEMA.fget(None)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'plane'
+
     __slots__ = ['_point', '_normal']
 
     def __init__(self, point, normal):
@@ -46,14 +58,6 @@ class Plane(Primitive):
         self._normal = None
         self.point = point
         self.normal = normal
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        return Schema({
-            'point': Point.DATASCHEMA.fget(None),
-            'normal': Vector.DATASCHEMA.fget(None)
-        })
 
     @property
     def data(self):

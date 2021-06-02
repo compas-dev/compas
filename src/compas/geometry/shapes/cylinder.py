@@ -50,15 +50,6 @@ class Cylinder(Shape):
 
     """
 
-    __slots__ = ['_circle', '_height']
-
-    def __init__(self, circle, height):
-        super(Cylinder, self).__init__()
-        self._circle = None
-        self._height = None
-        self.circle = circle
-        self.height = height
-
     @property
     def DATASCHEMA(self):
         import schema
@@ -69,6 +60,19 @@ class Cylinder(Shape):
             },
             'height': schema.And(float, lambda x: x > 0)
         })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'cylinder'
+
+    __slots__ = ['_circle', '_height']
+
+    def __init__(self, circle, height):
+        super(Cylinder, self).__init__()
+        self._circle = None
+        self._height = None
+        self.circle = circle
+        self.height = height
 
     @property
     def data(self):

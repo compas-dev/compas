@@ -41,6 +41,19 @@ class Ellipse(Primitive):
     >>> ellipse = Ellipse(plane, 2, 1)
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'plane': Plane.DATASCHEMA.fget(None),
+            'major': schema.And(float, lambda x: x > 0),
+            'minor': schema.And(float, lambda x: x > 0),
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'ellipse'
+
     __slots__ = ['_plane', '_major', '_minor']
 
     def __init__(self, plane, major, minor):
@@ -51,15 +64,6 @@ class Ellipse(Primitive):
         self.plane = plane
         self.major = major
         self.minor = minor
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'plane': Plane.DATASCHEMA.fget(None),
-            'major': schema.And(float, lambda x: x > 0),
-            'minor': schema.And(float, lambda x: x > 0),
-        })
 
     @property
     def data(self):

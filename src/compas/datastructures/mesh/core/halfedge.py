@@ -77,6 +77,10 @@ class HalfEdge(Datastructure):
             "max_face": schema.And(int, lambda x: x >= -1)
         })
 
+    @property
+    def JSONSCHEMANAME(self):
+        return 'halfedge'
+
     def __init__(self):
         super(HalfEdge, self).__init__()
         self._max_vertex = -1

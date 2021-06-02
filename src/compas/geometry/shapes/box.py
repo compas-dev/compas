@@ -71,6 +71,20 @@ class Box(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'frame': Frame.DATASCHEMA.fget(None),
+            'xsize': schema.And(float, lambda x: x > 0),
+            'ysize': schema.And(float, lambda x: x > 0),
+            'zsize': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'box'
+
     def __init__(self, frame, xsize, ysize, zsize, **kwargs):
         super(Box, self).__init__(**kwargs)
         self._frame = None
@@ -81,16 +95,6 @@ class Box(Shape):
         self.xsize = xsize
         self.ysize = ysize
         self.zsize = zsize
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'frame': Frame.DATASCHEMA.fget(None),
-            'xsize': schema.And(float, lambda x: x > 0),
-            'ysize': schema.And(float, lambda x: x > 0),
-            'zsize': schema.And(float, lambda x: x > 0)
-        })
 
     @property
     def data(self):

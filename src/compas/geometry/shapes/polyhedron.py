@@ -21,6 +21,21 @@ class Polyhedron(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from compas.data import is_float3, is_sequence_of_int
+        return schema.Schema({
+            'vertices': lambda items: all(is_float3(item) for item in items),
+            'faces': lambda items: all(is_sequence_of_int(item) for item in items)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'polyhedron'
+
+    __slots__ = ['_vertices', '_faces']
+
     def __init__(self, vertices, faces):
         super(Polyhedron, self).__init__()
         self._vertices = None
@@ -57,15 +72,6 @@ class Polyhedron(Shape):
                     seen.add((u, v))
                     seen.add((v, u))
                     yield u, v
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        from compas.data import is_float3, is_sequence_of_int
-        return schema.Schema({
-            'vertices': lambda items: all(is_float3(item) for item in items),
-            'faces': lambda items: all(is_sequence_of_int(item) for item in items)
-        })
 
     @property
     def data(self):

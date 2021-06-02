@@ -49,6 +49,19 @@ class Torus(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'plane': Plane.DATASCHEMA.fget(None),
+            'radius_axis': schema.And(float, lambda x: x > 0),
+            'radius_pipe': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'torus'
+
     __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
 
     def __init__(self, plane, radius_axis, radius_pipe):
@@ -59,15 +72,6 @@ class Torus(Shape):
         self.plane = plane
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'plane': Plane.DATASCHEMA.fget(None),
-            'radius_axis': schema.And(float, lambda x: x > 0),
-            'radius_pipe': schema.And(float, lambda x: x > 0)
-        })
 
     @property
     def data(self):

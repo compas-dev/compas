@@ -107,6 +107,16 @@ class Point(Primitive):
     Point(100.000, 196.000, 324.000)
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema(is_float3)
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'point'
+
     __slots__ = ['_x', '_y', '_z']
 
     def __init__(self, x, y, z=0.0):
@@ -117,12 +127,6 @@ class Point(Primitive):
         self.x = x
         self.y = y
         self.z = z
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        return Schema(is_float3)
 
     @property
     def data(self):

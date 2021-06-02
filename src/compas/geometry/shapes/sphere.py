@@ -43,15 +43,6 @@ class Sphere(Shape):
     >>> sphere3 = Sphere([2, 4, 1], 2)
     """
 
-    __slots__ = ['_point', '_radius']
-
-    def __init__(self, point, radius):
-        super(Sphere, self).__init__()
-        self._point = None
-        self._radius = None
-        self.point = point
-        self.radius = radius
-
     @property
     def DATASCHEMA(self):
         import schema
@@ -60,6 +51,19 @@ class Sphere(Shape):
             'point': is_float3,
             'radius': schema.And(float, lambda x: x > 0)
         })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'sphere'
+
+    __slots__ = ['_point', '_radius']
+
+    def __init__(self, point, radius):
+        super(Sphere, self).__init__()
+        self._point = None
+        self._radius = None
+        self.point = point
+        self.radius = radius
 
     @property
     def data(self):

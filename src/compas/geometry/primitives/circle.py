@@ -45,13 +45,6 @@ class Circle(Primitive):
 
     __slots__ = ['_plane', '_radius']
 
-    def __init__(self, plane, radius):
-        super(Circle, self).__init__()
-        self._plane = None
-        self._radius = None
-        self.plane = plane
-        self.radius = radius
-
     @property
     def DATASCHEMA(self):
         import schema
@@ -59,6 +52,17 @@ class Circle(Primitive):
             'plane': Plane.DATASCHEMA.fget(None),
             'radius': schema.And(float, lambda x: x > 0)
         })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'circle'
+
+    def __init__(self, plane, radius):
+        super(Circle, self).__init__()
+        self._plane = None
+        self._radius = None
+        self.plane = plane
+        self.radius = radius
 
     @property
     def data(self):
