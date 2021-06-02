@@ -43,9 +43,20 @@ Validators
     is_float3
     is_float4x4
 
+
+Exceptions
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    DecoderError
+
 """
 from __future__ import absolute_import
 
+from .exceptions import DecoderError
 from .validators import is_sequence_of_int
 from .validators import is_sequence_of_float
 from .validators import is_int3
@@ -61,6 +72,7 @@ __all__ = [
     'Data',
     'DataEncoder',
     'DataDecoder',
+    'DecoderError',
     'is_sequence_of_int',
     'is_sequence_of_float',
     'is_int3',

@@ -4,8 +4,7 @@ from __future__ import division
 
 import json
 
-
-__all__ = ['DataDecoder', 'DataEncoder']
+from compas.data.exceptions import DecoderError
 
 
 def cls_from_dtype(dtype):
@@ -34,10 +33,6 @@ def cls_from_dtype(dtype):
     mod_name, attr_name = dtype.split('/')
     module = __import__(mod_name, fromlist=[attr_name])
     return getattr(module, attr_name)
-
-
-class DecoderError(Exception):
-    pass
 
 
 class DataEncoder(json.JSONEncoder):
