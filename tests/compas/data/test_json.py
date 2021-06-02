@@ -97,6 +97,7 @@ def test_json_pretty():
     assert result == """{\n"a": 12,\n"b": 6565\n}"""
 
 
+# temporarily commented because folder does not exist yet on main
 # def test_json_url():
 #     data = compas.json_load('https://raw.githubusercontent.com/compas-dev/compas/main/src/compas/data/schemas/graph.json')
 #     assert data['$schema'] == 'http://json-schema.org/draft-07/schema#'
