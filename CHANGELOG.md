@@ -10,19 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`
-* Added pluggable function `trimesh_mean_curvature` in `compas_rhino`
-* Added pluggable function `trimesh_principal_curvature` in `compas_rhino`
-
-### Changed
-
-### Removed
-
-
-## Unreleased
-
-### Added
-
+* Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`.
+* Added pluggable function `trimesh_mean_curvature` in `compas_rhino`.
+* Added pluggable function `trimesh_principal_curvature` in `compas_rhino`.
 * Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
 
 ### Changed

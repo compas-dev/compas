@@ -118,10 +118,10 @@ def test_concatenated():
 
 
 def test___repr__():
-    trans = [1, 2, 3]
-    axes = [-2.142, 1.141, -0.142]
+    point = [1, 2, 3]
+    axis = [-2.142, 1.141, -0.142]
     angle = 0.7854
-    R = Rotation.from_axis_and_angle(axes, angle, point=trans)
+    R = Rotation.from_axis_and_angle(axis, angle, point=point)
     assert R == eval(repr(R))
 
 
@@ -130,10 +130,10 @@ def test___str__():
         ' [   -0.1624,    0.7716,    0.6150,   -1.2258],\n' + \
         ' [   -0.3168,   -0.6311,    0.7081,    2.4546],\n' + \
         ' [    0.0000,    0.0000,    0.0000,    1.0000]]\n'
-    trans = [1, 2, 3]
-    axes = [-2.142, 1.141, -0.142]
+    point = [1, 2, 3]
+    axis = [-2.142, 1.141, -0.142]
     angle = 0.7854
-    R = Rotation.from_axis_and_angle(axes, angle, point=trans)
+    R = Rotation.from_axis_and_angle(axis, angle, point=point)
     assert s == str(R)
 
 

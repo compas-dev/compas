@@ -29,11 +29,24 @@ Functions
     json_dump
     json_dumps
 
-"""
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
 
+Validators
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    is_int3
+    is_float3
+    is_float4x4
+
+"""
+from __future__ import absolute_import
+
+from .validators import is_int3
+from .validators import is_float3
+from .validators import is_float4x4
 from .encoders import DataEncoder
 from .encoders import DataDecoder
 from .data import Data
@@ -44,6 +57,9 @@ __all__ = [
     'Data',
     'DataEncoder',
     'DataDecoder',
+    'is_int3',
+    'is_float3',
+    'is_float4x4',
     'json_load',
     'json_loads',
     'json_dump',

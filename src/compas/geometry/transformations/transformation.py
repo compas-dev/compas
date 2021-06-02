@@ -102,7 +102,7 @@ class Transformation(Data):
         return not self.__eq__(other)
 
     def __repr__(self):
-        return "Transformation({})".format(self.matrix)
+        return "Transformation({0!r})".format(self.matrix)
 
     def __str__(self):
         s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
@@ -124,6 +124,37 @@ class Transformation(Data):
             self.matrix[2][:],
             self.matrix[3][:]]
         return cls(matrix)
+
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float4x4
+        return Schema({"matrix": is_float4x4})
+
+    @property
+    def JSONSCHEMA(self):
+        from compas import versionstring
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/transformation.json",
+            "$compas": versionstring,
+            "type": "object",
+            "properties": {
+                "matrix": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                        "type": "array",
+                        "minItems": 4,
+                        "maxItems": 4,
+                        "items": {"type": "number"}
+                    }
+                }
+            },
+            "required": ["matrix"]
+        }
+        return schema
 
     @property
     def data(self):
