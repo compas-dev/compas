@@ -9,19 +9,78 @@ from compas.data.encoders import DataEncoder
 from compas.data.encoders import DataDecoder
 
 
-def is_int3(items):
-    return len(items) == 3 and all(isinstance(item, int) for item in items)
+def is_sequence_of_int(items):
+    """Verify that the sequence contains only :obj:`int`.
 
+    Parameters
+    ----------
+    items : iterable
+        The sequence of items.
 
-def is_intx(items):
+    Returns
+    -------
+    bool
+    """
     return all(isinstance(item, int) for item in items)
 
 
+def is_int3(items):
+    """Verify that the sequence contains 3 :obj:`int`.
+
+    Parameters
+    ----------
+    items : iterable
+        The sequence of items.
+
+    Returns
+    -------
+    bool
+    """
+    return len(items) == 3 and all(isinstance(item, int) for item in items)
+
+
+def is_sequence_of_float(items):
+    """Verify that the sequence contains only :obj:`float`.
+
+    Parameters
+    ----------
+    items : iterable
+        The sequence of items.
+
+    Returns
+    -------
+    bool
+    """
+    return all(isinstance(item, float) for item in items)
+
+
 def is_float3(items):
+    """Verify that the sequence contains 3 :obj:`float`.
+
+    Parameters
+    ----------
+    items : iterable
+        The sequence of items.
+
+    Returns
+    -------
+    bool
+    """
     return len(items) == 3 and all(isinstance(item, float) for item in items)
 
 
 def is_float4x4(items):
+    """Verify that the sequence contains 4 sequences of each 4 :obj:`float`.
+
+    Parameters
+    ----------
+    items : iterable
+        The sequence of items.
+
+    Returns
+    -------
+    bool
+    """
     return (
         len(items) == 4 and
         all(

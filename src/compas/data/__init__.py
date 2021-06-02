@@ -37,16 +37,18 @@ Validators
     :toctree: generated/
     :nosignatures:
 
+    is_sequence_of_int
+    is_sequence_of_float
     is_int3
-    is_intx
     is_float3
     is_float4x4
 
 """
 from __future__ import absolute_import
 
+from .validators import is_sequence_of_int
+from .validators import is_sequence_of_float
 from .validators import is_int3
-from .validators import is_intx
 from .validators import is_float3
 from .validators import is_float4x4
 from .encoders import DataEncoder
@@ -59,8 +61,9 @@ __all__ = [
     'Data',
     'DataEncoder',
     'DataDecoder',
+    'is_sequence_of_int',
+    'is_sequence_of_float',
     'is_int3',
-    'is_intx',
     'is_float3',
     'is_float4x4',
     'json_load',

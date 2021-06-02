@@ -61,10 +61,10 @@ class Polyhedron(Shape):
     @property
     def DATASCHEMA(self):
         import schema
-        from compas.data import is_float3, is_intx
+        from compas.data import is_float3, is_sequence_of_int
         return schema.Schema({
             'vertices': lambda items: all(is_float3(item) for item in items),
-            'faces': lambda items: all(is_intx(item) for item in items)
+            'faces': lambda items: all(is_sequence_of_int(item) for item in items)
         })
 
     @property
