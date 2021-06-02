@@ -7,7 +7,6 @@ import os
 import shutil
 import sys
 import tempfile
-import inspect
 
 try:
     NotADirectoryError
@@ -19,7 +18,6 @@ PY3 = sys.version_info[0] == 3
 
 
 __all__ = [
-    'here',
     'absjoin',
     'create_symlink',
     'create_symlinks',
@@ -241,14 +239,6 @@ def prepare_environment(env=None):
 
 def absjoin(*parts):
     return os.path.abspath(os.path.join(*parts))
-
-
-# def here(sibbling, name):
-#     return os.path.join(os.path.dirname(sibbling), name)
-
-
-def here(name):
-    return os.path.join(os.path.dirname(inspect.stack()[1][1]), name)
 
 
 # Cache whatever symlink function works (native or polyfill)

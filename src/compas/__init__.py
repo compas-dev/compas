@@ -82,7 +82,6 @@ from distutils.version import LooseVersion
 
 import compas._os
 from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
-from compas._os import here
 from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
@@ -179,7 +178,6 @@ __all__ = [
     'set_precision',
     'get',
     'json_dump', 'json_load', 'json_dumps', 'json_loads',
-    'here'
 ]
 
 
