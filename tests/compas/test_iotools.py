@@ -25,7 +25,7 @@ def path_text():
 
 @pytest.fixture
 def url_text():
-    return 'https://raw.githubusercontent.com/compas-dev/compas/master/README.md'
+    return 'https://raw.githubusercontent.com/compas-dev/compas/main/README.md'
 
 
 @pytest.fixture
@@ -74,7 +74,7 @@ def test_open_file_url_text(url_text):
 
 def test_open_file_url_as_write_fails(url_text):
     with pytest.raises(ValueError):
-        with _iotools.open_file(url_text, mode='w') as _file:
+        with _iotools.open_file(url_text, mode='w') as _:
             pass
 
 
