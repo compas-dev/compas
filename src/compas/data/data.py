@@ -13,10 +13,6 @@ from compas.data.encoders import DataEncoder
 from compas.data.encoders import DataDecoder
 
 
-__all__ = [
-    'Data'
-]
-
 # ==============================================================================
 # If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.
 # Assigning __metaclass__ = ABCMeta to a class causes a severe memory leak/performance
@@ -27,9 +23,6 @@ __all__ = [
 # - https://github.com/compas-dev/compas/issues/649
 
 # ==============================================================================
-
-# import abc
-# ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
 class Data(object):
