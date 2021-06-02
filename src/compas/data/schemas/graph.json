@@ -1,25 +1,39 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://github.com/compas-dev/compas/raw/main/compas/data/schemas/graph.json",
+    "$id": "graph.json",
     "$compas": "1.6.3",
-
     "type": "object",
-    "poperties": {
-        "compas": {"type": "string"},
-        "datatype": {"type": "string"},
-        "data": {
-            "type": "object",
-            "properties": {
-                "attributes":      {"type": "object"},
-                "node_attributes": {"type": "object"},
-                "edge_attributes": {"type": "object"},
-                "node":            {"type": "object"},
-                "edge":            {"type": "object"},
-                "adjacency":       {"type": "object"},
-                "max_int_key":     {"type": "number"}
-            },
-            "required": ["attributes", "node_attributes", "edge_attributes", "node", "edge", "adjacency", "max_int_key"]
+    "properties": {
+        "attributes": {
+            "type": "object"
+        },
+        "dna": {
+            "type": "object"
+        },
+        "dea": {
+            "type": "object"
+        },
+        "node": {
+            "type": "object"
+        },
+        "edge": {
+            "type": "object"
+        },
+        "adjacency": {
+            "type": "object"
+        },
+        "max_node": {
+            "type": "integer",
+            "minimum": -1
         }
     },
-    "required": ["compas", "datatype", "data"]
+    "required": [
+        "attributes",
+        "dna",
+        "dea",
+        "node",
+        "edge",
+        "adjacency",
+        "max_node"
+    ]
 }
