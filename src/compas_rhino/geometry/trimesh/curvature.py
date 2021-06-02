@@ -26,7 +26,8 @@ __all__ = [
 
 @plugin(category="trimesh", requires=['Rhino'])
 def trimesh_gaussian_curvature(M):
-    """Compute the discrete Gaussian curvature of a triangle mesh.
+
+    r"""Compute the discrete Gaussian curvature of a triangle mesh.
 
     Parameters
     ----------
@@ -43,15 +44,16 @@ def trimesh_gaussian_curvature(M):
     Description: The angle defect at a vertex is used to describe the Gaussian curvature in a neighborhood around a vertex.
 
     Notation Convention:
-    :math:`K_{i}` - discrete Gaussian curvature at vertex i
-    :math:`j,k` - the vertices from the Star of vertex i
-    :math:`e_{ij}, e_{ik}` - the vectors from vertex i to j and i to k
-    :math:`\theta_{i}^{jk}` - interior angle at vertex i of triangle ijk
+        * :math:`K_{i}` - discrete Gaussian curvature at vertex i
+        * :math:`j,k` - the vertices from the Star of vertex i
+        * :math:`e_{ij},\, e_{ik}` - the vectors from vertex i to j and i to k
+        * :math:`\\theta_{i}^{jk}` - interior angle at vertex i of triangle ijk
 
     Formula:
+
     .. math::
 
-        K_{i} = 2\pi-\sum\theta_{i}^{jk}
+        K_{i} = 2\pi-\sum\\theta_{i}^{jk}
 
     Examples
     --------
@@ -116,7 +118,7 @@ def trimesh_gaussian_curvature(M):
 
 @plugin(category="trimesh", requires=['Rhino'])
 def trimesh_mean_curvature(M):
-    """Compute the discrete mean curvature of a triangle mesh.
+    r"""Compute the discrete mean curvature of a triangle mesh.
 
     Parameters
     ----------
@@ -133,13 +135,14 @@ def trimesh_mean_curvature(M):
     Description: The discrete mean curvature is computed by edge length and its dihedral angle.
 
     Notation Convention:
-    :math:`H_{i}` - discrete mean curvature at vertex i
-    :math:`E` - all the edges connected to vertex i
-    :math:`j` - a vertex connected to vertex i
-    :math:`l_{ij}` - the length of edge ij
-    :math:`\phi_{ij}` - the dihedral angle of edge ij
+        * :math:`H_{i}` - discrete mean curvature at vertex i
+        * :math:`E` - all the edges connected to vertex i
+        * :math:`j` - a vertex connected to vertex i
+        * :math:`l_{ij}` - the length of edge ij
+        * :math:`\phi_{ij}` - the dihedral angle of edge ij
 
     Formula:
+
     .. math::
 
         H_{i} = \frac{1}{4}\sum_{ij\in E}l_{ij}\phi_{ij}
@@ -147,6 +150,7 @@ def trimesh_mean_curvature(M):
     Examples
     --------
     Make a mesh from scratch
+
     >>> from compas.geometry import Sphere
     >>> sphere = Sphere([1, 1, 1], 1)
     >>> sphere = Mesh.from_shape(sphere, u=30, v=30)
@@ -222,7 +226,7 @@ def trimesh_mean_curvature(M):
 
 @plugin(category="trimesh", requires=['Rhino'])
 def trimesh_principal_curvature(M):
-    """Compute the principal curvature of a triangle mesh.
+    r"""Compute the principal curvature of a triangle mesh.
     Parameters
     ----------
     M : (list, list)
@@ -238,19 +242,21 @@ def trimesh_principal_curvature(M):
     Description: The discrete principal curvature is computed by mean curvature, Gaussian curvature, and vertex area.
 
     Notation Convention:
-    :math:`\kappa^1_i, \kappa^2_i` - The max principal curvature and the min principal curvature at the vertex i
-    :math:`H_i` - the discrete mean curvature at vertex i
-    :math:`K_i` - the discrete Gaussian curvature at vertex i
-    :math:`A_i` - the area of the dual cell centered at vertex i
+        * :math:`\kappa^1_i, \kappa^2_i` - The max principal curvature and the min principal curvature at the vertex i
+        * :math:`H_i` - the discrete mean curvature at vertex i
+        * :math:`K_i` - the discrete Gaussian curvature at vertex i
+        * :math:`A_i` - the area of the dual cell centered at vertex i
 
     Formula:
+
     .. math::
 
-        \kappa^1_i, \kappa^2_i =  \frac{H_i}{A_i}\pm\sqrt{( \,\frac{H_i}{A_i})\,^2-\frac{K_i}{A_i}}
+        \kappa^1_i, \kappa^2_i =  \frac{H_i}{A_i}\pm\sqrt{\left( \,\frac{H_i}{A_i}\right)\,^2-\frac{K_i}{A_i}}
 
     Examples
     --------
     Make a mesh from scratch
+
     >>> from compas.geometry import Sphere
     >>> sphere = Sphere([1, 1, 1], 1)
     >>> sphere = Mesh.from_shape(sphere, u=30, v=30)
