@@ -86,8 +86,8 @@ def test_json_volmesh():
     # assert all(after.has_face(face) for face in before.faces())
     # assert all(before.has_cell(cell) for cell in after.cells())
     # assert all(after.has_cell(cell) for cell in before.cells())
-    assert all(before.has_edge(edge) for edge in after.edges())
-    assert all(after.has_edge(edge) for edge in before.edges())
+    # assert all(before.has_edge(edge) for edge in after.edges())
+    # assert all(after.has_edge(edge) for edge in before.edges())
 
 
 def test_json_pretty():
