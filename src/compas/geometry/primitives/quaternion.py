@@ -112,8 +112,8 @@ class Quaternion(Primitive):
 
     __slots__ = ['_w', '_x', '_y', '_z']
 
-    def __init__(self, w, x, y, z):
-        super(Quaternion, self).__init__()
+    def __init__(self, w, x, y, z, **kwargs):
+        super(Quaternion, self).__init__(**kwargs)
         self._w = None
         self._x = None
         self._y = None

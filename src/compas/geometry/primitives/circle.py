@@ -57,8 +57,8 @@ class Circle(Primitive):
     def JSONSCHEMANAME(self):
         return 'circle'
 
-    def __init__(self, plane, radius):
-        super(Circle, self).__init__()
+    def __init__(self, plane, radius, **kwargs):
+        super(Circle, self).__init__(**kwargs)
         self._plane = None
         self._radius = None
         self.plane = plane

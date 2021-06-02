@@ -52,8 +52,8 @@ class Plane(Primitive):
 
     __slots__ = ['_point', '_normal']
 
-    def __init__(self, point, normal):
-        super(Plane, self).__init__()
+    def __init__(self, point, normal, **kwargs):
+        super(Plane, self).__init__(**kwargs)
         self._point = None
         self._normal = None
         self.point = point

@@ -80,8 +80,8 @@ class Frame(Primitive):
     def JSONSCHEMANAME(self):
         return 'frame'
 
-    def __init__(self, point, xaxis, yaxis):
-        super(Frame, self).__init__()
+    def __init__(self, point, xaxis, yaxis, **kwargs):
+        super(Frame, self).__init__(**kwargs)
         self._point = None
         self._xaxis = None
         self._yaxis = None

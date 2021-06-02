@@ -67,8 +67,8 @@ class Cylinder(Shape):
 
     __slots__ = ['_circle', '_height']
 
-    def __init__(self, circle, height):
-        super(Cylinder, self).__init__()
+    def __init__(self, circle, height, **kwargs):
+        super(Cylinder, self).__init__(**kwargs)
         self._circle = None
         self._height = None
         self.circle = circle

@@ -69,8 +69,8 @@ class Polyline(Primitive):
 
     __slots__ = ['_points', '_lines']
 
-    def __init__(self, points):
-        super(Polyline, self).__init__()
+    def __init__(self, points, **kwargs):
+        super(Polyline, self).__init__(**kwargs)
         self._points = []
         self._lines = []
         self.points = points

@@ -56,8 +56,8 @@ class Ellipse(Primitive):
 
     __slots__ = ['_plane', '_major', '_minor']
 
-    def __init__(self, plane, major, minor):
-        super(Ellipse, self).__init__()
+    def __init__(self, plane, major, minor, **kwargs):
+        super(Ellipse, self).__init__(**kwargs)
         self._plane = None
         self._major = None
         self._minor = None

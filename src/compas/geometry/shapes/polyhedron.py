@@ -36,8 +36,8 @@ class Polyhedron(Shape):
 
     __slots__ = ['_vertices', '_faces']
 
-    def __init__(self, vertices, faces):
-        super(Polyhedron, self).__init__()
+    def __init__(self, vertices, faces, **kwargs):
+        super(Polyhedron, self).__init__(**kwargs)
         self._vertices = None
         self._faces = None
         self.vertices = vertices

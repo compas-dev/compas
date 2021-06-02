@@ -58,8 +58,8 @@ class Sphere(Shape):
 
     __slots__ = ['_point', '_radius']
 
-    def __init__(self, point, radius):
-        super(Sphere, self).__init__()
+    def __init__(self, point, radius, **kwargs):
+        super(Sphere, self).__init__(**kwargs)
         self._point = None
         self._radius = None
         self.point = point
