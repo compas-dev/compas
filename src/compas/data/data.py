@@ -39,7 +39,7 @@ class Data(object):
     ----------
     dataschema : :class:`schema.Schema`
         The schema of the data dict.
-    jsonschema : dict
+    JSONSCHEMA : dict
         The schema of the serialized data dict.
     data : dict
         The fundamental data describing the object.
@@ -50,7 +50,7 @@ class Data(object):
         self._guid = None
         self._name = None
         self._jsondefinitions = None
-        self._jsonschema = None
+        self._JSONSCHEMA = None
         self._jsonvalidator = None
         if name:
             self.name = name
@@ -80,14 +80,14 @@ class Data(object):
         raise NotImplementedError
 
     @property
-    def jsonschema(self):
+    def JSONSCHEMA(self):
         """dict : The schema of the JSON representation of the data of this object."""
-        if not self._jsonschema:
+        if not self._JSONSCHEMA:
             schema_name = '{}.json'.format(self.__class__.__name__.lower())
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_name)
             with open(schema_path, 'r') as fp:
-                self._jsonschema = json.load(fp)
-        return self._jsonschema
+                self._JSONSCHEMA = json.load(fp)
+        return self._JSONSCHEMA
 
     @property
     def jsondefinitions(self):
@@ -104,7 +104,7 @@ class Data(object):
         if not self._jsonvalidator:
             from jsonschema import RefResolver, Draft7Validator
             resolver = RefResolver.from_schema(self.jsondefinitions)
-            self._jsonvalidator = Draft7Validator(self.jsonschema, resolver=resolver)
+            self._jsonvalidator = Draft7Validator(self.JSONSCHEMA, resolver=resolver)
         return self._jsonvalidator
 
     @property
@@ -275,7 +275,7 @@ class Data(object):
         return self.dataschema.validate(self.data)
 
     def validate_json(self):
-        """Validate the object's data against its json schema (`self.jsonschema`).
+        """Validate the object's data against its json schema (`self.JSONSCHEMA`).
 
         Returns
         -------

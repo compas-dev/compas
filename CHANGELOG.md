@@ -24,9 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `compas.topology.astar_lightest_path`.
-* Added jsonschema definitions for primitives and transformations.
+* Added JSONSCHEMA definitions for primitives and transformations.
 * Added schema implementation to primitives and transformations.
-* Added jsonschema implementation to primitives and transformations.
+* Added JSONSCHEMA implementation to primitives and transformations.
 * Added `compas.data.is_int3`, `compas.data.is_float3`, `compas_data.is_float4x4`.
 
 ### Changed
@@ -491,14 +491,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added abstract `dataschema` to `compas.base.Base`.
-* Added abstract `jsonschema` to `compas.base.Base`.
+* Added abstract `JSONSCHEMA` to `compas.base.Base`.
 * Added `validate_data` to `compas.base.Base`.
 * Added `validate_json` to `compas.base.Base`.
 * Added implementation of `dataschema` to `compas.datastructures.Halfedge`.
-* Added implementation of `jsonschema` to `compas.datastructures.Halfedge`.
+* Added implementation of `JSONSCHEMA` to `compas.datastructures.Halfedge`.
 * Added `NodeAttributeView`.
 * Added implementation of `dataschema` to `compas.datastructures.Graph`.
-* Added implementation of `jsonschema` to `compas.datastructures.Graph`.
+* Added implementation of `JSONSCHEMA` to `compas.datastructures.Graph`.
 * Added `compas.rpc.Proxy.restart_server`.
 * Added `compas_rhino.objects.NetworkObject`.
 * Added constructors `from_matrix` and `from_rotation` to `compas.geometry.Quaternion`.
