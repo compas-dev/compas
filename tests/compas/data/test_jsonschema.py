@@ -1,8 +1,12 @@
 import os
 import json
-import jsonschema
 import pytest
 import compas
+
+
+if not compas.IPY:
+    import jsonschema
+
 
 if not compas.IPY:
 
