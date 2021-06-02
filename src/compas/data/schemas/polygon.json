@@ -2,10 +2,17 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "polygon.json",
     "$compas": "1.6.3",
-
     "type": "object",
     "properties": {
-        "points": {"type": "array", "minItems": 2, "items": {"$ref": "compas.json#/definitions/point"}}
+        "points": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+                "$ref": "compas.json#/definitions/point"
+            }
+        }
     },
-    "required": ["points"]
+    "required": [
+        "points"
+    ]
 }
