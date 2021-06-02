@@ -123,7 +123,7 @@ class Transformation(Data):
         return cls(matrix)
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         from schema import Schema
         from compas.data import is_float4x4
         return Schema({"matrix": is_float4x4})

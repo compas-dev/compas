@@ -115,7 +115,7 @@ class Quaternion(Primitive):
         self.z = z
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         from schema import Schema
         return Schema({'w': float, 'x': float, 'y': float, 'z': float})
 

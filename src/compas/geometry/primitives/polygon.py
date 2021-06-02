@@ -76,7 +76,7 @@ class Polygon(Primitive):
         self.points = points
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         from schema import Schema
         from compas.data import is_float3
         return Schema({

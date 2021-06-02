@@ -53,10 +53,10 @@ class Ellipse(Primitive):
         self.minor = minor
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         return schema.Schema({
-            'plane': Plane.dataschema.fget(None),
+            'plane': Plane.DATASCHEMA.fget(None),
             'major': schema.And(float, lambda x: x > 0),
             'minor': schema.And(float, lambda x: x > 0),
         })

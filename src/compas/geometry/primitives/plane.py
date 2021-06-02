@@ -48,11 +48,11 @@ class Plane(Primitive):
         self.normal = normal
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         from schema import Schema
         return Schema({
-            'point': Point.dataschema.fget(None),
-            'normal': Vector.dataschema.fget(None)
+            'point': Point.DATASCHEMA.fget(None),
+            'normal': Vector.DATASCHEMA.fget(None)
         })
 
     @property

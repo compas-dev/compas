@@ -77,12 +77,12 @@ class Frame(Primitive):
         self.yaxis = yaxis
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         from schema import Schema
         return Schema({
-            'point': Point.dataschema.fget(None),
-            'xaxis': Vector.dataschema.fget(None),
-            'yaxis': Vector.dataschema.fget(None)
+            'point': Point.DATASCHEMA.fget(None),
+            'xaxis': Vector.DATASCHEMA.fget(None),
+            'yaxis': Vector.DATASCHEMA.fget(None)
         })
 
     @property

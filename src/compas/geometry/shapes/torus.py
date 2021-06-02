@@ -61,10 +61,10 @@ class Torus(Shape):
         self.radius_pipe = radius_pipe
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         return schema.Schema({
-            'plane': Plane.dataschema.fget(None),
+            'plane': Plane.DATASCHEMA.fget(None),
             'radius_axis': schema.And(float, lambda x: x > 0),
             'radius_pipe': schema.And(float, lambda x: x > 0)
         })

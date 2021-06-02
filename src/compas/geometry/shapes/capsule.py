@@ -61,10 +61,10 @@ class Capsule(Shape):
         self.radius = radius
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         return schema.Schema({
-            'line': Line.dataschema.fget(None),
+            'line': Line.DATASCHEMA.fget(None),
             'radius': schema.And(float, lambda x: x > 0)
         })
 

@@ -60,11 +60,11 @@ class Cylinder(Shape):
         self.height = height
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         return schema.Schema({
             'circle': {
-                'plane': Plane.dataschema.fget(None),
+                'plane': Plane.DATASCHEMA.fget(None),
                 'radius': schema.And(float, lambda x: x > 0)
             },
             'height': schema.And(float, lambda x: x > 0)

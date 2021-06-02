@@ -59,11 +59,11 @@ class Line(Primitive):
         self.end = p2
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         from schema import Schema
         return Schema({
-            'start': Point.dataschema.fget(None),
-            'end': Point.dataschema.fget(None)
+            'start': Point.DATASCHEMA.fget(None),
+            'end': Point.DATASCHEMA.fget(None)
         })
 
     @property

@@ -83,10 +83,10 @@ class Box(Shape):
         self.zsize = zsize
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         return schema.Schema({
-            'frame': Frame.dataschema.fget(None),
+            'frame': Frame.DATASCHEMA.fget(None),
             'xsize': schema.And(float, lambda x: x > 0),
             'ysize': schema.And(float, lambda x: x > 0),
             'zsize': schema.And(float, lambda x: x > 0)

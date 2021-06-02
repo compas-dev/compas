@@ -490,14 +490,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added abstract `dataschema` to `compas.base.Base`.
+* Added abstract `DATASCHEMA` to `compas.base.Base`.
 * Added abstract `JSONSCHEMA` to `compas.base.Base`.
 * Added `validate_data` to `compas.base.Base`.
 * Added `validate_json` to `compas.base.Base`.
-* Added implementation of `dataschema` to `compas.datastructures.Halfedge`.
+* Added implementation of `DATASCHEMA` to `compas.datastructures.Halfedge`.
 * Added implementation of `JSONSCHEMA` to `compas.datastructures.Halfedge`.
 * Added `NodeAttributeView`.
-* Added implementation of `dataschema` to `compas.datastructures.Graph`.
+* Added implementation of `DATASCHEMA` to `compas.datastructures.Graph`.
 * Added implementation of `JSONSCHEMA` to `compas.datastructures.Graph`.
 * Added `compas.rpc.Proxy.restart_server`.
 * Added `compas_rhino.objects.NetworkObject`.

@@ -59,7 +59,7 @@ class Polyhedron(Shape):
                     yield u, v
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         from compas.data import is_float3, is_intx
         return schema.Schema({

@@ -119,7 +119,7 @@ class Point(Primitive):
         self.z = z
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         from schema import Schema
         from compas.data import is_float3
         return Schema(is_float3)

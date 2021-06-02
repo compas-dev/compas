@@ -53,10 +53,10 @@ class Circle(Primitive):
         self.radius = radius
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         return schema.Schema({
-            'plane': Plane.dataschema.fget(None),
+            'plane': Plane.DATASCHEMA.fget(None),
             'radius': schema.And(float, lambda x: x > 0)
         })
 

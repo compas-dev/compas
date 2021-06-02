@@ -37,7 +37,7 @@ class Data(object):
 
     Attributes
     ----------
-    dataschema : :class:`schema.Schema`
+    DATASCHEMA : :class:`schema.Schema`
         The schema of the data dict.
     JSONSCHEMA : dict
         The schema of the serialized data dict.
@@ -68,14 +68,8 @@ class Data(object):
         self.__dict__.update(state['__dict__'])
         self.data = state['data']
 
-    # def __copy__(self):
-    #     pass
-
-    # def __deepcopy__(self):
-    #     pass
-
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         """:class:`schema.Schema` : The schema of the data of this object."""
         raise NotImplementedError
 
@@ -261,7 +255,7 @@ class Data(object):
         return cls.from_data(deepcopy(self.data))
 
     def validate_data(self):
-        """Validate the object's data against its data schema (`self.dataschema`).
+        """Validate the object's data against its data schema (`self.DATASCHEMA`).
 
         Returns
         -------
@@ -272,7 +266,7 @@ class Data(object):
         ------
         SchemaError
         """
-        return self.dataschema.validate(self.data)
+        return self.DATASCHEMA.validate(self.data)
 
     def validate_json(self):
         """Validate the object's data against its json schema (`self.JSONSCHEMA`).

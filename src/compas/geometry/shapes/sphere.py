@@ -53,7 +53,7 @@ class Sphere(Shape):
         self.radius = radius
 
     @property
-    def dataschema(self):
+    def DATASCHEMA(self):
         import schema
         from compas.data import is_float3
         return schema.Schema({
