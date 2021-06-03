@@ -106,10 +106,10 @@ def test_from_obj():
 
 
 def test_from_ply():
-    mesh = Mesh.from_ply(compas.get('bunny.ply'))
-    assert mesh.number_of_faces() == 69451
-    assert mesh.number_of_vertices() == 35947
-    assert mesh.number_of_edges() == 104288
+    mesh = Mesh.from_ply(compas.get('tubemesh.ply'))
+    assert mesh.number_of_faces() == 342
+    assert mesh.number_of_vertices() == 200
+    assert mesh.number_of_edges() == 541
 
 
 def test_from_stl():
