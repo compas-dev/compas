@@ -261,7 +261,7 @@ class Data(object):
 
         Raises
         ------
-        SchemaError
+        schema.SchemaError
         """
         return self.DATASCHEMA.validate(self.data)
 
@@ -275,9 +275,14 @@ class Data(object):
 
         Raises
         ------
-        SchemaError
+        jsonschema.exceptions.ValidationError
         """
+        import jsonschema
         jsonstring = json.dumps(self.data, cls=DataEncoder)
         jsondata = json.loads(jsonstring, cls=DataDecoder)
-        self.jsonvalidator.validate(jsondata)
+        try:
+            self.jsonvalidator.validate(jsondata)
+        except jsonschema.exceptions.ValidationError as e:
+            print("Data validation against the JSON schema failed.")
+            raise e
         return jsonstring
