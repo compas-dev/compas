@@ -29,10 +29,10 @@ jobs:
         run: |
           choco install ironpython --version=2.7.8.1
           curl -o ironpython-pytest.tar.gz -LJO https://pypi.debian.net/ironpython-pytest/latest
-          curl -o v3.2.0.tar.gz -LJO https://github.com/Julian/jsonschema/archive/refs/tags
+          curl -o jsonschema.tar.gz -LJO https://github.com/Julian/jsonschema/archive/refs/tags/v3.2.0.tar.gz
           ipy -X:Frames -m ensurepip
           ipy -X:Frames -m pip install --no-deps ironpython-pytest.tar.gz
-          ipy -X:Frames -m pip install --no-deps v3.2.0.tar.gz
+          ipy -X:Frames -m pip install --no-deps jsonschema.tar.gz
       - uses: NuGet/setup-nuget@v1.0.5
       - name: Install dependencies
         run: |
