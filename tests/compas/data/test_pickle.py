@@ -23,8 +23,8 @@ class DataObject(Data):
 
 def test_pickling():
     d1 = DataObject()
-    s = pickle.dumps(d1)
-    d2 = pickle.loads(s)
+    s = pickle.dumps(d1, protocol=pickle.HIGHEST_PROTOCOL)
+    d2 = pickle.loads(s, protocol=pickle.HIGHEST_PROTOCOL)
     assert all(a == b for a, b in zip(d1.point, d2.point))
     assert all(a == b for a, b in zip(d1.normal, d2.normal))
     assert d1.radius == d2.radius
