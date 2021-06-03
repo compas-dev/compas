@@ -4,19 +4,7 @@
     "$compas": "1.6.3",
     "type": "object",
     "properties": {
-        "plane": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": [
-                {
-                    "$ref": "compas.json#/definitions/point"
-                },
-                {
-                    "$ref": "compas.json#/definitions/vector"
-                }
-            ]
-        },
+        "plane": {"$ref": "compas.json#/definitions/plane"},
         "major": {
             "type": "number",
             "exclusiveMinimum": 0
