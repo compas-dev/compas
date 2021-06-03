@@ -54,7 +54,7 @@ class Data(object):
 
     def __getstate__(self):
         """Return the object data for state serialization with older pickle protocols."""
-        return {'__dict__': self.__dict__.copy(), 'dtype': self.dtype, 'data': self.data}
+        return {'__dict__': self.__dict__, 'data': self.data}
 
     def __setstate__(self, state):
         """Assign a deserialized state to the object data to support older pickle protocols."""
