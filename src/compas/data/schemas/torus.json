@@ -5,7 +5,7 @@
     "type": "object",
     "properties": {
         "plane": {
-            "$ref": "compas.json#/definitions/point"
+            "$ref": "compas.json#/definitions/plane"
         },
         "radius_axis": {
             "type": "number",
