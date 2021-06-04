@@ -1,5 +1,5 @@
 """
-Draws a frome or plane.
+Draws a frame or plane.
 """
 from ghpythonlib.componentbase import executingcomponent as component
 

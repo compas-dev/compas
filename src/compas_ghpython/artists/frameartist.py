@@ -63,7 +63,7 @@ class FrameArtist(PrimitiveArtist):
 
         """
         point, _ = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
-        return compas_ghpython.draw_points([point])
+        return compas_ghpython.draw_points([point])[0]
 
     def draw_axes(self):
         """Draw the frame's axes.
