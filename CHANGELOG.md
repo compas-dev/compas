@@ -9,16 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`.
+* Added pluggable function `trimesh_mean_curvature` in `compas_rhino`.
+* Added pluggable function `trimesh_principal_curvature` in `compas_rhino`.
 * Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
 * Added `compas.data.is_sequence_of_int` and `compas.data.is_sequence_of_float`.
 * Added `compas.data.Data.JSONSCHEMANAME`.
 * Added `kwargs` to all child classes of `compas.data.Data`.
+* Added grasshopper component for drawing a frame.
+* Added `draw_origin` and `draw_axes`
 
 ### Changed
 
 * Allow str or int as joint type in `compas.robots.Joint` constructor.
 * Moved json schemas to `compas.data`.
 * Nested json schemas.
+* `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.
 
 ### Removed
 

@@ -49,17 +49,32 @@ class FrameArtist(PrimitiveArtist):
 
         Returns
         -------
-        geometry : list
-
-            * geometry[0] : :class:`Rhino.Geometry.Point`
-            * geometry[1] : list of :class:`Rhino.Geometry.Line`
+        :class:`Rhino.Geometry.Plane`
 
         """
-        point, lines = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
-        geometry = [None, None]
-        geometry[0] = compas_ghpython.draw_points([point])
-        geometry[1] = compas_ghpython.draw_lines(lines)
-        return geometry
+        return compas_ghpython.draw_frame(self.primitive)
+
+    def draw_origin(self):
+        """Draw the frame's origin.
+
+        Returns
+        -------
+        :class:`Rhino.Geometry.Point`
+
+        """
+        point, _ = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
+        return compas_ghpython.draw_points([point])[0]
+
+    def draw_axes(self):
+        """Draw the frame's axes.
+
+        Returns
+        -------
+        list of :class:`Rhino.Geometry.Line`
+
+        """
+        _, lines = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
+        return compas_ghpython.draw_lines(lines)
 
     @staticmethod
     def _get_args(primitive, scale=1.0, color_origin=(0, 0, 0), color_xaxis=(255, 0, 0), color_yaxis=(0, 255, 0), color_zaxis=(0, 0, 255)):
