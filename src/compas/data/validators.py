@@ -107,9 +107,10 @@ def validate_data(data, cls):
 
     Raises
     ------
-    SchemaError
+    jsonschema.exceptions.ValidationError
     """
     from jsonschema import RefResolver, Draft7Validator
+    from jsonschema.exceptions import ValidationError
 
     here = os.path.dirname(__file__)
 
@@ -124,6 +125,11 @@ def validate_data(data, cls):
 
     resolver = RefResolver.from_schema(definitions)
     validator = Draft7Validator(schema, resolver=resolver)
-    validator.validate(data)
+
+    try:
+        validator.validate(data)
+    except ValidationError as e:
+        print("Validation against the JSON schema of this object failed.")
+        raise e
 
     return json.loads(json.dumps(data, cls=DataEncoder), cls=DataDecoder)

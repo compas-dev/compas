@@ -263,7 +263,13 @@ class Data(object):
         ------
         schema.SchemaError
         """
-        return self.DATASCHEMA.validate(self.data)
+        import schema
+        try:
+            data = self.DATASCHEMA.validate(self.data)
+        except schema.SchemaError as e:
+            print("Validation against the data schema of this object failed.")
+            raise e
+        return data
 
     def validate_json(self):
         """Validate the object's data against its json schema (`self.JSONSCHEMA`).
@@ -283,6 +289,6 @@ class Data(object):
         try:
             self.jsonvalidator.validate(jsondata)
         except jsonschema.exceptions.ValidationError as e:
-            print("Data validation against the JSON schema failed.")
+            print("Validation against the JSON schema of this object failed.")
             raise e
         return jsonstring
