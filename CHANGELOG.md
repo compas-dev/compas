@@ -14,10 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added pluggable function `trimesh_mean_curvature` in `compas_rhino`.
 * Added pluggable function `trimesh_principal_curvature` in `compas_rhino`.
 * Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
+* Added grasshopper component for drawing a frame.
+* Added `draw_origin` and `draw_axes`
 
 ### Changed
 
 * Allow str or int as joint type in `compas.robots.Joint` constructor.
+* `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.
 
 ### Removed
 
