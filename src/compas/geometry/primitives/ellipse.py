@@ -64,6 +64,44 @@ class Ellipse(Primitive):
         self.minor = minor
 
     @property
+    def DATASCHEMA(self):
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            "plane": schema.And(
+                lambda x: is_float3(x[0]),
+                lambda x: is_float3(x[1])
+            ),
+            "major": schema.And(float, lambda x: x > 0),
+            "minor": schema.And(float, lambda x: x > 0),
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        from compas import versionstring
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/ellipse.json",
+            "$compas": versionstring,
+            "type": "object",
+            "properties": {
+                "plane": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": [
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+                    ]
+                },
+                "major": {"type": "number", "exclusiveMinimum": 0},
+                "minor": {"type": "number", "exclusiveMinimum": 0}
+            },
+            "required": ["plane", "major", "minor"]
+        }
+        return schema
+
+    @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
         return {'plane': [list(self.plane.point), list(self.plane.normal)], 'major': self.major, 'minor': self.minor}
@@ -130,7 +168,7 @@ class Ellipse(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Ellipse({0}, {1}, {2})'.format(self.plane, self.major, self.minor)
+        return 'Ellipse({0!r}, {1!r}, {2!r})'.format(self.plane, self.major, self.minor)
 
     def __len__(self):
         return 3

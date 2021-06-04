@@ -395,8 +395,8 @@ class Joint(Data):
     ----------
     name : :obj:`str`
         Unique name for the joint.
-    type : :obj:`int`
-        Joint type.
+    type : :obj:`str` or :obj:`int`
+        Joint type either as a string or an index number. See class attributes for named constants and supported types.
     origin : :class:`Origin`
         Transformation from the parent link to the child link frame.
     parent : :class:`ParentLink` or str
@@ -458,12 +458,14 @@ class Joint(Data):
                        'floating', 'planar')
 
     def __init__(self, name, type, parent, child, origin=None, axis=None, calibration=None, dynamics=None, limit=None, safety_controller=None, mimic=None, **kwargs):
-        if type not in Joint.SUPPORTED_TYPES:
+        type_idx = Joint.SUPPORTED_TYPES.index(type) if isinstance(type, str) else type
+
+        if type_idx not in range(len(Joint.SUPPORTED_TYPES)):
             raise ValueError('Unsupported joint type: %s' % type)
 
         super(Joint, self).__init__()
         self.name = name
-        self.type = Joint.SUPPORTED_TYPES.index(type)
+        self.type = type_idx
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
         self.child = child if isinstance(child, ChildLink) else ChildLink(child)
         self.origin = origin or Origin.from_euler_angles([0., 0., 0.])

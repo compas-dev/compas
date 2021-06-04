@@ -78,6 +78,8 @@ from __future__ import print_function
 import os
 import decimal
 
+from distutils.version import LooseVersion
+
 import compas._os
 from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
 from compas.data import json_dump, json_dumps, json_load, json_loads
@@ -88,8 +90,10 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '1.6.2'
+__version__ = '1.6.3'
 
+version = LooseVersion(compas.__version__)
+versionstring = version.vstring.split('-')[0]
 
 HERE = os.path.dirname(__file__)
 """str: Path to the location of the compas package."""

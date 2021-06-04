@@ -29,7 +29,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '1.6.2'
+__version__ = '1.6.3'
 
 
 PURGE_ON_DELETE = True
@@ -210,6 +210,7 @@ def _try_remove_bootstrapper(path):
 __all__ = [name for name in dir() if not name.startswith('_')]
 __all_plugins__ = [
     'compas_rhino.geometry.booleans',
+    'compas_rhino.geometry.trimesh',
     'compas_rhino.install',
     'compas_rhino.uninstall',
 ]
