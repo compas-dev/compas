@@ -30,6 +30,18 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
      :figclass: figure
      :class: figure-img img-fluid
 
+Grasshopper components for COMPAS
+=================================
+
+When COMPAS for Rhino is installed, it also installs Grasshopper components for
+COMPAS.  For example, the current environment information can be retrieved with
+the INFO component.
+
+
+.. figure:: /_images/ghpython_component.jpg
+     :figclass: figure
+     :class: figure-img img-fluid
+
 
 Reloading changed libraries
 ===========================
