@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.geometry.Cone</title>
+  <title> - Cone</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.geometry.Cylinder" href="compas.geometry.Cylinder.html" />
+    <link rel="next" title="Cone.copy" href="compas.geometry.Cone.copy.html" />
   
   
   
-    <link rel="prev" title="compas.geometry.Capsule" href="compas.geometry.Capsule.html" />
+    <link rel="prev" title="Capsule.validate_json" href="compas.geometry.Capsule.validate_json.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.geometry.Cone</li>
+            <li class="breadcrumb-item active" aria-current="page">Cone</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-geometry-cone">
-<h1>compas.geometry.Cone</h1>
+          <section class="detail" id="cone">
+<h1>Cone</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Cone">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Cone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/shapes/cone.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -144,95 +144,41 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.copy.html#compas.geometry.Cone.copy" title="compas.geometry.Cone.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.from_data.html#compas.geometry.Cone.from_data" title="compas.geometry.Cone.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a cone from its data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.from_json.html#compas.geometry.Cone.from_json" title="compas.geometry.Cone.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.from_jsonstring.html#compas.geometry.Cone.from_jsonstring" title="compas.geometry.Cone.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_data.html#compas.geometry.Cone.to_data" title="compas.geometry.Cone.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code>(filepath[, pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_json.html#compas.geometry.Cone.to_json" title="compas.geometry.Cone.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code>([pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_jsonstring.html#compas.geometry.Cone.to_jsonstring" title="compas.geometry.Cone.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code>([u])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_vertices_and_faces.html#compas.geometry.Cone.to_vertices_and_faces" title="compas.geometry.Cone.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a>([u])</p></td>
 <td><p>Returns a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.transform.html#compas.geometry.Cone.transform" title="compas.geometry.Cone.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
 <td><p>Transform the cone.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code>(transformation)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.transformed.html#compas.geometry.Cone.transformed" title="compas.geometry.Cone.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.validate_data.html#compas.geometry.Cone.validate_data" title="compas.geometry.Cone.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.validate_json.html#compas.geometry.Cone.validate_json" title="compas.geometry.Cone.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
-<td><p>The schema of the data of this object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
-<td><p>The schema of the JSON representation of the data of this object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code></p></td>
-<td><p>The surface area of the cone.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></p></td>
-<td><p>The center of the cone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">circle</span></code></p></td>
-<td><p>The circle of the cone.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>Returns the data dictionary that represents the cone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">diameter</span></code></p></td>
-<td><p>The diameter of the cone.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
-<td><p>The globally unique identifier of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></p></td>
-<td><p>The height of the cone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>The name of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code></p></td>
-<td><p>The normal of the cone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plane</span></code></p></td>
-<td><p>The plane of the cone.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></p></td>
-<td><p>The radius of the cone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></p></td>
-<td><p>The volume of the cone.</p></td>
 </tr>
 </tbody>
 </table>
@@ -297,7 +243,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.geometry.Cone</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Cone</a></li>
 </ul>
 
       </div>
@@ -309,20 +255,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.Capsule.html" title="compas.geometry.Capsule" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.Capsule.validate_json.html" title="Capsule.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.geometry.Capsule
+            Capsule.validate_json
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.Cylinder.html" title="compas.geometry.Cylinder" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Cone.copy.html" title="Cone.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.geometry.Cylinder
+            Cone.copy
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

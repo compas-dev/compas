@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            1.6.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -106,11 +106,11 @@
   
         
           
-          <div class="detail section" id="mesh-to-stl">
+          <section class="detail" id="mesh-to-stl">
 <h1>Mesh.to_stl</h1>
 <dl class="py method">
-<dt id="compas.datastructures.Mesh.to_stl">
-<code class="sig-prename descclassname"><span class="pre">Mesh.</span></code><code class="sig-name descname"><span class="pre">to_stl</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/core/mesh.py#L223"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas.datastructures.Mesh.to_stl">
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">to_stl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/core/mesh.py#L223"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Write a mesh to an STL file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -129,10 +129,10 @@ when <code class="docutils literal notranslate"><span class="pre">True</span></c
 <p class="rubric">Notes</p>
 <p>STL files only support triangle faces.
 It is your responsibility to convert all faces of your mesh to triangles.
-For example, with <code class="xref py py-func docutils literal notranslate"><span class="pre">compas.datastructures.mesh_quads_to_triangles()</span></code>.</p>
+For example, with <a class="reference internal" href="compas.datastructures.mesh_quads_to_triangles.html#compas.datastructures.mesh_quads_to_triangles" title="compas.datastructures.mesh_quads_to_triangles"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.datastructures.mesh_quads_to_triangles()</span></code></a>.</p>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -262,7 +262,7 @@ For example, with <code class="xref py py-func docutils literal notranslate"><sp
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '1.6.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

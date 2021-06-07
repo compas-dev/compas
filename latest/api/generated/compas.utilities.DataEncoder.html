@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.utilities.DataEncoder</title>
+  <title> - DataEncoder</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.utilities.DataDecoder" href="compas.utilities.DataDecoder.html" />
+    <link rel="next" title="DataEncoder.default" href="compas.utilities.DataEncoder.default.html" />
   
   
   
-    <link rel="prev" title="compas.utilities.color_to_rgb" href="compas.utilities.color_to_rgb.html" />
+    <link rel="prev" title="color_to_rgb" href="compas.utilities.color_to_rgb.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.utilities.html">utilities</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.utilities.DataEncoder</li>
+            <li class="breadcrumb-item active" aria-current="page">DataEncoder</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-utilities-dataencoder">
-<h1>compas.utilities.DataEncoder</h1>
+          <section class="detail" id="dataencoder">
+<h1>DataEncoder</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.utilities.DataEncoder">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">DataEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/encoders.py#L43"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -120,29 +120,14 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code>(o)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.default.html#compas.utilities.DataEncoder.default" title="compas.utilities.DataEncoder.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a>(o)</p></td>
 <td><p>Implement this method in a subclass such that it returns a serializable object for <code class="docutils literal notranslate"><span class="pre">o</span></code>, or calls the base implementation (to raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code>(o)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.encode.html#compas.utilities.DataEncoder.encode" title="compas.utilities.DataEncoder.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(o)</p></td>
 <td><p>Return a JSON string representation of a Python data structure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterencode</span></code>(o[, _one_shot])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.utilities.DataEncoder.iterencode.html#compas.utilities.DataEncoder.iterencode" title="compas.utilities.DataEncoder.iterencode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterencode</span></code></a>(o[, _one_shot])</p></td>
 <td><p>Encode the given object and yield each string representation as available.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">item_separator</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_separator</span></code></p></td>
-<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -207,7 +192,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.utilities.DataEncoder</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">DataEncoder</a></li>
 </ul>
 
       </div>
@@ -219,20 +204,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.utilities.color_to_rgb.html" title="compas.utilities.color_to_rgb" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.utilities.color_to_rgb.html" title="color_to_rgb" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.utilities.color_to_rgb
+            color_to_rgb
           </div>
         </a>
       
 
       
-        <a href="compas.utilities.DataDecoder.html" title="compas.utilities.DataDecoder" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.utilities.DataEncoder.default.html" title="DataEncoder.default" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.utilities.DataDecoder
+            DataEncoder.default
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

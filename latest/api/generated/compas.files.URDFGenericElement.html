@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.files.URDFGenericElement</title>
+  <title> - URDFGenericElement</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.files.XML" href="compas.files.XML.html" />
+    <link rel="next" title="URDFGenericElement.copy" href="compas.files.URDFGenericElement.copy.html" />
   
   
   
-    <link rel="prev" title="compas.files.URDFElement" href="compas.files.URDFElement.html" />
+    <link rel="prev" title="URDFElement.redistribute_elements" href="compas.files.URDFElement.redistribute_elements.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.files.html">files</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.files.URDFGenericElement</li>
+            <li class="breadcrumb-item active" aria-current="page">URDFGenericElement</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-files-urdfgenericelement">
-<h1>compas.files.URDFGenericElement</h1>
+          <section class="detail" id="urdfgenericelement">
+<h1>URDFGenericElement</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.URDFGenericElement">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">URDFGenericElement</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/urdf.py#L322"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -119,65 +119,38 @@ are not explicitly supported.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.copy.html#compas.files.URDFGenericElement.copy" title="compas.files.URDFGenericElement.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.from_data.html#compas.files.URDFGenericElement.from_data" title="compas.files.URDFGenericElement.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.from_json.html#compas.files.URDFGenericElement.from_json" title="compas.files.URDFGenericElement.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.from_jsonstring.html#compas.files.URDFGenericElement.from_jsonstring" title="compas.files.URDFGenericElement.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_urdf</span></code>(attributes, elements, text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.from_urdf.html#compas.files.URDFGenericElement.from_urdf" title="compas.files.URDFGenericElement.from_urdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_urdf</span></code></a>(attributes, elements, text)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.get_urdf_element.html#compas.files.URDFGenericElement.get_urdf_element" title="compas.files.URDFGenericElement.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.to_data.html#compas.files.URDFGenericElement.to_data" title="compas.files.URDFGenericElement.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.to_json.html#compas.files.URDFGenericElement.to_json" title="compas.files.URDFGenericElement.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code>([pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.to_jsonstring.html#compas.files.URDFGenericElement.to_jsonstring" title="compas.files.URDFGenericElement.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.validate_data.html#compas.files.URDFGenericElement.validate_data" title="compas.files.URDFGenericElement.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDFGenericElement.validate_json.html#compas.files.URDFGenericElement.validate_json" title="compas.files.URDFGenericElement.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
-<td><p>The schema of the data of this object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
-<td><p>The schema of the JSON representation of the data of this object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>The representation of the object as native Python data.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
-<td><p>The globally unique identifier of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>The name of the object.</p></td>
 </tr>
 </tbody>
 </table>
@@ -242,7 +215,7 @@ are not explicitly supported.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.files.URDFGenericElement</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">URDFGenericElement</a></li>
 </ul>
 
       </div>
@@ -254,20 +227,20 @@ are not explicitly supported.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.URDFElement.html" title="compas.files.URDFElement" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.URDFElement.redistribute_elements.html" title="URDFElement.redistribute_elements" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.files.URDFElement
+            URDFElement.redistribute_elements
           </div>
         </a>
       
 
       
-        <a href="compas.files.XML.html" title="compas.files.XML" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.URDFGenericElement.copy.html" title="URDFGenericElement.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.files.XML
+            URDFGenericElement.copy
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

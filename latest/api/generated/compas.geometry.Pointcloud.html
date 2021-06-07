@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.geometry.Pointcloud</title>
+  <title> - Pointcloud</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.geometry.Quaternion" href="compas.geometry.Quaternion.html" />
+    <link rel="next" title="Pointcloud.copy" href="compas.geometry.Pointcloud.copy.html" />
   
   
   
-    <link rel="prev" title="compas.geometry.Polyline" href="compas.geometry.Polyline.html" />
+    <link rel="prev" title="Polyline.validate_json" href="compas.geometry.Polyline.validate_json.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.geometry.Pointcloud</li>
+            <li class="breadcrumb-item active" aria-current="page">Pointcloud</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-geometry-pointcloud">
-<h1>compas.geometry.Pointcloud</h1>
+          <section class="detail" id="pointcloud">
+<h1>Pointcloud</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Pointcloud">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Pointcloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/pointclouds/pointcloud.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -118,86 +118,50 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.copy.html#compas.geometry.Pointcloud.copy" title="compas.geometry.Pointcloud.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bounds</span></code>(x, y, z, n)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_bounds.html#compas.geometry.Pointcloud.from_bounds" title="compas.geometry.Pointcloud.from_bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bounds</span></code></a>(x, y, z, n)</p></td>
 <td><p>Construct a point cloud within a given box.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code>(box, n)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_box.html#compas.geometry.Pointcloud.from_box" title="compas.geometry.Pointcloud.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a>(box, n)</p></td>
 <td><p>Construct a point cloud within a given box.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_data.html#compas.geometry.Pointcloud.from_data" title="compas.geometry.Pointcloud.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_json.html#compas.geometry.Pointcloud.from_json" title="compas.geometry.Pointcloud.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_jsonstring.html#compas.geometry.Pointcloud.from_jsonstring" title="compas.geometry.Pointcloud.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pcd</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_pcd.html#compas.geometry.Pointcloud.from_pcd" title="compas.geometry.Pointcloud.from_pcd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pcd</span></code></a>(filepath)</p></td>
 <td><p>Construct a pointcloud from a PCD file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_ply.html#compas.geometry.Pointcloud.from_ply" title="compas.geometry.Pointcloud.from_ply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code></a>(filepath)</p></td>
 <td><p>Construct a pointcloud from a PLY file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.to_data.html#compas.geometry.Pointcloud.to_data" title="compas.geometry.Pointcloud.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code>(filepath[, pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.to_json.html#compas.geometry.Pointcloud.to_json" title="compas.geometry.Pointcloud.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code>([pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.to_jsonstring.html#compas.geometry.Pointcloud.to_jsonstring" title="compas.geometry.Pointcloud.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(T)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.transform.html#compas.geometry.Pointcloud.transform" title="compas.geometry.Pointcloud.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform the primitive.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.transformed.html#compas.geometry.Pointcloud.transformed" title="compas.geometry.Pointcloud.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.validate_data.html#compas.geometry.Pointcloud.validate_data" title="compas.geometry.Pointcloud.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.validate_json.html#compas.geometry.Pointcloud.validate_json" title="compas.geometry.Pointcloud.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
-<td><p>The schema of the data of this object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
-<td><p>The schema of the JSON representation of the data of this object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounding_box</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroid</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>The representation of the object as native Python data.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
-<td><p>The globally unique identifier of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>The name of the object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">points</span></code></p></td>
-<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -262,7 +226,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.geometry.Pointcloud</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Pointcloud</a></li>
 </ul>
 
       </div>
@@ -274,20 +238,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.Polyline.html" title="compas.geometry.Polyline" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.Polyline.validate_json.html" title="Polyline.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.geometry.Polyline
+            Polyline.validate_json
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.Quaternion.html" title="compas.geometry.Quaternion" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Pointcloud.copy.html" title="Pointcloud.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.geometry.Quaternion
+            Pointcloud.copy
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

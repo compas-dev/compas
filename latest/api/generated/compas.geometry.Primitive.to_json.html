@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Primitive.transform" href="compas.geometry.Primitive.transform.html" />
+    <link rel="next" title="Primitive.to_jsonstring" href="compas.geometry.Primitive.to_jsonstring.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.19.3
+            1.6.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -108,13 +108,17 @@
           
           <section class="detail" id="primitive-to-json">
 <h1>Primitive.to_json</h1>
-<dl class="method">
-<dt id="compas.geometry.Primitive.to_json">
-<code class="sig-prename descclassname">Primitive.</code><code class="sig-name descname">to_json</code><span class="sig-paren">(</span><em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/primitives/_primitive.html#Primitive.to_json"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Serialise the structured data representing the primitive to json.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="compas.geometry.Primitive.to_json">
+<span class="sig-prename descclassname"><span class="pre">Primitive.</span></span><span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L167"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Serialize the data representation of an object to a JSON file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – The path to the json file.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>path string or file-like object</em>) – The path or file-like object to the file containing the data.</p></li>
+<li><p><strong>pretty</strong> (<em>bool, optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> serialize a pretty representation of the data.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -144,6 +148,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
@@ -199,10 +204,10 @@
       
 
       
-        <a href="compas.geometry.Primitive.transform.html" title="Primitive.transform" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Primitive.to_jsonstring.html" title="Primitive.to_jsonstring" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Primitive.transform
+            Primitive.to_jsonstring
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -248,7 +253,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.19.3',
+    VERSION           : '1.6.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

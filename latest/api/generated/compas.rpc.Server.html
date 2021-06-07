@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.rpc.Server</title>
+  <title> - Server</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.rpc.RPCClientError" href="compas.rpc.RPCClientError.html" />
+    <link rel="next" title="Server.close_request" href="compas.rpc.Server.close_request.html" />
   
   
   
-    <link rel="prev" title="compas.rpc.Proxy" href="compas.rpc.Proxy.html" />
+    <link rel="prev" title="Proxy.stop_server" href="compas.rpc.Proxy.stop_server.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.rpc.html">rpc</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.rpc.Server</li>
+            <li class="breadcrumb-item active" aria-current="page">Server</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-rpc-server">
-<h1>compas.rpc.Server</h1>
+          <section class="detail" id="server">
+<h1>Server</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.rpc.Server">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.rpc.</span></span><span class="sig-name descname"><span class="pre">Server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">addr</span></em>, <em class="sig-param"><span class="pre">requestHandler=&lt;class</span> <span class="pre">'xmlrpc.server.SimpleXMLRPCRequestHandler'&gt;</span></em>, <em class="sig-param"><span class="pre">logRequests=True</span></em>, <em class="sig-param"><span class="pre">allow_none=False</span></em>, <em class="sig-param"><span class="pre">encoding=None</span></em>, <em class="sig-param"><span class="pre">bind_and_activate=True</span></em>, <em class="sig-param"><span class="pre">use_builtin_types=False</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/rpc/server.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -141,107 +141,83 @@ that can be pinged to check if the server is live, and can be cleanly terminated
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_request</span></code>(request)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.close_request.html#compas.rpc.Server.close_request" title="compas.rpc.Server.close_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_request</span></code></a>(request)</p></td>
 <td><p>Called to clean up an individual request.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileno</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.fileno.html#compas.rpc.Server.fileno" title="compas.rpc.Server.fileno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileno</span></code></a>()</p></td>
 <td><p>Return socket file number.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">finish_request</span></code>(request, client_address)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.finish_request.html#compas.rpc.Server.finish_request" title="compas.rpc.Server.finish_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finish_request</span></code></a>(request, client_address)</p></td>
 <td><p>Finish one request by instantiating RequestHandlerClass.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_request</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.get_request.html#compas.rpc.Server.get_request" title="compas.rpc.Server.get_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_request</span></code></a>()</p></td>
 <td><p>Get the request and client address from the socket.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_error</span></code>(request, client_address)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.handle_error.html#compas.rpc.Server.handle_error" title="compas.rpc.Server.handle_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_error</span></code></a>(request, client_address)</p></td>
 <td><p>Handle an error gracefully.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_request</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.handle_request.html#compas.rpc.Server.handle_request" title="compas.rpc.Server.handle_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_request</span></code></a>()</p></td>
 <td><p>Handle one request, possibly blocking.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_timeout</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.handle_timeout.html#compas.rpc.Server.handle_timeout" title="compas.rpc.Server.handle_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_timeout</span></code></a>()</p></td>
 <td><p>Called if no new request arrives within self.timeout.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ping</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.ping.html#compas.rpc.Server.ping" title="compas.rpc.Server.ping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ping</span></code></a>()</p></td>
 <td><p>Simple function used to check if a remote server can be reached.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_request</span></code>(request, client_address)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.process_request.html#compas.rpc.Server.process_request" title="compas.rpc.Server.process_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_request</span></code></a>(request, client_address)</p></td>
 <td><p>Call finish_request.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_function</span></code>([function, name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.register_function.html#compas.rpc.Server.register_function" title="compas.rpc.Server.register_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_function</span></code></a>([function, name])</p></td>
 <td><p>Registers a function to respond to XML-RPC requests.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_instance</span></code>(instance[, allow_dotted_names])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.register_instance.html#compas.rpc.Server.register_instance" title="compas.rpc.Server.register_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_instance</span></code></a>(instance[, allow_dotted_names])</p></td>
 <td><p>Registers an instance to respond to XML-RPC requests.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_introspection_functions</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.register_introspection_functions.html#compas.rpc.Server.register_introspection_functions" title="compas.rpc.Server.register_introspection_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_introspection_functions</span></code></a>()</p></td>
 <td><p>Registers the XML-RPC introspection methods in the system namespace.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_multicall_functions</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.register_multicall_functions.html#compas.rpc.Server.register_multicall_functions" title="compas.rpc.Server.register_multicall_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_multicall_functions</span></code></a>()</p></td>
 <td><p>Registers the XML-RPC multicall method in the system namespace.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remote_shutdown</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.remote_shutdown.html#compas.rpc.Server.remote_shutdown" title="compas.rpc.Server.remote_shutdown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remote_shutdown</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_forever</span></code>([poll_interval])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.serve_forever.html#compas.rpc.Server.serve_forever" title="compas.rpc.Server.serve_forever"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serve_forever</span></code></a>([poll_interval])</p></td>
 <td><p>Handle one request at a time until shutdown.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_activate</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.server_activate.html#compas.rpc.Server.server_activate" title="compas.rpc.Server.server_activate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_activate</span></code></a>()</p></td>
 <td><p>Called by constructor to activate the server.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_bind</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.server_bind.html#compas.rpc.Server.server_bind" title="compas.rpc.Server.server_bind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_bind</span></code></a>()</p></td>
 <td><p>Called by constructor to bind the socket.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_close</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.server_close.html#compas.rpc.Server.server_close" title="compas.rpc.Server.server_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_close</span></code></a>()</p></td>
 <td><p>Called to clean-up the server.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_actions</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.service_actions.html#compas.rpc.Server.service_actions" title="compas.rpc.Server.service_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_actions</span></code></a>()</p></td>
 <td><p>Called by the serve_forever() loop.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shutdown</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.shutdown.html#compas.rpc.Server.shutdown" title="compas.rpc.Server.shutdown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shutdown</span></code></a>()</p></td>
 <td><p>Stops the serve_forever loop.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shutdown_request</span></code>(request)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.shutdown_request.html#compas.rpc.Server.shutdown_request" title="compas.rpc.Server.shutdown_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shutdown_request</span></code></a>(request)</p></td>
 <td><p>Called to shutdown and close an individual request.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_listMethods</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.system_listMethods.html#compas.rpc.Server.system_listMethods" title="compas.rpc.Server.system_listMethods"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_listMethods</span></code></a>()</p></td>
 <td><p>system.listMethods() =&gt; [‘add’, ‘subtract’, ‘multiple’]</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_methodHelp</span></code>(method_name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.system_methodHelp.html#compas.rpc.Server.system_methodHelp" title="compas.rpc.Server.system_methodHelp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_methodHelp</span></code></a>(method_name)</p></td>
 <td><p>system.methodHelp(‘add’) =&gt; “Adds two integers together”</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_methodSignature</span></code>(method_name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.system_methodSignature.html#compas.rpc.Server.system_methodSignature" title="compas.rpc.Server.system_methodSignature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_methodSignature</span></code></a>(method_name)</p></td>
 <td><p>system.methodSignature(‘add’) =&gt; [double, int, int]</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_multicall</span></code>(call_list)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.system_multicall.html#compas.rpc.Server.system_multicall" title="compas.rpc.Server.system_multicall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_multicall</span></code></a>(call_list)</p></td>
 <td><p>system.multicall([{‘methodName’: ‘add’, ‘params’: [2, 2]}, …]) =&gt; [[4], …]</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verify_request</span></code>(request, client_address)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.verify_request.html#compas.rpc.Server.verify_request" title="compas.rpc.Server.verify_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verify_request</span></code></a>(request, client_address)</p></td>
 <td><p>Verify the request.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">address_family</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_reuse_address</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">request_queue_size</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">socket_type</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">timeout</span></code></p></td>
-<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -306,7 +282,7 @@ that can be pinged to check if the server is live, and can be cleanly terminated
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.rpc.Server</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Server</a></li>
 </ul>
 
       </div>
@@ -318,20 +294,20 @@ that can be pinged to check if the server is live, and can be cleanly terminated
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.rpc.Proxy.html" title="compas.rpc.Proxy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.rpc.Proxy.stop_server.html" title="Proxy.stop_server" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.rpc.Proxy
+            Proxy.stop_server
           </div>
         </a>
       
 
       
-        <a href="compas.rpc.RPCClientError.html" title="compas.rpc.RPCClientError" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.rpc.Server.close_request.html" title="Server.close_request" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.rpc.RPCClientError
+            Server.close_request
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

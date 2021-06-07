@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.data.Data</title>
+  <title> - Data</title>
   
 
   <meta charset="utf-8" />
@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.data.DataEncoder" href="compas.data.DataEncoder.html" />
+    <link rel="next" title="Data.copy" href="compas.data.Data.copy.html" />
   
   
   
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.data.html">data</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.data.Data</li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-data-data">
-<h1>compas.data.Data</h1>
+          <section class="detail" id="data">
+<h1>Data</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.data.Data">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">Data</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -128,59 +128,32 @@ The structure of the data dict is defined by the implementing classes.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.copy.html#compas.data.Data.copy" title="compas.data.Data.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.from_data.html#compas.data.Data.from_data" title="compas.data.Data.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.from_json.html#compas.data.Data.from_json" title="compas.data.Data.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code>(string)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.from_jsonstring.html#compas.data.Data.from_jsonstring" title="compas.data.Data.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.to_data.html#compas.data.Data.to_data" title="compas.data.Data.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code>(filepath[, pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.to_json.html#compas.data.Data.to_json" title="compas.data.Data.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code>([pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.to_jsonstring.html#compas.data.Data.to_jsonstring" title="compas.data.Data.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.validate_data.html#compas.data.Data.validate_data" title="compas.data.Data.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.validate_json.html#compas.data.Data.validate_json" title="compas.data.Data.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
-<td><p>The schema of the data of this object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
-<td><p>The schema of the JSON representation of the data of this object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>The representation of the object as native Python data.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
-<td><p>The globally unique identifier of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>The name of the object.</p></td>
 </tr>
 </tbody>
 </table>
@@ -245,7 +218,7 @@ The structure of the data dict is defined by the implementing classes.</p></li>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.data.Data</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Data</a></li>
 </ul>
 
       </div>
@@ -267,10 +240,10 @@ The structure of the data dict is defined by the implementing classes.</p></li>
       
 
       
-        <a href="compas.data.DataEncoder.html" title="compas.data.DataEncoder" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.data.Data.copy.html" title="Data.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.data.DataEncoder
+            Data.copy
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

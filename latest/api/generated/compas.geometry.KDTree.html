@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.geometry.KDTree</title>
+  <title> - KDTree</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.geometry.bestfit_plane" href="compas.geometry.bestfit_plane.html" />
+    <link rel="next" title="KDTree.build" href="compas.geometry.KDTree.build.html" />
   
   
   
-    <link rel="prev" title="compas.geometry.volume_polyhedron" href="compas.geometry.volume_polyhedron.html" />
+    <link rel="prev" title="volume_polyhedron" href="compas.geometry.volume_polyhedron.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.geometry.KDTree</li>
+            <li class="breadcrumb-item active" aria-current="page">KDTree</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-geometry-kdtree">
-<h1>compas.geometry.KDTree</h1>
+          <section class="detail" id="kdtree">
+<h1>KDTree</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.KDTree">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">KDTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/kdtree.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -146,13 +146,13 @@ Available at: <a class="reference external" href="http://code.activestate.com/re
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code>(objects[, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.KDTree.build.html#compas.geometry.KDTree.build" title="compas.geometry.KDTree.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(objects[, axis])</p></td>
 <td><p>Populate a kd-tree with given objects.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nearest_neighbor</span></code>(point[, exclude])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.KDTree.nearest_neighbor.html#compas.geometry.KDTree.nearest_neighbor" title="compas.geometry.KDTree.nearest_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nearest_neighbor</span></code></a>(point[, exclude])</p></td>
 <td><p>Find the nearest neighbor to a given point, excluding neighbors that have already been found.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nearest_neighbors</span></code>(point, number[, distance_sort])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.KDTree.nearest_neighbors.html#compas.geometry.KDTree.nearest_neighbors" title="compas.geometry.KDTree.nearest_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nearest_neighbors</span></code></a>(point, number[, distance_sort])</p></td>
 <td><p>Find the N nearest neighbors to a given point.</p></td>
 </tr>
 </tbody>
@@ -218,7 +218,7 @@ Available at: <a class="reference external" href="http://code.activestate.com/re
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.geometry.KDTree</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">KDTree</a></li>
 </ul>
 
       </div>
@@ -230,20 +230,20 @@ Available at: <a class="reference external" href="http://code.activestate.com/re
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.volume_polyhedron.html" title="compas.geometry.volume_polyhedron" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.volume_polyhedron.html" title="volume_polyhedron" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.geometry.volume_polyhedron
+            volume_polyhedron
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.bestfit_plane.html" title="compas.geometry.bestfit_plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.KDTree.build.html" title="KDTree.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.geometry.bestfit_plane
+            KDTree.build
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

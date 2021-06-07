@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.geometry.Point</title>
+  <title> - Point</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.geometry.Polygon" href="compas.geometry.Polygon.html" />
+    <link rel="next" title="Point.copy" href="compas.geometry.Point.copy.html" />
   
   
   
-    <link rel="prev" title="compas.geometry.Plane" href="compas.geometry.Plane.html" />
+    <link rel="prev" title="Plane.worldXY" href="compas.geometry.Plane.worldXY.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.geometry.Point</li>
+            <li class="breadcrumb-item active" aria-current="page">Point</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-geometry-point">
-<h1>compas.geometry.Point</h1>
+          <section class="detail" id="point">
+<h1>Point</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Point">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/point.py#L38"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -192,113 +192,77 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([cls])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.copy.html#compas.geometry.Point.copy" title="compas.geometry.Point.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_line</span></code>(line)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.distance_to_line.html#compas.geometry.Point.distance_to_line" title="compas.geometry.Point.distance_to_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_line</span></code></a>(line)</p></td>
 <td><p>Compute the distance to a line.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_plane</span></code>(plane)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.distance_to_plane.html#compas.geometry.Point.distance_to_plane" title="compas.geometry.Point.distance_to_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_plane</span></code></a>(plane)</p></td>
 <td><p>Compute the distance to a plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_point</span></code>(point)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.distance_to_point.html#compas.geometry.Point.distance_to_point" title="compas.geometry.Point.distance_to_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_point</span></code></a>(point)</p></td>
 <td><p>Compute the distance to another point.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.from_data.html#compas.geometry.Point.from_data" title="compas.geometry.Point.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a point from a data dict.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.from_json.html#compas.geometry.Point.from_json" title="compas.geometry.Point.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code>(string)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.from_jsonstring.html#compas.geometry.Point.from_jsonstring" title="compas.geometry.Point.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_circle</span></code>(circle)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.in_circle.html#compas.geometry.Point.in_circle" title="compas.geometry.Point.in_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_circle</span></code></a>(circle)</p></td>
 <td><p>Determine if the point lies inside the given circle.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_polygon</span></code>(polygon[, convex])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.in_polygon.html#compas.geometry.Point.in_polygon" title="compas.geometry.Point.in_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_polygon</span></code></a>(polygon[, convex])</p></td>
 <td><p>Determine if the point lies inside the given polygon.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_polyhedron</span></code>(polyhedron)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.in_polyhedron.html#compas.geometry.Point.in_polyhedron" title="compas.geometry.Point.in_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_polyhedron</span></code></a>(polyhedron)</p></td>
 <td><p>Determine if the point lies inside the given polyhedron.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_triangle</span></code>(triangle)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.in_triangle.html#compas.geometry.Point.in_triangle" title="compas.geometry.Point.in_triangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_triangle</span></code></a>(triangle)</p></td>
 <td><p>Determine if the point lies inside the given triangle.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_circle</span></code>(circle)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.on_circle.html#compas.geometry.Point.on_circle" title="compas.geometry.Point.on_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_circle</span></code></a>(circle)</p></td>
 <td><p>Determine if the point lies on the given circle.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_line</span></code>(line)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.on_line.html#compas.geometry.Point.on_line" title="compas.geometry.Point.on_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_line</span></code></a>(line)</p></td>
 <td><p>Determine if the point lies on the given line.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_polyline</span></code>(polyline)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.on_polyline.html#compas.geometry.Point.on_polyline" title="compas.geometry.Point.on_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_polyline</span></code></a>(polyline)</p></td>
 <td><p>Determine if the point lies on the given polyline.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_segment</span></code>(segment)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.on_segment.html#compas.geometry.Point.on_segment" title="compas.geometry.Point.on_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_segment</span></code></a>(segment)</p></td>
 <td><p>Determine if the point lies on the given segment.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.to_data.html#compas.geometry.Point.to_data" title="compas.geometry.Point.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code>(filepath[, pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.to_json.html#compas.geometry.Point.to_json" title="compas.geometry.Point.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code>([pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.to_jsonstring.html#compas.geometry.Point.to_jsonstring" title="compas.geometry.Point.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(T)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.transform.html#compas.geometry.Point.transform" title="compas.geometry.Point.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform this point.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code>(collection, X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.transform_collection.html#compas.geometry.Point.transform_collection" title="compas.geometry.Point.transform_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code></a>(collection, X)</p></td>
 <td><p>Transform a collection of points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.transformed.html#compas.geometry.Point.transformed" title="compas.geometry.Point.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code>(collection, X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.transformed_collection.html#compas.geometry.Point.transformed_collection" title="compas.geometry.Point.transformed_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code></a>(collection, X)</p></td>
 <td><p>Create a collection of transformed points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.validate_data.html#compas.geometry.Point.validate_data" title="compas.geometry.Point.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.validate_json.html#compas.geometry.Point.validate_json" title="compas.geometry.Point.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
-<td><p>The schema of the data of this object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
-<td><p>The schema of the JSON representation of the data of this object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>The data representing the point.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
-<td><p>The globally unique identifier of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>The name of the object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></p></td>
-<td><p>The X coordinate of the point.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></p></td>
-<td><p>The Y coordinate of the point.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></p></td>
-<td><p>The Z coordinate of the point.</p></td>
 </tr>
 </tbody>
 </table>
@@ -363,7 +327,7 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.geometry.Point</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Point</a></li>
 </ul>
 
       </div>
@@ -375,20 +339,20 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.Plane.html" title="compas.geometry.Plane" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.Plane.worldXY.html" title="Plane.worldXY" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.geometry.Plane
+            Plane.worldXY
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.Polygon.html" title="compas.geometry.Polygon" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.Point.copy.html" title="Point.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.geometry.Polygon
+            Point.copy
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

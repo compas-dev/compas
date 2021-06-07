@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.5.0
+            1.6.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -106,18 +106,18 @@
   
         
           
-          <div class="detail section" id="proxy-start-server">
+          <section class="detail" id="proxy-start-server">
 <h1>Proxy.start_server</h1>
 <dl class="py method">
-<dt id="compas.rpc.Proxy.start_server">
-<code class="sig-prename descclassname"><span class="pre">Proxy.</span></code><code class="sig-name descname"><span class="pre">start_server</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/rpc/proxy.py#L181"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="compas.rpc.Proxy.start_server">
+<span class="sig-prename descclassname"><span class="pre">Proxy.</span></span><span class="sig-name descname"><span class="pre">start_server</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/rpc/proxy.py#L181"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Start the remote server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><em>ServerProxy</em> – Instance of the proxy, if the connection was successful.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>RPCServerError</strong> – If the server providing the requested service cannot be reached after
+<dd class="field-even"><p><a class="reference internal" href="compas.rpc.RPCServerError.html#compas.rpc.RPCServerError" title="compas.rpc.RPCServerError"><strong>RPCServerError</strong></a> – If the server providing the requested service cannot be reached after
     100 contact attempts (<em>pings</em>). The number of attempts is set by
     <code class="xref py py-attr docutils literal notranslate"><span class="pre">Proxy.max_conn_attempts</span></code>.</p>
 </dd>
@@ -130,7 +130,7 @@
 </div>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -260,7 +260,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.5.0',
+    VERSION           : '1.6.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

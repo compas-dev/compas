@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas.files.GLTFExporter</title>
+  <title> - GLTFExporter</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas.files.LAS" href="compas.files.LAS.html" />
+    <link rel="next" title="GLTFExporter.export" href="compas.files.GLTFExporter.export.html" />
   
   
   
-    <link rel="prev" title="compas.files.GLTFMesh" href="compas.files.GLTFMesh.html" />
+    <link rel="prev" title="GLTFMesh.validate_vertices" href="compas.files.GLTFMesh.validate_vertices.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas.files.html">files</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas.files.GLTFExporter</li>
+            <li class="breadcrumb-item active" aria-current="page">GLTFExporter</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-files-gltfexporter">
-<h1>compas.files.GLTFExporter</h1>
+          <section class="detail" id="gltfexporter">
+<h1>GLTFExporter</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.GLTFExporter">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">GLTFExporter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embed_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/gltf/gltf_exporter.py#L31"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -131,29 +131,17 @@ When <code class="docutils literal notranslate"><span class="pre">False</span></
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFExporter.export.html#compas.files.GLTFExporter.export" title="compas.files.GLTFExporter.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a>()</p></td>
 <td><p>Writes the json to <em>.gltf</em> or <em>.glb</em>, and binary data to <em>.bin</em> as required.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bin_filename</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFExporter.get_bin_filename.html#compas.files.GLTFExporter.get_bin_filename" title="compas.files.GLTFExporter.get_bin_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bin_filename</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bin_path</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFExporter.get_bin_path.html#compas.files.GLTFExporter.get_bin_path" title="compas.files.GLTFExporter.get_bin_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bin_path</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFExporter.load.html#compas.files.GLTFExporter.load" title="compas.files.GLTFExporter.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
 <td><p>Creates the json object and the binary data (if any) to be written.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_data</span></code></p></td>
-<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -218,7 +206,7 @@ When <code class="docutils literal notranslate"><span class="pre">False</span></
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas.files.GLTFExporter</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">GLTFExporter</a></li>
 </ul>
 
       </div>
@@ -230,20 +218,20 @@ When <code class="docutils literal notranslate"><span class="pre">False</span></
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.GLTFMesh.html" title="compas.files.GLTFMesh" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.GLTFMesh.validate_vertices.html" title="GLTFMesh.validate_vertices" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas.files.GLTFMesh
+            GLTFMesh.validate_vertices
           </div>
         </a>
       
 
       
-        <a href="compas.files.LAS.html" title="compas.files.LAS" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.files.GLTFExporter.export.html" title="GLTFExporter.export" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            compas.files.LAS
+            GLTFExporter.export
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

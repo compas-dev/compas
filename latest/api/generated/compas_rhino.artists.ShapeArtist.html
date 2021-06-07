@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title> - compas_rhino.artists.ShapeArtist</title>
+  <title> - ShapeArtist</title>
   
 
   <meta charset="utf-8" />
@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="conduits" href="../compas_rhino.conduits.html" />
+    <link rel="next" title="ShapeArtist.build" href="compas_rhino.artists.ShapeArtist.build.html" />
   
   
   
-    <link rel="prev" title="compas_rhino.artists.PrimitiveArtist" href="compas_rhino.artists.PrimitiveArtist.html" />
+    <link rel="prev" title="PrimitiveArtist.register" href="compas_rhino.artists.PrimitiveArtist.register.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -97,15 +97,15 @@
             
               <li class="breadcrumb-item"><a href="../compas_rhino.artists.html">artists</a></li>
             
-            <li class="breadcrumb-item active" aria-current="page">compas_rhino.artists.ShapeArtist</li>
+            <li class="breadcrumb-item active" aria-current="page">ShapeArtist</li>
           </ol>
         </nav>
         
   
         
           
-          <section id="compas-rhino-artists-shapeartist">
-<h1>compas_rhino.artists.ShapeArtist</h1>
+          <section class="detail" id="shapeartist">
+<h1>ShapeArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.artists.ShapeArtist">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">ShapeArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/_shapeartist.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -135,38 +135,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code>(item, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.build.html#compas_rhino.artists.ShapeArtist.build" title="compas_rhino.artists.ShapeArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.clear.html#compas_rhino.artists.ShapeArtist.clear" title="compas_rhino.artists.ShapeArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.clear_layer.html#compas_rhino.artists.ShapeArtist.clear_layer" title="compas_rhino.artists.ShapeArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
 <td><p>Clear the main layer of the artist.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.draw.html#compas_rhino.artists.ShapeArtist.draw" title="compas_rhino.artists.ShapeArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.redraw.html#compas_rhino.artists.ShapeArtist.redraw" title="compas_rhino.artists.ShapeArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code>(item_type, artist_type)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.register.html#compas_rhino.artists.ShapeArtist.register" title="compas_rhino.artists.ShapeArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
 <td><p></p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>Reference to the name of the shape.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></p></td>
-<td><p>The geometry of the shape.</p></td>
 </tr>
 </tbody>
 </table>
@@ -227,7 +212,7 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas_rhino.artists.ShapeArtist</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">ShapeArtist</a></li>
 </ul>
 
       </div>
@@ -239,20 +224,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_rhino.artists.PrimitiveArtist.html" title="compas_rhino.artists.PrimitiveArtist" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_rhino.artists.PrimitiveArtist.register.html" title="PrimitiveArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            compas_rhino.artists.PrimitiveArtist
+            PrimitiveArtist.register
           </div>
         </a>
       
 
       
-        <a href="../compas_rhino.conduits.html" title="conduits" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.ShapeArtist.build.html" title="ShapeArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            conduits
+            ShapeArtist.build
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
