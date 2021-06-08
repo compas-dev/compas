@@ -122,7 +122,7 @@ def bestfit_circle_numpy(points):
         Ri = dist(*c)
         return Ri - Ri.mean()
 
-    # The addition epsilon is to promote convergence within leastsq,
+    # The addition of epsilon is to promote convergence within leastsq,
     # which seems to strongly dislike (0, 0) as an initial guess.
     epsilon = .000001
     xm = mean(x) + epsilon
