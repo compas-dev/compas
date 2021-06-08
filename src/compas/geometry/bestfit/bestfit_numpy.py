@@ -122,11 +122,10 @@ def bestfit_circle_numpy(points):
         Ri = dist(*c)
         return Ri - Ri.mean()
 
-    # The addition of epsilon is to promote convergence within leastsq,
-    # which seems to strongly dislike (0, 0) as an initial guess.
-    epsilon = .00001
-    xm = mean(x) + epsilon
-    ym = mean(y) + epsilon
+    # The mean of x and y are very nearly 0 (1.0e-15), which reveals a numerical
+    # instability of the problem.  So, we choose our initial guess
+    # to be an epsilon bigger than that.
+    xm = ym = 0.00001
     c0 = xm, ym
     c, error = leastsq(f, c0)
 
