@@ -4,7 +4,6 @@ from __future__ import division
 
 from numpy import asarray
 from numpy import sqrt
-from numpy import mean
 from numpy import zeros
 from numpy.linalg import lstsq
 from scipy.optimize import leastsq
@@ -122,8 +121,10 @@ def bestfit_circle_numpy(points):
         Ri = dist(*c)
         return Ri - Ri.mean()
 
-    xm = mean(x)
-    ym = mean(y)
+    # The mean of x and y are very nearly 0 (1.0e-15), which reveals a numerical
+    # instability of the problem.  So, we choose our initial guess
+    # to be an epsilon bigger than that.
+    xm = ym = 0.00001
     c0 = xm, ym
     c, error = leastsq(f, c0)
 
