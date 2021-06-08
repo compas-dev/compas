@@ -124,7 +124,7 @@ def bestfit_circle_numpy(points):
 
     # The addition of epsilon is to promote convergence within leastsq,
     # which seems to strongly dislike (0, 0) as an initial guess.
-    epsilon = .000001
+    epsilon = .00001
     xm = mean(x) + epsilon
     ym = mean(y) + epsilon
     c0 = xm, ym
