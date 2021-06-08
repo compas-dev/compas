@@ -103,12 +103,7 @@ def bestfit_circle_numpy(points):
 
     """
     o, uvw, _ = pca_numpy(points)
-    # leastsq has convergence issues with `f` as defined below,
-    # and an initial guess of (0, 0), that is (0, 0) is a stable point of `f`
-    # and therefore a bad initial guess. This definition of the frame's
-    # origin prevents such an initial guess.
-    frame_origin = [0, 0, o[2]] if o[0] != 0 or o[1] != 0 else [.001, .001, o[2]]
-    frame = [frame_origin, uvw[0], uvw[1]]
+    frame = [o, uvw[0], uvw[1]]
 
     rst = world_to_local_coordinates_numpy(frame, points)
 
@@ -127,8 +122,11 @@ def bestfit_circle_numpy(points):
         Ri = dist(*c)
         return Ri - Ri.mean()
 
-    xm = mean(x)
-    ym = mean(y)
+    # The addition epsilon is to promote convergence within leastsq,
+    # which seems to strongly dislike (0, 0) as an initial guess.
+    epsilon = .000001
+    xm = mean(x) + epsilon
+    ym = mean(y) + epsilon
     c0 = xm, ym
     c, error = leastsq(f, c0)
 
