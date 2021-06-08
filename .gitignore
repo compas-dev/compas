@@ -140,4 +140,4 @@ data/ctralie
 .vscode
 
 # Grasshopper generated objects
-src/compas_ghpython/components/*.ghuser
+src/compas_ghpython/components/**/*.ghuser
