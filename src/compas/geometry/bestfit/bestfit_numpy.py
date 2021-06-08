@@ -7,9 +7,10 @@ from numpy import sqrt
 from numpy import mean
 from numpy import zeros
 from numpy.linalg import lstsq
+from numpy.linalg import norm
 from scipy.optimize import leastsq
 
-from compas.geometry import world_to_local_coordinates_numpy
+from compas.geometry import world_to_local_coordinates_numpy, allclose
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.numerical import pca_numpy
 
@@ -103,7 +104,12 @@ def bestfit_circle_numpy(points):
 
     """
     o, uvw, _ = pca_numpy(points)
-    frame = [o, uvw[0], uvw[1]]
+    # leastsq has convergence issues with `f` as defined below,
+    # and an initial guess of (0, 0), that is (0, 0) is a stable point of `f`
+    # and therefore a bad initial guess. This definition of the frame's
+    # origin prevents such an initial guess.
+    frame_origin = [0, 0, o[2]] if o[0] != 0 or o[1] != 0 else [.001, .001, o[2]]
+    frame = [frame_origin, uvw[0], uvw[1]]
 
     rst = world_to_local_coordinates_numpy(frame, points)
 

@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Allow str or int as joint type in `compas.robots.Joint` constructor.
 * `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.
-* Fixed bug in `compas.geometry.bestfit_circle_numpy`.
+* Fixed bugs in `compas.geometry.bestfit_circle_numpy`.
 
 ### Removed
 
