@@ -93,7 +93,7 @@ def clean(ctx, docs=True, bytecode=True, builds=True, ghuser=True):
             folders.append('src/compas.egg-info/')
 
         if ghuser:
-            folders.append('src/compas_fab/ghpython/components/ghuser')
+            folders.append('src/compas/ghpython/components/ghuser')
 
         for folder in folders:
             shutil.rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)
