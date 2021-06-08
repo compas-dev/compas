@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.
 * Changed directory where ghuser components are installed.
 * Added ghuser components directory to those removed by the `clean` task.
+* Fixed bug in `compas.geometry.bestfit_circle_numpy`.
 
 ### Removed
 

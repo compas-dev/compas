@@ -103,7 +103,7 @@ def bestfit_circle_numpy(points):
 
     """
     o, uvw, _ = pca_numpy(points)
-    frame = [o, uvw[1], uvw[2]]
+    frame = [o, uvw[0], uvw[1]]
 
     rst = world_to_local_coordinates_numpy(frame, points)
 
