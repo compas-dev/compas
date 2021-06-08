@@ -7,10 +7,9 @@ from numpy import sqrt
 from numpy import mean
 from numpy import zeros
 from numpy.linalg import lstsq
-from numpy.linalg import norm
 from scipy.optimize import leastsq
 
-from compas.geometry import world_to_local_coordinates_numpy, allclose
+from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.numerical import pca_numpy
 
