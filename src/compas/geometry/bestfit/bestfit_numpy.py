@@ -4,7 +4,6 @@ from __future__ import division
 
 from numpy import asarray
 from numpy import sqrt
-from numpy import mean
 from numpy import zeros
 from numpy.linalg import lstsq
 from scipy.optimize import leastsq
