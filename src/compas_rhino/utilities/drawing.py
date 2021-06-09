@@ -38,6 +38,7 @@ from Rhino.Geometry import Mesh as RhinoMesh
 
 try:
     from Rhino.Geometry import MeshNgon
+    from Rhino.Geometry import Brep
 except ImportError:
     MeshNgon = False
 
@@ -421,7 +422,7 @@ def draw_polylines(polylines, **kwargs):
 
 
 @wrap_drawfunc
-def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
+def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, join=False, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
 
@@ -443,6 +444,8 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
     spacing : float, optional
     flex : float, optional
     pull : float, optional
+    join : bool, optional
+        Join the individual faces as polysurfaces. Default is False.
 
     Returns
     -------
@@ -462,7 +465,7 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
         })
 
     """
-    guids = []
+    breps = []
     for f in iter(faces):
         points = f['points']
         name = f.get('name', '')
@@ -486,8 +489,14 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
                                                TOL)
         else:
             brep = Brep.CreatePatch(geo, u, v, TOL)
-        if not brep:
-            continue
+        if brep:
+            breps.append(brep)
+
+    if join:
+        breps = Brep.JoinBreps(breps, TOL)
+
+    guids = []
+    for brep in breps:
         guid = add_brep(brep)
         if not guid:
             continue
