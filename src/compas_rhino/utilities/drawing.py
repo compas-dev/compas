@@ -38,7 +38,6 @@ from Rhino.Geometry import Mesh as RhinoMesh
 
 try:
     from Rhino.Geometry import MeshNgon
-    from Rhino.Geometry import Brep
 except ImportError:
     MeshNgon = False
 
@@ -73,6 +72,7 @@ __all__ = [
     'draw_lines',
     'draw_geodesics',
     'draw_polylines',
+    'draw_breps',
     'draw_faces',
     'draw_cylinders',
     'draw_pipes',
@@ -463,6 +463,29 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
             Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str,
         })
+
+    Examples
+    --------
+    Using a compas Mesh as an example:
+
+    >>> from compas.datastructures import Mesh
+    >>> from compas.geometry import Box, Frame
+    >>> from compas_rhino.utilities import draw_breps
+    >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+    >>> mesh = Mesh.from_shape(box)
+
+    Draw convert each mesh face to brep dict schema:
+
+    >>> vertices = [mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()]
+    >>> breps = []
+    >>> for face in mesh.faces():
+    >>>     face = {'points' : [vertices[vertex] for vertex in mesh.face_vertices(face)]}
+    >>>     face['points'].append(face['points'][0])
+    >>>     breps.append(face)
+
+    Draw brep faces as one joined brep.
+
+    >>> guids = draw_breps(breps, join=True)
 
     """
     breps = []
