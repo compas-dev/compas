@@ -193,6 +193,7 @@ def prepare_changelog(ctx):
       'ironpython': 'Command for running the IronPython executable. Defaults to `ipy`.'})
 def build_ghuser_components(ctx, gh_io_folder=None, ironpython=None):
     """Build Grasshopper user objects from source"""
+    clean(ctx, docs=False, bytecode=False, builds=False, ghuser=True)
     with chdir(BASE_FOLDER):
         with tempfile.TemporaryDirectory('actions.ghcomponentizer') as action_dir:
             source_dir = os.path.abspath('src/compas_ghpython/components')
