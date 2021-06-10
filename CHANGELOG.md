@@ -25,7 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed directory where ghuser components are installed.
 * Added ghuser components directory to those removed by the `clean` task.
 * Clean up the ghuser directory before building ghuser components.
-* Fixed bug in `compas.geometry.distance.closest_point_on_segment_xy`
+* Fixed bug in `compas.geometry.distance.closest_point_on_segment_xy`.
+* Fixed bug in Rhino implementations of `trimesh` curvature functions.
 
 ### Removed
 

@@ -76,11 +76,10 @@ def trimesh_gaussian_curvature(M):
     # (0) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
     if not isinstance(M, Rhino.Geometry.Mesh):
-        for vertices, faces in M:
-            for x, y, z in vertices:
-                mesh.Vertices.Add(x, y, z)
-            for face in faces:
-                mesh.Faces.AddFace(*face)
+        for x, y, z in M[0]:
+            mesh.Vertices.Add(x, y, z)
+        for face in M[1]:
+            mesh.Faces.AddFace(*face)
     else:
         mesh = M
 
@@ -170,11 +169,10 @@ def trimesh_mean_curvature(M):
     # (0) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
     if not isinstance(M, Rhino.Geometry.Mesh):
-        for vertices, faces in M:
-            for x, y, z in vertices:
-                mesh.Vertices.Add(x, y, z)
-            for face in faces:
-                mesh.Faces.AddFace(*face)
+        for x, y, z in M[0]:
+            mesh.Vertices.Add(x, y, z)
+        for face in M[1]:
+            mesh.Faces.AddFace(*face)
     else:
         mesh = M
 
@@ -275,11 +273,10 @@ def trimesh_principal_curvature(M):
     # (0) see if input is already Rhino.Geometry.Mesh
     mesh = Rhino.Geometry.Mesh()
     if not isinstance(M, Rhino.Geometry.Mesh):
-        for vertices, faces in M:
-            for x, y, z in vertices:
-                mesh.Vertices.Add(x, y, z)
-            for face in faces:
-                mesh.Faces.AddFace(*face)
+        for x, y, z in M[0]:
+            mesh.Vertices.Add(x, y, z)
+        for face in M[1]:
+            mesh.Faces.AddFace(*face)
     else:
         mesh = M
 
