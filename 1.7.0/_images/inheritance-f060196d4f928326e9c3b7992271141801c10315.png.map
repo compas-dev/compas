@@ -1,0 +1,6 @@
+<map id="inheritance595e3d3035" name="inheritance595e3d3035">
+<area shape="rect" id="node1" href="generated/compas.robots.AbstractMeshLoader.html#compas.robots.AbstractMeshLoader" target="_top" title="Basic contract/interface for all mesh loaders." alt="" coords="8,83,219,121"/>
+<area shape="rect" id="node2" href="generated/compas.robots.DefaultMeshLoader.html#compas.robots.DefaultMeshLoader" target="_top" title="Handles basic mesh loader tasks, mostly from local files." alt="" coords="326,8,528,46"/>
+<area shape="rect" id="node3" href="generated/compas.robots.GithubPackageMeshLoader.html#compas.robots.GithubPackageMeshLoader" target="_top" title="Loads resources stored in Github." alt="" coords="294,83,560,121"/>
+<area shape="rect" id="node4" href="generated/compas.robots.LocalPackageMeshLoader.html#compas.robots.LocalPackageMeshLoader" target="_top" title="Loads suport package resources stored locally." alt="" coords="299,158,555,196"/>
+</map>
