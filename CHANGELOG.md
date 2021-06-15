@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+* `compas.robots.Axis` is now normalized upon initialization.
 
 ### Removed
 
@@ -21,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Fixed bundling of ghuser components
+* Fixed bundling of ghuser components.
 
 ### Removed
 
@@ -35,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added pluggable function `trimesh_principal_curvature` in `compas_rhino`.
 * Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
 * Added grasshopper component for drawing a frame.
-* Added `draw_origin` and `draw_axes`
+* Added `draw_origin` and `draw_axes`.
 
 ### Changed
 
