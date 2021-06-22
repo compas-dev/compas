@@ -116,12 +116,18 @@ def dr_numpy(vertices, edges, fixed, loads, qpre,
     # --------------------------------------------------------------------------
     # input processing
     # --------------------------------------------------------------------------
-    qpre = qpre or [0.0 for _ in range(num_e)]
-    fpre = fpre or [0.0 for _ in range(num_e)]
-    lpre = lpre or [0.0 for _ in range(num_e)]
-    linit = linit or [0.0 for _ in range(num_e)]
-    E = E or [0.0 for _ in range(num_e)]
-    radius = radius or [0.0 for _ in range(num_e)]
+
+    def init_array(array, length):
+        if array is None or len(array) == 0:
+            return zeros((length,), dtype=float)
+        return array
+
+    qpre = init_array(qpre, num_e)
+    fpre = init_array(fpre, num_e)
+    lpre = init_array(lpre, num_e)
+    linit = init_array(linit, num_e)
+    E = init_array(E, num_e)
+    radius = init_array(radius, num_e)
     # --------------------------------------------------------------------------
     # attribute arrays
     # --------------------------------------------------------------------------
