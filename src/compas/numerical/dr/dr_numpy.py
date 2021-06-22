@@ -118,7 +118,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre,
     # --------------------------------------------------------------------------
 
     def init_array(array, length):
-        if array is None or (isinstance(array, list) and len(array) == 0):
+        if array is None or len(array) == 0:
             return zeros((length,), dtype=float)
         else:
             return array
