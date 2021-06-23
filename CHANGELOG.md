@@ -12,9 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * `compas.robots.Axis` is now normalized upon initialization.
+* `compas.robots.GithubPackageMeshLoader` allows for varying repository file structures.
 
 ### Fixed
-* Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`
+* Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
 
 ### Removed
 
