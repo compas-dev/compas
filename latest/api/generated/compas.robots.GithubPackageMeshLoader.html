@@ -108,7 +108,7 @@
 <h1>GithubPackageMeshLoader</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.robots.GithubPackageMeshLoader">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">GithubPackageMeshLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">support_package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'main'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/resources/github.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">GithubPackageMeshLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">support_package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/resources/github.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.robots.AbstractMeshLoader.html#compas.robots.AbstractMeshLoader" title="compas.robots.resources.basic.AbstractMeshLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.resources.basic.AbstractMeshLoader</span></code></a></p>
 <p>Loads resources stored in Github.</p>
 <dl class="field-list simple">
@@ -119,6 +119,9 @@ e.g. <code class="docutils literal notranslate"><span class="pre">ros-industrial
 <li><p><strong>support_package</strong> (<em>str</em>) – Name of the support package containing URDF, Meshes
 and additional assets, e.g. ‘abb_irb4400_support’</p></li>
 <li><p><strong>branch</strong> (<em>str</em>) – Branch name, defaults to <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p></li>
+<li><p><strong>relative_path</strong> (<em>str</em>) – Relative path of the support package within the repository.
+If the repository itself is the support package, set
+<code class="docutils literal notranslate"><span class="pre">relative_path</span></code> to <code class="docutils literal notranslate"><span class="pre">'.'</span></code>.  Defaults to <code class="docutils literal notranslate"><span class="pre">support_package</span></code></p></li>
 </ul>
 </dd>
 </dl>
