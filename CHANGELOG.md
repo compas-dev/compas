@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * `compas.robots.Axis` is now normalized upon initialization.
+* Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
 * `compas.robots.GithubPackageMeshLoader` allows for varying repository file structures.
 
 ### Fixed
