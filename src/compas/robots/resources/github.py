@@ -56,15 +56,15 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         str
             The file's url.
         """
+        relative_path_component = None if self.relative_path == '.' else self.relative_path
         url_components = [
             GithubPackageMeshLoader.HOST,
             self.repository,
             self.branch,
+            relative_path_component,
             file
         ]
-        if self.relative_path != '.':
-            url_components.insert(3, self.relative_path)
-        return '/'.join(url_components)
+        return '/'.join(filter(None, url_components))
 
     def load_urdf(self, file):
         """Load a URDF file from a Github support package repository.
