@@ -9,25 +9,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-
-* Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`
-* Added pluggable function `trimesh_mean_curvature` in `compas_rhino`
-* Added pluggable function `trimesh_principal_curvature` in `compas_rhino`
+* Added pluggable function `trimesh_slice` in `compas_rhino`.
 
 ### Changed
+* `compas.robots.Axis` is now normalized upon initialization.
+* Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
+* Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
+
+### Fixed
+* Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
 
 ### Removed
 
 
-## Unreleased
+## [1.7.1] 2021-06-14
 
 ### Added
 
+### Changed
+
+* Fixed bundling of ghuser components.
+
+### Removed
+
+
+## [1.7.0] 2021-06-14
+
+### Added
+
+* Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`.
+* Added pluggable function `trimesh_mean_curvature` in `compas_rhino`.
+* Added pluggable function `trimesh_principal_curvature` in `compas_rhino`.
 * Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
+* Added grasshopper component for drawing a frame.
+* Added `draw_origin` and `draw_axes`.
 
 ### Changed
 
 * Allow str or int as joint type in `compas.robots.Joint` constructor.
+* `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.
+* Fixed bugs in `compas.geometry.bestfit_circle_numpy`.
+* Changed directory where ghuser components are installed.
+* Added ghuser components directory to those removed by the `clean` task.
+* Clean up the ghuser directory before building ghuser components.
+* Fixed bug in `compas.geometry.distance.closest_point_on_segment_xy`.
+* Fixed bug in Rhino implementations of `trimesh` curvature functions.
 
 ### Removed
 
@@ -81,6 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added Grasshopper components for JSON serialization.
 * Added `compas_rhino.utilities.set_object_attributes`.
 * Added `from_jsonstring` and `to_jsonstring`.
+* Added Grasshopper component documentation.
 
 ### Changed
 
