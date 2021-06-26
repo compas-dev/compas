@@ -50,6 +50,9 @@ class Projection(Transformation):
                 raise ValueError('This is not a proper projection matrix.')
         super(Projection, self).__init__(matrix=matrix)
 
+    def __repr__(self):
+        return "Projection({0!r})".format(self.matrix)
+
     @classmethod
     def from_plane(cls, plane):
         """Returns an orthogonal ``Projection`` to project onto a plane.

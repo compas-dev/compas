@@ -18,6 +18,7 @@ __all__ = [
     'breadth_first_traverse',
     'breadth_first_paths',
     'shortest_path',
+    'astar_lightest_path',
     'astar_shortest_path',
     'dijkstra_distances',
     'dijkstra_path'
@@ -323,6 +324,8 @@ def shortest_path(adjacency, root, goal):
 
 
 def reconstruct_path(came_from, current):
+    if current not in came_from:
+        return None
     total_path = [current]
     while current in came_from:
         current = came_from[current]
@@ -331,12 +334,91 @@ def reconstruct_path(came_from, current):
     return total_path
 
 
-def astar_shortest_path(network, root, goal):
-    """Find the shortest path between two vertices of a network using the A* search algorithm.
+def astar_lightest_path(adjacency, weights, heuristic, root, goal):
+    """Find the path of least weight between two vertices of a graph using the A* search algorithm.
 
     Parameters
     ----------
-    network : instance of the Network class
+    adjacency : dict
+        An adjacency dictionary. Each key represents a vertex
+        and maps to a list of neighboring vertex keys.
+    weights : dict
+        A dictionary of edge weights.
+    heuristic : dict
+        A dictionary of guesses of weights of paths from a node to the goal.
+    root : hashable
+        The start vertex.
+    goal : hashable
+        The end vertex.
+
+    Returns
+    -------
+    list, None
+        The path from root to goal, or None, if no path exists between the vertices.
+
+    References
+    ----------
+    https://en.wikipedia.org/wiki/A*_search_algorithm
+    """
+    visited_set = set()
+
+    candidates_set = {root}
+    best_candidate_heap = PriorityQueue()
+    best_candidate_heap.put((heuristic[root], root))
+
+    came_from = dict()
+
+    g_score = dict()
+    for v in adjacency:
+        g_score[v] = float('inf')
+    g_score[root] = 0
+
+    while not best_candidate_heap.empty():
+        _, current = best_candidate_heap.get()
+        if current == goal:
+            break
+
+        visited_set.add(current)
+        for neighbor in adjacency[current]:
+            if neighbor in visited_set:
+                continue
+
+            tentative_g_score = g_score[current] + weights[(current, neighbor)]
+            if neighbor not in candidates_set:
+                candidates_set.add(neighbor)
+            elif tentative_g_score >= g_score[neighbor]:
+                continue
+
+            came_from[neighbor] = current
+            g_score[neighbor] = tentative_g_score
+            new_f_score = g_score[neighbor] + heuristic[neighbor]
+            best_candidate_heap.put((new_f_score, neighbor))
+
+    return reconstruct_path(came_from, goal)
+
+
+def _get_coordinates(key, structure):
+    if hasattr(structure, 'node_attributes'):
+        return structure.node_attributes(key, 'xyz')
+    if hasattr(structure, 'vertex_coordinates'):
+        return structure.vertex_coordinates(key)
+    raise Exception("Coordinates cannot be found for object of type {}".format(type(structure)))
+
+
+def _get_points(structure):
+    if hasattr(structure, 'nodes'):
+        return structure.nodes()
+    if hasattr(structure, 'vertices'):
+        return structure.vertices()
+    raise Exception("Points cannot be found for object of type {}".format(type(structure)))
+
+
+def astar_shortest_path(network, root, goal):
+    """Find the shortest path between two vertices of a network or mesh using the A* search algorithm.
+
+    Parameters
+    ----------
+    network : instance of the Network or Mesh class
     root : hashable
         The identifier of the starting node.
     goal : hashable
@@ -347,79 +429,27 @@ def astar_shortest_path(network, root, goal):
     list, None
         The path from root to goal, or None, if no path exists between the vertices.
 
-    Examples
-    --------
-    >>>
-
     References
     ----------
     https://en.wikipedia.org/wiki/A*_search_algorithm
     """
-    root_coords = network.vertex_coordinates(root)
-    goal_coords = network.vertex_coordinates(goal)
+    adjacency = network.adjacency
+    weights = {}
+    for u, v in network.edges():
+        u_coords = _get_coordinates(u, network)
+        v_coords = _get_coordinates(v, network)
+        distance = distance_point_point(u_coords, v_coords)
+        weights[(u, v)] = distance
+        weights[(v, u)] = distance
 
-    # The set of nodes already evaluated
-    visited_set = set()
+    heuristic = {}
+    goal_coords = _get_coordinates(goal, network)
+    points = _get_points(network)
+    for u in points:
+        u_coords = _get_coordinates(u, network)
+        heuristic[u] = distance_point_point(u_coords, goal_coords)
 
-    # The set of currently discovered nodes that are not evaluated yet.
-    # Initially, only the start node is known.
-    candidates_set = {root}
-    best_candidate_heap = PriorityQueue()
-    best_candidate_heap.put((0, root))
-
-    # For each node, which node it can most efficiently be reached from.
-    # If a node can be reached from many nodes, came_from will eventually contain the
-    # most efficient previous step.
-    came_from = dict()
-
-    # g_score is a dict mapping node index to the cost of getting from the root node to that node.
-    # The default value is Infinity.
-    # The cost of going from start to start is zero.
-    g_score = dict()
-
-    for v in network.vertices():
-        g_score[v] = float("inf")
-
-    g_score[root] = 0
-
-    # For each node, the total cost of getting from the start node to the goal
-    # by passing by that node. That value is partly known, partly heuristic.
-    # The default value of f_score is Infinity
-    f_score = dict()
-
-    for v in network.vertices():
-        f_score[v] = float("inf")
-
-    # For the first node, that value is completely heuristic.
-    f_score[root] = distance_point_point(root_coords, goal_coords)
-
-    while not best_candidate_heap.empty():
-        _, current = best_candidate_heap.get()
-        if current == goal:
-            break
-
-        visited_set.add(current)
-        current_coords = network.vertex_coordinates(current)
-        for neighbor in network.vertex_neighbors(current):
-            if neighbor in visited_set:
-                continue  # Ignore the neighbor which is already evaluated.
-
-            # The distance from start to a neighbor
-            neighbor_coords = network.vertex_coordinates(neighbor)
-            tentative_gScore = g_score[current] + distance_point_point(current_coords, neighbor_coords)
-            if neighbor not in candidates_set:  # Discover a new node
-                candidates_set.add(neighbor)
-            elif tentative_gScore >= g_score[neighbor]:
-                continue
-
-            # This path is the best until now. Record it!
-            came_from[neighbor] = current
-            g_score[neighbor] = tentative_gScore
-            new_fscore = g_score[neighbor] + distance_point_point(neighbor_coords, goal_coords)
-            f_score[neighbor] = new_fscore
-            best_candidate_heap.put((new_fscore, neighbor))
-
-    return reconstruct_path(came_from, goal)
+    return astar_lightest_path(adjacency, weights, heuristic, root, goal)
 
 
 def dijkstra_distances(adjacency, weight, target):

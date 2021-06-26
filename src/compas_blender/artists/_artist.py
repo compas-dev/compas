@@ -28,19 +28,19 @@ class BaseArtist(abc.ABC):
         self.objects = []
 
     @staticmethod
-    def register(item_type: Type[compas.base.Base], artist_type: Type['BaseArtist']):
+    def register(item_type: Type[compas.data.Data], artist_type: Type['BaseArtist']):
         """Register a type of COMPAS object with a Blender artist.
 
         Parameters
         ----------
-        item_type : :class:`compas.base.Base`
+        item_type : :class:`compas.data.Data`
         artist_type : :class:`compas_blender.artists.BaseArtist`
 
         """
         _ITEM_ARTIST[item_type] = artist_type
 
     @staticmethod
-    def build(item: compas.base.Base, **kwargs: Any) -> 'BaseArtist':
+    def build(item: compas.data.Data, **kwargs: Any) -> 'BaseArtist':
         """Build an artist corresponding to the item type.
 
         Parameters

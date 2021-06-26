@@ -7,6 +7,7 @@ from compas.plugins import pluggable
 
 __all__ = [
     'trimesh_gaussian_curvature',
+    'trimesh_mean_curvature',
     'trimesh_principal_curvature'
 ]
 
