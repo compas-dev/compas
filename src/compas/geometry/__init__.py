@@ -537,6 +537,7 @@ Triangle meshes
     trimesh_harmonic
     trimesh_isolines
     trimesh_lscm
+    trimesh_mean_curvature
     trimesh_massmatrix
     trimesh_principal_curvature
     trimesh_remesh
@@ -909,6 +910,7 @@ if not compas.IPY:
         voronoi_from_points_numpy
     )
 from .trimesh import (  # noqa: E402
+    trimesh_mean_curvature,
     trimesh_gaussian_curvature,
     trimesh_principal_curvature,
     trimesh_geodistance,
@@ -1187,6 +1189,7 @@ __all__ = [
     'delaunay_from_points',
     'delaunay_triangulation',
     'trimesh_gaussian_curvature',
+    'trimesh_mean_curvature',
     'trimesh_principal_curvature',
     'trimesh_geodistance',
     'trimesh_isolines',

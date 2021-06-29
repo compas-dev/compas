@@ -28,7 +28,7 @@ class AbstractRobotModelArtist(object):
         """
         raise NotImplementedError
 
-    def create_geoemetry(self, geometry, name=None, color=None):
+    def create_geometry(self, geometry, name=None, color=None):
         """Draw a **COMPAS** geometry in the respective CAD environment.
 
         Note
@@ -150,7 +150,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                     else:
                         mesh_name_components = [self.model.name, mesh_type, context, link.name, str(i)]
                     mesh_name = '.'.join(mesh_name_components)
-                    native_mesh = self.create_geoemetry(mesh, name=mesh_name, color=color)
+                    native_mesh = self.create_geometry(mesh, name=mesh_name, color=color)
 
                     self.transform(native_mesh, item.init_transformation)
 

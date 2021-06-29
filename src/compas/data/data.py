@@ -13,7 +13,7 @@ from compas.data.encoders import DataDecoder
 
 
 __all__ = [
-    'Data',
+    'Data'
 ]
 
 # ==============================================================================
@@ -49,9 +49,9 @@ class Data(object):
         self._guid = None
         self._name = None
 
-    # def __str__(self):
-    #     """Generate a readable representation of the data of the object."""
-    #     return json.dumps(self.data, sort_keys=True, indent=4)
+    def __str__(self):
+        """Generate a readable representation of the data of the object."""
+        return json.dumps(self.data, sort_keys=True, indent=4)
 
     @property
     def DATASCHEMA(self):
@@ -99,7 +99,7 @@ class Data(object):
 
     @data.setter
     def data(self, data):
-        pass
+        raise NotImplementedError
 
     @classmethod
     def from_data(cls, data):
@@ -191,7 +191,7 @@ class Data(object):
         str
             A JSON string representation of the data.
         """
-        compas.json_dumps(self.data, pretty)
+        return compas.json_dumps(self.data, pretty)
 
     def copy(self, cls=None):
         """Make an independent copy of the data object.
@@ -221,7 +221,7 @@ class Data(object):
         self.data = state['data']
 
     def validate_data(self):
-        """Validate the data of this object against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its data schema (`self.DATASCHEMA`).
 
         Returns
         -------
@@ -235,19 +235,19 @@ class Data(object):
         return self.DATASCHEMA.validate(self.data)
 
     def validate_json(self):
-        """Validate the data loaded from a JSON representation of the data of this object against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its json schema (`self.JSONSCHEMA`).
 
         Returns
         -------
-        None
+        str
+            The validated JSON representation of the data.
 
         Raises
         ------
         SchemaError
         """
         import jsonschema
-        jsondata = json.dumps(self.data, cls=DataEncoder)
-        data = json.loads(jsondata, cls=DataDecoder)
-        jsonschema.validate(data, schema=self.JSONSCHEMA)
-        self.data = data
-        return self.DATASCHEMA.validate(self.data)
+        jsonstring = json.dumps(self.data, cls=DataEncoder)
+        jsondata = json.loads(jsonstring, cls=DataDecoder)
+        jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
+        return jsonstring

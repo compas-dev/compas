@@ -68,6 +68,31 @@ class Line(Primitive):
         self.end = p2
 
     @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema({
+            "start": is_float3,
+            "end": is_float3
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        from compas import versionstring
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/line.json",
+            "$compas": versionstring,
+            "type": "object",
+            "properties": {
+                "start": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                "end": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+            },
+            "required": ["start", "end"]
+        }
+        return schema
+
+    @property
     def data(self):
         """dict : The data dictionary that represents the line."""
         return {'start': list(self.start), 'end': list(self.end)}
@@ -121,7 +146,7 @@ class Line(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Line({0}, {1})'.format(self.start, self.end)
+        return 'Line({0!r}, {1!r})'.format(self.start, self.end)
 
     def __len__(self):
         return 2

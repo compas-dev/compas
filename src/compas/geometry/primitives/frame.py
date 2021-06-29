@@ -85,6 +85,33 @@ class Frame(Primitive):
         self.yaxis = yaxis
 
     @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema({
+            "point": is_float3,
+            "xaxis": is_float3,
+            "yaxis": is_float3
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        from compas import versionstring
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/frame.json",
+            "$compas": versionstring,
+            "type": "object",
+            "properties": {
+                "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                "xaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+                "yaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+            },
+            "required": ["point", "xaxis", "yaxis"]
+        }
+        return schema
+
+    @property
     def data(self):
         """dict : The data dictionary that represents the frame."""
         return {'point': list(self.point),
@@ -158,7 +185,7 @@ class Frame(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Frame({0}, {1}, {2})".format(self.point, self.xaxis, self.yaxis)
+        return "Frame({0!r}, {1!r}, {2!r})".format(self.point, self.xaxis, self.yaxis)
 
     def __len__(self):
         return 3

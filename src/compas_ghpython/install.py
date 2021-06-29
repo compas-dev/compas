@@ -18,6 +18,6 @@ def after_rhino_install(installed_packages):
     if 'compas_ghpython' not in installed_packages:
         return []
 
-    installed_objects = install_userobjects(os.path.join(os.path.dirname(__file__), 'components'))
+    installed_objects = install_userobjects(os.path.join(os.path.dirname(__file__), 'components', 'ghuser'))
 
     return [('compas_ghpython', 'Installed {} GH User Objects'.format(len(installed_objects)), True)]

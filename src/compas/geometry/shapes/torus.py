@@ -137,7 +137,7 @@ class Torus(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Torus({0}, {1}, {2})'.format(self.plane, self.radius_axis, self.radius_pipe)
+        return 'Torus({0!r}, {1!r}, {2!r})'.format(self.plane, self.radius_axis, self.radius_pipe)
 
     def __len__(self):
         return 3

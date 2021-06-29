@@ -22,7 +22,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '1.5.0'
+__version__ = '1.7.1'
 
 
 def get_grasshopper_plugin_path(version):
@@ -69,5 +69,5 @@ def _get_grasshopper_special_folder(version, folder_name):
     return grasshopper_library_path
 
 
-__all_plugins__ = ['compas_ghpython.install']
+__all_plugins__ = ['compas_ghpython.install', 'compas_ghpython.uninstall']
 __all__ = [name for name in dir() if not name.startswith('_')]
