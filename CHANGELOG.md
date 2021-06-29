@@ -11,15 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+
 * `compas.robots.Axis` is now normalized upon initialization.
 * Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
 * Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
+* Remove default implementation of `__str__` for data objects.
+* Remove implementation of `__str__` for transformation objects.
 
 ### Fixed
+
 * Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
 
 ### Removed
-
 
 ## [1.7.1] 2021-06-14
 
@@ -30,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bundling of ghuser components.
 
 ### Removed
-
 
 ## [1.7.0] 2021-06-14
 

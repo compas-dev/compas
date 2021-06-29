@@ -49,10 +49,6 @@ class Data(object):
         self._guid = None
         self._name = None
 
-    def __str__(self):
-        """Generate a readable representation of the data of the object."""
-        return json.dumps(self.data, sort_keys=True, indent=4)
-
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` : The schema of the data of this object."""
