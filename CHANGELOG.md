@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
 * Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
 * Remove default implementation of `__str__` for data objects.
-* Remove implementation of `__str__` for transformation objects.
 
 ### Fixed
 
