@@ -38,7 +38,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "1.6.3"
+release = "1.7.1"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -46,7 +46,7 @@ source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
-templates_path = ["_templates"]
+templates_path = sphinx_compas_theme.get_autosummary_templates_path()
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
 pygments_style = "sphinx"

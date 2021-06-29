@@ -59,7 +59,7 @@ jobs:
         uses: compas-dev/compas-actions.ghpython_components@v1
         with:
           source: src/compas_ghpython/components
-          target: src/compas_ghpython/components
+          target: src/compas_ghpython/components/ghuser
       - name: 💃 Build release
         if: success() && startsWith(github.ref, 'refs/tags')
         run: |
