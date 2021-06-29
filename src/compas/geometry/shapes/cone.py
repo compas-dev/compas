@@ -153,7 +153,7 @@ class Cone(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Cone({0}, {1})'.format(self.circle, self.height)
+        return 'Cone({0!r}, {1!r})'.format(self.circle, self.height)
 
     def __len__(self):
         return 2

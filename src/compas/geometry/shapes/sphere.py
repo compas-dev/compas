@@ -118,7 +118,7 @@ class Sphere(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Sphere({0}, {1})'.format(self.point, self.radius)
+        return 'Sphere({0!r}, {1!r})'.format(self.point, self.radius)
 
     def __len__(self):
         return 2
