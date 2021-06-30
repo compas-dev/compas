@@ -48,10 +48,6 @@ class Data(object):
         if name:
             self.name = name
 
-    def __str__(self):
-        """Generate a readable representation of the data of the object."""
-        return json.dumps(self.data, sort_keys=True, indent=4)
-
     def __getstate__(self):
         """Return the object data for state serialization with older pickle protocols."""
         return {'__dict__': self.__dict__, 'dtype': self.dtype, 'data': self.data}
