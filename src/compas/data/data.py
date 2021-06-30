@@ -82,7 +82,7 @@ class Data(object):
 
     @property
     def jsondefinitions(self):
-        """dict : Reusable schema deinitions."""
+        """dict : Reusable schema definitions."""
         if not self._jsondefinitions:
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
             with open(schema_path, 'r') as fp:
