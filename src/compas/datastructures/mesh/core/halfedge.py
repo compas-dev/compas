@@ -95,6 +95,10 @@ class HalfEdge(Datastructure):
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
 
+    def __str__(self):
+        tpl = "<Mesh with {} vertices, {} faces, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
+
     # --------------------------------------------------------------------------
     # descriptors
     # --------------------------------------------------------------------------

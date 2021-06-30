@@ -75,6 +75,10 @@ class Graph(Datastructure):
         self.default_node_attributes = {}
         self.default_edge_attributes = {}
 
+    def __str__(self):
+        tpl = "<Network with {} nodes, {} edges>"
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
+
     # --------------------------------------------------------------------------
     # properties
     # --------------------------------------------------------------------------

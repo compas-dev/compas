@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+* Added pluggable function `trimesh_slice` in `compas_rhino`.
 
 ### Changed
 * `compas.robots.Axis` is now normalized upon initialization.
@@ -30,6 +31,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+
+## [1.7.0] 2021-06-14
+
+### Added
+
+### Changed
+
+* `compas.robots.Axis` is now normalized upon initialization.
+* Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
+* Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
+* Remove default implementation of `__str__` for data objects.
+
+### Fixed
+
+* Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
+
+### Removed
+
+## [1.7.1] 2021-06-14
+
+### Added
+
+### Changed
+
+* Fixed bundling of ghuser components.
+
+### Removed
 
 ## [1.7.0] 2021-06-14
 
