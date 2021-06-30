@@ -54,6 +54,21 @@ def is_sequence_of_float(items):
     return all(isinstance(item, float) for item in items)
 
 
+def is_sequence_of_uint(items):
+    """Verify that the sequence contains only unsigned :obj:`int`.
+
+    Parameters
+    ----------
+    items : iterable
+        The sequence of items.
+
+    Returns
+    -------
+    bool
+    """
+    return all(isinstance(item, int) and item >= 0 for item in items)
+
+
 def is_float3(items):
     """Verify that the sequence contains 3 :obj:`float`.
 

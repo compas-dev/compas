@@ -42,6 +42,7 @@ class HalfEdge(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
+        from compas.data import is_sequence_of_uint
         return schema.Schema({
             "attributes": dict,
             "dva": dict,
@@ -49,14 +50,12 @@ class HalfEdge(Datastructure):
             "dfa": dict,
             "vertex": schema.And(
                 dict,
-                lambda x: all(isinstance(key, int) for key in x),
-                lambda x: all(key >= 0 for key in x),
+                is_sequence_of_uint,
                 # lambda x: all(('x' in attr and 'y' in attr and 'z' in attr) for attr in x.values())
             ),
             "face": schema.And(
                 dict,
-                lambda x: all(isinstance(key, int) for key in x),
-                lambda x: all(key >= 0 for key in x),
+                is_sequence_of_uint,
                 lambda x: all(all(isinstance(item, int) for item in value) for value in x.values()),
                 lambda x: all(all(item >= 0 for item in value) for value in x.values()),
                 lambda x: all(len(value) > 2 for value in x.values()),
@@ -64,8 +63,7 @@ class HalfEdge(Datastructure):
             ),
             "facedata": schema.And(
                 dict,
-                lambda x: all(isinstance(key, int) for key in x),
-                lambda x: all(key >= 0 for key in x),
+                is_sequence_of_uint,
                 lambda x: all(isinstance(value, dict) for value in x.values())
             ),
             "edgedata": schema.And(
