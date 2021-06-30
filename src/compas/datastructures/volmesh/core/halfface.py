@@ -58,6 +58,10 @@ class HalfFace(Datastructure):
         self.default_face_attributes = {}
         self.default_cell_attributes = {}
 
+    def __str__(self):
+        tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_cells(),  self.number_of_edges())
+
     @property
     def DATASCHEMA(self):
         import schema
