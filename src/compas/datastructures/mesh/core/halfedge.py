@@ -24,6 +24,17 @@ __all__ = ['HalfEdge']
 class HalfEdge(Datastructure):
     """Base half-edge data structure for representing meshes.
 
+    Parameters
+    ----------
+    name : str, optional
+        The name of the mesh.
+    default_vertex_attributes : dict, optional
+        The default attributes of the vertices.
+    default_edge_attributes : dict, optional
+        The default attributes of the edges.
+    default_face_attributes : dict, optional
+        The default attributes of the faces.
+
     Attributes
     ----------
     attributes : dict
@@ -144,8 +155,12 @@ class HalfEdge(Datastructure):
             schema.update(meta)
         return schema
 
-    def __init__(self):
-        super(HalfEdge, self).__init__()
+    def __init__(self,
+                 name=None,
+                 default_vertex_attributes=None,
+                 default_edge_attributes=None,
+                 default_face_attributes=None):
+        super(HalfEdge, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex = {}
@@ -155,8 +170,10 @@ class HalfEdge(Datastructure):
         self.edgedata = {}
         self.attributes = {'name': 'Mesh'}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.default_edge_attributes = {}
-        self.default_face_attributes = {}
+        if default_vertex_attributes:
+            self.default_vertex_attributes.update(default_vertex_attributes)
+        self.default_edge_attributes = default_edge_attributes or {}
+        self.default_face_attributes = default_face_attributes or {}
 
     def __str__(self):
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"
