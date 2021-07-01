@@ -74,7 +74,7 @@ def test_is_float3(sequence, result):
     assert is_float3(sequence) is result
 
 
-if not compas.IPY:
+if compas.PY3:
     @pytest.mark.parametrize('sequence,result', [
         (map(float, range(3)), False),
         (map(float, range(+1, -2, -1)), False),
@@ -99,7 +99,7 @@ def test_is_float4x4(sequence, result):
     assert is_float4x4(sequence) is result
 
 
-if not compas.IPY:
+if compas.PY3:
     @pytest.mark.parametrize('sequence,result', [
         ([map(float, range(4)) for _ in range(4)], True),
         ([map(float, range(+2, -2, -1)) for _ in range(4)], True),
