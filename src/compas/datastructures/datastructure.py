@@ -9,5 +9,5 @@ __all__ = ['Datastructure']
 
 class Datastructure(Data):
 
-    def __init__(self):
-        super(Datastructure, self).__init__()
+    def __init__(self, **kwargs):
+        super(Datastructure, self).__init__(**kwargs)
