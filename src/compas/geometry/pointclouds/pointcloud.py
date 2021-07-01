@@ -21,7 +21,7 @@ class Pointcloud(Primitive):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
-            'points': lambda x: [is_float3(i) for i in x]
+            'points': lambda points: all(is_float3(point) for point in points)
         })
 
     @property
@@ -157,6 +157,25 @@ class Pointcloud(Primitive):
 
     def __iter__(self):
         return iter(self.points)
+
+    def __eq__(self, other):
+        """Is this pointcloud equal to the other pointcloud?
+
+        Two pointclouds are considered equal if they have the same number of points
+        and if the XYZ coordinates of the corresponding points are identical.
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Pointcloud` or list
+            The pointcloud to compare.
+
+        Returns
+        -------
+        bool
+            True if the pointclouds are equal.
+            False otherwise.
+        """
+        return all(a == b for a, b in zip(self, other))
 
     @property
     def centroid(self):

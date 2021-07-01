@@ -72,7 +72,7 @@ class Polygon(Primitive):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
-            'points': lambda x: [is_float3(i) for i in x]
+            'points': lambda points: all(is_float3(point) for point in points)
         })
 
     @property
