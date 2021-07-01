@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Polyline
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -17,9 +11,6 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 
 from compas.utilities import pairwise
-
-
-__all__ = ['Polyline']
 
 
 class Polyline(Primitive):
@@ -64,36 +55,25 @@ class Polyline(Primitive):
     1.0
     """
 
-    __slots__ = ["_points", "_lines"]
-
-    def __init__(self, points):
-        super(Polyline, self).__init__()
-        self._points = []
-        self._lines = []
-        self.points = points
-
     @property
     def DATASCHEMA(self):
         from schema import Schema
         from compas.data import is_float3
         return Schema({
-            "points": lambda x: [is_float3(i) for i in x]
+            'points': lambda points: all(is_float3(point) for point in points)
         })
 
     @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/polyline.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "points": {"type": "array", "minItems": 2, "items": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}}
-            },
-            "required": ["points"]
-        }
-        return schema
+    def JSONSCHEMANAME(self):
+        return 'polyline'
+
+    __slots__ = ['_points', '_lines']
+
+    def __init__(self, points, **kwargs):
+        super(Polyline, self).__init__(**kwargs)
+        self._points = []
+        self._lines = []
+        self.points = points
 
     @property
     def data(self):
@@ -104,11 +84,11 @@ class Polyline(Primitive):
         dict
             The polyline's data.
         """
-        return {'points': [list(point) for point in self.points]}
+        return {'points': [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
-        self.points = data['points']
+        self.points = [Point.from_data(point) for point in data['points']]
 
     @property
     def points(self):
@@ -139,7 +119,7 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polyline([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
+        return 'Polyline([{0}])'.format(', '.join(['{0!r}'.format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -182,7 +162,7 @@ class Polyline(Primitive):
         >>> Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
         Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
         """
-        return cls(data['points'])
+        return cls([Point.from_data(point) for point in data['points']])
 
     # ==========================================================================
     # methods

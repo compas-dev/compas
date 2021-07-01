@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "polyhedron.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "vertices": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+            },
+            "minItems": 4
+        },
+        "faces": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "integer"
+                },
+                "minItems": 3,
+                "uniqueItems": true,
+                "minimum": 0
+            },
+            "minItems": 4
+        }
+    },
+    "required": [
+        "vertices",
+        "faces"
+    ]
+}
