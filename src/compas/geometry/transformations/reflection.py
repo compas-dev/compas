@@ -40,6 +40,9 @@ class Reflection(Transformation):
             pass
         super(Reflection, self).__init__(matrix=matrix)
 
+    def __repr__(self):
+        return "Reflection({0!r})".format(self.matrix)
+
     @classmethod
     def from_plane(cls, plane):
         """Creates a reflection object that mirrors wrt the given plane.

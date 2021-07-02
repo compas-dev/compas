@@ -62,7 +62,7 @@ def help(ctx):
     'docs': 'True to clean up generated documentation, otherwise False',
     'bytecode': 'True to clean up compiled python files, otherwise False.',
     'builds': 'True to clean up build/packaging artifacts, otherwise False.'})
-def clean(ctx, docs=True, bytecode=True, builds=True):
+def clean(ctx, docs=True, bytecode=True, builds=True, ghuser=True):
     """Cleans the local copy from compiled artifacts."""
 
     with chdir(BASE_FOLDER):
@@ -91,6 +91,9 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
         if builds:
             folders.append('build/')
             folders.append('src/compas.egg-info/')
+
+        if ghuser:
+            folders.append('src/compas_ghpython/components/ghuser')
 
         for folder in folders:
             shutil.rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)
@@ -190,9 +193,11 @@ def prepare_changelog(ctx):
       'ironpython': 'Command for running the IronPython executable. Defaults to `ipy`.'})
 def build_ghuser_components(ctx, gh_io_folder=None, ironpython=None):
     """Build Grasshopper user objects from source"""
+    clean(ctx, docs=False, bytecode=False, builds=False, ghuser=True)
     with chdir(BASE_FOLDER):
         with tempfile.TemporaryDirectory('actions.ghcomponentizer') as action_dir:
-            target_dir = source_dir = os.path.abspath('src/compas_ghpython/components')
+            source_dir = os.path.abspath('src/compas_ghpython/components')
+            target_dir = os.path.join(source_dir, 'ghuser')
             ctx.run('git clone https://github.com/compas-dev/compas-actions.ghpython_components.git {}'.format(action_dir))
             if not gh_io_folder:
                 import compas_ghpython

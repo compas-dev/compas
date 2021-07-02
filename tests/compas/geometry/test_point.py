@@ -1,8 +1,20 @@
+import compas
 from compas.geometry import Point
 
 
+def test_data():
+    if compas.IPY:
+        return
+    p = Point(0, 0, '0')
+    assert p.to_data() == p.validate_data()
+    o = Point.from_data(p.to_data())
+    assert p == o
+    assert not (p is o)
+    assert o.to_data() == o.validate_data()
+
+
 def test_point():
-    p = Point(1, 0, 0)
+    p = Point(1, 0, '0')
     assert p.x == 1.0 and p.y == 0.0 and p.z == 0.0
     assert p[0] == 1.0 and p[1] == 0.0 and p[2] == 0.0
     assert p == [1.0, 0.0, 0.0]

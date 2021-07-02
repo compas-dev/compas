@@ -33,6 +33,17 @@ from compas_ghpython import get_grasshopper_userobjects_path
 from compas_rhino import _check_rhino_version
 
 
+def coerce_frame(plane):
+    import Rhino
+    from compas.geometry import Frame
+    if isinstance(plane, Rhino.Geometry.Plane):
+        return Frame(plane.Origin, plane.XAxis, plane.YAxis)
+    elif isinstance(plane, Frame):
+        return plane
+    else:
+        return Frame(*plane)
+
+
 def get_version_from_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0')

@@ -280,7 +280,7 @@ class Box(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Box({0}, {1}, {2}, {3})'.format(self.frame, self.xsize, self.ysize, self.zsize)
+        return 'Box({0!r}, {1!r}, {2!r}, {3!r})'.format(self.frame, self.xsize, self.ysize, self.zsize)
 
     def __len__(self):
         return 4
