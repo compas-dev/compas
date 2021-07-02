@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "capsule.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "line": {
+            "$ref": "compas.json#/definitions/line"
+        },
+        "radius": {
+            "type": "number",
+            "exclusiveMinimum": 0
+        }
+    },
+    "required": [
+        "line",
+        "radius"
+    ]
+}

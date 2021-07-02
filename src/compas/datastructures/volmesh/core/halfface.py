@@ -2,10 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# from ast import literal_eval
 from random import choice
-
-import compas
 
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
@@ -40,6 +37,29 @@ class HalfFace(Datastructure):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            "attributes": dict,
+            "dva": dict,
+            "dea": dict,
+            "dfa": dict,
+            "dca": dict,
+            "vertex": dict,
+            "cell": dict,
+            "edge_data": dict,
+            "face_data": dict,
+            "cell_data": dict,
+            "max_vertex": schema.And(int, lambda x: x >= -1),
+            "max_face": schema.And(int, lambda x: x >= -1),
+            "max_cell": schema.And(int, lambda x: x >= -1),
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'halfface'
+
     def __init__(self):
         super(HalfFace, self).__init__()
         self._max_vertex = -1
@@ -61,117 +81,6 @@ class HalfFace(Datastructure):
     def __str__(self):
         tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_cells(),  self.number_of_edges())
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        from packaging import version
-        if version.parse(compas.__version__) < version.parse('0.17'):
-            return schema.Schema({
-                "attributes": dict,
-                "dva": dict,
-                "dea": dict,
-                "dfa": dict,
-                "dca": dict,
-                "vertex": dict,
-                "cell": dict,
-                "edge_data": dict,
-                "face_data": dict,
-                "cell_data": dict,
-                "max_vertex": schema.And(int, lambda x: x >= -1),
-                "max_face": schema.And(int, lambda x: x >= -1),
-                "max_cell": schema.And(int, lambda x: x >= -1),
-            })
-        return schema.Schema({
-            "compas": str,
-            "datatype": str,
-            "data": {
-                "attributes": dict,
-                "dva": dict,
-                "dea": dict,
-                "dfa": dict,
-                "dca": dict,
-                "vertex": dict,
-                "cell": dict,
-                "edge_data": dict,
-                "face_data": dict,
-                "cell_data": dict,
-                "max_vertex": schema.And(int, lambda x: x >= -1),
-                "max_face": schema.And(int, lambda x: x >= -1),
-                "max_cell": schema.And(int, lambda x: x >= -1),
-            }
-        })
-
-    @property
-    def JSONSCHEMA(self):
-        from packaging import version
-        if version.parse(compas.__version__) < version.parse('0.17'):
-            return {
-                "$schema": "http://json-schema.org/draft-07/schema#",
-                "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
-                "$compas": compas.__version__,
-
-                "type": "object",
-                "properties": {
-                    "attributes":   {"type": "object"},
-                    "dva":          {"type": "object"},
-                    "dea":          {"type": "object"},
-                    "dfa":          {"type": "object"},
-                    "dca":          {"type": "object"},
-                    "vertex":       {"type": "object"},
-                    "cell":         {"type": "object"},
-                    "face_data":    {"type": "object"},
-                    "edge_data":    {"type": "object"},
-                    "cell_data":    {"type": "object"},
-                    "max_vertex":   {"type": "number"},
-                    "max_face":     {"type": "number"},
-                    "max_cell":     {"type": "number"}
-                },
-                "required": [
-                    "attributes",
-                    "dva", "dea", "dfa", "dca",
-                    "vertex", "cell",
-                    "face_data", "edge_data", "cell_data",
-                    "max_vertex", "max_face", "max_cell"
-                ]
-            }
-        return {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
-            "$compas": compas.__version__,
-
-            "type": "object",
-            "poperties": {
-                "compas": {"type": "string"},
-                "datatype": {"type": "string"},
-                "data": {
-                    "type": "object",
-                    "properties": {
-                        "attributes":   {"type": "object"},
-                        "dva":          {"type": "object"},
-                        "dea":          {"type": "object"},
-                        "dfa":          {"type": "object"},
-                        "dca":          {"type": "object"},
-                        "vertex":       {"type": "object"},
-                        "cell":         {"type": "object"},
-                        "face_data":    {"type": "object"},
-                        "edge_data":    {"type": "object"},
-                        "cell_data":    {"type": "object"},
-                        "max_vertex":   {"type": "number"},
-                        "max_face":     {"type": "number"},
-                        "max_cell":     {"type": "number"}
-                    },
-                    "required": [
-                        "attributes",
-                        "dva", "dea", "dfa", "dca",
-                        "vertex", "cell",
-                        "face_data", "edge_data", "cell_data",
-                        "max_vertex", "max_face", "max_cell"
-                    ]
-                }
-            },
-            "required": ["compas", "datatype", "data"]
-        }
 
     # --------------------------------------------------------------------------
     # descriptors
