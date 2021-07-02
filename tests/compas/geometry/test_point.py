@@ -2,15 +2,14 @@ import compas
 from compas.geometry import Point
 
 
-def test_data():
-    if compas.IPY:
-        return
-    p = Point(0, 0, '0')
-    assert p.to_data() == p.validate_data()
-    o = Point.from_data(p.to_data())
-    assert p == o
-    assert not (p is o)
-    assert o.to_data() == o.validate_data()
+if not compas.IPY:
+    def test_data():
+        p = Point(0, 0, '0')
+        assert p.data == p.validate_data()
+        o = Point.from_data(p.data)
+        assert p == o
+        assert not (p is o)
+        assert o.data == o.validate_data()
 
 
 def test_point():

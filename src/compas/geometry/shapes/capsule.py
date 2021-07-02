@@ -15,9 +15,6 @@ from compas.geometry import Line
 from compas.geometry.shapes import Shape
 
 
-__all__ = ['Capsule']
-
-
 class Capsule(Shape):
     """A capsule is defined by a line segment and a radius.
 
@@ -54,10 +51,22 @@ class Capsule(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'line': Line.DATASCHEMA.fget(None),
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'capsule'
+
     __slots__ = ['_line', '_radius']
 
-    def __init__(self, line, radius):
-        super(Capsule, self).__init__()
+    def __init__(self, line, radius, **kwargs):
+        super(Capsule, self).__init__(**kwargs)
         self._line = None
         self._radius = None
         self.line = line
@@ -170,8 +179,7 @@ class Capsule(Shape):
         :class: `Capsule`
             The constructed capsule.
         """
-        line = Line.from_data(data['line'])
-        capsule = Capsule(line, data['radius'])
+        capsule = Capsule(Line.from_data(data['line']), data['radius'])
         return capsule
 
     # ==========================================================================
@@ -184,10 +192,10 @@ class Capsule(Shape):
         Parameters
         ----------
         u : int, optional
-            Number of faces in the "u" direction.
+            Number of faces in the 'u' direction.
             Default is ``10``.
         v : int, optional
-            Number of faces in the "v" direction.
+            Number of faces in the 'v' direction.
             Default is ``10``.
 
         Returns

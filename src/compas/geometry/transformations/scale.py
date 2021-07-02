@@ -19,8 +19,6 @@ from compas.geometry.transformations import matrix_from_frame
 from compas.geometry.transformations import matrix_inverse
 from compas.geometry.transformations import Transformation
 
-__all__ = ['Scale']
-
 
 class Scale(Transformation):
     """Creates a scale transformation.

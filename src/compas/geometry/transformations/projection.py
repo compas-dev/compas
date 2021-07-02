@@ -20,9 +20,6 @@ from compas.geometry.transformations import matrix_from_perspective_entries
 from compas.geometry.transformations import Transformation
 
 
-__all__ = ['Projection']
-
-
 class Projection(Transformation):
     """Create a projection transformation.
 

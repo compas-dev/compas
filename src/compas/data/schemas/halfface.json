@@ -1,0 +1,139 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "halfface.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "attributes": {
+            "type": "object"
+        },
+        "dva": {
+            "type": "object"
+        },
+        "dea": {
+            "type": "object"
+        },
+        "dfa": {
+            "type": "object"
+        },
+        "dca": {
+            "type": "object"
+        },
+        "vertex": {
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[0-9]+$"
+            },
+            "patternProperties": {
+                "^[0-9]+$": {
+                    "type": "object",
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        },
+                        "z": {
+                            "type": "number"
+                        }
+                    },
+                    "additionalProperties": true
+                }
+            }
+        },
+        "cell": {
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[0-9]+$"
+            },
+            "patternProperties": {
+                "^[0-9]+$": {
+                    "type": "object",
+                    "propertyNames": {
+                        "pattern": "^[0-9]+$"
+                    },
+                    "patternProperties": {
+                        "^[0-9]+$": {
+                            "type": "object",
+                            "propertyNames": {
+                                "pattern": "^[0-9]+$"
+                            },
+                            "patternProperties": {
+                                "^[0-9]+$": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": 0
+                                    },
+                                    "minItems": 3,
+                                    "uniqueItems": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "face_data": {
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[0-9]+(-[0-9]+)+$"
+            },
+            "patternProperties": {
+                "^[0-9]+(-[0-9]+)+$": {
+                    "type": "object"
+                }
+            }
+        },
+        "edge_data": {
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[0-9]+-[0-9]+$"
+            },
+            "patternProperties": {
+                "^[0-9]+-[0-9]+$": {
+                    "type": "object"
+                }
+            }
+        },
+        "cell_data": {
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[0-9]+$"
+            },
+            "patternProperties": {
+                "^[0-9]+$": {
+                    "type": "object"
+                }
+            }
+        },
+        "max_vertex": {
+            "type": "integer",
+            "minimum": -1
+        },
+        "max_face": {
+            "type": "integer",
+            "minimum": -1
+        },
+        "max_cell": {
+            "type": "integer",
+            "minimum": -1
+        }
+    },
+    "required": [
+        "attributes",
+        "dva",
+        "dea",
+        "dfa",
+        "dca",
+        "vertex",
+        "cell",
+        "face_data",
+        "edge_data",
+        "cell_data",
+        "max_vertex",
+        "max_face",
+        "max_cell"
+    ]
+}

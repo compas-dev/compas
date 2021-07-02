@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "torus.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "plane": {
+            "$ref": "compas.json#/definitions/plane"
+        },
+        "radius_axis": {
+            "type": "number",
+            "exclusiveMinimum": 0
+        },
+        "radius_pipe": {
+            "type": "number",
+            "exclusiveMinimum": 0
+        }
+    },
+    "required": [
+        "plane",
+        "radius_axis",
+        "radius_pipe"
+    ]
+}

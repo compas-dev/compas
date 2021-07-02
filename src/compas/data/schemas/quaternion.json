@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "quaternion.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "w": {
+            "type": "number"
+        },
+        "x": {
+            "type": "number"
+        },
+        "y": {
+            "type": "number"
+        },
+        "z": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "w",
+        "x",
+        "y",
+        "z"
+    ]
+}

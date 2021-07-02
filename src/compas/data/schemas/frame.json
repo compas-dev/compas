@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "frame.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "point": {
+            "$ref": "compas.json#/definitions/point"
+        },
+        "xaxis": {
+            "$ref": "compas.json#/definitions/vector"
+        },
+        "yaxis": {
+            "$ref": "compas.json#/definitions/vector"
+        }
+    },
+    "required": [
+        "point",
+        "xaxis",
+        "yaxis"
+    ]
+}

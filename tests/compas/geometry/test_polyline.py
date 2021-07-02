@@ -1,9 +1,21 @@
 import math
 import pytest
+import random
+import compas
 
 from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.utilities import pairwise
+
+
+if not compas.IPY:
+    def test_data():
+        p = Polyline([Point(random.random(), random.random(), random.random()) for i in range(10)])
+        assert p.data == p.validate_data()
+        o = Polyline.from_data(p.data)
+        assert p == o
+        assert not (p is o)
+        assert o.data == o.validate_data()
 
 
 def test_polyline():
