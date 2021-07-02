@@ -175,7 +175,11 @@ class Pointcloud(Primitive):
             True if the pointclouds are equal.
             False otherwise.
         """
-        return len(self) == len(other) and all(a == b for a, b in zip(self, other))
+        if len(self) != len(other):
+            return False
+        A = sorted(self, key=lambda point: (point[0], point[1], point[2]))
+        B = sorted(other, key=lambda point: (point[0], point[1], point[2]))
+        return all(a == b for a, b in zip(A, B))
 
     @property
     def centroid(self):
