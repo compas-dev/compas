@@ -110,15 +110,22 @@ class Graph(Datastructure):
             schema.update(meta)
         return schema
 
-    def __init__(self):
-        super(Graph, self).__init__()
-        self._max_int_key = -1
-        self.attributes = {'name': 'Graph'}
+    def __init__(self,
+                 name=None,
+                 default_node_attributes=None,
+                 default_edge_attributes=None):
+        super(Graph, self).__init__(name=name)
+        self._max_node = -1
+        self.attributes = {}
         self.node = {}
         self.edge = {}
         self.adjacency = {}
-        self.default_node_attributes = {}
+        self.default_node_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        if default_node_attributes:
+            self.default_node_attributes.update(default_node_attributes)
         self.default_edge_attributes = {}
+        if default_edge_attributes:
+            self.default_edge_attributes.update(default_edge_attributes)
 
     def __str__(self):
         tpl = "<Network with {} nodes, {} edges>"
@@ -127,19 +134,6 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
     # properties
     # --------------------------------------------------------------------------
-
-    @property
-    def name(self):
-        """str : The name of the data structure.
-
-        Any value assigned to this property will be stored in the attribute dict
-        of the data structure instance.
-        """
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
 
     # --------------------------------------------------------------------------
     # serialization
@@ -413,7 +407,7 @@ class Graph(Datastructure):
     # builders
     # --------------------------------------------------------------------------
 
-    def add_node(self, key, attr_dict=None, **kwattr):
+    def add_node(self, key=None, attr_dict=None, **kwattr):
         """Add a node and specify its attributes (optional).
 
         Parameters
@@ -443,6 +437,13 @@ class Graph(Datastructure):
         --------
         >>>
         """
+        if key is None:
+            key = self._max_node = self._max_node + 1
+        try:
+            if key > self._max_node:
+                self._max_node = key
+        except (ValueError, TypeError):
+            pass
         if key not in self.node:
             self.node[key] = {}
             self.edge[key] = {}

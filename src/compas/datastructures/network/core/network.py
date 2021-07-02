@@ -30,12 +30,6 @@ class BaseNetwork(Graph):
     >>>
     """
 
-    def __init__(self):
-        super(BaseNetwork, self).__init__()
-        self._max_int_key = -1
-        self.attributes.update({'name': 'Network'})
-        self.default_node_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
-
     # --------------------------------------------------------------------------
     # customisation
     # --------------------------------------------------------------------------
@@ -264,16 +258,6 @@ class BaseNetwork(Graph):
     # --------------------------------------------------------------------------
     # builders
     # --------------------------------------------------------------------------
-
-    def add_node(self, key=None, attr_dict=None, **kwattr):
-        if key is None:
-            key = self._max_int_key = self._max_int_key + 1
-        try:
-            if key > self._max_int_key:
-                self._max_int_key = key
-        except (ValueError, TypeError):
-            pass
-        return super(BaseNetwork, self).add_node(key, attr_dict=attr_dict, **kwattr)
 
     # --------------------------------------------------------------------------
     # modifiers
