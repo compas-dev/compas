@@ -168,7 +168,7 @@ class HalfEdge(Datastructure):
         self.face = {}
         self.facedata = {}
         self.edgedata = {}
-        self.attributes = {'name': 'Mesh'}
+        self.attributes = {}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         if default_vertex_attributes:
             self.default_vertex_attributes.update(default_vertex_attributes)
@@ -182,19 +182,6 @@ class HalfEdge(Datastructure):
     # --------------------------------------------------------------------------
     # descriptors
     # --------------------------------------------------------------------------
-
-    @property
-    def name(self):
-        """str : The name of the data structure.
-
-        Any value assigned to this property will be stored in the attribute dict
-        of the data structure instance.
-        """
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
 
     @property
     def adjacency(self):

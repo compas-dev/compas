@@ -73,11 +73,6 @@ class BaseMesh(HalfEdge):
 
     """
 
-    def __init__(self):
-        super(BaseMesh, self).__init__()
-        self.attributes.update({'name': 'Mesh'})
-        self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
-
     # --------------------------------------------------------------------------
     # customisation
     # --------------------------------------------------------------------------
