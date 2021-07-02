@@ -1,7 +1,11 @@
+from abc import ABC
+from abc import abstractmethod
+from abc import abstractproperty
+
 _ITEM_ARTIST = {}
 
 
-class Artist(object):
+class Artist(ABC):
     """Base class for all plotter artists."""
 
     def __init__(self, item):
@@ -30,15 +34,17 @@ class Artist(object):
         ymin, ymax = ylim
         return [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]]
 
-    @property
+    @abstractproperty
     def data(self):
         raise NotImplementedError
 
+    @abstractmethod
     def draw(self):
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def redraw(self):
-        raise NotImplementedError
+        pass
 
     def update_data(self):
         raise NotImplementedError
