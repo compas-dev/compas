@@ -35,8 +35,8 @@ def install(version=None, packages=None):
     --------
     .. code-block:: python
 
-        import compas_rhino
-        compas_rhino.install('6.0')
+        import compas_rhino.install
+        compas_rhino.install.install('6.0')
 
     .. code-block:: bash
 
