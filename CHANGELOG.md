@@ -10,12 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added general plotter for geometry objects and data structures based on the artist registration mechanism.
+
 ### Changed
+
 * `compas.robots.Axis` is now normalized upon initialization.
 * Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
 * Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
 
 ### Fixed
+
 * Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
 
 ### Removed
