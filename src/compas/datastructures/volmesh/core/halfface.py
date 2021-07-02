@@ -60,8 +60,13 @@ class HalfFace(Datastructure):
     def JSONSCHEMANAME(self):
         return 'halfface'
 
-    def __init__(self):
-        super(HalfFace, self).__init__()
+    def __init__(self,
+                 name=None,
+                 default_vertex_attributes=None,
+                 default_edge_attributes=None,
+                 default_face_attributes=None,
+                 default_cell_attributes=None):
+        super(HalfFace, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -72,11 +77,13 @@ class HalfFace(Datastructure):
         self._edge_data = {}
         self._face_data = {}
         self._cell_data = {}
-        self.attributes = {'name': 'VolMesh'}
+        self.attributes = {}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.default_edge_attributes = {}
-        self.default_face_attributes = {}
-        self.default_cell_attributes = {}
+        if default_vertex_attributes:
+            self.default_vertex_attributes.update(default_vertex_attributes)
+        self.default_edge_attributes = default_edge_attributes or {}
+        self.default_face_attributes = default_face_attributes or {}
+        self.default_cell_attributes = default_cell_attributes or {}
 
     def __str__(self):
         tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
@@ -85,19 +92,6 @@ class HalfFace(Datastructure):
     # --------------------------------------------------------------------------
     # descriptors
     # --------------------------------------------------------------------------
-
-    @property
-    def name(self):
-        """str : The name of the data structure.
-
-        Any value assigned to this property will be stored in the attribute dict
-        of the data structure instance.
-        """
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
 
     @property
     def data(self):

@@ -73,11 +73,6 @@ class BaseVolMesh(HalfFace):
 
     """
 
-    def __init__(self):
-        super(BaseVolMesh, self).__init__()
-        self.attributes.update({'name': 'VolMesh'})
-        self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
-
     # --------------------------------------------------------------------------
     # customisation
     # --------------------------------------------------------------------------
