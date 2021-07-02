@@ -5,10 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## Unreleased
 
 ### Added
+
+* Added pluggable function `trimesh_slice` in `compas_rhino`.
+* Added equality comparison for pointclouds.
+* Added `compas.data.is_sequence_of_uint`.
 
 * Added general plotter for geometry objects and data structures based on the artist registration mechanism.
 
@@ -17,13 +20,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `compas.robots.Axis` is now normalized upon initialization.
 * Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
 * Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
+* Fixed data schema of `compas.geometry.Polyline`, `compas.geometry.Polygon`, `compas.geometry.Pointcloud`.
 
 ### Fixed
 
 * Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
 
 ### Removed
-
 
 ## [1.7.1] 2021-06-14
 
@@ -40,16 +43,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+* `compas.robots.Axis` is now normalized upon initialization.
+* Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
+* Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
+* Remove default implementation of `__str__` for data objects.
+
+### Fixed
+
+* Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
+
+### Removed
+
+## [1.7.1] 2021-06-14
+
+### Added
+
+### Changed
+
+* Fixed bundling of ghuser components.
+
+### Removed
+
+## [1.7.0] 2021-06-14
+
+### Added
+
 * Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`.
 * Added pluggable function `trimesh_mean_curvature` in `compas_rhino`.
 * Added pluggable function `trimesh_principal_curvature` in `compas_rhino`.
 * Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
+* Added `compas.data.is_sequence_of_int` and `compas.data.is_sequence_of_float`.
+* Added `compas.data.Data.JSONSCHEMANAME`.
+* Added `kwargs` to all child classes of `compas.data.Data`.
 * Added grasshopper component for drawing a frame.
 * Added `draw_origin` and `draw_axes`.
 
 ### Changed
 
 * Allow str or int as joint type in `compas.robots.Joint` constructor.
+* Moved json schemas to `compas.data`.
+* Nested json schemas.
 * `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.
 * Fixed bugs in `compas.geometry.bestfit_circle_numpy`.
 * Changed directory where ghuser components are installed.
@@ -60,15 +95,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.6.3] 2021-05-26
 
 ### Added
 
 * Added `compas.topology.astar_lightest_path`.
-* Added jsonschema definitions for primitives and transformations.
+* Added JSONSCHEMA definitions for primitives and transformations.
 * Added schema implementation to primitives and transformations.
-* Added jsonschema implementation to primitives and transformations.
+* Added JSONSCHEMA implementation to primitives and transformations.
 * Added `compas.data.is_int3`, `compas.data.is_float3`, `compas_data.is_float4x4`.
 
 ### Changed

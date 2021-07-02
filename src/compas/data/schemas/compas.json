@@ -1,0 +1,88 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "compas.json",
+    "$compas": "1.7.1",
+    "definitions": {
+        "point": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+                "type": "number"
+            }
+        },
+        "vector": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+                "type": "number"
+            }
+        },
+        "line": {
+            "type": "object",
+            "properties": {
+                "start": {
+                    "$ref": "#/definitions/point"
+                },
+                "end": {
+                    "$ref": "#/definitions/point"
+                }
+            },
+            "required": [
+                "start",
+                "end"
+            ]
+        },
+        "plane": {
+            "type": "object",
+            "properties": {
+                "point": {
+                    "$ref": "#/definitions/point"
+                },
+                "normal": {
+                    "$ref": "#/definitions/vector"
+                }
+            },
+            "required": [
+                "point",
+                "normal"
+            ]
+        },
+        "circle": {
+            "type": "object",
+            "properties": {
+                "plane": {
+                    "$ref": "#/definitions/plane"
+                },
+                "radius": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                }
+            },
+            "required": [
+                "plane",
+                "radius"
+            ]
+        },
+        "frame": {
+            "type": "object",
+            "properties": {
+                "point": {
+                    "$ref": "#/definitions/point"
+                },
+                "xaxis": {
+                    "$ref": "#/definitions/vector"
+                },
+                "yaxis": {
+                    "$ref": "#/definitions/vector"
+                }
+            },
+            "required": [
+                "point",
+                "xaxis",
+                "yaxis"
+            ]
+        }
+    }
+}

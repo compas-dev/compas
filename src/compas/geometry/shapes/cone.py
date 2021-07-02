@@ -18,9 +18,6 @@ from compas.geometry import Plane
 from compas.geometry.shapes._shape import Shape
 
 
-__all__ = ['Cone']
-
-
 class Cone(Shape):
     """A cone is defined by a circle and a height.
 
@@ -56,10 +53,25 @@ class Cone(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'circle': {
+                'plane': Plane.DATASCHEMA.fget(None),
+                'radius': schema.And(float, lambda x: x > 0)
+            },
+            'height': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'cone'
+
     __slots__ = ['_circle', '_height']
 
-    def __init__(self, circle, height):
-        super(Cone, self).__init__()
+    def __init__(self, circle, height, **kwargs):
+        super(Cone, self).__init__(**kwargs)
         self._circle = None
         self._height = None
         self.circle = circle
@@ -89,7 +101,7 @@ class Cone(Shape):
 
     @plane.setter
     def plane(self, plane):
-        self.circle.plane = Plane(plane[0], plane[1])
+        self.circle.plane = Plane(*plane)
 
     @property
     def circle(self):
@@ -98,7 +110,7 @@ class Cone(Shape):
 
     @circle.setter
     def circle(self, circle):
-        self._circle = Circle(circle[0], circle[1])
+        self._circle = Circle(*circle)
 
     @property
     def radius(self):
@@ -204,8 +216,7 @@ class Cone(Shape):
         >>> cone = Cone.from_data(data)
 
         """
-        cone = cls(Circle(Plane.worldXY(), 1), 1)
-        cone.data = data
+        cone = cls(Circle.from_data(data['circle']), data['height'])
         return cone
 
     # ==========================================================================
@@ -232,9 +243,10 @@ class Cone(Shape):
 
         vertices = [[0, 0, 0]]
         a = 2 * pi / u
+        radius = self.circle.radius
         for i in range(u):
-            x = self.circle.radius * cos(i * a)
-            y = self.circle.radius * sin(i * a)
+            x = radius * cos(i * a)
+            y = radius * sin(i * a)
             vertices.append([x, y, 0])
         vertices.append([0, 0, self.height])
 

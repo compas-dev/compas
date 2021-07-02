@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Frame
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -27,8 +21,6 @@ from compas.geometry.primitives import Point
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Quaternion
 from compas.geometry.primitives import Vector
-
-__all__ = ['Frame']
 
 
 class Frame(Primitive):
@@ -75,8 +67,21 @@ class Frame(Primitive):
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
     """
 
-    def __init__(self, point, xaxis, yaxis):
-        super(Frame, self).__init__()
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({
+            'point': Point.DATASCHEMA.fget(None),
+            'xaxis': Vector.DATASCHEMA.fget(None),
+            'yaxis': Vector.DATASCHEMA.fget(None)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'frame'
+
+    def __init__(self, point, xaxis, yaxis, **kwargs):
+        super(Frame, self).__init__(**kwargs)
         self._point = None
         self._xaxis = None
         self._yaxis = None
@@ -85,44 +90,17 @@ class Frame(Primitive):
         self.yaxis = yaxis
 
     @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        return Schema({
-            "point": is_float3,
-            "xaxis": is_float3,
-            "yaxis": is_float3
-        })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/frame.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "xaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "yaxis": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-            },
-            "required": ["point", "xaxis", "yaxis"]
-        }
-        return schema
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the frame."""
-        return {'point': list(self.point),
-                'xaxis': list(self.xaxis),
-                'yaxis': list(self.yaxis)}
+        return {'point': self.point.data,
+                'xaxis': self.xaxis.data,
+                'yaxis': self.yaxis.data}
 
     @data.setter
     def data(self, data):
-        self.point = data['point']
-        self.xaxis = data['xaxis']
-        self.yaxis = data['yaxis']
+        self.point = Point.from_data(data['point'])
+        self.xaxis = Vector.from_data(data['xaxis'])
+        self.yaxis = Vector.from_data(data['yaxis'])
 
     @property
     def point(self):
@@ -185,7 +163,7 @@ class Frame(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Frame({0!r}, {1!r}, {2!r})".format(self.point, self.xaxis, self.yaxis)
+        return 'Frame({0!r}, {1!r}, {2!r})'.format(self.point, self.xaxis, self.yaxis)
 
     def __len__(self):
         return 3
@@ -247,7 +225,7 @@ class Frame(Primitive):
         >>> frame.yaxis
         Vector(0.000, 1.000, 0.000)
         """
-        frame = cls(data['point'], data['xaxis'], data['yaxis'])
+        frame = cls(Point.from_data(data['point']), Vector.from_data(data['xaxis']), Vector.from_data(data['yaxis']))
         return frame
 
     @classmethod

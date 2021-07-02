@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Bezier
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -13,9 +7,6 @@ from math import factorial
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
-
-
-__all__ = ['Bezier']
 
 
 def binomial_coefficient(n, k):
@@ -106,7 +97,7 @@ class Bezier(Primitive):
     2
     """
 
-    __slots__ = ["_points"]
+    __slots__ = ['_points']
 
     def __init__(self, points):
         super(Bezier, self).__init__()
