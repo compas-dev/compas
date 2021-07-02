@@ -1,8 +1,20 @@
+import random
+import compas
 import pytest
 
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.utilities import pairwise
+
+
+if not compas.IPY:
+    def test_data():
+        p = Polygon([Point(random.random(), random.random(), random.random()) for i in range(10)])
+        assert p.data == p.validate_data()
+        o = Polygon.from_data(p.data)
+        assert p == o
+        assert not (p is o)
+        assert o.data == o.validate_data()
 
 
 def test_polygon():

@@ -178,7 +178,7 @@ __all__ = [
     'is_windows', 'is_linux', 'is_osx', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
     'set_precision',
     'get',
-    'json_dump', 'json_load', 'json_dumps', 'json_loads'
+    'json_dump', 'json_load', 'json_dumps', 'json_loads',
 ]
 
 

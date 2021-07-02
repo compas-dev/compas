@@ -19,9 +19,6 @@ from compas.geometry.transformations import identity_matrix
 from compas.geometry.transformations import Transformation
 
 
-__all__ = ['Reflection']
-
-
 class Reflection(Transformation):
     """Creates a ``Reflection`` that mirrors points at a plane.
 
