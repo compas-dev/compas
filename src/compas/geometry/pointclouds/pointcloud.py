@@ -175,7 +175,7 @@ class Pointcloud(Primitive):
             True if the pointclouds are equal.
             False otherwise.
         """
-        return all(a == b for a, b in zip(self, other))
+        return len(self) == len(other) and all(a == b for a, b in zip(self, other))
 
     @property
     def centroid(self):
