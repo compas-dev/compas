@@ -109,6 +109,8 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added pluggable function <code class="docutils literal notranslate"><span class="pre">trimesh_slice</span></code> in <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code>.</p></li>
+<li><p>Added equality comparison for pointclouds.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.data.is_sequence_of_uint</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
@@ -117,6 +119,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p><code class="docutils literal notranslate"><span class="pre">compas.robots.Axis</span></code> is now normalized upon initialization.</p></li>
 <li><p>Fixed a bug in <code class="docutils literal notranslate"><span class="pre">compas.numerical.dr_numpy</span></code> when using numpy array as inputs.</p></li>
 <li><p>Allowed for varying repository file structures in <code class="docutils literal notranslate"><span class="pre">compas.robots.GithubPackageMeshLoader</span></code>.</p></li>
+<li><p>Fixed data schema of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.Pointcloud</span></code>.</p></li>
 </ul>
 </section>
 <section id="fixed">
@@ -192,6 +195,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added pluggable function <code class="docutils literal notranslate"><span class="pre">trimesh_mean_curvature</span></code> in <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code>.</p></li>
 <li><p>Added pluggable function <code class="docutils literal notranslate"><span class="pre">trimesh_principal_curvature</span></code> in <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">copy</span></code> and <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> functionality to <code class="docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.data.is_sequence_of_int</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.data.is_sequence_of_float</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.data.Data.JSONSCHEMANAME</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> to all child classes of <code class="docutils literal notranslate"><span class="pre">compas.data.Data</span></code>.</p></li>
 <li><p>Added grasshopper component for drawing a frame.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_origin</span></code> and <code class="docutils literal notranslate"><span class="pre">draw_axes</span></code>.</p></li>
 </ul>
@@ -200,6 +206,8 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Allow str or int as joint type in <code class="docutils literal notranslate"><span class="pre">compas.robots.Joint</span></code> constructor.</p></li>
+<li><p>Moved json schemas to <code class="docutils literal notranslate"><span class="pre">compas.data</span></code>.</p></li>
+<li><p>Nested json schemas.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.FrameArtist.draw</span></code> now draws a Rhino Plane.</p></li>
 <li><p>Fixed bugs in <code class="docutils literal notranslate"><span class="pre">compas.geometry.bestfit_circle_numpy</span></code>.</p></li>
 <li><p>Changed directory where ghuser components are installed.</p></li>
@@ -219,9 +227,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.topology.astar_lightest_path</span></code>.</p></li>
-<li><p>Added jsonschema definitions for primitives and transformations.</p></li>
+<li><p>Added JSONSCHEMA definitions for primitives and transformations.</p></li>
 <li><p>Added schema implementation to primitives and transformations.</p></li>
-<li><p>Added jsonschema implementation to primitives and transformations.</p></li>
+<li><p>Added JSONSCHEMA implementation to primitives and transformations.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.data.is_int3</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.data.is_float3</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_data.is_float4x4</span></code>.</p></li>
 </ul>
 </section>
