@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import Callable, Optional, Tuple, List, Union
 import matplotlib
 import matplotlib.pyplot as plt
