@@ -33,6 +33,7 @@ class LineArtist(Artist):
         self.color = color
 
     def clip(self) -> List[Point]:
+        """Compute the clipping points of the line for the current view box."""
         xlim, ylim = self.plotter.viewbox
         xmin, xmax = xlim
         ymin, ymax = ylim
