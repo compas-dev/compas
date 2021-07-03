@@ -1,27 +1,38 @@
+from typing import Dict, Literal, Tuple, List, Union
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.patches import Polygon as PolygonPatch
 from matplotlib.patches import Circle
+from compas.datastructures import Mesh
 from compas_plotters.artists import Artist
+
+Color = Tuple[float, float, float]
 
 
 class MeshArtist(Artist):
-    """"""
+    """Artist for COMPAS mesh data structures."""
 
-    default_vertexcolor = (1, 1, 1)
-    default_edgecolor = (0, 0, 0)
-    default_facecolor = (0.9, 0.9, 0.9)
+    default_vertexcolor: Color = (1, 1, 1)
+    default_edgecolor: Color = (0, 0, 0)
+    default_facecolor: Color = (0.9, 0.9, 0.9)
 
-    default_vertexsize = 5
-    default_edgewidth = 1.0
+    default_vertexsize: int = 5
+    default_edgewidth: float = 1.0
 
-    zorder_faces = 1000
-    zorder_edges = 2000
-    zorder_vertices = 3000
+    zorder_faces: int = 1000
+    zorder_edges: int = 2000
+    zorder_vertices: int = 3000
 
-    def __init__(self, mesh, show_vertices=True, show_edges=True, show_faces=True,
-                 vertexsize=5, sizepolicy='relative', vertexcolor=(1, 1, 1),
-                 edgewidth=1.0, edgecolor=(0, 0, 0),
-                 facecolor=(0.9, 0.9, 0.9)):
+    def __init__(self,
+                 mesh: Mesh,
+                 show_vertices: bool = True,
+                 show_edges: bool = True,
+                 show_faces: bool = True,
+                 vertexsize: int = 5,
+                 sizepolicy: Literal['relative', 'absolute'] = 'relative',
+                 vertexcolor: Color = (1, 1, 1),
+                 edgewidth: float = 1.0,
+                 edgecolor: Color = (0, 0, 0),
+                 facecolor: Color = (0.9, 0.9, 0.9)):
         super(MeshArtist, self).__init__(mesh)
         self._mpl_vertex_collection = None
         self._mpl_edge_collection = None
@@ -42,12 +53,12 @@ class MeshArtist(Artist):
         self.facecolor = facecolor
 
     @property
-    def vertexcolor(self):
+    def vertexcolor(self) -> Dict[int, Color]:
         """dict: Vertex colors."""
         return self._vertexcolor
 
     @vertexcolor.setter
-    def vertexcolor(self, vertexcolor):
+    def vertexcolor(self, vertexcolor: Union[Color, Dict[int, Color]]):
         if isinstance(vertexcolor, dict):
             self._vertexcolor = vertexcolor
         elif len(vertexcolor) == 3 and all(isinstance(c, (int, float)) for c in vertexcolor):
@@ -56,12 +67,12 @@ class MeshArtist(Artist):
             self._vertexcolor = {}
 
     @property
-    def edgecolor(self):
+    def edgecolor(self) -> Dict[Tuple[int, int], Color]:
         """dict: Edge colors."""
         return self._edgecolor
 
     @edgecolor.setter
-    def edgecolor(self, edgecolor):
+    def edgecolor(self, edgecolor: Union[Color, Dict[Tuple[int, int], Color]]):
         if isinstance(edgecolor, dict):
             self._edgecolor = edgecolor
         elif len(edgecolor) == 3 and all(isinstance(c, (int, float)) for c in edgecolor):
@@ -70,12 +81,12 @@ class MeshArtist(Artist):
             self._edgecolor = {}
 
     @property
-    def facecolor(self):
+    def facecolor(self) -> Dict[int, Color]:
         """dict: Face colors."""
         return self._facecolor
 
     @facecolor.setter
-    def facecolor(self, facecolor):
+    def facecolor(self, facecolor: Union[Color, Dict[int, Color]]):
         if isinstance(facecolor, dict):
             self._facecolor = facecolor
         elif len(facecolor) == 3 and all(isinstance(c, (int, float)) for c in facecolor):
@@ -84,12 +95,12 @@ class MeshArtist(Artist):
             self._facecolor = {}
 
     @property
-    def edgewidth(self):
+    def edgewidth(self) -> Dict[Tuple[int, int], float]:
         """dict: Edge widths."""
         return self._edgewidth
 
     @edgewidth.setter
-    def edgewidth(self, edgewidth):
+    def edgewidth(self, edgewidth: Union[float, Dict[Tuple[int, int], float]]):
         if isinstance(edgewidth, dict):
             self._edgewidth = edgewidth
         elif isinstance(edgewidth, (int, float)):
@@ -98,10 +109,10 @@ class MeshArtist(Artist):
             self._edgewidth = {}
 
     @property
-    def data(self):
+    def data(self) -> List[List[float, float]]:
         return self.mesh.vertices_attributes('xy')
 
-    def draw(self):
+    def draw(self) -> None:
         """Draw the mesh."""
         vertex_xy = {vertex: self.mesh.vertex_attributes(vertex, 'xy') for vertex in self.mesh.vertices()}
 
@@ -171,5 +182,5 @@ class MeshArtist(Artist):
             )
             self.plotter.axes.add_collection(collection)
 
-    def redraw(self):
+    def redraw(self) -> None:
         raise NotImplementedError
