@@ -1,7 +1,7 @@
 from typing import Literal, Tuple, List
-from compas.geometry import Point, Ellipse
-from compas_plotters.artists import Artist
 from matplotlib.patches import Ellipse as EllipsePatch
+from compas.geometry import Ellipse
+from compas_plotters.artists import Artist
 
 Color = Tuple[float, float, float]
 
@@ -30,7 +30,7 @@ class EllipseArtist(Artist):
         self.alpha = alpha
 
     @property
-    def data(self) -> List[Point]:
+    def data(self) -> List[List[float, float]]:
         points = [
             self.ellipse.center[:2],
             self.ellipse.center[:2],

@@ -1,9 +1,8 @@
 from typing import Literal, Tuple, List
-from compas.geometry import Point, Line
-from compas_plotters.artists import Artist
 from matplotlib.lines import Line2D
-
+from compas.geometry import Point, Line
 from compas.geometry import intersection_line_box_xy
+from compas_plotters.artists import Artist
 
 Color = Tuple[float, float, float]
 
@@ -41,7 +40,7 @@ class LineArtist(Artist):
         return intersection_line_box_xy(self.line, box)
 
     @property
-    def data(self) -> None:
+    def data(self) -> List[List[float, float]]:
         return [self.line.start[:2], self.line.end[:2]]
 
     def draw(self) -> None:
@@ -70,8 +69,8 @@ class LineArtist(Artist):
                                 zorder=self.zorder)
                 self._mpl_line = self.plotter.axes.add_line(line2d)
                 if self.draw_points:
-                    self._start_artist = self.plotter.add(self.line.start)
-                    self._end_artist = self.plotter.add(self.line.end)
+                    self._start_artist = self.plotter.add(self.line.start, edgecolor=self.color)
+                    self._end_artist = self.plotter.add(self.line.end, edgecolor=self.color)
 
     def redraw(self) -> None:
         if self._draw_as_segment:
@@ -91,3 +90,6 @@ class LineArtist(Artist):
                 self._mpl_line.set_ydata([y0, y1])
                 self._mpl_line.set_color(self.color)
                 self._mpl_line.set_linewidth(self.linewidth)
+        if self.draw_points:
+            self._start_artist.redraw()
+            self._end_artist.redraw()

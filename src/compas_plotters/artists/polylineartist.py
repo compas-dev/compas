@@ -1,13 +1,22 @@
-from compas_plotters.artists import Artist
+from typing import Literal, Tuple, List
 from matplotlib.lines import Line2D
+from compas.geometry import Polyline
+from compas_plotters.artists import Artist
+
+Color = Tuple[float, float, float]
 
 
 class PolylineArtist(Artist):
-    """"""
+    """Artist for COMPAS polylines."""
 
-    zorder = 1000
+    zorder: int = 1000
 
-    def __init__(self, polyline, draw_points=True, linewidth=1.0, linestyle='solid', color=(0, 0, 0)):
+    def __init__(self,
+                 polyline: Polyline,
+                 draw_points: bool = True,
+                 linewidth: float = 1.0,
+                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
+                 color: Color = (0, 0, 0)):
         super(PolylineArtist, self).__init__(polyline)
         self._mpl_line = None
         self._point_artists = []
@@ -18,10 +27,10 @@ class PolylineArtist(Artist):
         self.color = color
 
     @property
-    def data(self):
+    def data(self) -> List[List[float, float]]:
         return [point[:2] for point in self.polyline.points]
 
-    def draw(self):
+    def draw(self) -> None:
         x, y, _ = zip(* self.polyline.points)
         line2d = Line2D(x, y,
                         linewidth=self.linewidth,
@@ -33,7 +42,7 @@ class PolylineArtist(Artist):
             for point in self.polyline:
                 self._point_artists.append(self.plotter.add(point))
 
-    def redraw(self):
+    def redraw(self) -> None:
         x, y, _ = zip(* self.polyline.points)
         self._mpl_line.set_xdata(x)
         self._mpl_line.set_ydata(y)

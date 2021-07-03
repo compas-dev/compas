@@ -1,7 +1,7 @@
 from typing import Literal, Tuple, List
-from compas.geometry import Point, Circle
-from compas_plotters.artists import Artist
 from matplotlib.patches import Circle as CirclePatch
+from compas.geometry import Circle
+from compas_plotters.artists import Artist
 
 Color = Tuple[float, float, float]
 
@@ -30,7 +30,7 @@ class CircleArtist(Artist):
         self.alpha = alpha
 
     @property
-    def data(self) -> List[Point]:
+    def data(self) -> List[List[float, float]]:
         points = [
             self.circle.center[:2],
             self.circle.center[:2],

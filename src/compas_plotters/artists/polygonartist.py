@@ -1,13 +1,24 @@
-from compas_plotters.artists import Artist
+from typing import Literal, Tuple, List
 from matplotlib.patches import Polygon as PolygonPatch
+from compas.geometry import Polygon
+from compas_plotters.artists import Artist
+
+Color = Tuple[float, float, float]
 
 
 class PolygonArtist(Artist):
-    """"""
+    """Artist for COMPAS polygons."""
 
-    zorder = 1000
+    zorder: int = 1000
 
-    def __init__(self, polygon, linewidth=1.0, linestyle='solid', facecolor=(1.0, 1.0, 1.0), edgecolor=(0, 0, 0), fill=True, alpha=1.0):
+    def __init__(self,
+                 polygon: Polygon,
+                 linewidth: float = 1.0,
+                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
+                 facecolor: Color = (1.0, 1.0, 1.0),
+                 edgecolor: Color = (0, 0, 0),
+                 fill: bool = True,
+                 alpha: float = 1.0):
         super(PolygonArtist, self).__init__(polygon)
         self._mpl_polygon = None
         self.polygon = polygon
@@ -19,10 +30,10 @@ class PolygonArtist(Artist):
         self.alpha = alpha
 
     @property
-    def data(self):
+    def data(self) -> List[List[float, float]]:
         return [point[:2] for point in self.polygon.points]
 
-    def draw(self):
+    def draw(self) -> None:
         polygon = PolygonPatch(self.data,
                                linewidth=self.linewidth,
                                linestyle='solid',
@@ -33,7 +44,7 @@ class PolygonArtist(Artist):
                                fill=self.fill)
         self._mpl_polygon = self.plotter.axes.add_patch(polygon)
 
-    def redraw(self):
+    def redraw(self) -> None:
         self._mpl_polygon.set_xy(self.data)
         self._mpl_polygon.set_facecolor(self.facecolor)
         self._mpl_polygon.set_edgecolor(self.edgecolor)
