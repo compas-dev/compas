@@ -2,13 +2,12 @@ from typing import Literal, Tuple, List
 from compas.geometry import Point, Circle
 from compas_plotters.artists import Artist
 from matplotlib.patches import Circle as CirclePatch
-# from matplotlib.transforms import ScaledTranslation
 
 Color = Tuple[float, float, float]
 
 
 class CircleArtist(Artist):
-    """"""
+    """Artist for COMPAS circles."""
 
     zorder: int = 1000
 

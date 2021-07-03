@@ -1,15 +1,25 @@
+from typing import Literal, Tuple, List
+from compas.geometry import Point, Line
 from compas_plotters.artists import Artist
 from matplotlib.lines import Line2D
 
 from compas.geometry import intersection_line_box_xy
 
+Color = Tuple[float, float, float]
+
 
 class LineArtist(Artist):
-    """"""
+    """Artist for COMPAS lines."""
 
-    zorder = 1000
+    zorder: int = 1000
 
-    def __init__(self, line, draw_points=False, draw_as_segment=False, linewidth=1.0, linestyle='solid', color=(0, 0, 0)):
+    def __init__(self,
+                 line: Line,
+                 draw_points: bool = False,
+                 draw_as_segment: bool = False,
+                 linewidth: float = 1.0,
+                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
+                 color: Color = (0, 0, 0)):
         super(LineArtist, self).__init__(line)
         self._mpl_line = None
         self._start_artist = None
@@ -22,7 +32,7 @@ class LineArtist(Artist):
         self.linestyle = linestyle
         self.color = color
 
-    def clip(self):
+    def clip(self) -> List[Point]:
         xlim, ylim = self.plotter.viewbox
         xmin, xmax = xlim
         ymin, ymax = ylim
@@ -30,10 +40,10 @@ class LineArtist(Artist):
         return intersection_line_box_xy(self.line, box)
 
     @property
-    def data(self):
+    def data(self) -> None:
         return [self.line.start[:2], self.line.end[:2]]
 
-    def draw(self):
+    def draw(self) -> None:
         if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
@@ -62,7 +72,7 @@ class LineArtist(Artist):
                     self._start_artist = self.plotter.add(self.line.start)
                     self._end_artist = self.plotter.add(self.line.end)
 
-    def redraw(self):
+    def redraw(self) -> None:
         if self._draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
