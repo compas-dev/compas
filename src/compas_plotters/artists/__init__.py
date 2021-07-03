@@ -21,12 +21,12 @@ Classes
     CircleArtist
     EllipseArtist
 
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     MeshArtist
+    NetworkArtist
 
 """
 from compas.geometry import Point
@@ -38,6 +38,7 @@ from compas.geometry import Circle
 from compas.geometry import Ellipse
 
 from compas.datastructures import Mesh
+from compas.datastructures import Network
 
 from .artist import Artist
 from .pointartist import PointArtist
@@ -49,6 +50,7 @@ from .circleartist import CircleArtist
 from .ellipseartist import EllipseArtist
 
 from .meshartist import MeshArtist
+from .networkartist import NetworkArtist
 
 Artist.register(Point, PointArtist)
 Artist.register(Vector, VectorArtist)
@@ -59,6 +61,7 @@ Artist.register(Circle, CircleArtist)
 Artist.register(Ellipse, EllipseArtist)
 
 Artist.register(Mesh, MeshArtist)
+Artist.register(Network, NetworkArtist)
 
 
 __all__ = [
@@ -70,5 +73,6 @@ __all__ = [
     'PolygonArtist',
     'CircleArtist',
     'EllipseArtist',
-    'MeshArtist'
+    'MeshArtist',
+    'NetworkArtist'
 ]
