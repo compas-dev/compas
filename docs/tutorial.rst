@@ -14,3 +14,4 @@ Tutorial
     tutorial/rpc
     tutorial/geomaps
     tutorial/serialization
+    tutorial/plotters
