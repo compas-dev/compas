@@ -5,6 +5,7 @@ Tutorial
     :maxdepth: 1
     :titlesonly:
 
+    tutorial/data
     tutorial/geometry
     tutorial/networks
     tutorial/meshes
