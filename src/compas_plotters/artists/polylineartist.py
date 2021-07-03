@@ -27,7 +27,7 @@ class PolylineArtist(Artist):
         self.color = color
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return [point[:2] for point in self.polyline.points]
 
     def draw(self) -> None:

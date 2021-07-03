@@ -109,7 +109,7 @@ class MeshArtist(Artist):
             self._edgewidth = {}
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return self.mesh.vertices_attributes('xy')
 
     def draw(self) -> None:

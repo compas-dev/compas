@@ -28,7 +28,7 @@ class SegmentArtist(Artist):
         self.color = color
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return [self.line.start[:2], self.line.end[:2]]
 
     def draw(self) -> None:

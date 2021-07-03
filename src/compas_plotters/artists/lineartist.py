@@ -40,7 +40,7 @@ class LineArtist(Artist):
         return intersection_line_box_xy(self.line, box)
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return [self.line.start[:2], self.line.end[:2]]
 
     def draw(self) -> None:

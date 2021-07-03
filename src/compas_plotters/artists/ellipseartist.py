@@ -30,7 +30,7 @@ class EllipseArtist(Artist):
         self.alpha = alpha
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         points = [
             self.ellipse.center[:2],
             self.ellipse.center[:2],

@@ -86,7 +86,7 @@ class NetworkArtist(Artist):
             self._edgewidth = {}
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return self.network.nodes_attributes('xy')
 
     def draw(self) -> None:

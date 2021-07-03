@@ -30,7 +30,7 @@ class CircleArtist(Artist):
         self.alpha = alpha
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         points = [
             self.circle.center[:2],
             self.circle.center[:2],

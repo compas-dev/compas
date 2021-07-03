@@ -26,7 +26,7 @@ class VectorArtist(Artist):
         self.color = color
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return [self.point[:2], (self.point + self.vector)[:2]]
 
     def draw(self) -> None:

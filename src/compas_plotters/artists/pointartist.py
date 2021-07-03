@@ -41,7 +41,7 @@ class PointArtist(Artist):
         self._size = size
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return [self.point[:2]]
 
     def update_data(self) -> None:

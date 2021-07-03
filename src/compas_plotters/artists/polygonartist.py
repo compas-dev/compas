@@ -30,7 +30,7 @@ class PolygonArtist(Artist):
         self.alpha = alpha
 
     @property
-    def data(self) -> List[List[float, float]]:
+    def data(self) -> List[List[float]]:
         return [point[:2] for point in self.polygon.points]
 
     def draw(self) -> None:
