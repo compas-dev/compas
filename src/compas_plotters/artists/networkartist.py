@@ -1,23 +1,33 @@
+from typing import Dict, Literal, Tuple, List, Union
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.patches import Circle
+from compas.datastructures import Network
 from compas_plotters.artists import Artist
+
+Color = Tuple[float, float, float]
 
 
 class NetworkArtist(Artist):
     """"""
 
-    default_nodecolor = (1, 1, 1)
-    default_edgecolor = (0, 0, 0)
+    default_nodecolor: Color = (1, 1, 1)
+    default_edgecolor: Color = (0, 0, 0)
 
-    default_nodesize = 5
-    default_edgewidth = 1.0
+    default_nodesize: int = 5
+    default_edgewidth: float = 1.0
 
-    zorder_edges = 2000
-    zorder_nodes = 3000
+    zorder_edges: int = 2000
+    zorder_nodes: int = 3000
 
-    def __init__(self, network, show_nodes=True, show_edges=True,
-                 nodesize=5, sizepolicy='relative', nodecolor=(1, 1, 1),
-                 edgewidth=1.0, edgecolor=(0, 0, 0)):
+    def __init__(self,
+                 network: Network,
+                 show_nodes: bool = True,
+                 show_edges: bool = True,
+                 nodesize: int = 5,
+                 sizepolicy: Literal['relative', 'absolute'] = 'relative',
+                 nodecolor: Color = (1, 1, 1),
+                 edgewidth: float = 1.0,
+                 edgecolor: Color = (0, 0, 0)):
         super(NetworkArtist, self).__init__(network)
         self._mpl_node_collection = None
         self._mpl_edge_collection = None
@@ -34,12 +44,12 @@ class NetworkArtist(Artist):
         self.edgecolor = edgecolor
 
     @property
-    def nodecolor(self):
+    def nodecolor(self) -> Dict[int, Color]:
         """dict: Vertex colors."""
         return self._nodecolor
 
     @nodecolor.setter
-    def nodecolor(self, nodecolor):
+    def nodecolor(self, nodecolor: Union[Color, Dict[int, Color]]):
         if isinstance(nodecolor, dict):
             self._nodecolor = nodecolor
         elif len(nodecolor) == 3 and all(isinstance(c, (int, float)) for c in nodecolor):
@@ -48,12 +58,12 @@ class NetworkArtist(Artist):
             self._nodecolor = {}
 
     @property
-    def edgecolor(self):
+    def edgecolor(self) -> Dict[Tuple[int, int], Color]:
         """dict: Edge colors."""
         return self._edgecolor
 
     @edgecolor.setter
-    def edgecolor(self, edgecolor):
+    def edgecolor(self, edgecolor: Union[Color, Dict[Tuple[int, int], Color]]):
         if isinstance(edgecolor, dict):
             self._edgecolor = edgecolor
         elif len(edgecolor) == 3 and all(isinstance(c, (int, float)) for c in edgecolor):
@@ -62,12 +72,12 @@ class NetworkArtist(Artist):
             self._edgecolor = {}
 
     @property
-    def edgewidth(self):
+    def edgewidth(self) -> Dict[Tuple[int, int], float]:
         """dict: Edge widths."""
         return self._edgewidth
 
     @edgewidth.setter
-    def edgewidth(self, edgewidth):
+    def edgewidth(self, edgewidth: Union[float, Dict[Tuple[int, int], float]]):
         if isinstance(edgewidth, dict):
             self._edgewidth = edgewidth
         elif isinstance(edgewidth, (int, float)):
@@ -76,10 +86,10 @@ class NetworkArtist(Artist):
             self._edgewidth = {}
 
     @property
-    def data(self):
+    def data(self) -> List[List[float, float]]:
         return self.network.nodes_attributes('xy')
 
-    def draw(self):
+    def draw(self) -> None:
         """Draw the network."""
         node_xy = {node: self.network.node_attributes(node, 'xy') for node in self.network.nodes()}
 
@@ -126,5 +136,5 @@ class NetworkArtist(Artist):
             )
             self.plotter.axes.add_collection(collection)
 
-    def redraw(self):
+    def redraw(self) -> None:
         raise NotImplementedError
