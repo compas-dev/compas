@@ -1,14 +1,25 @@
+from typing import Literal, Tuple, List
+from compas.geometry import Point, Circle
 from compas_plotters.artists import Artist
 from matplotlib.patches import Circle as CirclePatch
 # from matplotlib.transforms import ScaledTranslation
+
+Color = Tuple[float, float, float]
 
 
 class CircleArtist(Artist):
     """"""
 
-    zorder = 1000
+    zorder: int = 1000
 
-    def __init__(self, circle, linewidth=1.0, linestyle='solid', facecolor=(1.0, 1.0, 1.0), edgecolor=(0, 0, 0), fill=True, alpha=1.0):
+    def __init__(self,
+                 circle: Circle,
+                 linewidth: float = 1.0,
+                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
+                 facecolor: Color = (1.0, 1.0, 1.0),
+                 edgecolor: Color = (0, 0, 0),
+                 fill: bool = True,
+                 alpha: float = 1.0):
         super(CircleArtist, self).__init__(circle)
         self._mpl_circle = None
         self.circle = circle
@@ -20,7 +31,7 @@ class CircleArtist(Artist):
         self.alpha = alpha
 
     @property
-    def data(self):
+    def data(self) -> List[Point]:
         points = [
             self.circle.center[:2],
             self.circle.center[:2],
@@ -33,10 +44,10 @@ class CircleArtist(Artist):
         points[3][1] += self.circle.radius
         return points
 
-    def update_data(self):
+    def update_data(self) -> None:
         self.plotter.axes.update_datalim(self.data)
 
-    def draw(self):
+    def draw(self) -> None:
         circle = CirclePatch(
             self.circle.center[:2],
             linewidth=self.linewidth,
@@ -50,7 +61,7 @@ class CircleArtist(Artist):
         self._mpl_circle = self.plotter.axes.add_artist(circle)
         self.update_data()
 
-    def redraw(self):
+    def redraw(self) -> None:
         self._mpl_circle.center = self.circle.center[:2]
         self._mpl_circle.set_radius(self.circle.radius)
         self._mpl_circle.set_edgecolor(self.edgecolor)
