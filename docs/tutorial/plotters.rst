@@ -86,29 +86,44 @@ In this case all configurations options will be applied uniformly to all objects
     plotter.add_from_list(cloud.points, size=1, facecolor=(1.0, 0.7, 0.7), edgecolor=(1.0, 0, 0))
 
 
-Supported Geometry Objects
-==========================
+Geometry Objects
+================
 
-Currently, only the following geometry primitives are supported:
+Most of the geometry primitives are supported
+and can be added to a plotter instance as described above:
 
 * :class:`compas.geometry.Point`
-* Vector
-* Line
-* Circle
-* Ellipse
-* Polyline
-* Polygon
+* :class:`compas.geometry.Vector`
+* :class:`compas.geometry.Line`
+* :class:`compas.geometry.Circle`
+* :class:`compas.geometry.Ellipse`
+* :class:`compas.geometry.Polyline`
+* :class:`compas.geometry.Polygon`
+
+Bezier curves and pointclouds are currently not available yet, but will be added as well.
+Note that in all cases, the ``z`` coordinates of the objects are simply ignored, and only a 2D representation is depicted.
+
+.. code-block:: python
+
+    plotter.add(point)
+    plotter.add(vector)
+    plotter.add(line)
+    plotter.add(circle)
+    plotter.add(ellipse)
+    plotter.add(polyline)
+    plotter.add(polygon)
 
 
-Bezier curves and pointclouds are not
+Data Structures
+===============
 
+Of the three types of data structures, only network and mesh are supported.
+Also in this case, the ``z`` coordinates of the geometry is ignored, and only a 2D representation is depicted.
 
-Supported Data Structures
-=========================
+.. code-block:: python
 
-
-Visualisation Options
-=====================
+    plotter.add(point)
+    plotter.add(vector)
 
 
 Dynamic Plots
