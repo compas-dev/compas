@@ -126,6 +126,34 @@ Also in this case, the ``z`` coordinates of the geometry is ignored, and only a 
     plotter.add(vector)
 
 
+Visualisation Options
+=====================
+
+All line objects (line, polyline) have the following options
+
+* ``linewidth``: a positive number with as default ``1.0``
+* ``linestyle``: one of ``{'solid', 'dotted', 'dashed', 'dashdot'}`` with as default ``'solid'``
+* ``color``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(0.0, 0.0, 0.0)``
+* ``draw_points``: a boolean flag indicating that the underlying points should also be draw; the default is ``False``
+
+All objects with an interior region (circle, ellipse, polygon) have
+
+* ``linewidth``: a positive number with as default ``1.0``
+* ``linestyle``: one of ``{'solid', 'dotted', 'dashed', 'dashdot'}`` with as default ``'solid'``
+* ``facecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(1.0, 1.0, 1.0)``, specifying the color of the interior region
+* ``edgecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(0.0, 0.0, 0.0)``, specifying the color of the boundary
+* ``fill``: a boolean flag indicating that the interior should be filled; the default is ``True``.
+* ``alpha``: controls the transparency of the fill in a range of ``0.0`` to ``1.0``, with as default ``1.0``
+
+Point objects have their own set of options
+
+* ``size``
+* ``facecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(1.0, 1.0, 1.0)``, specifying the color of the interior region
+* ``edgecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(0.0, 0.0, 0.0)``, specifying the color of the boundary
+
+Note that since point objects are visualised as circles in ...
+
+
 Dynamic Plots
 =============
 
