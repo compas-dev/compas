@@ -1,6 +1,9 @@
+import os
 from typing import Callable, Optional, Tuple, List, Union
 import matplotlib
 import matplotlib.pyplot as plt
+import tempfile
+from PIL import Image
 
 import compas
 from compas_plotters import Artist
@@ -202,8 +205,9 @@ class Plotter:
         if pause:
             plt.pause(pause)
 
-    def zoom_extents(self) -> None:
+    def zoom_extents(self, padding: Optional[int] = None) -> None:
         """Zoom the view to the bounding box of all objects."""
+        padding = padding or 0
         width, height = self.figsize
         fig_aspect = width / height
         data = []
@@ -214,8 +218,8 @@ class Plotter:
         xmax = max(x)
         ymin = min(y)
         ymax = max(y)
-        xspan = xmax - xmin
-        yspan = ymax - ymin
+        xspan = xmax - xmin + padding
+        yspan = ymax - ymin + padding
         data_aspect = xspan / yspan
         if data_aspect < fig_aspect:
             scale = fig_aspect / data_aspect
@@ -359,3 +363,36 @@ class Plotter:
 
         """
         plt.savefig(filepath, **kwargs)
+
+    def on(self,
+           interval: int = None,
+           frames: int = None,
+           record: bool = False,
+           recording: str = None,
+           dpi: int = 150) -> Callable:
+        """Method for decorating callback functions in dynamic plots."""
+        if record:
+            if not recording:
+                raise Exception('Please provide a path for the recording.')
+
+        def outer(func: Callable):
+            if record:
+                with tempfile.TemporaryDirectory() as dirpath:
+                    paths = []
+                    for f in range(frames):
+                        func(f)
+                        self.redraw(pause=interval)
+                        if record:
+                            filepath = os.path.join(dirpath, f'frame-{f}.png')
+                            paths.append(filepath)
+                            self.save(filepath, dpi=dpi)
+                    images = []
+                    for path in paths:
+                        images.append(Image.open(path))
+                    images[0].save(recording, save_all=True, append_images=images[1:], optimize=False, duration=interval * 1000, loop=0)
+            else:
+                for f in range(frames):
+                    func(f)
+                    self.redraw(pause=interval)
+
+        return outer
