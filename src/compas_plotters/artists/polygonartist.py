@@ -36,7 +36,7 @@ class PolygonArtist(Artist):
     def draw(self) -> None:
         polygon = PolygonPatch(self.data,
                                linewidth=self.linewidth,
-                               linestyle='solid',
+                               linestyle=self.linestyle,
                                facecolor=self.facecolor,
                                edgecolor=self.edgecolor,
                                zorder=self.zorder,

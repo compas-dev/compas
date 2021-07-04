@@ -129,34 +129,169 @@ Also in this case, the ``z`` coordinates of the geometry is ignored, and only a 
 Visualisation Options
 =====================
 
-All line objects (line, polyline) have the following options
+Line and Polyline
+-----------------
 
-* ``linewidth``: a positive number with as default ``1.0``
-* ``linestyle``: one of ``{'solid', 'dotted', 'dashed', 'dashdot'}`` with as default ``'solid'``
-* ``color``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(0.0, 0.0, 0.0)``
-* ``draw_points``: a boolean flag indicating that the underlying points should also be draw; the default is ``False``
+.. rst-class:: table table-bordered
 
-All objects with an interior region (circle, ellipse, polygon) have
+.. list-table::
+    :widths: auto
+    :header-rows: 1
 
-* ``linewidth``: a positive number with as default ``1.0``
-* ``linestyle``: one of ``{'solid', 'dotted', 'dashed', 'dashdot'}`` with as default ``'solid'``
-* ``facecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(1.0, 1.0, 1.0)``, specifying the color of the interior region
-* ``edgecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(0.0, 0.0, 0.0)``, specifying the color of the boundary
-* ``fill``: a boolean flag indicating that the interior should be filled; the default is ``True``.
-* ``alpha``: controls the transparency of the fill in a range of ``0.0`` to ``1.0``, with as default ``1.0``
+    * - Name
+      - Value
+      - Default
+    * - ``linewidth``
+      - :obj:`float`
+      - ``1.0``
+    * - ``linestyle``
+      - ``{'solid', 'dotted', 'dashed', 'dashdot'}``
+      - ``'solid'``
+    * - ``color``
+      - :obj:`tuple`
+      - ``(0.0, 0.0, 0.0)``
+    * - ``draw_points``
+      - :obj:`bool`
+      - ``False``
 
-Point objects have their own set of options
+.. code-block:: python
 
-* ``size``
-* ``facecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(1.0, 1.0, 1.0)``, specifying the color of the interior region
-* ``edgecolor``: an rgb color tuple with components in the range of ``0.0`` to ``1.0``, and as default ``(0.0, 0.0, 0.0)``, specifying the color of the boundary
+    pointcloud = Pointcloud.from_bounds(8, 5, 0, 10)
 
-Note that since point objects are visualised as circles in ...
+    for a, b in grouper(pointcloud, 2):
+        line = Line(a, b)
+        plotter.add(line,
+                    linewidth=2.0,
+                    linestyle=random.choice(['dotted', 'dashed', 'solid']),
+                    color=i_to_rgb(random.random(), normalize=True),
+                    draw_points=True)
+
+.. figure:: /_images/tutorial/plotters_line-options.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+Circle, Ellipse, Polygon
+------------------------
+
+.. rst-class:: table table-bordered
+
+.. list-table::
+    :widths: auto
+    :header-rows: 1
+
+    * - Name
+      - Value
+      - Default
+    * - ``linewidth``
+      - :obj:`float`
+      - ``1.0``
+    * - ``linestyle``
+      - ``{'solid', 'dotted', 'dashed', 'dashdot'}``
+      - ``'solid'``
+    * - ``facecolor``
+      - :obj:`tuple`
+      - ``(1.0, 1.0, 1.0)``
+    * - ``edgecolor``
+      - :obj:`tuple`
+      - ``(0.0, 0.0, 0.0)``
+    * - ``alpha``
+      - :obj:`float`
+      - ``1.0``
+    * - ``fill``
+      - :obj:`bool`
+      - ``True``
+
+.. code-block:: python
+
+    poly1 = Polygon.from_sides_and_radius_xy(5, 1.0)
+    poly2 = Polygon.from_sides_and_radius_xy(5, 1.0).transformed(Translation.from_vector([0.5, -0.25, 0]))
+    poly3 = Polygon.from_sides_and_radius_xy(5, 1.0).transformed(Translation.from_vector([0.75, +0.25, 0]))
+
+    plotter.add(poly1, linewidth=3.0, facecolor=(0.8, 1.0, 0.8), edgecolor=(0.0, 1.0, 0.0))
+    plotter.add(poly2, linestyle='dashed', facecolor=(1.0, 0.8, 0.8), edgecolor=(1.0, 0.0, 0.0))
+    plotter.add(poly3, alpha=0.5)
+
+.. figure:: /_images/tutorial/plotters_polygon-options.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+Points
+------
+
+.. rst-class:: table table-bordered
+
+.. list-table::
+    :widths: auto
+    :header-rows: 1
+
+    * - Name
+      - Value
+      - Default
+    * - ``size``
+      - :obj:`int`
+      - ``5``
+    * - ``facecolor``
+      - :obj:`tuple`
+      - ``(1.0, 1.0, 1.0)``
+    * - ``edgecolor``
+      - :obj:`tuple`
+      - ``(0.0, 0.0, 0.0)``
+
+.. code-block:: python
+
+    pointcloud = Pointcloud.from_bounds(8, 5, 0, 10)
+
+    for point in pointcloud:
+        plotter.add(point, size=random.randint(1, 10), edgecolor=i_to_rgb(random.random(), normalize=True))
+
+.. figure:: /_images/tutorial/plotters_point-options.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+Vectors
+-------
+
+.. rst-class:: table table-bordered
+
+.. list-table::
+    :widths: auto
+    :header-rows: 1
+
+    * - Name
+      - Value
+      - Default
+    * - ``point``
+      - :class:`compas.geometry.Point`
+      - ``None``
+    * - ``draw_point``
+      - :obj:`bool`
+      - ``False``
+    * - ``color``
+      - :obj:`tuple`
+      - ``(0.0, 0.0, 0.0)``
+
+.. code-block:: python
+
+    pointcloud = Pointcloud.from_bounds(8, 5, 0, 10)
+
+    for index, (a, b) in enumerate(pairwise(pointcloud)):
+        vector = b - a
+        vector.unitize()
+        plotter.add(vector, point=a, draw_point=True, color=i_to_red(max(index / 10, 0.1), normalize=True))
+
+.. figure:: /_images/tutorial/plotters_vector-options.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 
 Dynamic Plots
 =============
 
+Interactive Plots
+=================
 
 Exports
 =======
