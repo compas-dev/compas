@@ -31,7 +31,7 @@ Data
 
 .. note::
 
-    This tutorial is loosely based on the COMPAS exchange meeting about `compas.data` that is available here
+    This tutorial is loosely based on the COMPAS exchange meeting about :mod:`compas.data` that is available here
     `COMPAS exchange: data <https://github.com/compas-dev/compas-exchange>`_
 
 Interface
@@ -60,9 +60,124 @@ and, most importantly, an attribute containing the underlying data of the object
 JSON Serialisation
 ==================
 
+All objects inheriting the data interface, can be serialised to a JSON string or file.
+
+::
+
+    >>> from compas.geometry import Point
+    >>> point = Point(0, 0, 0)
+    >>> point.to_jsonstring()
+    '[0.0, 0.0, 0.0]'
+    >>> point.to_json('point.json')
+
+::
+
+    >>> from compas.geometry import Frame
+    >>> frame = Frame.worldXY()
+    >>> frame.to_jsonstring()
+    '{"point": [0.0, 0.0, 0.0], "xaxis": [1.0, 0.0, 0.0], "yaxis": [0.0, 1.0, 0.0]}'
+    >>> frame.to_json('frame.json')
+
+Conversely, COMPAS data objects can be reconstructed from a compatible JSON string or file.
+
+::
+
+    >>> from compas.geometry import Frame, Box
+    >>> box = Box(Frame.worldXY(), 1, 1, 1)
+    >>> jsonstring = box.to_jsonstring()
+    >>> other = Box.from_jsonstring(jsonstring)
+    >>> box == other
+    True
+
+::
+
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj('faces.obj')
+    >>> mesh.to_json('mesh.json')
+    >>> other = Mesh.from_json('mesh.json')
+
+The serialisation mechanism applies recursively to nested structures of objects as well.
+
+::
+
+    >>> from compas.datastructures import Network, Mesh
+    >>> from compas.geometry import Point, Transformation, Box, Frame
+    >>> point = Point(0, 0, 0)
+    >>> xform = Transformation()
+    >>> mesh = Mesh.from_shape(Box(Frame.worldXY(), 1, 1, 1))
+    >>> network = Network()
+    >>> a = network.add_node(point=point)
+    >>> b = network.add_node(transformation=xform)
+    >>> c = network.add_node(box=mesh)
+    >>> network.to_json('network.json')
+
+::
+
+    >>> other = Network.from_json('network.json')
+    >>> other.node_attribute(a, 'point') == network.node_attribute(a, 'point')
+    True
+    >>> other.node_attribute(b, 'transformation') == network.node_attribute(b, 'transformation')
+    True
+
+
+Working Sessions
+================
+
+One of the most useful features of the serialisation meshanisms provided by the data package is the ability to store and load entire COMPAS working sessions.
+
+.. code-block:: python
+
+    # script A
+
+    import compas
+    from compas.datastructures import Mesh
+    from compas.geometry import Pointcloud, Box
+
+    box = Box.from_width_height_depth(1, 1, 1)
+    mesh = Mesh.from_poyhedron(12)
+
+    boxes = []
+    for point in Pointcloud.from_bounds(10, 10, 10, 100):
+        boxcopy = box.copy()
+        boxcopy.frame.point = point
+
+    session = {'mesh': mesh, 'boxes': boxes}
+    compas.json_dump(session, 'session.json')
+
+.. code-block:: python
+
+    # script B
+
+    import compas
+
+    session = compas.json_load('session.json')
+    mesh = session['mesh']
+    boxes = session['boxes']
+
+Note that if you are working in Python 3.6 or higher, you could add some type information to script B
+such that your editor knows what kind of objects have been loaded,
+which with help with intellisense and code completion.
+
+.. code-block:: python
+
+    # script B
+
+    from typing import List
+    import compas
+    from compas.datastructures import Mesh
+    from compas.geometry import Box
+
+    session = compas.json_load('session.json')
+    mesh: Mesh = session['mesh']
+    boxes: List[Box] = session['boxes']
+
 
 Validation
 ==========
+
+
+Custom Objects
+==============
 
 
 GH Components
