@@ -476,12 +476,8 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
 
     Draw convert each mesh face to brep dict schema:
 
-    >>> vertices = [mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()]
-    >>> breps = []
-    >>> for face in mesh.faces():
-    >>>     face = {'points' : [vertices[vertex] for vertex in mesh.face_vertices(face)]}
-    >>>     face['points'].append(face['points'][0])
-    >>>     breps.append(face)
+    >>> vertices = mesh.vertices_attributes('xyz')
+    >>> breps = [{'points': mesh.face_coordinates(face)} for face in mesh.faces()]
 
     Draw brep faces as one joined brep.
 
@@ -494,17 +490,17 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
         name = f.get('name', '')
         color = f.get('color')
         layer = f.get('layer')
-        corners = [Point3d(*point) for point in points]
+        corners = [Point3d(*point) for point in points + points[:1]]
         pcurve = PolylineCurve(corners)
         geo = List[GeometryBase](1)
         geo.Add(pcurve)
         p = len(points)
-        if p == 4:
+        if p == 3:
             brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
                                                Point3d(*points[1]),
                                                Point3d(*points[2]),
                                                TOL)
-        elif p == 5:
+        elif p == 4:
             brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
                                                Point3d(*points[1]),
                                                Point3d(*points[2]),

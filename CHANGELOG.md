@@ -19,10 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
 * Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
 * Fixed data schema of `compas.geometry.Polyline`, `compas.geometry.Polygon`, `compas.geometry.Pointcloud`.
-
-### Fixed
-
 * Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
+* Changed `compas_rhino.drawing.draw_breps` to assume provided polygon is closed and automatically add missing corner to polycurve constructor.
 
 ### Removed
 
