@@ -88,6 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed directory where ghuser components are installed.
 * Added ghuser components directory to those removed by the `clean` task.
 * Clean up the ghuser directory before building ghuser components.
+* Exposed function `draw_breps` in `compas_rhino.utilities`; example added.
+* Added `join` flag to function `draw_breps` in `compas_rhino.utilities`
 * Fixed bug in `compas.geometry.distance.closest_point_on_segment_xy`.
 * Fixed bug in Rhino implementations of `trimesh` curvature functions.
 
@@ -281,9 +283,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug regarding a repeated call to `RobotModel.add_joint`.
 * Fixed bug in `compas_blender.RobotModelArtist.update`.
 * Fixed bug in `compas.datastructures.mesh_slice_plane`.
-* Fixed bug where initialising a `compas_blender.artists.Robotmodelartist` would create a new collection for each mesh and then also not put the mesh iton the created collection. 
-* Changed the initialisation of `compas_blender.artists.Robotmodelartist` to include a `collection`-parameter instead of a `layer`-parameter to be more consistent with Blender's nomenclature. 
-* Used a utility function from `compas_blender.utilities` to create the collection if none exists instead of using a new call to a bpy-method. 
+* Fixed bug where initialising a `compas_blender.artists.Robotmodelartist` would create a new collection for each mesh and then also not put the mesh iton the created collection.
+* Changed the initialisation of `compas_blender.artists.Robotmodelartist` to include a `collection`-parameter instead of a `layer`-parameter to be more consistent with Blender's nomenclature.
+* Used a utility function from `compas_blender.utilities` to create the collection if none exists instead of using a new call to a bpy-method.
 
 ### Removed
 
