@@ -14,4 +14,3 @@ Tutorial
     tutorial/numericaldata
     tutorial/rpc
     tutorial/geomaps
-    tutorial/serialization
