@@ -764,8 +764,8 @@ def closest_point_on_segment_xy(point, segment):
     d2 = distance_point_point_sqrd_xy(b, p)
     if d1 > d or d2 > d:
         if d1 < d2:
-            return a
-        return b
+            return [a[0], a[1], 0.0]
+        return [b[0], b[1], 0.0]
     return p
 
 

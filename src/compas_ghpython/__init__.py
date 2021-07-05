@@ -22,7 +22,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '1.6.3'
+__version__ = '1.7.1'
 
 
 def get_grasshopper_plugin_path(version):

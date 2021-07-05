@@ -1,20 +1,9 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Ellipse
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# from math import pi
-
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Plane
-
-
-__all__ = ['Ellipse']
 
 
 class Ellipse(Primitive):
@@ -52,10 +41,23 @@ class Ellipse(Primitive):
     >>> ellipse = Ellipse(plane, 2, 1)
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'plane': Plane.DATASCHEMA.fget(None),
+            'major': schema.And(float, lambda x: x > 0),
+            'minor': schema.And(float, lambda x: x > 0),
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'ellipse'
+
     __slots__ = ['_plane', '_major', '_minor']
 
-    def __init__(self, plane, major, minor):
-        super(Ellipse, self).__init__()
+    def __init__(self, plane, major, minor, **kwargs):
+        super(Ellipse, self).__init__(**kwargs)
         self._plane = None
         self._major = None
         self._minor = None
@@ -64,51 +66,15 @@ class Ellipse(Primitive):
         self.minor = minor
 
     @property
-    def DATASCHEMA(self):
-        import schema
-        from compas.data import is_float3
-        return schema.Schema({
-            "plane": schema.And(
-                lambda x: is_float3(x[0]),
-                lambda x: is_float3(x[1])
-            ),
-            "major": schema.And(float, lambda x: x > 0),
-            "minor": schema.And(float, lambda x: x > 0),
-        })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/ellipse.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "plane": {
-                    "type": "array",
-                    "minItems": 2,
-                    "maxItems": 2,
-                    "items": [
-                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                        {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-                    ]
-                },
-                "major": {"type": "number", "exclusiveMinimum": 0},
-                "minor": {"type": "number", "exclusiveMinimum": 0}
-            },
-            "required": ["plane", "major", "minor"]
-        }
-        return schema
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
-        return {'plane': [list(self.plane.point), list(self.plane.normal)], 'major': self.major, 'minor': self.minor}
+        return {'plane': self.plane.data,
+                'major': self.major,
+                'minor': self.minor}
 
     @data.setter
     def data(self, data):
-        self.plane = data['plane']
+        self.plane = Plane.from_data(data['plane'])
         self.major = data['major']
         self.minor = data['minor']
 
@@ -119,7 +85,7 @@ class Ellipse(Primitive):
 
     @plane.setter
     def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+        self._plane = Plane(*plane)
 
     @property
     def major(self):
@@ -217,10 +183,10 @@ class Ellipse(Primitive):
         Examples
         --------
         >>> from compas.geometry import Ellipse
-        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'major': 2.0, 'minor': 1.0}
+        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'major': 2.0, 'minor': 1.0}
         >>> ellipse = Ellipse.from_data(data)
         """
-        return cls(data['plane'], data['minor'], data['minor'])
+        return cls(Plane.from_data(data['plane']), data['minor'], data['minor'])
 
     # ==========================================================================
     # transformations

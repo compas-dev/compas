@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Quaternion
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -19,9 +13,6 @@ from compas.geometry import quaternion_is_unit
 from compas.geometry import quaternion_from_matrix
 
 from compas.geometry.primitives import Primitive
-
-
-__all__ = ["Quaternion"]
 
 
 class Quaternion(Primitive):
@@ -110,10 +101,19 @@ class Quaternion(Primitive):
     True
     """
 
-    __slots__ = ["_w", "_x", "_y", "_z"]
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({'w': float, 'x': float, 'y': float, 'z': float})
 
-    def __init__(self, w, x, y, z):
-        super(Quaternion, self).__init__()
+    @property
+    def JSONSCHEMANAME(self):
+        return 'quaternion'
+
+    __slots__ = ['_w', '_x', '_y', '_z']
+
+    def __init__(self, w, x, y, z, **kwargs):
+        super(Quaternion, self).__init__(**kwargs)
         self._w = None
         self._x = None
         self._y = None
@@ -124,38 +124,15 @@ class Quaternion(Primitive):
         self.z = z
 
     @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        return Schema({"w": float, "x": float, "y": float, "z": float})
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/quaternion.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "w": {"type": "number"},
-                "x": {"type": "number"},
-                "y": {"type": "number"},
-                "z": {"type": "number"}
-            },
-            "required": ["w", "x", "y", "z"]
-        }
-        return schema
-
-    @property
     def data(self):
-        return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
+        return {'w': self.w, 'x': self.x, 'y': self.y, 'z': self.z}
 
     @data.setter
     def data(self, data):
-        self.w = data["w"]
-        self.x = data["x"]
-        self.y = data["y"]
-        self.z = data["z"]
+        self.w = data['w']
+        self.x = data['x']
+        self.y = data['y']
+        self.z = data['z']
 
     @property
     def w(self):
@@ -195,13 +172,13 @@ class Quaternion(Primitive):
 
     @property
     def wxyz(self):
-        """list of float : Quaternion as a list of float in the "wxyz" convention.
+        """list of float : Quaternion as a list of float in the 'wxyz' convention.
         """
         return [self.w, self.x, self.y, self.z]
 
     @property
     def xyzw(self):
-        """list of float : Quaternion as a list of float in the "xyzw" convention.
+        """list of float : Quaternion as a list of float in the 'xyzw' convention.
         """
         return [self.x, self.y, self.z, self.w]
 
@@ -246,7 +223,7 @@ class Quaternion(Primitive):
         raise KeyError
 
     def __eq__(self, other, tol=1e-05):
-        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
+        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
             return False
         for v1, v2 in zip(self, other):
             if math.fabs(v1 - v2) > tol:
@@ -260,7 +237,7 @@ class Quaternion(Primitive):
         return 4
 
     def __repr__(self):
-        return "Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})".format(self.w, self.x, self.y, self.z, prec=3)
+        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(self.w, self.x, self.y, self.z, prec=3)
 
     def __mul__(self, other):
         """Multiply operator for two quaternions.
@@ -315,7 +292,7 @@ class Quaternion(Primitive):
         --------
         >>>
         """
-        return cls(data["w"], data["x"], data["y"], data["z"])
+        return cls(data['w'], data['x'], data['y'], data['z'])
 
     @classmethod
     def from_frame(cls, frame):

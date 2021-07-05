@@ -2,12 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ast import literal_eval
 from random import sample
 from random import choice
-from distutils.version import LooseVersion
-
-import compas
 
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
@@ -16,9 +12,6 @@ from compas.datastructures.attributes import FaceAttributeView
 
 from compas.utilities import pairwise
 from compas.utilities import window
-
-
-__all__ = ['HalfEdge']
 
 
 class HalfEdge(Datastructure):
@@ -49,100 +42,42 @@ class HalfEdge(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        if LooseVersion(compas.__version__) < LooseVersion('0.16.5'):
-            return schema.Schema({
-                "attributes": dict,
-                "dva": dict,
-                "dea": dict,
-                "dfa": dict,
-                "vertex": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, int) for key in x)
-                ),
-                "face": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, int) for key in x),
-                    lambda x: all(all(isinstance(item, int) for item in value) for value in x.values())
-                ),
-                "facedata": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, int) for key in x),
-                    lambda x: all(isinstance(value, dict) for value in x.values())
-                ),
-                "edgedata": dict,
-                "max_int_key": schema.And(int, lambda x: x >= -1),
-                "max_int_fkey": schema.And(int, lambda x: x >= -1)
-            })
+        from compas.data import is_sequence_of_uint
         return schema.Schema({
-            "compas": str,
-            "datatype": str,
-            "data": {
-                "attributes": dict,
-                "dva": dict,
-                "dea": dict,
-                "dfa": dict,
-                "vertex": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, int) for key in x)
-                ),
-                "face": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, int) for key in x),
-                    lambda x: all(all(isinstance(item, int) for item in value) for value in x.values())
-                ),
-                "facedata": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, int) for key in x),
-                    lambda x: all(isinstance(value, dict) for value in x.values())
-                ),
-                "edgedata": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, str) for key in x),
-                    lambda x: all(isinstance(value, dict) for value in x.values())
-                ),
-                "max_vertex": schema.And(int, lambda x: x >= -1),
-                "max_face": schema.And(int, lambda x: x >= -1)
-            }
+            "attributes": dict,
+            "dva": dict,
+            "dea": dict,
+            "dfa": dict,
+            "vertex": schema.And(
+                dict,
+                is_sequence_of_uint,
+                # lambda x: all(('x' in attr and 'y' in attr and 'z' in attr) for attr in x.values())
+            ),
+            "face": schema.And(
+                dict,
+                is_sequence_of_uint,
+                lambda x: all(all(isinstance(item, int) for item in value) for value in x.values()),
+                lambda x: all(all(item >= 0 for item in value) for value in x.values()),
+                lambda x: all(len(value) > 2 for value in x.values()),
+                lambda x: all(len(value) == len(set(value)) for value in x.values())
+            ),
+            "facedata": schema.And(
+                dict,
+                is_sequence_of_uint,
+                lambda x: all(isinstance(value, dict) for value in x.values())
+            ),
+            "edgedata": schema.And(
+                dict,
+                lambda x: all(isinstance(key, str) for key in x),
+                lambda x: all(isinstance(value, dict) for value in x.values())
+            ),
+            "max_vertex": schema.And(int, lambda x: x >= -1),
+            "max_face": schema.And(int, lambda x: x >= -1)
         })
 
     @property
-    def JSONSCHEMA(self):
-        version = LooseVersion(compas.__version__)
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
-            "$compas": version.vstring.split('-')[0],
-        }
-        data = {
-            "type": "object",
-            "properties": {
-                "attributes":   {"type": "object"},
-                "dva":          {"type": "object"},
-                "dea":          {"type": "object"},
-                "dfa":          {"type": "object"},
-                "vertex":       {"type": "object"},
-                "face":         {"type": "object"},
-                "facedata":     {"type": "object"},
-                "edgedata":     {"type": "object"},
-                "max_vertex":   {"type": "number"},
-                "max_face":     {"type": "number"}
-            },
-            "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_vertex", "max_face"]
-        }
-        if version < LooseVersion('0.16.5'):
-            schema.update(data)
-        else:
-            meta = {
-                "type": "object",
-                "properties": {
-                    "compas": {"type": "string"},
-                    "datatype": {"type": "string"},
-                    "data": data
-                },
-                "required": ["compas", "datatype", "data"]
-            }
-            schema.update(meta)
-        return schema
+    def JSONSCHEMANAME(self):
+        return 'halfedge'
 
     def __init__(self):
         super(HalfEdge, self).__init__()
@@ -157,6 +92,10 @@ class HalfEdge(Datastructure):
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
+
+    def __str__(self):
+        tpl = "<Mesh with {} vertices, {} faces, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # descriptors
@@ -191,95 +130,38 @@ class HalfEdge(Datastructure):
             'vertex': self.vertex,
             'face': self.face,
             'facedata': self.facedata,
+            'edgedata': self.edgedata,
+            'max_vertex': self._max_vertex,
+            'max_face': self._max_face
         }
-        version = LooseVersion(compas.__version__)
-        if version < LooseVersion('0.16.5'):
-            data['edgedata'] = {repr(key): self.edgedata[key] for key in self.edgedata}
-            data['max_int_key'] = self._max_vertex
-            data['max_int_fkey'] = self._max_face
-            return data
-        data['edgedata'] = self.edgedata
-        data['max_vertex'] = self._max_vertex
-        data['max_face'] = self._max_face
-        return {
-            'compas': version.vstring.split('-')[0],
-            'datatype': self.dtype,
-            'data': data
-        }
+        return data
 
     @data.setter
     def data(self, data):
-        if 'compas' in data:
-            version = LooseVersion(compas.__version__)
-            if version < LooseVersion('0.16.5'):
-                raise Exception('The data was generated with an incompatible newer version of COMPAS: {}'.format(version.vstring.split('-')[0]))
-            # dtype = data['dtype']
+        if 'data' in data:
             data = data['data']
-            attributes = data['attributes']
-            dva = data.get('dva') or {}
-            dfa = data.get('dfa') or {}
-            dea = data.get('dea') or {}
-            vertex = data.get('vertex') or {}
-            face = data.get('face') or {}
-            facedata = data.get('facedata') or {}
-            edgedata = data.get('edgedata') or {}
-            max_vertex = data.get('max_vertex', -1)
-            max_face = data.get('max_face', -1)
-            self.attributes.update(attributes)
-            self.default_vertex_attributes.update(dva)
-            self.default_face_attributes.update(dfa)
-            self.default_edge_attributes.update(dea)
-            self.vertex = {}
-            self.face = {}
-            self.halfedge = {}
-            self.facedata = {}
-            self.edgedata = {}
-            # this could be handled by the schema
-            # but will not work in IronPython
-            for key, attr in iter(vertex.items()):
-                self.add_vertex(int(key), attr_dict=attr)
-            for fkey, vertices in iter(face.items()):
-                attr = facedata.get(fkey) or {}
-                self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
-            for uv, attr in iter(edgedata.items()):
-                self.edgedata[uv] = attr or {}
-            self._max_vertex = max_vertex
-            self._max_face = max_face
-        else:
-            attributes = data['attributes']
-            dva = data.get('dva') or {}
-            dfa = data.get('dfa') or {}
-            dea = data.get('dea') or {}
-            vertex = data.get('vertex') or {}
-            face = data.get('face') or {}
-            facedata = data.get('facedata') or {}
-            edgedata = data.get('edgedata') or {}
-            max_vertex = data.get('max_int_key', -1)
-            max_face = data.get('max_int_fkey', -1)
-            self.attributes.update(attributes)
-            self.default_vertex_attributes.update(dva)
-            self.default_face_attributes.update(dfa)
-            self.default_edge_attributes.update(dea)
-            self.vertex = {}
-            self.face = {}
-            self.halfedge = {}
-            self.facedata = {}
-            self.edgedata = {}
-            # this could be handled by the schema
-            # but will not work in IronPython
-            for key, attr in iter(vertex.items()):
-                self.add_vertex(int(key), attr_dict=attr)
-            for fkey, vertices in iter(face.items()):
-                attr = facedata.get(fkey) or {}
-                self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
-            for edge, attr in iter(edgedata.items()):
-                key = "-".join(map(str, sorted(literal_eval(edge))))
-                if key not in self.edgedata:
-                    self.edgedata[key] = {}
-                if attr:
-                    self.edgedata[key].update(attr)
-            self._max_vertex = max_vertex
-            self._max_face = max_face
+        self.attributes.update(data.get('attributes') or {})
+        self.default_vertex_attributes.update(data.get('dva') or {})
+        self.default_face_attributes.update(data.get('dfa') or {})
+        self.default_edge_attributes.update(data.get('dea') or {})
+        self.vertex = {}
+        self.face = {}
+        self.halfedge = {}
+        self.facedata = {}
+        self.edgedata = {}
+        vertex = data.get('vertex') or {}
+        face = data.get('face') or {}
+        facedata = data.get('facedata') or {}
+        edgedata = data.get('edgedata') or {}
+        for key, attr in iter(vertex.items()):
+            self.add_vertex(int(key), attr_dict=attr)
+        for fkey, vertices in iter(face.items()):
+            attr = facedata.get(fkey) or {}
+            self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
+        for uv, attr in iter(edgedata.items()):
+            self.edgedata[uv] = attr or {}
+        self._max_vertex = data.get('max_vertex', -1)
+        self._max_face = data.get('max_face', -1)
 
     # --------------------------------------------------------------------------
     # helpers

@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Plane
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -12,9 +6,6 @@ from math import sqrt
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Point
-
-
-__all__ = ['Plane']
 
 
 class Plane(Primitive):
@@ -47,50 +38,37 @@ class Plane(Primitive):
     Vector(0.000, 0.000, 1.000)
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({
+            'point': Point.DATASCHEMA.fget(None),
+            'normal': Vector.DATASCHEMA.fget(None)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'plane'
+
     __slots__ = ['_point', '_normal']
 
-    def __init__(self, point, normal):
-        super(Plane, self).__init__()
+    def __init__(self, point, normal, **kwargs):
+        super(Plane, self).__init__(**kwargs)
         self._point = None
         self._normal = None
         self.point = point
         self.normal = normal
 
     @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        return Schema({
-            "point": is_float3,
-            "normal": is_float3
-        })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/plane.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "point": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "normal": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-            },
-            "required": ["point", "normal"]
-        }
-        return schema
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the plane."""
-        return {'point': list(self.point),
-                'normal': list(self.normal)}
+        return {'point': self.point.data,
+                'normal': self.normal.data}
 
     @data.setter
     def data(self, data):
-        self.point = data['point']
-        self.normal = data['normal']
+        self.point = Point.from_data(data['point'])
+        self.normal = Vector.from_data(data['normal'])
 
     @property
     def point(self):
@@ -183,7 +161,7 @@ class Plane(Primitive):
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
         """
-        return cls(data['point'], data['normal'])
+        return cls(Point.from_data(data['point']), Vector.from_data(data['normal']))
 
     @classmethod
     def from_three_points(cls, a, b, c):

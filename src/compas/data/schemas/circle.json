@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "circle.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "plane": {"$ref": "compas.json#/definitions/plane"},
+        "radius": {
+            "type": "number",
+            "exclusiveMinimum": 0
+        }
+    },
+    "required": [
+        "plane",
+        "radius"
+    ]
+}

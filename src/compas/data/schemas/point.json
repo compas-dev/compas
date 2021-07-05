@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "point.json",
+    "$compas": "1.7.1",
+    "type": "array",
+    "minItems": 3,
+    "maxItems": 3,
+    "items": {
+        "type": "number"
+    }
+}

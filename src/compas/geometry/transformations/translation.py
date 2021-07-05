@@ -17,9 +17,6 @@ from compas.geometry.transformations import matrix_from_translation
 from compas.geometry.transformations import Transformation
 
 
-__all__ = ['Translation']
-
-
 class Translation(Transformation):
     """Create a translation transformation.
 
@@ -62,13 +59,16 @@ class Translation(Transformation):
     True
     """
 
-    def __init__(self, matrix=None):
+    def __init__(self, matrix=None, check=True):
         if matrix:
             _, _, _, translation, _ = decompose_matrix(matrix)
-            check = matrix_from_translation(translation)
-            if not allclose(flatten(matrix), flatten(check)):
-                raise ValueError('This is not a proper translation matrix.')
+            if check:
+                if not allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
+                    raise ValueError('This is not a proper translation matrix.')
         super(Translation, self).__init__(matrix=matrix)
+
+    def __repr__(self):
+        return "Translation({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_vector(cls, vector):

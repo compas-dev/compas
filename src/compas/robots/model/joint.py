@@ -317,6 +317,9 @@ class Axis(Data):
         # cannot attach _urdf_source to it due to __slots__
         super(Axis, self).__init__()
         xyz = _parse_floats(xyz)
+        xyz = Vector(*xyz)
+        if xyz.length != 0:
+            xyz.unitize()
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
