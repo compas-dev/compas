@@ -72,6 +72,7 @@ __all__ = [
     'draw_lines',
     'draw_geodesics',
     'draw_polylines',
+    'draw_breps',
     'draw_faces',
     'draw_cylinders',
     'draw_pipes',
@@ -421,7 +422,7 @@ def draw_polylines(polylines, **kwargs):
 
 
 @wrap_drawfunc
-def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
+def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, join=False, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
 
@@ -443,6 +444,8 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
     spacing : float, optional
     flex : float, optional
     pull : float, optional
+    join : bool, optional
+        Join the individual faces as polysurfaces. Default is False.
 
     Returns
     -------
@@ -461,8 +464,31 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
             Optional('layer', default=None): str,
         })
 
+    Examples
+    --------
+    Using a compas Mesh as an example:
+
+    >>> from compas.datastructures import Mesh
+    >>> from compas.geometry import Box, Frame
+    >>> from compas_rhino.utilities import draw_breps
+    >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+    >>> mesh = Mesh.from_shape(box)
+
+    Draw convert each mesh face to brep dict schema:
+
+    >>> vertices = [mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()]
+    >>> breps = []
+    >>> for face in mesh.faces():
+    >>>     face = {'points' : [vertices[vertex] for vertex in mesh.face_vertices(face)]}
+    >>>     face['points'].append(face['points'][0])
+    >>>     breps.append(face)
+
+    Draw brep faces as one joined brep.
+
+    >>> guids = draw_breps(breps, join=True)
+
     """
-    guids = []
+    breps = []
     for f in iter(faces):
         points = f['points']
         name = f.get('name', '')
@@ -486,8 +512,14 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
                                                TOL)
         else:
             brep = Brep.CreatePatch(geo, u, v, TOL)
-        if not brep:
-            continue
+        if brep:
+            breps.append(brep)
+
+    if join:
+        breps = Brep.JoinBreps(breps, TOL)
+
+    guids = []
+    for brep in breps:
         guid = add_brep(brep)
         if not guid:
             continue
