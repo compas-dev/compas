@@ -175,14 +175,75 @@ which with help with intellisense and code completion.
 Validation
 ==========
 
+A somewhat experimental feature of the data package is data validation.
+The base data class defines two unimplemented attributes :attr:`compas.data.Data.JSONSCHEMA` and :attr:`compas.data.Data.JSONSCHEMA`.
+The former is meant to define the name of the json schema in the ``schema`` folder of :mod:`compas.data`,
+and the latter a Python schema using :mod:`schema.Schema`.
+
+If a deriving class implements those attributes, data sources can be validated against the two schemas to verify compatibility
+of the available data with the object type.
+
+::
+
+    >>> from compas.data import validate_data
+    >>> from compas.geometry import Frame
+    >>> data = {'point': [0.0, 0.0, 0.0], 'xaxis': [1.0, 0.0, 0.0], 'zaxis': [0.0, 0.0, 1.0]}
+    >>> validate_data(data, Frame)
+    Validation against the JSON schema of this object failed.
+    Traceback (most recent call last):
+       ...
+
+    jsonschema.exceptions.ValidationError: 'yaxis' is a required property
+
+    Failed validating 'required' in schema:
+        {'$compas': '1.7.1',
+         '$id': 'frame.json',
+         '$schema': 'http://json-schema.org/draft-07/schema#',
+         'properties': {'point': {'$ref': 'compas.json#/definitions/point'},
+                        'xaxis': {'$ref': 'compas.json#/definitions/vector'},
+                        'yaxis': {'$ref': 'compas.json#/definitions/vector'}},
+         'required': ['point', 'xaxis', 'yaxis'],
+         'type': 'object'}
+
+    On instance:
+        {'point': [0.0, 0.0, 0.0],
+         'xaxis': [1.0, 0.0, 0.0],
+         'zaxis': [0.0, 0.0, 1.0]}
+
 
 Custom Objects
 ==============
+
+To add a new object class that implements the data interface, only a few attributes have to be implemented.
+
+.. code-block:: python
+
+    class MyObject(Data):
+
+        def __init__(self, a, b, **kwargs):
+            super(MyObject, self).__init__(**kwargs)
+            self.a = a
+            self.b = b
+
+        @property
+        def data(self):
+            """dict : The data dictionary that represents the data of the object."""
+            return {'a': self.a, 'b': self.b}
+
+        @data.setter
+        def data(self, data):
+            self.a = data['a']
+            self.b = data['b']
+
+        @classmethod
+        def from_data(cls, data):
+            return cls(data['a'], data['b'])
 
 
 GH Components
 =============
 
+*Coming soon...*
 
 Inherticance Diagrams
 =====================
