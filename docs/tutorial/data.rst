@@ -5,8 +5,8 @@ Data
 .. rst-class:: lead
 
     The data package provides a base class (:class:`compas.data.Data`) for all data objects in the COMPAS framework (see :ref:`Inheritance Diagrams`),
-    the mechanism for serialisation of data to JSON format,
-    and the base infrastructure for validation of the data of COMPAS objects in both the original Python and serialised JSON formats.
+    the mechanism for serialization of data to JSON format,
+    and the base infrastructure for validation of the data of COMPAS objects in both the original Python and serialized JSON formats.
 
 ::
 
@@ -57,10 +57,10 @@ and, most importantly, an attribute containing the underlying data of the object
     [0.0, 0.0, 0.0]
 
 
-JSON Serialisation
+JSON Serialization
 ==================
 
-All objects inheriting the data interface, can be serialised to a JSON string or file.
+All objects inheriting the data interface, can be serialized to a JSON string or file.
 
 ::
 
@@ -96,7 +96,7 @@ Conversely, COMPAS data objects can be reconstructed from a compatible JSON stri
     >>> mesh.to_json('mesh.json')
     >>> other = Mesh.from_json('mesh.json')
 
-The serialisation mechanism applies recursively to nested structures of objects as well.
+The serialization mechanism applies recursively to nested structures of objects as well.
 
 ::
 
@@ -123,7 +123,7 @@ The serialisation mechanism applies recursively to nested structures of objects 
 Working Sessions
 ================
 
-One of the most useful features of the serialisation meshanisms provided by the data package is the ability to store and load entire COMPAS working sessions.
+One of the most useful features of the serialization meshanisms provided by the data package is the ability to store and load entire COMPAS working sessions.
 
 .. code-block:: python
 
@@ -156,7 +156,7 @@ One of the most useful features of the serialisation meshanisms provided by the 
 
 Note that if you are working in Python 3.6 or higher, you could add some type information to script B
 such that your editor knows what kind of objects have been loaded,
-which with help with intellisense and code completion.
+which will help with IntelliSense and code completion.
 
 .. code-block:: python
 
@@ -176,7 +176,7 @@ Validation
 ==========
 
 A somewhat experimental feature of the data package is data validation.
-The base data class defines two unimplemented attributes :attr:`compas.data.Data.JSONSCHEMA` and :attr:`compas.data.Data.JSONSCHEMA`.
+The base data class defines two unimplemented attributes :attr:`compas.data.Data.JSONSCHEMA` and :attr:`compas.data.Data.DATASCHEMA`.
 The former is meant to define the name of the json schema in the ``schema`` folder of :mod:`compas.data`,
 and the latter a Python schema using :mod:`schema.Schema`.
 
@@ -245,8 +245,8 @@ GH Components
 
 *Coming soon...*
 
-Inherticance Diagrams
-=====================
+Inheritance Diagrams
+====================
 
 .. currentmodule:: compas.geometry
 
