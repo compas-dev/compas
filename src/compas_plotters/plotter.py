@@ -10,7 +10,7 @@ from compas_plotters import Artist
 
 
 class Plotter:
-    """Plotter for the visualisation of COMPAS geometry.
+    """Plotter for the visualization of COMPAS geometry.
 
     Parameters
     ----------
@@ -329,7 +329,7 @@ class Plotter:
         Parameters
         ----------
         pause : float
-            Ammount of time to pause the plot in seconds.
+            Amount of time to pause the plot in seconds.
 
         """
         for artist in self._artists:

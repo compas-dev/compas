@@ -65,7 +65,7 @@ class BasePlotter:
     Other Parameters
     ----------------
     dpi : float, optional
-        The resolution of the plot.
+        The resolution of the plot in "dots per inch".
         Default is ``100.0``.
     tight : bool, optional
         Produce a plot with limited padding between the plot and the edge of the figure.
@@ -94,8 +94,8 @@ class BasePlotter:
 
     """
 
-    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=True, axes=None, **kwargs):
-        """Initialises a plotter object"""
+    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=True, axes=None, fontsize=10, **kwargs):
+        """Initializes a plotter object"""
         self._axes = None
         self.axes = axes
         self.tight = tight
@@ -118,18 +118,18 @@ class BasePlotter:
             'point.edgecolor': '#000000',
             'point.edgewidth': 0.5,
             'point.textcolor': '#000000',
-            'point.fontsize': kwargs.get('fontsize', 10),
+            'point.fontsize': fontsize,
 
             'line.width': 1.0,
             'line.color': '#000000',
             'line.textcolor': '#000000',
-            'line.fontsize': kwargs.get('fontsize', 10),
+            'line.fontsize': fontsize,
 
             'polygon.facecolor': '#ffffff',
             'polygon.edgecolor': '#000000',
             'polygon.edgewidth': 0.1,
             'polygon.textcolor': '#000000',
-            'polygon.fontsize': kwargs.get('fontsize', 10),
+            'polygon.fontsize': fontsize,
         }
 
     @property
@@ -211,7 +211,7 @@ class BasePlotter:
         Parameters
         ----------
         value : str, tuple
-            The color specififcation for the figure background.
+            The color specification for the figure background.
             Colors should be specified in the form of a string (hex colors) or
             as a tuple of normalized RGB components.
 
@@ -432,7 +432,7 @@ class BasePlotter:
             * edgecolor (rgb or hex color, optional): The color of the edge of the cicrle. Default is black.
             * edgewidth (float, optional): The width of the edge of the circle. Default is 1.0.
             * textcolor (rgb or hex color, optional): Color of the text label. Default is black.
-            * fontsize (int, optional): Font size of the text label. Default is 12.
+            * fontsize (int, optional): Font size of the text label. Default is ``12``.
 
         Returns
         -------
@@ -457,7 +457,7 @@ class BasePlotter:
             * color (rgb tuple or hex string, optional): The color of the line. Default is black.
             * text (str, optional): The text of the label. Default is ``None``.
             * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
+            * fontsize (int, optional): The size of the font of the label text. Default is ``12``.
 
         Returns
         -------
@@ -479,7 +479,7 @@ class BasePlotter:
             * points (list): XY(Z) coordinates of the polygon vertices.
             * text (str, optional): The text of the label. Default is ``None``.
             * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
+            * fontsize (int, optional): The size of the font of the label text. Default is ``12``.
             * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
             * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
             * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
@@ -504,7 +504,7 @@ class BasePlotter:
             * points (list): XY(Z) coordinates of the polygon vertices.
             * text (str, optional): The text of the label. Default is ``None``.
             * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
+            * fontsize (int, optional): The size of the font of the label text. Default is ``12``.
             * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
             * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
             * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
@@ -530,7 +530,7 @@ class BasePlotter:
             * end (list): XY(Z) coordinates of the end point.
             * text (str, optional): The text of the label. Default is ``None``.
             * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
+            * fontsize (int, optional): The size of the font of the label text. Default is ``6``.
             * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
             * width (float): Width of the arrow. Default is ``1.0``.
 
@@ -562,7 +562,7 @@ class BasePlotter:
         Parameters
         ----------
         pause : float
-            Ammount of time to pause the plot in seconds.
+            Amount of time to pause the plot in seconds.
 
         """
         self.axes.autoscale()

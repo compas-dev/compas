@@ -5,7 +5,10 @@ Plotters
 The COMPAS plotters (:mod:`compas_plotters`) provide an easy-to-use inteface for basic 2D visualisation
 of COMPAS objects based on matplotlib.
 
-The package contains four types of plotters: :class:`compas_plotters.GeometryPlotter`, :class:`compas_plotters.NetworkPlotter`, :class:`compas_plotters.MeshPlotter`, and ... :class:`compas_plotters.Plotter`.
+The package contains four types of plotters:
+:class:`compas_plotters.GeometryPlotter`,
+:class:`compas_plotters.NetworkPlotter`,
+:class:`compas_plotters.MeshPlotter`, and ... :class:`compas_plotters.Plotter`.
 The first three are deprecated in favour of :class:`compas_plotters.Plotter`, which is therefore the only one that will be described in this tutorial.
 
 

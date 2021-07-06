@@ -6,7 +6,7 @@ __all__ = ['NetworkPlotter']
 
 
 class NetworkPlotter(BasePlotter):
-    """Plotter for the visualisation of COMPAS Networks.
+    """Plotter for the visualization of COMPAS Networks.
 
     Parameters
     ----------

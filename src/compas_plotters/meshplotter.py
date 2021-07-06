@@ -11,7 +11,7 @@ __all__ = ['MeshPlotter']
 
 
 class MeshPlotter(BasePlotter):
-    """Plotter for the visualisation of COMPAS meshes.
+    """Plotter for the visualization of COMPAS meshes.
 
     Parameters
     ----------
@@ -35,7 +35,7 @@ class MeshPlotter(BasePlotter):
 
     Examples
     --------
-    This is a basic example using the default settings for all visualisation options.
+    This is a basic example using the default settings for all visualization options.
     For more detailed examples, see the documentation of the various drawing methods
     listed below...
 

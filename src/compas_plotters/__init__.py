@@ -3,7 +3,7 @@
 compas_plotters
 ********************************************************************************
 
-2D visualisation framework based on ``matplotlib`` for COMPAS geometry objects and data structures.
+2D visualization framework based on ``matplotlib`` for COMPAS geometry objects and data structures.
 
 .. currentmodule:: compas_plotters
 
