@@ -82,11 +82,3 @@ class Scene(BaseScene):
             self.objects[guid].draw()
         compas_rhino.rs.EnableRedraw(True)
         compas_rhino.rs.Redraw()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass
