@@ -47,7 +47,7 @@ class BaseObject(object):
     def __init__(self, item, scene=None, name=None, visible=True):
         super(BaseObject, self).__init__()
         self._item = None
-        self._guid = None
+        self._id = None
         self._scene = None
         self._artist = None
         self.scene = scene
@@ -81,10 +81,10 @@ class BaseObject(object):
         return self._artist
 
     @property
-    def guid(self):
-        if not self._guid:
-            self._guid = str(uuid4())
-        return self._guid
+    def uuid(self):
+        if not self._id:
+            self._id = str(uuid4())
+        return self._id
 
     @property
     def name(self):

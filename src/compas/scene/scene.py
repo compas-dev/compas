@@ -2,6 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+# import os
+# import tempfile
+# from PIL import Image
+
 from .object import BaseObject
 
 
@@ -41,11 +45,11 @@ class BaseScene(object):
             The identifier of the created object.
         """
         obj = BaseObject.build(item, scene=self, name=name, visible=visible, **kwargs)
-        self.objects[obj.guid] = obj
-        return obj.guid
+        self.objects[obj.uuid] = obj
+        return obj
 
-    def find(self, guid):
-        """Find an object using its GUID.
+    def find(self, uuid):
+        """Find an object using its UUID.
 
         Parameters
         ----------
@@ -55,8 +59,8 @@ class BaseScene(object):
         -------
         :class:`compas.scene.BaseObject`
         """
-        if guid in self.objects:
-            return self.objects[guid]
+        if uuid in self.objects:
+            return self.objects[uuid]
 
     def find_by_name(self, name):
         """Find an object using its name.
@@ -102,3 +106,31 @@ class BaseScene(object):
     def redo(self):
         """Redo scene updates."""
         raise NotImplementedError
+
+    def on(self, interval=None, frames=None, record=False, recording=None, dpi=150):
+        """Method for decorating callback functions in dynamic visualisations."""
+        if record:
+            if not recording:
+                raise Exception('Please provide a path for the recording.')
+
+        def outer(func):
+            # if record:
+            #     with tempfile.TemporaryDirectory() as dirpath:
+            #         paths = []
+            #         for f in range(frames):
+            #             func(f)
+            #             self.redraw(pause=interval)
+            #             if record:
+            #                 filepath = os.path.join(dirpath, f'frame-{f}.png')
+            #                 paths.append(filepath)
+            #                 self.save(filepath, dpi=dpi)
+            #         images = []
+            #         for path in paths:
+            #             images.append(Image.open(path))
+            #         images[0].save(recording, save_all=True, append_images=images[1:], optimize=False, duration=interval * 1000, loop=0)
+            # else:
+            for f in range(frames):
+                func(f)
+                self.redraw(pause=interval)
+
+        return outer
