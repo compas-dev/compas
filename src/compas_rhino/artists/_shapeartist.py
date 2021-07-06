@@ -2,8 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+from compas.utilities import is_color_rgb
 from ._artist import Artist
+
 
 __all__ = ['ShapeArtist']
 
@@ -33,12 +34,14 @@ class ShapeArtist(Artist):
 
     """
 
+    default_color = (255, 255, 255)
+
     def __init__(self, shape, color=None, layer=None):
-        super(ShapeArtist, self).__init__()
+        super(ShapeArtist, self).__init__(layer=layer)
         self._shape = None
+        self._color = None
         self.shape = shape
         self.color = color
-        self.layer = layer
 
     @property
     def shape(self):
@@ -50,15 +53,12 @@ class ShapeArtist(Artist):
         self._shape = shape
 
     @property
-    def name(self):
-        """str : Reference to the name of the shape."""
-        return self.shape.name
+    def color(self):
+        if not self._color:
+            self._color = self.default_color
+        return self._color
 
-    @name.setter
-    def name(self, name):
-        self.shape.name = name
-
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
+    @color.setter
+    def color(self, color):
+        if is_color_rgb(color):
+            self._color = color

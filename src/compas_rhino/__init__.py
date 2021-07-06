@@ -43,7 +43,12 @@ def clear():
 
 
 def redraw():
-    rs.EnableRedraw()
+    rs.EnableRedraw(True)
+    rs.Redraw()
+
+
+def update():
+    rs.EnableRedraw(True)
     rs.Redraw()
 
 

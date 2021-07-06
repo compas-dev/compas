@@ -9,7 +9,6 @@ from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
-from compas.utilities import is_color_rgb
 
 import Rhino
 from Rhino.Geometry import Point3d
@@ -68,21 +67,15 @@ class MeshObject(Object):
         self._location = None
         self._scale = None
         self._rotation = None
-        self._vertex_color = None
-        self._edge_color = None
-        self._face_color = None
-        self._vertex_text = None
-        self._edge_text = None
-        self._face_text = None
         self.show_vertices = show_vertices
         self.show_edges = show_edges
         self.show_faces = show_faces
-        self.vertex_color = vertexcolor
-        self.edge_color = edgecolor
-        self.face_color = facecolor
-        self.vertex_text = vertextext
-        self.edge_text = edgetext
-        self.face_text = facetext
+        self.artist.vertex_color = vertexcolor
+        self.artist.edge_color = edgecolor
+        self.artist.face_color = facecolor
+        self.artist.vertex_text = vertextext
+        self.artist.edge_text = edgetext
+        self.artist.face_text = facetext
 
     @property
     def mesh(self):
@@ -209,63 +202,6 @@ class MeshObject(Object):
         guids += list(self.guid_face)
         return guids
 
-    @property
-    def vertex_color(self):
-        """dict: Dictionary mapping vertices to colors.
-
-        Only RGB color values are allowed.
-        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
-        a dictionary will be created automatically with the provided color mapped to all vertices.
-        """
-        if not self._vertex_color:
-            self._vertex_color = {vertex: self.artist.default_vertexcolor for vertex in self.mesh.vertices()}
-        return self._vertex_color
-
-    @vertex_color.setter
-    def vertex_color(self, vertex_color):
-        if isinstance(vertex_color, dict):
-            self._vertex_color = vertex_color
-        elif is_color_rgb(vertex_color):
-            self._vertex_color = {vertex: vertex_color for vertex in self.mesh.vertices()}
-
-    @property
-    def edge_color(self):
-        """dict: Dictionary mapping edges to colors.
-
-        Only RGB color values are allowed.
-        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
-        a dictionary will be created automatically with the provided color mapped to all edges.
-        """
-        if not self._edge_color:
-            self._edge_color = {edge: self.artist.default_edgecolor for edge in self.mesh.edges()}
-        return self._edge_color
-
-    @edge_color.setter
-    def edge_color(self, edge_color):
-        if isinstance(edge_color, dict):
-            self._edge_color = edge_color
-        elif is_color_rgb(edge_color):
-            self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
-
-    @property
-    def face_color(self):
-        """dict: Dictionary mapping faces to colors.
-
-        Only RGB color values are allowed.
-        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
-        a dictionary will be created automatically with the provided color mapped to all faces.
-        """
-        if not self._face_color:
-            self._face_color = {face: self.artist.default_facecolor for face in self.mesh.faces()}
-        return self._face_color
-
-    @face_color.setter
-    def face_color(self, face_color):
-        if isinstance(face_color, dict):
-            self._face_color = face_color
-        elif is_color_rgb(face_color):
-            self._face_color = {face: face_color for face in self.mesh.faces()}
-
     def clear(self):
         """Clear all Rhino objects associated with this object.
         """
@@ -284,22 +220,16 @@ class MeshObject(Object):
         self.artist.vertex_xyz = self.vertex_xyz
 
         if self.show_vertices:
-            vertices = list(self.mesh.vertices())
-            vertex_color = self.vertex_color
-            guids = self.artist.draw_vertices(vertices=vertices, color=vertex_color)
-            self.guid_vertex = zip(guids, vertices)
+            guids = self.artist.draw_vertices()
+            self.guid_vertex = zip(guids, self.mesh.vertices())
 
         if self.show_faces:
-            faces = list(self.mesh.faces())
-            face_color = self.face_color
-            guids = self.artist.draw_faces(faces=faces, color=face_color)
-            self.guid_face = zip(guids, faces)
+            guids = self.artist.draw_faces()
+            self.guid_face = zip(guids, self.mesh.faces())
 
         if self.show_edges:
-            edges = list(self.mesh.edges())
-            edge_color = self.edge_color
-            guids = self.artist.draw_edges(edges=edges, color=edge_color)
-            self.guid_edge = zip(guids, edges)
+            guids = self.artist.draw_edges()
+            self.guid_edge = zip(guids, self.mesh.edges())
 
     def select(self):
         # there is currently no "general" selection method

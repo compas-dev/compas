@@ -45,7 +45,6 @@ class Object(BaseObject):
 
     def __init__(self, item, scene=None, name=None, visible=True, layer=None):
         super(Object, self).__init__(item, scene, name, visible)
-        self.settings = {}
         self.layer = layer
 
     # ==========================================================================

@@ -19,9 +19,9 @@ class Artist(BaseArtist):
 
     """
 
-    def __init__(self):
+    def __init__(self, layer=None):
         super(Artist, self).__init__()
-        self._guids = []
+        self.layer = layer
 
     @staticmethod
     def draw_collection(collection):
@@ -35,9 +35,7 @@ class Artist(BaseArtist):
         compas_rhino.rs.EnableRedraw(True)
         compas_rhino.rs.Redraw()
 
-    def clear(self):
-        """Delete all objects created by the artist."""
-        if not self._guids:
-            return
-        compas_rhino.delete_objects(self._guids)
-        self._guids = []
+    def clear_layer(self):
+        """Clear the main layer of the artist."""
+        if self.layer:
+            compas_rhino.clear_layer(self.layer)

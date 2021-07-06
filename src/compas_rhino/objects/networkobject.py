@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import ast
-from compas.utilities import is_color_rgb
 import compas_rhino
 from compas.geometry import Point
 from compas.geometry import Scale
@@ -61,16 +60,12 @@ class NetworkObject(Object):
         self._location = None
         self._scale = None
         self._rotation = None
-        self._node_color = None
-        self._edge_color = None
-        self._node_text = None
-        self._edge_text = None
         self.show_nodes = show_nodes
         self.show_edges = show_edges
-        self.node_color = nodecolor
-        self.edge_color = edgecolor
-        self.node_text = nodetext
-        self.edge_text = edgetext
+        self.artist.node_color = nodecolor
+        self.artist.edge_color = edgecolor
+        self.artist.node_text = nodetext
+        self.artist.edge_text = edgetext
 
     @property
     def network(self):
@@ -189,34 +184,6 @@ class NetworkObject(Object):
         guids += list(self.guid_edge)
         return guids
 
-    @property
-    def node_color(self):
-        """dict: Dictionary mapping vertices to colors."""
-        if not self._node_color:
-            self._node_color = {node: self.artist.default_nodecolor for node in self.network.nodes()}
-        return self._node_color
-
-    @node_color.setter
-    def node_color(self, node_color):
-        if isinstance(node_color, dict):
-            self._node_color = node_color
-        elif is_color_rgb(node_color):
-            self._node_color = {node: node_color for node in self.network.nodes()}
-
-    @property
-    def edge_color(self):
-        """dict: Dictionary mapping edges to colors."""
-        if not self._edge_color:
-            self._edge_color = {edge: self.artist.default_edgecolor for edge in self.network.edges()}
-        return self._edge_color
-
-    @edge_color.setter
-    def edge_color(self, edge_color):
-        if isinstance(edge_color, dict):
-            self._edge_color = edge_color
-        elif is_color_rgb(edge_color):
-            self._edge_color = {edge: edge_color for edge in self.network.edges()}
-
     def clear(self):
         compas_rhino.delete_objects(self.guids, purge=True)
         self._guids = []
@@ -229,20 +196,15 @@ class NetworkObject(Object):
         self.clear()
         if not self.visible:
             return
-
         self.artist.node_xyz = self.node_xyz
 
         if self.show_nodes:
-            nodes = list(self.network.nodes())
-            node_color = self.node_color
-            guids = self.artist.draw_nodes(nodes=nodes, color=node_color)
-            self.guid_node = zip(guids, nodes)
+            guids = self.artist.draw_nodes()
+            self.guid_node = zip(guids, self.network.nodes())
 
         if self.show_edges:
-            edges = list(self.network.edges())
-            edge_color = self.edge_color
-            guids = self.artist.draw_edges(edges=edges, color=edge_color)
-            self.guid_edge = zip(guids, edges)
+            guids = self.artist.draw_edges()
+            self.guid_edge = zip(guids, self.network.edges())
 
     def select(self):
         # there is currently no "general" selection method

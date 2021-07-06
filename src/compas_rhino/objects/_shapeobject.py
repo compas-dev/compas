@@ -6,25 +6,37 @@ import compas_rhino
 
 from compas.geometry import Point
 from compas.geometry import Scale, Translation, Rotation
+
 from compas_rhino.objects._object import Object
 
 
 class ShapeObject(Object):
+    """Base class for working visualizing and interacting with COMPAS shapes in Rhino.
 
-    def __init__(self, shape, scene=None, name=None, visible=True, layer=None,
-                 show_faces=True, show_vertices=False, show_edges=False, join_faces=True, color=None):
+    Parameters
+    ----------
+    shape : :class:`compas.geometry.Shape`
+        A COMPAS shape.
+    scene : :class:`compas.scenes.Scene`, optional
+        A scene object.
+    name : str, optional
+        The name of the object.
+    visible : bool, optional
+        Toggle for the visibility of the object.
+    layer : str, optional
+        The layer for drawing.
+    color : rgb color tuple, optional
+        A RGB color value.
+    """
+
+    def __init__(self, shape, scene=None, name=None, visible=True, layer=None, color=None):
         super(ShapeObject, self).__init__(shape, scene, name, visible, layer)
         self._mesh = None
-        self._guids = []
+        self._guids = None
         self._location = None
         self._scale = None
         self._rotation = None
-        self._color = None
-        self.show_vertices = show_vertices
-        self.show_edges = show_edges
-        self.show_faces = show_faces
-        self.join_faces = join_faces
-        self.color = color
+        self.artist.color = color
 
     @property
     def shape(self):
@@ -34,10 +46,10 @@ class ShapeObject(Object):
     def shape(self, shape):
         self.item = shape
         self._mesh = None
+        self._guids = None
         self._location = None
         self._scale = None
         self._rotation = None
-        self._guids = []
 
     @property
     def mesh(self):
@@ -104,25 +116,19 @@ class ShapeObject(Object):
     @property
     def guids(self):
         """list: The GUIDs of all Rhino objects created by this artist."""
+        if self._guids is None:
+            self._guids = []
         return self._guids
 
+    def clear(self):
+        """Clear all Rhino objects associated with this object.
+        """
+        compas_rhino.delete_objects(self.guids, purge=True)
+        self._guids = []
+
     def draw(self):
-        guids = []
-        vertex_xyz = self.vertex_xyz
-        if self.show_vertices:
-            points = [{'pos': vertex_xyz[vertex], 'color': self.color} for vertex in self.mesh.vertices()]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        if self.show_edges:
-            lines = [{'start': vertex_xyz[u], 'end': vertex_xyz[v], 'color': self.color} for u, v in self.mesh.edges()]
-            guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        if self.show_faces:
-            polygons = [{'points': [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]} for face in self.mesh.faces()]
-            temp = compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
-            if self.join_faces:
-                guid = compas_rhino.rs.JoinMeshes(temp, delete_input=True)
-                compas_rhino.rs.ObjectLayer(guid, self.layer)
-                compas_rhino.rs.ObjectName(guid, '{}'.format(self.name))
-                compas_rhino.rs.ObjectColor(guid, self.color)
-                temp = [guid]
-            guids += temp
-        self._guids = guids
+        """Draw the shape."""
+        self.clear()
+        if not self.visible:
+            return
+        self._guids = self.artist.draw()

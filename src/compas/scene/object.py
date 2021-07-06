@@ -34,8 +34,8 @@ class BaseObject(object):
         A scene object.
     artist: :class:`compas.scene.BaseArtist`
         The artist matching the type of ``item``.
-    guid: str
-        The unique identifier of the object.
+    uuid: str
+        The universaly unique identifier of the object.
     name: str
         The name of the object.
         This is an alias for the name of ``item``.
@@ -47,7 +47,7 @@ class BaseObject(object):
     def __init__(self, item, scene=None, name=None, visible=True):
         super(BaseObject, self).__init__()
         self._item = None
-        self._id = None
+        self._uuid = None
         self._scene = None
         self._artist = None
         self.scene = scene
@@ -74,17 +74,18 @@ class BaseObject(object):
     @item.setter
     def item(self, item):
         self._item = item
-        self._artist = BaseArtist.build(item)
 
     @property
     def artist(self):
+        if not self._artist:
+            self._artist = BaseArtist.build(self.item)
         return self._artist
 
     @property
     def uuid(self):
-        if not self._id:
-            self._id = str(uuid4())
-        return self._id
+        if not self._uuid:
+            self._uuid = str(uuid4())
+        return self._uuid
 
     @property
     def name(self):
