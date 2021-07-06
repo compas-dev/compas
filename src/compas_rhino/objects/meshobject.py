@@ -36,7 +36,7 @@ class MeshObject(Object):
     layer : str, optional
         The layer for drawing.
     show_vertices : bool, optional
-        Indicate that the verticess should be drawn when the mesh is visualised.
+        Indicate that the vertices should be drawn when the mesh is visualised.
     show_edges : bool, optional
         Indicate that the edges should be drawn when the mesh is visualised.
     show_faces : bool, optional
