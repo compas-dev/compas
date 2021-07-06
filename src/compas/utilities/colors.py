@@ -620,14 +620,12 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
     color = color or default
     if color is None:
         return {key: None for key in keys}
-    # if input is hex
-    if isinstance(color, basestring):
+    if is_color_hex(color):
         # and output should be rgb
         if colorformat == 'rgb':
             color = hex_to_rgb(color, normalize=normalize)
         return {key: color for key in keys}
-    # if input is rgb
-    if isinstance(color, (tuple, list)) and len(color) == 3:
+    if is_color_rgb(color):
         # and output should be hex
         if colorformat == 'hex':
             color = rgb_to_hex(color, normalize=normalize)
@@ -638,12 +636,12 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
     if isinstance(color, dict):
         for k, c in color.items():
             # if input is hex
-            if isinstance(c, basestring):
+            if is_color_hex(c):
                 # and output should be rgb
                 if colorformat == 'rgb':
                     color[k] = hex_to_rgb(c, normalize=normalize)
             # if input is rgb
-            elif isinstance(c, (tuple, list)) and len(c) == 3:
+            elif is_color_rgb(c):
                 # and output should be hex
                 if colorformat == 'hex':
                     color[k] = rgb_to_hex(c, normalize=normalize)
