@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="GeometryPlotter" href="generated/compas_plotters.GeometryPlotter.html" />
+    <link rel="next" title="Plotter" href="generated/compas_plotters.Plotter.html" />
   
   
   
@@ -102,6 +102,42 @@
           
           <span class="target" id="module-compas_plotters"></span><section id="compas-plotters">
 <h1>compas_plotters</h1>
+<p>2D visualization framework based on <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> for COMPAS geometry objects and data structures.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Line</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">Polyline</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Ellipse</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">Plotter</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">Plotter</span><span class="p">()</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Line</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Polyline</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">7</span><span class="p">)),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Polygon</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">7</span><span class="p">)),</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+
+<span class="n">circles</span> <span class="o">=</span> <span class="p">[</span><span class="n">Circle</span><span class="p">([</span><span class="n">point</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">7</span><span class="p">)]</span>
+<span class="n">ellipses</span> <span class="o">=</span> <span class="p">[</span><span class="n">Ellipse</span><span class="p">([</span><span class="n">point</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">7</span><span class="p">)]</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_from_list</span><span class="p">(</span><span class="n">circles</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_from_list</span><span class="p">(</span><span class="n">ellipses</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">zoom_extents</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
 <section id="classes">
 <h2>Classes</h2>
 <table class="longtable docutils align-default">
@@ -110,14 +146,28 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_plotters.Plotter.html#compas_plotters.Plotter" title="compas_plotters.Plotter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plotter</span></code></a></p></td>
+<td><p>Plotter for the visualization of COMPAS geometry.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="deprecated">
+<h2>Deprecated</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_plotters.GeometryPlotter.html#compas_plotters.GeometryPlotter" title="compas_plotters.GeometryPlotter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeometryPlotter</span></code></a></p></td>
-<td><p>Plotter for the visualisation of COMPAS geometry.</p></td>
+<td><p>Plotter for the visualization of COMPAS geometry.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_plotters.NetworkPlotter.html#compas_plotters.NetworkPlotter" title="compas_plotters.NetworkPlotter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkPlotter</span></code></a></p></td>
-<td><p>Plotter for the visualisation of COMPAS Networks.</p></td>
+<td><p>Plotter for the visualization of COMPAS Networks.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_plotters.MeshPlotter.html#compas_plotters.MeshPlotter" title="compas_plotters.MeshPlotter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeshPlotter</span></code></a></p></td>
-<td><p>Plotter for the visualisation of COMPAS meshes.</p></td>
+<td><p>Plotter for the visualization of COMPAS meshes.</p></td>
 </tr>
 </tbody>
 </table>
@@ -151,6 +201,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">compas_plotters</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="generated/compas_plotters.Plotter.html">Plotter</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="generated/compas_plotters.GeometryPlotter.html">GeometryPlotter</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="generated/compas_plotters.NetworkPlotter.html">NetworkPlotter</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="generated/compas_plotters.MeshPlotter.html">MeshPlotter</a></li>
@@ -176,6 +227,7 @@
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">compas_plotters</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#deprecated">Deprecated</a></li>
 </ul>
 </li>
 </ul>
@@ -199,10 +251,10 @@
       
 
       
-        <a href="generated/compas_plotters.GeometryPlotter.html" title="GeometryPlotter" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="generated/compas_plotters.Plotter.html" title="Plotter" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            GeometryPlotter
+            Plotter
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
