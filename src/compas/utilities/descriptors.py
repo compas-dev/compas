@@ -96,11 +96,3 @@ class RGBColour(object):
 
     def __set__(self, obj, value):
         self.value = color_to_rgb(value, normalize=self.normalize)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass
