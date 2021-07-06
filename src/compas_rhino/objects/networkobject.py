@@ -30,10 +30,22 @@ class NetworkObject(Object):
         A scene object.
     name : str, optional
         The name of the object.
-    layer : str, optional
-        The layer for drawing.
     visible : bool, optional
         Toggle for the visibility of the object.
+    layer : str, optional
+        The layer for drawing.
+    show_nodes : bool, optional
+        Indicate that the nodes should be drawn when the network is visualised.
+    show_edges : bool, optional
+        Indicate that the edges should be drawn when the network is visualised.
+    nodetext : dict, optional
+        A dictionary mapping node identifiers to text labels.
+    edgetext : dict, optional
+        A dictionary mapping edge identifiers to text labels.
+    nodecolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping node identifiers to RGB color values.
+    edgecolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping edge identifiers to RGB color values.
 
     """
 
