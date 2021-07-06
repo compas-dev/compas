@@ -39,19 +39,6 @@ from ._select import (  # noqa : F401 F403
     network_select_edge,
     network_select_edges
 )
-from ._modify import (  # noqa : F401 F403
-    network_update_attributes,
-    network_update_node_attributes,
-    network_update_edge_attributes,
-    network_move_node,
-    mesh_update_attributes,
-    mesh_update_vertex_attributes,
-    mesh_update_face_attributes,
-    mesh_update_edge_attributes,
-    mesh_move_vertex,
-    mesh_move_vertices,
-    mesh_move_face
-)
 from .inspectors import MeshVertexInspector  # noqa : F401 F403
 
 from ._object import Object

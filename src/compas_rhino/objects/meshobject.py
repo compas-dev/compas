@@ -2,19 +2,17 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import ast
 import compas_rhino
+from compas.geometry import add_vectors
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
+from compas.utilities import is_color_rgb
 
-from compas_rhino.objects._modify import mesh_update_attributes
-from compas_rhino.objects._modify import mesh_update_vertex_attributes
-from compas_rhino.objects._modify import mesh_update_face_attributes
-from compas_rhino.objects._modify import mesh_update_edge_attributes
-from compas_rhino.objects._modify import mesh_move_vertex
-from compas_rhino.objects._modify import mesh_move_vertices
-from compas_rhino.objects._modify import mesh_move_face
+import Rhino
+from Rhino.Geometry import Point3d
 
 from ._object import Object
 
@@ -33,20 +31,32 @@ class MeshObject(Object):
         A scene object.
     name : str, optional
         The name of the object.
-    layer : str, optional
-        The layer for drawing.
     visible : bool, optional
         Toggle for the visibility of the object.
-
+    layer : str, optional
+        The layer for drawing.
+    show_vertices : bool, optional
+        Indicate that the verticess should be drawn when the mesh is visualised.
+    show_edges : bool, optional
+        Indicate that the edges should be drawn when the mesh is visualised.
+    show_faces : bool, optional
+        Indicate that the faces should be drawn when the mesh is visualised.
+    vertextext : dict, optional
+        A dictionary mapping vertex identifiers to text labels.
+    edgetext : dict, optional
+        A dictionary mapping edge identifiers to text labels.
+    facetext : dict, optional
+        A dictionary mapping face identifiers to text labels.
+    vertexcolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping vertex identifiers to RGB color values.
+    edgecolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping edge identifiers to RGB color values.
+    facecolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping face identifiers to RGB color values.
     """
 
-    default_vertexcolor = (255, 255, 255)
-    default_edgecolor = (0, 0, 0)
-    default_facecolor = (0, 0, 0)
-
     def __init__(self, mesh, scene=None, name=None, visible=True, layer=None,
-                 show_faces=True, show_vertices=False, show_edges=False,
-                 join_faces=True,
+                 show_vertices=False, show_edges=False, show_faces=True,
                  vertextext=None, edgetext=None, facetext=None,
                  vertexcolor=None, edgecolor=None, facecolor=None):
         super(MeshObject, self).__init__(mesh, scene, name, visible, layer)
@@ -54,11 +64,6 @@ class MeshObject(Object):
         self._guid_vertex = {}
         self._guid_edge = {}
         self._guid_face = {}
-        self._guid_vertexnormal = {}
-        self._guid_facenormal = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
         self._anchor = None
         self._location = None
         self._scale = None
@@ -72,7 +77,6 @@ class MeshObject(Object):
         self.show_vertices = show_vertices
         self.show_edges = show_edges
         self.show_faces = show_faces
-        self.join_faces = join_faces
         self.vertex_color = vertexcolor
         self.edge_color = edgecolor
         self.face_color = facecolor
@@ -91,11 +95,6 @@ class MeshObject(Object):
         self._guid_vertex = {}
         self._guid_edge = {}
         self._guid_face = {}
-        self._guid_vertexnormal = {}
-        self._guid_facenormal = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
 
     @property
     def anchor(self):
@@ -202,108 +201,70 @@ class MeshObject(Object):
         self._guid_face = dict(values)
 
     @property
-    def guid_vertexnormal(self):
-        """dict: Map between Rhino object GUIDs and mesh vertexnormal identifiers."""
-        return self._guid_vertexnormal
-
-    @guid_vertexnormal.setter
-    def guid_vertexnormal(self, values):
-        self._guid_vertexnormal = dict(values)
-
-    @property
-    def guid_facenormal(self):
-        """dict: Map between Rhino object GUIDs and mesh facenormal identifiers."""
-        return self._guid_facenormal
-
-    @guid_facenormal.setter
-    def guid_facenormal(self, values):
-        self._guid_facenormal = dict(values)
-
-    @property
-    def guid_vertexlabel(self):
-        """dict: Map between Rhino object GUIDs and mesh vertexlabel identifiers."""
-        return self._guid_vertexlabel
-
-    @guid_vertexlabel.setter
-    def guid_vertexlabel(self, values):
-        self._guid_vertexlabel = dict(values)
-
-    @property
-    def guid_facelabel(self):
-        """dict: Map between Rhino object GUIDs and mesh facelabel identifiers."""
-        return self._guid_facelabel
-
-    @guid_facelabel.setter
-    def guid_facelabel(self, values):
-        self._guid_facelabel = dict(values)
-
-    @property
-    def guid_edgelabel(self):
-        """dict: Map between Rhino object GUIDs and mesh edgelabel identifiers."""
-        return self._guid_edgelabel
-
-    @guid_edgelabel.setter
-    def guid_edgelabel(self, values):
-        self._guid_edgelabel = dict(values)
-
-    @property
     def guids(self):
         """list: The GUIDs of all Rhino objects created by this artist."""
         guids = self._guids
-        guids += list(self.guid_vertex.keys())
-        guids += list(self.guid_edge.keys())
-        guids += list(self.guid_face.keys())
-        guids += list(self.guid_vertexnormal.keys())
-        guids += list(self.guid_facenormal.keys())
-        guids += list(self.guid_vertexlabel.keys())
-        guids += list(self.guid_edgelabel.keys())
-        guids += list(self.guid_facelabel.keys())
+        guids += list(self.guid_vertex)
+        guids += list(self.guid_edge)
+        guids += list(self.guid_face)
         return guids
 
     @property
     def vertex_color(self):
-        """dict: Dictionary mapping vertices to colors."""
+        """dict: Dictionary mapping vertices to colors.
+
+        Only RGB color values are allowed.
+        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
+        a dictionary will be created automatically with the provided color mapped to all vertices.
+        """
         if not self._vertex_color:
-            self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
+            self._vertex_color = {vertex: self.artist.default_vertexcolor for vertex in self.mesh.vertices()}
         return self._vertex_color
 
     @vertex_color.setter
     def vertex_color(self, vertex_color):
         if isinstance(vertex_color, dict):
             self._vertex_color = vertex_color
-        elif len(vertex_color) == 3:
-            if all(isinstance(c, (int, float)) for c in vertex_color):
-                self._vertex_color = {vertex: vertex_color for vertex in self.mesh.vertices()}
+        elif is_color_rgb(vertex_color):
+            self._vertex_color = {vertex: vertex_color for vertex in self.mesh.vertices()}
 
     @property
     def edge_color(self):
-        """dict: Dictionary mapping edges to colors."""
+        """dict: Dictionary mapping edges to colors.
+
+        Only RGB color values are allowed.
+        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
+        a dictionary will be created automatically with the provided color mapped to all edges.
+        """
         if not self._edge_color:
-            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
+            self._edge_color = {edge: self.artist.default_edgecolor for edge in self.mesh.edges()}
         return self._edge_color
 
     @edge_color.setter
     def edge_color(self, edge_color):
         if isinstance(edge_color, dict):
             self._edge_color = edge_color
-        elif len(edge_color) == 3:
-            if all(isinstance(c, (int, float)) for c in edge_color):
-                self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
+        elif is_color_rgb(edge_color):
+            self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
 
     @property
     def face_color(self):
-        """dict: Dictionary mapping faces to colors."""
+        """dict: Dictionary mapping faces to colors.
+
+        Only RGB color values are allowed.
+        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
+        a dictionary will be created automatically with the provided color mapped to all faces.
+        """
         if not self._face_color:
-            self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
+            self._face_color = {face: self.artist.default_facecolor for face in self.mesh.faces()}
         return self._face_color
 
     @face_color.setter
     def face_color(self, face_color):
         if isinstance(face_color, dict):
             self._face_color = face_color
-        elif len(face_color) == 3:
-            if all(isinstance(c, (int, float)) for c in face_color):
-                self._face_color = {face: face_color for face in self.mesh.faces()}
+        elif is_color_rgb(face_color):
+            self._face_color = {face: face_color for face in self.mesh.faces()}
 
     def clear(self):
         """Clear all Rhino objects associated with this object.
@@ -313,11 +274,6 @@ class MeshObject(Object):
         self._guid_vertex = {}
         self._guid_edge = {}
         self._guid_face = {}
-        self._guid_vertexnormal = {}
-        self._guid_facenormal = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
 
     def draw(self):
         """Draw the object representing the mesh.
@@ -336,7 +292,7 @@ class MeshObject(Object):
         if self.show_faces:
             faces = list(self.mesh.faces())
             face_color = self.face_color
-            guids = self.artist.draw_faces(faces=faces, join_faces=self.join_faces, color=face_color)
+            guids = self.artist.draw_faces(faces=faces, color=face_color)
             self.guid_face = zip(guids, faces)
 
         if self.show_edges:
@@ -407,7 +363,17 @@ class MeshObject(Object):
             ``True`` if the update was successful.
             ``False`` otherwise.
         """
-        return mesh_update_attributes(self.mesh)
+        names = sorted(self.mesh.attributes.keys())
+        values = [str(self.mesh.attributes[name]) for name in names]
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                try:
+                    self.mesh.attributes[name] = ast.literal_eval(value)
+                except (ValueError, TypeError):
+                    self.mesh.attributes[name] = value
+            return True
+        return False
 
     def modify_vertices(self, vertices, names=None):
         """Update the attributes of selected vertices.
@@ -427,7 +393,28 @@ class MeshObject(Object):
             False otherwise.
 
         """
-        return mesh_update_vertex_attributes(self.mesh, vertices, names=names)
+        names = names or self.mesh.default_vertex_attributes.keys()
+        names = sorted(names)
+        values = self.mesh.vertex_attributes(vertices[0], names)
+        if len(vertices) > 1:
+            for i, name in enumerate(names):
+                for vertex in vertices[1:]:
+                    if values[i] != self.mesh.vertex_attribute(vertex, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for vertex in vertices:
+                    try:
+                        self.mesh.vertex_attribute(vertex, name, ast.literal_eval(value))
+                    except (ValueError, TypeError):
+                        self.mesh.vertex_attribute(vertex, name, value)
+            return True
+        return False
 
     def modify_edges(self, edges, names=None):
         """Update the attributes of the edges.
@@ -447,7 +434,30 @@ class MeshObject(Object):
             ``False`` otherwise.
 
         """
-        return mesh_update_edge_attributes(self.mesh, edges, names=names)
+        names = names or self.mesh.default_edge_attributes.keys()
+        names = sorted(names)
+        edge = edges[0]
+        values = self.mesh.edge_attributes(edge, names)
+        if len(edges) > 1:
+            for i, name in enumerate(names):
+                for edge in edges[1:]:
+                    if values[i] != self.mesh.edge_attribute(edge, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for edge in edges:
+                    try:
+                        value = ast.literal_eval(value)
+                    except (SyntaxError, ValueError, TypeError):
+                        pass
+                    self.mesh.edge_attribute(edge, name, value)
+            return True
+        return False
 
     def modify_faces(self, faces, names=None):
         """Update the attributes of selected faces.
@@ -467,20 +477,46 @@ class MeshObject(Object):
             False otherwise.
 
         """
-        return mesh_update_face_attributes(self.mesh, faces, names=names)
+        names = names or self.mesh.default_face_attributes.keys()
+        names = sorted(names)
+        values = self.mesh.face_attributes(faces[0], names)
+        if len(faces) > 1:
+            for i, name in enumerate(names):
+                for face in faces[1:]:
+                    if values[i] != self.mesh.face_attribute(face, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for face in faces:
+                    try:
+                        self.mesh.face_attribute(face, name, ast.literal_eval(value))
+                    except (ValueError, TypeError):
+                        self.mesh.face_attribute(face, name, value)
+            return True
+        return False
 
     # not clear if this is now about the location or the data
     def move(self):
         """Move the entire mesh object to a different location."""
         raise NotImplementedError
 
-    def move_vertex(self, vertex):
+    def move_vertex(self, vertex, constraint=None, allow_off=True):
         """Move a single vertex of the mesh object and update the data structure accordingly.
 
         Parameters
         ----------
         vertex : int
             The identifier of the vertex.
+        constraint : :class:`Rhino.Geometry`, optional
+            A Rhino geometry object to constrain the movement to.
+            By default the movement is unconstrained.
+        allow_off : bool, optional (True)
+            Allow the vertex to move off the constraint.
 
         Returns
         -------
@@ -488,7 +524,27 @@ class MeshObject(Object):
             True if the operation was successful.
             False otherwise.
         """
-        return mesh_move_vertex(self.mesh, vertex)
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        nbrs = [self.mesh.vertex_coordinates(nbr) for nbr in self.mesh.vertex_neighbors(vertex)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
+
+        def OnDynamicDraw(sender, e):
+            for ep in nbrs:
+                sp = e.CurrentPoint
+                e.Display.DrawDottedLine(sp, ep, color)
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.DynamicDraw += OnDynamicDraw
+        if constraint:
+            gp.Constrain(constraint, allow_off)
+
+        gp.Get()
+        if gp.CommandResult() == Rhino.Commands.Result.Success:
+            self.mesh.vertex_attributes(vertex, 'xyz', list(gp.Point()))
+            return True
+        return False
 
     def move_vertices(self, vertices):
         """Move a multiple vertices of the mesh object and update the data structure accordingly.
@@ -504,15 +560,69 @@ class MeshObject(Object):
             True if the operation was successful.
             False otherwise.
         """
-        return mesh_move_vertices(self.mesh, vertices)
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        lines = []
+        connectors = []
 
-    def move_face(self, face):
+        for vertex in vertices:
+            a = self.mesh.vertex_coordinates(vertex)
+            nbrs = self.mesh.vertex_neighbors(vertex)
+            for nbr in nbrs:
+                b = self.mesh.vertex_coordinates(nbr)
+                line = [Point3d(* a), Point3d(* b)]
+                if nbr in vertices:
+                    lines.append(line)
+                else:
+                    connectors.append(line)
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move from?')
+        gp.Get()
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        start = gp.Point()
+
+        def OnDynamicDraw(sender, e):
+            end = e.CurrentPoint
+            vector = end - start
+            for a, b in lines:
+                a = a + vector
+                b = b + vector
+                e.Display.DrawDottedLine(a, b, color)
+            for a, b in connectors:
+                a = a + vector
+                e.Display.DrawDottedLine(a, b, color)
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.SetBasePoint(start, False)
+        gp.DrawLineFromPoint(start, True)
+        gp.DynamicDraw += OnDynamicDraw
+        gp.Get()
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        end = gp.Point()
+        vector = list(end - start)
+
+        for vertex in vertices:
+            xyz = self.mesh.vertex_attributes(vertex, 'xyz')
+            self.mesh.vertex_attributes(vertex, 'xyz', add_vectors(xyz, vector))
+        return True
+
+    def move_face(self, face, constraint=None, allow_off=True):
         """Move a single face of the mesh object and update the data structure accordingly.
 
         Parameters
         ----------
         face : int
             The identifier of the face.
+        constraint : Rhino.Geometry (None)
+            A Rhino geometry object to constrain the movement to.
+            By default the movement is unconstrained.
+        allow_off : bool (False)
+            Allow the vertex to move off the constraint.
 
         Returns
         -------
@@ -520,4 +630,25 @@ class MeshObject(Object):
             True if the operation was successful.
             False otherwise.
         """
-        return mesh_move_face(self.mesh, face)
+        def OnDynamicDraw(sender, e):
+            for ep in nbrs:
+                sp = e.CurrentPoint
+                e.Display.DrawDottedLine(sp, ep, color)
+
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        nbrs = [self.mesh.face_coordinates(nbr) for nbr in self.mesh.face_neighbors(face)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.DynamicDraw += OnDynamicDraw
+        if constraint:
+            gp.Constrain(constraint, allow_off)
+
+        gp.Get()
+
+        if gp.CommandResult() == Rhino.Commands.Result.Success:
+            self.mesh.face_attributes(face, 'xyz', list(gp.Point()))
+            return True
+        return False

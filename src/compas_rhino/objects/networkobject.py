@@ -2,16 +2,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import ast
+from compas.utilities import is_color_rgb
 import compas_rhino
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from compas_rhino.objects._modify import network_update_attributes
-from compas_rhino.objects._modify import network_update_node_attributes
-from compas_rhino.objects._modify import network_update_edge_attributes
-from compas_rhino.objects._modify import network_move_node
+import Rhino
+from Rhino.Geometry import Point3d
 
 from ._object import Object
 
@@ -37,25 +37,21 @@ class NetworkObject(Object):
 
     """
 
-    default_nodecolor = (255, 255, 255)
-    default_edgecolor = (0, 0, 0)
-
     def __init__(self, network, scene=None, name=None, visible=True, layer=None,
-                 show_nodes=False, show_edges=False,
+                 show_nodes=True, show_edges=True,
                  nodetext=None, edgetext=None,
                  nodecolor=None, edgecolor=None):
         super(NetworkObject, self).__init__(network, scene, name, visible, layer)
+        self._guids = []
         self._guid_node = {}
         self._guid_edge = {}
-        self._guid_nodelabel = {}
-        self._guid_edgelabel = {}
         self._anchor = None
         self._location = None
         self._scale = None
         self._rotation = None
-        self._vertex_color = None
+        self._node_color = None
         self._edge_color = None
-        self._vertex_text = None
+        self._node_text = None
         self._edge_text = None
         self.show_nodes = show_nodes
         self.show_edges = show_edges
@@ -74,8 +70,6 @@ class NetworkObject(Object):
         self._guids = []
         self._guid_node = {}
         self._guid_edge = {}
-        self._guid_nodelabel = {}
-        self._guid_edgelabel = {}
 
     @property
     def anchor(self):
@@ -151,7 +145,7 @@ class NetworkObject(Object):
             T = Translation.from_vector(self.location)
             X = T * R * S
         network = self.network.transformed(X)
-        node_xyz = {network: network.node_attributes(node, 'xyz') for node in network.nodes()}
+        node_xyz = {node: network.node_attributes(node, 'xyz') for node in network.nodes()}
         return node_xyz
 
     @property
@@ -177,26 +171,8 @@ class NetworkObject(Object):
         self._guid_edge = dict(values)
 
     @property
-    def guid_nodelabel(self):
-        """dict: Map between Rhino object GUIDs and network nodelabel identifiers."""
-        return self._guid_vertexlabel
-
-    @guid_nodelabel.setter
-    def guid_nodelabel(self, values):
-        self._guid_vertexlabel = dict(values)
-
-    @property
-    def guid_edgelabel(self):
-        """dict: Map between Rhino object GUIDs and network edgelabel identifiers."""
-        return self._guid_edgelabel
-
-    @guid_edgelabel.setter
-    def guid_edgelabel(self, values):
-        self._guid_edgelabel = dict(values)
-
-    @property
     def guids(self):
-        guids = []
+        guids = self._guids
         guids += list(self.guid_node)
         guids += list(self.guid_edge)
         return guids
@@ -205,34 +181,33 @@ class NetworkObject(Object):
     def node_color(self):
         """dict: Dictionary mapping vertices to colors."""
         if not self._node_color:
-            self._node_color = {node: self.default_nodecolor for node in self.network.nodes()}
+            self._node_color = {node: self.artist.default_nodecolor for node in self.network.nodes()}
         return self._node_color
 
     @node_color.setter
     def node_color(self, node_color):
         if isinstance(node_color, dict):
             self._node_color = node_color
-        elif len(node_color) == 3:
-            if all(isinstance(c, (int, float)) for c in node_color):
-                self._node_color = {node: node_color for node in self.network.nodes()}
+        elif is_color_rgb(node_color):
+            self._node_color = {node: node_color for node in self.network.nodes()}
 
     @property
     def edge_color(self):
         """dict: Dictionary mapping edges to colors."""
         if not self._edge_color:
-            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
+            self._edge_color = {edge: self.artist.default_edgecolor for edge in self.network.edges()}
         return self._edge_color
 
     @edge_color.setter
     def edge_color(self, edge_color):
         if isinstance(edge_color, dict):
             self._edge_color = edge_color
-        elif len(edge_color) == 3:
-            if all(isinstance(c, (int, float)) for c in edge_color):
-                self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
+        elif is_color_rgb(edge_color):
+            self._edge_color = {edge: edge_color for edge in self.network.edges()}
 
     def clear(self):
         compas_rhino.delete_objects(self.guids, purge=True)
+        self._guids = []
         self._guid_node = {}
         self._guid_edge = {}
 
@@ -251,7 +226,7 @@ class NetworkObject(Object):
             guids = self.artist.draw_nodes(nodes=nodes, color=node_color)
             self.guid_node = zip(guids, nodes)
 
-        if self.settings['show.edges']:
+        if self.show_edges:
             edges = list(self.network.edges())
             edge_color = self.edge_color
             guids = self.artist.draw_edges(edges=edges, color=edge_color)
@@ -262,7 +237,19 @@ class NetworkObject(Object):
         # for the entire mesh object
         raise NotImplementedError
 
-    def select_nodes(self):
+    def select_node(self, message="Select one node."):
+        """Select one node of the network.
+
+        Returns
+        -------
+        int
+            A node identifiers.
+        """
+        guid = compas_rhino.select_point(message=message)
+        if guid and guid in self.guid_node:
+            return self.guid_node[guid]
+
+    def select_nodes(self, message="Select nodes."):
         """Select nodes of the network.
 
         Returns
@@ -270,11 +257,11 @@ class NetworkObject(Object):
         list
             A list of node identifiers.
         """
-        guids = compas_rhino.select_points()
+        guids = compas_rhino.select_points(message=message)
         nodes = [self.guid_node[guid] for guid in guids if guid in self.guid_node]
         return nodes
 
-    def select_edges(self):
+    def select_edges(self, message="Select edges."):
         """Select edges of the network.
 
         Returns
@@ -282,7 +269,7 @@ class NetworkObject(Object):
         list
             A list of edge identifiers.
         """
-        guids = compas_rhino.select_lines()
+        guids = compas_rhino.select_lines(message=message)
         edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
         return edges
 
@@ -295,7 +282,17 @@ class NetworkObject(Object):
             ``True`` if the update was successful.
             ``False`` otherwise.
         """
-        return network_update_attributes(self.network)
+        names = sorted(self.network.attributes.keys())
+        values = [str(self.network.attributes[name]) for name in names]
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                try:
+                    self.network.attributes[name] = ast.literal_eval(value)
+                except (ValueError, TypeError):
+                    self.network.attributes[name] = value
+            return True
+        return False
 
     def modify_nodes(self, nodes, names=None):
         """Update the attributes of the nodes.
@@ -315,7 +312,28 @@ class NetworkObject(Object):
             ``False`` otherwise.
 
         """
-        return network_update_node_attributes(self.network, nodes, names=names)
+        names = names or self.network.default_node_attributes.keys()
+        names = sorted(names)
+        values = self.network.node_attributes(nodes[0], names)
+        if len(nodes) > 1:
+            for i, name in enumerate(names):
+                for node in nodes[1:]:
+                    if values[i] != self.network.node_attribute(node, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for node in nodes:
+                    try:
+                        self.network.node_attribute(node, name, ast.literal_eval(value))
+                    except (ValueError, TypeError):
+                        self.network.node_attribute(node, name, value)
+            return True
+        return False
 
     def modify_edges(self, edges, names=None):
         """Update the attributes of the edges.
@@ -334,13 +352,36 @@ class NetworkObject(Object):
             ``True`` if the update was successful.
             ``False`` otherwise.
         """
-        return network_update_edge_attributes(self.network, edges, names=names)
+        names = names or self.network.default_edge_attributes.keys()
+        names = sorted(names)
+        edge = edges[0]
+        values = self.network.edge_attributes(edge, names)
+        if len(edges) > 1:
+            for i, name in enumerate(names):
+                for edge in edges[1:]:
+                    if values[i] != self.network.edge_attribute(edge, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for edge in edges:
+                    try:
+                        value = ast.literal_eval(value)
+                    except (SyntaxError, ValueError, TypeError):
+                        pass
+                    self.network.edge_attribute(edge, name, value)
+            return True
+        return False
 
     def move(self):
         """Move the entire mesh object to a different location."""
         raise NotImplementedError
 
-    def move_node(self, node):
+    def move_node(self, node, constraint=None, allow_off=False):
         """Move a single node of the network object and update the data structure accordingly.
 
         Parameters
@@ -354,4 +395,25 @@ class NetworkObject(Object):
             True if the operation was successful.
             False otherwise.
         """
-        return network_move_node(self.network, node)
+        def OnDynamicDraw(sender, e):
+            for ep in nbrs:
+                sp = e.CurrentPoint
+                e.Display.DrawDottedLine(sp, ep, color)
+
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        nbrs = [self.network.node_coordinates(nbr) for nbr in self.network.node_neighbors(node)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.DynamicDraw += OnDynamicDraw
+        if constraint:
+            gp.Constrain(constraint, allow_off)
+
+        gp.Get()
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        self.network.node_attributes(node, 'xyz', list(gp.Point()))
+        return True

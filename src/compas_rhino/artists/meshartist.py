@@ -65,9 +65,9 @@ class MeshArtist(Artist):
         self._vertex_xyz = None
         self.mesh = mesh
         self.layer = layer
-        self.color_vertices = (255, 255, 255)
-        self.color_edges = (0, 0, 0)
-        self.color_faces = (0, 0, 0)
+        self.default_vertexcolor = (255, 255, 255)
+        self.default_edgecolor = (0, 0, 0)
+        self.default_facecolor = (0, 0, 0)
 
     @property
     def mesh(self):
@@ -151,7 +151,7 @@ class MeshArtist(Artist):
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
         faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
         layer = self.layer
-        name = "{}".format(self.mesh.name)
+        name = self.mesh.name
         guid = compas_rhino.draw_mesh(vertices, faces, layer=layer, name=name, color=color, disjoint=disjoint, clear=False, redraw=False)
         return [guid]
 
@@ -175,7 +175,7 @@ class MeshArtist(Artist):
         """
         vertices = vertices or list(self.mesh.vertices())
         vertex_xyz = self.vertex_xyz
-        vertex_color = colordict(color, vertices, default=self.color_vertices)
+        vertex_color = colordict(color, vertices, default=self.default_vertexcolor)
         points = []
         for vertex in vertices:
             points.append({
@@ -207,7 +207,7 @@ class MeshArtist(Artist):
         """
         faces = faces or list(self.mesh.faces())
         vertex_xyz = self.vertex_xyz
-        face_color = colordict(color, faces, default=self.color_faces)
+        face_color = colordict(color, faces, default=self.default_facecolor)
         facets = []
         for face in faces:
             facets.append({
@@ -244,7 +244,7 @@ class MeshArtist(Artist):
         """
         edges = edges or list(self.mesh.edges())
         vertex_xyz = self.vertex_xyz
-        edge_color = colordict(color, edges, default=self.color_edges)
+        edge_color = colordict(color, edges, default=self.default_edgecolor)
         lines = []
         for edge in edges:
             lines.append({
@@ -361,7 +361,7 @@ class MeshArtist(Artist):
         else:
             raise NotImplementedError
         vertex_xyz = self.vertex_xyz
-        vertex_color = colordict(color, vertex_text.keys(), default=self.color_vertices)
+        vertex_color = colordict(color, vertex_text.keys(), default=self.default_vertexcolor)
         labels = []
         for vertex in vertex_text:
             labels.append({
@@ -398,14 +398,15 @@ class MeshArtist(Artist):
         else:
             raise NotImplementedError
         vertex_xyz = self.vertex_xyz
-        face_color = colordict(color, face_text.keys(), default=self.color_faces)
+        face_color = colordict(color, face_text.keys(), default=self.default_facecolor)
         labels = []
         for face in face_text:
             labels.append({
                 'pos': centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]),
                 'name': "{}.facelabel.{}".format(self.mesh.name, face),
                 'color': face_color[face],
-                'text': face_text[face]})
+                'text': face_text[face]
+            })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
@@ -433,7 +434,7 @@ class MeshArtist(Artist):
         else:
             raise NotImplementedError
         vertex_xyz = self.vertex_xyz
-        edge_color = colordict(color, edge_text.keys(), default=self.color_edges)
+        edge_color = colordict(color, edge_text.keys(), default=self.default_edgecolor)
         labels = []
         for edge in edge_text:
             labels.append({

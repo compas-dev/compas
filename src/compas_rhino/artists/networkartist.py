@@ -44,8 +44,8 @@ class NetworkArtist(Artist):
         self._node_xyz = None
         self.network = network
         self.layer = layer
-        self.color_nodes = (255, 255, 255)
-        self.color_edges = (0, 0, 0)
+        self.default_nodecolor = (255, 255, 255)
+        self.default_edgecolor = (0, 0, 0)
 
     @property
     def network(self):
@@ -121,13 +121,14 @@ class NetworkArtist(Artist):
         """
         node_xyz = self.node_xyz
         nodes = nodes or list(self.network.nodes())
-        node_color = colordict(color, nodes, default=self.color_nodes)
+        node_color = colordict(color, nodes, default=self.default_nodecolor)
         points = []
         for node in nodes:
             points.append({
                 'pos': node_xyz[node],
                 'name': "{}.node.{}".format(self.network.name, node),
-                'color': node_color[node]})
+                'color': node_color[node]
+            })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
@@ -150,14 +151,15 @@ class NetworkArtist(Artist):
         """
         node_xyz = self.node_xyz
         edges = edges or list(self.network.edges())
-        edge_color = colordict(color, edges, default=self.color_edges)
+        edge_color = colordict(color, edges, default=self.default_edgecolor)
         lines = []
         for edge in edges:
             lines.append({
                 'start': node_xyz[edge[0]],
                 'end': node_xyz[edge[1]],
                 'color': edge_color[edge],
-                'name': "{}.edge.{}-{}".format(self.network.name, *edge)})
+                'name': "{}.edge.{}-{}".format(self.network.name, *edge)
+            })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
@@ -191,7 +193,7 @@ class NetworkArtist(Artist):
         else:
             raise NotImplementedError
         node_xyz = self.node_xyz
-        node_color = colordict(color, node_text.keys(), default=self.color_nodes)
+        node_color = colordict(color, node_text.keys(), default=self.default_nodecolor)
         labels = []
         for node in node_text:
             labels.append({
@@ -226,7 +228,7 @@ class NetworkArtist(Artist):
         else:
             raise NotImplementedError
         node_xyz = self.node_xyz
-        edge_color = colordict(color, edge_text.keys(), default=self.color_edges)
+        edge_color = colordict(color, edge_text.keys(), default=self.default_edgecolor)
         labels = []
         for edge in edge_text:
             labels.append({

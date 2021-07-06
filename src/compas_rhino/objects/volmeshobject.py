@@ -2,19 +2,17 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import ast
 import compas_rhino
+from compas.geometry import add_vectors
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
+from compas.utilities import is_color_rgb
 
-from compas_rhino.objects._modify import mesh_update_attributes
-from compas_rhino.objects._modify import mesh_update_vertex_attributes
-from compas_rhino.objects._modify import mesh_update_face_attributes
-from compas_rhino.objects._modify import mesh_update_edge_attributes
-from compas_rhino.objects._modify import mesh_move_vertex
-from compas_rhino.objects._modify import mesh_move_vertices
-from compas_rhino.objects._modify import mesh_move_face
+import Rhino
+from Rhino.Geometry import Point3d
 
 from ._object import Object
 
@@ -33,10 +31,34 @@ class VolMeshObject(Object):
         A scene object.
     name : str, optional
         The name of the object.
-    layer : str, optional
-        The layer for drawing.
     visible : bool, optional
         Toggle for the visibility of the object.
+    layer : str, optional
+        The layer for drawing.
+    show_vertices : bool, optional
+        Indicate that the verticess should be drawn when the volmesh is visualised.
+    show_edges : bool, optional
+        Indicate that the edges should be drawn when the volmesh is visualised.
+    show_faces : bool, optional
+        Indicate that the faces should be drawn when the volmesh is visualised.
+    show_cells : bool, optional
+        Indicate that the cells should be drawn when the volmesh is visualised.
+    vertextext : dict, optional
+        A dictionary mapping vertex identifiers to text labels.
+    edgetext : dict, optional
+        A dictionary mapping edge identifiers to text labels.
+    facetext : dict, optional
+        A dictionary mapping face identifiers to text labels.
+    celltext : dict, optional
+        A dictionary mapping cell identifiers to text labels.
+    vertexcolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping vertex identifiers to RGB color values.
+    edgecolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping edge identifiers to RGB color values.
+    facecolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping face identifiers to RGB color values.
+    cellcolor : rgb color tuple or dict of rgb color tuples, optional
+        A single RGB color value or a dictionary mapping cell identifiers to RGB color values.
 
     """
 
@@ -55,10 +77,6 @@ class VolMeshObject(Object):
         self._guid_edge = {}
         self._guid_face = {}
         self._guid_cell = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
-        self._guid_celllabel = {}
         self._anchor = None
         self._location = None
         self._scale = None
@@ -206,42 +224,6 @@ class VolMeshObject(Object):
         self._guid_cell = dict(values)
 
     @property
-    def guid_vertexlabel(self):
-        """Map between Rhino object GUIDs and volmesh vertexlabel identifiers."""
-        return self._guid_vertexlabel
-
-    @guid_vertexlabel.setter
-    def guid_vertexlabel(self, values):
-        self._guid_vertexlabel = dict(values)
-
-    @property
-    def guid_edgelabel(self):
-        """Map between Rhino object GUIDs and volmesh edgelabel identifiers."""
-        return self._guid_edgelabel
-
-    @guid_edgelabel.setter
-    def guid_edgelabel(self, values):
-        self._guid_edgelabel = dict(values)
-
-    @property
-    def guid_facelabel(self):
-        """Map between Rhino object GUIDs and volmesh facelabel identifiers."""
-        return self._guid_facelabel
-
-    @guid_facelabel.setter
-    def guid_facelabel(self, values):
-        self._guid_facelabel = dict(values)
-
-    @property
-    def guid_celllabel(self):
-        """Map between Rhino object GUIDs and volmesh celllabel identifiers."""
-        return self._guid_celllabel
-
-    @guid_celllabel.setter
-    def guid_celllabel(self, values):
-        self._guid_celllabel = dict(values)
-
-    @property
     def guids(self):
         """list: The GUIDs of all Rhino objects created by this artist."""
         guids = self._guids
@@ -249,71 +231,83 @@ class VolMeshObject(Object):
         guids += list(self.guid_edge)
         guids += list(self.guid_face)
         guids += list(self.guid_cell)
-        guids += list(self.guid_vertexlabel)
-        guids += list(self.guid_edgelabel)
-        guids += list(self.guid_facelabel)
-        guids += list(self.guid_celllabel)
         return guids
 
     @property
     def vertex_color(self):
-        """dict: Dictionary mapping vertices to colors."""
+        """dict: Dictionary mapping vertices to colors.
+
+        Only RGB color values are allowed.
+        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
+        a dictionary will be created automatically with the provided color mapped to all vertices.
+        """
         if not self._vertex_color:
-            self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.volmesh.vertices()}
+            self._vertex_color = {vertex: self.artist.default_vertexcolor for vertex in self.volmesh.vertices()}
         return self._vertex_color
 
     @vertex_color.setter
     def vertex_color(self, vertex_color):
         if isinstance(vertex_color, dict):
             self._vertex_color = vertex_color
-        elif len(vertex_color) == 3:
-            if all(isinstance(c, (int, float)) for c in vertex_color):
-                self._vertex_color = {vertex: vertex_color for vertex in self.volmesh.vertices()}
+        elif is_color_rgb(vertex_color):
+            self._vertex_color = {vertex: vertex_color for vertex in self.volmesh.vertices()}
 
     @property
     def edge_color(self):
-        """dict: Dictionary mapping edges to colors."""
+        """dict: Dictionary mapping edges to colors.
+
+        Only RGB color values are allowed.
+        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
+        a dictionary will be created automatically with the provided color mapped to all edges.
+        """
         if not self._edge_color:
-            self._edge_color = {edge: self.default_edgecolor for edge in self.volmesh.edges()}
+            self._edge_color = {edge: self.artist.default_edgecolor for edge in self.volmesh.edges()}
         return self._edge_color
 
     @edge_color.setter
     def edge_color(self, edge_color):
         if isinstance(edge_color, dict):
             self._edge_color = edge_color
-        elif len(edge_color) == 3:
-            if all(isinstance(c, (int, float)) for c in edge_color):
-                self._edge_color = {edge: edge_color for edge in self.volmesh.edges()}
+        elif is_color_rgb(edge_color):
+            self._edge_color = {edge: edge_color for edge in self.volmesh.edges()}
 
     @property
     def face_color(self):
-        """dict: Dictionary mapping faces to colors."""
+        """dict: Dictionary mapping faces to colors.
+
+        Only RGB color values are allowed.
+        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
+        a dictionary will be created automatically with the provided color mapped to all faces.
+        """
         if not self._face_color:
-            self._face_color = {face: self.default_facecolor for face in self.volmesh.faces()}
+            self._face_color = {face: self.artist.default_facecolor for face in self.volmesh.faces()}
         return self._face_color
 
     @face_color.setter
     def face_color(self, face_color):
         if isinstance(face_color, dict):
             self._face_color = face_color
-        elif len(face_color) == 3:
-            if all(isinstance(c, (int, float)) for c in face_color):
-                self._face_color = {face: face_color for face in self.volmesh.faces()}
+        elif is_color_rgb(face_color):
+            self._face_color = {face: face_color for face in self.volmesh.faces()}
 
     @property
     def cell_color(self):
-        """dict: Dictionary mapping cells to colors."""
+        """dict: Dictionary mapping cells to colors.
+
+        Only RGB color values are allowed.
+        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
+        a dictionary will be created automatically with the provided color mapped to all cells.
+        """
         if not self._cell_color:
-            self._cell_color = {cell: self.default_cellcolor for cell in self.volmesh.cells()}
+            self._cell_color = {cell: self.artist.default_cellcolor for cell in self.volmesh.cells()}
         return self._cell_color
 
     @cell_color.setter
     def cell_color(self, cell_color):
         if isinstance(cell_color, dict):
             self._cell_color = cell_color
-        elif len(cell_color) == 3:
-            if all(isinstance(c, (int, float)) for c in cell_color):
-                self._cell_color = {cell: cell_color for cell in self.volmesh.cells()}
+        elif is_color_rgb(cell_color):
+            self._cell_color = {cell: cell_color for cell in self.volmesh.cells()}
 
     def clear(self):
         """Clear all objects previously drawn by this artist.
@@ -323,10 +317,6 @@ class VolMeshObject(Object):
         self._guid_edge = {}
         self._guid_face = {}
         self._guid_cell = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
-        self._guid_celllabel = {}
 
     def draw(self):
         """Draw the volmesh using the visualisation settings.
@@ -369,7 +359,7 @@ class VolMeshObject(Object):
         raise NotImplementedError
 
     def select_vertex(self, message="Select one vertex."):
-        """Select one vertex of the mesh.
+        """Select one vertex of the volmesh.
 
         Returns
         -------
@@ -425,7 +415,17 @@ class VolMeshObject(Object):
             ``True`` if the update was successful.
             ``False`` otherwise.
         """
-        return mesh_update_attributes(self.volmesh)
+        names = sorted(self.volmesh.attributes.keys())
+        values = [str(self.volmesh.attributes[name]) for name in names]
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                try:
+                    self.volmesh.attributes[name] = ast.literal_eval(value)
+                except (ValueError, TypeError):
+                    self.volmesh.attributes[name] = value
+            return True
+        return False
 
     def modify_vertices(self, vertices, names=None):
         """Update the attributes of selected vertices.
@@ -445,7 +445,28 @@ class VolMeshObject(Object):
             False otherwise.
 
         """
-        return mesh_update_vertex_attributes(self.volmesh, vertices, names=names)
+        names = names or self.volmesh.default_vertex_attributes.keys()
+        names = sorted(names)
+        values = self.volmesh.vertex_attributes(vertices[0], names)
+        if len(vertices) > 1:
+            for i, name in enumerate(names):
+                for vertex in vertices[1:]:
+                    if values[i] != self.volmesh.vertex_attribute(vertex, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for vertex in vertices:
+                    try:
+                        self.volmesh.vertex_attribute(vertex, name, ast.literal_eval(value))
+                    except (ValueError, TypeError):
+                        self.volmesh.vertex_attribute(vertex, name, value)
+            return True
+        return False
 
     def modify_edges(self, edges, names=None):
         """Update the attributes of the edges.
@@ -465,7 +486,30 @@ class VolMeshObject(Object):
             ``False`` otherwise.
 
         """
-        return mesh_update_edge_attributes(self.volmesh, edges, names=names)
+        names = names or self.volmesh.default_edge_attributes.keys()
+        names = sorted(names)
+        edge = edges[0]
+        values = self.volmesh.edge_attributes(edge, names)
+        if len(edges) > 1:
+            for i, name in enumerate(names):
+                for edge in edges[1:]:
+                    if values[i] != self.volmesh.edge_attribute(edge, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for edge in edges:
+                    try:
+                        value = ast.literal_eval(value)
+                    except (SyntaxError, ValueError, TypeError):
+                        pass
+                    self.volmesh.edge_attribute(edge, name, value)
+            return True
+        return False
 
     def modify_faces(self, faces, names=None):
         """Update the attributes of selected faces.
@@ -485,19 +529,45 @@ class VolMeshObject(Object):
             False otherwise.
 
         """
-        return mesh_update_face_attributes(self.volmesh, faces, names=names)
+        names = names or self.volmesh.default_face_attributes.keys()
+        names = sorted(names)
+        values = self.volmesh.face_attributes(faces[0], names)
+        if len(faces) > 1:
+            for i, name in enumerate(names):
+                for face in faces[1:]:
+                    if values[i] != self.volmesh.face_attribute(face, name):
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value == '-':
+                    continue
+                for face in faces:
+                    try:
+                        self.volmesh.face_attribute(face, name, ast.literal_eval(value))
+                    except (ValueError, TypeError):
+                        self.volmesh.face_attribute(face, name, value)
+            return True
+        return False
 
     def move(self):
         """Move the entire volmesh object to a different location."""
         raise NotImplementedError
 
-    def move_vertex(self, vertex):
+    def move_vertex(self, vertex, constraint=None, allow_off=True):
         """Move a single vertex of the volmesh object and update the data structure accordingly.
 
         Parameters
         ----------
         vertex : int
             The identifier of the vertex.
+        constraint : :class:`Rhino.Geometry`, optional
+            A Rhino geometry object to constrain the movement to.
+            By default the movement is unconstrained.
+        allow_off : bool, optional (True)
+            Allow the vertex to move off the constraint.
 
         Returns
         -------
@@ -505,7 +575,27 @@ class VolMeshObject(Object):
             True if the operation was successful.
             False otherwise.
         """
-        return mesh_move_vertex(self.volmesh, vertex)
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        nbrs = [self.volmesh.vertex_coordinates(nbr) for nbr in self.volmesh.vertex_neighbors(vertex)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
+
+        def OnDynamicDraw(sender, e):
+            for ep in nbrs:
+                sp = e.CurrentPoint
+                e.Display.DrawDottedLine(sp, ep, color)
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.DynamicDraw += OnDynamicDraw
+        if constraint:
+            gp.Constrain(constraint, allow_off)
+
+        gp.Get()
+        if gp.CommandResult() == Rhino.Commands.Result.Success:
+            self.volmesh.vertex_attributes(vertex, 'xyz', list(gp.Point()))
+            return True
+        return True
 
     def move_vertices(self, vertices):
         """Move a multiple vertices of the volmesh object and update the data structure accordingly.
@@ -521,16 +611,70 @@ class VolMeshObject(Object):
             True if the operation was successful.
             False otherwise.
         """
-        return mesh_move_vertices(self.volmesh, vertices)
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        lines = []
+        connectors = []
+
+        for vertex in vertices:
+            a = self.volmesh.vertex_coordinates(vertex)
+            nbrs = self.volmesh.vertex_neighbors(vertex)
+            for nbr in nbrs:
+                b = self.volmesh.vertex_coordinates(nbr)
+                line = [Point3d(* a), Point3d(* b)]
+                if nbr in vertices:
+                    lines.append(line)
+                else:
+                    connectors.append(line)
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move from?')
+        gp.Get()
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        start = gp.Point()
+
+        def OnDynamicDraw(sender, e):
+            end = e.CurrentPoint
+            vector = end - start
+            for a, b in lines:
+                a = a + vector
+                b = b + vector
+                e.Display.DrawDottedLine(a, b, color)
+            for a, b in connectors:
+                a = a + vector
+                e.Display.DrawDottedLine(a, b, color)
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.SetBasePoint(start, False)
+        gp.DrawLineFromPoint(start, True)
+        gp.DynamicDraw += OnDynamicDraw
+        gp.Get()
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        end = gp.Point()
+        vector = list(end - start)
+
+        for vertex in vertices:
+            xyz = self.volmesh.vertex_attributes(vertex, 'xyz')
+            self.volmesh.vertex_attributes(vertex, 'xyz', add_vectors(xyz, vector))
+        return True
 
     # it is not entirely clear what is meant with this in terms of face/halfface
-    def move_face(self, face):
+    def move_face(self, face, constraint=None, allow_off=True):
         """Move a single face of the volmesh object and update the data structure accordingly.
 
         Parameters
         ----------
         face : int
             The identifier of the face.
+        constraint : Rhino.Geometry (None)
+            A Rhino geometry object to constrain the movement to.
+            By default the movement is unconstrained.
+        allow_off : bool (False)
+            Allow the vertex to move off the constraint.
 
         Returns
         -------
@@ -538,4 +682,25 @@ class VolMeshObject(Object):
             True if the operation was successful.
             False otherwise.
         """
-        return mesh_move_face(self.volmesh, face)
+        def OnDynamicDraw(sender, e):
+            for ep in nbrs:
+                sp = e.CurrentPoint
+                e.Display.DrawDottedLine(sp, ep, color)
+
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        nbrs = [self.volmesh.face_coordinates(nbr) for nbr in self.volmesh.face_neighbors(face)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.DynamicDraw += OnDynamicDraw
+        if constraint:
+            gp.Constrain(constraint, allow_off)
+
+        gp.Get()
+
+        if gp.CommandResult() == Rhino.Commands.Result.Success:
+            self.volmesh.face_attributes(face, 'xyz', list(gp.Point()))
+            return True
+        return False
