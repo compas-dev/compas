@@ -51,11 +51,9 @@ class BoxArtist(ShapeArtist):
         list
             The GUIDs of the objects created in Rhino.
         """
-        color = self.color
-        name = self.shape.name
         vertices = [list(vertex) for vertex in self.shape.vertices]
         faces = self.shape.faces
         guids = []
-        guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=name, color=color, disjoint=True, clear=False, redraw=False)
+        guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.shape.name, color=self.color, disjoint=True, clear=False, redraw=False)
         guids.append(guid)
         return guids

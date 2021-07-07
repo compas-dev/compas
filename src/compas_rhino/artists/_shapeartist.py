@@ -54,6 +54,7 @@ class ShapeArtist(Artist):
 
     @property
     def color(self):
+        """tuple : The RGB color value."""
         if not self._color:
             self._color = self.default_color
         return self._color
