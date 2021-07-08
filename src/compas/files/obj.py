@@ -20,6 +20,58 @@ __all__ = [
 class OBJ(object):
     """Read and write files in OBJ format.
 
+    Currently, reading is only supported for polygonal geometry.
+    Writing is only supported for meshes.
+
+    Examples
+    --------
+    Reading and writing of a single mesh.
+
+    .. code-block:: python
+
+        from compas.datastructures import Mesh
+        from compas.files import OBJ
+
+        mesh = Mesh.from_polyhedron(12)
+
+        # write to file
+        obj = OBJ('mesh.obj')
+        obj.write(mesh)
+
+        # read from file
+        obj = OBJ('mesh.obj')
+        obj.read()
+
+        mesh = Mesh.from_vertices_and_faces(obj.vertices, obj.faces)
+
+    Reading and writing of multiple meshes as separate objects in a single OBJ file.
+
+    .. code-block:: python
+
+        from compas.geometry import Pointcloud, Translation
+        from compas.datastructures import Mesh
+        from compas.files import OBJ
+
+        meshes = []
+        for point in Pointcloud.from_bounds(10, 10, 10, 100):
+            mesh = Mesh.from_polyhedron(12)
+            mesh.transform(Translation.from_vector(point))
+            meshes.append(mesh)
+
+        # write to file
+        obj = OBJ('meshes.obj')
+        obj.write(meshes)
+
+        # read from file
+        obj = OBJ('meshes.obj')
+        obj.read()
+
+        meshes = []
+        for name in obj.objects:
+            mesh = Mesh.from_vertices_and_faces(* obj.objects[name])
+            mesh.name = name
+            meshes.append(mesh)
+
     References
     ----------
     .. [1] http://paulbourke.net/dataformats/obj/
