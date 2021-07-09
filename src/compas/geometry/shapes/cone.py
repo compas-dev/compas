@@ -79,14 +79,7 @@ class Cone(Shape):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the cone.
-
-        Returns
-        -------
-        dict
-            The cone data.
-
-        """
+        """dict: Returns the data dictionary that represents the cone."""
         return {'circle': self.circle.data, 'height': self.height}
 
     @data.setter

@@ -5,5 +5,5 @@ from __future__ import division
 from compas_rhino.objects._shapeobject import ShapeObject
 
 
-class BoxObject(ShapeObject):
+class PolyhedronObject(ShapeObject):
     pass

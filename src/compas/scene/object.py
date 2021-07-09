@@ -17,29 +17,29 @@ class BaseObject(object):
 
     Parameters
     ----------
-    item: :class:`compas.base.Base`
+    item : :class:`compas.base.Base`
         A COMPAS object.
-    scene: :class:`compas.scene.BaseScene`, optional
+    scene : :class:`compas.scene.BaseScene`, optional
         A scene object.
-    name: str, optional
+    name : str, optional
         The name of the object.
-    visible: bool, optional
+    visible : bool, optional
         Toggle for the visibility of the object.
 
     Attributes
     ----------
-    item: :class:`compas.base.Base`
+    item : :class:`compas.base.Base`
         A COMPAS object.
-    scene: :class:`compas.scene.BaseScene`
+    scene : :class:`compas.scene.BaseScene`
         A scene object.
-    artist: :class:`compas.scene.BaseArtist`
+    artist : :class:`compas.scene.BaseArtist`
         The artist matching the type of ``item``.
-    uuid: str
+    uuid : str
         The universaly unique identifier of the object.
-    name: str
+    name : str
         The name of the object.
         This is an alias for the name of ``item``.
-    visible: bool
+    visible : bool
         Toggle for the visibility of the object in the scene.
 
     """
@@ -113,7 +113,7 @@ class BaseObject(object):
         return object_type(item, **kwargs)
 
     def clear(self):
-        """Clear all previously created Rhino objects."""
+        """Clear all previously created objects."""
         raise NotImplementedError
 
     def draw(self):

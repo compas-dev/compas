@@ -5,5 +5,8 @@ from __future__ import division
 from compas_rhino.objects._shapeobject import ShapeObject
 
 
-class BoxObject(ShapeObject):
-    pass
+class ConeObject(ShapeObject):
+
+    def __init__(self, shape, u=None, **kwargs):
+        super(ConeObject, self).__init__(shape, **kwargs)
+        self.artist.u = u
