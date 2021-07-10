@@ -41,6 +41,9 @@ class RobotModelArtist(BaseRobotModelArtist, Artist):
         super(RobotModelArtist, self).__init__(model)
         self.layer = layer
 
+    # i would move this to the object
+    # in my opinion, the artists draws geometry as is
+    # objects provide all other functionality
     def transform(self, native_mesh, transformation):
         T = xform_from_transformation(transformation)
         native_mesh.Transform(T)
@@ -73,6 +76,10 @@ class RobotModelArtist(BaseRobotModelArtist, Artist):
         if name:
             mesh.UserDictionary.Set('MeshName', name)
 
+        # this is something that could be used in general
+        # to create a link between COMPAS geometry and Rhino geometry
+        # re my remarks on slack about conversions to other types of geometry done implicitly by Rhino
+        # we could store the dtype, data, and is_dirty to indicate that the representation in Rhino has changed
         if color:
             r, g, b, a = color
             mesh.UserDictionary.Set('MeshColor.R', r)
