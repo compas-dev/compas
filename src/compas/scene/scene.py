@@ -41,8 +41,8 @@ class BaseScene(object):
 
         Returns
         -------
-        uuid
-            The identifier of the created object.
+        :class:`compas.scene.BaseObject`
+            The created object.
         """
         obj = BaseObject.build(item, scene=self, name=name, visible=visible, **kwargs)
         self.objects[obj.uuid] = obj
@@ -53,7 +53,7 @@ class BaseScene(object):
 
         Parameters
         ----------
-        guid : str
+        uuid : str
 
         Returns
         -------
@@ -91,11 +91,13 @@ class BaseScene(object):
         """Clear all objects from the scene."""
         raise NotImplementedError
 
-    def update(self):
+    def update(self, pause=None):
         """Update the scene by redrawing all objects."""
         raise NotImplementedError
 
-    def save(self):
+    redraw = update
+
+    def save(self, filename):
         """Save the scene."""
         raise NotImplementedError
 
@@ -105,6 +107,10 @@ class BaseScene(object):
 
     def redo(self):
         """Redo scene updates."""
+        raise NotImplementedError
+
+    def synchronize(self):
+        """Synchronize all data items with the current state of the scene objects."""
         raise NotImplementedError
 
     def on(self, interval=None, frames=None, record=False, recording=None, dpi=150):
