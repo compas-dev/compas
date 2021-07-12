@@ -508,7 +508,7 @@ class OBJWriter(object):
             else:
                 self._write_vertices(mesh)
                 self._write_faces(mesh)
-            self._v += mesh.number_of_vertices()
+                self._v += mesh.number_of_vertices()
 
     def _write_vertices(self, mesh):
         for key in mesh.vertices():
@@ -524,14 +524,13 @@ class OBJWriter(object):
             self.file.write('f {0}\n'.format(vertices_str))
 
     def _write_vertices_and_faces(self, mesh):
-        index = 0 + self._v
         for face in mesh.faces():
             vertices = mesh.face_vertices(face)
             indices = []
             for vertex in vertices:
                 x, y, z = mesh.vertex_coordinates(vertex)
                 self.file.write(self.vertex_tpl.format(x, y, z))
-                indices.append(index)
-                index += 1
+                indices.append(self._v)
+                self._v += 1
             indices_str = ' '.join([str(i) for i in indices])
             self.file.write('f {0}\n'.format(indices_str))
