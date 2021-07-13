@@ -1,3 +1,20 @@
+"""
+******************
+scene
+******************
+
+.. currentmodule:: compas_rhino.scene
+
+Classes
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Scene
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -25,19 +42,79 @@ class Scene(BaseScene):
 
     Examples
     --------
+    Basic scene management in Rhino.
+
     .. code-block:: python
 
-        import compas
-        from compas.datastructures import Mesh
+        from compas.geometry import Frame, Box
         from compas_rhino.scene import Scene
 
-        mesh = Mesh.from_off(compas.get('tubemesh.off'))
+        box = Box(Frame.worldXY(), 1, 1, 1)
 
         scene = Scene()
-        scene.add(mesh, name="Tubemesh", layer="SceneTest")
-
-        scene.clear_layers()
+        scene.add(box, name='Box', color=(255, 0, 0))
         scene.update()
+
+
+    Note that, after adding objects, at least one call has to be made to the update method of the scene
+    to make sure the objects are placed in the Rhino model.
+
+    Object attributes can be set at the time when the data item is added to the scene,
+    as above, with additional keyword arguments in the ``add`` call,
+    or afterwards, by modyfying the attributes of the object directly.
+
+    Only attributes that were modified before the call to the update method of the scene object will have an effect.
+
+    .. code-block:: python
+
+        from compas.geometry import Frame, Box
+        from compas_rhino.scene import Scene
+
+        box = Box(Frame.worldXY(), 1, 1, 1)
+
+        scene = Scene()
+
+        boxobj = scene.add(box)
+        boxobj.name = 'Box'
+        boxobj.color = (255, 0, 0)
+
+        scene.update()
+
+
+    Multiple scene objects can share a single item of COMPAS data.
+
+    .. code-block:: python
+
+        from compas.geometry import Frame, Box
+        from compas_rhino.scene import Scene
+
+        box = Box(Frame.worldXY(), 1, 1, 1)
+
+        scene = Scene()
+
+        boxobj = scene.add(box)
+        boxobj.name = 'Box'
+        boxobj.color = (255, 0, 0)
+
+        scene.update()
+
+
+    Dynamic scenes.
+
+    .. code-block:: python
+
+        from compas_rhino.scene import Scene
+
+        scene = Scene()
+
+
+    Synchronize modified objects.
+
+    .. code-block:: python
+
+        from compas_rhino.scene import Scene
+
+        scene = Scene()
 
     """
 
