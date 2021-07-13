@@ -97,9 +97,9 @@ class DataDecoder(json.JSONDecoder):
             raise DecoderError("The data type of the object should be in the following format: '{}/{}'".format(o.__class__.__module__, o.__class__.__name__))
 
         except ImportError:
-            raise DecoderError("The module of the data type can't be found.")
+            raise DecoderError("The module of the data type can't be found: {}.".format(o['dtype']))
 
         except AttributeError:
-            raise DecoderError("The data type can't be found in the specified module.")
+            raise DecoderError("The data type can't be found in the specified module: {}.".format(o['dtype']))
 
         return cls.from_data(o['value'])
