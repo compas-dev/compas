@@ -157,7 +157,7 @@ Artist.register(RobotModel, RobotModelArtist)
 
 
 __all__ = [
-    'BaseArtist',
+    'Artist',
     'PrimitiveArtist',
     'ShapeArtist',
     'CircleArtist',

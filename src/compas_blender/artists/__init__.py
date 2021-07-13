@@ -65,7 +65,7 @@ Base Classes
 
 """
 
-from ._artist import BaseArtist  # noqa: F401
+from ._artist import Artist  # noqa: F401
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .robotmodelartist import (  # noqa: F401
