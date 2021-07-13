@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added equality comparison for pointclouds.
 * Added `compas.data.is_sequence_of_uint`.
 * Added general plotter for geometry objects and data structures based on the artist registration mechanism.
+* Added support for multimesh files to OBJ reader/writer.
 
 ### Changed
 

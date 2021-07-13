@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from collections import OrderedDict
+from collections import defaultdict
 
 import compas
 from compas import _iotools
@@ -18,6 +19,58 @@ __all__ = [
 
 class OBJ(object):
     """Read and write files in OBJ format.
+
+    Currently, reading is only supported for polygonal geometry.
+    Writing is only supported for meshes.
+
+    Examples
+    --------
+    Reading and writing of a single mesh.
+
+    .. code-block:: python
+
+        from compas.datastructures import Mesh
+        from compas.files import OBJ
+
+        mesh = Mesh.from_polyhedron(12)
+
+        # write to file
+        obj = OBJ('mesh.obj')
+        obj.write(mesh)
+
+        # read from file
+        obj = OBJ('mesh.obj')
+        obj.read()
+
+        mesh = Mesh.from_vertices_and_faces(obj.vertices, obj.faces)
+
+    Reading and writing of multiple meshes as separate objects in a single OBJ file.
+
+    .. code-block:: python
+
+        from compas.geometry import Pointcloud, Translation
+        from compas.datastructures import Mesh
+        from compas.files import OBJ
+
+        meshes = []
+        for point in Pointcloud.from_bounds(10, 10, 10, 100):
+            mesh = Mesh.from_polyhedron(12)
+            mesh.transform(Translation.from_vector(point))
+            meshes.append(mesh)
+
+        # write to file
+        obj = OBJ('meshes.obj')
+        obj.write(meshes)
+
+        # read from file
+        obj = OBJ('meshes.obj')
+        obj.read()
+
+        meshes = []
+        for name in obj.objects:
+            mesh = Mesh.from_vertices_and_faces(* obj.objects[name])
+            mesh.name = name
+            meshes.append(mesh)
 
     References
     ----------
@@ -71,6 +124,14 @@ class OBJ(object):
     def faces(self):
         return self.parser.faces
 
+    @property
+    def objects(self):
+        return self.parser.objects
+
+    @property
+    def groups(self):
+        return self.parser.groups
+
 
 class OBJReader(object):
     """Read the contents of an *obj* file.
@@ -102,6 +163,10 @@ class OBJReader(object):
         Curves
     surfaces : list
         Surfaces
+    objects : dict
+        The named objects.
+    groups : dict
+        The named polygon groups.
 
     Notes
     -----
@@ -138,9 +203,10 @@ class OBJReader(object):
         # free-form statements
         # parm, trim, hole, scrv, sp, end
         # grouping
-        self.groups = {}
-        self.objects = {}
+        self.groups = defaultdict(list)
+        self.objects = defaultdict(list)
         self.group = None
+        self.object = None
 
     def open(self):
         with _iotools.open_file(self.filepath, 'r') as f:
@@ -191,6 +257,8 @@ class OBJReader(object):
         * ``bmat``: freeform attribute *basis matrix*
         * ``step``: freeform attribute *step size*
         * ``cstype``: freeform attribute *curve or surface type*
+        * ``o``: start of named object
+        * ``g``: start of a named group
 
         """
         if not self.content:
@@ -268,15 +336,17 @@ class OBJReader(object):
         # point
         if name == 'p':
             self.points.append(int(data[0]) - 1)
-            if self.group:
-                self.groups[self.group].append(('p', len(self.points) - 1))
+            ref = 'p', len(self.points) - 1
+            self.groups[self.group].append(ref)
+            self.objects[self.object].append(ref)
         # line
         elif name == 'l':
             if len(data) < 2:
                 return
             self.lines.append([int(i) - 1 for i in data])
-            if self.group:
-                self.groups[self.group].append(('l', len(self.lines) - 1))
+            ref = 'l', len(self.lines) - 1
+            self.groups[self.group].append(ref)
+            self.objects[self.object].append(ref)
         # face
         elif name == 'f':
             if len(data) < 3:
@@ -287,8 +357,9 @@ class OBJReader(object):
                 i = int(parts[0]) - 1
                 face.append(i)
             self.faces.append(face)
-            if self.group:
-                self.groups[self.group].append(('f', len(self.faces) - 1))
+            ref = 'f', len(self.faces) - 1
+            self.groups[self.group].append(ref)
+            self.objects[self.object].append(ref)
 
     def _read_freeform_attribute(self, name, data):
         if name == 'deg':
@@ -313,22 +384,29 @@ class OBJReader(object):
             if self.deg[0] == 1:
                 if len(data) == 4:
                     self.lines.append((int(data[2]) - 1, int(data[3]) - 1))
-                    if self.group:
-                        self.groups[self.group].append(('l', len(self.lines) - 1))
+                    ref = 'l', len(self.lines) - 1
+                    self.groups[self.group].append(ref)
+                    self.objects[self.object].append(ref)
                     return
                 if len(data) > 4:
                     self.lines.append([int(d) - 1 for d in data[2:]])
-                    # if self.group:
-                    #     self.groups[self.group].append(('l', len(self.lines) - 1))
+                    ref = 'l', len(self.lines) - 1
+                    self.groups[self.group].append(ref)
+                    self.objects[self.object].append(ref)
                     return
 
     def _read_freeform_statement(self, name, data):
         pass
 
     def _read_grouping(self, name, data):
+        if name == 'o':
+            self.object = ' '.join(data)
+            self.objects[self.object] = []
+            return
         if name == 'g':
-            self.group = data[0]
+            self.group = ' '.join(data)
             self.groups[self.group] = []
+            self.objects[self.object].append(('g', self.group))
             return
 
 
@@ -351,7 +429,6 @@ class OBJParser(object):
         self.surfaces = None
         self.groups = None
         self.objects = None
-        # self.parse()
 
     def parse(self):
         index_key = OrderedDict()
@@ -371,69 +448,89 @@ class OBJParser(object):
         self.polylines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
         self.faces = [[index_index[index] for index in face] for face in self.reader.faces]
         self.groups = self.reader.groups
+        self.objects = {}
+        for name in self.reader.objects:
+            faces = []
+            for item in self.reader.objects[name]:
+                if item[0] == 'f':
+                    faces.append(self.faces[item[1]])
+            vertices = {}
+            for face in faces:
+                for vertex in face:
+                    vertices[vertex] = self.vertices[vertex]
+            self.objects[name] = vertices, faces
 
 
 class OBJWriter(object):
 
-    def __init__(self, filepath, mesh, precision=None, unweld=False, author=None, email=None, date=None):
+    def __init__(self, filepath, meshes, precision=None, unweld=False, author=None, email=None, date=None):
         self.filepath = filepath
-        self.mesh = mesh
+        self.meshes = meshes if isinstance(meshes, (list, tuple)) else [meshes]
         self.author = author
         self.email = email
         self.date = date
         self.precision = precision or compas.PRECISION
         self.unweld = unweld
         self.vertex_tpl = "v {0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
-        self.v = mesh.number_of_vertices()
-        self.f = mesh.number_of_faces()
-        self.e = mesh.number_of_edges()
+        self.v = sum(mesh.number_of_vertices() for mesh in self.meshes)
+        self.f = sum(mesh.number_of_faces() for mesh in self.meshes)
+        self.e = sum(mesh.number_of_edges() for mesh in self.meshes)
+        self._v = 1
         self.file = None
 
     def write(self):
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self.write_header()
-            if self.unweld:
-                self.write_vertices_and_faces()
-            else:
-                self.write_vertices()
-                self.write_faces()
+            self.write_meshes()
 
     def write_header(self):
-        self.file.write("# OBJ\n")
-        self.file.write("# COMPAS\n")
-        self.file.write("# version: {}\n".format(compas.__version__))
-        self.file.write("# precision: {}\n".format(self.precision))
-        self.file.write("# V F E: {} {} {}\n".format(self.v, self.f, self.e))
+        self.file.write('# OBJ\n')
+        self.file.write('# COMPAS\n')
+        self.file.write('# version: {}\n'.format(compas.__version__))
+        self.file.write('# precision: {}\n'.format(self.precision))
+        self.file.write('# V F E: {} {} {}\n'.format(self.v, self.f, self.e))
         if self.author:
-            self.file.write("# author: {}\n".format(self.author))
+            self.file.write('# author: {}\n'.format(self.author))
         if self.email:
-            self.file.write("# email: {}\n".format(self.email))
+            self.file.write('# email: {}\n'.format(self.email))
         if self.date:
-            self.file.write("# date: {}\n".format(self.date))
-        self.file.write("\n")
+            self.file.write('# date: {}\n'.format(self.date))
+        self.file.write('\n')
 
-    def write_vertices(self):
-        for key in self.mesh.vertices():
-            x, y, z = self.mesh.vertex_coordinates(key)
+    def write_meshes(self):
+        for index, mesh in enumerate(self.meshes):
+            name = mesh.name
+            if name == 'Mesh':
+                name = 'Mesh {}'.format(index)
+            self.file.write('o {}\n'.format(name))
+            if self.unweld:
+                self._write_vertices_and_faces(mesh)
+            else:
+                self._write_vertices(mesh)
+                self._write_faces(mesh)
+                self._v += mesh.number_of_vertices()
+
+    def _write_vertices(self, mesh):
+        for key in mesh.vertices():
+            x, y, z = mesh.vertex_coordinates(key)
             self.file.write(self.vertex_tpl.format(x, y, z))
 
-    def write_faces(self):
-        key_index = self.mesh.key_index()
-        for fkey in self.mesh.faces():
-            vertices = self.mesh.face_vertices(fkey)
-            vertices = [key_index[key] + 1 for key in vertices]
-            vertices_str = " ".join([str(index) for index in vertices])
-            self.file.write("f {0}\n".format(vertices_str))
+    def _write_faces(self, mesh):
+        key_index = mesh.key_index()
+        for fkey in mesh.faces():
+            vertices = mesh.face_vertices(fkey)
+            vertices = [key_index[key] + self._v for key in vertices]
+            vertices_str = ' '.join([str(index) for index in vertices])
+            self.file.write('f {0}\n'.format(vertices_str))
 
-    def write_vertices_and_faces(self):
-        index = 1
-        for face in self.mesh.faces():
-            vertices = self.mesh.face_vertices(face)
+    def _write_vertices_and_faces(self, mesh):
+        for face in mesh.faces():
+            vertices = mesh.face_vertices(face)
             indices = []
             for vertex in vertices:
-                x, y, z = self.mesh.vertex_coordinates(vertex)
+                x, y, z = mesh.vertex_coordinates(vertex)
                 self.file.write(self.vertex_tpl.format(x, y, z))
-                indices.append(index)
-                index += 1
-            indices_str = " ".join([str(i) for i in indices])
-            self.file.write("f {0}\n".format(indices_str))
+                indices.append(self._v)
+                self._v += 1
+            indices_str = ' '.join([str(i) for i in indices])
+            self.file.write('f {0}\n'.format(indices_str))
