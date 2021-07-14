@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+from compas.utilities import is_color_rgb
 from ._artist import Artist
 
 
@@ -25,31 +25,37 @@ class PrimitiveArtist(Artist):
     ----------
     primitive: :class:`compas.geometry.Primitive`
         The geometry of the primitive.
-    name : str
-        The name of the primitive.
     color : tuple
         The RGB components of the base color of the primitive.
     layer : str
         The layer in which the primitive should be contained.
-
+    default_color : tuple
+        The default rgb color value of the primitive (``(0, 0, 0)``).
     """
 
+    default_color = (0, 0, 0)
+
     def __init__(self, primitive, color=None, layer=None):
-        super(PrimitiveArtist, self).__init__()
-        self.primitive = primitive
+        super(PrimitiveArtist, self).__init__(primitive)
+        self._color = None
         self.color = color
         self.layer = layer
 
     @property
-    def name(self):
-        """str : Reference to the name of the primitive."""
-        return self.primitive.name
+    def primitive(self):
+        return self.item
 
-    @name.setter
-    def name(self, name):
-        self.primitive.name = name
+    @primitive.setter
+    def primitive(self, primitive):
+        self.item = primitive
 
-    def clear_layer(self):
-        """Clear the layer containing the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
+    @property
+    def color(self):
+        if not self._color:
+            self._color = self.default_color
+        return self._color
+
+    @color.setter
+    def color(self, color):
+        if is_color_rgb(color):
+            self._color = color

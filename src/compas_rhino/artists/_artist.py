@@ -19,16 +19,9 @@ class Artist(BaseArtist):
 
     """
 
-    def __init__(self, layer=None):
-        super(Artist, self).__init__()
+    def __init__(self, item, layer=None):
+        super(Artist, self).__init__(item)
         self.layer = layer
-
-    @staticmethod
-    def draw_collection(collection):
-        raise NotImplementedError
-
-    def draw(self):
-        raise NotImplementedError
 
     def redraw(self):
         """Trigger a redraw."""

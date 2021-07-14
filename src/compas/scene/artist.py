@@ -10,8 +10,22 @@ _ITEM_ARTIST = {}
 
 
 class BaseArtist(object):
-    """Base class for all scene artists.
+    """Base class for all artists.
+
+    Parameters
+    ----------
+    item: :class:`compas.data.Data`
+        The data item.
+
+    Attributes
+    ----------
+    item: :class:`compas.data.Data`
+        The data item.
     """
+
+    def __init__(self, item):
+        super(BaseArtist, self).__init__()
+        self.item = item
 
     @staticmethod
     def register(item_type, artist_type):
@@ -43,5 +57,6 @@ class BaseArtist(object):
     def redraw(self):
         raise NotImplementedError
 
-    def clear(self):
+    @staticmethod
+    def draw_collection(collection):
         raise NotImplementedError
