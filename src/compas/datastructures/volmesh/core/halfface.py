@@ -900,7 +900,7 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = "-".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if value is not None:
             if key not in self._edge_data:
                 self._edge_data[key] = {}
@@ -934,7 +934,7 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = "-".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if key in self._edge_data and name in self._edge_data[key]:
             del self._edge_data[key][name]
 
@@ -967,7 +967,7 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = "-".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if values:
             for name, value in zip(names, values):
                 if key not in self._edge_data:
@@ -1097,7 +1097,7 @@ class HalfFace(Datastructure):
         """
         if face not in self._halfface:
             raise KeyError(face)
-        key = "-".join(map(str, sorted(self.halfface_vertices(face))))
+        key = str(tuple(sorted(self.halfface_vertices(face))))
         if value is not None:
             if key not in self._face_data:
                 self._face_data[key] = {}
@@ -1130,7 +1130,7 @@ class HalfFace(Datastructure):
         """
         if face not in self._halfface:
             raise KeyError(face)
-        key = "-".join(map(str, sorted(self.halfface_vertices(face))))
+        key = str(tuple(sorted(self.halfface_vertices(face))))
         if key in self._face_data and name in self._face_data[key]:
             del self._face_data[key][name]
 
@@ -1162,7 +1162,7 @@ class HalfFace(Datastructure):
         """
         if face not in self._halfface:
             raise KeyError(face)
-        key = "-".join(map(str, sorted(self.halfface_vertices(face))))
+        key = str(tuple(sorted(self.halfface_vertices(face))))
         if values:
             for name, value in zip(names, values):
                 if key not in self._face_data:
