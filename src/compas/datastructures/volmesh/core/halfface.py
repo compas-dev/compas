@@ -900,7 +900,7 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = ",".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if value is not None:
             if key not in self._edge_data:
                 self._edge_data[key] = {}
@@ -934,7 +934,7 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = ",".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if key in self._edge_data and name in self._edge_data[key]:
             del self._edge_data[key][name]
 
@@ -967,7 +967,7 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = ",".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if values:
             for name, value in zip(names, values):
                 if key not in self._edge_data:
