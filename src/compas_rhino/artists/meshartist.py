@@ -16,7 +16,7 @@ __all__ = ['MeshArtist']
 
 
 class MeshArtist(Artist):
-    """Artists for drawing mesh data structures.
+    """Artist for drawing mesh data structures.
 
     Parameters
     ----------
@@ -31,6 +31,41 @@ class MeshArtist(Artist):
         The COMPAS mesh associated with the artist.
     layer : str
         The layer in which the mesh should be contained.
+    vertices : list
+        The list of vertices to draw.
+        Default is a list of all vertices of the mesh.
+    edges : list
+        The list of edges to draw.
+        Default is a list of all edges of the mesh.
+    faces : list
+        The list of faces to draw.
+        Default is a list of all faces of the mesh.
+    vertex_xyz : dict[int, tuple(float, float, float)]
+        Mapping between vertices and their view coordinates.
+        The default view coordinates are the actual coordinates of the vertices of the mesh.
+    vertex_color : dict[int, tuple(int, int, int)]
+        Mapping between vertices and RGB color values.
+        The colors have to be integer tuples with values in the range ``0-255``.
+        Missing vertices get the default vertex color (``MeshArtist.default_vertexcolor``).
+    vertex_text : dict[int, str]
+        Mapping between vertices and text labels.
+        Missing vertices are labelled with the corresponding vertex identifiers.
+    edge_color : dict[tuple(int, int), tuple(int, int, int)]
+        Mapping between edges and RGB color values.
+        The colors have to be integer tuples with values in the range ``0-255``.
+        Missing edges get the default edge color (``MeshArtist.default_edgecolor``).
+    edge_text : dict[tuple(int, int), str]
+        Mapping between edges and text labels.
+        Missing edges are labelled with the corresponding edge identifiers.
+    face_color : dict[int, tuple(int, int, int)]
+        Mapping between faces and RGB color values.
+        The colors have to be integer tuples with values in the range ``0-255``.
+        Missing faces get the default face color (``MeshArtist.default_facecolor``).
+    face_text : dict[int, str]
+        Mapping between faces and text labels.
+        Missing faces are labelled with the corresponding face identifiers.
+    meshcolor : tuple(int, int, int)
+        RGB color of the mesh.
 
     Examples
     --------
@@ -63,8 +98,7 @@ class MeshArtist(Artist):
     default_meshcolor = (0, 0, 0)
 
     def __init__(self, mesh, layer=None):
-        super(MeshArtist, self).__init__()
-        self._mesh = None
+        super(MeshArtist, self).__init__(mesh, layer=layer)
         self._vertices = None
         self._edges = None
         self._faces = None
@@ -76,26 +110,19 @@ class MeshArtist(Artist):
         self._vertex_text = None
         self._edge_text = None
         self._face_text = None
-        self.mesh = mesh
-        self.layer = layer
         self.join_faces = False
 
     @property
     def mesh(self):
-        """:class:`Mesh` : A mesh data structure."""
-        return self._mesh
+        return self.item
 
     @mesh.setter
     def mesh(self, mesh):
-        self._mesh = mesh
+        self.item = mesh
         self._vertex_xyz = None
 
     @property
     def vertices(self):
-        """list :
-        A list of mesh vertices to draw.
-        Defaults to all vertices.
-        """
         if self._vertices is None:
             self._vertices = list(self.mesh.vertices())
         return self._vertices
@@ -106,10 +133,6 @@ class MeshArtist(Artist):
 
     @property
     def edges(self):
-        """list :
-        A list of mesh edges to draw.
-        Defaults to all edges.
-        """
         if self._edges is None:
             self._edges = list(self.mesh.edges())
         return self._edges
@@ -120,10 +143,6 @@ class MeshArtist(Artist):
 
     @property
     def faces(self):
-        """list :
-        A list of mesh faces to draw.
-        Defaults to all faces.
-        """
         if self._faces is None:
             self._faces = list(self.mesh.faces())
         return self._faces
@@ -134,10 +153,6 @@ class MeshArtist(Artist):
 
     @property
     def vertex_xyz(self):
-        """dict:
-        The view coordinates of the mesh vertices.
-        The view coordinates default to the actual mesh coordinates.
-        """
         if not self._vertex_xyz:
             return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
         return self._vertex_xyz
@@ -148,12 +163,6 @@ class MeshArtist(Artist):
 
     @property
     def vertex_color(self):
-        """dict: Dictionary mapping vertices to colors.
-
-        Only RGB color values are allowed.
-        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
-        a dictionary will be created automatically with the provided color mapped to all vertices.
-        """
         if not self._vertex_color:
             self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
         return self._vertex_color
@@ -167,12 +176,6 @@ class MeshArtist(Artist):
 
     @property
     def edge_color(self):
-        """dict: Dictionary mapping edges to colors.
-
-        Only RGB color values are allowed.
-        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
-        a dictionary will be created automatically with the provided color mapped to all edges.
-        """
         if not self._edge_color:
             self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
         return self._edge_color
@@ -186,12 +189,6 @@ class MeshArtist(Artist):
 
     @property
     def face_color(self):
-        """dict: Dictionary mapping faces to colors.
-
-        Only RGB color values are allowed.
-        If a single RGB color is assigned to this attribute instead of a dictionary of colors,
-        a dictionary will be created automatically with the provided color mapped to all faces.
-        """
         if not self._face_color:
             self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
         return self._face_color
@@ -205,11 +202,6 @@ class MeshArtist(Artist):
 
     @property
     def meshcolor(self):
-        """tuple :
-        The RGB color value of the mesh.
-        This color is used if all mesh faces are joined,
-        or if the mesh is drawn as a mesh.
-        """
         if not self._meshcolor:
             self._meshcolor = self.default_meshcolor
         return self._meshcolor
@@ -221,12 +213,6 @@ class MeshArtist(Artist):
 
     @property
     def vertex_text(self):
-        """dict : A dictionary mapping vertices to text labels.
-
-        If the assigned value is ``'key'`` or if no value is assigned, every vertex is mapped to its identifier.
-        If the assigned value is ``'index'``, every vertex is mapped to its index in a list of vertices.
-        If a dict is assigned, every vertex is mapped to the value in the dict.
-        """
         if not self._vertex_text:
             self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}
         return self._vertex_text
@@ -242,12 +228,6 @@ class MeshArtist(Artist):
 
     @property
     def edge_text(self):
-        """dict : A dictionary mapping edges to text labels.
-
-        If the assigned value is ``'key'`` or if no value is assigned, every edge is mapped to its identifier.
-        If the assigned value is ``'index'``, every edge is mapped to its index in a list of edges.
-        If a dict is assigned, every edge is mapped to the value in the dict.
-        """
         if not self._edge_text:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
         return self._edge_text
@@ -263,12 +243,6 @@ class MeshArtist(Artist):
 
     @property
     def face_text(self):
-        """dict : A dictionary mapping faces to text labels.
-
-        If the assigned value is ``'key'`` or if no value is assigned, every face is mapped to its identifier.
-        If the assigned value is ``'index'``, every face is mapped to its index in a list of faces.
-        If a dict is assigned, every face is mapped to the value in the dict.
-        """
         if not self._face_text:
             self._face_text = {face: str(face) for face in self.mesh.faces()}
         return self._face_text
@@ -290,11 +264,6 @@ class MeshArtist(Artist):
         """Clear all objects in the "namespace" of the associated mesh."""
         guids = compas_rhino.get_objects(name="{}.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
-
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
 
     # ==========================================================================
     # draw
