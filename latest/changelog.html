@@ -124,6 +124,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed data schema of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.Pointcloud</span></code>.</p></li>
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">Configuration.from_data</span></code> to be backward-compatible with JSON data generated before <code class="docutils literal notranslate"><span class="pre">compas</span> <span class="pre">1.3.0</span></code>.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.drawing.draw_breps</span></code> to assume provided polygon is closed and automatically add missing corner to polycurve constructor.</p></li>
+<li><p>Changed conversion of edges and faces to uniques keys for the data dicts to use the string representation of a sorted tuple of identifiers.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">dtype</span></code> to JSON decoding error message.</p></li>
 </ul>
 </section>
