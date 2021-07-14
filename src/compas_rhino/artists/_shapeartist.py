@@ -126,13 +126,3 @@ class ShapeArtist(Artist):
     def v(self, v):
         if v > 2:
             self._v = v
-
-    def draw(self):
-        """Draw the item associated with the artist.
-
-        Returns
-        -------
-        str
-            The GUID of the object created in Rhino.
-        """
-        pass
