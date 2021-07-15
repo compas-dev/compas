@@ -28,9 +28,6 @@ from compas.geometry.transformations import basis_vectors_from_matrix
 from compas.geometry.transformations import Transformation
 
 
-__all__ = ['Rotation']
-
-
 class Rotation(Transformation):
     """Create a rotation transformation.
 
@@ -64,13 +61,16 @@ class Rotation(Transformation):
     True
     """
 
-    def __init__(self, matrix=None):
+    def __init__(self, matrix=None, check=True):
         if matrix:
             _, _, angles, _, _ = decompose_matrix(matrix)
-            check = matrix_from_euler_angles(angles)
-            if not allclose(flatten(matrix), flatten(check)):
-                raise ValueError('This is not a proper rotation matrix.')
+            if check:
+                if not allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
+                    raise ValueError('This is not a proper rotation matrix.')
         super(Rotation, self).__init__(matrix=matrix)
+
+    def __repr__(self):
+        return "Rotation({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):

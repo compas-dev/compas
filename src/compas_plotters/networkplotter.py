@@ -1,12 +1,12 @@
 from matplotlib.patches import Circle
-from compas_plotters.plotter import Plotter, valuedict
+from compas_plotters._plotter import BasePlotter, valuedict
 
 
 __all__ = ['NetworkPlotter']
 
 
-class NetworkPlotter(Plotter):
-    """Plotter for the visualisation of COMPAS Networks.
+class NetworkPlotter(BasePlotter):
+    """Plotter for the visualization of COMPAS Networks.
 
     Parameters
     ----------

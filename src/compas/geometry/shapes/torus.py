@@ -13,8 +13,6 @@ from compas.geometry import Plane
 
 from compas.geometry.shapes import Shape
 
-__all__ = ['Torus']
-
 
 class Torus(Shape):
     """A torus is defined by a plane and two radii.
@@ -51,10 +49,23 @@ class Torus(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'plane': Plane.DATASCHEMA.fget(None),
+            'radius_axis': schema.And(float, lambda x: x > 0),
+            'radius_pipe': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'torus'
+
     __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
 
-    def __init__(self, plane, radius_axis, radius_pipe):
-        super(Torus, self).__init__()
+    def __init__(self, plane, radius_axis, radius_pipe, **kwargs):
+        super(Torus, self).__init__(**kwargs)
         self._plane = None
         self._radius_axis = None
         self._radius_pipe = None
@@ -81,7 +92,7 @@ class Torus(Shape):
         True
 
         """
-        return {'plane': Plane.worldXY().to_data(),
+        return {'plane': self.plane.data,
                 'radius_axis': self.radius_axis,
                 'radius_pipe': self.radius_pipe}
 
@@ -98,7 +109,7 @@ class Torus(Shape):
 
     @plane.setter
     def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+        self._plane = Plane(*plane)
 
     @property
     def radius_axis(self):
@@ -137,7 +148,7 @@ class Torus(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Torus({0}, {1}, {2})'.format(self.plane, self.radius_axis, self.radius_pipe)
+        return 'Torus({0!r}, {1!r}, {2!r})'.format(self.plane, self.radius_axis, self.radius_pipe)
 
     def __len__(self):
         return 3
@@ -190,8 +201,7 @@ class Torus(Shape):
         >>> torus = Torus.from_data(data)
 
         """
-        torus = cls(Plane.worldXY(), 1, 1)
-        torus.data = data
+        torus = cls(Plane.from_data(data['plane']), data['radius_axis'], data['radius_pipe'])
         return torus
 
     # ==========================================================================

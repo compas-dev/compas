@@ -19,8 +19,6 @@ from compas.geometry.transformations import matrix_from_frame
 from compas.geometry.transformations import matrix_inverse
 from compas.geometry.transformations import Transformation
 
-__all__ = ['Scale']
-
 
 class Scale(Transformation):
     """Creates a scale transformation.
@@ -62,6 +60,9 @@ class Scale(Transformation):
             if not allclose(flatten(matrix), flatten(check)):
                 raise ValueError('This is not a proper scale matrix.')
         super(Scale, self).__init__(matrix=matrix)
+
+    def __repr__(self):
+        return "Scale({0!r})".format(self.matrix)
 
     @classmethod
     def from_factors(cls, factors, frame=None):

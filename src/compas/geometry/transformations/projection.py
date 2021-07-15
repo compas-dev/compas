@@ -20,9 +20,6 @@ from compas.geometry.transformations import matrix_from_perspective_entries
 from compas.geometry.transformations import Transformation
 
 
-__all__ = ['Projection']
-
-
 class Projection(Transformation):
     """Create a projection transformation.
 
@@ -49,6 +46,9 @@ class Projection(Transformation):
             if not allclose(flatten(matrix), flatten(check)):
                 raise ValueError('This is not a proper projection matrix.')
         super(Projection, self).__init__(matrix=matrix)
+
+    def __repr__(self):
+        return "Projection({0!r})".format(self.matrix)
 
     @classmethod
     def from_plane(cls, plane):

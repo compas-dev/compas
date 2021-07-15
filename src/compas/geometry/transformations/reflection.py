@@ -19,9 +19,6 @@ from compas.geometry.transformations import identity_matrix
 from compas.geometry.transformations import Transformation
 
 
-__all__ = ['Reflection']
-
-
 class Reflection(Transformation):
     """Creates a ``Reflection`` that mirrors points at a plane.
 
@@ -39,6 +36,9 @@ class Reflection(Transformation):
         if matrix:
             pass
         super(Reflection, self).__init__(matrix=matrix)
+
+    def __repr__(self):
+        return "Reflection({0!r})".format(self.matrix)
 
     @classmethod
     def from_plane(cls, plane):

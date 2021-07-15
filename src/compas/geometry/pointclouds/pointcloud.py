@@ -16,18 +16,30 @@ __all__ = ['Pointcloud']
 class Pointcloud(Primitive):
     """Class for working with pointclouds."""
 
-    def __init__(self, points):
-        super(Pointcloud, self).__init__()
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema({
+            'points': lambda points: all(is_float3(point) for point in points)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'pointcloud'
+
+    def __init__(self, points, **kwargs):
+        super(Pointcloud, self).__init__(**kwargs)
         self._points = None
         self.points = points
 
     @property
     def data(self):
-        return {'points': self.points}
+        return {'points': [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
-        self.points = data['points']
+        self._points = [Point.from_data(point) for point in data['points']]
 
     @property
     def points(self):
@@ -127,12 +139,8 @@ class Pointcloud(Primitive):
         z = [uniform(zmin, zmax) for i in range(n)]
         return cls(list(map(list, zip(x, y, z))))
 
-    # @classmethod
-    # def from_shape(cls, shape, n):
-    #     pass
-
     def __repr__(self):
-        return 'Pointcloud({})'.format(self.points)
+        return 'Pointcloud({0!r})'.format(self.points)
 
     def __len__(self):
         return len(self.points)
@@ -149,6 +157,29 @@ class Pointcloud(Primitive):
 
     def __iter__(self):
         return iter(self.points)
+
+    def __eq__(self, other):
+        """Is this pointcloud equal to the other pointcloud?
+
+        Two pointclouds are considered equal if they have the same number of points
+        and if the XYZ coordinates of the corresponding points are identical.
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Pointcloud` or list
+            The pointcloud to compare.
+
+        Returns
+        -------
+        bool
+            True if the pointclouds are equal.
+            False otherwise.
+        """
+        if len(self) != len(other):
+            return False
+        A = sorted(self, key=lambda point: (point[0], point[1], point[2]))
+        B = sorted(other, key=lambda point: (point[0], point[1], point[2]))
+        return all(a == b for a, b in zip(A, B))
 
     @property
     def centroid(self):

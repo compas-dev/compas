@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "polyline.json",
+    "$compas": "1.7.1",
+    "type": "object",
+    "properties": {
+        "points": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+                "$ref": "compas.json#/definitions/point"
+            }
+        }
+    },
+    "required": [
+        "points"
+    ]
+}

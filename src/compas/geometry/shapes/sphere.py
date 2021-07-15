@@ -10,8 +10,6 @@ from compas.geometry import Point
 
 from compas.geometry.shapes import Shape
 
-__all__ = ['Sphere']
-
 
 class Sphere(Shape):
     """A sphere is defined by a point and a radius.
@@ -45,10 +43,23 @@ class Sphere(Shape):
     >>> sphere3 = Sphere([2, 4, 1], 2)
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            'point': is_float3,
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'sphere'
+
     __slots__ = ['_point', '_radius']
 
-    def __init__(self, point, radius):
-        super(Sphere, self).__init__()
+    def __init__(self, point, radius, **kwargs):
+        super(Sphere, self).__init__(**kwargs)
         self._point = None
         self._radius = None
         self.point = point
@@ -73,12 +84,11 @@ class Sphere(Shape):
         True
 
         """
-        return {'point': list(self.point),
-                'radius': self.radius}
+        return {'point': self.point.data, 'radius': self.radius}
 
     @data.setter
     def data(self, data):
-        self.point = data['point']
+        self.point = Point.from_data(data['point'])
         self.radius = data['radius']
 
     @property
@@ -118,7 +128,7 @@ class Sphere(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Sphere({0}, {1})'.format(self.point, self.radius)
+        return 'Sphere({0!r}, {1!r})'.format(self.point, self.radius)
 
     def __len__(self):
         return 2
@@ -167,8 +177,7 @@ class Sphere(Shape):
         >>> sphere = Sphere.from_data(data)
 
         """
-        sphere = cls([0, 0, 0], 1)
-        sphere.data = data
+        sphere = cls(Point.from_data(data['point']), data['radius'])
         return sphere
 
     # ==========================================================================

@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Vector
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -20,8 +14,6 @@ from compas.geometry import angles_vectors
 from compas.geometry import transform_vectors
 
 from compas.geometry.primitives import Primitive
-
-__all__ = ['Vector']
 
 
 class Vector(Primitive):
@@ -77,10 +69,20 @@ class Vector(Primitive):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema(is_float3)
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'vector'
+
     __slots__ = ['_x', '_y', '_z']
 
-    def __init__(self, x, y, z=0):
-        super(Vector, self).__init__()
+    def __init__(self, x, y, z=0.0, **kwargs):
+        super(Vector, self).__init__(**kwargs)
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0

@@ -8,14 +8,6 @@ from compas.data import DataEncoder
 from compas.data import DataDecoder
 
 
-__all__ = [
-    'json_dump',
-    'json_dumps',
-    'json_load',
-    'json_loads'
-]
-
-
 def json_dump(data, fp, pretty=False):
     """Write a collection of COMPAS object data to a JSON file.
 
@@ -128,13 +120,3 @@ def json_loads(s):
     True
     """
     return json.loads(s, cls=DataDecoder)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    import doctest
-
-    doctest.testmod(globs=globals())

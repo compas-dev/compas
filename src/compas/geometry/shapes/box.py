@@ -11,9 +11,6 @@ from compas.geometry import Vector
 from compas.geometry.shapes._shape import Shape
 
 
-__all__ = ['Box']
-
-
 class Box(Shape):
     """A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.
 
@@ -74,8 +71,22 @@ class Box(Shape):
 
     """
 
-    def __init__(self, frame, xsize, ysize, zsize):
-        super(Box, self).__init__()
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'frame': Frame.DATASCHEMA.fget(None),
+            'xsize': schema.And(float, lambda x: x > 0),
+            'ysize': schema.And(float, lambda x: x > 0),
+            'zsize': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'box'
+
+    def __init__(self, frame, xsize, ysize, zsize, **kwargs):
+        super(Box, self).__init__(**kwargs)
         self._frame = None
         self._xsize = None
         self._ysize = None
@@ -122,7 +133,7 @@ class Box(Shape):
 
     @frame.setter
     def frame(self, frame):
-        self._frame = Frame(frame[0], frame[1], frame[2])
+        self._frame = Frame(*frame)
 
     @property
     def xsize(self):
@@ -280,7 +291,7 @@ class Box(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Box({0}, {1}, {2}, {3})'.format(self.frame, self.xsize, self.ysize, self.zsize)
+        return 'Box({0!r}, {1!r}, {2!r}, {3!r})'.format(self.frame, self.xsize, self.ysize, self.zsize)
 
     def __len__(self):
         return 4

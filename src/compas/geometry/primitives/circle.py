@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Circle
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -12,9 +6,6 @@ from math import pi
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Plane
-
-
-__all__ = ['Circle']
 
 
 class Circle(Primitive):
@@ -54,8 +45,20 @@ class Circle(Primitive):
 
     __slots__ = ['_plane', '_radius']
 
-    def __init__(self, plane, radius):
-        super(Circle, self).__init__()
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'plane': Plane.DATASCHEMA.fget(None),
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'circle'
+
+    def __init__(self, plane, radius, **kwargs):
+        super(Circle, self).__init__(**kwargs)
         self._plane = None
         self._radius = None
         self.plane = plane
@@ -64,11 +67,11 @@ class Circle(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
-        return {'plane': [list(self.plane.point), list(self.plane.normal)], 'radius': self.radius}
+        return {'plane': self.plane.data, 'radius': self.radius}
 
     @data.setter
     def data(self, data):
-        self.plane = data['plane']
+        self.plane = Plane.from_data(data['plane'])
         self.radius = data['radius']
 
     @property
@@ -78,7 +81,7 @@ class Circle(Primitive):
 
     @plane.setter
     def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+        self._plane = Plane(*plane)
 
     @property
     def radius(self):
@@ -123,7 +126,7 @@ class Circle(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Circle({0}, {1})'.format(self.plane, self.radius)
+        return 'Circle({0!r}, {1!r})'.format(self.plane, self.radius)
 
     def __len__(self):
         return 2
@@ -176,10 +179,10 @@ class Circle(Primitive):
         Examples
         --------
         >>> from compas.geometry import Circle
-        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 5.}
+        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'radius': 5.}
         >>> circle = Circle.from_data(data)
         """
-        return cls(data['plane'], data['radius'])
+        return cls(Plane.from_data(data['plane']), data['radius'])
 
     # ==========================================================================
     # methods

@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Quaternion
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -19,9 +13,6 @@ from compas.geometry import quaternion_is_unit
 from compas.geometry import quaternion_from_matrix
 
 from compas.geometry.primitives import Primitive
-
-
-__all__ = ['Quaternion']
 
 
 class Quaternion(Primitive):
@@ -110,10 +101,19 @@ class Quaternion(Primitive):
     True
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({'w': float, 'x': float, 'y': float, 'z': float})
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'quaternion'
+
     __slots__ = ['_w', '_x', '_y', '_z']
 
-    def __init__(self, w, x, y, z):
-        super(Quaternion, self).__init__()
+    def __init__(self, w, x, y, z, **kwargs):
+        super(Quaternion, self).__init__(**kwargs)
         self._w = None
         self._x = None
         self._y = None
@@ -122,6 +122,17 @@ class Quaternion(Primitive):
         self.x = x
         self.y = y
         self.z = z
+
+    @property
+    def data(self):
+        return {'w': self.w, 'x': self.x, 'y': self.y, 'z': self.z}
+
+    @data.setter
+    def data(self, data):
+        self.w = data['w']
+        self.x = data['x']
+        self.y = data['y']
+        self.z = data['z']
 
     @property
     def w(self):
@@ -160,25 +171,14 @@ class Quaternion(Primitive):
         self._z = float(z)
 
     @property
-    def data(self):
-        return {'w': self.w, 'x': self.x, 'y': self.y, 'z': self.z}
-
-    @data.setter
-    def data(self, data):
-        self.w = data['w']
-        self.x = data['x']
-        self.y = data['y']
-        self.z = data['z']
-
-    @property
     def wxyz(self):
-        """list of float : Quaternion as a list of float in the "wxyz" convention.
+        """list of float : Quaternion as a list of float in the 'wxyz' convention.
         """
         return [self.w, self.x, self.y, self.z]
 
     @property
     def xyzw(self):
-        """list of float : Quaternion as a list of float in the "xyzw" convention.
+        """list of float : Quaternion as a list of float in the 'xyzw' convention.
         """
         return [self.x, self.y, self.z, self.w]
 

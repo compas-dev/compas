@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Point
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -30,9 +24,6 @@ from compas.geometry import transform_points
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
-
-
-__all__ = ['Point']
 
 
 class Point(Primitive):
@@ -116,10 +107,20 @@ class Point(Primitive):
     Point(100.000, 196.000, 324.000)
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema(is_float3)
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'point'
+
     __slots__ = ['_x', '_y', '_z']
 
-    def __init__(self, x, y, z=0.0):
-        super(Point, self).__init__()
+    def __init__(self, x, y, z=0.0, **kwargs):
+        super(Point, self).__init__(**kwargs)
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0

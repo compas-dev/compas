@@ -28,9 +28,6 @@ from compas.geometry.transformations import matrix_inverse
 from compas.geometry.transformations import translation_from_matrix
 
 
-__all__ = ['Transformation']
-
-
 class Transformation(Data):
     """The ``Transformation`` represents a 4x4 transformation matrix.
 
@@ -58,6 +55,16 @@ class Transformation(Data):
     >>> Sc, Sh, R, Tl, P = T.decomposed()
     >>> Tinv = T.inverse()
     """
+
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float4x4
+        return Schema({"matrix": is_float4x4})
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'transformation'
 
     def __init__(self, matrix=None):
         """Construct a transformation from a 4x4 transformation matrix.
@@ -102,7 +109,7 @@ class Transformation(Data):
         return not self.__eq__(other)
 
     def __repr__(self):
-        return "Transformation({})".format(self.matrix)
+        return "Transformation({0!r})".format(self.matrix)
 
     def __str__(self):
         s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])

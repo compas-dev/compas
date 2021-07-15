@@ -14,8 +14,6 @@ from compas.geometry import Plane
 
 from compas.geometry.shapes import Shape
 
-__all__ = ['Cylinder']
-
 
 class Cylinder(Shape):
     """A cylinder is defined by a circle and a height.
@@ -52,10 +50,25 @@ class Cylinder(Shape):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            'circle': {
+                'plane': Plane.DATASCHEMA.fget(None),
+                'radius': schema.And(float, lambda x: x > 0)
+            },
+            'height': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'cylinder'
+
     __slots__ = ['_circle', '_height']
 
-    def __init__(self, circle, height):
-        super(Cylinder, self).__init__()
+    def __init__(self, circle, height, **kwargs):
+        super(Cylinder, self).__init__(**kwargs)
         self._circle = None
         self._height = None
         self.circle = circle
@@ -71,8 +84,7 @@ class Cylinder(Shape):
             The cylinder data.
 
         """
-        return {'circle': self.circle.data,
-                'height': self.height}
+        return {'circle': self.circle.data, 'height': self.height}
 
     @data.setter
     def data(self, data):
@@ -86,7 +98,7 @@ class Cylinder(Shape):
 
     @plane.setter
     def plane(self, plane):
-        self.circle.plane = Plane(plane[0], plane[1])
+        self.circle.plane = Plane(*plane)
 
     @property
     def circle(self):
@@ -95,7 +107,7 @@ class Cylinder(Shape):
 
     @circle.setter
     def circle(self, circle):
-        self._circle = Circle(circle[0], circle[1])
+        self._circle = Circle(*circle)
 
     @property
     def radius(self):
@@ -149,7 +161,7 @@ class Cylinder(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Cylinder({0}, {1})'.format(self.circle, self.height)
+        return 'Cylinder({0!r}, {1!r})'.format(self.circle, self.height)
 
     def __len__(self):
         return 2
@@ -200,8 +212,7 @@ class Cylinder(Shape):
         >>> cylinder = Cylinder.from_data(data)
 
         """
-        cylinder = cls(Circle(Plane.worldXY(), 1), 1)
-        cylinder.data = data
+        cylinder = cls(Circle.from_data(data['circle']), data['height'])
         return cylinder
 
     # ==========================================================================

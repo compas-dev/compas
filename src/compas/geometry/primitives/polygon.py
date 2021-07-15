@@ -1,9 +1,3 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Polygon
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -24,9 +18,6 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 
 from compas.utilities import pairwise
-
-
-__all__ = ['Polygon']
 
 
 class Polygon(Primitive):
@@ -76,10 +67,22 @@ class Polygon(Primitive):
     1.0
     """
 
-    __slots__ = ["_points", "_lines"]
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema({
+            'points': lambda points: all(is_float3(point) for point in points)
+        })
 
-    def __init__(self, points):
-        super(Polygon, self).__init__()
+    @property
+    def JSONSCHEMANAME(self):
+        return 'polygon'
+
+    __slots__ = ['_points', '_lines']
+
+    def __init__(self, points, **kwargs):
+        super(Polygon, self).__init__(**kwargs)
         self._points = []
         self._lines = []
         self.points = points
@@ -87,11 +90,11 @@ class Polygon(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the polygon."""
-        return {'points': [list(point) for point in self.points]}
+        return {'points': [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
-        self.points = data['points']
+        self.points = [Point.from_data(point) for point in data['points']]
 
     @property
     def points(self):
@@ -154,7 +157,7 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polygon([{}])".format(", ".join(["{}".format(point) for point in self.points]))
+        return 'Polygon([{0}])'.format(', '.join(['{0!r}'.format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -198,7 +201,7 @@ class Polygon(Primitive):
         >>> polygon.points[0]
         Point(0.000, 0.000, 0.000)
         """
-        return cls(data['points'])
+        return cls([Point.from_data(point) for point in data['points']])
 
     @classmethod
     def from_sides_and_radius_xy(cls, n, radius):
@@ -237,7 +240,7 @@ class Polygon(Primitive):
         >>> dot_vectors(centertofirst, [0.0, 1.0, 0.0]) == 1
         True
         """
-        assert n >= 3, "Supplied number of sides must be at least 3!"
+        assert n >= 3, 'Supplied number of sides must be at least 3!'
         points = []
         side = math.pi * 2 / n
         for i in range(n):

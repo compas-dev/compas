@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import os
 import json
 from uuid import uuid4
 from copy import deepcopy
@@ -11,10 +12,6 @@ import compas
 from compas.data.encoders import DataEncoder
 from compas.data.encoders import DataDecoder
 
-
-__all__ = [
-    'Data',
-]
 
 # ==============================================================================
 # If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.
@@ -26,9 +23,6 @@ __all__ = [
 # - https://github.com/compas-dev/compas/issues/649
 
 # ==============================================================================
-
-# import abc
-# ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
 class Data(object):
@@ -45,13 +39,23 @@ class Data(object):
         The structure of the data dict is defined by the implementing classes.
     """
 
-    def __init__(self):
+    def __init__(self, name=None):
         self._guid = None
         self._name = None
+        self._jsondefinitions = None
+        self._JSONSCHEMA = None
+        self._jsonvalidator = None
+        if name:
+            self.name = name
 
-    # def __str__(self):
-    #     """Generate a readable representation of the data of the object."""
-    #     return json.dumps(self.data, sort_keys=True, indent=4)
+    def __getstate__(self):
+        """Return the object data for state serialization with older pickle protocols."""
+        return {'__dict__': self.__dict__, 'dtype': self.dtype, 'data': self.data}
+
+    def __setstate__(self, state):
+        """Assign a deserialized state to the object data to support older pickle protocols."""
+        self.__dict__.update(state['__dict__'])
+        self.data = state['data']
 
     @property
     def DATASCHEMA(self):
@@ -59,9 +63,58 @@ class Data(object):
         raise NotImplementedError
 
     @property
+    def JSONSCHEMANAME(self):
+        raise NotImplementedError
+
+    @property
     def JSONSCHEMA(self):
         """dict : The schema of the JSON representation of the data of this object."""
+        if not self._JSONSCHEMA:
+            schema_filename = '{}.json'.format(self.JSONSCHEMANAME.lower())
+            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_filename)
+            with open(schema_path, 'r') as fp:
+                self._JSONSCHEMA = json.load(fp)
+        return self._JSONSCHEMA
+
+    @property
+    def jsondefinitions(self):
+        """dict : Reusable schema definitions."""
+        if not self._jsondefinitions:
+            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
+            with open(schema_path, 'r') as fp:
+                self._jsondefinitions = json.load(fp)
+        return self._jsondefinitions
+
+    @property
+    def jsonvalidator(self):
+        """:class:`jsonschema.Draft7Validator` : JSON schema validator for draft 7."""
+        if not self._jsonvalidator:
+            from jsonschema import RefResolver, Draft7Validator
+            resolver = RefResolver.from_schema(self.jsondefinitions)
+            self._jsonvalidator = Draft7Validator(self.JSONSCHEMA, resolver=resolver)
+        return self._jsonvalidator
+
+    @property
+    def dtype(self):
+        """str : The type of the object in the form of a '2-level' import and a class name."""
+        return '{}/{}'.format('.'.join(self.__class__.__module__.split('.')[:2]), self.__class__.__name__)
+
+    @property
+    def data(self):
+        """dict : The representation of the object as native Python data.
+
+        The structure of the data is described by the data schema.
+        """
         raise NotImplementedError
+
+    @data.setter
+    def data(self, data):
+        raise NotImplementedError
+
+    @property
+    def jsonstring(self):
+        """str: The representation of the object data in JSON format."""
+        return compas.json_dumps(self.data)
 
     @property
     def guid(self):
@@ -83,23 +136,6 @@ class Data(object):
     @name.setter
     def name(self, name):
         self._name = name
-
-    @property
-    def dtype(self):
-        """str : The type of the object in the form of a "2-level" import and a class name."""
-        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
-
-    @property
-    def data(self):
-        """dict : The representation of the object as native Python data.
-
-        The structure of the data is described by the data schema.
-        """
-        raise NotImplementedError
-
-    @data.setter
-    def data(self, data):
-        pass
 
     @classmethod
     def from_data(cls, data):
@@ -147,6 +183,19 @@ class Data(object):
         data = compas.json_load(filepath)
         return cls.from_data(data)
 
+    def to_json(self, filepath, pretty=False):
+        """Serialize the data representation of an object to a JSON file.
+
+        Parameters
+        ----------
+        filepath : path string or file-like object
+            The path or file-like object to the file containing the data.
+        pretty : bool, optional
+            If ``True`` serialize a pretty representation of the data.
+            Default is ``False``.
+        """
+        compas.json_dump(self.data, filepath, pretty)
+
     @classmethod
     def from_jsonstring(cls, string):
         """Construct an object from serialized data contained in a JSON string.
@@ -164,19 +213,6 @@ class Data(object):
         data = compas.json_loads(string)
         return cls.from_data(data)
 
-    def to_json(self, filepath, pretty=False):
-        """Serialize the data representation of an object to a JSON file.
-
-        Parameters
-        ----------
-        filepath : path string or file-like object
-            The path or file-like object to the file containing the data.
-        pretty : bool, optional
-            If ``True`` serialize a pretty representation of the data.
-            Default is ``False``.
-        """
-        compas.json_dump(self.data, filepath, pretty)
-
     def to_jsonstring(self, pretty=False):
         """Serialize the data representation of an object to a JSON string.
 
@@ -191,7 +227,7 @@ class Data(object):
         str
             A JSON string representation of the data.
         """
-        compas.json_dumps(self.data, pretty)
+        return compas.json_dumps(self.data, pretty)
 
     def copy(self, cls=None):
         """Make an independent copy of the data object.
@@ -211,17 +247,8 @@ class Data(object):
             cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
-    def __getstate__(self):
-        """Return the object data for state serialization with older pickle protocols."""
-        return {'__dict__': self.__dict__.copy(), 'dtype': self.dtype, 'data': self.data}
-
-    def __setstate__(self, state):
-        """Assign a deserialized state to the object data to support older pickle protocols."""
-        self.__dict__.update(state['__dict__'])
-        self.data = state['data']
-
     def validate_data(self):
-        """Validate the data of this object against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its data schema (`self.DATASCHEMA`).
 
         Returns
         -------
@@ -230,24 +257,34 @@ class Data(object):
 
         Raises
         ------
-        SchemaError
+        schema.SchemaError
         """
-        return self.DATASCHEMA.validate(self.data)
+        import schema
+        try:
+            data = self.DATASCHEMA.validate(self.data)
+        except schema.SchemaError as e:
+            print("Validation against the data schema of this object failed.")
+            raise e
+        return data
 
     def validate_json(self):
-        """Validate the data loaded from a JSON representation of the data of this object against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its json schema (`self.JSONSCHEMA`).
 
         Returns
         -------
-        None
+        str
+            The validated JSON representation of the data.
 
         Raises
         ------
-        SchemaError
+        jsonschema.exceptions.ValidationError
         """
         import jsonschema
-        jsondata = json.dumps(self.data, cls=DataEncoder)
-        data = json.loads(jsondata, cls=DataDecoder)
-        jsonschema.validate(data, schema=self.JSONSCHEMA)
-        self.data = data
-        return self.DATASCHEMA.validate(self.data)
+        jsonstring = json.dumps(self.data, cls=DataEncoder)
+        jsondata = json.loads(jsonstring, cls=DataDecoder)
+        try:
+            self.jsonvalidator.validate(jsondata)
+        except jsonschema.exceptions.ValidationError as e:
+            print("Validation against the JSON schema of this object failed.")
+            raise e
+        return jsonstring

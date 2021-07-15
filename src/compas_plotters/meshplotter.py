@@ -4,14 +4,14 @@ from matplotlib.patches import Polygon
 from compas.utilities import color_to_rgb
 from compas.utilities import pairwise
 
-from compas_plotters.plotter import Plotter, valuedict
+from compas_plotters._plotter import BasePlotter, valuedict
 
 
 __all__ = ['MeshPlotter']
 
 
-class MeshPlotter(Plotter):
-    """Plotter for the visualisation of COMPAS meshes.
+class MeshPlotter(BasePlotter):
+    """Plotter for the visualization of COMPAS meshes.
 
     Parameters
     ----------
@@ -35,7 +35,7 @@ class MeshPlotter(Plotter):
 
     Examples
     --------
-    This is a basic example using the default settings for all visualisation options.
+    This is a basic example using the default settings for all visualization options.
     For more detailed examples, see the documentation of the various drawing methods
     listed below...
 

@@ -9,9 +9,6 @@ from compas.utilities import pairwise
 from compas.geometry.shapes._shape import Shape
 
 
-__all__ = ['Polyhedron']
-
-
 class Polyhedron(Shape):
     """A polyhedron is defined by its vertices and faces.
 
@@ -24,8 +21,23 @@ class Polyhedron(Shape):
 
     """
 
-    def __init__(self, vertices, faces):
-        super(Polyhedron, self).__init__()
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from compas.data import is_float3, is_sequence_of_int
+        return schema.Schema({
+            'vertices': lambda items: all(is_float3(item) for item in items),
+            'faces': lambda items: all(is_sequence_of_int(item) for item in items)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'polyhedron'
+
+    __slots__ = ['_vertices', '_faces']
+
+    def __init__(self, vertices, faces, **kwargs):
+        super(Polyhedron, self).__init__(**kwargs)
         self._vertices = None
         self._faces = None
         self.vertices = vertices
@@ -83,7 +95,7 @@ class Polyhedron(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polyhedron({0}, {1})'.format(self.vertices, self.faces)
+        return 'Polyhedron({0!r}, {1!r})'.format(self.vertices, self.faces)
 
     def __len__(self):
         return 2
