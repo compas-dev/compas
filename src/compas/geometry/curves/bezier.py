@@ -68,12 +68,15 @@ def bernstein(n, k, t):
 
 class BezierCurve(Curve):
 
-    __slots__ = [...]
+    __slots__ = ('points', )
 
     @property
     def DATASCHEMA(self):
-        import schema
-        return schema.Schema({...})
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema({
+            'points': lambda points: all(is_float3(point) for point in points)
+        })
 
     @property
     def JSONSCHEMANAME(self):
@@ -86,7 +89,6 @@ class BezierCurve(Curve):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the curve."""
         return {'points': [point.data for point in self.points]}
 
     @data.setter
