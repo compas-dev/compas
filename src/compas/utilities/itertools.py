@@ -8,6 +8,8 @@ from itertools import islice
 from itertools import chain
 from itertools import repeat
 from itertools import tee
+from functools import reduce
+from operator import mul
 
 try:
     from itertools import zip_longest
@@ -21,6 +23,8 @@ __all__ = [
     'meshgrid',
     'linspace',
     'flatten',
+    'unflatten',
+    'reshape',
     'pairwise',
     'window',
     'iterable_like',
@@ -185,8 +189,77 @@ def linspace(start, stop, num=50):
 
 
 def flatten(list_of_lists):
-    """Flatten one level of nesting"""
+    """Flatten one level of nesting.
+
+    Examples
+    --------
+    >>> a = [[1, 2, 3], [4, 5, 6]]
+    >>> list(flatten(a))
+    [1, 2, 3, 4, 5, 6]
+    """
     return chain.from_iterable(list_of_lists)
+
+
+def unflatten(lst, num):
+    """Returns a nested list.
+
+    Parameters
+    ----------
+    lst : list
+        A list of items.
+    num : int
+        The length of the sub-list.
+
+    Raises
+    ------
+    ValueError
+        If the length of the list is not a factor of num.
+
+
+    Examples
+    --------
+    >>> a = [1, 2, 3, 4, 5, 6]
+    >>> unflatten(a, 3)
+    [[1, 2, 3], [4, 5, 6]]
+    """
+    if len(lst) % num:
+        raise ValueError("The length of the array must be a factor of n: %d %% %d == 0" % (len(lst), num))
+    return [lst[i:i + num] for i in range(0, len(lst), num)]
+
+
+def reshape(lst, shape):
+    """Gives a new shape to an array without changing its data.
+
+    This function mimicks the functionality of ``numpy.reshape`` [1]_, but in a simpler form.
+
+    Parameters
+    ----------
+    lst : list
+        A list of items.
+    shape : int or tuple of ints
+        The new shape of the list
+
+
+    Examples
+    --------
+    >>> a = [1, 2, 3, 4, 5, 6]
+    >>> reshape(a, (2, 3))
+    [[1, 2, 3], [4, 5, 6]]
+    >>> reshape(a, (3, 2))
+    [[1, 2], [3, 4], [5, 6]]
+
+
+    References
+    ----------
+    .. [1] ``numpy.reshape`` Available at https://numpy.org/doc/stable/reference/generated/numpy.reshape.html
+
+    """
+    if len(shape) == 1:
+        return lst
+    if len(lst) != reduce(lambda x, y: x * y, shape):
+        raise ValueError("ValueError: cannot reshape array of size %d into shape %s" % (len(lst), shape))
+    n = reduce(mul, shape[1:])
+    return [reshape(lst[i * n:(i + 1) * n], shape[1:]) for i in range(len(lst) // n)]
 
 
 def pairwise(iterable):

@@ -53,6 +53,8 @@ itertools
     :nosignatures:
 
     flatten
+    unflatten
+    reshape
     linspace
     meshgrid
     pairwise
