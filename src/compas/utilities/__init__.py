@@ -137,6 +137,8 @@ from .encoders import (
 from .images import gif_from_images
 from .itertools import (
     flatten,
+    unflatten,
+    reshape,
     grouper,
     iterable_like,
     linspace,
@@ -205,6 +207,8 @@ __all__ = [
     'meshgrid',
     'linspace',
     'flatten',
+    'unflatten',
+    'rehape',
     'pairwise',
     'window',
     'iterable_like',
