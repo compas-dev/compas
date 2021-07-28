@@ -1,8 +1,8 @@
 from .data_classes import TextureInfoData
 from .data_classes import NormalTextureInfoData
+from .data_classes import Base
 
-
-class KHR_materials_transmission(object):
+class KHR_materials_transmission(Base):
     """glTF extension that defines the optical transmission of a material.
 
     https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_materials_transmission
@@ -13,10 +13,10 @@ class KHR_materials_transmission(object):
                  transmission_texture=None,
                  extensions=None,
                  extras=None):
+        super(KHR_materials_transmission, self).__init__(extras, extensions)
         self.transmission_factor = transmission_factor
         self.transmission_texture = transmission_texture
-        self.extensions = extensions
-        self.extras = extras
+        self.key = 'KHR_materials_transmission'
 
     def to_data(self, texture_index_by_key):
         dct = {}
@@ -40,7 +40,7 @@ class KHR_materials_transmission(object):
                    extras=dct.get('extras'))
 
 
-class KHR_materials_clearcoat(object):
+class KHR_materials_clearcoat(Base):
     """glTF extension that defines the clearcoat material layer.
 
     https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_materials_clearcoat
@@ -54,13 +54,13 @@ class KHR_materials_clearcoat(object):
                  clearcoat_normal_texture=None,
                  extensions=None,
                  extras=None):
+        super(KHR_materials_clearcoat, self).__init__(extras, extensions)
         self.clearcoat_factor = clearcoat_factor
         self.clearcoat_texture = clearcoat_texture
         self.clearcoat_roughness_factor = clearcoat_roughness_factor
         self.clearcoat_roughness_texture = clearcoat_roughness_texture
         self.clearcoat_normal_texture = clearcoat_normal_texture
-        self.extensions = extensions
-        self.extras = extras
+        self.key = 'KHR_materials_clearcoat'
 
     def to_data(self, texture_index_by_key):
         dct = {}
@@ -94,7 +94,7 @@ class KHR_materials_clearcoat(object):
                    )
 
 
-class KHR_Texture_Transform(object):
+class KHR_Texture_Transform(Base):
     """glTF extension that enables shifting and scaling UV coordinates on a per-texture basis.
 
     https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_transform
@@ -107,12 +107,11 @@ class KHR_Texture_Transform(object):
                  tex_coord=None,
                  extensions=None,
                  extras=None):
+        super(KHR_Texture_Transform, self).__init__(extras, extensions)
         self.offset = offset  # or [0.0, 0.0]
         self.rotation = rotation  # or 0.
         self.scale = scale  # or [1., 1.]
         self.tex_coord = tex_coord
-        self.extensions = extensions
-        self.extras = extras
         self.key = 'KHR_texture_transform'
 
     def to_data(self):
@@ -143,7 +142,7 @@ class KHR_Texture_Transform(object):
                    extras=dct.get('extras'))
 
 
-class KHR_materials_pbrSpecularGlossiness(object):
+class KHR_materials_pbrSpecularGlossiness(Base):
     """glTF extension that defines the specular-glossiness material model from Physically-Based Rendering (PBR) methodology.
     """
 
@@ -155,13 +154,12 @@ class KHR_materials_pbrSpecularGlossiness(object):
                  specular_glossiness_texture=None,
                  extensions=None,
                  extras=None):
+        super(KHR_materials_pbrSpecularGlossiness, self).__init__(extras, extensions)
         self.diffuse_factor = diffuse_factor or [1.0, 1.0, 1.0, 1.0]
         self.diffuse_texture = diffuse_texture
         self.specular_factor = specular_factor or [1.0, 1.0, 1.0]
         self.glossiness_factor = glossiness_factor or 1.
         self.specular_glossiness_texture = specular_glossiness_texture
-        self.extensions = extensions
-        self.extras = extras
         self.key = 'KHR_materials_pbrSpecularGlossiness'
 
     def to_data(self, texture_index_by_key):
