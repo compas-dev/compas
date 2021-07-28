@@ -29,6 +29,7 @@ class GLTFParser(object):
     reader : :class:`compas.files.GLTFReader`
     content : :class:`compas.files.GLTFContent`
     """
+
     def __init__(self, reader):
         self.reader = reader
         self.content = GLTFContent()

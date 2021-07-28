@@ -38,6 +38,7 @@ class GLTFReader(object):
     image_data : list
         List containing image data.
     """
+
     def __init__(self, filepath):
         self.filepath = filepath
 

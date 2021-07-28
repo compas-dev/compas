@@ -35,6 +35,7 @@ class GLTFMesh(object):
         representing faces of the mesh.
 
     """
+
     def __init__(self, primitive_data_list, context, mesh_name=None, weights=None, extras=None, extensions=None):
         self.mesh_name = mesh_name
         self.weights = weights

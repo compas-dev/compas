@@ -107,9 +107,9 @@ class KHR_Texture_Transform(object):
                  tex_coord=None,
                  extensions=None,
                  extras=None):
-        self.offset = offset #or [0.0, 0.0]
-        self.rotation = rotation #or 0.
-        self.scale = scale #or [1., 1.]
+        self.offset = offset  # or [0.0, 0.0]
+        self.rotation = rotation  # or 0.
+        self.scale = scale  # or [1., 1.]
         self.tex_coord = tex_coord
         self.extensions = extensions
         self.extras = extras

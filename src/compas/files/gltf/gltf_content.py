@@ -43,6 +43,7 @@ class GLTFContent(object):
     extensions : object
 
     """
+
     def __init__(self):
         self.scenes = {}
         self.default_scene_key = None
@@ -266,7 +267,7 @@ class GLTFContent(object):
         if node.weights is None:
             return mesh_data.vertices
         return get_weighted_mesh_vertices(mesh_data, node.weights)
-    
+
     def get_node_by_name(self, name):
         """Returns the node with a specific name.
 
@@ -283,7 +284,6 @@ class GLTFContent(object):
             if self.nodes[key].name == name:
                 return self.nodes[key]
         return None
-    
 
     def add_material(self, material):
         """Adds a material to the content.
@@ -304,7 +304,7 @@ class GLTFContent(object):
         # TODO if extensions must be enabled
         # extensionsUsed = {};
         return key
-    
+
     def add_texture(self, texture):
         """Adds a texture to the content.
 
@@ -321,7 +321,7 @@ class GLTFContent(object):
         self.textures[key] = texture
         # TODO if extensions must be enabled
         return key
-    
+
     def add_image(self, image):
         """Adds a texture to the content.
 
@@ -338,7 +338,7 @@ class GLTFContent(object):
         self.images[key] = image
         # TODO if extensions must be enabled
         return key
-    
+
     def get_material_index_by_name(self, name):
         """Returns the index of the material.
 
@@ -525,8 +525,6 @@ if __name__ == '__main__':
     material.pbr_metallic_roughness.roughness_factor = 0.5
     material.double_sided = True
 
-    
-
     from compas.files.gltf.extensions import KHR_materials_pbrSpecularGlossiness, KHR_Texture_Transform
 
     pbr_specular_glossiness = KHR_materials_pbrSpecularGlossiness()
@@ -542,13 +540,13 @@ if __name__ == '__main__':
 
     pbr_specular_glossiness.diffuse_texture = TextureInfoData(index)
     pbr_specular_glossiness.diffuse_texture.add_extension(texture_transform)
-    #, extensions={texture_transform.key: texture_transform})
+    # , extensions={texture_transform.key: texture_transform})
 
-    print(pbr_specular_glossiness.to_data({0:0}))
+    print(pbr_specular_glossiness.to_data({0: 0}))
 
     material.extensions = {pbr_specular_glossiness.key: pbr_specular_glossiness}
 
-    print(material.to_data({0:0}))
+    print(material.to_data({0: 0}))
 
     """
     {'name': 'Cara_03 Shedland',

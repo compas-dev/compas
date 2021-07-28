@@ -2,10 +2,12 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+
 class Base(object):
     def __init__(self, extras=None, extensions=None):
         self.extras = extras
         self.extensions = extensions
+
 
 class SamplerData(Base):
     def __init__(
@@ -118,7 +120,7 @@ class TextureInfoData(Base):
             extras=texture_info.get('extras'),
             extensions=texture_info.get('extensions'),
         )
-    
+
     def add_extension(self, extension):
         if not self.extensions:
             self.extensions = {}

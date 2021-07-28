@@ -26,6 +26,7 @@ class GLTFScene(object):
         Tuple containing a dictionary of positions and a list of tuples representing edges.
 
     """
+
     def __init__(self, context, children=None, name=None, extras=None, extensions=None):
         self.name = name
         self._children = GLTFChildren(context, children or [])

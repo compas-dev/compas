@@ -63,6 +63,7 @@ class GLTFNode(object):
         List of tuples of indices of the vertices of the faces of the mesh used by this node.
 
     """
+
     def __init__(self, context, name=None, extras=None, extensions=None):
         self.name = name
         self._children = GLTFChildren(context, [])

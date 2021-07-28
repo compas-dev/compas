@@ -27,6 +27,7 @@ class GLTF(object):
     .. [1] https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
 
     """
+
     def __init__(self, filepath=None):
         self.filepath = filepath
         self._content = None
