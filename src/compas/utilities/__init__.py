@@ -208,7 +208,7 @@ __all__ = [
     'linspace',
     'flatten',
     'unflatten',
-    'rehape',
+    'reshape',
     'pairwise',
     'window',
     'iterable_like',
