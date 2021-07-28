@@ -58,13 +58,12 @@ class SamplerData(Base):
         )
 
 
-class TextureData(object):
+class TextureData(Base):
     def __init__(self, sampler=None, source=None, name=None, extras=None, extensions=None):
+        super(TextureData, self).__init__(extras, extensions)
         self.sampler = sampler
         self.source = source
         self.name = name
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, sampler_index_by_key, image_index_by_key):
         texture_dict = {}
@@ -93,12 +92,11 @@ class TextureData(object):
         )
 
 
-class TextureInfoData(object):
+class TextureInfoData(Base):
     def __init__(self, index, tex_coord=None, extras=None, extensions=None):
+        super(TextureInfoData, self).__init__(extras, extensions)
         self.index = index
         self.tex_coord = tex_coord
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, texture_index_by_key):
         texture_info_dict = {'index': texture_index_by_key[self.index]}
@@ -175,7 +173,7 @@ class NormalTextureInfoData(TextureInfoData):
         )
 
 
-class PBRMetallicRoughnessData(object):
+class PBRMetallicRoughnessData(Base):
     def __init__(
         self,
         base_color_factor=None,
@@ -186,13 +184,12 @@ class PBRMetallicRoughnessData(object):
         extras=None,
         extensions=None,
     ):
+        super(PBRMetallicRoughnessData, self).__init__(extras, extensions)
         self.base_color_factor = base_color_factor
         self.base_color_texture = base_color_texture
         self.metallic_factor = metallic_factor
         self.roughness_factor = roughness_factor
         self.metallic_roughness_texture = metallic_roughness_texture
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, texture_index_by_key):
         roughness_dict = {}
@@ -227,7 +224,7 @@ class PBRMetallicRoughnessData(object):
         )
 
 
-class MaterialData(object):
+class MaterialData(Base):
     def __init__(
         self,
         name=None,
@@ -242,8 +239,8 @@ class MaterialData(object):
         double_sided=None,
         extensions=None,
     ):
+        super(MaterialData, self).__init__(extras, extensions)
         self.name = name
-        self.extras = extras
         self.pbr_metallic_roughness = pbr_metallic_roughness
         self.normal_texture = normal_texture
         self.occlusion_texture = occlusion_texture
@@ -252,7 +249,6 @@ class MaterialData(object):
         self.alpha_mode = alpha_mode
         self.alpha_cutoff = alpha_cutoff
         self.double_sided = double_sided
-        self.extensions = extensions
 
     def to_data(self, texture_index_by_key):
         material_dict = {}
@@ -299,14 +295,13 @@ class MaterialData(object):
         )
 
 
-class CameraData(object):
+class CameraData(Base):
     def __init__(self, type_, orthographic=None, perspective=None, name=None, extras=None, extensions=None):
+        super(CameraData, self).__init__(extras, extensions)
         self.type = type_
         self.orthographic = orthographic
         self.perspective = perspective
         self.name = name
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self):
         camera_dict = {'type': self.type}
@@ -336,13 +331,12 @@ class CameraData(object):
         )
 
 
-class AnimationSamplerData(object):
+class AnimationSamplerData(Base):
     def __init__(self, input_, output, interpolation=None, extras=None, extensions=None):
+        super(AnimationSamplerData, self).__init__(extras, extensions)
         self.input = input_
         self.output = output
         self.interpolation = interpolation
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, input_accessor, output_accessor):
         sampler_dict = {
@@ -370,12 +364,11 @@ class AnimationSamplerData(object):
         )
 
 
-class TargetData(object):
+class TargetData(Base):
     def __init__(self, path, node=None, extras=None, extensions=None):
+        super(TargetData, self).__init__(extras, extensions)
         self.path = path
         self.node = node
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, node_index_by_key):
         target_dict = {
@@ -401,12 +394,11 @@ class TargetData(object):
         )
 
 
-class ChannelData(object):
+class ChannelData(Base):
     def __init__(self, sampler, target, extras=None, extensions=None):
+        super(ChannelData, self).__init__(extras, extensions)
         self.sampler = sampler
         self.target = target
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, node_index_by_key, sampler_index_by_key):
         channel_dict = {
@@ -431,13 +423,12 @@ class ChannelData(object):
         )
 
 
-class AnimationData(object):
+class AnimationData(Base):
     def __init__(self, channels, samplers_dict, name=None, extras=None, extensions=None):
+        super(AnimationData, self).__init__(extras, extensions)
         self.channels = channels
         self.samplers_dict = samplers_dict
         self.name = name
-        self.extras = extras
-        self.extensions = extensions
 
         self._sampler_index_by_key = None
 
@@ -477,12 +468,11 @@ class AnimationData(object):
 
 class SkinData(object):
     def __init__(self, joints, inverse_bind_matrices=None, skeleton=None, name=None, extras=None, extensions=None):
+        super(SkinData, self).__init__(extras, extensions)
         self.joints = joints
         self.inverse_bind_matrices = inverse_bind_matrices
         self.skeleton = skeleton
         self.name = name
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, node_index_by_key, accessor_index):
         node_indices = [
@@ -516,14 +506,12 @@ class SkinData(object):
         )
 
 
-class ImageData(object):
+class ImageData(Base):
     def __init__(self, data=None, uri=None, mime_type=None, name=None, extras=None, extensions=None):
+        super(ImageData, self).__init__(extras, extensions)
         self.uri = uri
         self.mime_type = mime_type
         self.name = name
-        self.extras = extras
-        self.extensions = extensions
-
         self.data = data
 
     def to_data(self, uri, buffer_view):
@@ -558,15 +546,14 @@ class ImageData(object):
         )
 
 
-class PrimitiveData(object):
+class PrimitiveData(Base):
     def __init__(self, attributes, indices=None, material=None, mode=None, targets=None, extras=None, extensions=None):
+        super(PrimitiveData, self).__init__(extras, extensions)
         self.attributes = attributes or {}
         self.indices = indices
         self.material = material
         self.mode = mode
         self.targets = targets
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self, indices_accessor, attributes_dict, targets_dict, material_index_by_key):
         primitive_dict = {'indices': indices_accessor}
