@@ -43,7 +43,6 @@ class GLTFContent(object):
     extensions : object
 
     """
-
     def __init__(self):
         self.scenes = {}
         self.default_scene_key = None
@@ -399,23 +398,6 @@ class GLTFContent(object):
 
         return positions_dict, edges_list
 
-    def get_node_by_name(self, name):
-        """Returns the node with a specific name.
-
-        Parameters
-        ----------
-        name : str
-            The name of the node
-
-        Returns
-        -------
-        node : :class:`compas.files.GLTFNode` or `None`
-        """
-        for key in self.nodes:
-            if self.nodes[key].name == name:
-                return self.nodes[key]
-        return None
-
 
 # ==============================================================================
 # Main
@@ -444,7 +426,6 @@ if __name__ == '__main__':
     node_2 = node_1.add_child(child_name='Node2')
     node_2.translation = [0, 0, 5]
     node_2.add_mesh(mesh_data.key)
-    assert(node_1 == cnt.get_node_by_name('Node1'))
 
     gltf = GLTF(gltf_filepath)
     gltf.content = cnt

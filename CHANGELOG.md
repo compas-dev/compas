@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added general plotter for geometry objects and data structures based on the artist registration mechanism.
 * Added support for multimesh files to OBJ reader/writer.
 * Added `reshape` and `unflatten` in `compas.utilities` 
-* Adding `get_node_by_name` to `compas.files.gltf.GLTFContent`
 
 ### Changed
 
