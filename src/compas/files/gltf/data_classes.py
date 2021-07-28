@@ -2,8 +2,12 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+class Base(object):
+    def __init__(self, extras=None, extensions=None):
+        self.extras = extras
+        self.extensions = extensions
 
-class SamplerData(object):
+class SamplerData(Base):
     def __init__(
         self,
         mag_filter=None,
@@ -14,13 +18,12 @@ class SamplerData(object):
         extras=None,
         extensions=None,
     ):
+        super(SamplerData, self).__init__(extras, extensions)
         self.mag_filter = mag_filter
         self.min_filter = min_filter
         self.wrap_s = wrap_s
         self.wrap_t = wrap_t
         self.name = name
-        self.extras = extras
-        self.extensions = extensions
 
     def to_data(self):
         sampler_dict = {}
@@ -104,7 +107,7 @@ class TextureInfoData(object):
         if self.extras is not None:
             texture_info_dict['extras'] = self.extras
         if self.extensions is not None:
-            texture_info_dict['extensions'] = self.extensions
+            texture_info_dict['extensions'] = dict(zip(self.extensions.keys(), [v.to_data() for v in self.extensions.values()]))
         return texture_info_dict
 
     @classmethod
@@ -117,6 +120,11 @@ class TextureInfoData(object):
             extras=texture_info.get('extras'),
             extensions=texture_info.get('extensions'),
         )
+    
+    def add_extension(self, extension):
+        if not self.extensions:
+            self.extensions = {}
+        self.extensions.update({extension.key: extension})
 
 
 class OcclusionTextureInfoData(TextureInfoData):
@@ -194,6 +202,8 @@ class PBRMetallicRoughnessData(object):
             roughness_dict['baseColorTexture'] = self.base_color_texture.to_data(texture_index_by_key)
         if self.metallic_factor is not None:
             roughness_dict['metallicFactor'] = self.metallic_factor
+        if self.roughness_factor is not None:
+            roughness_dict['roughnessFactor'] = self.roughness_factor
         if self.metallic_roughness_texture is not None:
             roughness_dict['metallicRoughnessTexture'] = self.metallic_roughness_texture.to_data(texture_index_by_key)
         if self.extras is not None:
@@ -267,7 +277,7 @@ class MaterialData(object):
         if self.double_sided is not None:
             material_dict['doubleSided'] = self.double_sided
         if self.extensions is not None:
-            material_dict['extensions'] = self.extensions
+            material_dict['extensions'] = dict(zip(self.extensions.keys(), [v.to_data(texture_index_by_key) for v in self.extensions.values()]))
         return material_dict
 
     @classmethod
