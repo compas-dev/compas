@@ -1,12 +1,15 @@
+from .data_classes import BaseGLTFDataClass
 from .data_classes import TextureInfoData
 from .data_classes import NormalTextureInfoData
-from .data_classes import Base
 
-class KHR_materials_transmission(Base):
+
+class KHR_materials_transmission(BaseGLTFDataClass):
     """glTF extension that defines the optical transmission of a material.
 
     https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_materials_transmission
     """
+
+    key = 'KHR_materials_transmission'
 
     def __init__(self,
                  transmission_factor=None,
@@ -16,7 +19,6 @@ class KHR_materials_transmission(Base):
         super(KHR_materials_transmission, self).__init__(extras, extensions)
         self.transmission_factor = transmission_factor
         self.transmission_texture = transmission_texture
-        self.key = 'KHR_materials_transmission'
 
     def to_data(self, texture_index_by_key):
         dct = {}
@@ -27,7 +29,7 @@ class KHR_materials_transmission(Base):
         if self.extras is not None:
             dct['extras'] = self.extras
         if self.extensions is not None:
-            dct['extensions'] = self.extensions
+            dct['extensions'] = self.extensions_to_data()
         return dct
 
     @classmethod
@@ -36,15 +38,17 @@ class KHR_materials_transmission(Base):
             return None
         return cls(transmission_factor=dct.get('transmissionFactor'),
                    transmission_texture=TextureInfoData.from_data(dct.get('transmissionTexture')),
-                   extensions=dct.get('extensions'),
+                   extensions=cls.extensions_from_data(dct.get('extensions')),
                    extras=dct.get('extras'))
 
 
-class KHR_materials_clearcoat(Base):
+class KHR_materials_clearcoat(BaseGLTFDataClass):
     """glTF extension that defines the clearcoat material layer.
 
     https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_materials_clearcoat
     """
+
+    key = 'KHR_materials_clearcoat'
 
     def __init__(self,
                  clearcoat_factor=None,
@@ -60,7 +64,6 @@ class KHR_materials_clearcoat(Base):
         self.clearcoat_roughness_factor = clearcoat_roughness_factor
         self.clearcoat_roughness_texture = clearcoat_roughness_texture
         self.clearcoat_normal_texture = clearcoat_normal_texture
-        self.key = 'KHR_materials_clearcoat'
 
     def to_data(self, texture_index_by_key):
         dct = {}
@@ -77,7 +80,7 @@ class KHR_materials_clearcoat(Base):
         if self.extras is not None:
             dct['extras'] = self.extras
         if self.extensions is not None:
-            dct['extensions'] = self.extensions
+            dct['extensions'] = self.extensions_to_data()
         return dct
 
     @classmethod
@@ -89,16 +92,18 @@ class KHR_materials_clearcoat(Base):
                    clearcoat_roughness_factor=dct.get('clearcoatRoughnessFactor'),
                    clearcoat_roughness_texture=TextureInfoData.from_data(dct.get('clearcoatRoughnessTexture')),
                    clearcoat_normal_texture=NormalTextureInfoData.from_data(dct.get('clearcoatNormalTexture')),
-                   extensions=dct.get('extensions'),
+                   extensions=cls.extensions_from_data(dct.get('extensions')),
                    extras=dct.get('extras'),
                    )
 
 
-class KHR_Texture_Transform(Base):
+class KHR_Texture_Transform(BaseGLTFDataClass):
     """glTF extension that enables shifting and scaling UV coordinates on a per-texture basis.
 
     https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_transform
     """
+
+    key = 'KHR_texture_transform'
 
     def __init__(self,
                  offset=None,
@@ -112,7 +117,6 @@ class KHR_Texture_Transform(Base):
         self.rotation = rotation  # or 0.
         self.scale = scale  # or [1., 1.]
         self.tex_coord = tex_coord
-        self.key = 'KHR_texture_transform'
 
     def to_data(self):
         dct = {}
@@ -127,7 +131,7 @@ class KHR_Texture_Transform(Base):
         if self.extras is not None:
             dct['extras'] = self.extras
         if self.extensions is not None:
-            dct['extensions'] = self.extensions
+            dct['extensions'] = self.extensions_to_data()
         return dct
 
     @classmethod
@@ -138,13 +142,15 @@ class KHR_Texture_Transform(Base):
                    rotation=dct.get('rotation'),
                    scale=dct.get('scale'),
                    tex_coord=dct.get('texCoord'),
-                   extensions=dct.get('extensions'),
+                   extensions=cls.extensions_from_data(dct.get('extensions')),
                    extras=dct.get('extras'))
 
 
-class KHR_materials_pbrSpecularGlossiness(Base):
+class KHR_materials_pbrSpecularGlossiness(BaseGLTFDataClass):
     """glTF extension that defines the specular-glossiness material model from Physically-Based Rendering (PBR) methodology.
     """
+
+    key = 'KHR_materials_pbrSpecularGlossiness'
 
     def __init__(self,
                  diffuse_factor=None,
@@ -160,7 +166,6 @@ class KHR_materials_pbrSpecularGlossiness(Base):
         self.specular_factor = specular_factor or [1.0, 1.0, 1.0]
         self.glossiness_factor = glossiness_factor or 1.
         self.specular_glossiness_texture = specular_glossiness_texture
-        self.key = 'KHR_materials_pbrSpecularGlossiness'
 
     def to_data(self, texture_index_by_key):
         dct = {}
@@ -177,7 +182,7 @@ class KHR_materials_pbrSpecularGlossiness(Base):
         if self.extras is not None:
             dct['extras'] = self.extras
         if self.extensions is not None:
-            dct['extensions'] = self.extensions
+            dct['extensions'] = self.extensions_to_data()
         return dct
 
     @classmethod
@@ -189,5 +194,13 @@ class KHR_materials_pbrSpecularGlossiness(Base):
                    specular_factor=dct.get('specularFactor'),
                    glossiness_factor=dct.get('glossinessFactor'),
                    specular_glossiness_texture=TextureInfoData.from_data(dct.get('specularGlossinessTexture')),
-                   extensions=dct.get('extensions'),
+                   extensions=cls.extensions_from_data(dct.get('extensions')),
                    extras=dct.get('extras'))
+
+
+SUPPORTED_EXTENSIONS = {
+    KHR_materials_transmission.key: KHR_materials_transmission,
+    KHR_materials_clearcoat.key: KHR_materials_clearcoat,
+    KHR_Texture_Transform.key: KHR_Texture_Transform,
+    KHR_materials_pbrSpecularGlossiness.key: KHR_materials_pbrSpecularGlossiness,
+}

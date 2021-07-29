@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+
 class AlphaMode(object):
     BLEND = 'BLEND'
     MASK = 'MASK'
@@ -13,7 +14,8 @@ class MineType(object):
     PNG = "image/png"
 
 
-class Base(object):
+# I changed the name of this so as not to collide with compas.Base
+class BaseGLTFDataClass(object):
     def __init__(self, extras=None, extensions=None):
         self.extras = extras
         self.extensions = extensions
@@ -23,8 +25,27 @@ class Base(object):
             self.extensions = {}
         self.extensions.update({extension.key: extension})
 
+    def extensions_to_data(self):
+        if not self.extensions:
+            return None
+        return {key: value.to_data() if hasattr(value, 'to_data') else value for key, value in self.extensions}
 
-class SamplerData(Base):
+    @classmethod
+    def extensions_from_data(cls, data):
+        # i hate hate hate this local import, but i don't see a good way around it
+        from .extensions import SUPPORTED_EXTENSIONS
+        if not data:
+            return None
+        extensions = {}
+        for key, value_data in data.items():
+            if key in SUPPORTED_EXTENSIONS:
+                extensions[key] = SUPPORTED_EXTENSIONS[key].from_data(value_data)
+            else:
+                extensions[key] = value_data
+        return extensions
+
+
+class SamplerData(BaseGLTFDataClass):
     def __init__(
         self,
         mag_filter=None,
@@ -57,7 +78,7 @@ class SamplerData(Base):
         if self.extras is not None:
             sampler_dict['extras'] = self.extras
         if self.extensions is not None:
-            sampler_dict['extensions'] = self.extensions
+            sampler_dict['extensions'] = self.extensions_to_data()
         return sampler_dict
 
     @classmethod
@@ -71,11 +92,11 @@ class SamplerData(Base):
             wrap_t=sampler.get('wrapT'),
             name=sampler.get('name'),
             extras=sampler.get('extras'),
-            extensions=sampler.get('extensions'),
+            extensions=cls.extensions_from_data(sampler.get('extensions')),
         )
 
 
-class TextureData(Base):
+class TextureData(BaseGLTFDataClass):
     def __init__(self, sampler=None, source=None, name=None, extras=None, extensions=None):
         super(TextureData, self).__init__(extras, extensions)
         self.sampler = sampler
@@ -93,7 +114,7 @@ class TextureData(Base):
         if self.extras is not None:
             texture_dict['extras'] = self.extras
         if self.extensions is not None:
-            texture_dict['extensions'] = self.extensions
+            texture_dict['extensions'] = self.extensions_to_data()
         return texture_dict
 
     @classmethod
@@ -105,11 +126,11 @@ class TextureData(Base):
             source=texture.get('source'),
             name=texture.get('name'),
             extras=texture.get('extras'),
-            extensions=texture.get('extensions'),
+            extensions=cls.extensions_from_data(texture.get('extensions')),
         )
 
 
-class TextureInfoData(Base):
+class TextureInfoData(BaseGLTFDataClass):
     def __init__(self, index, tex_coord=None, extras=None, extensions=None):
         super(TextureInfoData, self).__init__(extras, extensions)
         self.index = index
@@ -117,13 +138,12 @@ class TextureInfoData(Base):
 
     def to_data(self, texture_index_by_key):
         texture_info_dict = {'index': texture_index_by_key[self.index]}
-        #texture_info_dict = {'index': texture_index_by_key}
         if self.tex_coord is not None:
             texture_info_dict['texCoord'] = self.tex_coord
         if self.extras is not None:
             texture_info_dict['extras'] = self.extras
         if self.extensions is not None:
-            texture_info_dict['extensions'] = dict(zip(self.extensions.keys(), [v.to_data() for v in self.extensions.values()]))
+            texture_info_dict['extensions'] = self.extensions_to_data()
         return texture_info_dict
 
     @classmethod
@@ -134,7 +154,7 @@ class TextureInfoData(Base):
             index=texture_info['index'],
             tex_coord=texture_info.get('texCoord'),
             extras=texture_info.get('extras'),
-            extensions=texture_info.get('extensions'),
+            extensions=cls.extensions_from_data(texture_info.get('extensions')),
         )
 
 
@@ -157,7 +177,7 @@ class OcclusionTextureInfoData(TextureInfoData):
             index=texture_info['index'],
             tex_coord=texture_info.get('texCoord'),
             extras=texture_info.get('extras'),
-            extensions=texture_info.get('extensions'),
+            extensions=cls.extensions_from_data(texture_info.get('extensions')),
             strength=texture_info.get('strength'),
         )
 
@@ -181,12 +201,12 @@ class NormalTextureInfoData(TextureInfoData):
             index=texture_info['index'],
             tex_coord=texture_info.get('texCoord'),
             extras=texture_info.get('extras'),
-            extensions=texture_info.get('extensions'),
+            extensions=cls.extensions_from_data(texture_info.get('extensions')),
             scale=texture_info.get('scale'),
         )
 
 
-class PBRMetallicRoughnessData(Base):
+class PBRMetallicRoughnessData(BaseGLTFDataClass):
     def __init__(
         self,
         base_color_factor=None,
@@ -219,7 +239,7 @@ class PBRMetallicRoughnessData(Base):
         if self.extras is not None:
             roughness_dict['extras'] = self.extras
         if self.extensions is not None:
-            roughness_dict['extensions'] = self.extensions
+            roughness_dict['extensions'] = self.extensions_to_data()
         return roughness_dict
 
     @classmethod
@@ -233,11 +253,11 @@ class PBRMetallicRoughnessData(Base):
             roughness_factor=texture_info.get('roughnessFactor'),
             metallic_roughness_texture=TextureInfoData.from_data(texture_info.get('metallicRoughnessTexture')),
             extras=texture_info.get('extras'),
-            extensions=texture_info.get('extensions'),
+            extensions=cls.extensions_from_data(texture_info.get('extensions')),
         )
 
 
-class MaterialData(Base):
+class MaterialData(BaseGLTFDataClass):
     def __init__(
         self,
         name=None,
@@ -286,7 +306,7 @@ class MaterialData(Base):
         if self.double_sided is not None:
             material_dict['doubleSided'] = self.double_sided
         if self.extensions is not None:
-            material_dict['extensions'] = dict(zip(self.extensions.keys(), [v.to_data(texture_index_by_key) for v in self.extensions.values()]))
+            material_dict['extensions'] = self.extensions_to_data()
         return material_dict
 
     @classmethod
@@ -304,11 +324,11 @@ class MaterialData(Base):
             alpha_mode=material.get('alphaMode'),
             alpha_cutoff=material.get('alphaCutoff'),
             double_sided=material.get('doubleSided'),
-            extensions=material.get('extensions'),
+            extensions=cls.extensions_from_data(material.get('extensions')),
         )
 
 
-class CameraData(Base):
+class CameraData(BaseGLTFDataClass):
     def __init__(self, type_, orthographic=None, perspective=None, name=None, extras=None, extensions=None):
         super(CameraData, self).__init__(extras, extensions)
         self.type = type_
@@ -327,7 +347,7 @@ class CameraData(Base):
         if self.extras is not None:
             camera_dict['extras'] = self.extras
         if self.extensions is not None:
-            camera_dict['extensions'] = self.extensions
+            camera_dict['extensions'] = self.extensions_to_data()
         return camera_dict
 
     @classmethod
@@ -340,11 +360,11 @@ class CameraData(Base):
             perspective=camera.get('perspective'),
             name=camera.get('name'),
             extras=camera.get('extras'),
-            extensions=camera.get('extensions'),
+            extensions=cls.extensions_from_data(camera.get('extensions')),
         )
 
 
-class AnimationSamplerData(Base):
+class AnimationSamplerData(BaseGLTFDataClass):
     def __init__(self, input_, output, interpolation=None, extras=None, extensions=None):
         super(AnimationSamplerData, self).__init__(extras, extensions)
         self.input = input_
@@ -361,7 +381,7 @@ class AnimationSamplerData(Base):
         if self.extras is not None:
             sampler_dict['extras'] = self.extras
         if self.extensions is not None:
-            sampler_dict['extensions'] = self.extensions
+            sampler_dict['extensions'] = self.extensions_to_data()
         return sampler_dict
 
     @classmethod
@@ -373,11 +393,11 @@ class AnimationSamplerData(Base):
             output=output,
             interpolation=sampler.get('interpolation'),
             extras=sampler.get('extras'),
-            extensions=sampler.get('extensions'),
+            extensions=cls.extensions_from_data(sampler.get('extensions')),
         )
 
 
-class TargetData(Base):
+class TargetData(BaseGLTFDataClass):
     def __init__(self, path, node=None, extras=None, extensions=None):
         super(TargetData, self).__init__(extras, extensions)
         self.path = path
@@ -392,7 +412,7 @@ class TargetData(Base):
         if self.extras is not None:
             target_dict['extras'] = self.extras
         if self.extensions is not None:
-            target_dict['extensions'] = self.extensions
+            target_dict['extensions'] = self.extensions_to_data()
         return target_dict
 
     @classmethod
@@ -403,11 +423,11 @@ class TargetData(Base):
             path=target['path'],
             node=target.get('node'),
             extras=target.get('extras'),
-            extensions=target.get('extensions'),
+            extensions=cls.extensions_from_data(target.get('extensions')),
         )
 
 
-class ChannelData(Base):
+class ChannelData(BaseGLTFDataClass):
     def __init__(self, sampler, target, extras=None, extensions=None):
         super(ChannelData, self).__init__(extras, extensions)
         self.sampler = sampler
@@ -421,7 +441,7 @@ class ChannelData(Base):
         if self.extras is not None:
             channel_dict['extras'] = self.extras
         if self.extensions is not None:
-            channel_dict['extensions'] = self.extensions
+            channel_dict['extensions'] = self.extensions_to_data()
         return channel_dict
 
     @classmethod
@@ -432,11 +452,11 @@ class ChannelData(Base):
             sampler=channel['sampler'],
             target=TargetData.from_data(channel['target']),
             extras=channel.get('extras'),
-            extensions=channel.get('extensions'),
+            extensions=cls.extensions_from_data(channel.get('extensions')),
         )
 
 
-class AnimationData(Base):
+class AnimationData(BaseGLTFDataClass):
     def __init__(self, channels, samplers_dict, name=None, extras=None, extensions=None):
         super(AnimationData, self).__init__(extras, extensions)
         self.channels = channels
@@ -459,7 +479,7 @@ class AnimationData(Base):
         if self.extras is not None:
             animation_dict['extras'] = self.extras
         if self.extensions is not None:
-            animation_dict['extensions'] = self.extensions
+            animation_dict['extensions'] = self.extensions_to_data()
         return animation_dict
 
     def get_sampler_index_by_key(self):
@@ -475,11 +495,11 @@ class AnimationData(Base):
             samplers_dict=sampler_dict,
             name=animation.get('name'),
             extras=animation.get('extras'),
-            extensions=animation.get('extensions'),
+            extensions=cls.extensions_from_data(animation.get('extensions')),
         )
 
 
-class SkinData(object):
+class SkinData(BaseGLTFDataClass):
     def __init__(self, joints, inverse_bind_matrices=None, skeleton=None, name=None, extras=None, extensions=None):
         super(SkinData, self).__init__(extras, extensions)
         self.joints = joints
@@ -502,7 +522,7 @@ class SkinData(object):
         if self.inverse_bind_matrices is not None:
             skin_dict['inverseBindMatrices'] = accessor_index
         if self.extensions is not None:
-            skin_dict['extensions'] = self.extensions
+            skin_dict['extensions'] = self.extensions_from_data()
         return skin_dict
 
     @classmethod
@@ -515,11 +535,11 @@ class SkinData(object):
             skeleton=skin.get('skeleton'),
             name=skin.get('name'),
             extras=skin.get('extras'),
-            extensions=skin.get('extensions'),
+            extensions=cls.extensions_from_data(skin.get('extensions')),
         )
 
 
-class ImageData(Base):
+class ImageData(BaseGLTFDataClass):
     def __init__(self, data=None, uri=None, mime_type=None, name=None, extras=None, extensions=None):
         super(ImageData, self).__init__(extras, extensions)
         self.uri = uri
@@ -542,7 +562,7 @@ class ImageData(Base):
         elif self.uri is not None:
             image_dict['uri'] = self.uri
         if self.extensions is not None:
-            image_dict['extensions'] = self.extensions
+            image_dict['extensions'] = self.extensions_from_data()
         return image_dict
 
     @classmethod
@@ -554,12 +574,12 @@ class ImageData(Base):
             mime_type=image.get('mimeType') or mime_type,
             name=image.get('name'),
             extras=image.get('extras'),
-            extensions=image.get('extensions'),
+            extensions=cls.extensions_from_data(image.get('extensions')),
             data=data,
         )
 
 
-class PrimitiveData(Base):
+class PrimitiveData(BaseGLTFDataClass):
     def __init__(self, attributes, indices=None, material=None, mode=None, targets=None, extras=None, extensions=None):
         super(PrimitiveData, self).__init__(extras, extensions)
         self.attributes = attributes or {}
@@ -581,7 +601,7 @@ class PrimitiveData(Base):
         if targets_dict:
             primitive_dict['targets'] = targets_dict
         if self.extensions is not None:
-            primitive_dict['extensions'] = self.extensions
+            primitive_dict['extensions'] = self.extensions_to_data()
         return primitive_dict
 
     @classmethod
@@ -595,5 +615,5 @@ class PrimitiveData(Base):
             mode=primitive.get('mode'),
             targets=target_list,
             extras=primitive.get('extras'),
-            extensions=primitive.get('extensions'),
+            extensions=cls.extensions_from_data(primitive.get('extensions')),
         )

@@ -501,7 +501,6 @@ if __name__ == '__main__':
     from compas.files.gltf.gltf import GLTF
     from compas.files.gltf.data_classes import MaterialData, PBRMetallicRoughnessData, TextureInfoData, ImageData, TextureData
     from compas.files.gltf.extensions import KHR_materials_pbrSpecularGlossiness, KHR_Texture_Transform
-    import base64
 
     source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
     stl_filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
@@ -519,23 +518,18 @@ if __name__ == '__main__':
     node_2.translation = [0, 0, 5]
     node_2.add_mesh(mesh_data.key)
 
-    index = 0  # this we need to get from image data
-
     imagefile = r"C:\Users\rustr\Desktop\IDL\IDL\Cara_Shedland_01_edited.jpg"
 
-    mime_type = "image/jpeg"
+    # image's uri should be the relative path to the image from the filepath given at the time of export,
+    # so if the image will sit in the same directory as the resultant gltf, the uri is just the name of the file.
+    # it's the exporter's job to manage how things are stored in the buffer, and it would only store image data
+    # in the buffer if it is exporting as glb. otherwise the uri will just stay the relative path to the image
+    # and the gltf only makes sense when bundled with these external files.
+    image_data = ImageData(name="Cara_Shedland_01_edited.jpg", mime_type="image/jpeg", uri="Cara_Shedland_01_edited.jpg")
 
-    with open(imagefile, "rb") as img_file:
-        data = img_file.read()
-        encoded_data = base64.b64encode(data).decode('utf-8')
-        #uri = 'data:{mime_type};base64,{encoded_data}'
-
-    #image = ImageData(name="Cara_Shedland_01_edited.jpg", mime_type="image/jpeg", data=data, uri=uri)
-
-    image_data = ImageData(name="Cara_Shedland_01_edited.jpg", data=data, mime_type="image/jpeg", uri=None)
-
-    imageIdx = cnt.add_image(image_data)  # need to get dict?
-    texture = TextureData(source={0: 0}, sampler=0)
+    imageIdx = cnt.add_image(image_data)
+    # TextureData.source takes the key of the ImageData that it should use as 'source'
+    texture = TextureData(source=imageIdx)
     textureIdx = cnt.add_texture(texture)
 
     # create Material
@@ -553,7 +547,8 @@ if __name__ == '__main__':
     texture_transform = KHR_Texture_Transform()
     texture_transform.rotation = 0.
     texture_transform.scale = [70.0, 70.0]
-    pbr_specular_glossiness.diffuse_texture = TextureInfoData(index)
+    # same here, TextureInfoData uses the key of the TextureData
+    pbr_specular_glossiness.diffuse_texture = TextureInfoData(textureIdx)
     pbr_specular_glossiness.diffuse_texture.add_extension(texture_transform)
     material.add_extension(pbr_specular_glossiness)
 
@@ -563,6 +558,12 @@ if __name__ == '__main__':
     gltf.content = cnt
 
     key = cnt.get_material_index_by_name('Cara_03 Shedland')
-    node_2.mesh_data.primitive_data_list[0].material = key  # dict or int?
+    for pd in node_2.mesh_data.primitive_data_list:
+        # here is the tricky part... for this material to be valid and applied to this mesh,
+        # each of the primitives must have within the attribute `attributes` a key of the form `TEXCOORD_{some integer}`.
+        # the value of this thing should be a list of pairs of floats representing the UV texture coordinates for each vertex.
+        # if `{some integer}` is 0 then there's nothing else to do.  but if a primitive has multiple `TEXTCOORD_{some integer}`s,
+        # then the various `TextureInfoData.tex_coord` associated to this material have to be updated with the appropriate `{some integer}`.
+        pd.material = key  # dict or int? int.
 
     gltf.export(embed_data=False)
