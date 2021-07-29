@@ -2,11 +2,26 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+class AlphaMode(object):
+    BLEND = 'BLEND'
+    MASK = 'MASK'
+    OPAQUE = 'OPAQUE'
+
+
+class MineType(object):
+    JPEG = "image/jpeg"
+    PNG = "image/png"
+
 
 class Base(object):
     def __init__(self, extras=None, extensions=None):
         self.extras = extras
         self.extensions = extensions
+
+    def add_extension(self, extension):
+        if not self.extensions:
+            self.extensions = {}
+        self.extensions.update({extension.key: extension})
 
 
 class SamplerData(Base):
@@ -102,6 +117,7 @@ class TextureInfoData(Base):
 
     def to_data(self, texture_index_by_key):
         texture_info_dict = {'index': texture_index_by_key[self.index]}
+        #texture_info_dict = {'index': texture_index_by_key}
         if self.tex_coord is not None:
             texture_info_dict['texCoord'] = self.tex_coord
         if self.extras is not None:
@@ -120,11 +136,6 @@ class TextureInfoData(Base):
             extras=texture_info.get('extras'),
             extensions=texture_info.get('extensions'),
         )
-
-    def add_extension(self, extension):
-        if not self.extensions:
-            self.extensions = {}
-        self.extensions.update({extension.key: extension})
 
 
 class OcclusionTextureInfoData(TextureInfoData):
