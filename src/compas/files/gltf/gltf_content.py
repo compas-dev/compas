@@ -499,7 +499,9 @@ if __name__ == '__main__':
 
     from compas.datastructures import Mesh
     from compas.files.gltf.gltf import GLTF
-    from compas.files.gltf.data_classes import MaterialData, PBRMetallicRoughnessData, TextureData, TextureInfoData
+    from compas.files.gltf.data_classes import MaterialData, PBRMetallicRoughnessData, TextureInfoData, ImageData, TextureData
+    from compas.files.gltf.extensions import KHR_materials_pbrSpecularGlossiness, KHR_Texture_Transform
+    import base64
 
     source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
     stl_filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
@@ -517,6 +519,26 @@ if __name__ == '__main__':
     node_2.translation = [0, 0, 5]
     node_2.add_mesh(mesh_data.key)
 
+    index = 0  # this we need to get from image data
+
+    imagefile = r"C:\Users\rustr\Desktop\IDL\IDL\Cara_Shedland_01_edited.jpg"
+
+    mime_type = "image/jpeg"
+
+    with open(imagefile, "rb") as img_file:
+        data = img_file.read()
+        encoded_data = base64.b64encode(data).decode('utf-8')
+        #uri = 'data:{mime_type};base64,{encoded_data}'
+
+    #image = ImageData(name="Cara_Shedland_01_edited.jpg", mime_type="image/jpeg", data=data, uri=uri)
+
+    image_data = ImageData(name="Cara_Shedland_01_edited.jpg", data=data, mime_type="image/jpeg", uri=None)
+
+    imageIdx = cnt.add_image(image_data)  # need to get dict?
+    texture = TextureData(source={0: 0}, sampler=0)
+    textureIdx = cnt.add_texture(texture)
+
+    # create Material
     material = MaterialData()
     material.name = 'Cara_03 Shedland'
     material.pbr_metallic_roughness = PBRMetallicRoughnessData()
@@ -524,42 +546,23 @@ if __name__ == '__main__':
     material.pbr_metallic_roughness.metallic_factor = 0.
     material.pbr_metallic_roughness.roughness_factor = 0.5
     material.double_sided = True
-
-    from compas.files.gltf.extensions import KHR_materials_pbrSpecularGlossiness, KHR_Texture_Transform
-
     pbr_specular_glossiness = KHR_materials_pbrSpecularGlossiness()
     pbr_specular_glossiness.diffuse_factor = [0.980392158, 0.980392158, 0.980392158, 1.0]
     pbr_specular_glossiness.specular_factor = [0.0, 0.0, 0.0]
     pbr_specular_glossiness.glossiness_factor = 0.
-
     texture_transform = KHR_Texture_Transform()
     texture_transform.rotation = 0.
     texture_transform.scale = [70.0, 70.0]
-
-    index = 0
-
     pbr_specular_glossiness.diffuse_texture = TextureInfoData(index)
     pbr_specular_glossiness.diffuse_texture.add_extension(texture_transform)
-    # , extensions={texture_transform.key: texture_transform})
+    material.add_extension(pbr_specular_glossiness)
 
-    print(pbr_specular_glossiness.to_data({0: 0}))
+    cnt.add_material(material)
 
-    material.extensions = {pbr_specular_glossiness.key: pbr_specular_glossiness}
-
-    print(material.to_data({0: 0}))
-
-    """
-    {'name': 'Cara_03 Shedland',
-     'pbrMetallicRoughness': {'baseColorFactor': [0.980392158, 0.980392158, 0.980392158, 1.0], 
-                              'metallicFactor': 0.0,
-                              'roughnessFactor': 0.5},
-     'doubleSided': True,
-     'extensions': {'KHR_materials_pbrSpecularGlossiness': {'diffuseFactor': [0.980392158, 0.980392158, 0.980392158, 1.0], 
-                                                            'diffuseTexture': {'index': 0, 
-                                                                            'extensions': {'KHR_texture_transform': {'rotation': 0.0, 'scale': [70.0, 70.0]}}}, 
-                                                            'specularFactor': [0.0, 0.0, 0.0], 
-                                                            'glossinessFactor': 0.0}}},
-    """
     gltf = GLTF(gltf_filepath)
     gltf.content = cnt
-    gltf.export(embed_data=True)
+
+    key = cnt.get_material_index_by_name('Cara_03 Shedland')
+    node_2.mesh_data.primitive_data_list[0].material = key  # dict or int?
+
+    gltf.export(embed_data=False)
