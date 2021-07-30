@@ -230,7 +230,7 @@ def unflatten(lst, num):
 def reshape(lst, shape):
     """Gives a new shape to an array without changing its data.
 
-    This function mimicks the functionality of ``numpy.reshape`` [1]_, but in a simpler form.
+    This function mimics the functionality of ``numpy.reshape`` [1]_, but in a simpler form.
 
     Parameters
     ----------
