@@ -200,33 +200,6 @@ def flatten(list_of_lists):
     return chain.from_iterable(list_of_lists)
 
 
-def unflatten(lst, num):
-    """Returns a nested list.
-
-    Parameters
-    ----------
-    lst : list
-        A list of items.
-    num : int
-        The length of the sub-list.
-
-    Raises
-    ------
-    ValueError
-        If the length of the list is not a factor of num.
-
-
-    Examples
-    --------
-    >>> a = [1, 2, 3, 4, 5, 6]
-    >>> unflatten(a, 3)
-    [[1, 2, 3], [4, 5, 6]]
-    """
-    if len(lst) % num:
-        raise ValueError("The length of the array must be a factor of n: %d %% %d == 0" % (len(lst), num))
-    return [lst[i:i + num] for i in range(0, len(lst), num)]
-
-
 def reshape(lst, shape):
     """Gives a new shape to an array without changing its data.
 
