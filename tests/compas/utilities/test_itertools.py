@@ -3,6 +3,9 @@ import pytest
 
 from compas.datastructures import Mesh
 from compas.utilities import iterable_like
+from compas.utilities import reshape
+from compas.utilities import flatten
+from compas.geometry import allclose
 
 
 # ==============================================================================
@@ -14,6 +17,7 @@ from compas.utilities import iterable_like
 def test_iterable_like_string_and_float(target, base, fillvalue):
     a = list(iterable_like(target, base, fillvalue))
     assert a == [0.5, 0.5, 0.5, 0.5, 0.5]
+
 
 @pytest.mark.parametrize(("target", "base", "fillvalue"),
                          [(['foo', 'bar', 'baz'], {'key_1': 'a', 'key_2': 'b'}, 'key_3')])
@@ -37,3 +41,20 @@ def test_iterable_cap_generator(mesh_a, mesh_b):
     mb = Mesh.from_obj(compas.get(mesh_b))
     a = list(iterable_like(ma.faces(), mb.faces()))
     assert len(a) == len(list(ma.faces()))
+
+
+def test_reshape():
+    a = [1, 2, 3, 4, 5, 6]
+    assert(allclose(reshape(a, (2, 3)), [[1, 2, 3], [4, 5, 6]]))
+    assert(allclose(reshape(a, (3, 2)), [[1, 2], [3, 4], [5, 6]]))
+    a = [[1, 2], [3, 4], [5, 6]]
+    assert(allclose(reshape(a, (2, 3)), [[1, 2, 3], [4, 5, 6]]))
+    a = [1, 2, 3, 4]
+    assert(allclose(reshape(a, (4, 1)), [[1], [2], [3], [4]]))
+
+
+def test_flatten():
+    a = [[1, 2, 3], [4, 5, 6]]
+    assert(allclose(flatten(a), [1, 2, 3, 4, 5, 6]))
+    a = [[1], [2], [3], [4]]
+    assert(allclose(flatten(a), [1, 2, 3, 4]))
