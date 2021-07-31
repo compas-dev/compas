@@ -23,7 +23,6 @@ __all__ = [
     'meshgrid',
     'linspace',
     'flatten',
-    'unflatten',
     'reshape',
     'pairwise',
     'window',
@@ -194,10 +193,12 @@ def flatten(list_of_lists):
     Examples
     --------
     >>> a = [[1, 2, 3], [4, 5, 6]]
-    >>> list(flatten(a))
+    >>> flatten(a)
     [1, 2, 3, 4, 5, 6]
     """
-    return chain.from_iterable(list_of_lists)
+    if not hasattr(list_of_lists[0], '__len__'):
+        return list_of_lists
+    return flatten(list(chain(*list_of_lists)))
 
 
 def reshape(lst, shape):
@@ -220,6 +221,9 @@ def reshape(lst, shape):
     [[1, 2, 3], [4, 5, 6]]
     >>> reshape(a, (3, 2))
     [[1, 2], [3, 4], [5, 6]]
+    >>> a = [[1, 2], [3, 4], [5, 6]]
+    >>> reshape(a, (2, 3))
+    [[1, 2, 3], [4, 5, 6]]
 
 
     References
@@ -227,12 +231,20 @@ def reshape(lst, shape):
     .. [1] ``numpy.reshape`` Available at https://numpy.org/doc/stable/reference/generated/numpy.reshape.html
 
     """
-    if len(shape) == 1:
-        return lst
-    if len(lst) != reduce(lambda x, y: x * y, shape):
+    def helper(l, shape):  # noqa E741
+        if len(shape) == 1:
+            if len(l) % shape[0] != 0:
+                raise ValueError("ValueError: cannot reshape array of size %d into shape %s" % (len(lst), shape))
+            return l
+        else:
+            n = reduce(mul, shape[1:])
+            return [helper(l[i * n:(i + 1) * n], shape[1:]) for i in range(len(l) // n)]
+
+    shape = (shape,) if isinstance(shape, int) else shape
+    flattened_list = flatten(lst)
+    if len(flattened_list) != reduce(lambda x, y: x * y, shape):
         raise ValueError("ValueError: cannot reshape array of size %d into shape %s" % (len(lst), shape))
-    n = reduce(mul, shape[1:])
-    return [reshape(lst[i * n:(i + 1) * n], shape[1:]) for i in range(len(lst) // n)]
+    return helper(flattened_list, shape)
 
 
 def pairwise(iterable):
