@@ -53,7 +53,6 @@ itertools
     :nosignatures:
 
     flatten
-    unflatten
     reshape
     linspace
     meshgrid
@@ -137,7 +136,6 @@ from .encoders import (
 from .images import gif_from_images
 from .itertools import (
     flatten,
-    unflatten,
     reshape,
     grouper,
     iterable_like,
@@ -207,7 +205,6 @@ __all__ = [
     'meshgrid',
     'linspace',
     'flatten',
-    'unflatten',
     'reshape',
     'pairwise',
     'window',
