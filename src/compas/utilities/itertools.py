@@ -188,7 +188,11 @@ def linspace(start, stop, num=50):
 
 
 def flatten(list_of_lists):
-    """Flatten one level of nesting.
+    """Flattens a multi-dimensional list.
+
+    Notes
+    -----
+    It does only work if the nested sequences have the same lengths or shapes.
 
     Examples
     --------
