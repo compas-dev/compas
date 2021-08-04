@@ -162,6 +162,42 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         for child_joint in link.joints:
             self.create(child_joint.child_link)
 
+    def meshes(self, link=None, visual=True, collision=False):
+        """Returns all compas meshes of the model.
+
+        Parameters
+        ----------
+        link : :class:`compas.robots.Link`, optional
+            Base link instance. Defaults to the robot model's root.
+        visual : :obj:`bool`, optional
+            Whether to include the robot's visual meshes. Defaults
+            to ``True``.
+        collision : :obj:`bool`, optional
+            Whether to include the robot's collision meshes.  Defaults
+            to ``False``.
+
+        Returns
+        -------
+        :obj:`list` of :class:`compas.datastructures.Mesh`
+        """
+        if link is None:
+            link = self.model.root
+
+        meshes = []
+        items = []
+        if visual:
+            items += link.visual
+        if collision:
+            items += link.collision
+        for item in items:
+            new_meshes = Geometry._get_item_meshes(item)
+            for mesh in new_meshes:
+                mesh.transform(item.current_transformation)
+            meshes += new_meshes
+        for child_joint in link.joints:
+            meshes += self.meshes(child_joint.child_link)
+        return meshes
+
     def scale(self, factor):
         """Scales the robot model's geometry by factor (absolute).
 
