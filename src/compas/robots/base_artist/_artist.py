@@ -14,6 +14,8 @@ __all__ = [
     'BaseRobotModelArtist'
 ]
 
+from compas.robots.model.link import Item
+
 
 class AbstractRobotModelArtist(object):
     def transform(self, geometry, transformation):
@@ -75,6 +77,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         self.create()
         self.scale_factor = 1.
         self.attached_tool_model = None
+        self.attached_items = {}
 
     def attach_tool_model(self, tool_model):
         """Attach a tool to the robot artist.
@@ -113,6 +116,45 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         """Detach the tool.
         """
         self.attached_tool_model = None
+
+    def attach_mesh(self, mesh, link=None):
+        """Rigidly attaches a compas mesh to a given link.
+
+        Parameters
+        ----------
+        mesh : :class:`compas.datastructures.Mesh`
+            The mesh to attach to the robot model.
+        link : :class:`compas.robots.Link`
+            The link within the robot model or tool model to attach the mesh to. Optional.
+            Defaults to the model's end effector link.
+
+        Returns
+        -------
+        ``None``
+        """
+        if not link:
+            link = self.model.get_end_effector_link()
+
+        frame = link.parent_joint.origin.copy()
+        initial_transformation = Transformation.from_frame_to_frame(Frame.worldXY(), frame)
+
+        sample_geometry = link.collision[0] if link.collision else link.visual[0] if link.visual else None
+
+        if hasattr(sample_geometry, 'current_transformation'):
+            relative_transformation = sample_geometry.current_transformation
+        else:
+            relative_transformation = Transformation()
+
+        transformation = relative_transformation.concatenated(initial_transformation)
+        native_mesh = self.create_geometry(mesh)
+        self.transform(native_mesh, transformation)
+
+        item = Item()
+        item.native_geometry = [native_mesh]
+        item.init_transformation = transformation  # !!!
+        item.current_transformation = Transformation()  # !!!
+
+        self.attached_items.setdefault(link.name, []).append(item)
 
     def create(self, link=None, context=None):
         """Recursive function that triggers the drawing of the robot model's geometry.
@@ -258,6 +300,8 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                 # some links have only collision geometry, not visual. These meshes have not been loaded.
                 if item.native_geometry:
                     self._apply_transformation_on_transformed_link(item, transformation)
+        for item in self.attached_items.get(link.name, []):
+            self._apply_transformation_on_transformed_link(item, transformation)
 
     def update_tool(self, joint_state=None, visual=True, collision=True, transformation=None):
         """Triggers the update of the robot geometry of the tool.
@@ -301,6 +345,13 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         if self.attached_tool_model:
             for native_geometry in self._iter_geometry(self.attached_tool_model, 'collision'):
                 yield native_geometry
+
+    def draw_attached_meshes(self):
+        """Draws all meshes attached to the robot model."""
+        for items in self.attached_items.values():
+            for item in items:
+                for native_mesh in item.native_geometry:
+                    yield native_mesh
 
     @staticmethod
     def _iter_geometry(model, geometry_type):
