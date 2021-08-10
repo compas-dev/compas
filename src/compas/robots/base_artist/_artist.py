@@ -8,13 +8,12 @@ from compas.geometry import Frame
 from compas.geometry import Scale
 from compas.geometry import Transformation
 from compas.robots import Geometry
+from compas.robots.model.link import Item
 
 
 __all__ = [
     'BaseRobotModelArtist'
 ]
-
-from compas.robots.model.link import Item
 
 
 class AbstractRobotModelArtist(object):
