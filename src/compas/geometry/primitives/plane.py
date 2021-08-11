@@ -298,3 +298,16 @@ class Plane(Primitive):
         """
         self.point.transform(T)
         self.normal.transform(T)
+
+    def offset(self, distance):
+        """Returns a new offset plane by a given distance.
+        Plane normal is used as positive direction.
+
+        Parameters:
+        -----------
+        plane: compas.geometry.Plane
+
+        distance: float
+        """
+
+        return Plane(self.point+self.normal.scaled(distance), self.normal)
