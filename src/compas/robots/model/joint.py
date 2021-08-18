@@ -460,7 +460,9 @@ class Joint(Data):
     SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic', 'fixed',
                        'floating', 'planar')
 
-    def __init__(self, name, type, parent, child, origin=None, axis=None, calibration=None, dynamics=None, limit=None, safety_controller=None, mimic=None, **kwargs):
+    def __init__(self, name, type, parent, child, origin=None, axis=None,
+                 calibration=None, dynamics=None, limit=None,
+                 safety_controller=None, mimic=None, **kwargs):
         type_idx = Joint.SUPPORTED_TYPES.index(type) if isinstance(type, str) else type
 
         if type_idx not in range(len(Joint.SUPPORTED_TYPES)):
