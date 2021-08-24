@@ -150,6 +150,27 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         self._exit_layer()
         return new_guids
 
+    def draw_attached_meshes(self):
+        """Draw all the geometries attached to the robot model.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+        """
+        acms = super(RobotModelArtist, self).draw_attached_meshes()
+        acms = list(acms)
+
+        self._enter_layer()
+
+        new_guids = []
+        for mesh in acms:
+            guids = self._add_mesh_to_doc(mesh)
+            new_guids.extend(guids)
+
+        self._exit_layer()
+        return new_guids
+
     def draw(self):
         """Same as draw_visual."""
         return self.draw_visual()
