@@ -6,7 +6,7 @@ __all__ = ['GeometryPlotter']
 
 
 class GeometryPlotter:
-    """Plotter for the visualisation of COMPAS geometry.
+    """Plotter for the visualization of COMPAS geometry.
 
     Parameters
     ----------

@@ -5,21 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## Unreleased
 
 ### Added
 
+* Added pluggable function `trimesh_slice` in `compas_rhino`.
+* Added equality comparison for pointclouds.
+* Added `compas.data.is_sequence_of_uint`.
+* Added general plotter for geometry objects and data structures based on the artist registration mechanism.
+* Added support for multimesh files to OBJ reader/writer.
+
 ### Changed
+
 * `compas.robots.Axis` is now normalized upon initialization.
 * Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
 * Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
-
-### Fixed
+* Fixed data schema of `compas.geometry.Polyline`, `compas.geometry.Polygon`, `compas.geometry.Pointcloud`.
 * Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
+* Changed `compas_rhino.drawing.draw_breps` to assume provided polygon is closed and automatically add missing corner to polycurve constructor.
+* Changed conversion of edges and faces to uniques keys for the data dicts to use the string representation of a sorted tuple of identifiers.
+* Added `dtype` to JSON decoding error message.
 
 ### Removed
-
 
 ## [1.7.1] 2021-06-14
 
@@ -36,35 +43,68 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+* `compas.robots.Axis` is now normalized upon initialization.
+* Fixed a bug in `compas.numerical.dr_numpy` when using numpy array as inputs.
+* Allowed for varying repository file structures in `compas.robots.GithubPackageMeshLoader`.
+* Remove default implementation of `__str__` for data objects.
+
+### Fixed
+
+* Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
+
+### Removed
+
+## [1.7.1] 2021-06-14
+
+### Added
+
+### Changed
+
+* Fixed bundling of ghuser components.
+
+### Removed
+
+## [1.7.0] 2021-06-14
+
+### Added
+
 * Added pluggable function `trimesh_gaussian_curvature` in `compas_rhino`.
 * Added pluggable function `trimesh_mean_curvature` in `compas_rhino`.
 * Added pluggable function `trimesh_principal_curvature` in `compas_rhino`.
 * Added `copy` and `deepcopy` functionality to `compas.robots.Configuration`.
+* Added `compas.data.is_sequence_of_int` and `compas.data.is_sequence_of_float`.
+* Added `compas.data.Data.JSONSCHEMANAME`.
+* Added `kwargs` to all child classes of `compas.data.Data`.
 * Added grasshopper component for drawing a frame.
 * Added `draw_origin` and `draw_axes`.
 
 ### Changed
 
 * Allow str or int as joint type in `compas.robots.Joint` constructor.
+* Moved json schemas to `compas.data`.
+* Nested json schemas.
 * `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.
 * Fixed bugs in `compas.geometry.bestfit_circle_numpy`.
 * Changed directory where ghuser components are installed.
 * Added ghuser components directory to those removed by the `clean` task.
 * Clean up the ghuser directory before building ghuser components.
+* Exposed function `draw_breps` in `compas_rhino.utilities`; example added.
+* Added `join` flag to function `draw_breps` in `compas_rhino.utilities`
 * Fixed bug in `compas.geometry.distance.closest_point_on_segment_xy`.
 * Fixed bug in Rhino implementations of `trimesh` curvature functions.
 
 ### Removed
-
 
 ## [1.6.3] 2021-05-26
 
 ### Added
 
 * Added `compas.topology.astar_lightest_path`.
-* Added jsonschema definitions for primitives and transformations.
+* Added JSONSCHEMA definitions for primitives and transformations.
 * Added schema implementation to primitives and transformations.
-* Added jsonschema implementation to primitives and transformations.
+* Added JSONSCHEMA implementation to primitives and transformations.
 * Added `compas.data.is_int3`, `compas.data.is_float3`, `compas_data.is_float4x4`.
 
 ### Changed
@@ -245,9 +285,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug regarding a repeated call to `RobotModel.add_joint`.
 * Fixed bug in `compas_blender.RobotModelArtist.update`.
 * Fixed bug in `compas.datastructures.mesh_slice_plane`.
-* Fixed bug where initialising a `compas_blender.artists.Robotmodelartist` would create a new collection for each mesh and then also not put the mesh iton the created collection. 
-* Changed the initialisation of `compas_blender.artists.Robotmodelartist` to include a `collection`-parameter instead of a `layer`-parameter to be more consistent with Blender's nomenclature. 
-* Used a utility function from `compas_blender.utilities` to create the collection if none exists instead of using a new call to a bpy-method. 
+* Fixed bug where initialising a `compas_blender.artists.Robotmodelartist` would create a new collection for each mesh and then also not put the mesh iton the created collection.
+* Changed the initialisation of `compas_blender.artists.Robotmodelartist` to include a `collection`-parameter instead of a `layer`-parameter to be more consistent with Blender's nomenclature.
+* Used a utility function from `compas_blender.utilities` to create the collection if none exists instead of using a new call to a bpy-method.
 
 ### Removed
 

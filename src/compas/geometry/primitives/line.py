@@ -1,18 +1,9 @@
-"""
-.. testsetup::
-
-    from compas.geometry import Line
-
-"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
-
-
-__all__ = ['Line']
 
 
 class Line(Primitive):
@@ -58,49 +49,36 @@ class Line(Primitive):
 
     """
 
+    @property
+    def DATASCHEMA(self):
+        from schema import Schema
+        return Schema({
+            'start': Point.DATASCHEMA.fget(None),
+            'end': Point.DATASCHEMA.fget(None)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'line'
+
     __slots__ = ['_start', '_end']
 
-    def __init__(self, p1, p2):
-        super(Line, self).__init__()
+    def __init__(self, p1, p2, **kwargs):
+        super(Line, self).__init__(**kwargs)
         self._start = None
         self._end = None
         self.start = p1
         self.end = p2
 
     @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        return Schema({
-            "start": is_float3,
-            "end": is_float3
-        })
-
-    @property
-    def JSONSCHEMA(self):
-        from compas import versionstring
-        schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://github.com/compas-dev/compas/schemas/line.json",
-            "$compas": versionstring,
-            "type": "object",
-            "properties": {
-                "start": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
-                "end": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
-            },
-            "required": ["start", "end"]
-        }
-        return schema
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the line."""
-        return {'start': list(self.start), 'end': list(self.end)}
+        return {'start': self.start.data, 'end': self.end.data}
 
     @data.setter
     def data(self, data):
-        self.start = data['start']
-        self.end = data['end']
+        self.start = Point.from_data(data['start'])
+        self.end = Point.from_data(data['end'])
 
     @property
     def start(self):
@@ -197,7 +175,7 @@ class Line(Primitive):
         >>> line.end
         Point(1.000, 0.000, 0.000)
         """
-        return cls(data['start'], data['end'])
+        return cls(Point.from_data(data['start']), Point.from_data(data['end']))
 
     # ==========================================================================
     # static

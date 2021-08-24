@@ -19,8 +19,23 @@ def graph():
 
 
 # ==============================================================================
-# Tests - Schema & JSONSchema
+# Tests - Schema & jsonschema
 # ==============================================================================
+
+
+# def test_edgedata_directionality(graph):
+#     graph.update_default_edge_attributes({'index': 0})
+#     for index, (u, v) in enumerate(graph.edges()):
+#         graph.edge_attribute((u, v), 'index', index)
+#     assert all(graph.edge_attribute((u, v), 'index') != graph.edge_attribute((v, u), 'index') for u, v in graph.edges())
+
+
+def test_edgedata_io(graph):
+    graph.update_default_edge_attributes({'index': 0})
+    for index, (u, v) in enumerate(graph.edges()):
+        graph.edge_attribute((u, v), 'index', index)
+    other = Graph.from_data(graph.data)
+    assert all(other.edge_attribute(edge, 'index') == index for index, edge in enumerate(other.edges()))
 
 
 def test_data_schema(graph):

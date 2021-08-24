@@ -33,7 +33,7 @@ class Axes2D(object):
     """
 
     def __init__(self, origin, vectors):
-        """Initialises the Axes2D object"""
+        """Initializes the Axes2D object"""
         self.origin = asarray(origin)
         self.vectors = asarray(vectors)
 
@@ -81,7 +81,7 @@ class Axes3D(object):
     """
 
     def __init__(self, origin, vectors, colors=None):
-        """Initialises the Axes3D object"""
+        """Initializes the Axes3D object"""
         self.origin = asarray(origin)
         self.vectors = asarray(vectors)
         if not colors:
