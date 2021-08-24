@@ -57,3 +57,8 @@ class RobotModelArtist(BaseRobotModelArtist):
         collisions = super(RobotModelArtist, self).draw_collision()
         for collision in collisions:
             collision.hide_set(False)
+
+    def draw_attached_meshes(self):
+        meshes = super(RobotModelArtist, self).draw_attached_meshes()
+        for mesh in meshes:
+            mesh.hide_set(False)
