@@ -1278,7 +1278,7 @@ class HalfEdge(Datastructure):
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
             raise KeyError(edge)
-        key = "-".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if value is not None:
             if key not in self.edgedata:
                 self.edgedata[key] = {}
@@ -1312,7 +1312,7 @@ class HalfEdge(Datastructure):
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
             raise KeyError(edge)
-        key = "-".join(map(str, sorted(edge)))
+        key = str(tuple(sorted(edge)))
         if key in self.edgedata and name in self.edgedata[key]:
             del self.edgedata[key][name]
 
@@ -1352,7 +1352,7 @@ class HalfEdge(Datastructure):
             return
         # use it as a getter
         if not names:
-            key = "-".join(map(str, sorted(edge)))
+            key = str(tuple(sorted(edge)))
             # get the entire attribute dict
             return EdgeAttributeView(self.default_edge_attributes, self.edgedata.setdefault(key, {}))
         # get only the values of the named attributes
