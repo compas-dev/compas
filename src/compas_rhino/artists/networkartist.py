@@ -59,6 +59,8 @@ class NetworkArtist(Artist):
 
     def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__(network, layer=layer)
+        self._nodes = None
+        self._edges = None
         self._node_xyz = None
         self._node_color = None
         self._edge_color = None
@@ -107,7 +109,7 @@ class NetworkArtist(Artist):
     @property
     def node_color(self):
         if not self._node_color:
-            self._node_color = {node: self.artist.default_nodecolor for node in self.network.nodes()}
+            self._node_color = {node: self.default_nodecolor for node in self.network.nodes()}
         return self._node_color
 
     @node_color.setter
@@ -120,7 +122,7 @@ class NetworkArtist(Artist):
     @property
     def edge_color(self):
         if not self._edge_color:
-            self._edge_color = {edge: self.artist.default_edgecolor for edge in self.network.edges()}
+            self._edge_color = {edge: self.default_edgecolor for edge in self.network.edges()}
         return self._edge_color
 
     @edge_color.setter
