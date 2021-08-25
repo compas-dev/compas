@@ -335,6 +335,8 @@ from .volmesh import (
     volmesh_transformed
 )
 
+from .assembly import Assembly
+
 if not compas.IPY:
     from .network import (
         network_adjacency_matrix,
