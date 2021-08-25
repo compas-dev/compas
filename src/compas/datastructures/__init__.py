@@ -5,6 +5,16 @@ datastructures
 
 .. currentmodule:: compas.datastructures
 
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Datastructure
+
+
 Network
 =======
 
@@ -195,11 +205,33 @@ Functions
     volmesh_transformed
 
 
+Assembly
+========
+
+Classes
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Assembly
+
+
+Functions
+---------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
 """
 from __future__ import absolute_import
+
 import compas
 
 from .datastructure import Datastructure
+
 from .network import (
     BaseNetwork,               # NOTE: this class being in the stable API is something we should deprecate before 2.x release
     Graph,
@@ -432,6 +464,8 @@ __all__ = [
     'volmesh_bounding_box',
     'volmesh_transform',
     'volmesh_transformed',
+    # Assemblies
+    'Assembly',
 ]
 
 if not compas.IPY:
