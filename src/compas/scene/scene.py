@@ -15,11 +15,40 @@ __all__ = ['BaseScene']
 class BaseScene(object):
     """A base class for all CAD scenes.
 
+    Parameters
+    ----------
+    viewmode: {'shaded', 'ghosted', 'wireframe'}, optional
+        Default is ``'shaded'``.
+    fov: float, optional
+        Angle in degrees between 0 and 180.
+    eye: :class:`compas.geometry.Point`, optional
+        View origin.
+        Default is ``Point(0, 0, 0)``.
+    target: :class:`compas.geometry.Point`, optional
+        View target.
+    db: ???, optional
+        A database connection.
+    depth: int, optional
+        The number of steps to be tracked.
+        Default is ``10``.
+    settings: dict, optional
+        Additional scene settings.
+
     Attributes
     ----------
-    objects : dict
+    objects: dict
         Mapping between object identifiers and objects added to the scene.
         The identifiers are automatically generated and assigned.
+    viewmode: str
+        The viewing mode is one of ``{'shaded', 'ghosted', 'wireframe'}``.
+    fov: float
+        The field-of-view angle.
+    eye: :class:`compas.geometry.Point`
+        The camera position.
+    target: :class:`compas.geometry.Point`
+        The camera target.
+    settings: dict
+        Additional scene settings.
 
     """
 
@@ -131,15 +160,43 @@ class BaseScene(object):
         raise NotImplementedError
 
     def draw(self, pause=None):
-        """Draw all objects in the scene."""
+        """Draw all objects in the scene.
+
+        Parameters
+        ----------
+        pause: float, optional
+            A timeout before drawing.
+        """
         raise NotImplementedError
 
     def update(self, pause=None):
-        """Update the display state of all objects in the scene."""
+        """Update the display state of all objects in the scene.
+
+        Parameters
+        ----------
+        pause: float, optional
+            A timeout before updating.
+        """
         raise NotImplementedError
 
     def save(self, filename):
-        """Save the scene."""
+        """Save the scene.
+
+        Parameters
+        ----------
+        filename: str
+            The name of the storage file.
+        """
+        raise NotImplementedError
+
+    def load(self, filename):
+        """Load a scene.
+
+        Parameters
+        ----------
+        filename: str
+            The name of the storage file.
+        """
         raise NotImplementedError
 
     def undo(self):
@@ -155,5 +212,21 @@ class BaseScene(object):
         raise NotImplementedError
 
     def on(self, interval=None, frames=None, record=False, recording=None, dpi=150):
-        """Method for decorating callback functions in dynamic visualisations."""
+        """Method for decorating callback functions in dynamic visualisations.
+
+        Parameters
+        ----------
+        interval: float, optional
+            An interval between consecutive callback calls, in seconds.
+        frames: int, optional
+            The number of callback frames.
+        record: bool, optional
+            Flag indicating that the visualization should be recorded.
+            Default is ``False``.
+        recording: str, optional
+            Path to the file in which the recording should be stored.
+        dpi: float, optional
+            The resolution of the recording.
+            Default is ``150``.
+        """
         raise NotImplementedError
