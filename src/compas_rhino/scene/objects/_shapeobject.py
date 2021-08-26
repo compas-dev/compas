@@ -61,7 +61,7 @@ class ShapeObject(Object):
     @shape.setter
     def shape(self, shape):
         self.item = shape
-        self._guids = None
+        self._guid = None
 
     def clear(self):
         """Clear all Rhino objects associated with this object.

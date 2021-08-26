@@ -79,6 +79,7 @@ class BaseScene(object):
         """
         obj = BaseObject.build(item, scene=self, name=name, visible=visible, **kwargs)
         self.objects[obj.uuid] = obj
+        obj.draw()
         return obj
 
     def remove(self, item):

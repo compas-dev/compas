@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.utilities import is_color_rgb
 from ._artist import Artist
 
 
@@ -41,7 +42,9 @@ class ShapeArtist(Artist):
     default_color = (255, 255, 255)
 
     def __init__(self, shape, color=None, layer=None):
-        super(ShapeArtist, self).__init__(shape, color=color, layer=layer)
+        super(ShapeArtist, self).__init__(shape, layer=layer)
+        self._color = None
+        self.color = color
         self._u = None
         self._v = None
 
@@ -52,6 +55,17 @@ class ShapeArtist(Artist):
     @shape.setter
     def shape(self, shape):
         self.item = shape
+
+    @property
+    def color(self):
+        if not self._color:
+            self._color = self.default_color
+        return self._color
+
+    @color.setter
+    def color(self, color):
+        if is_color_rgb(color):
+            self._color = color
 
     @property
     def u(self):

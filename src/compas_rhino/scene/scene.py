@@ -58,7 +58,7 @@ class Scene(BaseScene):
     def draw(self, pause=None):
         if pause:
             time.sleep(pause)
-            compas_rhino.wait()
+        compas_rhino.wait()
         compas_rhino.rs.EnableRedraw(False)
         for guid in self.objects:
             self.objects[guid].draw()
@@ -68,7 +68,7 @@ class Scene(BaseScene):
     def update(self, pause=None):
         if pause:
             time.sleep(pause)
-            compas_rhino.wait()
+        compas_rhino.wait()
         compas_rhino.rs.EnableRedraw(True)
         compas_rhino.rs.Redraw()
 

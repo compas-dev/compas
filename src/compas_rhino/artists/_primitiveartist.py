@@ -36,10 +36,9 @@ class PrimitiveArtist(Artist):
     default_color = (0, 0, 0)
 
     def __init__(self, primitive, color=None, layer=None):
-        super(PrimitiveArtist, self).__init__(primitive)
+        super(PrimitiveArtist, self).__init__(primitive, layer=layer)
         self._color = None
         self.color = color
-        self.layer = layer
 
     @property
     def primitive(self):
