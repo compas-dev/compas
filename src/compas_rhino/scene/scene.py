@@ -35,7 +35,6 @@ class Scene(BaseScene):
         compas_rhino.rs.Redraw()
 
     def clear(self):
-        """Clear all objects from the scene."""
         compas_rhino.rs.EnableRedraw(False)
         try:
             for guid in list(self.objects.keys()):
@@ -57,13 +56,6 @@ class Scene(BaseScene):
         compas_rhino.rs.Redraw()
 
     def draw(self, pause=None):
-        """Draw all objects currently present in the scene.
-
-        Parameters
-        ----------
-        pause : float, optional
-            The amount of time to pause before executing the update, in seconds.
-        """
         if pause:
             time.sleep(pause)
             compas_rhino.wait()
@@ -74,13 +66,6 @@ class Scene(BaseScene):
         compas_rhino.rs.Redraw()
 
     def update(self, pause=None):
-        """Update the display state of all objects currently present in the scene.
-
-        Parameters
-        ----------
-        pause : float, optional
-            The amount of time to pause before executing the update, in seconds.
-        """
         if pause:
             time.sleep(pause)
             compas_rhino.wait()
@@ -88,41 +73,6 @@ class Scene(BaseScene):
         compas_rhino.rs.Redraw()
 
     def on(self, interval, frames, record=False, recording=None, dpi=150):
-        """Method for decorating callback functions in dynamic visualisations.
-
-        Parameters
-        ----------
-        interval : float
-            The interval between function calls, in seconds.
-        frames : int
-            The number of frames to run.
-        record : bool, optional
-            Indicate that the frames should be recorded.
-        recording : str, optional
-            The path to the file where the recording should be stored.
-        dpi : int, optional
-            The frame resolution of the recording.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            from compas.geometry import Frame, Box, Translation
-            from compas_rhino.scene import Scene
-
-            scene = Scene()
-
-            box = Box(Frame.worldXY(), 1, 1, 1)
-            obj = scene.add(box, color=(255, 0, 0))
-            scene.draw()
-
-            T = Translation.from_vector([0.1, 0, 0])
-
-            @scene.on(interval=0.1, frames=100)
-            def do(frame):
-                obj.transform(T)
-
-        """
         if record:
             if not recording:
                 raise Exception('Please provide a path for the recording.')

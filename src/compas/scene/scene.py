@@ -211,22 +211,40 @@ class BaseScene(object):
         """Synchronize all data items with the current state of the scene objects."""
         raise NotImplementedError
 
-    def on(self, interval=None, frames=None, record=False, recording=None, dpi=150):
+    def on(self, interval, frames, record=False, recording=None, dpi=150):
         """Method for decorating callback functions in dynamic visualisations.
 
         Parameters
         ----------
-        interval: float, optional
-            An interval between consecutive callback calls, in seconds.
-        frames: int, optional
-            The number of callback frames.
-        record: bool, optional
-            Flag indicating that the visualization should be recorded.
-            Default is ``False``.
-        recording: str, optional
-            Path to the file in which the recording should be stored.
-        dpi: float, optional
-            The resolution of the recording.
-            Default is ``150``.
+        interval : float
+            The interval between function calls, in seconds.
+        frames : int
+            The number of frames to run.
+        record : bool, optional
+            Indicate that the frames should be recorded.
+        recording : str, optional
+            The path to the file where the recording should be stored.
+        dpi : int, optional
+            The frame resolution of the recording.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            from compas.geometry import Frame, Box, Translation
+            from compas_rhino.scene import Scene
+
+            scene = Scene()
+
+            box = Box(Frame.worldXY(), 1, 1, 1)
+            obj = scene.add(box, color=(255, 0, 0))
+            scene.draw()
+
+            T = Translation.from_vector([0.1, 0, 0])
+
+            @scene.on(interval=0.1, frames=100)
+            def do(frame):
+                obj.transform(T)
+
         """
         raise NotImplementedError
