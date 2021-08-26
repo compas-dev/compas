@@ -9,6 +9,13 @@ from compas_rhino.artists._shapeartist import ShapeArtist
 class TorusArtist(ShapeArtist):
 
     def draw(self):
+        """Draw the torus.
+
+        Returns
+        -------
+        str
+            The GUID of the created Rhino object.
+        """
         vertices, faces = self.shape.to_vertices_and_faces(u=self.u, v=self.v)
         vertices = [list(vertex) for vertex in vertices]
         return compas_rhino.draw_mesh(vertices,

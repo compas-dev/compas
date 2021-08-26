@@ -9,6 +9,13 @@ from compas_rhino.artists._shapeartist import ShapeArtist
 class PolyhedronArtist(ShapeArtist):
 
     def draw(self):
+        """Draw the poolyhedron.
+
+        Returns
+        -------
+        str
+            The GUID of the created Rhino object.
+        """
         vertices = [list(vertex) for vertex in self.shape.vertices]
         faces = self.shape.faces
         return compas_rhino.draw_mesh(vertices,

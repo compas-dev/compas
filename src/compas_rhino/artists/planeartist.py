@@ -10,18 +10,6 @@ __all__ = ['PlaneArtist']
 
 
 class PlaneArtist(PrimitiveArtist):
-    """Artist for drawing planes.
-
-    Parameters
-    ----------
-    primitive : :class:`compas.geometry.Plane`
-        A COMPAS plane.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
-
-    """
 
     def draw(self):
         """Draw the plane.

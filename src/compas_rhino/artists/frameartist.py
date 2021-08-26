@@ -16,12 +16,11 @@ class FrameArtist(PrimitiveArtist):
     ----------
     frame: :class:`compas.geometry.Frame`
         A COMPAS frame.
+    layer: str, optional
+        The layer containing the Rhino objects.
     scale: float, optional
         Scale factor that controls the length of the axes.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
+        Default is ``1.0``.
 
     Attributes
     ----------
@@ -36,27 +35,6 @@ class FrameArtist(PrimitiveArtist):
         Default is ``(0, 255, 0)``.
     color_zaxis : tuple of 3 int between 0 abd 255
         Default is ``(0, 0, 255)``.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        from compas.geometry import Pointcloud
-        from compas.geometry import Frame
-
-        import compas_rhino
-        from compas_rhino.artists import FrameArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-
-        compas_rhino.clear_layer("Test::FrameArtist")
-
-        for point in pcl.points:
-            frame = tpl.copy()
-            frame.point = point
-            artist = FrameArtist(frame, layer="Test::FrameArtist")
-            artist.draw()
 
     """
 
@@ -89,5 +67,4 @@ class FrameArtist(PrimitiveArtist):
             {'start': origin, 'end': Z, 'color': self.color_zaxis, 'arrow': 'end'}]
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self._guids = guids
         return guids
