@@ -1,35 +1,3 @@
-"""
-********************************************************************************
-objects
-********************************************************************************
-
-.. currentmodule:: compas_rhino.objects
-
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BoxObject
-    CapsuleObject
-    ConeObject
-    CylinderObject
-    PolyhedronObject
-    SphereObject
-    TorusObject
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    NetworkObject
-    MeshObject
-    VolMeshObject
-
-"""
 from __future__ import absolute_import
 
 from ._select import (  # noqa : F401 F403
@@ -84,17 +52,3 @@ Object.register(Torus, TorusObject)
 Object.register(Network, NetworkObject)
 Object.register(Mesh, MeshObject)
 Object.register(VolMesh, VolMeshObject)
-
-__all__ = [
-    'Object',
-    'BoxObject'
-    'CapsuleObject'
-    'ConeObject'
-    'CylinderObject'
-    'PolyhedronObject'
-    'SphereObject'
-    'TorusObject'
-    'MeshObject',
-    'NetworkObject',
-    'VolMeshObject'
-]
