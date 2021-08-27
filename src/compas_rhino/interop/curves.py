@@ -1,5 +1,4 @@
 from compas.geometry import Line
-from compas.geometry import NurbsCurve
 
 from .exceptions import COMPASRhinoInteropError
 
@@ -40,7 +39,7 @@ def compas_line_to_rhino_curve(line):
     -------
     :class:`Rhino.Geometry.Curve`
     """
-    return NurbsCurve.CreateFromLine(compas_line_to_rhino_line(line))
+    return RhinoNurbsCurve.CreateFromLine(compas_line_to_rhino_line(line))
 
 
 def rhino_curve_to_compas_circle(curve):
@@ -76,7 +75,7 @@ def compas_circle_to_rhino_curve(circle):
     -------
     :class:`Rhino.Geometry.Curve`
     """
-    return NurbsCurve.CreateFromCircle(compas_circle_to_rhino_circle(circle))
+    return RhinoNurbsCurve.CreateFromCircle(compas_circle_to_rhino_circle(circle))
 
 
 def rhino_curve_to_compas_ellipse(curve):
@@ -112,7 +111,7 @@ def compas_ellipse_to_rhino_curve(ellipse):
     -------
     :class:`Rhino.Geometry.Curve`
     """
-    return NurbsCurve.CreateFromEllipse(compas_ellipse_to_rhino_ellipse(ellipse))
+    return RhinoNurbsCurve.CreateFromEllipse(compas_ellipse_to_rhino_ellipse(ellipse))
 
 
 def rhino_curve_to_compas_polyline(curve):
@@ -137,8 +136,8 @@ def rhino_curve_to_compas_polyline(curve):
     return rhino_polyline_to_compas_polyline(polyline)
 
 
-def rhino_curve_to_compas_curve(curve):
-    """Convert a Rhino curve to a COMPAS curve.
+def rhino_curve_to_compas_data(curve):
+    """Convert a Rhino curve to a COMPAS data dict.
 
     Parameters
     ----------
@@ -146,7 +145,7 @@ def rhino_curve_to_compas_curve(curve):
 
     Returns
     -------
-    :class:`compas.geometry.NurbsCurve`
+    :obj:`dict`
     """
     nurbs = curve.ToNurbsCurve()
     points = []
@@ -165,23 +164,37 @@ def rhino_curve_to_compas_curve(curve):
         knots.append(nurbs.Knots.Item[index])
         multiplicities.append(nurbs.Knots.KnotMultiplicity(index))
 
-    return NurbsCurve.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
+    return {
+        'points': [point.data for point in points],
+        'weights': weights,
+        'knots': knots,
+        'multiplicities': multiplicities,
+        'degree': degree,
+        'is_periodic': is_periodic
+    }
 
 
-def compas_curve_to_rhino_curve(curve):
+def compas_data_to_rhino_curve(data):
     """Convert a COMPAS curve to a Rhino curve.
 
     Parameters
     ----------
-    curve: :class:`compas.geometry.NurbsCurve`
+    data: :obj:`dict`
 
     Returns
     -------
     :class:`Rhino.Geometry.NurbsCurve`
     """
-    nurbs = RhinoNurbsCurve(3, curve.is_rational, curve.order, len(curve.points))
-    for index, point in enumerate(curve.points):
-        nurbs.Points.SetPoint(index, point.x, point.y, point.z)
-    for index, knot in enumerate(curve.knotvector):
+    nurbs = RhinoNurbsCurve(data['degree'], len(data['points']))
+
+    for index, xyz in enumerate(data['points']):
+        nurbs.Points.SetPoint(index, *xyz)
+
+    knotvector = []
+    for knot, mult in zip(data['knots'], data['multiplicities']):
+        for i in range(mult):
+            knotvector.append(knot)
+
+    for index, knot in enumerate(knotvector):
         nurbs.Knots.Item[index] = knot
     return nurbs

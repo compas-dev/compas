@@ -1,11 +1,12 @@
-from compas.geometry import NurbsSurface
+from compas.geometry import Point
+
 from Rhino.Geometry import NurbsSurface as RhinoNurbsSurface
 
 from .primitives import compas_point_to_rhino_point
 from .primitives import rhino_point_to_compas_point
 
 
-def rhino_surface_to_compas_surface(surface):
+def rhino_surface_to_compas_data(surface):
     """Convert a Rhino surface to a COMPAS surface.
 
     Parameters
@@ -14,7 +15,7 @@ def rhino_surface_to_compas_surface(surface):
 
     Returns
     -------
-    :class:`compas.geometry.NurbsSurface`
+    :obj:`dict`
     """
     surface = surface.ToNurbsSurface()
 
@@ -49,42 +50,61 @@ def rhino_surface_to_compas_surface(surface):
     is_u_periodic = False
     is_v_periodic = False
 
-    return NurbsSurface.from_parameters(points,
-                                        weights,
-                                        u_knots, v_knots,
-                                        u_mults, v_mults,
-                                        u_degree, v_degree,
-                                        is_u_periodic, is_v_periodic)
+    return {
+        'points': [[point.data for point in row] for row in points],
+        'weights': weights,
+        'u_knots': u_knots,
+        'v_knots': v_knots,
+        'u_mults': u_mults,
+        'v_mults': v_mults,
+        'u_degree': u_degree,
+        'v_degree': v_degree,
+        'is_u_periodic': is_u_periodic,
+        'is_v_periodic': is_v_periodic
+    }
 
 
-def compas_surface_to_rhino_surface(surface):
+def compas_data_to_rhino_surface(data):
     """Convert a COMPAS surface to a Rhino surface.
 
     Parameters
     ----------
-    surface: :class:`compas.geometry.NurbsSurface`
+    data: :obj:`dict`
 
     Returns
     -------
     :class:`Rhino.Geometry.NurbsSurface`
     """
-    nu = len(surface.points[0])
-    nv = len(surface.points)
+    points = [[Point.from_data(point) for point in row] for row in data['points']]
+
+    nu = len(points[0])
+    nv = len(points)
+
     nurbs = RhinoNurbsSurface.Create(3,
-                                     surface.is_rational,
-                                     surface.u_degree + 1,
-                                     surface.v_degree + 1,
+                                     False,
+                                     data['u_degree'] + 1,
+                                     data['v_degree'] + 1,
                                      nu,
                                      nv)
     for i in range(nu):
         for j in range(nv):
-            nurbs.Points.SetPoint(i, j, compas_point_to_rhino_point(surface.points[j][i]))
-            nurbs.Points.SetWeight(i, j, surface.weights[j][i])
+            nurbs.Points.SetPoint(i, j, compas_point_to_rhino_point(points[j][i]))
+            nurbs.Points.SetWeight(i, j, data['weights'][j][i])
 
-    for index, knot in enumerate(surface.u_knotvector):
+    u_knotvector = []
+    for knot, mult in zip(data['u_knots'], data['u_mults']):
+        for i in range(mult):
+            u_knotvector.append(knot)
+
+    for index, knot in enumerate(u_knotvector):
         nurbs.KnotsU.Item[index] = knot
 
-    for index, knot in enumerate(surface.v_knotvector):
+    v_knotvector = []
+    for knot, mult in zip(data['v_knots'], data['v_mults']):
+        for i in range(mult):
+            v_knotvector.append(knot)
+
+    for index, knot in enumerate(v_knotvector):
         nurbs.KnotsV.Item[index] = knot
 
     return nurbs
