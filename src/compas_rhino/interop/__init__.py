@@ -53,12 +53,23 @@ Shapes
     rhino_cone_to_compas_cone
     rhino_cylinder_to_compas_cylinder
 
+
 Curves
 ======
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
+
+    compas_line_to_rhino_curve
+    compas_circle_to_rhino_curve
+    compas_ellipse_to_rhino_curve
+    compas_curve_to_rhino_curve
+    rhino_curve_to_compas_line
+    rhino_curve_to_compas_circle
+    rhino_curve_to_compas_ellipse
+    rhino_curve_to_compas_polyline
+    rhino_curve_to_compas_curve
 
 
 Surfaces
@@ -104,10 +115,21 @@ from .shapes import (
     rhino_cone_to_compas_cone,
     rhino_cylinder_to_compas_cylinder,
 )
+from .curves import (
+    compas_line_to_rhino_curve,
+    compas_circle_to_rhino_curve,
+    compas_ellipse_to_rhino_curve,
+    compas_curve_to_rhino_curve,
+
+    rhino_curve_to_compas_circle,
+    rhino_curve_to_compas_ellipse,
+    rhino_curve_to_compas_line,
+    rhino_curve_to_compas_polyline,
+    rhino_curve_to_compas_curve
+)
 
 # geometry to geometry conversions
 # Rhino object to geometry conversions
-# wrapper functions should be move to base classes in compas and receive an implementation via the plugin mechanism
 
 __all__ = [
     'compas_point_to_rhino_point',
@@ -139,4 +161,15 @@ __all__ = [
     'rhino_sphere_to_compas_sphere',
     'rhino_cone_to_compas_cone',
     'rhino_cylinder_to_compas_cylinder',
+
+    'compas_line_to_rhino_curve',
+    'compas_circle_to_rhino_curve',
+    'compas_ellipse_to_rhino_curve',
+    'compas_curve_to_rhino_curve',
+
+    'rhino_curve_to_compas_circle',
+    'rhino_curve_to_compas_ellipse',
+    'rhino_curve_to_compas_line',
+    'rhino_curve_to_compas_polyline',
+    'rhino_curve_to_compas_curve',
 ]
