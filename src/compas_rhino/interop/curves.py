@@ -1,4 +1,5 @@
 from compas.geometry import Line
+from compas.geometry import NurbsCurve
 
 from .exceptions import COMPASRhinoInteropError
 
@@ -10,7 +11,7 @@ from .primitives import rhino_circle_to_compas_circle
 from .primitives import rhino_ellipse_to_compas_ellipse
 from .primitives import rhino_polyline_to_compas_polyline
 
-from Rhino.Geometry import NurbsCurve
+from Rhino.Geometry import NurbsCurve as RhinoNurbsCurve
 
 
 def rhino_curve_to_compas_line(curve):
@@ -147,11 +148,27 @@ def rhino_curve_to_compas_curve(curve):
     -------
     :class:`compas.geometry.Curve`
     """
-    # curve = curve.ToNurbsCurve()
-    raise NotImplementedError
+    curve = curve.ToNurbsCurve()
+    points = []
+    weights = []
+    knots = []
+    multiplicities = []
+    degree = curve.Degree
+    is_periodic = curve.IsPeriodic
+
+    for index in range(curve.Points.Count):
+        point = curve.Points.Item[index]
+        points.append(rhino_point_to_compas_point(point.Location))
+        weights.append(point.Weight)
+
+    for index in range(curve.Knots.Count):
+        knots.append(curve.Knots.Item[index])
+        multiplicities.append(curve.Knots.KnotMultiplicity(index))
+
+    return NurbsCurve.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
 
 
-def compas_curve_to_rhino_curve(ellipse):
+def compas_curve_to_rhino_curve(curve):
     """Convert a COMPAS curve to a Rhino curve.
 
     Parameters
@@ -162,4 +179,9 @@ def compas_curve_to_rhino_curve(ellipse):
     -------
     :class:`Rhino.Geometry.Curve`
     """
-    raise NotImplementedError
+    rhinocurve = RhinoNurbsCurve(3, curve.is_rational, curve.order, len(curve.points))
+    for index, point in enumerate(curve.points):
+        rhinocurve.Points.SetPoint(index, point.x, point.y, point.z)
+    for index, knot in enumerate(curve.knots):
+        rhinocurve.Knots[index] = knot
+    return rhinocurve
