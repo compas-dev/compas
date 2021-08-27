@@ -146,7 +146,7 @@ def rhino_curve_to_compas_curve(curve):
 
     Returns
     -------
-    :class:`compas.geometry.Curve`
+    :class:`compas.geometry.NurbsCurve`
     """
     curve = curve.ToNurbsCurve()
     points = []
@@ -173,15 +173,15 @@ def compas_curve_to_rhino_curve(curve):
 
     Parameters
     ----------
-    curve: :class:`compas.geometry.Curve`
+    curve: :class:`compas.geometry.NurbsCurve`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Curve`
+    :class:`Rhino.Geometry.NurbsCurve`
     """
     rhinocurve = RhinoNurbsCurve(3, curve.is_rational, curve.order, len(curve.points))
     for index, point in enumerate(curve.points):
         rhinocurve.Points.SetPoint(index, point.x, point.y, point.z)
     for index, knot in enumerate(curve.knots):
-        rhinocurve.Knots[index] = knot
+        rhinocurve.Knots.Item[index] = knot
     return rhinocurve
