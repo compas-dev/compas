@@ -68,7 +68,7 @@ def bernstein(n, k, t):
 
 class BezierCurve(Curve):
 
-    __slots__ = ('points', )
+    # __slots__ = ('points', )
 
     @property
     def DATASCHEMA(self):

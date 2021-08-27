@@ -83,6 +83,29 @@ Transformations
     Translation
 
 
+Curves
+------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Curve
+    BezierCurve
+    NurbsCurve
+
+
+Surfaces
+--------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Surface
+    NurbsSurface
+
+
 Functions
 =========
 
@@ -936,6 +959,17 @@ if not compas.IPY:
         PointCollectionNumpy
     )
 
+from .curves import (
+    Curve,
+    BezierCurve,
+    NurbsCurve
+)
+
+from .surfaces import (
+    Surface,
+    NurbsSurface
+)
+
 __all__ = [
     'close',
     'allclose',
@@ -1236,6 +1270,13 @@ __all__ = [
 
     'Collection',
     'PointCollection',
+
+    'Curve',
+    'BezierCurve',
+    'NurbsCurve',
+
+    'Surface',
+    'NurbsSurface'
 ]
 
 if not compas.IPY:
