@@ -8,7 +8,7 @@ from compas.geometry import Frame
 from compas.geometry import Scale
 from compas.geometry import Transformation
 from compas.robots import Geometry
-from compas.robots.model.link import Item
+from compas.robots.model.link import LinkItem
 
 
 __all__ = [
@@ -79,7 +79,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         self.attached_items = {}
 
     def attach_tool_model(self, tool_model):
-        """Attach a tool to the robot artist.
+        """Attach a tool to the robot artist for visualization.
 
         Parameters
         ----------
@@ -117,7 +117,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         self.attached_tool_model = None
 
     def attach_mesh(self, mesh, name, link=None, frame=None):
-        """Rigidly attaches a compas mesh to a given link.
+        """Rigidly attaches a compas mesh to a given link for visualization.
 
         Parameters
         ----------
@@ -149,7 +149,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         init_transformation = transformation * sample_geometry.init_transformation
         self.transform(native_mesh, sample_geometry.current_transformation * init_transformation)
 
-        item = Item()
+        item = LinkItem()
         item.native_geometry = [native_mesh]
         item.init_transformation = init_transformation
         item.current_transformation = sample_geometry.current_transformation
@@ -219,7 +219,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         for child_joint in link.joints:
             self.create(child_joint.child_link)
 
-    def meshes(self, link=None, visual=True, collision=False):
+    def meshes(self, link=None, visual=True, collision=False, attached_meshes=True):
         """Returns all compas meshes of the model.
 
         Parameters
@@ -232,6 +232,9 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         collision : :obj:`bool`, optional
             Whether to include the robot's collision meshes.  Defaults
             to ``False``.
+        attached_meshes : :obj:`bool`, optional
+            Whether to include the robot's attached meshes.  Defaults
+            to ``True``.
 
         Returns
         -------
@@ -246,13 +249,15 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             items += link.visual
         if collision:
             items += link.collision
+        if attached_meshes:
+            items += list(self.attached_items.get(link.name, {}).values())
         for item in items:
             new_meshes = Geometry._get_item_meshes(item)
             for mesh in new_meshes:
                 mesh.transform(item.current_transformation)
             meshes += new_meshes
         for child_joint in link.joints:
-            meshes += self.meshes(child_joint.child_link)
+            meshes += self.meshes(child_joint.child_link, visual, collision, attached_meshes)
         return meshes
 
     def scale(self, factor):

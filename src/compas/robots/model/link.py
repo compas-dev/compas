@@ -168,14 +168,14 @@ class Inertial(Data):
         self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
 
 
-class Item(object):
+class LinkItem(object):
     def __init__(self):
         self.init_transformation = None  # to store the init transformation
         self.current_transformation = None  # to store the current transformation
         self.native_geometry = None  # to store the link's CAD native geometry
 
 
-class Visual(Item, Data):
+class Visual(LinkItem, Data):
     """Visual description of a link.
 
     Attributes
@@ -268,7 +268,7 @@ class Visual(Item, Data):
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Collision(Item, Data):
+class Collision(LinkItem, Data):
     """Collidable description of a link.
 
     Attributes
