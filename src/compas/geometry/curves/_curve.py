@@ -2,4 +2,4 @@ from compas.data import Data
 
 
 class Curve(Data):
-    pass
+    """Base class for curves."""

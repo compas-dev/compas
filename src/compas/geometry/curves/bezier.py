@@ -67,6 +67,7 @@ def bernstein(n, k, t):
 
 
 class BezierCurve(Curve):
+    """Class representing a Bezier curve."""
 
     # __slots__ = ('points', )
 

@@ -16,7 +16,7 @@ from ._surface import Surface
 
 
 class NurbsSurface(Surface):
-    """Class representing a NURBS surface based on the BSplineSurface of the OCC geometry kernel.
+    """Class representing a NURBS surface.
 
     Attributes
     ----------
