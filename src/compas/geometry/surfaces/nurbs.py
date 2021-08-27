@@ -128,7 +128,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas_occ.geometry.NurbsSurface`
+        :class:`compas.geometry.NurbsSurface`
             The constructed surface.
 
         """
