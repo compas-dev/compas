@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from itertools import product
 
 from typing import Generator, Optional, Tuple, List, Dict
@@ -74,7 +72,7 @@ class NurbsSurface(Surface):
         super().__init__(name=name)
         self._points = None
 
-    def __eq__(self, other: NurbsSurface) -> bool:
+    def __eq__(self, other: 'NurbsSurface') -> bool:
         raise NotImplementedError
 
     def __str__(self):
@@ -120,7 +118,7 @@ class NurbsSurface(Surface):
         raise NotImplementedError
 
     @classmethod
-    def from_data(cls, data: Dict) -> NurbsSurface:
+    def from_data(cls, data: Dict) -> 'NurbsSurface':
         """Construct a BSpline surface from its data representation.
 
         Parameters
@@ -168,7 +166,7 @@ class NurbsSurface(Surface):
                         u_degree: int,
                         v_degree: int,
                         is_u_periodic: bool = False,
-                        is_v_periodic: bool = False) -> NurbsSurface:
+                        is_v_periodic: bool = False) -> 'NurbsSurface':
         """Construct a NURBS surface from explicit parameters."""
         raise NotImplementedError
 
@@ -176,12 +174,12 @@ class NurbsSurface(Surface):
     def from_points(cls,
                     points: List[List[Point]],
                     u_degree: int = 3,
-                    v_degree: int = 3) -> NurbsSurface:
+                    v_degree: int = 3) -> 'NurbsSurface':
         """Construct a NURBS surface from control points."""
         raise NotImplementedError
 
     @classmethod
-    def from_meshgrid(cls, nu: int = 10, nv: int = 10) -> NurbsSurface:
+    def from_meshgrid(cls, nu: int = 10, nv: int = 10) -> 'NurbsSurface':
         """Construct a NURBS surface from a mesh grid."""
         UU, VV = meshgrid(linspace(0, nu, nu + 1), linspace(0, nv, nv + 1))
         points = []
@@ -193,12 +191,12 @@ class NurbsSurface(Surface):
         return cls.from_points(points=points)
 
     @classmethod
-    def from_step(cls, filepath: str) -> NurbsSurface:
+    def from_step(cls, filepath: str) -> 'NurbsSurface':
         """Load a NURBS surface from a STP file."""
         raise NotImplementedError
 
     @classmethod
-    def from_fill(cls, curve1: NurbsCurve, curve2: NurbsCurve) -> NurbsSurface:
+    def from_fill(cls, curve1: NurbsCurve, curve2: NurbsCurve) -> 'NurbsSurface':
         """Construct a NURBS surface from the infill between two NURBS curves."""
         raise NotImplementedError
 
@@ -311,7 +309,7 @@ class NurbsSurface(Surface):
     # Methods
     # ==============================================================================
 
-    def copy(self) -> NurbsSurface:
+    def copy(self) -> 'NurbsSurface':
         """Make an independent copy of the surface."""
         return NurbsSurface.from_parameters(
             self.points,
@@ -330,7 +328,7 @@ class NurbsSurface(Surface):
         """Transform this surface."""
         raise NotImplementedError
 
-    def transformed(self, T: Transformation) -> NurbsSurface:
+    def transformed(self, T: Transformation) -> 'NurbsSurface':
         """Transform an independent copy of this surface."""
         copy = self.copy()
         copy.transform(T)

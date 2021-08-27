@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from math import sqrt
 
 from typing import Dict, List
@@ -70,7 +68,7 @@ class NurbsCurve(Curve):
     def __init__(self, name=None) -> None:
         super().__init__(name=name)
 
-    def __eq__(self, other: NurbsCurve) -> bool:
+    def __eq__(self, other: 'NurbsCurve') -> bool:
         raise NotImplementedError
 
     def __str__(self):
@@ -110,7 +108,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @classmethod
-    def from_data(cls, data: Dict) -> NurbsCurve:
+    def from_data(cls, data: Dict) -> 'NurbsCurve':
         """Construct a NURBS curve from its data representation.
 
         Parameters
@@ -143,12 +141,12 @@ class NurbsCurve(Curve):
                         knots: List[float],
                         multiplicities: List[int],
                         degree: int,
-                        is_periodic: bool = False) -> NurbsCurve:
+                        is_periodic: bool = False) -> 'NurbsCurve':
         """Construct a NURBS curve from explicit curve parameters."""
         raise NotImplementedError
 
     @classmethod
-    def from_points(cls, points: List[Point], degree: int = 3) -> NurbsCurve:
+    def from_points(cls, points: List[Point], degree: int = 3) -> 'NurbsCurve':
         """Construct a NURBS curve from control points.
 
         This construction method is similar to the method ``Create`` of the Rhino API for NURBS curves [1]_.
@@ -161,7 +159,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @classmethod
-    def from_interpolation(cls, points: List[Point], precision: float = 1e-3) -> NurbsCurve:
+    def from_interpolation(cls, points: List[Point], precision: float = 1e-3) -> 'NurbsCurve':
         """Construct a NURBS curve by interpolating a set of points.
 
         This construction method is similar to the method ``CreateHSpline`` of the Rhino API for NURBS curves [1]_.
@@ -174,7 +172,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @classmethod
-    def from_step(cls, filepath: str) -> NurbsCurve:
+    def from_step(cls, filepath: str) -> 'NurbsCurve':
         """Load a NURBS curve from an STP file."""
         raise NotImplementedError
 
@@ -183,7 +181,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @classmethod
-    def from_circle(cls, circle: Circle) -> NurbsCurve:
+    def from_circle(cls, circle: Circle) -> 'NurbsCurve':
         """Construct a NURBS curve from a circle.
 
         This construction method is similar to the method ``CreateFromCircle`` of the Rhino API for NURBS curves [1]_.
@@ -348,7 +346,7 @@ class NurbsCurve(Curve):
     # Methods
     # ==============================================================================
 
-    def copy(self) -> NurbsCurve:
+    def copy(self) -> 'NurbsCurve':
         """Make an independent copy of the current curve."""
         return NurbsCurve.from_parameters(
             self.points,
@@ -363,7 +361,7 @@ class NurbsCurve(Curve):
         """Transform this curve."""
         raise NotImplementedError
 
-    def transformed(self, T: Transformation) -> NurbsCurve:
+    def transformed(self, T: Transformation) -> 'NurbsCurve':
         """Transform a copy of the curve."""
         copy = self.copy()
         copy.transform(T)
