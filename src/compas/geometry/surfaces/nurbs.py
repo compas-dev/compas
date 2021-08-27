@@ -3,11 +3,11 @@ from itertools import product
 from typing import Generator, Optional, Tuple, List, Dict
 
 import numpy as np
+import compas
 
 from compas.geometry import Point, Vector, Line, Frame, Box
 from compas.geometry import Transformation
 from compas.utilities import meshgrid, linspace
-from compas.datastructures import Mesh
 
 from ..curves import NurbsCurve
 from ._surface import Surface
@@ -208,10 +208,11 @@ class NurbsSurface(Surface):
         """Write the surface geometry to a STP file."""
         raise NotImplementedError
 
-    def to_mesh(self, nu: int = 100, nv: Optional[int] = None) -> Mesh:
+    def to_mesh(self, nu: int = 100, nv: Optional[int] = None) -> 'compas.datastructures.Mesh':
         """Convert the surface to a quad mesh."""
         from itertools import product
         from functools import lru_cache
+        from compas.datastructures import Mesh
 
         @lru_cache(maxsize=None)
         def point_at(i, j):
