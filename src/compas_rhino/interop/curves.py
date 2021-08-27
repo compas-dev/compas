@@ -148,22 +148,22 @@ def rhino_curve_to_compas_curve(curve):
     -------
     :class:`compas.geometry.NurbsCurve`
     """
-    curve = curve.ToNurbsCurve()
+    nurbs = curve.ToNurbsCurve()
     points = []
     weights = []
     knots = []
     multiplicities = []
-    degree = curve.Degree
-    is_periodic = curve.IsPeriodic
+    degree = nurbs.Degree
+    is_periodic = nurbs.IsPeriodic
 
-    for index in range(curve.Points.Count):
-        point = curve.Points.Item[index]
+    for index in range(nurbs.Points.Count):
+        point = nurbs.Points.Item[index]
         points.append(rhino_point_to_compas_point(point.Location))
         weights.append(point.Weight)
 
-    for index in range(curve.Knots.Count):
-        knots.append(curve.Knots.Item[index])
-        multiplicities.append(curve.Knots.KnotMultiplicity(index))
+    for index in range(nurbs.Knots.Count):
+        knots.append(nurbs.Knots.Item[index])
+        multiplicities.append(nurbs.Knots.KnotMultiplicity(index))
 
     return NurbsCurve.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
 
@@ -179,9 +179,9 @@ def compas_curve_to_rhino_curve(curve):
     -------
     :class:`Rhino.Geometry.NurbsCurve`
     """
-    rhinocurve = RhinoNurbsCurve(3, curve.is_rational, curve.order, len(curve.points))
+    nurbs = RhinoNurbsCurve(3, curve.is_rational, curve.order, len(curve.points))
     for index, point in enumerate(curve.points):
-        rhinocurve.Points.SetPoint(index, point.x, point.y, point.z)
-    for index, knot in enumerate(curve.knots):
-        rhinocurve.Knots.Item[index] = knot
-    return rhinocurve
+        nurbs.Points.SetPoint(index, point.x, point.y, point.z)
+    for index, knot in enumerate(curve.knotvector):
+        nurbs.Knots.Item[index] = knot
+    return nurbs
