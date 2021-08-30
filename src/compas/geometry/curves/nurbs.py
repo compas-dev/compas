@@ -1,10 +1,7 @@
 from math import sqrt
 
-from typing import Dict, List
 from compas.geometry import Point
-from compas.geometry import Transformation
 from compas.geometry import Frame
-from compas.geometry import Circle
 from compas.utilities import linspace
 
 from ._curve import Curve
@@ -65,10 +62,10 @@ class NurbsCurve(Curve):
     def JSONSCHEMANAME(self):
         raise NotImplementedError
 
-    def __init__(self, name=None) -> None:
+    def __init__(self, name=None):
         super().__init__(name=name)
 
-    def __eq__(self, other: 'NurbsCurve') -> bool:
+    def __eq__(self, other):
         raise NotImplementedError
 
     def __str__(self):
@@ -93,7 +90,7 @@ class NurbsCurve(Curve):
     # ==============================================================================
 
     @property
-    def data(self) -> Dict:
+    def data(self):
         return {
             'points': [point.data for point in self.points],
             'weights': self.weights,
@@ -104,11 +101,11 @@ class NurbsCurve(Curve):
         }
 
     @data.setter
-    def data(self, data: Dict):
+    def data(self, data):
         raise NotImplementedError
 
     @classmethod
-    def from_data(cls, data: Dict) -> 'NurbsCurve':
+    def from_data(cls, data):
         """Construct a NURBS curve from its data representation.
 
         Parameters
@@ -135,18 +132,12 @@ class NurbsCurve(Curve):
     # ==============================================================================
 
     @classmethod
-    def from_parameters(cls,
-                        points: List[Point],
-                        weights: List[float],
-                        knots: List[float],
-                        multiplicities: List[int],
-                        degree: int,
-                        is_periodic: bool = False) -> 'NurbsCurve':
+    def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
         """Construct a NURBS curve from explicit curve parameters."""
         raise NotImplementedError
 
     @classmethod
-    def from_points(cls, points: List[Point], degree: int = 3) -> 'NurbsCurve':
+    def from_points(cls, points, degree=3):
         """Construct a NURBS curve from control points.
 
         This construction method is similar to the method ``Create`` of the Rhino API for NURBS curves [1]_.
@@ -159,7 +150,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @classmethod
-    def from_interpolation(cls, points: List[Point], precision: float = 1e-3) -> 'NurbsCurve':
+    def from_interpolation(cls, points, precision=1e-3):
         """Construct a NURBS curve by interpolating a set of points.
 
         This construction method is similar to the method ``CreateHSpline`` of the Rhino API for NURBS curves [1]_.
@@ -172,7 +163,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @classmethod
-    def from_step(cls, filepath: str) -> 'NurbsCurve':
+    def from_step(cls, filepath):
         """Load a NURBS curve from an STP file."""
         raise NotImplementedError
 
@@ -181,7 +172,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @classmethod
-    def from_circle(cls, circle: Circle) -> 'NurbsCurve':
+    def from_circle(cls, circle):
         """Construct a NURBS curve from a circle.
 
         This construction method is similar to the method ``CreateFromCircle`` of the Rhino API for NURBS curves [1]_.
@@ -270,7 +261,7 @@ class NurbsCurve(Curve):
     # Conversions
     # ==============================================================================
 
-    def to_step(self, filepath: str, schema: str = "AP203") -> None:
+    def to_step(self, filepath, schema="AP203"):
         """Write the curve geometry to a STP file."""
         raise NotImplementedError
 
@@ -279,27 +270,27 @@ class NurbsCurve(Curve):
     # ==============================================================================
 
     @property
-    def points(self) -> List[Point]:
+    def points(self):
         raise NotImplementedError
 
     @property
-    def weights(self) -> List[float]:
+    def weights(self):
         raise NotImplementedError
 
     @property
-    def knots(self) -> List[float]:
+    def knots(self):
         raise NotImplementedError
 
     @property
-    def knotsequence(self) -> List[float]:
+    def knotsequence(self):
         raise NotImplementedError
 
     @property
-    def multiplicities(self) -> List[int]:
+    def multiplicities(self):
         raise NotImplementedError
 
     @property
-    def degree(self) -> int:
+    def degree(self):
         raise NotImplementedError
 
     @property
@@ -315,23 +306,23 @@ class NurbsCurve(Curve):
         return self.degree + 1
 
     @property
-    def start(self) -> Point:
+    def start(self):
         raise NotImplementedError
 
     @property
-    def end(self) -> Point:
+    def end(self):
         raise NotImplementedError
 
     @property
-    def is_closed(self) -> bool:
+    def is_closed(self):
         raise NotImplementedError
 
     @property
-    def is_periodic(self) -> bool:
+    def is_periodic(self):
         raise NotImplementedError
 
     @property
-    def is_rational(self) -> bool:
+    def is_rational(self):
         raise NotImplementedError
 
     @property
@@ -346,7 +337,7 @@ class NurbsCurve(Curve):
     # Methods
     # ==============================================================================
 
-    def copy(self) -> 'NurbsCurve':
+    def copy(self):
         """Make an independent copy of the current curve."""
         return NurbsCurve.from_parameters(
             self.points,
@@ -357,22 +348,22 @@ class NurbsCurve(Curve):
             self.is_periodic
         )
 
-    def transform(self, T: Transformation) -> None:
+    def transform(self, T):
         """Transform this curve."""
         raise NotImplementedError
 
-    def transformed(self, T: Transformation) -> 'NurbsCurve':
+    def transformed(self, T):
         """Transform a copy of the curve."""
         copy = self.copy()
         copy.transform(T)
         return copy
 
-    def space(self, n: int = 10) -> List[float]:
+    def space(self, n=10):
         """Compute evenly spaced parameters over the curve domain."""
         u, v = self.domain
         return linspace(u, v, n)
 
-    def xyz(self, n: int = 10) -> List[Point]:
+    def xyz(self, n=10):
         """Compute point locations corresponding to evenly spaced parameters over the curve domain."""
         return [self.point_at(param) for param in self.space(n)]
 
@@ -392,12 +383,12 @@ class NurbsCurve(Curve):
         """
         return self.xyz(resolution)
 
-    def point_at(self, u: float) -> Point:
+    def point_at(self, u):
         """Compute a point on the curve.
 
         Parameters
         ----------
-        t : float
+        u : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
@@ -407,12 +398,12 @@ class NurbsCurve(Curve):
         """
         raise NotImplementedError
 
-    def tangent_at(self, t):
+    def tangent_at(self, u):
         """Compute the tangent vector at a point on the curve.
 
         Parameters
         ----------
-        t : float
+        u : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
@@ -423,12 +414,12 @@ class NurbsCurve(Curve):
         """
         pass
 
-    def curvature_at(self, t):
+    def curvature_at(self, u):
         """Compute the curvature at a point on the curve.
 
         Parameters
         ----------
-        t : float
+        u : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
@@ -439,12 +430,12 @@ class NurbsCurve(Curve):
         """
         raise NotImplementedError
 
-    def frame_at(self, t):
+    def frame_at(self, u):
         """Compute the local frame at a point on the curve.
 
         Parameters
         ----------
-        t : float
+        u : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
