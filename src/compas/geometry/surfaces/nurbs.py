@@ -1,15 +1,10 @@
-from itertools import product
-
-from typing import Generator, Optional, Tuple, List, Dict
-
 import numpy as np
-import compas
+from itertools import product
+from functools import lru_cache
 
-from compas.geometry import Point, Vector, Line, Frame, Box
-from compas.geometry import Transformation
+from compas.geometry import Point
 from compas.utilities import meshgrid, linspace
 
-from ..curves import NurbsCurve
 from ._surface import Surface
 
 
@@ -68,11 +63,11 @@ class NurbsSurface(Surface):
     def JSONSCHEMANAME(self):
         raise NotImplementedError
 
-    def __init__(self, name: str = None) -> None:
+    def __init__(self, name=None):
         super().__init__(name=name)
         self._points = None
 
-    def __eq__(self, other: 'NurbsSurface') -> bool:
+    def __eq__(self, other):
         raise NotImplementedError
 
     def __str__(self):
@@ -99,7 +94,7 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @property
-    def data(self) -> Dict:
+    def data(self):
         return {
             'points': [[point.data for point in row] for row in self.points],
             'weights': self.weights,
@@ -114,11 +109,11 @@ class NurbsSurface(Surface):
         }
 
     @data.setter
-    def data(self, data: Dict):
+    def data(self, data):
         raise NotImplementedError
 
     @classmethod
-    def from_data(cls, data: Dict) -> 'NurbsSurface':
+    def from_data(cls, data):
         """Construct a BSpline surface from its data representation.
 
         Parameters
@@ -156,30 +151,17 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @classmethod
-    def from_parameters(cls,
-                        points: List[List[Point]],
-                        weights: List[List[float]],
-                        u_knots: List[float],
-                        v_knots: List[float],
-                        u_mults: List[int],
-                        v_mults: List[int],
-                        u_degree: int,
-                        v_degree: int,
-                        is_u_periodic: bool = False,
-                        is_v_periodic: bool = False) -> 'NurbsSurface':
+    def from_parameters(cls, points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=False, is_v_periodic=False):
         """Construct a NURBS surface from explicit parameters."""
         raise NotImplementedError
 
     @classmethod
-    def from_points(cls,
-                    points: List[List[Point]],
-                    u_degree: int = 3,
-                    v_degree: int = 3) -> 'NurbsSurface':
+    def from_points(cls, points, u_degree=3, v_degree=3):
         """Construct a NURBS surface from control points."""
         raise NotImplementedError
 
     @classmethod
-    def from_meshgrid(cls, nu: int = 10, nv: int = 10) -> 'NurbsSurface':
+    def from_meshgrid(cls, nu=10, nv=10):
         """Construct a NURBS surface from a mesh grid."""
         UU, VV = meshgrid(linspace(0, nu, nu + 1), linspace(0, nv, nv + 1))
         points = []
@@ -191,12 +173,12 @@ class NurbsSurface(Surface):
         return cls.from_points(points=points)
 
     @classmethod
-    def from_step(cls, filepath: str) -> 'NurbsSurface':
+    def from_step(cls, filepath):
         """Load a NURBS surface from a STP file."""
         raise NotImplementedError
 
     @classmethod
-    def from_fill(cls, curve1: NurbsCurve, curve2: NurbsCurve) -> 'NurbsSurface':
+    def from_fill(cls, curve1, curve2):
         """Construct a NURBS surface from the infill between two NURBS curves."""
         raise NotImplementedError
 
@@ -204,14 +186,12 @@ class NurbsSurface(Surface):
     # Conversions
     # ==============================================================================
 
-    def to_step(self, filepath: str, schema: str = "AP203") -> None:
+    def to_step(self, filepath, schema="AP203"):
         """Write the surface geometry to a STP file."""
         raise NotImplementedError
 
-    def to_mesh(self, nu: int = 100, nv: Optional[int] = None) -> 'compas.datastructures.Mesh':
+    def to_mesh(self, nu=100, nv=None):
         """Convert the surface to a quad mesh."""
-        from itertools import product
-        from functools import lru_cache
         from compas.datastructures import Mesh
 
         @lru_cache(maxsize=None)
@@ -229,11 +209,8 @@ class NurbsSurface(Surface):
 
         return Mesh.from_polygons(quads)
 
-    def to_triangles(self, nu: int = 100, nv: Optional[int] = None) -> List[Tuple[float, float, float]]:
+    def to_triangles(self, nu=100, nv=None):
         """Convert the surface to a list of triangles."""
-        from itertools import product
-        from functools import lru_cache
-
         @lru_cache(maxsize=None)
         def point_at(i, j):
             return self.point_at(i, j)
@@ -259,58 +236,58 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @property
-    def points(self) -> List[List[Point]]:
+    def points(self):
         raise NotImplementedError
 
     @property
-    def weights(self) -> List[List[float]]:
+    def weights(self):
         raise NotImplementedError
 
     @property
-    def u_knots(self) -> List[float]:
+    def u_knots(self):
         raise NotImplementedError
 
     @property
-    def v_knots(self) -> List[float]:
+    def v_knots(self):
         raise NotImplementedError
 
     @property
-    def u_mults(self) -> List[int]:
+    def u_mults(self):
         raise NotImplementedError
 
     @property
-    def v_mults(self) -> List[int]:
+    def v_mults(self):
         raise NotImplementedError
 
     @property
-    def u_degree(self) -> int:
+    def u_degree(self):
         raise NotImplementedError
 
     @property
-    def v_degree(self) -> int:
+    def v_degree(self):
         raise NotImplementedError
 
     @property
-    def u_domain(self) -> int:
+    def u_domain(self):
         raise NotImplementedError
 
     @property
-    def v_domain(self) -> int:
+    def v_domain(self):
         raise NotImplementedError
 
     @property
-    def is_u_periodic(self) -> bool:
+    def is_u_periodic(self):
         raise NotImplementedError
 
     @property
-    def is_v_periodic(self) -> bool:
+    def is_v_periodic(self):
         raise NotImplementedError
 
     # ==============================================================================
     # Methods
     # ==============================================================================
 
-    def copy(self) -> 'NurbsSurface':
+    def copy(self):
         """Make an independent copy of the surface."""
         return NurbsSurface.from_parameters(
             self.points,
@@ -325,74 +302,74 @@ class NurbsSurface(Surface):
             self.is_v_periodic
         )
 
-    def transform(self, T: Transformation) -> None:
+    def transform(self, T):
         """Transform this surface."""
         raise NotImplementedError
 
-    def transformed(self, T: Transformation) -> 'NurbsSurface':
+    def transformed(self, T):
         """Transform an independent copy of this surface."""
         copy = self.copy()
         copy.transform(T)
         return copy
 
-    def intersections_with_line(self, line: Line) -> List[Point]:
+    def intersections_with_line(self, line):
         """Compute the intersections with a line."""
         raise NotImplementedError
 
-    def u_space(self, n: int = 10) -> Generator[float, None, None]:
+    def u_space(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the U direction.
         """
         umin, umax = self.u_domain
         return np.linspace(umin, umax, n)
 
-    def v_space(self, n: int = 10) -> Generator[float, None, None]:
+    def v_space(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the V direction.
         """
         vmin, vmax = self.v_domain
         return np.linspace(vmin, vmax, n)
 
-    def u_isocurve(self, u: float) -> NurbsCurve:
+    def u_isocurve(self, u):
         """Compute the isoparametric curve at parameter u."""
         raise NotImplementedError
 
-    def v_isocurve(self, v: float) -> NurbsCurve:
+    def v_isocurve(self, v):
         """Compute the isoparametric curve at parameter v."""
         raise NotImplementedError
 
-    def boundary(self) -> List[NurbsCurve]:
+    def boundary(self):
         """Compute the boundary curves of the surface."""
         raise NotImplementedError
 
-    def xyz(self, nu: int = 10, nv: int = 10) -> List[Point]:
+    def xyz(self, nu=10, nv=10):
         """Compute point locations corresponding to evenly spaced parameters over the surface domain.
         """
         U, V = np.meshgrid(self.u_space(nu), self.v_space(nv), indexing='ij')
         return [self.point_at(U[i, j], V[i, j]) for i, j in product(np.arange(nu), np.arange(nv))]
 
-    def point_at(self, u: float, v: float) -> Point:
+    def point_at(self, u, v):
         """Compute a point on the surface.
         """
         raise NotImplementedError
 
-    def curvature_at(self, u: float, v: float) -> Tuple[float, float, Point, Vector]:
+    def curvature_at(self, u, v):
         """Compute the curvature at a point on the surface.
         """
         raise NotImplementedError
 
-    def frame_at(self, u: float, v: float) -> Frame:
+    def frame_at(self, u, v):
         """Compute the local frame at a point on the curve.
         """
         raise NotImplementedError
 
-    def closest_point(self, point, distance=None) -> Point:
+    def closest_point(self, point, distance=None):
         """Compute the closest point on the curve to a given point.
         """
         raise NotImplementedError
 
-    def aabb(self, precision: float = 0.0, optimal: bool = False) -> Box:
+    def aabb(self, precision=0.0, optimal=False):
         """Compute the axis aligned bounding box of the surface."""
         raise NotImplementedError
 
-    def obb(self, precision: float = 0.0) -> Box:
+    def obb(self, precision=0.0):
         """Compute the oriented bounding box of the surface."""
         raise NotImplementedError
