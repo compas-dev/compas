@@ -144,7 +144,7 @@ def draw_labels(labels, **kwargs):
         text = label['text']
         name = label.get('name', '')
         color = label.get('color', None)
-        layer = p.get('layer')
+        layer = label.get('layer')
         size = label.get('fontsize', 10)
         font = label.get('font', 'Arial Regular')
         dot = TextDot(str(text), Point3d(*pos))
