@@ -305,9 +305,10 @@ class Plane(Primitive):
 
         Parameters:
         -----------
-        plane: compas.geometry.Plane
-
-        distance: float
+        plane: :class:`compas.geometry.Plane`
+            The plane to be offset.
+        distance: :obj:`float`
+            The offset distance.
         """
 
         return Plane(self.point+self.normal.scaled(distance), self.normal)
