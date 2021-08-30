@@ -110,7 +110,7 @@ class BezierCurve(Curve):
 
     @classmethod
     def from_data(cls, data):
-        """Construct a Bézier curve from its data representation.
+        """Construct a Bezier curve from its data representation.
 
         Parameters
         ----------
