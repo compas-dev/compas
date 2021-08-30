@@ -110,7 +110,7 @@ def wrap_drawfunc(f):
 
 @wrap_drawfunc
 def draw_labels(labels, **kwargs):
-    """Draw labels as text dots and optionally set individual font, fontsize, name and color.
+    """Draw labels as text dots and optionally set individual font, fontsize, name, layer and color.
 
     Parameters
     ----------
