@@ -132,6 +132,7 @@ def draw_labels(labels, **kwargs):
             'text': And(str, len),
             Optional('name', default=''): str,
             Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
             Optional('fontsize', default=10): Or(int, float),
             Optional('font', default="Arial Regular"): str
         })
@@ -143,6 +144,7 @@ def draw_labels(labels, **kwargs):
         text = label['text']
         name = label.get('name', '')
         color = label.get('color', None)
+        layer = p.get('layer')
         size = label.get('fontsize', 10)
         font = label.get('font', 'Arial Regular')
         dot = TextDot(str(text), Point3d(*pos))
@@ -160,6 +162,10 @@ def draw_labels(labels, **kwargs):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
         attr.Name = name
         obj.CommitChanges()
         guids.append(guid)
