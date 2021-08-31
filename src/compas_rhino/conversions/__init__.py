@@ -9,6 +9,15 @@ interop
 
 Conversions between Rhino geometry objects (:mod:`Rhino.Geometry`) and COMPAS geometry objects (:mod:`compas.geometry`).
 
+Exceptions
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    ConversionError
+
 
 Primitives
 ==========
@@ -81,6 +90,8 @@ Surfaces
 """
 from __future__ import absolute_import
 
+from .exceptions import ConversionError
+
 from .primitives import (
     point_to_rhino,
     vector_to_rhino,
@@ -128,6 +139,8 @@ from .curves import (
 # Rhino object to geometry conversions
 
 __all__ = [
+    'ConversionError',
+
     'point_to_rhino',
     'vector_to_rhino',
     'line_to_rhino',
