@@ -12,12 +12,20 @@ __all__ = ['BaseRhinoGeometry']
 
 
 class BaseRhinoGeometry(object):
-    """Base class for Rhino geometry objects.
+    """Base class for Rhino Geometry and DocObject wrappers.
 
     Attributes
     ----------
-    name : str
+    name: str
         The name of the object.
+    type: str
+        The type of the object.
+    guid: str
+        The GUID of the object.
+    object: :class:`Rhino.DocObjects.RhinoObject`
+        A reference to the Rhino DocObject, if it exists.
+    geometry: :class:`Rhino.Geometry.GeometryBase`
+        A reference to the Rhino Geometry Object.
 
     """
 

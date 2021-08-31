@@ -4,32 +4,38 @@ from __future__ import division
 
 import Rhino
 import compas_rhino
-from compas.geometry import Point
-
+from ..conversions import point_to_rhino
+from ..conversions import point_to_compas
 from .vector import RhinoVector
-
-
-__all__ = ['RhinoPoint']
 
 
 class RhinoPoint(RhinoVector):
     """Wrapper for Rhino points.
-
-    Attributes
-    ----------
-    x (read-only) : float
-        The X coordinate.
-    y (read-only) : float
-        The Y coordinate.
-    z (read-only) : float
-        The Z coordinate.
-    xyz (read-only) : list
-        The XYZ coordinates.
-
     """
 
     def __init__(self):
         super(RhinoPoint, self).__init__()
+
+    @classmethod
+    def from_guid(cls, guid):
+        """Construct a Rhino object wrapper from the GUID of an existing Rhino object.
+
+        Parameters
+        ----------
+        guid : str
+            The GUID of the Rhino object.
+
+        Returns
+        -------
+        :class:`RhinoPoint`
+            The Rhino vector wrapper.
+        """
+        obj = compas_rhino.find_object(guid)
+        wrapper = cls()
+        wrapper.guid = obj.Id
+        wrapper.object = obj
+        wrapper.geometry = obj.Geometry.Location
+        return wrapper
 
     @classmethod
     def from_geometry(cls, geometry):
@@ -46,7 +52,7 @@ class RhinoPoint(RhinoVector):
             The Rhino point wrapper.
         """
         if not isinstance(geometry, Rhino.Geometry.Point3d):
-            geometry = Rhino.Geometry.Point3d(geometry[0], geometry[1], geometry[2])
+            geometry = point_to_rhino(geometry)
         point = cls()
         point.geometry = geometry
         return point
@@ -75,7 +81,7 @@ class RhinoPoint(RhinoVector):
         :class:`Point`
             A COMPAS point.
         """
-        return Point(self.x, self.y, self.z)
+        return point_to_compas(self.geometry)
 
     def closest_point(self, point, maxdist=0.0, return_param=False):
         """Compute the closest point to a point in space.
@@ -97,4 +103,4 @@ class RhinoPoint(RhinoVector):
             The XYZ coordinates of the point.
 
         """
-        return self.xyz
+        return self.geometry.X, self.geometry.Y, self.geometry.Z

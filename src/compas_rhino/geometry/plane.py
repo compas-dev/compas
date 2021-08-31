@@ -3,54 +3,25 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-
 from compas.geometry import Frame
-
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
-
-
-__all__ = ['RhinoPlane']
+from ..conversions import plane_to_rhino
+from ..conversions import frame_to_rhino
+from ..conversions import plane_to_compas
+from ..conversions import plane_to_compas_frame
+from ._geometry import BaseRhinoGeometry
 
 
 class RhinoPlane(BaseRhinoGeometry):
     """Wrapper for a Rhino plane objects.
 
-    Attributes
-    ----------
-    point (read-only) : :class:`Rhino.Geometry.Point3d`
-        Base point of the plane.
-    normal (read-only) : :class:`Rhino.Geometry.Vector3d`
-        The normal vector of the plane.
-    xaxis (read-only) : :class:`Rhino.Geometry.Vector3d`
-        The X axis of the plane.
-    yaxis (read-only) : :class:`Rhino.Geometry.Vector3d`
-        The Y axis of the plane.
-
     Notes
     -----
     In Rhino, a plane and a frame are equivalent.
     Therefore, the COMPAS conversion function of this class returns a frame object instead of a plane.
-
     """
 
     def __init__(self):
         super(RhinoPlane, self).__init__()
-
-    @property
-    def point(self):
-        return self.geometry.Origin
-
-    @property
-    def normal(self):
-        return self.geometry.Normal
-
-    @property
-    def xaxis(self):
-        return self.geometry.XAxis
-
-    @property
-    def yaxis(self):
-        return self.geometry.YAxis
 
     @classmethod
     def from_geometry(cls, geometry):
@@ -68,18 +39,9 @@ class RhinoPlane(BaseRhinoGeometry):
         """
         if not isinstance(geometry, Rhino.Geometry.Plane):
             if isinstance(geometry, Frame):
-                point, xaxis, yaxis = geometry
-                point = Rhino.Geometry.Point3d(point[0], point[1], point[2])
-                xaxis = Rhino.Geometry.Vector3d(xaxis[0], xaxis[1], xaxis[2])
-                yaxis = Rhino.Geometry.Vector3d(yaxis[0], yaxis[1], yaxis[2])
-                geometry = Rhino.Geometry.Plane(point, xaxis, yaxis)
-
+                geometry = frame_to_rhino(geometry)
             else:
-                point, normal = geometry
-                point = Rhino.Geometry.Point3d(point[0], point[1], point[2])
-                normal = Rhino.Geometry.Vector3d(normal[0], normal[1], normal[2])
-                geometry = Rhino.Geometry.Plane(point, normal)
-
+                geometry = plane_to_rhino(geometry)
         plane = cls()
         plane.geometry = geometry
         return plane
@@ -96,4 +58,14 @@ class RhinoPlane(BaseRhinoGeometry):
         :class:`Frame`
             A COMPAS frame.
         """
-        return Frame(self.point, self.xaxis, self.yaxis)
+        return plane_to_compas(self.geometry)
+
+    def to_compas_frame(self):
+        """Convert to a COMPAS geometry object.
+
+        Returns
+        -------
+        :class:`Frame`
+            A COMPAS frame.
+        """
+        return plane_to_compas_frame(self.geometry)

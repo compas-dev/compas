@@ -3,14 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-
 import compas_rhino
-from compas.geometry import Line
-
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
-
-
-__all__ = ['RhinoLine']
+from ..conversions import line_to_compas
+from ..conversions import line_to_rhino
+from ._geometry import BaseRhinoGeometry
 
 
 class RhinoLine(BaseRhinoGeometry):
@@ -27,14 +23,6 @@ class RhinoLine(BaseRhinoGeometry):
     def __init__(self):
         super(RhinoLine, self).__init__()
 
-    @property
-    def start(self):
-        return self.geometry.From
-
-    @property
-    def end(self):
-        return self.geometry.To
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct a line from an existing Rhino line geometry object.
@@ -49,9 +37,7 @@ class RhinoLine(BaseRhinoGeometry):
 
         """
         if not isinstance(geometry, Rhino.Geometry.Line):
-            start = Rhino.Geometry.Point3d(geometry[0][0], geometry[0][1], geometry[0][2])
-            end = Rhino.Geometry.Point3d(geometry[1][0], geometry[1][1], geometry[1][2])
-            geometry = Rhino.Geometry.Line(start, end)
+            geometry = line_to_rhino(geometry)
         line = cls()
         line.geometry = geometry
         return line
@@ -80,4 +66,4 @@ class RhinoLine(BaseRhinoGeometry):
         :class:`Line`
             A COMPAS line.
         """
-        return Line(self.start, self.end)
+        return line_to_compas(self.geometry)
