@@ -10,6 +10,7 @@ from Rhino.Geometry import Cone as RhinoCone
 from Rhino.Geometry import Cylinder as RhinoCylinder
 
 from .primitives import plane_to_rhino
+from .primitives import circle_to_rhino
 from .primitives import frame_to_rhino
 from .primitives import point_to_rhino
 from .primitives import plane_to_compas_frame
@@ -112,7 +113,7 @@ def cylinder_to_compas(cylinder):
     -------
     :class:`compas.geometry.Cylinder`
     """
-    return Cylinder(Circle(plane_to_compas(cylinder.Plane), cylinder.Radius), cylinder.Height)
+    return Cylinder(Circle(plane_to_compas(cylinder.BasePlane), cylinder.Radius), cylinder.Height1 - cylinder.Height2)
 
 
 def cylinder_to_rhino(cylinder):
@@ -126,4 +127,4 @@ def cylinder_to_rhino(cylinder):
     -------
     :class:`Rhino.Geometry.Cylinder`
     """
-    return RhinoCylinder(plane_to_rhino(cylinder.circle.plane), cylinder.height, cylinder.circle.radius)
+    return RhinoCylinder(circle_to_rhino(cylinder.circle), cylinder.height)
