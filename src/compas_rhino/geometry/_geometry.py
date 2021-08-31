@@ -76,11 +76,7 @@ class BaseRhinoGeometry(object):
             The Rhino object wrapper.
         """
         obj = compas_rhino.find_object(guid)
-        wrapper = cls()
-        wrapper.guid = obj.Id
-        wrapper.object = obj
-        wrapper.geometry = obj.Geometry
-        return wrapper
+        return cls.from_object(obj)
 
     @classmethod
     def from_object(cls, obj):
