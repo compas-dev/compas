@@ -272,6 +272,6 @@ def compas_polygon_to_rhino_polygon(polygon):
 
     Returns
     -------
-    :class:`Rhino.Geometry.Ellipse`
+    :class:`Rhino.Geometry.Polygon`
     """
     raise NotImplementedError
