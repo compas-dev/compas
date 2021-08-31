@@ -6,7 +6,7 @@ from .primitives import point_to_rhino
 from .primitives import point_to_compas
 
 
-def rhino_surface_to_compas_data(surface):
+def surface_to_compas_data(surface):
     """Convert a Rhino surface to a COMPAS surface.
 
     Parameters
@@ -64,7 +64,7 @@ def rhino_surface_to_compas_data(surface):
     }
 
 
-def compas_data_to_rhino_surface(data):
+def data_to_rhino_surface(data):
     """Convert a COMPAS surface to a Rhino surface.
 
     Parameters

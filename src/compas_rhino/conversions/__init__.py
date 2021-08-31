@@ -61,14 +61,14 @@ Curves
     :toctree: generated/
     :nosignatures:
 
-    compas_line_to_rhino_curve
-    compas_circle_to_rhino_curve
-    compas_ellipse_to_rhino_curve
+    line_to_rhino_curve
+    circle_to_rhino_curve
+    ellipse_to_rhino_curve
     compas_curve_to_rhino_curve
-    rhino_curve_to_compas_line
-    rhino_curve_to_compas_circle
-    rhino_curve_to_compas_ellipse
-    rhino_curve_to_compas_polyline
+    curve_to_compas_line
+    curve_to_compas_circle
+    curve_to_compas_ellipse
+    curve_to_compas_polyline
     rhino_curve_to_compas_curve
 
 
@@ -116,15 +116,15 @@ from .shapes import (
     cylinder_to_compas,
 )
 from .curves import (
-    compas_line_to_rhino_curve,
-    compas_circle_to_rhino_curve,
-    compas_ellipse_to_rhino_curve,
+    line_to_rhino_curve,
+    circle_to_rhino_curve,
+    ellipse_to_rhino_curve,
     compas_curve_to_rhino_curve,
 
-    rhino_curve_to_compas_circle,
-    rhino_curve_to_compas_ellipse,
-    rhino_curve_to_compas_line,
-    rhino_curve_to_compas_polyline,
+    curve_to_compas_circle,
+    curve_to_compas_ellipse,
+    curve_to_compas_line,
+    curve_to_compas_polyline,
     rhino_curve_to_compas_curve
 )
 
@@ -162,14 +162,14 @@ __all__ = [
     'cone_to_compas',
     'cylinder_to_compas',
 
-    'compas_line_to_rhino_curve',
-    'compas_circle_to_rhino_curve',
-    'compas_ellipse_to_rhino_curve',
+    'line_to_rhino_curve',
+    'circle_to_rhino_curve',
+    'ellipse_to_rhino_curve',
     'compas_curve_to_rhino_curve',
 
-    'rhino_curve_to_compas_circle',
-    'rhino_curve_to_compas_ellipse',
-    'rhino_curve_to_compas_line',
-    'rhino_curve_to_compas_polyline',
+    'curve_to_compas_circle',
+    'curve_to_compas_ellipse',
+    'curve_to_compas_line',
+    'curve_to_compas_polyline',
     'rhino_curve_to_compas_curve',
 ]

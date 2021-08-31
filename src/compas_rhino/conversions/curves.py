@@ -13,7 +13,7 @@ from .primitives import polyline_to_compas
 from Rhino.Geometry import NurbsCurve as RhinoNurbsCurve
 
 
-def rhino_curve_to_compas_line(curve):
+def curve_to_compas_line(curve):
     """Convert a Rhino curve to a COMPAS line.
 
     Parameters
@@ -28,7 +28,7 @@ def rhino_curve_to_compas_line(curve):
                 point_to_compas(curve.PointAtEnd))
 
 
-def compas_line_to_rhino_curve(line):
+def line_to_rhino_curve(line):
     """Convert a COMPAS line to a Rhino curve.
 
     Parameters
@@ -42,7 +42,7 @@ def compas_line_to_rhino_curve(line):
     return RhinoNurbsCurve.CreateFromLine(line_to_rhino(line))
 
 
-def rhino_curve_to_compas_circle(curve):
+def curve_to_compas_circle(curve):
     """Convert a Rhino curve to a COMPAS circle.
 
     Parameters
@@ -64,7 +64,7 @@ def rhino_curve_to_compas_circle(curve):
     return circle_to_compas(circle)
 
 
-def compas_circle_to_rhino_curve(circle):
+def circle_to_rhino_curve(circle):
     """Convert a COMPAS circle to a Rhino curve.
 
     Parameters
@@ -78,7 +78,7 @@ def compas_circle_to_rhino_curve(circle):
     return RhinoNurbsCurve.CreateFromCircle(circle_to_rhino(circle))
 
 
-def rhino_curve_to_compas_ellipse(curve):
+def curve_to_compas_ellipse(curve):
     """Convert a Rhino curve to a COMPAS ellipse.
 
     Parameters
@@ -100,7 +100,7 @@ def rhino_curve_to_compas_ellipse(curve):
     return ellipse_to_compas(ellipse)
 
 
-def compas_ellipse_to_rhino_curve(ellipse):
+def ellipse_to_rhino_curve(ellipse):
     """Convert a COMPAS ellipse to a Rhino curve.
 
     Parameters
@@ -114,7 +114,7 @@ def compas_ellipse_to_rhino_curve(ellipse):
     return RhinoNurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
 
 
-def rhino_curve_to_compas_polyline(curve):
+def curve_to_compas_polyline(curve):
     """Convert a Rhino curve to a COMPAS polyline.
 
     Parameters
@@ -136,7 +136,7 @@ def rhino_curve_to_compas_polyline(curve):
     return polyline_to_compas(polyline)
 
 
-def rhino_curve_to_compas_data(curve):
+def curve_to_compas_data(curve):
     """Convert a Rhino curve to a COMPAS data dict.
 
     Parameters
@@ -174,7 +174,7 @@ def rhino_curve_to_compas_data(curve):
     }
 
 
-def compas_data_to_rhino_curve(data):
+def data_to_rhino_curve(data):
     """Convert a COMPAS curve to a Rhino curve.
 
     Parameters
