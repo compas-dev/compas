@@ -21,7 +21,7 @@ class RhinoEllipse(BaseRhinoGeometry):
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Ellipse` or :class:`compas.geometry.Ellipse` or tuple of plane and major and minor
+        geometry : :class:`Rhino.Geometry.Ellipse` or :class:`compas.geometry.Ellipse`
             The geometry object defining an ellipse.
 
         Returns
@@ -44,7 +44,7 @@ class RhinoEllipse(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Ellipse`
+        :class:`compas.geometry.Ellipse`
             A COMPAS ellipse.
         """
         return ellipse_to_compas(self.geometry)

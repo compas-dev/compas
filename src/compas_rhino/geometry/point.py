@@ -43,7 +43,7 @@ class RhinoPoint(RhinoVector):
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Point3d` or :class:`Point` or list of float
+        geometry : :class:`Rhino.Geometry.Point3d` or :class:`compas.geometry.Point` or list of float
             The input geometry.
 
         Returns
@@ -78,7 +78,7 @@ class RhinoPoint(RhinoVector):
 
         Returns
         -------
-        :class:`Point`
+        :class:`compas.geometry.Point`
             A COMPAS point.
         """
         return point_to_compas(self.geometry)

@@ -21,7 +21,7 @@ class RhinoCircle(BaseRhinoGeometry):
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Circle` or :class:`compas.geometry.Circle` or tuple of plane and radius
+        geometry : :class:`Rhino.Geometry.Circle` or :class:`compas.geometry.Circle`
             The geometry object defining a circle.
 
         Returns
@@ -44,7 +44,7 @@ class RhinoCircle(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Circle`
+        :class:`compas.geometry.Circle`
             A COMPAS circle.
         """
         return circle_to_compas(self.geometry)

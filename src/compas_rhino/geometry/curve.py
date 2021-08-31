@@ -69,7 +69,7 @@ class RhinoCurve(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Circle`
+        :class:`compas.geometry.Circle`
         """
         return curve_to_compas_circle(self.geometry)
 
@@ -78,7 +78,7 @@ class RhinoCurve(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Ellipse`
+        :class:`compas.geometry.Ellipse`
         """
         return curve_to_compas_ellipse(self.geometry)
 
@@ -87,7 +87,7 @@ class RhinoCurve(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Line`
+        :class:`compas.geometry.Line`
         """
         return curve_to_compas_line(self.geometry)
 
@@ -96,7 +96,7 @@ class RhinoCurve(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Polyline`
+        :class:`compas.geometry.Polyline`
         """
         return curve_to_compas_polyline(self.geometry)
 

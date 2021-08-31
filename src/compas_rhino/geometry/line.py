@@ -22,7 +22,7 @@ class RhinoLine(BaseRhinoGeometry):
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Line` or :class:`Line` or tuple of two points
+        geometry : :class:`Rhino.Geometry.Line` or :class:`compas.geometry.Line`
             The input geometry.
 
         Returns
@@ -45,7 +45,7 @@ class RhinoLine(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoLine`
+        :class:`RhinoLine`
             The Rhino line wrapper.
         """
         guid = compas_rhino.select_line()
@@ -56,7 +56,7 @@ class RhinoLine(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Line`
+        :class:`compas.geometry.Line`
             A COMPAS line.
         """
         return line_to_compas(self.geometry)

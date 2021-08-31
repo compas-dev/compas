@@ -22,7 +22,7 @@ class RhinoPolyline(BaseRhinoGeometry):
 s
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Polyline` or :class:`Polyline` or list of points
+        geometry : :class:`Rhino.Geometry.Polyline` or :class:`compas.geometry.Polyline` or list of points
             The input geometry.
 
         Returns
@@ -45,7 +45,7 @@ s
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoPolyline`
+        :class:`RhinoPolyline`
             The Rhino polyline wrapper.
         """
         guid = compas_rhino.select_polyline()
@@ -56,7 +56,7 @@ s
 
         Returns
         -------
-        :class:`Polyline`
+        :class:`compas.geometry.Polyline`
             A COMPAS polyline.
         """
         return polyline_to_compas(self.geometry)

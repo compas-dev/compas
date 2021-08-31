@@ -29,7 +29,7 @@ class RhinoPlane(BaseRhinoGeometry):
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Plane` or :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame` or tuple of point and normal
+        geometry : :class:`Rhino.Geometry.Plane` or :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame`
             The geometry object defining a plane.
 
         Returns
@@ -55,8 +55,8 @@ class RhinoPlane(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Frame`
-            A COMPAS frame.
+        :class:`compas.geometry.Plane`
+            A COMPAS plane.
         """
         return plane_to_compas(self.geometry)
 
@@ -65,7 +65,7 @@ class RhinoPlane(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Frame`
+        :class:`compas.geometry.Frame`
             A COMPAS frame.
         """
         return plane_to_compas_frame(self.geometry)
