@@ -9,7 +9,7 @@ from ._geometry import BaseRhinoGeometry
 
 
 class RhinoCircle(BaseRhinoGeometry):
-    """Wrapper for a Rhino circle objects.
+    """Wrapper for Rhino circle objects.
     """
 
     def __init__(self):

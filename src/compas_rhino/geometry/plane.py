@@ -12,7 +12,7 @@ from ._geometry import BaseRhinoGeometry
 
 
 class RhinoPlane(BaseRhinoGeometry):
-    """Wrapper for a Rhino plane objects.
+    """Wrapper for Rhino plane objects.
 
     Notes
     -----

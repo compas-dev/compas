@@ -9,7 +9,7 @@ from ._geometry import BaseRhinoGeometry
 
 
 class RhinoEllipse(BaseRhinoGeometry):
-    """Wrapper for a Rhino ellipse objects.
+    """Wrapper for Rhino ellipse objects.
     """
 
     def __init__(self):

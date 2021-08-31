@@ -9,7 +9,7 @@ from ._geometry import BaseRhinoGeometry
 
 
 class RhinoBox(BaseRhinoGeometry):
-    """Wrapper for a Rhino box objects.
+    """Wrapper for Rhino box objects.
     """
 
     def __init__(self):
@@ -44,7 +44,7 @@ class RhinoBox(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`Box`
+        :class:`compas.geometry.Box`
             A COMPAS box.
         """
         return box_to_compas(self.geometry)

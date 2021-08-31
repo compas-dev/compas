@@ -10,7 +10,7 @@ from ._geometry import BaseRhinoGeometry
 
 
 class RhinoPolyline(BaseRhinoGeometry):
-    """Wrapper for a Rhino polyline objects.
+    """Wrapper for Rhino polyline objects.
     """
 
     def __init__(self):
