@@ -1,2 +1,0 @@
-class COMPASRhinoInteropError(Exception):
-    pass

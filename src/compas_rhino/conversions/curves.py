@@ -1,14 +1,14 @@
 from compas.geometry import Line
 
-from .exceptions import COMPASRhinoInteropError
+from .exceptions import ConversionError
 
-from .primitives import compas_line_to_rhino_line
-from .primitives import compas_circle_to_rhino_circle
-from .primitives import compas_ellipse_to_rhino_ellipse
-from .primitives import rhino_point_to_compas_point
-from .primitives import rhino_circle_to_compas_circle
-from .primitives import rhino_ellipse_to_compas_ellipse
-from .primitives import rhino_polyline_to_compas_polyline
+from .primitives import line_to_rhino
+from .primitives import circle_to_rhino
+from .primitives import ellipse_to_rhino
+from .primitives import point_to_compas
+from .primitives import circle_to_compas
+from .primitives import ellipse_to_compas
+from .primitives import polyline_to_compas
 
 from Rhino.Geometry import NurbsCurve as RhinoNurbsCurve
 
@@ -24,8 +24,8 @@ def rhino_curve_to_compas_line(curve):
     -------
     :class:`compas.geometry.Line`
     """
-    return Line(rhino_point_to_compas_point(curve.PointAtStart),
-                rhino_point_to_compas_point(curve.PointAtEnd))
+    return Line(point_to_compas(curve.PointAtStart),
+                point_to_compas(curve.PointAtEnd))
 
 
 def compas_line_to_rhino_curve(line):
@@ -39,7 +39,7 @@ def compas_line_to_rhino_curve(line):
     -------
     :class:`Rhino.Geometry.Curve`
     """
-    return RhinoNurbsCurve.CreateFromLine(compas_line_to_rhino_line(line))
+    return RhinoNurbsCurve.CreateFromLine(line_to_rhino(line))
 
 
 def rhino_curve_to_compas_circle(curve):
@@ -55,13 +55,13 @@ def rhino_curve_to_compas_circle(curve):
 
     Raises
     ------
-    COMPASRhinoInteropError
+    ConversionError
         If the curve cannot be converted to a circle.
     """
     result, circle = curve.TryGetCircle()
     if not result:
-        raise COMPASRhinoInteropError('The curve cannot be converted to a circle.')
-    return rhino_circle_to_compas_circle(circle)
+        raise ConversionError('The curve cannot be converted to a circle.')
+    return circle_to_compas(circle)
 
 
 def compas_circle_to_rhino_curve(circle):
@@ -75,7 +75,7 @@ def compas_circle_to_rhino_curve(circle):
     -------
     :class:`Rhino.Geometry.Curve`
     """
-    return RhinoNurbsCurve.CreateFromCircle(compas_circle_to_rhino_circle(circle))
+    return RhinoNurbsCurve.CreateFromCircle(circle_to_rhino(circle))
 
 
 def rhino_curve_to_compas_ellipse(curve):
@@ -91,13 +91,13 @@ def rhino_curve_to_compas_ellipse(curve):
 
     Raises
     ------
-    COMPASRhinoInteropError
+    ConversionError
         If the curve cannot be converted to an ellipse.
     """
     result, ellipse = curve.TryGetEllipse()
     if not result:
-        raise COMPASRhinoInteropError('The curve cannot be converted to an ellipse.')
-    return rhino_ellipse_to_compas_ellipse(ellipse)
+        raise ConversionError('The curve cannot be converted to an ellipse.')
+    return ellipse_to_compas(ellipse)
 
 
 def compas_ellipse_to_rhino_curve(ellipse):
@@ -111,7 +111,7 @@ def compas_ellipse_to_rhino_curve(ellipse):
     -------
     :class:`Rhino.Geometry.Curve`
     """
-    return RhinoNurbsCurve.CreateFromEllipse(compas_ellipse_to_rhino_ellipse(ellipse))
+    return RhinoNurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
 
 
 def rhino_curve_to_compas_polyline(curve):
@@ -127,13 +127,13 @@ def rhino_curve_to_compas_polyline(curve):
 
     Raises
     ------
-    COMPASRhinoInteropError
+    ConversionError
         If the curve cannot be converted to a polyline.
     """
     result, polyline = curve.TryGetPolyline()
     if not result:
-        raise COMPASRhinoInteropError('The curve cannot be converted to a polyline.')
-    return rhino_polyline_to_compas_polyline(polyline)
+        raise ConversionError('The curve cannot be converted to a polyline.')
+    return polyline_to_compas(polyline)
 
 
 def rhino_curve_to_compas_data(curve):
@@ -157,7 +157,7 @@ def rhino_curve_to_compas_data(curve):
 
     for index in range(nurbs.Points.Count):
         point = nurbs.Points.Item[index]
-        points.append(rhino_point_to_compas_point(point.Location))
+        points.append(point_to_compas(point.Location))
         weights.append(point.Weight)
 
     for index in range(nurbs.Knots.Count):

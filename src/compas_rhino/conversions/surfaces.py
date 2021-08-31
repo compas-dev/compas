@@ -2,8 +2,8 @@ from compas.geometry import Point
 
 from Rhino.Geometry import NurbsSurface as RhinoNurbsSurface
 
-from .primitives import compas_point_to_rhino_point
-from .primitives import rhino_point_to_compas_point
+from .primitives import point_to_rhino
+from .primitives import point_to_compas
 
 
 def rhino_surface_to_compas_data(surface):
@@ -27,7 +27,7 @@ def rhino_surface_to_compas_data(surface):
         for i in range(surface.Points.UCount):
             point = surface.Points.GetPoint(i, j)
             weight = surface.Points.GetWeight(i, j)
-            _points.append(rhino_point_to_compas_point(point))
+            _points.append(point_to_compas(point))
             _weights.append(weight)
         points.append(_points)
         weights.append(_weights)
@@ -88,7 +88,7 @@ def compas_data_to_rhino_surface(data):
                                      nv)
     for i in range(nu):
         for j in range(nv):
-            nurbs.Points.SetPoint(i, j, compas_point_to_rhino_point(points[j][i]))
+            nurbs.Points.SetPoint(i, j, point_to_rhino(points[j][i]))
             nurbs.Points.SetWeight(i, j, data['weights'][j][i])
 
     u_knotvector = []

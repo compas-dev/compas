@@ -41,7 +41,7 @@ class RhinoLine(BaseRhinoGeometry):
 
         Parameters
         ----------
-        geometry : two points or :class:`Rhino.Geometry.Line`
+        geometry : :class:`Rhino.Geometry.Line` or :class:`Line` or tuple of two points
             The input geometry.
 
         Returns
@@ -49,8 +49,8 @@ class RhinoLine(BaseRhinoGeometry):
 
         """
         if not isinstance(geometry, Rhino.Geometry.Line):
-            start = Rhino.Geometry.Point3d(* geometry[0])
-            end = Rhino.Geometry.Point3d(* geometry[1])
+            start = Rhino.Geometry.Point3d(geometry[0][0], geometry[0][1], geometry[0][2])
+            end = Rhino.Geometry.Point3d(geometry[1][0], geometry[1][1], geometry[1][2])
             geometry = Rhino.Geometry.Line(start, end)
         line = cls()
         line.geometry = geometry
@@ -67,7 +67,7 @@ class RhinoLine(BaseRhinoGeometry):
         Returns
         -------
         :class:`compas_rhino.geometry.RhinoLine`
-            The wrapped line.
+            The Rhino line wrapper.
         """
         guid = compas_rhino.select_line()
         return cls.from_guid(guid)
@@ -77,7 +77,7 @@ class RhinoLine(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Line`
-            The equivalent COMPAS geometry line.
+        :class:`Line`
+            A COMPAS line.
         """
         return Line(self.start, self.end)

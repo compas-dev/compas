@@ -33,8 +33,7 @@ class BaseRhinoGeometry(object):
     def type(self):
         if self.object:
             return self.object.ObjectType
-        else:
-            return self._type
+        return self._type
 
     @type.setter
     def type(self, value):
@@ -44,8 +43,7 @@ class BaseRhinoGeometry(object):
     def name(self):
         if self.object:
             return self.object.Attributes.Name
-        else:
-            return self._name
+        return self._name
 
     @name.setter
     def name(self, value):

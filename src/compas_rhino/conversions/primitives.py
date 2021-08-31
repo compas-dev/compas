@@ -17,7 +17,7 @@ from Rhino.Geometry import Ellipse as RhinoEllipse
 from Rhino.Geometry import Polyline as RhinoPolyline
 
 
-def rhino_point_to_compas_point(point):
+def point_to_compas(point):
     """Convert a Rhino point to a COMPAS point.
 
     Parameters
@@ -31,7 +31,7 @@ def rhino_point_to_compas_point(point):
     return Point(point.X, point.Y, point.Z)
 
 
-def compas_point_to_rhino_point(point):
+def point_to_rhino(point):
     """Convert a COMPAS point to a Rhino point.
 
     Parameters
@@ -45,7 +45,7 @@ def compas_point_to_rhino_point(point):
     return Point3d(point.x, point.y, point.z)
 
 
-def rhino_vector_to_compas_vector(vector):
+def vector_to_compas(vector):
     """Convert a Rhino vector to a COMPAS vector.
 
     Parameters
@@ -59,7 +59,7 @@ def rhino_vector_to_compas_vector(vector):
     return Vector(vector.X, vector.Y, vector.Z)
 
 
-def compas_vector_to_rhino_vector(vector):
+def vector_to_rhino(vector):
     """Convert a COMPAS vector to a Rhino vector.
 
     Parameters
@@ -73,7 +73,7 @@ def compas_vector_to_rhino_vector(vector):
     return Vector3d(vector.x, vector.y, vector.z)
 
 
-def rhino_line_to_compas_line(line):
+def line_to_compas(line):
     """Convert a Rhino line to a COMPAS line.
 
     Parameters
@@ -84,11 +84,11 @@ def rhino_line_to_compas_line(line):
     -------
     :class:`compas.geometry.Line`
     """
-    return Line(rhino_point_to_compas_point(line.From),
-                rhino_point_to_compas_point(line.To))
+    return Line(point_to_compas(line.From),
+                point_to_compas(line.To))
 
 
-def compas_line_to_rhino_line(line):
+def line_to_rhino(line):
     """Convert a COMPAS line to a Rhino line.
 
     Parameters
@@ -99,11 +99,11 @@ def compas_line_to_rhino_line(line):
     -------
     :class:`Rhino.Geometry.Line`
     """
-    return RhinoLine(compas_point_to_rhino_point(line.start),
-                     compas_point_to_rhino_point(line.end))
+    return RhinoLine(point_to_rhino(line.start),
+                     point_to_rhino(line.end))
 
 
-def rhino_plane_to_compas_plane(plane):
+def plane_to_compas(plane):
     """Convert a Rhino plane to a COMPAS plane.
 
     Parameters
@@ -114,11 +114,11 @@ def rhino_plane_to_compas_plane(plane):
     -------
     :class:`compas.geometry.Plane`
     """
-    return Plane(rhino_point_to_compas_point(plane.Origin),
-                 rhino_vector_to_compas_vector(plane.Normal))
+    return Plane(point_to_compas(plane.Origin),
+                 vector_to_compas(plane.Normal))
 
 
-def compas_plane_to_rhino_plane(plane):
+def plane_to_rhino(plane):
     """Convert a COMPAS plane to a Rhino plane.
 
     Parameters
@@ -129,11 +129,11 @@ def compas_plane_to_rhino_plane(plane):
     -------
     :class:`Rhino.Geometry.Plane`
     """
-    return RhinoPlane(compas_point_to_rhino_point(plane.point),
-                      compas_vector_to_rhino_vector(plane.normal))
+    return RhinoPlane(point_to_rhino(plane.point),
+                      vector_to_rhino(plane.normal))
 
 
-def rhino_plane_to_compas_frame(plane):
+def plane_to_compas_frame(plane):
     """Convert a Rhino plane to a COMPAS frame.
 
     Parameters
@@ -144,12 +144,12 @@ def rhino_plane_to_compas_frame(plane):
     -------
     :class:`compas.geometry.Frame`
     """
-    return Frame(rhino_point_to_compas_point(plane.Origin),
-                 rhino_vector_to_compas_vector(plane.XAxis),
-                 rhino_vector_to_compas_vector(plane.YAxis))
+    return Frame(point_to_compas(plane.Origin),
+                 vector_to_compas(plane.XAxis),
+                 vector_to_compas(plane.YAxis))
 
 
-def compas_frame_to_rhino_plane(frame):
+def frame_to_rhino(frame):
     """Convert a COMPAS frame to a Rhino plane.
 
     Parameters
@@ -160,12 +160,12 @@ def compas_frame_to_rhino_plane(frame):
     -------
     :class:`Rhino.Geometry.Plane`
     """
-    return RhinoPlane(compas_point_to_rhino_point(frame.point),
-                      compas_vector_to_rhino_vector(frame.xaxis),
-                      compas_vector_to_rhino_vector(frame.yaxis))
+    return RhinoPlane(point_to_rhino(frame.point),
+                      vector_to_rhino(frame.xaxis),
+                      vector_to_rhino(frame.yaxis))
 
 
-def rhino_circle_to_compas_circle(circle):
+def circle_to_compas(circle):
     """Convert a Rhino circle to a COMPAS circle.
 
     Parameters
@@ -176,10 +176,10 @@ def rhino_circle_to_compas_circle(circle):
     -------
     :class:`compas.geometry.Circle`
     """
-    return Circle(rhino_plane_to_compas_plane(circle.Plane), circle.Radius)
+    return Circle(plane_to_compas(circle.Plane), circle.Radius)
 
 
-def compas_circle_to_rhino_circle(circle):
+def circle_to_rhino(circle):
     """Convert a COMPAS circle to a Rhino circle.
 
     Parameters
@@ -190,10 +190,10 @@ def compas_circle_to_rhino_circle(circle):
     -------
     :class:`Rhino.Geometry.Circle`
     """
-    return RhinoCircle(compas_plane_to_rhino_plane(circle.plane), circle.radius)
+    return RhinoCircle(plane_to_rhino(circle.plane), circle.radius)
 
 
-def rhino_ellipse_to_compas_ellipse(ellipse):
+def ellipse_to_compas(ellipse):
     """Convert a Rhino ellipse to a COMPAS ellipse.
 
     Parameters
@@ -204,10 +204,10 @@ def rhino_ellipse_to_compas_ellipse(ellipse):
     -------
     :class:`compas.geometry.Ellipse`
     """
-    return Ellipse(rhino_plane_to_compas_plane(ellipse.Plane), ellipse.major, ellipse.minor)
+    return Ellipse(plane_to_compas(ellipse.Plane), ellipse.major, ellipse.minor)
 
 
-def compas_ellipse_to_rhino_ellipse(ellipse):
+def ellipse_to_rhino(ellipse):
     """Convert a COMPAS ellipse to a Rhino ellipse.
 
     Parameters
@@ -218,10 +218,10 @@ def compas_ellipse_to_rhino_ellipse(ellipse):
     -------
     :class:`Rhino.Geometry.Ellipse`
     """
-    return RhinoEllipse(compas_plane_to_rhino_plane(ellipse.plane), ellipse.major, ellipse.minor)
+    return RhinoEllipse(plane_to_rhino(ellipse.plane), ellipse.major, ellipse.minor)
 
 
-def rhino_polyline_to_compas_polyline(polyline):
+def polyline_to_compas(polyline):
     """Convert a Rhino polyline to a COMPAS polyline.
 
     Parameters
@@ -232,10 +232,10 @@ def rhino_polyline_to_compas_polyline(polyline):
     -------
     :class:`compas.geometry.Polyline`
     """
-    return Polyline([rhino_point_to_compas_point(point) for point in polyline])
+    return Polyline([point_to_compas(point) for point in polyline])
 
 
-def compas_polyline_to_rhino_polyline(polyline):
+def polyline_to_rhino(polyline):
     """Convert a COMPAS polyline to a Rhino polyline.
 
     Parameters
@@ -246,10 +246,10 @@ def compas_polyline_to_rhino_polyline(polyline):
     -------
     :class:`Rhino.Geometry.Ellipse`
     """
-    return RhinoPolyline([compas_point_to_rhino_point(point) for point in polyline])
+    return RhinoPolyline([point_to_rhino(point) for point in polyline])
 
 
-def rhino_polygon_to_compas_polygon(polygon):
+def polygon_to_compas(polygon):
     """Convert a Rhino polygon to a COMPAS polygon.
 
     Parameters
@@ -260,10 +260,10 @@ def rhino_polygon_to_compas_polygon(polygon):
     -------
     :class:`compas.geometry.Polygon`
     """
-    return Polygon([rhino_point_to_compas_point(point) for point in polygon])
+    return Polygon([point_to_compas(point) for point in polygon])
 
 
-def compas_polygon_to_rhino_polygon(polygon):
+def polygon_to_rhino(polygon):
     """Convert a COMPAS polygon to a Rhino polygon.
 
     Parameters

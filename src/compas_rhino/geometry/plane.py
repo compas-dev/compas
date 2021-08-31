@@ -4,7 +4,6 @@ from __future__ import division
 
 import Rhino
 
-from compas.geometry import Plane
 from compas.geometry import Frame
 
 from compas_rhino.geometry._geometry import BaseRhinoGeometry
@@ -59,31 +58,31 @@ class RhinoPlane(BaseRhinoGeometry):
 
         Parameters
         ----------
-        geometry : tuple of point and normal or :class:`Rhino.Geometry.Plane` or :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame`
+        geometry : :class:`Rhino.Geometry.Plane` or :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame` or tuple of point and normal
             The geometry object defining a plane.
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoPlane`
-            The wrapped plane.
+        :class:`RhinoPlane`
+            The Rhino plane wrapper.
         """
         if not isinstance(geometry, Rhino.Geometry.Plane):
-            if isinstance(geometry, Plane):
-                point = Rhino.Geometry.Point3d(geometry[0][0], geometry[0][1], geometry[0][2])
-                normal = Rhino.Geometry.Vector3d(geometry[1][0], geometry[1][1], geometry[1][2])
-                geometry = Rhino.Geometry.Plane(point, normal)
-            elif isinstance(geometry, Frame):
-                point = Rhino.Geometry.Point3d(geometry[0][0], geometry[0][1], geometry[0][2])
-                xaxis = Rhino.Geometry.Vector3d(geometry[1][0], geometry[1][1], geometry[1][2])
-                yaxis = Rhino.Geometry.Vector3d(geometry[2][0], geometry[2][1], geometry[2][2])
+            if isinstance(geometry, Frame):
+                point, xaxis, yaxis = geometry
+                point = Rhino.Geometry.Point3d(point[0], point[1], point[2])
+                xaxis = Rhino.Geometry.Vector3d(xaxis[0], xaxis[1], xaxis[2])
+                yaxis = Rhino.Geometry.Vector3d(yaxis[0], yaxis[1], yaxis[2])
                 geometry = Rhino.Geometry.Plane(point, xaxis, yaxis)
+
             else:
-                point = Rhino.Geometry.Point3d(geometry[0][0], geometry[0][1], geometry[0][2])
-                normal = Rhino.Geometry.Vector3d(geometry[1][0], geometry[1][1], geometry[1][2])
+                point, normal = geometry
+                point = Rhino.Geometry.Point3d(point[0], point[1], point[2])
+                normal = Rhino.Geometry.Vector3d(normal[0], normal[1], normal[2])
                 geometry = Rhino.Geometry.Plane(point, normal)
-        line = cls()
-        line.geometry = geometry
-        return line
+
+        plane = cls()
+        plane.geometry = geometry
+        return plane
 
     @classmethod
     def from_selection(cls):
@@ -94,7 +93,7 @@ class RhinoPlane(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
-            A COMPAS frame object.
+        :class:`Frame`
+            A COMPAS frame.
         """
         return Frame(self.point, self.xaxis, self.yaxis)
