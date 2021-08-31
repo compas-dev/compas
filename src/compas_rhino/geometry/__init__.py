@@ -27,6 +27,7 @@ Classes
     BaseRhinoGeometry
     RhinoBox
     RhinoCircle
+    RhinoCone
     RhinoCurve
     RhinoEllipse
     RhinoLine
@@ -45,6 +46,7 @@ from ._geometry import BaseRhinoGeometry
 
 from .box import RhinoBox
 from .circle import RhinoCircle
+from .cone import RhinoCone
 from .curve import RhinoCurve
 from .ellipse import RhinoEllipse
 from .line import RhinoLine
@@ -60,6 +62,7 @@ __all__ = [
     'BaseRhinoGeometry',
     'RhinoBox',
     'RhinoCircle',
+    'RhinoCone',
     'RhinoCurve',
     'RhinoEllipse',
     'RhinoLine',
