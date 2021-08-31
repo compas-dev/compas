@@ -64,12 +64,10 @@ Curves
     line_to_rhino_curve
     circle_to_rhino_curve
     ellipse_to_rhino_curve
-    compas_curve_to_rhino_curve
     curve_to_compas_line
     curve_to_compas_circle
     curve_to_compas_ellipse
     curve_to_compas_polyline
-    rhino_curve_to_compas_curve
 
 
 Surfaces
@@ -119,13 +117,11 @@ from .curves import (
     line_to_rhino_curve,
     circle_to_rhino_curve,
     ellipse_to_rhino_curve,
-    compas_curve_to_rhino_curve,
 
     curve_to_compas_circle,
     curve_to_compas_ellipse,
     curve_to_compas_line,
-    curve_to_compas_polyline,
-    rhino_curve_to_compas_curve
+    curve_to_compas_polyline
 )
 
 # geometry to geometry conversions
@@ -165,11 +161,9 @@ __all__ = [
     'line_to_rhino_curve',
     'circle_to_rhino_curve',
     'ellipse_to_rhino_curve',
-    'compas_curve_to_rhino_curve',
 
     'curve_to_compas_circle',
     'curve_to_compas_ellipse',
     'curve_to_compas_line',
     'curve_to_compas_polyline',
-    'rhino_curve_to_compas_curve',
 ]
