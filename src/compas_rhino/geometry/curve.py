@@ -31,7 +31,7 @@ class RhinoCurve(BaseRhinoGeometry):
         Parameters
         ----------
         geometry : :class:`Rhino.Geometry.Curve` or :class:`compas.geometry.Line` or :class:`compas.geometry.Circle` or :class:`compas.geometry.Ellipse`
-            The geometry object defining a circle.
+            The geometry object defining a curve.
 
         Returns
         -------
@@ -48,22 +48,18 @@ class RhinoCurve(BaseRhinoGeometry):
             else:
                 raise NotImplementedError
 
-        circle = cls()
-        circle.geometry = geometry
-        return circle
+        curve = cls()
+        curve.geometry = geometry
+        return curve
 
     @classmethod
     def from_selection(cls):
         """Construct a curve wrapper by selecting an existing Rhino curve object.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         :class:`RhinoCurve`
-            The wrapped curve.
+            The Rhino curve wrapper.
         """
         guid = compas_rhino.select_curve()
         return cls.from_guid(guid)
