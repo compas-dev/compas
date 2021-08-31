@@ -28,7 +28,7 @@ def box_to_compas(box):
     -------
     :class:`compas.geometry.Box`
     """
-    return Box(plane_to_compas_frame(box.Plane), box.X, box.Y, box.Z)
+    return Box(plane_to_compas_frame(box.Plane), box.X.Length, box.Y.Length, box.Z.Length)
 
 
 def box_to_rhino(box):
