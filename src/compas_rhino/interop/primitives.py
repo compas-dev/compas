@@ -230,7 +230,7 @@ def rhino_polyline_to_compas_polyline(polyline):
 
     Returns
     -------
-    :class:`compas.geometry.Ellipse`
+    :class:`compas.geometry.Polyline`
     """
     return Polyline([rhino_point_to_compas_point(point) for point in polyline])
 
