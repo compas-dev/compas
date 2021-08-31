@@ -11,13 +11,6 @@ from ._geometry import BaseRhinoGeometry
 
 class RhinoLine(BaseRhinoGeometry):
     """Wrapper for a Rhino line objects.
-
-    Attributes
-    ----------
-    start (read-only) : Rhino.Geometry.Point3d
-        The starting point of the line.
-    end (read-only) : Rhino.Geometry.Point3d
-        The end point of the line.
     """
 
     def __init__(self):
