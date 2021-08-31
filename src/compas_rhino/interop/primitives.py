@@ -240,7 +240,7 @@ def compas_polyline_to_rhino_polyline(polyline):
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Ellipse`
+    polyline : :class:`compas.geometry.Polyline`
 
     Returns
     -------
