@@ -959,16 +959,18 @@ if not compas.IPY:
         PointCollectionNumpy
     )
 
-from .curves import (
-    Curve,
-    BezierCurve,
-    NurbsCurve
-)
+if not compas.IPY:
+    from .curves import (
+        Curve,
+        BezierCurve,
+        NurbsCurve
+    )
 
-from .surfaces import (
-    Surface,
-    NurbsSurface
-)
+if not compas.IPY:
+    from .surfaces import (
+        Surface,
+        NurbsSurface
+    )
 
 __all__ = [
     'close',
@@ -1270,13 +1272,6 @@ __all__ = [
 
     'Collection',
     'PointCollection',
-
-    'Curve',
-    'BezierCurve',
-    'NurbsCurve',
-
-    'Surface',
-    'NurbsSurface'
 ]
 
 if not compas.IPY:
@@ -1302,5 +1297,12 @@ if not compas.IPY:
         'delaunay_from_points_numpy',
         'voronoi_from_points_numpy',
         'CollectionNumpy',
-        'PointCollectionNumpy'
+        'PointCollectionNumpy',
+
+        'Curve',
+        'BezierCurve',
+        'NurbsCurve',
+
+        'Surface',
+        'NurbsSurface'
     ]

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from ._curve import Curve  # noqa: F401
 from .bezier import BezierCurve  # noqa: F401
 

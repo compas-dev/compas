@@ -8,6 +8,7 @@ from compas.geometry import Transformation
 from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas.geometry import Box
+from compas.geometry import Frame
 
 from ._curve import Curve
 
