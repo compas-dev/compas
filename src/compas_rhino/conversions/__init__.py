@@ -44,14 +44,14 @@ Shapes
     :toctree: generated/
     :nosignatures:
 
-    compas_box_to_rhino_box
-    compas_sphere_to_rhino_sphere
-    compas_cone_to_rhino_cone
-    compas_cylinder_to_rhino_cylinder
-    rhino_box_to_compas_box
-    rhino_sphere_to_compas_sphere
-    rhino_cone_to_compas_cone
-    rhino_cylinder_to_compas_cylinder
+    box_to_rhino
+    sphere_to_rhino
+    cone_to_rhino
+    cylinder_to_rhino
+    box_to_compas
+    sphere_to_compas
+    cone_to_compas
+    cylinder_to_compas
 
 
 Curves
@@ -105,15 +105,15 @@ from .primitives import (
     polygon_to_compas
 )
 from .shapes import (
-    compas_box_to_rhino_box,
-    compas_sphere_to_rhino_sphere,
-    compas_cone_to_rhino_cone,
-    compas_cylinder_to_rhino_cylinder,
+    box_to_rhino,
+    sphere_to_rhino,
+    cone_to_rhino,
+    cylinder_to_rhino,
 
-    rhino_box_to_compas_box,
-    rhino_sphere_to_compas_sphere,
-    rhino_cone_to_compas_cone,
-    rhino_cylinder_to_compas_cylinder,
+    box_to_compas,
+    sphere_to_compas,
+    cone_to_compas,
+    cylinder_to_compas,
 )
 from .curves import (
     compas_line_to_rhino_curve,
@@ -152,15 +152,15 @@ __all__ = [
     'polyline_to_compas',
     'polygon_to_compas',
 
-    'compas_box_to_rhino_box',
-    'compas_sphere_to_rhino_sphere',
-    'compas_cone_to_rhino_cone',
-    'compas_cylinder_to_rhino_cylinder',
+    'box_to_rhino',
+    'sphere_to_rhino',
+    'cone_to_rhino',
+    'cylinder_to_rhino',
 
-    'rhino_box_to_compas_box',
-    'rhino_sphere_to_compas_sphere',
-    'rhino_cone_to_compas_cone',
-    'rhino_cylinder_to_compas_cylinder',
+    'box_to_compas',
+    'sphere_to_compas',
+    'cone_to_compas',
+    'cylinder_to_compas',
 
     'compas_line_to_rhino_curve',
     'compas_circle_to_rhino_curve',
