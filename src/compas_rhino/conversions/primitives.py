@@ -42,7 +42,7 @@ def point_to_rhino(point):
     -------
     :class:`Rhino.Geometry.Point3d`
     """
-    return Point3d(point.x, point.y, point.z)
+    return Point3d(point[0], point[1], point[2])
 
 
 def vector_to_compas(vector):
@@ -70,7 +70,7 @@ def vector_to_rhino(vector):
     -------
     :class:`Rhino.Geometry.Vector3d`
     """
-    return Vector3d(vector.x, vector.y, vector.z)
+    return Vector3d(vector[0], vector[1], vector[2])
 
 
 def line_to_compas(line):
@@ -99,8 +99,8 @@ def line_to_rhino(line):
     -------
     :class:`Rhino.Geometry.Line`
     """
-    return RhinoLine(point_to_rhino(line.start),
-                     point_to_rhino(line.end))
+    return RhinoLine(point_to_rhino(line[0]),
+                     point_to_rhino(line[1]))
 
 
 def plane_to_compas(plane):
@@ -129,8 +129,8 @@ def plane_to_rhino(plane):
     -------
     :class:`Rhino.Geometry.Plane`
     """
-    return RhinoPlane(point_to_rhino(plane.point),
-                      vector_to_rhino(plane.normal))
+    return RhinoPlane(point_to_rhino(plane[0]),
+                      vector_to_rhino(plane[1]))
 
 
 def plane_to_compas_frame(plane):
@@ -160,9 +160,9 @@ def frame_to_rhino(frame):
     -------
     :class:`Rhino.Geometry.Plane`
     """
-    return RhinoPlane(point_to_rhino(frame.point),
-                      vector_to_rhino(frame.xaxis),
-                      vector_to_rhino(frame.yaxis))
+    return RhinoPlane(point_to_rhino(frame[0]),
+                      vector_to_rhino(frame[1]),
+                      vector_to_rhino(frame[2]))
 
 
 def circle_to_compas(circle):
@@ -190,7 +190,7 @@ def circle_to_rhino(circle):
     -------
     :class:`Rhino.Geometry.Circle`
     """
-    return RhinoCircle(plane_to_rhino(circle.plane), circle.radius)
+    return RhinoCircle(plane_to_rhino(circle[0]), circle[1])
 
 
 def ellipse_to_compas(ellipse):
@@ -204,7 +204,7 @@ def ellipse_to_compas(ellipse):
     -------
     :class:`compas.geometry.Ellipse`
     """
-    return Ellipse(plane_to_compas(ellipse.Plane), ellipse.major, ellipse.minor)
+    return Ellipse(plane_to_compas(ellipse.Plane), ellipse.Major, ellipse.Minor)
 
 
 def ellipse_to_rhino(ellipse):
@@ -218,7 +218,7 @@ def ellipse_to_rhino(ellipse):
     -------
     :class:`Rhino.Geometry.Ellipse`
     """
-    return RhinoEllipse(plane_to_rhino(ellipse.plane), ellipse.major, ellipse.minor)
+    return RhinoEllipse(plane_to_rhino(ellipse[0]), ellipse[1], ellipse[2])
 
 
 def polyline_to_compas(polyline):
