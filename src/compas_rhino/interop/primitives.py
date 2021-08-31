@@ -268,7 +268,7 @@ def compas_polygon_to_rhino_polygon(polygon):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Ellipse`
+    polygon : :class:`compas.geometry.Polygon`
 
     Returns
     -------
