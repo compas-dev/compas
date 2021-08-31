@@ -258,7 +258,7 @@ def rhino_polygon_to_compas_polygon(polygon):
 
     Returns
     -------
-    :class:`compas.geometry.Ellipse`
+    :class:`compas.geometry.Polygon`
     """
     return Polygon([rhino_point_to_compas_point(point) for point in polygon])
 
