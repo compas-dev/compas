@@ -15,9 +15,6 @@ class RhinoSphere(BaseRhinoGeometry):
     """Wrapper for Rhino sphere objects.
     """
 
-    def __init__(self):
-        super(RhinoSphere, self).__init__()
-
     @classmethod
     def from_object(cls, obj):
         """Construct a sphere wrapper from an existing Rhino object.
@@ -31,6 +28,11 @@ class RhinoSphere(BaseRhinoGeometry):
         -------
         :class:`RhinoSphere`
             The Rhino sphere wrapper.
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the Rhino object cannot be converted to a sphere.
         """
         wrapper = cls()
         wrapper.guid = obj.Id
@@ -64,6 +66,11 @@ class RhinoSphere(BaseRhinoGeometry):
         -------
         :class:`RhinoSphere`
             The Rhino sphere wrapper.
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a sphere.
         """
         if not isinstance(geometry, Rhino.Geometry.Sphere):
             if isinstance(geometry, Rhino.Geometry.Brep):

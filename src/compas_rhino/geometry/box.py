@@ -15,9 +15,6 @@ class RhinoBox(BaseRhinoGeometry):
     """Wrapper for Rhino box objects.
     """
 
-    def __init__(self):
-        super(RhinoBox, self).__init__()
-
     @classmethod
     def from_object(cls, obj):
         """Construct a box wrapper from an existing Rhino object.
@@ -31,6 +28,11 @@ class RhinoBox(BaseRhinoGeometry):
         -------
         :class:`RhinoBox`
             The Rhino box wrapper.
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the Rhino (extrusion) object cannot be converted to a box.
         """
         wrapper = cls()
         wrapper.guid = obj.Id
@@ -59,6 +61,11 @@ class RhinoBox(BaseRhinoGeometry):
         -------
         :class:`RhinoBox`
             The Rhino box wrapper.
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a box.
         """
         if not isinstance(geometry, Rhino.Geometry.Box):
             if isinstance(geometry, Rhino.Geometry.Extrusion):

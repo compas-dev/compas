@@ -17,9 +17,6 @@ from ._geometry import BaseRhinoGeometry
 class RhinoSurface(BaseRhinoGeometry):
     """Wrapper for Rhino surface objects."""
 
-    def __init__(self):
-        super(RhinoSurface, self).__init__()
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct a surface wrapper from an existing geometry object.

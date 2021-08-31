@@ -12,9 +12,6 @@ class RhinoCircle(BaseRhinoGeometry):
     """Wrapper for Rhino circle objects.
     """
 
-    def __init__(self):
-        super(RhinoCircle, self).__init__()
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct a circle wrapper from an existing geometry object.

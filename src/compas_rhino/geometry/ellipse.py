@@ -12,9 +12,6 @@ class RhinoEllipse(BaseRhinoGeometry):
     """Wrapper for Rhino ellipse objects.
     """
 
-    def __init__(self):
-        super(RhinoEllipse, self).__init__()
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct an ellipse wrapper from an existing geometry object.

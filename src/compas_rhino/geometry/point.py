@@ -13,9 +13,6 @@ class RhinoPoint(RhinoVector):
     """Wrapper for Rhino points.
     """
 
-    def __init__(self):
-        super(RhinoPoint, self).__init__()
-
     @classmethod
     def from_guid(cls, guid):
         """Construct a Rhino object wrapper from the GUID of an existing Rhino object.

@@ -20,9 +20,6 @@ class RhinoPlane(BaseRhinoGeometry):
     Therefore, the COMPAS conversion function of this class returns a frame object instead of a plane.
     """
 
-    def __init__(self):
-        super(RhinoPlane, self).__init__()
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct a plane wrapper from an existing geometry object.

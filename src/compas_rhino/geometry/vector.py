@@ -12,9 +12,6 @@ class RhinoVector(BaseRhinoGeometry):
     """Wrapper for Rhino vectors.
     """
 
-    def __init__(self):
-        super(RhinoVector, self).__init__()
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct a vector wrapper from an existing geometry object.

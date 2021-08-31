@@ -9,14 +9,6 @@ geometry
 
 Wrappers for Rhino objects that can be used to convert Rhino geometry and data to COMPAS objects.
 
-.. code-block:: python
-
-    import compas_rhino
-    from compas_rhino.geometry import RhinoMesh
-
-    guid = compas_rhino.select_mesh()
-    mesh = RhinoMesh.from_guid(guid).to_compas()
-
 Classes
 =======
 
@@ -29,6 +21,7 @@ Classes
     RhinoCircle
     RhinoCone
     RhinoCurve
+    RhinoCylinder
     RhinoEllipse
     RhinoLine
     RhinoMesh
@@ -48,6 +41,7 @@ from .box import RhinoBox
 from .circle import RhinoCircle
 from .cone import RhinoCone
 from .curve import RhinoCurve
+from .cylinder import RhinoCylinder
 from .ellipse import RhinoEllipse
 from .line import RhinoLine
 from .mesh import RhinoMesh
@@ -64,6 +58,7 @@ __all__ = [
     'RhinoCircle',
     'RhinoCone',
     'RhinoCurve',
+    'RhinoCylinder',
     'RhinoEllipse',
     'RhinoLine',
     'RhinoMesh',

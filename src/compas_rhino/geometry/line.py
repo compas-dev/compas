@@ -13,9 +13,6 @@ class RhinoLine(BaseRhinoGeometry):
     """Wrapper for Rhino line objects.
     """
 
-    def __init__(self):
-        super(RhinoLine, self).__init__()
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct a line from an existing Rhino line geometry object.

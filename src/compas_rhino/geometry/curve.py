@@ -14,15 +14,13 @@ from ..conversions import curve_to_compas_circle
 from ..conversions import curve_to_compas_ellipse
 from ..conversions import curve_to_compas_polyline
 from ..conversions import curve_to_compas_line
+from ..conversions import ConversionError
 from ._geometry import BaseRhinoGeometry
 
 
 class RhinoCurve(BaseRhinoGeometry):
     """Wrapper for Rhino curve objects.
     """
-
-    def __init__(self):
-        super(RhinoCurve, self).__init__()
 
     @classmethod
     def from_geometry(cls, geometry):
@@ -37,6 +35,11 @@ class RhinoCurve(BaseRhinoGeometry):
         -------
         :class:`RhinoCurve`
             The Rhino curve wrapper.
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a curve.
         """
         if not isinstance(geometry, Rhino.Geometry.Curve):
             if isinstance(geometry, Line):
@@ -46,8 +49,7 @@ class RhinoCurve(BaseRhinoGeometry):
             elif isinstance(geometry, Ellipse):
                 geometry = ellipse_to_rhino_curve(geometry)
             else:
-                raise NotImplementedError
-
+                raise ConversionError('The geometry cannot be convertex to a curve.')
         curve = cls()
         curve.geometry = geometry
         return curve

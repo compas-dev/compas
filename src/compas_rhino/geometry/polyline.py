@@ -13,13 +13,10 @@ class RhinoPolyline(BaseRhinoGeometry):
     """Wrapper for Rhino polyline objects.
     """
 
-    def __init__(self):
-        super(RhinoPolyline, self).__init__()
-
     @classmethod
     def from_geometry(cls, geometry):
         """Construct a line from an existing Rhino polyline geometry object.
-s
+
         Parameters
         ----------
         geometry : :class:`Rhino.Geometry.Polyline` or :class:`compas.geometry.Polyline` or list of points

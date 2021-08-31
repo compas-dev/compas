@@ -15,9 +15,6 @@ class RhinoCone(BaseRhinoGeometry):
     """Wrapper for Rhino cone objects.
     """
 
-    def __init__(self):
-        super(RhinoCone, self).__init__()
-
     @classmethod
     def from_object(cls, obj):
         """Construct a cone wrapper from an existing Rhino object.
@@ -31,6 +28,11 @@ class RhinoCone(BaseRhinoGeometry):
         -------
         :class:`RhinoCone`
             The Rhino cone wrapper.
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the Rhino (brep) object cannot be converted to a cone.
         """
         wrapper = cls()
         wrapper.guid = obj.Id
@@ -67,6 +69,11 @@ class RhinoCone(BaseRhinoGeometry):
         -------
         :class:`RhinoCone`
             The Rhino cone wrapper.
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the (brep) geometry cannot be converted to a cone.
         """
         if not isinstance(geometry, Rhino.Geometry.Cone):
             if isinstance(geometry, Rhino.Geometry.Brep):

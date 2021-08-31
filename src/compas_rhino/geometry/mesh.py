@@ -3,11 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-
 import compas_rhino
 from compas.datastructures import Mesh
-
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
+from ._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoMesh']
@@ -15,42 +13,27 @@ __all__ = ['RhinoMesh']
 
 class RhinoMesh(BaseRhinoGeometry):
     """Wrapper for Rhino mesh objects.
-
-    Attributes
-    ----------
-    vertices (read-only) : list of point
-        The coordinates of the vertices of the mesh.
-    faces (read-only) : list of list of int
-        Faces defined as lists of references into the list of vertices.
-    vertex_color : list
-        The colors of the vertices.
-        Setting this to ``None`` unsets the vertex colors.
-    border (read-only) : list
-        The GUIDs of the border curves.
     """
 
-    def __init__(self):
-        super(RhinoMesh, self).__init__()
+    # @property
+    # def vertices(self):
+    #     return [map(float, point) for point in compas_rhino.rs.MeshVertices(self.geometry)]
 
-    @property
-    def vertices(self):
-        return [map(float, point) for point in compas_rhino.rs.MeshVertices(self.geometry)]
+    # @property
+    # def faces(self):
+    #     return map(list, compas_rhino.rs.MeshFaceVertices(self.geometry))
 
-    @property
-    def faces(self):
-        return map(list, compas_rhino.rs.MeshFaceVertices(self.geometry))
+    # @property
+    # def vertex_colors(self):
+    #     return map(list, compas_rhino.rs.MeshVertexColors(self.guid))
 
-    @property
-    def vertex_colors(self):
-        return map(list, compas_rhino.rs.MeshVertexColors(self.guid))
+    # @vertex_colors.setter
+    # def vertex_colors(self, colors):
+    #     compas_rhino.rs.MeshVertexColors(self.guid, colors)
 
-    @vertex_colors.setter
-    def vertex_colors(self, colors):
-        compas_rhino.rs.MeshVertexColors(self.guid, colors)
-
-    @property
-    def border(self):
-        return compas_rhino.rs.DuplicateMeshBorder(self.guid)
+    # @property
+    # def border(self):
+    #     return compas_rhino.rs.DuplicateMeshBorder(self.guid)
 
     @classmethod
     def from_selection(cls):
@@ -62,7 +45,7 @@ class RhinoMesh(BaseRhinoGeometry):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoMesh`
+        :class:`RhinoMesh`
             The wrapped line.
         """
         guid = compas_rhino.select_mesh()
@@ -74,12 +57,12 @@ class RhinoMesh(BaseRhinoGeometry):
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Mesh`
+        geometry: :class:`Rhino.Geometry.Mesh`
             A Rhino mesh geometry.
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoMesh`
+        :class:`RhinoMesh`
             The wrapped line.
         """
         mesh = cls()
@@ -91,7 +74,7 @@ class RhinoMesh(BaseRhinoGeometry):
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
+        cls: :class:`compas.datastructures.Mesh`, optional
             The mesh type.
 
         Returns
@@ -120,9 +103,9 @@ class RhinoMesh(BaseRhinoGeometry):
 
         Parameters
         ----------
-        point : point
+        point: point
             A point location.
-        maxdist : float, optional
+        maxdist: float, optional
             The maximum distance between the closest point and the mesh.
             Default is ``0.0``.
 
@@ -134,20 +117,20 @@ class RhinoMesh(BaseRhinoGeometry):
         face, point = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
         return list(point)
 
-    def closest_points(self, points, maxdist=None):
-        """Compute the closest points on the mesh to a list of input points.
+    # def closest_points(self, points, maxdist=None):
+    #     """Compute the closest points on the mesh to a list of input points.
 
-        Parameters
-        ----------
-        points : list of point
-            The input points.
-        maxdist : float, optional
-            The maximum distance between the closest point and the mesh.
-            Default is ``0.0``.
+    #     Parameters
+    #     ----------
+    #     points : list of point
+    #         The input points.
+    #     maxdist : float, optional
+    #         The maximum distance between the closest point and the mesh.
+    #         Default is ``0.0``.
 
-        Returns
-        -------
-        list of point
-            The XYZ coordinates of the closest points.
-        """
-        return [self.closest_point(point, maxdist) for point in points]
+    #     Returns
+    #     -------
+    #     list of point
+    #         The XYZ coordinates of the closest points.
+    #     """
+    #     return [self.closest_point(point, maxdist) for point in points]
