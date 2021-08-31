@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added support for attaching and detaching meshes in `compas.robots.RobotModelArtist` and drawing them.
 * Added `compas.geometry.NurbsCurve`.
 * Added `compas.geometry.NurbsSurface`.
+* Added `compas_rhino.conversions`.
+* Added `compas_rhino.geometry.RhinoBox`.
+* Added `compas_rhino.geometry.RhinoCone`.
+* Added `compas_rhino.geometry.RhinoCylinder`.
+* Added `compas_rhino.geometry.RhinoPolyline`.
+* Added `compas_rhino.geometry.RhinoSphere`.
 
 ### Changed
 
