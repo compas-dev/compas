@@ -7,6 +7,7 @@ import compas_rhino
 from compas.geometry import Box
 from ..conversions import box_to_rhino
 from ..conversions import box_to_compas
+from ..conversions import ConversionError
 from ._geometry import BaseRhinoGeometry
 
 
@@ -41,7 +42,7 @@ class RhinoBox(BaseRhinoGeometry):
                 box = geometry.GetBoundingBox(plane)
                 geometry = Rhino.Geometry.Box(plane, box)
             else:
-                raise NotImplementedError
+                raise ConversionError('Rhino object cannot be converted to a box: {}'.format(obj))
         wrapper.geometry = geometry
         return wrapper
 
@@ -67,7 +68,7 @@ class RhinoBox(BaseRhinoGeometry):
             elif isinstance(geometry, Box):
                 geometry = box_to_rhino(geometry)
             else:
-                raise NotImplementedError
+                raise ConversionError('Geometry object cannot be converted to a box: {}'.format(geometry))
         box = cls()
         box.geometry = geometry
         return box
@@ -81,7 +82,7 @@ class RhinoBox(BaseRhinoGeometry):
         :class:`RhinoBox`
             The Rhino box wrapper.
         """
-        guid = compas_rhino.select_box()
+        guid = compas_rhino.select_object()
         return cls.from_guid(guid)
 
     def to_compas(self):

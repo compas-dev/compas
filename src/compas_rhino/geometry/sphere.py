@@ -39,15 +39,15 @@ class RhinoSphere(BaseRhinoGeometry):
         if not isinstance(geometry, Rhino.Geometry.Sphere):
             if isinstance(geometry, Rhino.Geometry.Brep):
                 if geometry.Faces.Count != 1:
-                    raise ConversionError('Object brep cannot be converted to sphere.')
+                    raise ConversionError('Object brep cannot be converted to a sphere.')
                 face = geometry.Faces.Item[0]
                 if not face.IsSphere():
-                    raise ConversionError('Object brep cannot be converted to sphere.')
+                    raise ConversionError('Object brep cannot be converted to a sphere.')
                 result, geometry = face.TryGetSphere()
                 if not result:
-                    raise ConversionError('Object brep cannot be converted to sphere.')
+                    raise ConversionError('Object brep cannot be converted to a sphere.')
             else:
-                raise NotImplementedError
+                raise ConversionError('Rhino object cannot be converted to a sphere: {}'.format(obj))
         wrapper.geometry = geometry
         return wrapper
 
@@ -68,17 +68,17 @@ class RhinoSphere(BaseRhinoGeometry):
         if not isinstance(geometry, Rhino.Geometry.Sphere):
             if isinstance(geometry, Rhino.Geometry.Brep):
                 if geometry.Faces.Count != 1:
-                    raise ConversionError('Object brep cannot be converted to sphere.')
+                    raise ConversionError('Object brep cannot be converted to a sphere.')
                 face = geometry.Faces.Item[0]
                 if not face.IsSphere():
-                    raise ConversionError('Object brep cannot be converted to sphere.')
+                    raise ConversionError('Object brep cannot be converted to a sphere.')
                 result, geometry = face.TryGetSphere()
                 if not result:
-                    raise ConversionError('Object brep cannot be converted to sphere.')
+                    raise ConversionError('Object brep cannot be converted to a sphere.')
             elif isinstance(geometry, Sphere):
                 geometry = sphere_to_rhino(geometry)
             else:
-                raise NotImplementedError
+                raise ConversionError('Geometry object cannot be converted to a sphere: {}'.format(geometry))
         sphere = cls()
         sphere.geometry = geometry
         return sphere
@@ -92,7 +92,7 @@ class RhinoSphere(BaseRhinoGeometry):
         :class:`RhinoSphere`
             The Rhino sphere wrapper.
         """
-        guid = compas_rhino.select_sphere()
+        guid = compas_rhino.select_object()
         return cls.from_guid(guid)
 
     def to_compas(self):
