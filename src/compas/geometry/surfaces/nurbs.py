@@ -1,6 +1,4 @@
-import numpy as np
 from itertools import product
-from functools import lru_cache
 
 from compas.geometry import Point
 from compas.utilities import meshgrid, linspace
@@ -74,18 +72,18 @@ class NurbsSurface(Surface):
         lines = [
             'NurbsSurface',
             '--------------',
-            f'Points: {self.points}',
-            f'Weights: {self.weights}',
-            f'U Knots: {self.u_knots}',
-            f'V Knots: {self.v_knots}',
-            f'U Mults: {self.u_mults}',
-            f'V Mults: {self.v_mults}',
-            f'U Degree: {self.u_degree}',
-            f'V Degree: {self.v_degree}',
-            f'U Domain: {self.u_domain}',
-            f'V Domain: {self.v_domain}',
-            f'U Periodic: {self.is_u_periodic}',
-            f'V Periodic: {self.is_v_periodic}',
+            'Points: {}'.format(self.points),
+            'Weights: {}'.format(self.weights),
+            'U Knots: {}'.format(self.u_knots),
+            'V Knots: {}'.format(self.v_knots),
+            'U Mults: {}'.format(self.u_mults),
+            'V Mults: {}'.format(self.v_mults),
+            'U Degree: {}'.format(self.u_degree),
+            'V Degree: {}'.format(self.v_degree),
+            'U Domain: {}'.format(self.u_domain),
+            'V Domain: {}'.format(self.v_domain),
+            'U Periodic: {}'.format(self.is_u_periodic),
+            'V Periodic: {}'.format(self.is_v_periodic),
         ]
         return "\n".join(lines)
 
@@ -192,6 +190,8 @@ class NurbsSurface(Surface):
 
     def to_mesh(self, nu=100, nv=None):
         """Convert the surface to a quad mesh."""
+        import numpy as np
+        from functools import lru_cache
         from compas.datastructures import Mesh
 
         @lru_cache(maxsize=None)
@@ -211,6 +211,9 @@ class NurbsSurface(Surface):
 
     def to_triangles(self, nu=100, nv=None):
         """Convert the surface to a list of triangles."""
+        import numpy as np
+        from functools import lru_cache
+
         @lru_cache(maxsize=None)
         def point_at(i, j):
             return self.point_at(i, j)
@@ -319,12 +322,14 @@ class NurbsSurface(Surface):
     def u_space(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the U direction.
         """
+        import numpy as np
         umin, umax = self.u_domain
         return np.linspace(umin, umax, n)
 
     def v_space(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the V direction.
         """
+        import numpy as np
         vmin, vmax = self.v_domain
         return np.linspace(vmin, vmax, n)
 
@@ -343,6 +348,7 @@ class NurbsSurface(Surface):
     def xyz(self, nu=10, nv=10):
         """Compute point locations corresponding to evenly spaced parameters over the surface domain.
         """
+        import numpy as np
         U, V = np.meshgrid(self.u_space(nu), self.v_space(nv), indexing='ij')
         return [self.point_at(U[i, j], V[i, j]) for i, j in product(np.arange(nu), np.arange(nv))]
 

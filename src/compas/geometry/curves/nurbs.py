@@ -72,16 +72,16 @@ class NurbsCurve(Curve):
         lines = [
             'NurbsCurve',
             '------------',
-            f'Points: {self.points}',
-            f'Weights: {self.weights}',
-            f'Knots: {self.knots}',
-            f'Mults: {self.multiplicities}',
-            f'Degree: {self.degree}',
-            f'Order: {self.order}',
-            f'Domain: {self.domain}',
-            f'Closed: {self.is_closed}',
-            f'Periodic: {self.is_periodic}',
-            f'Rational: {self.is_rational}',
+            'Points: {}'.format(self.points),
+            'Weights: {}'.format(self.weights),
+            'Knots: {}'.format(self.knots),
+            'Mults: {}'.format(self.multiplicities),
+            'Degree: {}'.format(self.degree),
+            'Order: {}'.format(self.order),
+            'Domain: {}'.format(self.domain),
+            'Closed: {}'.format(self.is_closed),
+            'Periodic: {}'.format(self.is_periodic),
+            'Rational: {}'.format(self.is_rational),
         ]
         return "\n".join(lines)
 
