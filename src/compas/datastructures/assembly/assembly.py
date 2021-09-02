@@ -7,6 +7,15 @@ from ..network import Network
 
 
 class Assembly(Datastructure):
+    """A data structure for managing the connections between different parts of an assembly.
+
+    Attributes
+    ----------
+    attributes: dict
+        General attributes of the assembly that will be included in the data dict.
+    network: :class:`compas.datastructures.Network`
+        The network that is used under the hood to store the parts and their connections.
+    """
 
     @property
     def DATASCHEMA(self):
@@ -42,3 +51,19 @@ class Assembly(Datastructure):
     def data(self, data):
         self.attributes.update(data['attributes'] or {})
         self.network = data['network']
+
+    def parts(self):
+        """The parts of the assembly."""
+        return self.network.nodes()
+
+    def connections(self):
+        """The connections between the parts."""
+        return self.network.edges()
+
+    def add_part(self, part, id=None, **kwargs):
+        """Add a part to the assembly."""
+        self.network.add_node(key=id, part=part, **kwargs)
+
+    def add_connection(self, a, b, **kwargs):
+        """Add a connection between two parts."""
+        self.network.add_edge(a, b, **kwargs)
