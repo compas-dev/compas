@@ -25,7 +25,7 @@ class Assembly(Datastructure):
         self.network = Network()
 
     def __str__(self):
-        tpl = "<Assembly with {} elements and {} interactions>"
+        tpl = "<Assembly with {} parts and {} connections>"
         return tpl.format(self.network.number_of_nodes(), self.network.number_of_edges())
 
     @property
