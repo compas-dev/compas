@@ -332,9 +332,9 @@ if not compas.IPY:
 
 __all__ = [
     'Datastructure',
-    # Networks
-    'BaseNetwork',
+    # Graphs
     'Graph',
+    # Networks
     'Network',
     'network_complement',
     'network_count_crossings',

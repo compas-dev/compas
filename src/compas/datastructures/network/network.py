@@ -29,6 +29,11 @@ from .transformations import network_transformed
 from .traversal import network_shortest_path
 from .smoothing import network_smooth_centroid
 
+from .planarity import network_count_crossings
+from .planarity import network_find_crossings
+from .planarity import network_is_crossed
+from .planarity import network_is_xy
+
 
 class Network(Graph):
     """Geometric implementation of an edge graph.
@@ -43,31 +48,28 @@ class Network(Graph):
     transformed = network_transformed
     find_cycles = network_find_cycles
 
+    count_crossings = network_count_crossings
+    find_crossings = network_find_crossings
+    is_crossed = network_is_crossed
+    is_xy = network_is_xy
+
     if not compas.IPY:
         from .matrices import network_adjacency_matrix
         from .matrices import network_connectivity_matrix
         from .matrices import network_degree_matrix
         from .matrices import network_laplacian_matrix
-        from .planarity import network_count_crossings
         from .planarity import network_embed_in_plane
-        from .planarity import network_find_crossings
-        from .planarity import network_is_crossed
         from .planarity import network_is_planar
         from .planarity import network_is_planar_embedding
-        from .planarity import network_is_xy
 
         adjacency_matrix = network_adjacency_matrix
         connectivity_matrix = network_connectivity_matrix
         degree_matrix = network_degree_matrix
         laplacian_matrix = network_laplacian_matrix
 
-        count_crossings = network_count_crossings
         embed_in_plane = network_embed_in_plane
-        find_crossings = network_find_crossings
-        is_crossed = network_is_crossed
         is_planar = network_is_planar
         is_planar_embedding = network_is_planar_embedding
-        is_xy = network_is_xy
 
     def __init__(self):
         super(Network, self).__init__()

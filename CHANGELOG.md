@@ -27,8 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.drawing.draw_breps` to assume provided polygon is closed and automatically add missing corner to polycurve constructor.
 * Changed conversion of edges and faces to uniques keys for the data dicts to use the string representation of a sorted tuple of identifiers.
 * Added `dtype` to JSON decoding error message.
+* Moved `compas.datastructures.network.core.graph.Graph` to `compas.datastructures.graph.graph.Graph`.
 
 ### Removed
+
+* Removed `compas.datastructures.BaseNetwork`.
 
 ## [1.7.1] 2021-06-14
 
