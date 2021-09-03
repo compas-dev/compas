@@ -4,6 +4,7 @@ from __future__ import division
 
 import sys
 import collections
+import compas
 
 from compas.files import OBJ
 
@@ -16,22 +17,62 @@ from compas.geometry import normalize_vector
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
-from compas.datastructures.network.core import Graph
+from compas.datastructures import Graph
+
+from .operations import network_split_edge
+
+from .combinatorics import network_is_connected
+from .complementarity import network_complement
+from .duality import network_find_cycles
+from .transformations import network_transform
+from .transformations import network_transformed
+from .traversal import network_shortest_path
+from .smoothing import network_smooth_centroid
+
+from .planarity import network_count_crossings
+from .planarity import network_find_crossings
+from .planarity import network_is_crossed
+from .planarity import network_is_xy
 
 
-__all__ = ['BaseNetwork']
-
-
-class BaseNetwork(Graph):
-    """Geometric implementation of a basic edge graph.
-
-    Examples
-    --------
-    >>>
+class Network(Graph):
+    """Geometric implementation of an edge graph.
     """
 
+    complement = network_complement
+    is_connected = network_is_connected
+    shortest_path = network_shortest_path
+    split_edge = network_split_edge
+    smooth = network_smooth_centroid
+    transform = network_transform
+    transformed = network_transformed
+    find_cycles = network_find_cycles
+
+    count_crossings = network_count_crossings
+    find_crossings = network_find_crossings
+    is_crossed = network_is_crossed
+    is_xy = network_is_xy
+
+    if not compas.IPY:
+        from .matrices import network_adjacency_matrix
+        from .matrices import network_connectivity_matrix
+        from .matrices import network_degree_matrix
+        from .matrices import network_laplacian_matrix
+        from .planarity import network_embed_in_plane
+        from .planarity import network_is_planar
+        from .planarity import network_is_planar_embedding
+
+        adjacency_matrix = network_adjacency_matrix
+        connectivity_matrix = network_connectivity_matrix
+        degree_matrix = network_degree_matrix
+        laplacian_matrix = network_laplacian_matrix
+
+        embed_in_plane = network_embed_in_plane
+        is_planar = network_is_planar
+        is_planar_embedding = network_is_planar_embedding
+
     def __init__(self):
-        super(BaseNetwork, self).__init__()
+        super(Network, self).__init__()
         self._max_int_key = -1
         self.attributes.update({'name': 'Network'})
         self.default_node_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
@@ -273,7 +314,7 @@ class BaseNetwork(Graph):
                 self._max_int_key = key
         except (ValueError, TypeError):
             pass
-        return super(BaseNetwork, self).add_node(key, attr_dict=attr_dict, **kwattr)
+        return super(Network, self).add_node(key, attr_dict=attr_dict, **kwattr)
 
     # --------------------------------------------------------------------------
     # modifiers
