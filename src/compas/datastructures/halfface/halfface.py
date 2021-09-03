@@ -60,7 +60,7 @@ class HalfFace(Datastructure):
     def JSONSCHEMANAME(self):
         return 'halfface'
 
-    def __init__(self):
+    def __init__(self, name=None):
         super(HalfFace, self).__init__()
         self._max_vertex = -1
         self._max_face = -1
@@ -72,14 +72,14 @@ class HalfFace(Datastructure):
         self._edge_data = {}
         self._face_data = {}
         self._cell_data = {}
-        self.attributes = {'name': 'VolMesh'}
+        self.attributes = {'name': name or 'HalfFace'}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
         self.default_cell_attributes = {}
 
     def __str__(self):
-        tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
+        tpl = "<HalfFace with {} vertices, {} faces, {} cells, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_cells(),  self.number_of_edges())
 
     # --------------------------------------------------------------------------

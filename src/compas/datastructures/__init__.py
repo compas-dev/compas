@@ -5,21 +5,25 @@ datastructures
 
 .. currentmodule:: compas.datastructures
 
-Network
-=======
-
 Classes
--------
+=======
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    HalfEdge
+    HalfFace
+    Mesh
     Network
+    VolMesh
 
 
 Functions
----------
+=========
+
+Network
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -47,10 +51,6 @@ Functions
     network_transform
     network_transformed
 
-
-CPython-only
-------------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -62,17 +62,7 @@ CPython-only
 
 
 Mesh
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Mesh
-
-
-Functions
----------
+----
 
 .. autosummary::
     :toctree: generated/
@@ -142,10 +132,6 @@ Functions
     trimesh_subdivide_loop
     trimesh_swap_edge
 
-
-CPython-only
-------------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -171,20 +157,7 @@ CPython-only
 
 
 VolMesh
-=======
-
-Classes
 -------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    VolMesh
-
-
-Functions
----------
 
 .. autosummary::
     :toctree: generated/
@@ -226,7 +199,9 @@ from .network import (
     network_transform,
     network_transformed,
 )
-from .halfedge import HalfEdge
+from .halfedge import (
+    HalfEdge
+)
 from .mesh import (
     Mesh,
     mesh_add_vertex_to_face_edge,
@@ -293,9 +268,10 @@ from .mesh import (
     trimesh_subdivide_loop,
     trimesh_swap_edge,
 )
+from .halfface import (
+    HalfFace
+)
 from .volmesh import (
-    BaseVolMesh,               # NOTE: this class being in the stable API is something we should deprecate before 2.x release
-    HalfFace,
     VolMesh,
     volmesh_bounding_box,
     volmesh_transform,
@@ -330,6 +306,9 @@ if not compas.IPY:
         trimesh_vertexarea_matrix,
     )
 
+BaseMesh = Mesh
+BaseVolMesh = VolMesh
+
 __all__ = [
     'Datastructure',
     # Networks
@@ -357,8 +336,10 @@ __all__ = [
     'network_split_edge',
     'network_transform',
     'network_transformed',
-    # Meshes
+    # HalfEdge
     'HalfEdge',
+    # Meshes
+    'BaseMesh',
     'Mesh',
     'mesh_add_vertex_to_face_edge',
     'mesh_bounding_box_xy',
@@ -423,9 +404,10 @@ __all__ = [
     'trimesh_split_edge',
     'trimesh_subdivide_loop',
     'trimesh_swap_edge',
+    # HalfFace
+    'HalfFace',
     # Volumetric Meshes
     'BaseVolMesh',
-    'HalfFace',
     'VolMesh',
     'volmesh_bounding_box',
     'volmesh_transform',
