@@ -122,7 +122,7 @@ from .decorators import (
     abstractclassmethod,
     abstractstaticmethod,
     memoize,
-    print_profile
+    print_profile,
 )
 from .descriptors import (
     Float,

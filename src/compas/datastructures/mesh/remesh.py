@@ -2,10 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.datastructures.mesh.smoothing import mesh_smooth_area
-from compas.datastructures.mesh.core import trimesh_collapse_edge
-from compas.datastructures.mesh.core import trimesh_swap_edge
-from compas.datastructures.mesh.core import trimesh_split_edge
+from .smoothing import mesh_smooth_area
+from .operations import trimesh_collapse_edge
+from .operations import trimesh_swap_edge
+from .operations import trimesh_split_edge
 
 
 __all__ = [

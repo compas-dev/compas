@@ -12,7 +12,8 @@ from compas.geometry import offset_polygon
 from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
-from compas.datastructures.mesh.core import BaseMesh
+from .mesh import Mesh
+from .operations import mesh_split_edge
 
 
 __all__ = [
@@ -39,13 +40,11 @@ def mesh_fast_copy(other):
     return subd
 
 
-class SubdMesh(BaseMesh):
+class SubdMesh(Mesh):
 
-    from compas.datastructures.mesh.core import mesh_split_edge
-
-    _add_vertex = BaseMesh.add_vertex
-    _add_face = BaseMesh.add_face
-    _insert_vertex = BaseMesh.insert_vertex
+    _add_vertex = Mesh.add_vertex
+    _add_face = Mesh.add_face
+    _insert_vertex = Mesh.insert_vertex
 
     split_edge = mesh_split_edge
 
@@ -82,6 +81,7 @@ class SubdMesh(BaseMesh):
             self.add_face([u, v, w])
         del self.face[fkey]
         return w
+
 
 # distinguish between subd of meshes with and without boundary
 # closed vs. open

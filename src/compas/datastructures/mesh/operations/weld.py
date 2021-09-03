@@ -5,9 +5,10 @@ from __future__ import division
 from compas.topology import adjacency_from_edges
 from compas.topology import connected_components
 
-from compas.datastructures.mesh.core.operations.substitute import mesh_substitute_vertex_in_faces
-
 from compas.utilities import pairwise
+
+from .substitute import mesh_substitute_vertex_in_faces
+
 
 __all__ = [
     'mesh_unweld_vertices',

@@ -226,9 +226,8 @@ from .network import (
     network_transform,
     network_transformed,
 )
+from .halfedge.halfedge import HalfEdge
 from .mesh import (
-    BaseMesh,                  # NOTE: this class being in the stable API is something we should deprecate before 2.x release
-    HalfEdge,
     Mesh,
     mesh_add_vertex_to_face_edge,
     mesh_bounding_box_xy,
@@ -359,7 +358,6 @@ __all__ = [
     'network_transform',
     'network_transformed',
     # Meshes
-    'BaseMesh',
     'HalfEdge',
     'Mesh',
     'mesh_add_vertex_to_face_edge',
