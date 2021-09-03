@@ -53,6 +53,7 @@ from .orientation import mesh_unify_cycles
 from .slice import mesh_slice_plane
 from .smoothing import mesh_smooth_centroid
 from .smoothing import mesh_smooth_area
+from .subdivision import mesh_subdivide
 from .transformations import mesh_transform
 from .transformations import mesh_transformed
 from .triangulation import mesh_quads_to_triangles
@@ -104,6 +105,7 @@ class Mesh(HalfEdge):
     smooth_area = mesh_smooth_area
     split_edge = mesh_split_edge
     split_face = mesh_split_face
+    subdivide = mesh_subdivide
     transform = mesh_transform
     transformed = mesh_transformed
     unify_cycles = mesh_unify_cycles

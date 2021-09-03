@@ -40,9 +40,7 @@ if not IPY:
     from .transformations_numpy import *  # noqa: F401 F403
     from .trimesh_samplepoints_numpy import *  # noqa: F401 F403
 
-from .mesh import Mesh
-
-setattr(Mesh, 'subdivide', mesh_subdivide)  # noqa: F405
+from .mesh import Mesh  # noqa: F401
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

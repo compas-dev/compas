@@ -12,9 +12,6 @@ from compas.geometry import offset_polygon
 from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
-from .mesh import Mesh
-from .operations import mesh_split_edge
-
 
 __all__ = [
     'mesh_subdivide',
@@ -28,59 +25,55 @@ __all__ = [
 ]
 
 
+def subd_factory(cls):
+
+    class SubdMesh(cls):
+
+        _add_vertex = cls.add_vertex
+        _add_face = cls.add_face
+        _insert_vertex = cls.insert_vertex
+
+        def add_vertex(self, x, y, z):
+            key = self._max_vertex = self._max_vertex + 1
+            if key not in self.vertex:
+                self.vertex[key] = {}
+                self.halfedge[key] = {}
+            self.vertex[key] = dict(x=x, y=y, z=z)
+            return key
+
+        def add_face(self, vertices):
+            fkey = self._max_face = self._max_face + 1
+            self.face[fkey] = vertices
+            self.facedata[fkey] = {}
+            for i in range(-1, len(vertices) - 1):
+                u = vertices[i]
+                v = vertices[i + 1]
+                self.halfedge[u][v] = fkey
+                if u not in self.halfedge[v]:
+                    self.halfedge[v][u] = None
+            return fkey
+
+        def insert_vertex(self, fkey):
+            x, y, z = self.face_center(fkey)
+            w = self.add_vertex(x=x, y=y, z=z)
+            for u, v in self.face_halfedges(fkey):
+                self.add_face([u, v, w])
+            del self.face[fkey]
+            return w
+
+    return SubdMesh
+
+
 def mesh_fast_copy(other):
+    SubdMesh = subd_factory(type(other))
     subd = SubdMesh()
     subd.vertex = deepcopy(other.vertex)
     subd.face = deepcopy(other.face)
-    # subd.edgedata = deepcopy(other.edgedata)
     subd.facedata = deepcopy(other.facedata)
     subd.halfedge = deepcopy(other.halfedge)
     subd._max_vertex = other._max_vertex
     subd._max_face = other._max_face
     return subd
-
-
-class SubdMesh(Mesh):
-
-    _add_vertex = Mesh.add_vertex
-    _add_face = Mesh.add_face
-    _insert_vertex = Mesh.insert_vertex
-
-    split_edge = mesh_split_edge
-
-    def add_vertex(self, x, y, z):
-        key = self._max_vertex = self._max_vertex + 1
-
-        if key not in self.vertex:
-            self.vertex[key] = {}
-            self.halfedge[key] = {}
-
-        self.vertex[key] = dict(x=x, y=y, z=z)
-
-        return key
-
-    def add_face(self, vertices):
-        fkey = self._max_face = self._max_face + 1
-
-        self.face[fkey] = vertices
-        self.facedata[fkey] = {}
-
-        for i in range(-1, len(vertices) - 1):
-            u = vertices[i]
-            v = vertices[i + 1]
-            self.halfedge[u][v] = fkey
-            if u not in self.halfedge[v]:
-                self.halfedge[v][u] = None
-
-        return fkey
-
-    def insert_vertex(self, fkey):
-        x, y, z = self.face_center(fkey)
-        w = self.add_vertex(x=x, y=y, z=z)
-        for u, v in self.face_halfedges(fkey):
-            self.add_face([u, v, w])
-        del self.face[fkey]
-        return w
 
 
 # distinguish between subd of meshes with and without boundary
@@ -341,6 +334,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     """
     cls = type(mesh)
+
     if not fixed:
         fixed = []
     fixed = set(fixed)
@@ -495,6 +489,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
     fixed = set(fixed)
 
     cls = type(mesh)
+    SubdMesh = subd_factory(cls)
 
     for _ in range(k):
         old_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
@@ -597,6 +592,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
 
     """
     cls = type(mesh)
+    SubdMesh = subd_factory(cls)
 
     subd = SubdMesh()
 
