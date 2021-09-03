@@ -20,17 +20,17 @@ class EdgeError(Exception):
     pass
 
 
-class Nodes(Data):
+class NodeCollection(Data):
 
     def __init__(self, default_attributes=None, strict=False):
-        super(Nodes, self).__init__()
+        super(NodeCollection, self).__init__()
         self._default_attributes = default_attributes or {}
         self._strict = strict
         self._nodes = {}
         self._max = -1
 
     def __str__(self):
-        return "MultiGraph Nodes Object with {} items".format(len(self))
+        return "MultiGraph NodeCollection Object with {} items".format(len(self))
 
     def __len__(self):
         return len(self._nodes)
@@ -41,7 +41,7 @@ class Nodes(Data):
 
     def __getitem__(self, node):
         if node not in self._nodes:
-            raise NodeError("The Nodes object doesn't contain {}".format(node))
+            raise NodeError("The NodeCollection object doesn't contain {}".format(node))
         return NodeAttributeView(self._default_attributes, self._nodes[node])
 
     def __call__(self, data=False):
@@ -72,7 +72,11 @@ class Nodes(Data):
 
         Parameters
         ----------
-
+        name: str
+            Name of the attribute.
+        nodes: list, optional
+            The selection of nodes of which the attribute should be included in the result.
+            If ``None`` (default), a list with the attribute of every node is returned.
         """
         if not nodes:
             nodes = self._nodes
@@ -90,16 +94,16 @@ class Nodes(Data):
         return [[self._nodes[node].get(name, self._default_attributes.get(name)) for name in names] for node in nodes]
 
 
-class Edges(Data):
+class EdgeCollection(Data):
 
     def __init__(self, default_attributes=None, strict=False):
-        super(Edges, self).__init__()
+        super(EdgeCollection, self).__init__()
         self._default_attributes = default_attributes or {}
         self._strict = strict
         self._edges = {}
 
     def __str__(self):
-        return "MultiGraph Edges Object with {} items".format(len(self))
+        return "MultiGraph EdgeCollection Object with {} items".format(len(self))
 
     def __len__(self):
         return len(self._edges)
@@ -107,9 +111,9 @@ class Edges(Data):
     def __getitem__(self, edge):
         u, v = edge
         if u not in self._edges:
-            raise EdgeError("The Edges object doesn't contain node {} of edge {}".format(u, edge))
+            raise EdgeError("The EdgeCollection object doesn't contain node {} of edge {}".format(u, edge))
         if v not in self._edges[u]:
-            raise EdgeError("The Edges object doesn't contain edge {}".format(edge))
+            raise EdgeError("The EdgeCollection object doesn't contain edge {}".format(edge))
         views = []
         for attr in self._edges[u][v]:
             view = EdgeAttributeView(self._default_attributes, attr)
@@ -160,9 +164,9 @@ class MultiGraph(Datastructure):
 
     Attributes
     ----------
-    nodes: Nodes
+    nodes: NodeCollection
         A container object for the nodes of the graph.
-    edges: Edges
+    edges: EdgeCollection
         A container object for the edges of the graph.
 
     Examples
@@ -197,8 +201,8 @@ class MultiGraph(Datastructure):
 
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None, strict=False):
         super(MultiGraph, self).__init__(name=name)
-        self._nodes = Nodes(default_attributes=default_node_attributes, strict=strict)
-        self._edges = Edges(default_attributes=default_edge_attributes, strict=strict)
+        self._nodes = NodeCollection(default_attributes=default_node_attributes, strict=strict)
+        self._edges = EdgeCollection(default_attributes=default_edge_attributes, strict=strict)
 
     def __str__(self):
         return "MultiGraph with {} nodes and {} edges.".format(len(self.nodes), len(self.edges))
