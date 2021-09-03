@@ -71,11 +71,15 @@ class Network(Graph):
         is_planar = network_is_planar
         is_planar_embedding = network_is_planar_embedding
 
-    def __init__(self):
+    def __init__(self, name=None):
         super(Network, self).__init__()
         self._max_int_key = -1
-        self.attributes.update({'name': 'Network'})
+        self.attributes.update({'name': name or 'Network'})
         self.default_node_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
+
+    def __str__(self):
+        tpl = "<Network with {} nodes, {} edges>"
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # customisation
