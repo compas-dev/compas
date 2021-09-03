@@ -200,9 +200,8 @@ from __future__ import absolute_import
 import compas
 
 from .datastructure import Datastructure
+from .graph import Graph
 from .network import (
-    BaseNetwork,               # NOTE: this class being in the stable API is something we should deprecate before 2.x release
-    Graph,
     Network,
     network_complement,
     network_count_crossings,
