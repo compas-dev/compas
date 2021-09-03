@@ -12,6 +12,7 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    Datastructure
     HalfEdge
     HalfFace
     Mesh

@@ -8,6 +8,7 @@ __all__ = ['Datastructure']
 
 
 class Datastructure(Data):
+    """Bsee class for all data structures."""
 
     def __init__(self):
         super(Datastructure, self).__init__()
