@@ -13,6 +13,7 @@ Classes
     :nosignatures:
 
     Datastructure
+    Graph
     HalfEdge
     HalfFace
     Mesh
@@ -174,7 +175,10 @@ from __future__ import absolute_import
 import compas
 
 from .datastructure import Datastructure
-from .graph import Graph
+
+from .graph import (
+    Graph
+)
 from .network import (
     Network,
     network_complement,
@@ -306,6 +310,7 @@ if not compas.IPY:
         trimesh_vertexarea_matrix,
     )
 
+BaseNetwork = Network
 BaseMesh = Mesh
 BaseVolMesh = VolMesh
 
@@ -314,6 +319,7 @@ __all__ = [
     # Graphs
     'Graph',
     # Networks
+    'BaseNetwork',
     'Network',
     'network_complement',
     'network_count_crossings',
