@@ -116,6 +116,10 @@ class Mesh(HalfEdge):
         self.attributes.update({'name': 'Mesh'})
         self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
 
+    def __str__(self):
+        tpl = "<Mesh with {} vertices, {} faces, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
+
     # --------------------------------------------------------------------------
     # customisation
     # --------------------------------------------------------------------------
