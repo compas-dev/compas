@@ -226,7 +226,7 @@ from .network import (
     network_transform,
     network_transformed,
 )
-from .halfedge.halfedge import HalfEdge
+from .halfedge import HalfEdge
 from .mesh import (
     Mesh,
     mesh_add_vertex_to_face_edge,

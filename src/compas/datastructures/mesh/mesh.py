@@ -35,7 +35,7 @@ from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
 
-from compas.datastructures.halfedge.halfedge import HalfEdge
+from compas.datastructures import HalfEdge
 
 from .operations import mesh_collapse_edge
 from .operations import mesh_split_edge
