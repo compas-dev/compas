@@ -390,7 +390,7 @@ class BaseMesh(HalfEdge):
 
         if isinstance(vertices, mapping):
             for key, xyz in vertices.items():
-                mesh.add_vertex(key=key, attr_dict={i: j for i, j in zip(['x', 'y', 'z'], xyz)})
+                mesh.add_vertex(key=key, attr_dict=dict(zip(('x', 'y', 'z'), xyz)))
         else:
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)

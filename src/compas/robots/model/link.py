@@ -168,7 +168,14 @@ class Inertial(Data):
         self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
 
 
-class Visual(Data):
+class LinkItem(object):
+    def __init__(self):
+        self.init_transformation = None  # to store the init transformation
+        self.current_transformation = None  # to store the current transformation
+        self.native_geometry = None  # to store the link's CAD native geometry
+
+
+class Visual(LinkItem, Data):
     """Visual description of a link.
 
     Attributes
@@ -194,10 +201,6 @@ class Visual(Data):
         self.name = name
         self.material = material
         self.attr = kwargs
-
-        self.init_transformation = None  # to store the init transformation
-        self.current_transformation = None  # to store the current transformation
-        self.native_geometry = None  # to store the link's CAD native geometry
 
     def get_urdf_element(self):
         attributes = {}
@@ -265,7 +268,7 @@ class Visual(Data):
         return cls(geometry, origin=origin, **kwargs)
 
 
-class Collision(Data):
+class Collision(LinkItem, Data):
     """Collidable description of a link.
 
     Attributes
@@ -288,10 +291,6 @@ class Collision(Data):
         self.origin = origin
         self.name = name
         self.attr = kwargs
-
-        self.init_transformation = None  # to store the init transformation
-        self.current_transformation = None  # to store the current transformation
-        self.native_geometry = None  # to store the link's CAD native geometry
 
     def get_urdf_element(self):
         attributes = {}

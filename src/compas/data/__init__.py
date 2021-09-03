@@ -43,6 +43,7 @@ Validators
     is_int3
     is_float3
     is_float4x4
+    validate_data
 
 
 Exceptions
@@ -64,6 +65,7 @@ from .validators import is_sequence_of_float
 from .validators import is_int3
 from .validators import is_float3
 from .validators import is_float4x4
+from .validators import validate_data
 from .encoders import DataEncoder
 from .encoders import DataDecoder
 from .data import Data
@@ -84,5 +86,6 @@ __all__ = [
     'json_load',
     'json_loads',
     'json_dump',
-    'json_dumps'
+    'json_dumps',
+    'validate_data'
 ]

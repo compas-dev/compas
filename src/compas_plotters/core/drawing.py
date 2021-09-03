@@ -57,7 +57,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
                    xscale='linear',
                    yscale='linear',
                    bgcolor='#ffffff'):
-    """Initialises plot axes object for matplotlib plotting.
+    """Initializes plot axes object for matplotlib plotting.
 
     Parameters
     ----------
@@ -147,7 +147,7 @@ def create_axes_3d(size=(10, 7),
                    ticklength=20,
                    tickfontsize=15,
                    angle=(30, 45)):
-    """Initialises plot axes object for matplotlib plotting.
+    """Initializes plot axes object for matplotlib plotting.
 
     Parameters
     ----------

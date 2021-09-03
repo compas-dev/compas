@@ -1,139 +1,58 @@
 import os
-import shutil
-
-import subprocess
-
-from contextlib import contextmanager
-
+from typing import Callable, Optional, Tuple, List, Union
+import matplotlib
 import matplotlib.pyplot as plt
+import tempfile
+from PIL import Image
 
-from matplotlib.patches import Circle
-from matplotlib.patches import FancyArrowPatch
-from matplotlib.patches import ArrowStyle
-
-from compas_plotters.core.drawing import create_axes_xy
-from compas_plotters.core.drawing import draw_xpoints_xy
-from compas_plotters.core.drawing import draw_xlines_xy
-from compas_plotters.core.drawing import draw_xpolylines_xy
-from compas_plotters.core.drawing import draw_xpolygons_xy
-from compas_plotters.core.drawing import draw_xarrows_xy
-
-
-__all__ = [
-    'Plotter',
-    'valuedict'
-]
-
-
-def valuedict(keys, value, default):
-    """
-     Build value dictionary from a list of keys and a value.
-
-     Parameters
-     ----------
-     keys: list
-         The list of keys
-     value: {dict, int, float, str, None}
-         A value or the already formed dictionary
-     default: {int, float, str}
-         A default value to set if no value
-
-     Returns
-     -------
-     dict
-         A dictionary
-
-     Notes
-     -----
-     This standalone and generic function is only required by plotters.
-
-     """
-    if isinstance(value, dict):
-        return {key: value.get(key, default) for key in keys}
-    else:
-        return dict.fromkeys(keys, value or default)
+import compas
+from compas_plotters import Artist
 
 
 class Plotter:
-    """Definition of a plotter object based on matplotlib.
+    """Plotter for the visualization of COMPAS geometry.
 
     Parameters
     ----------
+    view : tuple, optional
+        The area of the axes that should be zoomed into view.
+        DEfault is ``([-10, 10], [-3, 10])``.
     figsize : tuple, optional
-        The size of the plot in inches (width, length). Default is ``(16.0, 12.0)``.
-
-    Other Parameters
-    ----------------
-    dpi : float, optional
-        The resolution of the plot.
-        Default is ``100.0``.
-    tight : bool, optional
-        Produce a plot with limited padding between the plot and the edge of the figure.
-        Default is ``True``.
-    fontsize : int, optional
-        The size of the font used in labels. Default is ``10``.
-    axes : matplotlib.axes.Axes, optional
-        An instance of ``matplotlib`` ``Axes``.
-        For example to share the axes of a figure between different plotters.
-        Default is ``None`` in which case the plotter will make its own axes.
-
-    Attributes
-    ----------
-    defaults : dict
-        Dictionary containing default attributes for vertices and edges.
-
-    Notes
-    -----
-    For more info, see [1]_.
-
-    References
-    ----------
-    .. [1] Hunter, J. D., 2007. *Matplotlib: A 2D graphics environment*.
-           Computing In Science & Engineering (9) 3, p.90-95.
-           Available at: http://ieeexplore.ieee.org/document/4160265/citations.
+        The size of the figure in inches.
+        Default is ``(8, 5)``
 
     """
 
-    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=True, axes=None, **kwargs):
-        """Initialises a plotter object"""
+    def __init__(self,
+                 view: Tuple[Tuple[float, float], Tuple[float, float]] = ((-8.0, 16.0), (-5.0, 10.0)),
+                 figsize: Tuple[float, float] = (8.0, 5.0),
+                 dpi: float = 100,
+                 bgcolor: Tuple[float, float, float] = (1.0, 1.0, 1.0),
+                 show_axes: bool = False):
+        self._show_axes = show_axes
+        self._bgcolor = None
+        self._viewbox = None
         self._axes = None
-        self.axes = axes
-        self.tight = tight
-        # use descriptors for these
-        # to help the user set these attributes in the right format
-        # figure attributes
-        self.figure_size = figsize
-        self.figure_dpi = dpi
-        self.figure_bgcolor = '#ffffff'
-        # axes attributes
-        self.axes_xlabel = None
-        self.axes_ylabel = None
-        # drawing defaults
-        # z-order
-        # color
-        # size/thickness
-        self.defaults = {
-            'point.radius': 0.1,
-            'point.facecolor': '#ffffff',
-            'point.edgecolor': '#000000',
-            'point.edgewidth': 0.5,
-            'point.textcolor': '#000000',
-            'point.fontsize': kwargs.get('fontsize', 10),
-
-            'line.width': 1.0,
-            'line.color': '#000000',
-            'line.textcolor': '#000000',
-            'line.fontsize': kwargs.get('fontsize', 10),
-
-            'polygon.facecolor': '#ffffff',
-            'polygon.edgecolor': '#000000',
-            'polygon.edgewidth': 0.1,
-            'polygon.textcolor': '#000000',
-            'polygon.fontsize': kwargs.get('fontsize', 10),
-        }
+        self._artists = []
+        self.viewbox = view
+        self.figsize = figsize
+        self.dpi = dpi
+        self.bgcolor = bgcolor
 
     @property
-    def axes(self):
+    def viewbox(self) -> Tuple[Tuple[float, float], Tuple[float, float]]:
+        """([xmin, xmax], [ymin, ymax]): The area of the axes that is zoomed into view."""
+        return self._viewbox
+
+    @viewbox.setter
+    def viewbox(self, view: Tuple[Tuple[float, float], Tuple[float, float]]):
+        xlim, ylim = view
+        xmin, xmax = xlim
+        ymin, ymax = ylim
+        self._viewbox = (xmin, xmax), (ymin, ymax)
+
+    @property
+    def axes(self) -> matplotlib.axes.Axes:
         """Returns the axes subplot matplotlib object.
 
         Returns
@@ -152,22 +71,41 @@ class Plotter:
         .. [2] https://matplotlib.org/api/axis_api.html
 
         """
-        if self._axes is None:
-            self._axes = create_axes_xy(
-                figsize=self.figure_size,
-                dpi=self.figure_dpi,
-                xlabel=self.axes_xlabel,
-                ylabel=self.axes_ylabel
-            )
-
+        if not self._axes:
+            figure = plt.figure(facecolor=self.bgcolor,
+                                figsize=self.figsize,
+                                dpi=self.dpi)
+            axes = figure.add_subplot(111, aspect='equal')
+            if self.viewbox:
+                xmin, xmax = self.viewbox[0]
+                ymin, ymax = self.viewbox[1]
+                axes.set_xlim(xmin, xmax)
+                axes.set_ylim(ymin, ymax)
+            axes.set_xscale('linear')
+            axes.set_yscale('linear')
+            if self._show_axes:
+                axes.set_frame_on(True)
+                axes.grid(False)
+                axes.set_xticks([])
+                axes.set_yticks([])
+                axes.spines['top'].set_color('none')
+                axes.spines['right'].set_color('none')
+                axes.spines['left'].set_position('zero')
+                axes.spines['bottom'].set_position('zero')
+                axes.spines['left'].set_linestyle('-')
+                axes.spines['bottom'].set_linestyle('-')
+            else:
+                axes.grid(False)
+                axes.set_frame_on(False)
+                axes.set_xticks([])
+                axes.set_yticks([])
+            axes.autoscale_view()
+            plt.tight_layout()
+            self._axes = axes
         return self._axes
 
-    @axes.setter
-    def axes(self, axes):
-        self._axes = axes
-
     @property
-    def figure(self):
+    def figure(self) -> matplotlib.figure.Figure:
         """Returns the matplotlib figure instance.
 
         Returns
@@ -193,7 +131,7 @@ class Plotter:
         return self.figure.canvas
 
     @property
-    def bgcolor(self):
+    def bgcolor(self) -> str:
         """Returns the background color.
 
         Returns
@@ -202,10 +140,10 @@ class Plotter:
             The color as a string (hex colors).
 
         """
-        return self.figure.get_facecolor()
+        return self._bgcolor
 
     @bgcolor.setter
-    def bgcolor(self, value):
+    def bgcolor(self, value: Union[str, Tuple[float, float, float]]):
         """Sets the background color.
 
         Parameters
@@ -216,10 +154,11 @@ class Plotter:
             as a tuple of normalized RGB components.
 
         """
+        self._bgcolor = value
         self.figure.set_facecolor(value)
 
     @property
-    def title(self):
+    def title(self) -> str:
         """Returns the title of the plot.
 
         Returns
@@ -231,7 +170,7 @@ class Plotter:
         return self.figure.canvas.get_window_title()
 
     @title.setter
-    def title(self, value):
+    def title(self, value: str):
         """Sets the title of the plot.
 
         Parameters
@@ -242,7 +181,117 @@ class Plotter:
         """
         self.figure.canvas.set_window_title(value)
 
-    def register_listener(self, listener):
+    @property
+    def artists(self) -> List[Artist]:
+        """list of :class:`compas_plotters.artists.Artist`"""
+        return self._artists
+
+    @artists.setter
+    def artists(self, artists: List[Artist]):
+        self._artists = artists
+
+    # =========================================================================
+    # Methods
+    # =========================================================================
+
+    def pause(self, pause: float) -> None:
+        """Pause plotting during the specified interval.
+
+        Parameters
+        ----------
+        pause: float
+            The duration of the pause in seconds.
+        """
+        if pause:
+            plt.pause(pause)
+
+    def zoom_extents(self, padding: Optional[int] = None) -> None:
+        """Zoom the view to the bounding box of all objects."""
+        padding = padding or 0
+        width, height = self.figsize
+        fig_aspect = width / height
+        data = []
+        for artist in self.artists:
+            data += artist.data
+        x, y = zip(* data)
+        xmin = min(x)
+        xmax = max(x)
+        ymin = min(y)
+        ymax = max(y)
+        xspan = xmax - xmin + padding
+        yspan = ymax - ymin + padding
+        data_aspect = xspan / yspan
+        if data_aspect < fig_aspect:
+            scale = fig_aspect / data_aspect
+            self.axes.set_xlim(scale * (xmin - 0.1 * xspan), scale * (xmax + 0.1 * xspan))
+            self.axes.set_ylim(ymin - 0.1 * yspan, ymax + 0.1 * yspan)
+        else:
+            scale = data_aspect / fig_aspect
+            self.axes.set_xlim(xmin - 0.1 * xspan, xmax + 0.1 * xspan)
+            self.axes.set_ylim(scale * (ymin - 0.1 * yspan), scale * (ymax + 0.1 * yspan))
+        self.axes.autoscale_view()
+
+    def add(self,
+            item: Union[compas.geometry.Circle,
+                        compas.geometry.Ellipse,
+                        compas.geometry.Line,
+                        compas.geometry.Point,
+                        compas.geometry.Polygon,
+                        compas.geometry.Polyline,
+                        compas.geometry.Vector,
+                        compas.datastructures.Mesh],
+            artist: Optional[Artist] = None,
+            **kwargs) -> Artist:
+        """Add a COMPAS geometry object or data structure to the plot.
+        """
+        if not artist:
+            artist = Artist.build(item, **kwargs)
+        artist.plotter = self
+        artist.draw()
+        self._artists.append(artist)
+        return artist
+
+    def add_as(self,
+               item: Union[compas.geometry.Circle,
+                           compas.geometry.Ellipse,
+                           compas.geometry.Line,
+                           compas.geometry.Point,
+                           compas.geometry.Polygon,
+                           compas.geometry.Polyline,
+                           compas.geometry.Vector,
+                           compas.datastructures.Mesh],
+               artist_type: Artist,
+               **kwargs) -> Artist:
+        """Add a COMPAS geometry object or data structure using a specific artist type."""
+        artist = Artist.build_as(item, artist_type, **kwargs)
+        artist.plotter = self
+        artist.draw()
+        self._artists.append(artist)
+        return artist
+
+    def add_from_list(self, items, **kwargs) -> List[Artist]:
+        """Add multiple COMPAS geometry objects and/or data structures from a list."""
+        artists = []
+        for item in items:
+            artist = self.add(item, **kwargs)
+            artists.append(artist)
+        return artists
+
+    def find(self,
+             item: Union[compas.geometry.Circle,
+                         compas.geometry.Ellipse,
+                         compas.geometry.Line,
+                         compas.geometry.Point,
+                         compas.geometry.Polygon,
+                         compas.geometry.Polyline,
+                         compas.geometry.Vector,
+                         compas.datastructures.Mesh]) -> Artist:
+        """Find a geometry object or data structure in the plot."""
+        for artist in self._artists:
+            if item is artist.item:
+                return artist
+
+    def register_listener(self, listener: Callable) -> None:
         """Register a listener for pick events.
 
         Parameters
@@ -264,63 +313,39 @@ class Plotter:
         .. [1] https://matplotlib.org/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.mpl_connect
         .. [2] https://matplotlib.org/users/event_handling.html
 
-        Examples
-        --------
-        .. code-block:: python
-
-            #
-
         """
         self.figure.canvas.mpl_connect('pick_event', listener)
 
-    def clear_collection(self, collection):
-        """Clears a matplotlib collection object.
+    def draw(self, pause: Optional[float] = None) -> None:
+        """Draw all objects included in the plot."""
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+        if pause:
+            plt.pause(pause)
+
+    def redraw(self, pause: Optional[float] = None) -> None:
+        """Updates and pauses the plot.
 
         Parameters
         ----------
-        collection : object
-            The matplotlib collection object.
-
-        Notes
-        -----
-        For more info, see [1]_ and [2]_.
-
-        References
-        ----------
-        .. [1] https://matplotlib.org/2.0.2/api/collections_api.html
-        .. [2] https://matplotlib.org/2.0.2/api/collections_api.html#matplotlib.collections.Collection.remove
+        pause : float
+            Amount of time to pause the plot in seconds.
 
         """
-        collection.remove()
+        for artist in self._artists:
+            artist.redraw()
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+        if pause:
+            plt.pause(pause)
 
-    def show(self, autoscale=True):
+    def show(self) -> None:
         """Displays the plot.
         """
-        if autoscale:
-            self.axes.autoscale()
-        if self.tight:
-            plt.tight_layout()
+        self.draw()
         plt.show()
 
-    def top(self):
-        """Bring the plotting window to the top.
-
-        Warnings
-        --------
-        This seems to work only for some back-ends.
-
-        Notes
-        -----
-        For more info, see this SO post [1]_.
-
-        References
-        ----------
-        .. [1] https://stackoverflow.com/questions/20025077/how-do-i-display-a-matplotlib-figure-window-on-top-of-all-other-windows-in-spyde
-
-        """
-        self.figure.canvas.manager.show()
-
-    def save(self, filepath, **kwargs):
+    def save(self, filepath: str, **kwargs) -> None:
         """Saves the plot to a file.
 
         Parameters
@@ -337,273 +362,37 @@ class Plotter:
         .. [1] https://matplotlib.org/2.0.2/api/pyplot_api.html#matplotlib.pyplot.savefig
 
         """
-        self.axes.autoscale()
         plt.savefig(filepath, **kwargs)
 
-    @contextmanager
-    def gifified(self, func, tempfolder, outfile, pattern='image_{}.png'):
-        """Create a context for making animated gifs using a callback for updating the plot.
+    def on(self,
+           interval: int = None,
+           frames: int = None,
+           record: bool = False,
+           recording: str = None,
+           dpi: int = 150) -> Callable:
+        """Method for decorating callback functions in dynamic plots."""
+        if record:
+            if not recording:
+                raise Exception('Please provide a path for the recording.')
 
-        Parameters
-        ----------
-        func : callable
-            The callback function used to update the plot.
-        tempfolder : str
-            The path to a folder for storing temporary image frames.
-        outfile : str
-            Path to the file where the resultshould be saved.
-        pattern : str, optional
-            Pattern for the filename of the intermediate frames.
-            The pattern should contain a replacement placeholder for the number
-            of the frame. Default is ``'image_{}.png'``.
-        """
-        images = []
+        def outer(func: Callable):
+            if record:
+                with tempfile.TemporaryDirectory() as dirpath:
+                    paths = []
+                    for f in range(frames):
+                        func(f)
+                        self.redraw(pause=interval)
+                        if record:
+                            filepath = os.path.join(dirpath, f'frame-{f}.png')
+                            paths.append(filepath)
+                            self.save(filepath, dpi=dpi)
+                    images = []
+                    for path in paths:
+                        images.append(Image.open(path))
+                    images[0].save(recording, save_all=True, append_images=images[1:], optimize=False, duration=interval * 1000, loop=0)
+            else:
+                for f in range(frames):
+                    func(f)
+                    self.redraw(pause=interval)
 
-        def gifify(f):
-            def wrapper(*args, **kwargs):
-                f(*args, **kwargs)
-                image = os.path.join(tempfolder, pattern.format(len(images)))
-                images.append(image)
-                self.save(image)
-            return wrapper
-
-        if not os.path.exists(tempfolder) or not os.path.isdir(tempfolder):
-            os.makedirs(tempfolder)
-
-        for file in os.listdir(tempfolder):
-            filepath = os.path.join(tempfolder, file)
-            try:
-                if os.path.isfile(filepath):
-                    os.remove(filepath)
-            except Exception as e:
-                print(e)
-
-        image = os.path.join(tempfolder, pattern.format(len(images)))
-        images.append(image)
-        self.save(image)
-        #
-        yield gifify(func)
-        #
-        self.save_gif(outfile, images)
-        shutil.rmtree(tempfolder)
-        print('done gififying!')
-
-    def save_gif(self, filepath, images, delay=10, loop=0):
-        """Save a series of images as an animated gif.
-
-        Parameters
-        ----------
-        filepath : str
-            The full path to the output file.
-        images : list
-            A list of paths to input files.
-        delay : int, optional
-            The delay between frames in milliseconds. Default is ``10``.
-        loop : int, optional
-            The number of loops. Default is ``0``.
-
-        Returns
-        -------
-        None
-
-        Warnings
-        --------
-        This function assumes ImageMagick is installed on your system, and on
-        *convert* being on your system path.
-        """
-        command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop), '-layers', 'optimize']
-        subprocess.call(command + images + [filepath])
-
-    def draw_points(self, points):
-        """Draws points on a 2D plot.
-
-        Parameters
-        ----------
-
-        points : list of dict
-            List of dictionaries containing the point properties.
-            Each point is represented by a circle with a given radius.
-            The following properties of the circle can be specified in the point dict.
-
-            * pos (list): XY(Z) coordinates
-            * radius (float, optional): the radius of the circle. Default is 0.1.
-            * text (str, optional): the text of the label. Default is None.
-            * facecolor (rgb or hex color, optional): The color of the face of the circle. Default is white.
-            * edgecolor (rgb or hex color, optional): The color of the edge of the cicrle. Default is black.
-            * edgewidth (float, optional): The width of the edge of the circle. Default is 1.0.
-            * textcolor (rgb or hex color, optional): Color of the text label. Default is black.
-            * fontsize (int, optional): Font size of the text label. Default is 12.
-
-        Returns
-        -------
-        object
-            The matplotlib point collection object.
-
-        """
-        return draw_xpoints_xy(points, self.axes)
-
-    def draw_lines(self, lines):
-        """Draws lines on a 2D plot.
-
-        Parameters
-        ----------
-        lines : list of dict
-            List of dictionaries containing the line properties.
-            The following properties of a line can be specified in the dict.
-
-            * start (list): XY(Z) coordinates of the start point.
-            * end (list): XY(Z) coordinatesof the end point.
-            * width (float, optional): The width of the line. Default is ``1.0``.
-            * color (rgb tuple or hex string, optional): The color of the line. Default is black.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
-
-        Returns
-        -------
-        object
-            The matplotlib line collection object.
-
-        """
-        return draw_xlines_xy(lines, self.axes)
-
-    def draw_polylines(self, polylines):
-        """Draw polylines on a 2D plot.
-
-        Parameters
-        ----------
-        polylines : list of dict
-            A list of dictionaries containing the polyline properties.
-            The following properties are supported:
-
-            * points (list): XY(Z) coordinates of the polygon vertices.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
-            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
-            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
-            * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
-
-        Returns
-        -------
-        object
-            The matplotlib polyline collection object.
-
-        """
-        return draw_xpolylines_xy(polylines, self.axes)
-
-    def draw_polygons(self, polygons):
-        """Draws polygons on a 2D plot.
-
-        Parameters
-        ----------
-        polygons : list of dict
-            List of dictionaries containing the polygon properties.
-            The following properties can be specified in the dict.
-
-            * points (list): XY(Z) coordinates of the polygon vertices.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
-            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
-            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
-            * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
-
-        Returns
-        -------
-        object
-            The matplotlib polygon collection object.
-
-        """
-        return draw_xpolygons_xy(polygons, self.axes)
-
-    def draw_arrows(self, arrows):
-        """Draws arrows on a 2D plot.
-
-        Parameters
-        ----------
-        arrows : list of dict
-            List of dictionaries containing the arrow properties.
-            The following properties of an arrow can be specified in the dict.
-
-            * start (list): XY(Z) coordinates of the starting point.
-            * end (list): XY(Z) coordinates of the end point.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
-            * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
-            * width (float): Width of the arrow. Default is ``1.0``.
-
-        Returns
-        -------
-        object
-            The matplotlib arrow collection object.
-
-        """
-        return draw_xarrows_xy(arrows, self.axes)
-
-    def draw_arrows2(self, arrows):
-        for data in arrows:
-            a = data['start'][:2]
-            b = data['end'][:2]
-            color = data.get('color', (0.0, 0.0, 0.0))
-            style = ArrowStyle("Simple, head_length=.1, head_width=.1, tail_width=.02")
-            arrow = FancyArrowPatch(a, b,
-                                    arrowstyle=style,
-                                    edgecolor=color,
-                                    facecolor=color,
-                                    zorder=2000,
-                                    mutation_scale=100)
-            self.axes.add_patch(arrow)
-
-    def update(self, pause=0.0001):
-        """Updates and pauses the plot.
-
-        Parameters
-        ----------
-        pause : float
-            Ammount of time to pause the plot in seconds.
-
-        """
-        self.axes.autoscale()
-        if self.tight:
-            plt.tight_layout()
-        plt.pause(pause)
-
-    def update_pointcollection(self, collection, centers, radius=1.0):
-        """Updates the location and radii of a point collection.
-
-        Parameters
-        ----------
-        collection : object
-            The point collection to update.
-        centers : list
-            List of tuples or lists with XY(Z) location for the points in the collection.
-        radius : float or list, optional
-            The radii of the points. If a floar is given it will be used for all points.
-
-        """
-        try:
-            len(radius)
-        except Exception:
-            radius = [radius] * len(centers)
-        data = zip(centers, radius)
-        circles = [Circle(c[0:2], r) for c, r in data]
-        collection.set_paths(circles)
-
-    def update_linecollection(self, collection, segments):
-        """Updates a line collection.
-
-        Parameters
-        ----------
-        collection : object
-            The line collection to update.
-        segments : list
-            List of tuples or lists with XY(Z) location for the start and end
-            points in each line in the collection.
-
-        """
-        collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
-
-    def update_polygoncollection(self, collection, polygons):
-        raise NotImplementedError
+        return outer
