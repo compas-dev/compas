@@ -6,8 +6,6 @@ import collections
 import sys
 from math import pi
 
-from compas.datastructures.mesh.core.halfedge import HalfEdge
-
 from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
@@ -37,11 +35,31 @@ from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
 
+from compas.datastructures import HalfEdge
 
-__all__ = ['BaseMesh']
+from .operations import mesh_collapse_edge
+from .operations import mesh_split_edge
+from .operations import mesh_split_face
+from .operations import mesh_merge_faces
+
+from .bbox import mesh_bounding_box
+from .bbox import mesh_bounding_box_xy
+from .combinatorics import mesh_is_connected
+from .combinatorics import mesh_connected_components
+from .duality import mesh_dual
+from .orientation import mesh_face_adjacency
+from .orientation import mesh_flip_cycles
+from .orientation import mesh_unify_cycles
+from .slice import mesh_slice_plane
+from .smoothing import mesh_smooth_centroid
+from .smoothing import mesh_smooth_area
+from .subdivision import mesh_subdivide
+from .transformations import mesh_transform
+from .transformations import mesh_transformed
+from .triangulation import mesh_quads_to_triangles
 
 
-class BaseMesh(HalfEdge):
+class Mesh(HalfEdge):
     """Geometric implementation of a half edge data structure for polygon meshses.
 
     Attributes
@@ -73,10 +91,34 @@ class BaseMesh(HalfEdge):
 
     """
 
+    bounding_box = mesh_bounding_box
+    bounding_box_xy = mesh_bounding_box_xy
+    collapse_edge = mesh_collapse_edge
+    connected_components = mesh_connected_components
+    dual = mesh_dual
+    face_adjacency = mesh_face_adjacency
+    flip_cycles = mesh_flip_cycles
+    is_connected = mesh_is_connected
+    merge_faces = mesh_merge_faces
+    slice_plane = mesh_slice_plane
+    smooth_centroid = mesh_smooth_centroid
+    smooth_area = mesh_smooth_area
+    split_edge = mesh_split_edge
+    split_face = mesh_split_face
+    subdivide = mesh_subdivide
+    transform = mesh_transform
+    transformed = mesh_transformed
+    unify_cycles = mesh_unify_cycles
+    quads_to_triangles = mesh_quads_to_triangles
+
     def __init__(self):
-        super(BaseMesh, self).__init__()
+        super(Mesh, self).__init__()
         self.attributes.update({'name': 'Mesh'})
         self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
+
+    def __str__(self):
+        tpl = "<Mesh with {} vertices, {} faces, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # customisation

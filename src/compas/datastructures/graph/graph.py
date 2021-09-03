@@ -65,10 +65,10 @@ class Graph(Datastructure):
     def JSONSCHEMANAME(self):
         return 'graph'
 
-    def __init__(self):
+    def __init__(self, name=None):
         super(Graph, self).__init__()
         self._max_node = -1
-        self.attributes = {'name': 'Graph'}
+        self.attributes = {'name': name or 'Graph'}
         self.node = {}
         self.edge = {}
         self.adjacency = {}
@@ -76,7 +76,7 @@ class Graph(Datastructure):
         self.default_edge_attributes = {}
 
     def __str__(self):
-        tpl = "<Network with {} nodes, {} edges>"
+        tpl = "<Graph with {} nodes, {} edges>"
         return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     # --------------------------------------------------------------------------

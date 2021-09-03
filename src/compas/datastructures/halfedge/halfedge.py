@@ -88,13 +88,13 @@ class HalfEdge(Datastructure):
         self.face = {}
         self.facedata = {}
         self.edgedata = {}
-        self.attributes = {'name': 'Mesh'}
-        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        self.attributes = {'name': 'HalfEdge'}
+        self.default_vertex_attributes = {}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
 
     def __str__(self):
-        tpl = "<Mesh with {} vertices, {} faces, {} edges>"
+        tpl = "<HalfEdge with {} vertices, {} faces, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------

@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.datastructures.volmesh.core.halfface import HalfFace
+from compas.datastructures import HalfFace
 from compas.datastructures import Mesh
 
 from compas.files import OBJ
@@ -22,11 +22,15 @@ from compas.geometry import subtract_vectors
 
 from compas.utilities import geometric_key
 
+from .bbox import volmesh_bounding_box
+from .transformations import volmesh_transform
+from .transformations import volmesh_transformed
 
-__all__ = ['BaseVolMesh']
+
+__all__ = ['VolMesh']
 
 
-class BaseVolMesh(HalfFace):
+class VolMesh(HalfFace):
     """Geometric implementation of a face data structure for volumetric meshes.
 
     Attributes
@@ -73,10 +77,18 @@ class BaseVolMesh(HalfFace):
 
     """
 
-    def __init__(self):
-        super(BaseVolMesh, self).__init__()
-        self.attributes.update({'name': 'VolMesh'})
+    bounding_box = volmesh_bounding_box
+    transform = volmesh_transform
+    transformed = volmesh_transformed
+
+    def __init__(self, name=None):
+        super(VolMesh, self).__init__()
+        self.attributes.update({'name': name or 'VolMesh'})
         self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
+
+    def __str__(self):
+        tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_cells(),  self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # customisation
