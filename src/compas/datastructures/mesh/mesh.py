@@ -62,6 +62,18 @@ from .triangulation import mesh_quads_to_triangles
 class Mesh(HalfEdge):
     """Geometric implementation of a half edge data structure for polygon meshses.
 
+    Parameters
+    ----------
+    name: str, optional
+        The name of the graph.
+        Defaults to "Graph".
+    default_vertex_attributes: dict, optional
+        Default values for vertex attributes.
+    default_edge_attributes: dict, optional
+        Default values for edge attributes.
+    default_face_attributes: dict, optional
+        Default values for face attributes.
+
     Attributes
     ----------
     attributes : dict
@@ -111,10 +123,21 @@ class Mesh(HalfEdge):
     unify_cycles = mesh_unify_cycles
     quads_to_triangles = mesh_quads_to_triangles
 
-    def __init__(self):
-        super(Mesh, self).__init__()
-        self.attributes.update({'name': 'Mesh'})
-        self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
+    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
+        name = name or 'Mesh'
+        _default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        _default_edge_attributes = {}
+        _default_face_attributes = {}
+        if default_vertex_attributes:
+            _default_vertex_attributes.update(default_vertex_attributes)
+        if default_edge_attributes:
+            _default_edge_attributes.update(default_edge_attributes)
+        if default_face_attributes:
+            _default_face_attributes.update(default_face_attributes)
+        super(Mesh, self).__init__(name=name,
+                                   default_vertex_attributes=_default_vertex_attributes,
+                                   default_edge_attributes=_default_edge_attributes,
+                                   default_face_attributes=_default_face_attributes)
 
     def __str__(self):
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"

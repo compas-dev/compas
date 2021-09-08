@@ -37,6 +37,17 @@ from .planarity import network_is_xy
 
 class Network(Graph):
     """Geometric implementation of an edge graph.
+
+    Parameters
+    ----------
+    name: str, optional
+        The name of the graph.
+        Defaults to "Graph".
+    default_node_attributes: dict, optional
+        Default values for node attributes.
+    default_edge_attributes: dict, optional
+        Default values for edge attributes.
+
     """
 
     complement = network_complement
@@ -71,11 +82,17 @@ class Network(Graph):
         is_planar = network_is_planar
         is_planar_embedding = network_is_planar_embedding
 
-    def __init__(self, name=None):
-        super(Network, self).__init__()
-        self._max_int_key = -1
-        self.attributes.update({'name': name or 'Network'})
-        self.default_node_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
+    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
+        name = name or 'Network'
+        _default_node_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        _default_edge_attributes = {}
+        if default_node_attributes:
+            _default_node_attributes.update(default_node_attributes)
+        if default_edge_attributes:
+            _default_edge_attributes.update(default_edge_attributes)
+        super(Network, self).__init__(name=name,
+                                      default_node_attributes=_default_node_attributes,
+                                      default_edge_attributes=_default_edge_attributes)
 
     def __str__(self):
         tpl = "<Network with {} nodes, {} edges>"

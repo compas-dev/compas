@@ -19,6 +19,20 @@ __all__ = ['HalfFace']
 class HalfFace(Datastructure):
     """Base half-face data structure fore representing volumetric meshes.
 
+    Parameters
+    ----------
+    name: str, optional
+        The name of the graph.
+        Defaults to "Graph".
+    default_vertex_attributes: dict, optional
+        Default values for vertex attributes.
+    default_edge_attributes: dict, optional
+        Default values for edge attributes.
+    default_face_attributes: dict, optional
+        Default values for face attributes.
+    default_cell_attributes: dict, optional
+        Default values for cell attributes.
+
     Attributes
     ----------
     attributes : dict
@@ -60,7 +74,12 @@ class HalfFace(Datastructure):
     def JSONSCHEMANAME(self):
         return 'halfface'
 
-    def __init__(self, name=None):
+    def __init__(self,
+                 name=None,
+                 default_vertex_attributes=None,
+                 default_edge_attributes=None,
+                 default_face_attributes=None,
+                 default_cell_attributes=None):
         super(HalfFace, self).__init__()
         self._max_vertex = -1
         self._max_face = -1
@@ -77,6 +96,14 @@ class HalfFace(Datastructure):
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
         self.default_cell_attributes = {}
+        if default_vertex_attributes:
+            self.default_vertex_attributes.update(default_vertex_attributes)
+        if default_edge_attributes:
+            self.default_edge_attributes.update(default_edge_attributes)
+        if default_face_attributes:
+            self.default_face_attributes.update(default_face_attributes)
+        if default_cell_attributes:
+            self.default_cell_attributes.update(default_cell_attributes)
 
     def __str__(self):
         tpl = "<HalfFace with {} vertices, {} faces, {} cells, {} edges>"

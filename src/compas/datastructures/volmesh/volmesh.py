@@ -33,47 +33,19 @@ __all__ = ['VolMesh']
 class VolMesh(HalfFace):
     """Geometric implementation of a face data structure for volumetric meshes.
 
-    Attributes
+    Parameters
     ----------
-    attributes : dict
-        A dictionary of general volmesh attributes.
-
-        * ``'name': "VolMesh"``
-
-    default_vertex_attributes : dict
-        The names of pre-assigned vertex attributes and their default values.
-
-        * ``'x': 0.0``
-        * ``'y': 0.0``
-        * ``'z': 0.0``
-
-    default_edge_attributes : dict
-        The default data attributes assigned to every new edge.
-    default_face_attributes : dict
-        The default data attributes assigned to every new face.
-    name : str
-        The name of the volmesh.
-        Shorthand for ``volmesh.attributes['name']``
-
-    data : dict
-        The data representing the mesh.
-        The dict has the following structure:
-
-        * 'attributes'   => dict
-        * 'dva'          => dict
-        * 'dea'          => dict
-        * 'dfa'          => dict
-        * 'dca'          => dict
-        * 'vertex'       => dict
-        * 'halface'      => dict
-        * 'cell'         => dict
-        * 'plane'        => dict
-        * 'edgedata'     => dict
-        * 'facedata'     => dict
-        * 'celldata'     => dict
-        * 'max_int_key'  => int
-        * 'max_int_hfkey' => int
-        * 'max_int_ckey' => int
+    name: str, optional
+        The name of the graph.
+        Defaults to "Graph".
+    default_vertex_attributes: dict, optional
+        Default values for vertex attributes.
+    default_edge_attributes: dict, optional
+        Default values for edge attributes.
+    default_face_attributes: dict, optional
+        Default values for face attributes.
+    default_cell_attributes: dict, optional
+        Default values for cell attributes.
 
     """
 
@@ -81,10 +53,30 @@ class VolMesh(HalfFace):
     transform = volmesh_transform
     transformed = volmesh_transformed
 
-    def __init__(self, name=None):
-        super(VolMesh, self).__init__()
-        self.attributes.update({'name': name or 'VolMesh'})
-        self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
+    def __init__(self,
+                 name=None,
+                 default_vertex_attributes=None,
+                 default_edge_attributes=None,
+                 default_face_attributes=None,
+                 default_cell_attributes=None):
+        name = name or 'VolMesh'
+        _default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        _default_edge_attributes = {}
+        _default_face_attributes = {}
+        _default_cell_attributes = {}
+        if default_vertex_attributes:
+            _default_vertex_attributes.update(default_vertex_attributes)
+        if default_edge_attributes:
+            _default_edge_attributes.update(default_edge_attributes)
+        if default_face_attributes:
+            _default_face_attributes.update(default_face_attributes)
+        if default_cell_attributes:
+            _default_cell_attributes.update(default_cell_attributes)
+        super(VolMesh, self).__init__(name=name,
+                                      default_vertex_attributes=_default_vertex_attributes,
+                                      default_edge_attributes=_default_edge_attributes,
+                                      default_face_attributes=_default_face_attributes,
+                                      default_cell_attributes=_default_cell_attributes)
 
     def __str__(self):
         tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
