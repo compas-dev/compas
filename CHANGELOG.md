@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added support for multimesh files to OBJ reader/writer.
 * Added support for attaching and detaching meshes in `compas.robots.RobotModelArtist` and drawing them.
 * Added `meshes` method to artists of `compas.robots.RobotModel`.
+* Added `FrameArtist` class to `compas_blender`.
 
 ### Changed
 
