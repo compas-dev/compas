@@ -67,7 +67,7 @@ Deprecated
 
 """
 
-__version__ = '1.7.1'
+__version__ = '1.8.0'
 
 from .core import *  # noqa: F401 F403
 from .artists import *  # noqa: F401 F403
