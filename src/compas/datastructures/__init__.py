@@ -5,21 +5,27 @@ datastructures
 
 .. currentmodule:: compas.datastructures
 
-Network
-=======
-
 Classes
--------
+=======
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    Datastructure
+    Graph
+    HalfEdge
+    HalfFace
+    Mesh
     Network
+    VolMesh
 
 
 Functions
----------
+=========
+
+Network
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -47,10 +53,6 @@ Functions
     network_transform
     network_transformed
 
-
-CPython-only
-------------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -62,17 +64,7 @@ CPython-only
 
 
 Mesh
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Mesh
-
-
-Functions
----------
+----
 
 .. autosummary::
     :toctree: generated/
@@ -142,10 +134,6 @@ Functions
     trimesh_subdivide_loop
     trimesh_swap_edge
 
-
-CPython-only
-------------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -171,20 +159,7 @@ CPython-only
 
 
 VolMesh
-=======
-
-Classes
 -------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    VolMesh
-
-
-Functions
----------
 
 .. autosummary::
     :toctree: generated/
@@ -200,9 +175,11 @@ from __future__ import absolute_import
 import compas
 
 from .datastructure import Datastructure
+
+from .graph import (
+    Graph
+)
 from .network import (
-    BaseNetwork,               # NOTE: this class being in the stable API is something we should deprecate before 2.x release
-    Graph,
     Network,
     network_complement,
     network_count_crossings,
@@ -226,9 +203,10 @@ from .network import (
     network_transform,
     network_transformed,
 )
+from .halfedge import (
+    HalfEdge
+)
 from .mesh import (
-    BaseMesh,                  # NOTE: this class being in the stable API is something we should deprecate before 2.x release
-    HalfEdge,
     Mesh,
     mesh_add_vertex_to_face_edge,
     mesh_bounding_box_xy,
@@ -294,9 +272,10 @@ from .mesh import (
     trimesh_subdivide_loop,
     trimesh_swap_edge,
 )
+from .halfface import (
+    HalfFace
+)
 from .volmesh import (
-    BaseVolMesh,               # NOTE: this class being in the stable API is something we should deprecate before 2.x release
-    HalfFace,
     VolMesh,
     volmesh_bounding_box,
     volmesh_transform,
@@ -331,11 +310,16 @@ if not compas.IPY:
         trimesh_vertexarea_matrix,
     )
 
+BaseNetwork = Network
+BaseMesh = Mesh
+BaseVolMesh = VolMesh
+
 __all__ = [
     'Datastructure',
+    # Graphs
+    'Graph',
     # Networks
     'BaseNetwork',
-    'Graph',
     'Network',
     'network_complement',
     'network_count_crossings',
@@ -358,9 +342,10 @@ __all__ = [
     'network_split_edge',
     'network_transform',
     'network_transformed',
+    # HalfEdge
+    'HalfEdge',
     # Meshes
     'BaseMesh',
-    'HalfEdge',
     'Mesh',
     'mesh_add_vertex_to_face_edge',
     'mesh_bounding_box_xy',
@@ -425,9 +410,10 @@ __all__ = [
     'trimesh_split_edge',
     'trimesh_subdivide_loop',
     'trimesh_swap_edge',
+    # HalfFace
+    'HalfFace',
     # Volumetric Meshes
     'BaseVolMesh',
-    'HalfFace',
     'VolMesh',
     'volmesh_bounding_box',
     'volmesh_transform',

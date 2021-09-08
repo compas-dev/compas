@@ -17,6 +17,16 @@ __all__ = ['Graph']
 class Graph(Datastructure):
     """Base graph data structure for describing the topological relationships between nodes connected by edges.
 
+    Parameters
+    ----------
+    name: str, optional
+        The name of the graph.
+        Defaults to "Graph".
+    default_node_attributes: dict, optional
+        Default values for node attributes.
+    default_edge_attributes: dict, optional
+        Default values for edge attributes.
+
     Attributes
     ----------
     node : dict
@@ -65,18 +75,22 @@ class Graph(Datastructure):
     def JSONSCHEMANAME(self):
         return 'graph'
 
-    def __init__(self):
+    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
         super(Graph, self).__init__()
         self._max_node = -1
-        self.attributes = {'name': 'Graph'}
+        self.attributes = {'name': name or 'Graph'}
         self.node = {}
         self.edge = {}
         self.adjacency = {}
         self.default_node_attributes = {}
         self.default_edge_attributes = {}
+        if default_node_attributes:
+            self.default_node_attributes.update(default_node_attributes)
+        if default_edge_attributes:
+            self.default_edge_attributes.update(default_edge_attributes)
 
     def __str__(self):
-        tpl = "<Network with {} nodes, {} edges>"
+        tpl = "<Graph with {} nodes, {} edges>"
         return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
@@ -352,7 +366,7 @@ class Graph(Datastructure):
     # builders
     # --------------------------------------------------------------------------
 
-    def add_node(self, key, attr_dict=None, **kwattr):
+    def add_node(self, key=None, attr_dict=None, **kwattr):
         """Add a node and specify its attributes (optional).
 
         Parameters
@@ -367,7 +381,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        str
+        hashable
             The key of the node.
 
         Notes
@@ -382,6 +396,14 @@ class Graph(Datastructure):
         --------
         >>>
         """
+        if key is None:
+            key = self._max_node = self._max_node + 1
+        try:
+            if key > self._max_node:
+                self._max_node = key
+        except (ValueError, TypeError):
+            pass
+
         if key not in self.node:
             self.node[key] = {}
             self.edge[key] = {}

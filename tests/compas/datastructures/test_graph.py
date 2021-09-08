@@ -52,6 +52,34 @@ def test_graph_json_schema(graph):
     graph.validate_json()
 
 
+# ==============================================================================
+# Tests - Attributes
+# ==============================================================================
+
+
+def test_default_node_attributes():
+    graph = Graph(name='test', default_node_attributes={'a': 1, 'b': 2})
+    for node in graph.nodes():
+        assert graph.node_attribute(node, name='a') == 1
+        assert graph.node_attribute(node, name='b') == 2
+        graph.node_attribute(node, name='a', value=3)
+        assert graph.node_attribute(node, name='a') == 3
+
+
+def test_default_edge_attributes():
+    graph = Graph(name='test', default_edge_attributes={'a': 1, 'b': 2})
+    for edge in graph.edges():
+        assert graph.edge_attribute(edge, name='a') == 1
+        assert graph.edge_attribute(edge, name='b') == 2
+        graph.edge_attribute(edge, name='a', value=3)
+        assert graph.edge_attribute(edge, name='a') == 3
+
+
+# ==============================================================================
+# Tests - Conversion
+# ==============================================================================
+
+
 def test_graph_networkx_conversion():
     if compas.IPY:
         return
