@@ -18,4 +18,5 @@ schema
 jsonschema
 scipy >= 1.1
 sympy
+typing_extensions
 watchdog
