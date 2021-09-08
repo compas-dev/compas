@@ -327,16 +327,6 @@ class Network(Graph):
     # builders
     # --------------------------------------------------------------------------
 
-    def add_node(self, key=None, attr_dict=None, **kwattr):
-        if key is None:
-            key = self._max_int_key = self._max_int_key + 1
-        try:
-            if key > self._max_int_key:
-                self._max_int_key = key
-        except (ValueError, TypeError):
-            pass
-        return super(Network, self).add_node(key, attr_dict=attr_dict, **kwattr)
-
     # --------------------------------------------------------------------------
     # modifiers
     # --------------------------------------------------------------------------

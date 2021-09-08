@@ -366,7 +366,7 @@ class Graph(Datastructure):
     # builders
     # --------------------------------------------------------------------------
 
-    def add_node(self, key, attr_dict=None, **kwattr):
+    def add_node(self, key=None, attr_dict=None, **kwattr):
         """Add a node and specify its attributes (optional).
 
         Parameters
@@ -381,7 +381,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        str
+        hashable
             The key of the node.
 
         Notes
@@ -396,6 +396,14 @@ class Graph(Datastructure):
         --------
         >>>
         """
+        if key is None:
+            key = self._max_node = self._max_node + 1
+        try:
+            if key > self._max_node:
+                self._max_node = key
+        except (ValueError, TypeError):
+            pass
+
         if key not in self.node:
             self.node[key] = {}
             self.edge[key] = {}
