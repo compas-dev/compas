@@ -355,35 +355,6 @@ class Network(Graph):
     # edge topology
     # --------------------------------------------------------------------------
 
-    # def edge_connected_edges(self, u, v):
-    #     """Return the edges connected to an edge.
-
-    #     Parameters
-    #     ----------
-    #     u : hashable
-    #         The identifier of the first node of the edge.
-    #     v : hashable
-    #         The identifier of the secondt node of the edge.
-
-    #     Returns
-    #     -------
-    #     list
-    #         A list of connected edges.
-
-    #     """
-    #     edges = []
-    #     for nbr in self.node_neighbors(u):
-    #         if nbr in self.edge[u]:
-    #             edges.append((u, nbr))
-    #         else:
-    #             edges.append((nbr, u))
-    #     for nbr in self.node_neighbors(v):
-    #         if nbr in self.edge[v]:
-    #             edges.append((v, nbr))
-    #         else:
-    #             edges.append((nbr, v))
-    #     return edges
-
     # --------------------------------------------------------------------------
     # node geometry
     # --------------------------------------------------------------------------
