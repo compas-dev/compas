@@ -52,6 +52,13 @@ def test_graph_json_schema(graph):
     graph.validate_json()
 
 
+def test_default_node_attributes():
+    graph = Graph(name='test', default_node_attributes={'a': 1, 'b': 2})
+    for node in graph.nodes():
+        assert graph.node_attribute(node, name='a') == 1
+        assert graph.node_attribute(node, name='b') == 2
+
+
 def test_graph_networkx_conversion():
     if compas.IPY:
         return
