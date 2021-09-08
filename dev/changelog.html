@@ -129,10 +129,16 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.drawing.draw_breps</span></code> to assume provided polygon is closed and automatically add missing corner to polycurve constructor.</p></li>
 <li><p>Changed conversion of edges and faces to uniques keys for the data dicts to use the string representation of a sorted tuple of identifiers.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">dtype</span></code> to JSON decoding error message.</p></li>
+<li><p>Moved <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh.core.halfedge.HalfEdge</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.datastructures.halfedge.halfedge.HalfEdge</span></code></p></li>
+<li><p>Moved <code class="docutils literal notranslate"><span class="pre">compas.datastructures.network.core.graph.Graph</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.datastructures.graph.graph.Graph</span></code>.</p></li>
 </ul>
 </section>
 <section id="removed">
 <h3>Removed</h3>
+<ul class="simple">
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh.core.mesh.BaseMesh</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.BaseNetwork</span></code>.</p></li>
+</ul>
 </section>
 </section>
 <section id="id1">
