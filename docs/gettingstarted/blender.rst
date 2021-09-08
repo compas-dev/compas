@@ -12,7 +12,7 @@ It is important that the version of Python installed in the `conda` environment 
 the version of Python that was originally shipped with Blender. For Blender 2.83 LTS
 the version of the bundled Python is 3.7, and for 2.93 LTS it is 3.9.
 
-..note::
+.. note::
 
     To find out which Python is shipped with your Blender installation, just open Blender
     and have a look at the Interactive Python Console that is part of the UI
