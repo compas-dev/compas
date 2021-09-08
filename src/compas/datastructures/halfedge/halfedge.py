@@ -15,7 +15,19 @@ from compas.utilities import window
 
 
 class HalfEdge(Datastructure):
-    """Base half-edge data structure for representing meshes.
+    """Base half-edge data structure for representing the topology of open oor closed surface meshes.
+
+    Parameters
+    ----------
+    name: str, optional
+        The name of the graph.
+        Defaults to "Graph".
+    default_vertex_attributes: dict, optional
+        Default values for vertex attributes.
+    default_edge_attributes: dict, optional
+        Default values for edge attributes.
+    default_face_attributes: dict, optional
+        Default values for face attributes.
 
     Attributes
     ----------
@@ -51,7 +63,6 @@ class HalfEdge(Datastructure):
             "vertex": schema.And(
                 dict,
                 is_sequence_of_uint,
-                # lambda x: all(('x' in attr and 'y' in attr and 'z' in attr) for attr in x.values())
             ),
             "face": schema.And(
                 dict,
@@ -79,7 +90,7 @@ class HalfEdge(Datastructure):
     def JSONSCHEMANAME(self):
         return 'halfedge'
 
-    def __init__(self):
+    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
         super(HalfEdge, self).__init__()
         self._max_vertex = -1
         self._max_face = -1
@@ -88,13 +99,19 @@ class HalfEdge(Datastructure):
         self.face = {}
         self.facedata = {}
         self.edgedata = {}
-        self.attributes = {'name': 'Mesh'}
-        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        self.attributes = {'name': name or 'HalfEdge'}
+        self.default_vertex_attributes = {}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
+        if default_vertex_attributes:
+            self.default_vertex_attributes.update(default_vertex_attributes)
+        if default_edge_attributes:
+            self.default_edge_attributes.update(default_edge_attributes)
+        if default_face_attributes:
+            self.default_face_attributes.update(default_face_attributes)
 
     def __str__(self):
-        tpl = "<Mesh with {} vertices, {} faces, {} edges>"
+        tpl = "<HalfEdge with {} vertices, {} faces, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------

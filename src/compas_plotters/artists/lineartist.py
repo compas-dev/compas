@@ -1,4 +1,5 @@
-from typing import Literal, Tuple, List
+from typing import Tuple, List
+from typing_extensions import Literal
 from matplotlib.lines import Line2D
 from compas.geometry import Point, Line
 from compas.geometry import intersection_line_box_xy

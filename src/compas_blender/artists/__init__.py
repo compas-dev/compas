@@ -23,6 +23,7 @@ Classes
 .. autosummary::
     :toctree: generated/
 
+    FrameArtist
     NetworkArtist
     MeshArtist
     RobotModelArtist
@@ -30,6 +31,7 @@ Classes
 """
 
 from ._artist import BaseArtist  # noqa: F401
+from .frameartist import FrameArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .robotmodelartist import (  # noqa: F401
@@ -38,6 +40,7 @@ from .robotmodelartist import (  # noqa: F401
 )
 
 __all__ = [
+    'FrameArtist',
     'NetworkArtist',
     'MeshArtist',
     'RobotModelArtist'

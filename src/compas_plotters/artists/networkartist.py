@@ -1,4 +1,5 @@
-from typing import Dict, Literal, Tuple, List, Union
+from typing import Dict, Tuple, List, Union
+from typing_extensions import Literal
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.patches import Circle
 from compas.datastructures import Network
