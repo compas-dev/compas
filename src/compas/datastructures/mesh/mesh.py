@@ -6,6 +6,8 @@ import collections
 import sys
 from math import pi
 
+import compas
+
 from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
@@ -122,6 +124,13 @@ class Mesh(HalfEdge):
     transformed = mesh_transformed
     unify_cycles = mesh_unify_cycles
     quads_to_triangles = mesh_quads_to_triangles
+
+    if not compas.IPY:
+        from .bbox_numpy import mesh_oriented_bounding_box_numpy
+        from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
+
+        obb_numpy = mesh_oriented_bounding_box_numpy
+        obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy
 
     def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
         name = name or 'Mesh'
