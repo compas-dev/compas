@@ -1,0 +1,8 @@
+<map id="inheritance259b377964" name="inheritance259b377964">
+<area shape="rect" id="node1" href="generated/compas.robots.Configuration.html#compas.robots.Configuration" target="_top" title="Represents the configuration of a robot based on the state of its joints." alt="" coords="196,8,346,46"/>
+<area shape="rect" id="node2" href="generated/compas.data.Data.html#compas.data.Data" target="_top" title="Abstract base class for all COMPAS data objects." alt="" coords="8,121,121,158"/>
+<area shape="rect" id="node3" href="generated/compas.robots.Joint.html#compas.robots.Joint" target="_top" title="Representation of the kinematics and dynamics of a joint and its safety limits." alt="" coords="215,83,327,121"/>
+<area shape="rect" id="node4" href="generated/compas.robots.Link.html#compas.robots.Link" target="_top" title="Link represented as a rigid body with an inertia, visual, and collision features." alt="" coords="215,158,327,196"/>
+<area shape="rect" id="node5" href="generated/compas.robots.RobotModel.html#compas.robots.RobotModel" target="_top" title="RobotModel is the root element of the model." alt="" coords="203,233,339,271"/>
+<area shape="rect" id="node6" href="generated/compas.robots.ToolModel.html#compas.robots.ToolModel" target="_top" title="Represents a tool to be attached to the robot&#39;s flange." alt="" coords="421,233,542,271"/>
+</map>
