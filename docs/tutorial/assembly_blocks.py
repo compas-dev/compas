@@ -21,3 +21,4 @@ assembly.add_part(b)
 assembly.add_connection(a, b)
 
 print(assembly)
+print(assembly.find(a.guid))
