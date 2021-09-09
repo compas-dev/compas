@@ -4,3 +4,7 @@ class AssemblyError(Exception):
 
 class FrameError(Exception):
     pass
+
+
+class FeatureError(Exception):
+    pass
