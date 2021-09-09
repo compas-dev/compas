@@ -42,7 +42,7 @@ class Part(Datastructure):
 
     @property
     def JSONSCHEMANAME(self):
-        return 'assembly'
+        return 'part'
 
     def __init__(self, name, frame=None, geometry=None, features=None, **kwargs):
         super(Part, self).__init__()
