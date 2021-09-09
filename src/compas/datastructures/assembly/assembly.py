@@ -104,7 +104,7 @@ class Assembly(Datastructure):
             If ``a`` and/or ``b`` are not in the assembly.
         """
         if a.key is None or b.key is None:
-            raise AssemblyError('Both parts have to be added to the asembly before a connection can be created.')
+            raise AssemblyError('Both parts have to be added to the assembly before a connection can be created.')
         if not self.graph.has_node(a.key) or not self.graph.has_node(b.key):
             raise AssemblyError('Both parts have to be added to the asembly before a connection can be created.')
         return self.graph.add_edge(a.key, b.key, **kwargs)
