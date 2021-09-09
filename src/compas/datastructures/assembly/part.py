@@ -2,10 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.data.encoders import cls_from_dtype
-
 from ..datastructure import Datastructure
-# from ..graph import Graph
+from ..graph import Graph
+from ..mesh import Mesh
 
 
 class Part(Datastructure):
@@ -16,8 +15,8 @@ class Part(Datastructure):
         import schema
         return schema.Schema({
             "attributes": dict,
-            # "graph": Graph,
-            "geometries": list
+            "graph": Graph,
+            "mesh": Mesh
         })
 
     @property
@@ -25,13 +24,14 @@ class Part(Datastructure):
         return 'assembly'
 
     def __init__(self, name, **kwargs):
-        super(Part, self).__init__(name=name, **kwargs)
-        # self.graph = Graph()
-        self.geometries = []
+        super(Part, self).__init__()
+        self._key = None
+        self._mesh = None
+        self._graph = None
 
     def __str__(self):
-        tpl = "<Part with {} geometries and {} sub-parts with {} connections>"
-        return tpl.format(len(self.geometries), self.graph.number_of_nodes(), self.graph.number_of_edges())
+        tpl = "<Part with ...>"
+        return tpl
 
     @property
     def data(self):
@@ -39,16 +39,37 @@ class Part(Datastructure):
         """
         data = {
             'attributes': self.attributes,
-            # 'graph': self.graph.data,
-            'geometries': [(g.dtype, g.data) for g in self.geometries]
+            'mesh': self.mesh.data,
+            'graph': self.graph.data
         }
         return data
 
     @data.setter
     def data(self, data):
         self.attributes.update(data['attributes'] or {})
-        # self.graph.data = data['graph']
-        self.geometries = []
-        for dt, dd in data['geometries']:
-            d = cls_from_dtype(dt).from_data(dd)
-            self.geometries.append(d)
+        self.mesh.data = data['mesh']
+        self.graph.data = data['graph']
+
+    @property
+    def key(self):
+        return self._key
+
+    @property
+    def mesh(self):
+        if not self._mesh:
+            self._mesh = Mesh()
+        return self._mesh
+
+    @mesh.setter
+    def mesh(self, mesh):
+        self._mesh = mesh
+
+    @property
+    def graph(self):
+        if not self._graph:
+            self._graph = Graph()
+        return self._graph
+
+    @graph.setter
+    def graph(self, graph):
+        self._graph = graph

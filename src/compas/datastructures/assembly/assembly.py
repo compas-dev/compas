@@ -4,6 +4,7 @@ from __future__ import division
 
 from ..datastructure import Datastructure
 from ..graph import Graph
+from .exceptions import AssemblyError
 
 
 class Assembly(Datastructure):
@@ -30,7 +31,7 @@ class Assembly(Datastructure):
         return 'assembly'
 
     def __init__(self, name=None, **kwargs):
-        super(Assembly, None).__init__(name=name, **kwargs)
+        super(Assembly, None).__init__()
         self.attributes = {}
         self.graph = Graph()
         self.parts = {}
@@ -76,7 +77,7 @@ class Assembly(Datastructure):
 
         """
         key = self.graph.add_node(key=key, part=part, **kwargs)
-        part.key = key
+        part._key = key
         self.parts[part.guid] = part
         return key
 
@@ -85,10 +86,10 @@ class Assembly(Datastructure):
 
         Parameters
         ----------
-        a: int or str
-            The identifier of the "from" part in the assembly.
-        b: int or str
-            The identifier of the "to" part in the assembly.
+        a: :class:`compas.datastructures.Part`
+            The "from" part.
+        b: :class:`compas.datastructures.Part`
+            The "to" part.
         kwargs: dict
             Additional named parameters collected in a dict.
 
@@ -97,8 +98,16 @@ class Assembly(Datastructure):
         tuple of str or int
             The tuple of node identifiers that identifies the connection.
 
+        Raises
+        ------
+        :class:`AssemblyError`
+            If ``a`` and/or ``b`` are not in the assembly.
         """
-        return self.graph.add_edge(a, b, **kwargs)
+        if a.key is None or b.key is None:
+            raise AssemblyError('Both parts have to be added to the asembly before a connection can be created.')
+        if not self.graph.has_node(a.key) or not self.graph.has_node(b.key):
+            raise AssemblyError('Both parts have to be added to the asembly before a connection can be created.')
+        return self.graph.add_edge(a.key, b.key, **kwargs)
 
     def parts(self):
         """The parts of the assembly.
