@@ -19,6 +19,7 @@ Classes
     Mesh
     Network
     VolMesh
+    Assembly
 
 
 Functions
@@ -171,20 +172,7 @@ VolMesh
 
 
 Assembly
-========
-
-Classes
--------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Assembly
-
-
-Functions
----------
+--------
 
 .. autosummary::
     :toctree: generated/

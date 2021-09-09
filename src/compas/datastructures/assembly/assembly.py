@@ -2,11 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from .node import Node
-from compas.datastructures import Graph
+from ..datastructure import Datastructure
+from ..graph import Graph
 
 
-class Assembly(Node):
+class Assembly(Datastructure):
     """A data structure for managing the connections between different parts of an assembly.
 
     Attributes
@@ -31,6 +31,7 @@ class Assembly(Node):
     def __init__(self, name=None, **kwargs):
         super(Assembly, None).__init__(name=name, **kwargs)
         self.graph = Graph()
+        self.parts = {}
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
@@ -56,15 +57,15 @@ class Assembly(Node):
 
         Parameters
         ----------
-        part: :class:`compas.datastructures.Node`
-            The part or assembly of parts to add.
+        part: :class:`compas.datastructures.Part`
+            The part to add.
         key: int or str, optional
             The identifier of the part in the assembly.
             Note that the key is unique only in the context of the current assembly.
             Nested assemblies may have the same ``key`` value for one of their parts.
             Default is ``None`` in which case the key will be automatically assigned integer value.
         kwargs: dict
-            Additional named parameters colledted in a dict.
+            Additional named parameters collected in a dict.
 
         Returns
         -------
@@ -74,6 +75,7 @@ class Assembly(Node):
         """
         key = self.graph.add_node(key=key, part=part, **kwargs)
         part.key = key
+        self.parts[part.guid] = part
         return key
 
     def add_connection(self, a, b, **kwargs):
@@ -82,11 +84,11 @@ class Assembly(Node):
         Parameters
         ----------
         a: int or str
-            The identifier of the "from" part in the current assembly.
+            The identifier of the "from" part in the assembly.
         b: int or str
-            The identifier of the "to" part in the current assembly.
+            The identifier of the "to" part in the assembly.
         kwargs: dict
-            Additional named parameters colledted in a dict.
+            Additional named parameters collected in a dict.
 
         Returns
         -------
@@ -101,8 +103,8 @@ class Assembly(Node):
 
         Yields
         ------
-        :class:`compas.datastructures.Node`
-            The individual parts or sub-assemblies of the current assembly.
+        :class:`compas.datastructures.Part`
+            The individual parts of the assembly.
         """
         for node in self.graph.nodes():
             yield self.graph.node_attribute(node, 'part')
@@ -112,10 +114,7 @@ class Assembly(Node):
         return self.graph.edges()
 
     def find(self, guid):
-        """Find a part in the assembly.
-
-        This method will traverse all parts and sub-assemblies of the current assembly
-        to find the part.
+        """Find a part in the assembly by its GUID.
 
         Parameters
         ----------
@@ -125,22 +124,8 @@ class Assembly(Node):
 
         Returns
         -------
-        :class:`compas.datastructures.Node` or None
+        :class:`compas.datastructures.Part` or None
             The identified part, if any.
 
         """
-        for node in self.graph.nodes():
-            part = self.graph.node_attribute(node, 'part')
-            if part.guid == guid:
-                return part
-        # this is effectively a depth-first search through all the parts of the assembly
-        for node in self.graph.nodes():
-            part = self.graph.node_attribute(node, 'part')
-            part = part.find(guid)
-            if part:
-                return part
-        return None
-
-    def find_by_name(self, name):
-        """"""
-        pass
+        return self.parts.get(guid)
