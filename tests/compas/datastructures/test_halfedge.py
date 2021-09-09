@@ -70,6 +70,15 @@ def test_json_schema(mesh):
 # ==============================================================================
 
 
+def test_default_vertex_attributes():
+    he = HalfEdge(name='test', default_vertex_attributes={'a': 1, 'b': 2})
+    for vertex in he.vertices():
+        assert he.vertex_attribute(vertex, name='a') == 1
+        assert he.vertex_attribute(vertex, name='b') == 2
+        he.vertex_attribute(vertex, name='a', value=3)
+        assert he.vertex_attribute(vertex, name='a') == 3
+
+
 def test_vertex_attributes_key_not_found(mesh):
     with pytest.raises(KeyError):
         mesh.vertex_attributes(mesh.number_of_vertices() + 1)
@@ -111,6 +120,16 @@ def test_del_vertex_attribute_in_view(mesh, vertex_key):
 # Tests - Face Attributes
 # ==============================================================================
 
+
+def test_default_face_attributes():
+    he = HalfEdge(name='test', default_face_attributes={'a': 1, 'b': 2})
+    for face in he.vertices():
+        assert he.face_attribute(face, name='a') == 1
+        assert he.face_attribute(face, name='b') == 2
+        he.face_attribute(face, name='a', value=3)
+        assert he.face_attribute(face, name='a') == 3
+
+
 def test_face_attributes_is_empty(mesh):
     assert mesh.face_attributes(mesh.get_any_face()) == {}
 
@@ -150,6 +169,16 @@ def test_del_face_attribute_in_view(mesh, face_key):
 # ==============================================================================
 # Tests - Edge Attributes
 # ==============================================================================
+
+
+def test_default_edge_attributes():
+    he = HalfEdge(name='test', default_edge_attributes={'a': 1, 'b': 2})
+    for edge in he.vertices():
+        assert he.edge_attribute(edge, name='a') == 1
+        assert he.edge_attribute(edge, name='b') == 2
+        he.edge_attribute(edge, name='a', value=3)
+        assert he.edge_attribute(edge, name='a') == 3
+
 
 def test_edge_attributes_is_empty(mesh, edge_key):
     assert mesh.edge_attributes(edge_key) == {}
