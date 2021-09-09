@@ -77,7 +77,7 @@ class Assembly(Datastructure):
 
         """
         key = self.graph.add_node(key=key, part=part, **kwargs)
-        part._key = key
+        part.key = key
         self.parts[part.guid] = part
         return key
 
