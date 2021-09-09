@@ -294,12 +294,6 @@ if the axis of rotation points towards the observer.</p>
   hljs.initHighlighting();
   anchors.add();
 
-  var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
-      return window.location.href.startsWith(ver.href);
-  });
-  selected_version.addClass('active');
-  $("#bd-versions").text(selected_version.text());
-
   });
 
   var url = $("#doc_versions").data("url");
@@ -311,6 +305,13 @@ if the axis of rotation points towards the observer.</p>
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
       });
+
+      var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
+          return window.location.href.startsWith(ver.href);
+      });
+      selected_version.addClass('active');
+      $("#bd-versions").text(selected_version.text());
+
     })
   }
   </script>

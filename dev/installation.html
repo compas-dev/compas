@@ -364,12 +364,6 @@ See the detail of the bug here: <a class="reference external" href="https://gith
   hljs.initHighlighting();
   anchors.add();
 
-  var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
-      return window.location.href.startsWith(ver.href);
-  });
-  selected_version.addClass('active');
-  $("#bd-versions").text(selected_version.text());
-
   });
 
   var url = $("#doc_versions").data("url");
@@ -381,6 +375,13 @@ See the detail of the bug here: <a class="reference external" href="https://gith
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
       });
+
+      var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
+          return window.location.href.startsWith(ver.href);
+      });
+      selected_version.addClass('active');
+      $("#bd-versions").text(selected_version.text());
+
     })
   }
   </script>
