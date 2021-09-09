@@ -4,7 +4,7 @@
 [![GitHub - License](https://img.shields.io/github/license/compas-dev/compas.svg)](https://github.com/compas-dev/compas)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
 [![PyPI - Latest Release](https://img.shields.io/pypi/v/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
-[![Conda](https://img.shields.io/conda/v/conda-forge/compas)](https://anaconda.org/conda-forge/compas)
+[![Conda (channel only)](https://img.shields.io/conda/vn/conda-forge/compas)](https://anaconda.org/conda-forge/compas)
 [![Conda - Platform](https://img.shields.io/conda/pn/conda-forge/compas)](https://anaconda.org/conda-forge/compas)
 [![DOI](https://zenodo.org/badge/104857648.svg)](https://zenodo.org/badge/latestdoi/104857648)
 [![Twitter Follow](https://img.shields.io/twitter/follow/compas_dev?style=social)](https://twitter.com/compas_dev)
