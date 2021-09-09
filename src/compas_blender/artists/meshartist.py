@@ -3,7 +3,9 @@
 from functools import partial
 
 import compas_blender
-from compas.geometry import add_vectors, scale_vector, centroid_points
+from compas.geometry import add_vectors
+from compas.geometry import centroid_points
+from compas.geometry import scale_vector
 
 from compas_blender.artists._artist import BaseArtist
 from compas.utilities import color_to_colordict
