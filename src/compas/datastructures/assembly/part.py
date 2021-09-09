@@ -2,9 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry import Shape
+from compas.geometry import Frame
+
 from ..datastructure import Datastructure
-from ..graph import Graph
 from ..mesh import Mesh
+
+from .exceptions import FrameError
 
 
 class Part(Datastructure):
@@ -15,8 +19,11 @@ class Part(Datastructure):
         import schema
         return schema.Schema({
             "attributes": dict,
-            "graph": Graph,
-            "mesh": Mesh
+            "key": int,
+            "frame": Frame,
+            "transformations": list,
+            "geometry": Shape,
+            "features": list
         })
 
     @property
@@ -26,12 +33,14 @@ class Part(Datastructure):
     def __init__(self, name, **kwargs):
         super(Part, self).__init__()
         self._key = None
-        self._mesh = None
-        self._graph = None
+        self._frame = None
+        self._transformations = None
+        self._geometry = None
+        self._features = None
 
     def __str__(self):
-        tpl = "<Part with ...>"
-        return tpl
+        tpl = "<Part with base geometry {} and features {}>"
+        return tpl.format(self.geometry, self.features)
 
     @property
     def data(self):
@@ -55,21 +64,48 @@ class Part(Datastructure):
         return self._key
 
     @property
-    def mesh(self):
-        if not self._mesh:
-            self._mesh = Mesh()
-        return self._mesh
+    def frame(self):
+        if not self._frame:
+            self._frame = Frame.worldXY()
+        return self._frame
 
-    @mesh.setter
-    def mesh(self, mesh):
-        self._mesh = mesh
+    @frame.setter
+    def frame(self, frame):
+        if not isinstance(frame, Frame):
+            raise FrameError
+        self._frame = frame
 
     @property
-    def graph(self):
-        if not self._graph:
-            self._graph = Graph()
-        return self._graph
+    def transformations(self):
+        return self._transformations
 
-    @graph.setter
-    def graph(self, graph):
-        self._graph = graph
+    @property
+    def geometry(self):
+        if not self._geometry:
+            self._geometry = Shape()
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        self._geometry = geometry
+
+    @property
+    def features(self):
+        return self._features
+
+    def add_transformation(self, transformation):
+        raise NotImplementedError
+
+    def apply_transformations(self):
+        raise NotImplementedError
+
+    def add_feature(self, geometry, operation):
+        raise NotImplementedError
+
+    def apply_features(self):
+        raise NotImplementedError
+
+    def to_mesh(self, cls=None):
+        cls = cls or Mesh
+        shape = self.apply_features()
+        return cls.from_shape(shape)
