@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
+
 ### Changed
+
+* Fixed bug in `compas_blender.draw_texts`.
 
 ### Removed
 

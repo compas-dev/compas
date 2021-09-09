@@ -361,7 +361,7 @@ class MeshArtist(BaseArtist):
             A dictionary of vertex labels as vertex-text pairs.
             The default value is ``None``, in which case every vertex will be labelled with its key.
         color : tuple or dict of tuple, optional
-            The color sepcification of the labels.
+            The color specification of the labels.
             The default color is the same as the default vertex color.
 
         Returns
@@ -398,7 +398,7 @@ class MeshArtist(BaseArtist):
             A dictionary of face labels as face-text pairs.
             The default value is ``None``, in which case every face will be labelled with its key.
         color : tuple or dict of tuple, optional
-            The color sepcification of the labels.
+            The color specification of the labels.
             The default color is the same as the default face color.
 
         Returns
@@ -435,7 +435,7 @@ class MeshArtist(BaseArtist):
             A dictionary of edge labels as edge-text pairs.
             The default value is ``None``, in which case every edge will be labelled with its key.
         color : tuple or dict of tuple, optional
-            The color sepcification of the labels.
+            The color specification of the labels.
             The default color is the same as the default color for edges.
 
         Returns
