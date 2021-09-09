@@ -21,6 +21,7 @@ class Assembly(Datastructure):
     def DATASCHEMA(self):
         import schema
         return schema.Schema({
+            "attributes": dict,
             "graph": Graph,
         })
 
@@ -30,6 +31,7 @@ class Assembly(Datastructure):
 
     def __init__(self, name=None, **kwargs):
         super(Assembly, None).__init__(name=name, **kwargs)
+        self.attributes = {}
         self.graph = Graph()
         self.parts = {}
 

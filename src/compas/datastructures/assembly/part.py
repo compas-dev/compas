@@ -9,7 +9,7 @@ from ..datastructure import Datastructure
 
 
 class Part(Datastructure):
-    """Class representing assembly parts."""
+    """A data structure for representing assembly parts."""
 
     @property
     def DATASCHEMA(self):

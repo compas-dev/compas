@@ -20,6 +20,7 @@ Classes
     Network
     VolMesh
     Assembly
+    Part
 
 
 Functions
@@ -291,7 +292,10 @@ from .volmesh import (
     volmesh_transformed
 )
 
-from .assembly import Assembly
+from .assembly import (
+    Assembly,
+    Part
+)
 
 if not compas.IPY:
     from .network import (
@@ -431,6 +435,7 @@ __all__ = [
     'volmesh_transformed',
     # Assemblies
     'Assembly',
+    'Part',
 ]
 
 if not compas.IPY:
