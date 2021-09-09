@@ -3,12 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 from collections import deque
-from functools import reduce
+# from functools import reduce
 
 from compas.geometry import Frame
 from compas.geometry import Polyhedron as Shape
 from compas.geometry import Transformation
-from compas.geometry import multiply_matrices
+# from compas.geometry import multiply_matrices
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
@@ -44,13 +44,13 @@ class Part(Datastructure):
     def JSONSCHEMANAME(self):
         return 'part'
 
-    def __init__(self, name, frame=None, geometry=None, features=None, **kwargs):
+    def __init__(self, name, frame=None, shape=None, features=None, **kwargs):
         super(Part, self).__init__()
-        self._shape = None
+        self._frame = None
         self.attributes = {'name': name or 'Part'}
         self.key = None
-        self.frame = frame or Frame.worldXY()
-        self.geometry = geometry or Shape([], [])
+        self.frame = frame
+        self.shape = shape or Shape([], [])
         self.features = features or []
         self.transformations = deque()
 
@@ -81,50 +81,41 @@ class Part(Datastructure):
         self.features = [(Shape.from_data(shape), operation) for shape, operation in data['features']]
         self.transformations = deque([Transformation.from_data(T) for T in data['transformations']])
 
-    # @property
-    # def key(self):
-    #     return self._key
+    @property
+    def frame(self):
+        if not self._frame:
+            self._frame = Frame.worldXY()
+        return self._frame
 
-    # @property
-    # def frame(self):
-    #     if not self._frame:
-    #         self._frame = Frame.worldXY()
-    #     return self._frame
+    @frame.setter
+    def frame(self, frame):
+        self._frame = frame
 
-    # @frame.setter
-    # def frame(self, frame):
-    #     self._frame = frame
+    @property
+    def geometry(self):
+        # this is a temp solution
+        A = Mesh.from_shape(self.shape)
+        for shape, operation in self.features:
+            A.quads_to_triangles()
+            B = Mesh.from_shape(shape)
+            B.quads_to_triangles()
+            A = Part.operations[operation](A.to_vertices_and_faces(), B.to_vertices_and_faces())
+        geometry = Shape(*A)
+        T = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
+        geometry.transform(T)
+        return geometry
 
-    # @property
-    # def transformations(self):
-    #     return self._transformations
-
-    # @property
-    # def geometry(self):
-    #     if not self._geometry:
-    #         self._geometry = Shape()
-    #     return self._geometry
-
-    # @geometry.setter
-    # def geometry(self, geometry):
-    #     self._geometry = geometry
-
-    # @property
-    # def features(self):
-    #     return self._features
-
-    # @property
-    # def shape(self):
-    #     return self._shape
-
-    def add_transformation(self, T):
-        """Add a transformation to the stack.
+    def transform(self, T):
+        """Transform the part with respect to the local cooordinate system.
 
         Parameters
         ----------
         T : :class:`compas.geometry.Transformation`
         """
         self.transformations.appendleft(T)
+        self.shape.transform(T)
+        for shape, operation in self.features:
+            shape.transform(T)
 
     def add_feature(self, shape, operation):
         """Add a feature to the geometry and the operation through which they should be combined.
@@ -140,27 +131,13 @@ class Part(Datastructure):
             raise FeatureError
         self.features.append((shape, operation))
 
-    def apply_features(self):
-        """Apply all features to the base geometry to construct the final shape of the part.
-        The shape will be available in ``Part.shape``.
-        """
-        geometry = self.geometry
-        A = Mesh.from_shape(geometry)
-        for shape, operation in self.features:
-            # this is a temp solution
-            A.quads_to_triangles()
-            B = Mesh.from_shape(shape)
-            B.quads_to_triangles()
-            A = Part.operations[operation](A.to_vertices_and_faces(), B.to_vertices_and_faces())
-        self.shape = Shape(*A)
-
-    def apply_transformations(self):
-        """Apply all transformations to the part shape."""
-        X = Transformation.from_frame(self.frame)
-        transformations = self.transformations[:]
-        transformations.append(X)
-        T = reduce(multiply_matrices, transformations)
-        self.shape.transform(T)
+    # def apply_transformations(self):
+    #     """Apply all transformations to the part shape."""
+    #     X = Transformation.from_frame(self.frame)
+    #     transformations = self.transformations[:]
+    #     transformations.append(X)
+    #     T = reduce(multiply_matrices, transformations)
+    #     self.shape.transform(T)
 
     def to_mesh(self, cls=None):
         """Convert the part shape to a mesh.
@@ -176,6 +153,6 @@ class Part(Datastructure):
             The resulting mesh.
         """
         cls = cls or Mesh
-        self.apply_features()
-        self.apply_transformations()
-        return cls.from_shape(self.shape)
+        # self.apply_features()
+        # self.apply_transformations()
+        return cls.from_shape(self.geometry)
