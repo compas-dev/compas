@@ -41,7 +41,7 @@
       <!-- primary -->
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
-        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
         <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
         <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
         <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
@@ -85,7 +85,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-9 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
         
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-3 bg-white px-0">
@@ -176,13 +176,7 @@ keys in a vertex dictionary.</p>
       </div>
       <!-- sidebar -->
       <!-- toc -->
-      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-        
-        <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Mesh.index_vertex</a></li>
-</ul>
-
-      </div>
+      
       <!-- toc -->
     </div>
   </div>
@@ -281,9 +275,12 @@ keys in a vertex dictionary.</p>
   hljs.initHighlighting();
   anchors.add();
 
-  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+  var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
       return window.location.href.startsWith(ver.href);
-  }).addClass("active");
+  });
+  selected_version.addClass('active');
+  $("#bd-versions").text(selected_version.text());
+
   });
 
   var url = $("#doc_versions").data("url");
