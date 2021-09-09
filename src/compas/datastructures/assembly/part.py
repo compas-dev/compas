@@ -136,7 +136,7 @@ class Part(Datastructure):
         operation : {'union', 'difference', 'intersection'}
             The boolean operation through which the feature should be integrated in the geometry.
         """
-        if operation not in ('union', 'difference', 'intersection'):
+        if operation not in Part.operations:
             raise FeatureError
         self.features.append((shape, operation))
 
@@ -156,7 +156,10 @@ class Part(Datastructure):
 
     def apply_transformations(self):
         """Apply all transformations to the part shape."""
-        T = reduce(multiply_matrices, self.transformations)
+        X = Transformation.from_frame(self.frame)
+        transformations = self.transformations[:]
+        transformations.append(X)
+        T = reduce(multiply_matrices, transformations)
         self.shape.transform(T)
 
     def to_mesh(self, cls=None):
