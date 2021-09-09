@@ -2,8 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from collections import deque
+from functools import reduce
+
 from compas.geometry import Shape
 from compas.geometry import Frame
+from compas.geometry import multiply_matrices
 
 from ..datastructure import Datastructure
 from ..mesh import Mesh
@@ -36,7 +40,7 @@ class Part(Datastructure):
         self._frame = None
         self._transformations = None
         self._geometry = None
-        self._features = None
+        self._features = []
 
     def __str__(self):
         tpl = "<Part with base geometry {} and features {}>"
@@ -77,6 +81,8 @@ class Part(Datastructure):
 
     @property
     def transformations(self):
+        if not self._transformations:
+            self._transformations = deque()
         return self._transformations
 
     @property
@@ -93,11 +99,14 @@ class Part(Datastructure):
     def features(self):
         return self._features
 
-    def add_transformation(self, transformation):
-        raise NotImplementedError
+    def add_transformation(self, matrix):
+        self._transformations.appendleft(matrix)
 
     def apply_transformations(self):
-        raise NotImplementedError
+        T = reduce(multiply_matrices, self._transformations)
+        self.geometry.transform(T)
+        for shape, operation in self.features:
+            shape.transform(T)
 
     def add_feature(self, geometry, operation):
         raise NotImplementedError
