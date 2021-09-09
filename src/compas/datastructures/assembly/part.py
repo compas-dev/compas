@@ -5,8 +5,8 @@ from __future__ import division
 from collections import deque
 from functools import reduce
 
-from compas.geometry import Shape
 from compas.geometry import Frame
+from compas.geometry import Polyhedron as Shape
 from compas.geometry import Transformation
 from compas.geometry import multiply_matrices
 from compas.geometry import boolean_union_mesh_mesh
@@ -50,7 +50,7 @@ class Part(Datastructure):
         self.attributes = {'name': name or 'Part'}
         self.key = None
         self.frame = frame or Frame.worldXY()
-        self.geometry = geometry or Shape()
+        self.geometry = geometry or Shape([], [])
         self.features = features or []
         self.transformations = deque()
 
@@ -145,9 +145,14 @@ class Part(Datastructure):
         The shape will be available in ``Part.shape``.
         """
         geometry = self.geometry
+        A = Mesh.from_shape(geometry)
         for shape, operation in self.features:
-            geometry = Part.operations[operation](geometry, shape)
-        self.shape = geometry
+            # this is a temp solution
+            A.quads_to_triangles()
+            B = Mesh.from_shape(shape)
+            B.quads_to_triangles()
+            A = Part.operations[operation](A.to_vertices_and_faces(), B.to_vertices_and_faces())
+        self.shape = Shape(*A)
 
     def apply_transformations(self):
         """Apply all transformations to the part shape."""
