@@ -12,8 +12,6 @@ from compas.geometry import Frame
 
 from compas_view2.app import App
 
-# a block assembly
-
 assembly = Assembly()
 
 a = Part(name='A',

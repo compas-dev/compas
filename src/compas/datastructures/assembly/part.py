@@ -20,7 +20,37 @@ from .exceptions import FeatureError
 
 
 class Part(Datastructure):
-    """A data structure for representing assembly parts."""
+    """A data structure for representing assembly parts.
+
+    Parameters
+    ----------
+    name : str, optional
+        The name of the part.
+        The name will be stored in :attr:`Part.attributes`.
+    frame : :class:`compas.geometry.Frame`, optional
+        The local coordinate system of the part.
+    shape : :class:`compas.geometry.Shape`, optional
+        The base shape of the part geometry.
+    features : list of tuple(:class:`compas.geometry.Shape`, str), optional
+        The features to be added to the base shape of the part geometry.
+
+    Attributes
+    ----------
+    attributes : dict
+        General object attributes that will be included in the data dict.
+    key : int or str
+        The identifier of the part in the connectivity graph of the parent assembly.
+    frame : :class:`compas.geometry.Frame`
+        The local coordinate system of the part.
+    shape : :class:`compas.geometry.Shape`
+        The base shape of the part geometry.
+    features : list of tuple(:class:`compas.geometry.Shape`, str)
+        The features added to the base shape of the part geometry.
+    transformations : deque of :class:`compas.geometry.Transformation`
+        The stack of transformations applied to the part geometry.
+        The most recent transformation is on the left of the stack.
+        All transformations are with respect to the local coordinate system.
+    """
 
     operations = {
         'union': boolean_union_mesh_mesh,
@@ -35,9 +65,9 @@ class Part(Datastructure):
             "attributes": dict,
             "key": int,
             "frame": Frame,
+            "shape": Shape,
+            "features": list,
             "transformations": list,
-            "geometry": Shape,
-            "features": list
         })
 
     @property
@@ -55,18 +85,19 @@ class Part(Datastructure):
         self.transformations = deque()
 
     def __str__(self):
-        tpl = "<Part with base geometry {} and features {}>"
-        return tpl.format(self.geometry, self.features)
+        tpl = "<Part with shape {} and features {}>"
+        return tpl.format(self.shape, self.features)
 
     @property
     def data(self):
-        """dict : A data dict representing the part attributes, internal data structure, and geometries for serialization.
+        """dict : A data dict representing the part attributes, the assembly graph identifier, the local coordinate system,
+        the base shape, the shape features, and the transformation tack wrt to the local coordinate system.
         """
         data = {
             'attributes': self.attributes,
             "key": self.key,
             "frame": self.frame.data,
-            "geometry": self.geometry.data,
+            "shape": self.shape.data,
             "features": [(shape.data, operation) for shape, operation in self.features],
             "transformations": [T.data for T in self.transformations],
         }
@@ -77,7 +108,7 @@ class Part(Datastructure):
         self.attributes.update(data['attributes'] or {})
         self.key = data['key']
         self.frame.data = data['frame']
-        self.geometry.data = data['geometry']
+        self.shape.data = data['shape']
         self.features = [(Shape.from_data(shape), operation) for shape, operation in data['features']]
         self.transformations = deque([Transformation.from_data(T) for T in data['transformations']])
 
@@ -118,14 +149,14 @@ class Part(Datastructure):
             shape.transform(T)
 
     def add_feature(self, shape, operation):
-        """Add a feature to the geometry and the operation through which they should be combined.
+        """Add a feature to the shape of the part and the operation through which it should be integrated.
 
         Parameters
         ----------
         shape : :class:`compas.geometry.Shape`
             The shape of the feature.
         operation : {'union', 'difference', 'intersection'}
-            The boolean operation through which the feature should be integrated in the geometry.
+            The boolean operation through which the feature should be integrated in the base shape.
         """
         if operation not in Part.operations:
             raise FeatureError
@@ -140,11 +171,11 @@ class Part(Datastructure):
     #     self.shape.transform(T)
 
     def to_mesh(self, cls=None):
-        """Convert the part shape to a mesh.
+        """Convert the part geometry to a mesh.
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`
+        cls : :class:`compas.datastructures.Mesh`, optional
             The type of mesh to be used for the conversion.
 
         Returns
@@ -153,6 +184,4 @@ class Part(Datastructure):
             The resulting mesh.
         """
         cls = cls or Mesh
-        # self.apply_features()
-        # self.apply_transformations()
         return cls.from_shape(self.geometry)
