@@ -155,13 +155,13 @@ vector as starting point.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles" title="compas.geometry.Frame.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a>([static, axes])</p></td>
 <td><p>The Euler angles from the rotation given by the frame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a>(axis_angle_vector[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a>(axis_angle_vector[, ...])</p></td>
 <td><p>Construct a frame from an axis-angle vector representing the rotation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_data.html#compas.geometry.Frame.from_data" title="compas.geometry.Frame.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a frame from its data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles" title="compas.geometry.Frame.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles" title="compas.geometry.Frame.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, ...])</p></td>
 <td><p>Construct a frame from a rotation represented by Euler angles.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_json.html#compas.geometry.Frame.from_json" title="compas.geometry.Frame.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
@@ -191,8 +191,8 @@ vector as starting point.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation" title="compas.geometry.Frame.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a>(transformation)</p></td>
 <td><p>Constructs a frame from a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.local_to_local_coordinates.html#compas.geometry.Frame.local_to_local_coordinates" title="compas.geometry.Frame.local_to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_to_local_coordinates</span></code></a>(frame1, frame2, …)</p></td>
-<td><p>Returns the object’s coordinates in frame1 in the local coordinates of frame2.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.local_to_local_coordinates.html#compas.geometry.Frame.local_to_local_coordinates" title="compas.geometry.Frame.local_to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_to_local_coordinates</span></code></a>(frame1, frame2, ...)</p></td>
+<td><p>Returns the object's coordinates in frame1 in the local coordinates of frame2.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_data.html#compas.geometry.Frame.to_data" title="compas.geometry.Frame.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
@@ -204,10 +204,10 @@ vector as starting point.</p>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates" title="compas.geometry.Frame.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a>(object_in_wcf)</p></td>
-<td><p>Returns the object’s coordinates in the local coordinate system of the frame.</p></td>
+<td><p>Returns the object's coordinates in the local coordinate system of the frame.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates" title="compas.geometry.Frame.to_world_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_world_coordinates</span></code></a>(object_in_lcf)</p></td>
-<td><p>Returns the object’s coordinates in the global coordinate frame.</p></td>
+<td><p>Returns the object's coordinates in the global coordinate frame.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.transform.html#compas.geometry.Frame.transform" title="compas.geometry.Frame.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform the frame.</p></td>
@@ -216,10 +216,10 @@ vector as starting point.</p>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.validate_data.html#compas.geometry.Frame.validate_data" title="compas.geometry.Frame.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
-<td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.validate_json.html#compas.geometry.Frame.validate_json" title="compas.geometry.Frame.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
-<td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY" title="compas.geometry.Frame.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a>()</p></td>
 <td><p>Construct the world XY frame.</p></td>

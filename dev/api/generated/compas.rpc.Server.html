@@ -205,16 +205,16 @@ that can be pinged to check if the server is live, and can be cleanly terminated
 <td><p>Called to shutdown and close an individual request.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.system_listMethods.html#compas.rpc.Server.system_listMethods" title="compas.rpc.Server.system_listMethods"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_listMethods</span></code></a>()</p></td>
-<td><p>system.listMethods() =&gt; [‘add’, ‘subtract’, ‘multiple’]</p></td>
+<td><p>system.listMethods() =&gt; ['add', 'subtract', 'multiple']</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.system_methodHelp.html#compas.rpc.Server.system_methodHelp" title="compas.rpc.Server.system_methodHelp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_methodHelp</span></code></a>(method_name)</p></td>
-<td><p>system.methodHelp(‘add’) =&gt; “Adds two integers together”</p></td>
+<td><p>system.methodHelp('add') =&gt; &quot;Adds two integers together&quot;</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.system_methodSignature.html#compas.rpc.Server.system_methodSignature" title="compas.rpc.Server.system_methodSignature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_methodSignature</span></code></a>(method_name)</p></td>
-<td><p>system.methodSignature(‘add’) =&gt; [double, int, int]</p></td>
+<td><p>system.methodSignature('add') =&gt; [double, int, int]</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Server.system_multicall.html#compas.rpc.Server.system_multicall" title="compas.rpc.Server.system_multicall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_multicall</span></code></a>(call_list)</p></td>
-<td><p>system.multicall([{‘methodName’: ‘add’, ‘params’: [2, 2]}, …]) =&gt; [[4], …]</p></td>
+<td><p>system.multicall([{'methodName': 'add', 'params': [2, 2]}, ...]) =&gt; [[4], ...]</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.rpc.Server.verify_request.html#compas.rpc.Server.verify_request" title="compas.rpc.Server.verify_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verify_request</span></code></a>(request, client_address)</p></td>
 <td><p>Verify the request.</p></td>
