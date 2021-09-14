@@ -3,6 +3,7 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
+from typing import Union
 
 import bpy
 
@@ -18,6 +19,7 @@ from compas_blender.artists._artist import BaseArtist
 from compas.utilities import color_to_colordict
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
+Color = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
 __all__ = ['MeshArtist']
@@ -270,7 +272,7 @@ class MeshArtist(BaseArtist):
 
     def draw_vertices(self,
                       vertices: Optional[List[int]] = None,
-                      color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                      color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw a selection of vertices.
 
         Parameters
@@ -302,7 +304,7 @@ class MeshArtist(BaseArtist):
 
     def draw_faces(self,
                    faces: Optional[List[int]] = None,
-                   color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw a selection of faces.
 
         Parameters
@@ -332,8 +334,8 @@ class MeshArtist(BaseArtist):
         return objects
 
     def draw_edges(self,
-                   edges: Optional[List[Tuple[int]]] = None,
-                   color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                   edges: Optional[List[Tuple[int, int]]] = None,
+                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
         Parameters
@@ -369,8 +371,8 @@ class MeshArtist(BaseArtist):
 
     def draw_vertexnormals(self,
                            vertices: Optional[List[int]] = None,
-                           color: Optional[str, Tuple, List, Dict] = None,
-                           scale: Optional[float] = 1.0) -> List[bpy.types.Object]:
+                           color: Optional[str, Color, List[Color], Dict[int, Color]] = None,
+                           scale: float = 1.0) -> List[bpy.types.Object]:
         """Draw the normals at the vertices of the mesh.
 
         Parameters
@@ -408,8 +410,8 @@ class MeshArtist(BaseArtist):
 
     def draw_facenormals(self,
                          faces: Optional[List[List[int]]] = None,
-                         color: Optional[str, Tuple, List, Dict] = None,
-                         scale: Optional[float] = 1.0) -> List[bpy.types.Object]:
+                         color: Optional[str, Color, List[Color], Dict[int, Color]] = None,
+                         scale: float = 1.0) -> List[bpy.types.Object]:
         """Draw the normals of the faces.
 
         Parameters
@@ -453,7 +455,7 @@ class MeshArtist(BaseArtist):
 
     def draw_vertexlabels(self,
                           text: Optional[Dict[int, str]] = None,
-                          color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                          color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection vertices.
 
         Parameters
@@ -490,8 +492,8 @@ class MeshArtist(BaseArtist):
         return objects
 
     def draw_edgelabels(self,
-                        text: Optional[Dict[Tuple[int], str]] = None,
-                        color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                        text: Optional[Dict[Tuple[int, int], str]] = None,
+                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters
@@ -528,7 +530,7 @@ class MeshArtist(BaseArtist):
 
     def draw_facelabels(self,
                         text: Optional[Dict[int, str]] = None,
-                        color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of faces.
 
         Parameters

@@ -45,7 +45,11 @@ class RobotModelArtist(BaseRobotModelArtist):
     def transform(self, native_mesh: bpy.types.Object, transformation: Transformation) -> None:
         native_mesh.matrix_world = mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world
 
-    def create_geometry(self, geometry: Union[Mesh, Shape], name: str = None, color: Tuple = None) -> bpy.types.Object:
+    def create_geometry(self,
+                        geometry: Union[Mesh, Shape],
+                        name: str = None,
+                        color: Union[Tuple[int, int, int, int], Tuple[float, float, float, float]] = None
+                        ) -> bpy.types.Object:
         # Imported colors take priority over a the parameter color
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']

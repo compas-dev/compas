@@ -3,6 +3,7 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
+from typing import Union
 
 import bpy
 from functools import partial
@@ -14,6 +15,7 @@ from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
+Color = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
 __all__ = [
@@ -44,12 +46,10 @@ class NetworkArtist(BaseArtist):
         super().__init__()
         self._nodecollection = None
         self._edgecollection = None
-        self._pathcollection = None
         self._nodelabelcollection = None
         self._edgelabelcollection = None
         self._object_node = {}
         self._object_edge = {}
-        self._object_path = {}
         self._object_nodelabel = {}
         self._object_edgelabel = {}
         self.color_nodes = (1.0, 1.0, 1.0)
@@ -73,13 +73,6 @@ class NetworkArtist(BaseArtist):
         if not self._edgecollection:
             self._edgecollection = compas_blender.create_collections_from_path(path)[1]
         return self._edgecollection
-
-    @property
-    def pathcollection(self) -> bpy.types.Collection:
-        path = f"{self.network.name}::Paths"
-        if not self._pathcollection:
-            self._pathcollection = compas_blender.create_collections_from_path(path)[1]
-        return self._pathcollection
 
     @property
     def nodelabelcollection(self) -> bpy.types.Collection:
@@ -116,16 +109,6 @@ class NetworkArtist(BaseArtist):
         self._object_edge = dict(values)
 
     @property
-    def object_path(self) -> Dict[bpy.types.Object, List[int]]:  # !!! what is a path?
-        if not self._object_path:
-            self._object_path = {}
-        return self._object_path
-
-    @object_path.setter
-    def object_path(self, values):
-        self._object_path = dict(values)
-
-    @property
     def object_nodelabel(self) -> Dict[bpy.types.Object, int]:
         """Map between Blender object objects and node label identifiers."""
         return self._object_nodelabel
@@ -146,13 +129,11 @@ class NetworkArtist(BaseArtist):
     def clear(self) -> None:
         objects = list(self.object_node)
         objects += list(self.object_edge)
-        objects += list(self.object_path)
         objects += list(self.object_nodelabel)
         objects += list(self.object_edgelabel)
         compas_blender.delete_objects(objects, purge_data=True)
         self._object_node = {}
         self._object_edge = {}
-        self._object_path = {}
         self._object_nodelabel = {}
         self._object_edgelabel = {}
 
@@ -173,7 +154,7 @@ class NetworkArtist(BaseArtist):
 
     def draw_nodes(self,
                    nodes: Optional[List[int]] = None,
-                   color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw a selection of nodes.
 
         Parameters
@@ -203,8 +184,8 @@ class NetworkArtist(BaseArtist):
         return objects
 
     def draw_edges(self,
-                   edges: Optional[Tuple[int]] = None,
-                   color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                   edges: Optional[Tuple[int, int]] = None,
+                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
         Parameters
@@ -236,7 +217,7 @@ class NetworkArtist(BaseArtist):
 
     def draw_nodelabels(self,
                         text: Optional[Dict[int, str]] = None,
-                        color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection nodes.
 
         Parameters
@@ -273,8 +254,8 @@ class NetworkArtist(BaseArtist):
         return objects
 
     def draw_edgelabels(self,
-                        text: Optional[Dict[Tuple[int], str]] = None,
-                        color: Optional[str, Tuple, List, Dict] = None) -> List[bpy.types.Object]:
+                        text: Optional[Dict[Tuple[int, int], str]] = None,
+                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters

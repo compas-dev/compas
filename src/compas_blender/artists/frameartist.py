@@ -64,7 +64,7 @@ class FrameArtist(BaseArtist):
     def __init__(self,
                  frame: Frame,
                  collection: Optional[bpy.types.Collection] = None,
-                 scale: Optional[float] = 1.0):
+                 scale: float = 1.0):
         super(FrameArtist, self).__init__()
         self.collection = collection
         self.frame = frame
