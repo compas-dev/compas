@@ -309,6 +309,11 @@ class Plane(Primitive):
             The plane to be offset.
         distance: :obj:`float`
             The offset distance.
+
+        Returns
+        --------
+        :class:`Plane`
+            The offset plane.
         """
 
         return Plane(self.point+self.normal.scaled(distance), self.normal)
