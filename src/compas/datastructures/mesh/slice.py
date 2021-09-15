@@ -76,7 +76,7 @@ class IntersectionMeshPlane(object):
         return len(self.intersections) >= 3
     
     @property
-    def is_closed(self):
+    def is_mesh_closed(self):
         return self.mesh.is_closed()
 
     @property
@@ -94,7 +94,7 @@ class IntersectionMeshPlane(object):
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
-        if self.is_closed:
+        if self.is_mesh_closed:
             mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
@@ -124,7 +124,7 @@ class IntersectionMeshPlane(object):
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
-        if self.is_closed:
+        if self.is_mesh_closed:
             mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
