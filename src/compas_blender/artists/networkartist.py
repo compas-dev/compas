@@ -154,7 +154,7 @@ class NetworkArtist(BaseArtist):
 
     def draw_nodes(self,
                    nodes: Optional[List[int]] = None,
-                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw a selection of nodes.
 
         Parameters
@@ -185,7 +185,7 @@ class NetworkArtist(BaseArtist):
 
     def draw_edges(self,
                    edges: Optional[Tuple[int, int]] = None,
-                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
         Parameters
@@ -217,7 +217,8 @@ class NetworkArtist(BaseArtist):
 
     def draw_nodelabels(self,
                         text: Optional[Dict[int, str]] = None,
-                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                        ) -> List[bpy.types.Object]:
         """Draw labels for a selection nodes.
 
         Parameters
@@ -255,7 +256,8 @@ class NetworkArtist(BaseArtist):
 
     def draw_edgelabels(self,
                         text: Optional[Dict[Tuple[int, int], str]] = None,
-                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                        ) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters

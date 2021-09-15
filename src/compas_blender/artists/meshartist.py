@@ -32,15 +32,11 @@ class MeshArtist(BaseArtist):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
-    settings : dict, optional
-        A dict with custom visualisation settings.
 
     Attributes
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The COMPAS mesh associated with the artist.
-    settings : dict
-        Default settings for color, scale, tolerance, ...
 
     Examples
     --------
@@ -272,7 +268,7 @@ class MeshArtist(BaseArtist):
 
     def draw_vertices(self,
                       vertices: Optional[List[int]] = None,
-                      color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                      color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw a selection of vertices.
 
         Parameters
@@ -304,7 +300,7 @@ class MeshArtist(BaseArtist):
 
     def draw_faces(self,
                    faces: Optional[List[int]] = None,
-                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw a selection of faces.
 
         Parameters
@@ -335,7 +331,7 @@ class MeshArtist(BaseArtist):
 
     def draw_edges(self,
                    edges: Optional[List[Tuple[int, int]]] = None,
-                   color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
         Parameters
@@ -371,7 +367,7 @@ class MeshArtist(BaseArtist):
 
     def draw_vertexnormals(self,
                            vertices: Optional[List[int]] = None,
-                           color: Optional[str, Color, List[Color], Dict[int, Color]] = None,
+                           color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
                            scale: float = 1.0) -> List[bpy.types.Object]:
         """Draw the normals at the vertices of the mesh.
 
@@ -410,7 +406,7 @@ class MeshArtist(BaseArtist):
 
     def draw_facenormals(self,
                          faces: Optional[List[List[int]]] = None,
-                         color: Optional[str, Color, List[Color], Dict[int, Color]] = None,
+                         color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
                          scale: float = 1.0) -> List[bpy.types.Object]:
         """Draw the normals of the faces.
 
@@ -455,7 +451,7 @@ class MeshArtist(BaseArtist):
 
     def draw_vertexlabels(self,
                           text: Optional[Dict[int, str]] = None,
-                          color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                          color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection vertices.
 
         Parameters
@@ -493,7 +489,7 @@ class MeshArtist(BaseArtist):
 
     def draw_edgelabels(self,
                         text: Optional[Dict[Tuple[int, int], str]] = None,
-                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters
@@ -530,7 +526,7 @@ class MeshArtist(BaseArtist):
 
     def draw_facelabels(self,
                         text: Optional[Dict[int, str]] = None,
-                        color: Optional[str, Color, List[Color], Dict[int, Color]] = None) -> List[bpy.types.Object]:
+                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of faces.
 
         Parameters
