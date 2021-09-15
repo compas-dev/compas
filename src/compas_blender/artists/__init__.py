@@ -31,9 +31,12 @@ Classes
 """
 
 from ._artist import BaseArtist  # noqa: F401
+from ._primitiveartist import PrimitiveArtist
 from .frameartist import FrameArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
+from .pointartist import PointArtist
+from .vectorartist import VectorArtist
 from .robotmodelartist import (  # noqa: F401
     BaseRobotModelArtist,
     RobotModelArtist
@@ -43,5 +46,8 @@ __all__ = [
     'FrameArtist',
     'NetworkArtist',
     'MeshArtist',
-    'RobotModelArtist'
+    'PointArtist',
+    'PrimitiveArtist',
+    'RobotModelArtist',
+    'VectorArtist',
 ]
