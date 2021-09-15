@@ -74,7 +74,7 @@ class IntersectionMeshPlane(object):
     @property
     def is_polygon(self):
         return len(self.intersections) >= 3
-    
+
     @property
     def is_mesh_closed(self):
         return self.mesh.is_closed()
