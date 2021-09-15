@@ -33,6 +33,7 @@ Classes
 from ._artist import BaseArtist  # noqa: F401
 from ._primitiveartist import PrimitiveArtist
 from .frameartist import FrameArtist
+from .lineartist import LineArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .pointartist import PointArtist
@@ -44,6 +45,7 @@ from .robotmodelartist import (  # noqa: F401
 
 __all__ = [
     'FrameArtist',
+    'LineArtist',
     'NetworkArtist',
     'MeshArtist',
     'PointArtist',

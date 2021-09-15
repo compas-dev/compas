@@ -29,7 +29,6 @@ class PointArtist(PrimitiveArtist):
         from compas.geometry import Pointcloud
         from compas.utilities import i_to_rgb
 
-        import compas_blender
         from compas_blender.artists import PointArtist
 
         pcl = Pointcloud.from_bounds(10, 10, 10, 100)

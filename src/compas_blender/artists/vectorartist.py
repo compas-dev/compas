@@ -31,8 +31,7 @@ class VectorArtist(PrimitiveArtist):
         from compas.geometry import Pointcloud
         from compas.geometry import Vector
         from compas.utilities import i_to_rgb
-
-        import compas_blender
+\
         from compas_blender.artists import VectorArtist
 
         pcl = Pointcloud.from_bounds(10, 10, 10, 100)
