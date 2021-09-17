@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added optional `triangulated` flag to `to_vertices_and_faces` of all shapes.
 * Added `compas.geometry.Geometry` base class.
 * Added `__add__`, `__sub__`, `__and__` to `compas.geometry.Shape` for boolean operations using binary operators.
+* Added `is_closed` to `compas.geometry.Polyhedron`.
 
 ### Changed
 
