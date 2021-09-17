@@ -20,7 +20,7 @@ class KHR_materials_transmission(BaseGLTFDataClass):
         self.transmission_factor = transmission_factor
         self.transmission_texture = transmission_texture
 
-    def to_data(self, texture_index_by_key):
+    def to_data(self, texture_index_by_key, **kwargs):
         dct = {}
         if self.transmission_factor is not None:
             dct['transmissionFactor'] = self.transmission_factor
@@ -65,7 +65,7 @@ class KHR_materials_clearcoat(BaseGLTFDataClass):
         self.clearcoat_roughness_texture = clearcoat_roughness_texture
         self.clearcoat_normal_texture = clearcoat_normal_texture
 
-    def to_data(self, texture_index_by_key):
+    def to_data(self, texture_index_by_key, **kwargs):
         dct = {}
         if self.clearcoat_factor is not None:
             dct['clearcoatFactor'] = self.clearcoat_factor
@@ -118,7 +118,7 @@ class KHR_Texture_Transform(BaseGLTFDataClass):
         self.scale = scale  # or [1., 1.]
         self.tex_coord = tex_coord
 
-    def to_data(self):
+    def to_data(self, **kwargs):
         dct = {}
         if self.offset is not None:
             dct['offset'] = self.offset
@@ -167,7 +167,7 @@ class KHR_materials_pbrSpecularGlossiness(BaseGLTFDataClass):
         self.glossiness_factor = glossiness_factor or 1.
         self.specular_glossiness_texture = specular_glossiness_texture
 
-    def to_data(self, texture_index_by_key):
+    def to_data(self, texture_index_by_key, **kwargs):
         dct = {}
         if self.diffuse_factor is not None:
             dct['diffuseFactor'] = self.diffuse_factor

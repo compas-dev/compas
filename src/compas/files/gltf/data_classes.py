@@ -25,10 +25,10 @@ class BaseGLTFDataClass(object):
             self.extensions = {}
         self.extensions.update({extension.key: extension})
 
-    def extensions_to_data(self):
+    def extensions_to_data(self, **kwargs):
         if not self.extensions:
             return None
-        return {key: value.to_data() if hasattr(value, 'to_data') else value for key, value in self.extensions}
+        return {key: value.to_data(**kwargs) if hasattr(value, 'to_data') else value for key, value in self.extensions.items()}
 
     @classmethod
     def extensions_from_data(cls, data):
@@ -306,7 +306,7 @@ class MaterialData(BaseGLTFDataClass):
         if self.double_sided is not None:
             material_dict['doubleSided'] = self.double_sided
         if self.extensions is not None:
-            material_dict['extensions'] = self.extensions_to_data()
+            material_dict['extensions'] = self.extensions_to_data(texture_index_by_key=texture_index_by_key)
         return material_dict
 
     @classmethod
