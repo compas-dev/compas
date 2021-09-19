@@ -77,6 +77,7 @@ from __future__ import absolute_import
 
 from compas.plugins import plugin
 from compas.artists import Artist
+from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -155,13 +156,14 @@ RhinoArtist.register(RobotModel, RobotModelArtist)
 @plugin(category='factories', pluggable_name='new_artist', requires=['Rhino'])
 def new_artist_rhino(cls, *args, **kwargs):
     data = args[0]
-    cls = Artist.ITEM_ARTIST[type(data)]
+    dtype = type(data)
+    if dtype not in Artist.ITEM_ARTIST:
+        raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
+    cls = Artist.ITEM_ARTIST[dtype]
     return super(Artist, cls).__new__(cls)
 
 
 __all__ = [
-    'new_artist_rhino',
-
     'RhinoArtist',
     'PrimitiveArtist',
     'ShapeArtist',

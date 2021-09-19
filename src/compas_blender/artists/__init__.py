@@ -31,6 +31,7 @@ Classes
 """
 from compas.plugins import plugin
 from compas.artists import Artist
+from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Frame
 from compas.datastructures import Mesh
@@ -56,13 +57,14 @@ Artist.register(RobotModel, RobotModelArtist)
 @plugin(category='factories', pluggable_name='new_artist', requires=['bpy'])
 def new_artist_blender(cls, *args, **kwargs):
     data = args[0]
-    cls = Artist.ITEM_ARTIST[type(data)]
+    dtype = type(data)
+    if dtype not in Artist.ITEM_ARTIST:
+        raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
+    cls = Artist.ITEM_ARTIST[dtype]
     return super(Artist, cls).__new__(cls)
 
 
 __all__ = [
-    'new_artist_blender',
-
     'FrameArtist',
     'NetworkArtist',
     'MeshArtist',
