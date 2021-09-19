@@ -1,9 +1,4 @@
-from compas_blender.artists.meshartist import MeshArtist
-
-
-__all__ = [
-    'VolMeshArtist',
-]
+from .meshartist import MeshArtist
 
 
 class VolMeshArtist(MeshArtist):

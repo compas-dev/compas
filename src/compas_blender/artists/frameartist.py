@@ -1,11 +1,8 @@
 import compas_blender
-from compas_blender.artists import BaseArtist
+from .artist import BlenderArtist
 
 
-__all__ = ['FrameArtist']
-
-
-class FrameArtist(BaseArtist):
+class FrameArtist(BlenderArtist):
     """Artist for drawing frames.
 
     Parameters
@@ -56,7 +53,7 @@ class FrameArtist(BaseArtist):
 
     """
     def __init__(self, frame, collection=None, scale=1.0):
-        super(FrameArtist, self).__init__()
+        super().__init__()
         self.collection = collection
         self.frame = frame
         self.scale = scale or 1.0

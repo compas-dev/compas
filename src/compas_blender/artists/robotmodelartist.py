@@ -4,10 +4,6 @@ import mathutils
 import compas_blender
 from compas.robots.base_artist import BaseRobotModelArtist
 
-__all__ = [
-    'RobotModelArtist',
-]
-
 
 class RobotModelArtist(BaseRobotModelArtist):
     """Visualizer for robot models inside a Blender environment.
@@ -20,7 +16,7 @@ class RobotModelArtist(BaseRobotModelArtist):
 
     def __init__(self, model, collection=None):
         self.collection = collection
-        super(RobotModelArtist, self).__init__(model)
+        super().__init__(model)
 
     def transform(self, native_mesh, transformation):
         native_mesh.matrix_world = mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world

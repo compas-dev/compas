@@ -1,5 +1,3 @@
-# from __future__ import annotations
-
 from functools import partial
 
 import compas_blender
@@ -7,16 +5,13 @@ from compas.geometry import add_vectors
 from compas.geometry import centroid_points
 from compas.geometry import scale_vector
 
-from compas_blender.artists._artist import BaseArtist
 from compas.utilities import color_to_colordict
+from .artist import BlenderArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
 
 
-__all__ = ['MeshArtist']
-
-
-class MeshArtist(BaseArtist):
+class MeshArtist(BlenderArtist):
     """A mesh artist defines functionality for visualising COMPAS meshes in Blender.
 
     Parameters
