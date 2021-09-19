@@ -6,14 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-* Added `Plane.offset`
+
 ### Added
 
 * Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
+* Added `Plane.offset`
+* Added `compas.artists.Artist`.
+* Added pluggable `compas.artists.new_artist`.
+* Added plugin `compas_rhino.artists.new_artist_rhino`.
+* Added plugin `compas_blender.artists.new_artist_blender`.
 
 ### Changed
 
 * Fixed bug in `compas_blender.draw_texts`.
+* Changed `compas_rhino.artists.BaseArtist` to `compas_rhino.artists.RhinoArtist`.
+* Changed `compas_blender.artists.BaseArtist` to `compas_blender.artists.BlenderArtist`.
 
 ### Removed
 
