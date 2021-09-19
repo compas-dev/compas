@@ -5,7 +5,7 @@ from __future__ import division
 from functools import partial
 import compas_rhino
 
-from compas_rhino.artists._artist import BaseArtist
+from compas_rhino.artists._artist import RhinoArtist
 
 from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
@@ -21,7 +21,7 @@ colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(BaseArtist):
+class MeshArtist(RhinoArtist):
     """Artists for drawing mesh data structures.
 
     Parameters

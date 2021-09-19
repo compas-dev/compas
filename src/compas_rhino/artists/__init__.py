@@ -5,24 +5,6 @@ artists
 
 .. currentmodule:: compas_rhino.artists
 
-.. rst-class:: lead
-
-Artists for visualising (painting) COMPAS objects in Rhino.
-Artists convert COMPAS objects to Rhino geometry and data.
-
-.. code-block:: python
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas_rhino.artists import MeshArtist
-
-    mesh = Mesh.from_off(compas.get('tubemesh.off'))
-
-    artist = MeshArtist(mesh, layer='COMPAS::tubemesh.off')
-
-    artist.clear_layer()
-    artist.draw()
-
 
 Primitive Artists
 =================
@@ -86,12 +68,15 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    BaseArtist
+    RhinoArtist
     PrimitiveArtist
     ShapeArtist
 
 """
 from __future__ import absolute_import
+
+from compas.plugins import plugin
+from compas.artists import Artist
 
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -116,9 +101,9 @@ from compas.datastructures import VolMesh
 
 from compas.robots import RobotModel
 
-from ._artist import BaseArtist  # noqa: F401 F403
-from ._primitiveartist import PrimitiveArtist  # noqa: F401 F403
-from ._shapeartist import ShapeArtist  # noqa: F401
+from ._artist import RhinoArtist
+from ._primitiveartist import PrimitiveArtist
+from ._shapeartist import ShapeArtist
 
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
@@ -143,32 +128,41 @@ from .volmeshartist import VolMeshArtist
 
 from .robotmodelartist import RobotModelArtist
 
-BaseArtist.register(Circle, CircleArtist)
-BaseArtist.register(Frame, FrameArtist)
-BaseArtist.register(Line, LineArtist)
-BaseArtist.register(Plane, PlaneArtist)
-BaseArtist.register(Point, PointArtist)
-BaseArtist.register(Polygon, PolygonArtist)
-BaseArtist.register(Polyline, PolylineArtist)
-BaseArtist.register(Vector, VectorArtist)
+RhinoArtist.register(Circle, CircleArtist)
+RhinoArtist.register(Frame, FrameArtist)
+RhinoArtist.register(Line, LineArtist)
+RhinoArtist.register(Plane, PlaneArtist)
+RhinoArtist.register(Point, PointArtist)
+RhinoArtist.register(Polygon, PolygonArtist)
+RhinoArtist.register(Polyline, PolylineArtist)
+RhinoArtist.register(Vector, VectorArtist)
 
-BaseArtist.register(Box, BoxArtist)
-BaseArtist.register(Capsule, CapsuleArtist)
-BaseArtist.register(Cone, ConeArtist)
-BaseArtist.register(Cylinder, CylinderArtist)
-BaseArtist.register(Polyhedron, PolyhedronArtist)
-BaseArtist.register(Sphere, SphereArtist)
-BaseArtist.register(Torus, TorusArtist)
+RhinoArtist.register(Box, BoxArtist)
+RhinoArtist.register(Capsule, CapsuleArtist)
+RhinoArtist.register(Cone, ConeArtist)
+RhinoArtist.register(Cylinder, CylinderArtist)
+RhinoArtist.register(Polyhedron, PolyhedronArtist)
+RhinoArtist.register(Sphere, SphereArtist)
+RhinoArtist.register(Torus, TorusArtist)
 
-BaseArtist.register(Mesh, MeshArtist)
-BaseArtist.register(Network, NetworkArtist)
-BaseArtist.register(VolMesh, VolMeshArtist)
+RhinoArtist.register(Mesh, MeshArtist)
+RhinoArtist.register(Network, NetworkArtist)
+RhinoArtist.register(VolMesh, VolMeshArtist)
 
-BaseArtist.register(RobotModel, RobotModelArtist)
+RhinoArtist.register(RobotModel, RobotModelArtist)
+
+
+@plugin(category='factories', pluggable_name='new_artist', requires=['Rhino'])
+def new_artist_rhino(cls, *args, **kwargs):
+    data = args[0]
+    cls = Artist.ITEM_ARTIST[type(data)]
+    return super(Artist, cls).__new__(cls)
 
 
 __all__ = [
-    'BaseArtist',
+    'new_artist_rhino',
+
+    'RhinoArtist',
     'PrimitiveArtist',
     'ShapeArtist',
     'CircleArtist',

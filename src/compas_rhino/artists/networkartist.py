@@ -4,7 +4,7 @@ from __future__ import division
 
 from functools import partial
 import compas_rhino
-from compas_rhino.artists._artist import BaseArtist
+from compas_rhino.artists._artist import RhinoArtist
 from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict
 
@@ -15,7 +15,7 @@ colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(BaseArtist):
+class NetworkArtist(RhinoArtist):
     """Artist for drawing network data structures.
 
     Parameters

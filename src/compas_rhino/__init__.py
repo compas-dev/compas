@@ -213,4 +213,5 @@ __all_plugins__ = [
     'compas_rhino.geometry.trimesh',
     'compas_rhino.install',
     'compas_rhino.uninstall',
+    'compas_rhino.artists',
 ]
