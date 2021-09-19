@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added pluggable `compas.artists.new_artist`.
 * Added plugin `compas_rhino.artists.new_artist_rhino`.
 * Added plugin `compas_blender.artists.new_artist_blender`.
+* Added 'compas.artist.DataArtistNotRegistered'.
 
 ### Changed
 
