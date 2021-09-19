@@ -1,11 +1,10 @@
 import bpy
-import abc
 import compas_blender
 
 from compas.artists import Artist
 
 
-class BlenderArtist(Artist, abc.ABC):
+class BlenderArtist(Artist):
     """Base class for all Blender artists.
 
     Attributes
@@ -17,10 +16,6 @@ class BlenderArtist(Artist, abc.ABC):
 
     def __init__(self):
         self.objects = []
-
-    def draw(self):
-        """Draw the item."""
-        raise NotImplementedError
 
     def redraw(self):
         """Trigger a redraw."""

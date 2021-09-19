@@ -29,6 +29,8 @@ Classes
     RobotModelArtist
 
 """
+import inspect
+
 from compas.plugins import plugin
 from compas.artists import Artist
 from compas.artists import DataArtistNotRegistered
@@ -61,6 +63,10 @@ def new_artist_blender(cls, *args, **kwargs):
     if dtype not in Artist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
     cls = Artist.ITEM_ARTIST[dtype]
+    for name, value in inspect.getmembers(cls):
+        if inspect.isfunction(value):
+            if hasattr(value, '__isabstractmethod__'):
+                raise Exception('Abstract method not implemented: {}'.format(value))
     return super(Artist, cls).__new__(cls)
 
 

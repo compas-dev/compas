@@ -75,6 +75,8 @@ Base Classes
 """
 from __future__ import absolute_import
 
+import inspect
+
 from compas.plugins import plugin
 from compas.artists import Artist
 from compas.artists import DataArtistNotRegistered
@@ -160,6 +162,10 @@ def new_artist_rhino(cls, *args, **kwargs):
     if dtype not in Artist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
     cls = Artist.ITEM_ARTIST[dtype]
+    for name, value in inspect.getmembers(cls):
+        if inspect.ismethod(value):
+            if hasattr(value, '__isabstractmethod__'):
+                raise Exception('Abstract method not implemented')
     return super(Artist, cls).__new__(cls)
 
 

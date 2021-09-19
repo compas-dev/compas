@@ -19,9 +19,6 @@ class RhinoArtist(Artist):
     def __init__(self):
         self._guids = []
 
-    def draw(self):
-        raise NotImplementedError
-
     def redraw(self):
         compas_rhino.rs.EnableRedraw(True)
         compas_rhino.rs.Redraw()

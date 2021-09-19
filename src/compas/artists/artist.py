@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from abc import abstractmethod
 from compas.plugins import pluggable
 
 
@@ -35,17 +36,19 @@ class Artist(object):
 
         Returns
         -------
-        :class:`compas.scene.BaseArtist`
-            An artist of the type matching the provided item according to an item-artist map.
-            The map is created by registering item-artist type pairs using ``~BaseArtist.register``.
+        :class:`compas.artists.Artist`
+            An artist of the type matching the provided item according to the item-artist map ``~Artist.ITEM_ARTIST``.
+            The map is created by registering item-artist type pairs using ``~Artist.register``.
         """
         artist_type = Artist.ITEM_ARTIST[type(item)]
         artist = artist_type(item, **kwargs)
         return artist
 
+    @abstractmethod
     def draw(self):
         raise NotImplementedError
 
+    @abstractmethod
     def redraw(self):
         raise NotImplementedError
 
