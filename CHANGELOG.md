@@ -16,12 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added plugin `compas_rhino.artists.new_artist_rhino`.
 * Added plugin `compas_blender.artists.new_artist_blender`.
 * Added 'compas.artist.DataArtistNotRegistered'.
+* Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
+* Added `compas_blender.artists.RobotModelArtist.clear`.
 
 ### Changed
 
 * Fixed bug in `compas_blender.draw_texts`.
 * Changed `compas_rhino.artists.BaseArtist` to `compas_rhino.artists.RhinoArtist`.
 * Changed `compas_blender.artists.BaseArtist` to `compas_blender.artists.BlenderArtist`.
+* `compas_blender.artists.RobotModelArtist.collection` can be assigned as a Blender collection or a name.
+* Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
 
 ### Removed
 
