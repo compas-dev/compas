@@ -1,6 +1,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+
 from abc import abstractmethod
 
 from compas.utilities import is_color_rgb
@@ -9,6 +10,11 @@ from .artist import Artist
 
 class MeshArtist(Artist):
     """Base class for all mesh artists.
+
+    Parameters
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        A COMPAS mesh.
 
     Class Attributes
     ----------------
@@ -60,6 +66,7 @@ class MeshArtist(Artist):
     default_facecolor = (0, 0, 0)
 
     def __init__(self, mesh):
+        super(MeshArtist, self).__init__()
         self._mesh = None
         self._vertices = None
         self._edges = None
@@ -73,15 +80,14 @@ class MeshArtist(Artist):
         self._edge_text = None
         self._face_text = None
         self.mesh = mesh
-        self.join_faces = False
 
     @property
     def mesh(self):
-        return self.item
+        return self._mesh
 
     @mesh.setter
     def mesh(self, mesh):
-        self.item = mesh
+        self._mesh = mesh
         self._vertex_xyz = None
 
     @property
