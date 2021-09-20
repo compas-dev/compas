@@ -102,7 +102,7 @@ from compas.datastructures import VolMesh
 
 from compas.robots import RobotModel
 
-from ._artist import RhinoArtist
+from .artist import RhinoArtist
 
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist

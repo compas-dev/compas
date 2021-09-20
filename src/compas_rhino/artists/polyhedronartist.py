@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.artists import ShapeArtist
-from ._artist import RhinoArtist
+from .artist import RhinoArtist
 
 
 class PolyhedronArtist(RhinoArtist, ShapeArtist):

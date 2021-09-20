@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.artists import PrimitiveArtist
-from ._artist import RhinoArtist
+from .artist import RhinoArtist
 
 
 class PlaneArtist(RhinoArtist, PrimitiveArtist):

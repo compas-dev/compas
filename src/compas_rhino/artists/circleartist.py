@@ -5,7 +5,7 @@ from __future__ import division
 import compas_rhino
 from compas.geometry import add_vectors
 from compas.artists import PrimitiveArtist
-from ._artist import RhinoArtist
+from .artist import RhinoArtist
 
 
 class CircleArtist(RhinoArtist, PrimitiveArtist):

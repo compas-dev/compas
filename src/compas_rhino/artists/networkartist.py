@@ -9,7 +9,7 @@ from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict
 
 from compas.artists import NetworkArtist
-from ._artist import RhinoArtist
+from .artist import RhinoArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
