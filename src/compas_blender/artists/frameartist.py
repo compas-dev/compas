@@ -62,7 +62,7 @@ class FrameArtist(BlenderArtist):
                  frame: Frame,
                  collection: Optional[bpy.types.Collection] = None,
                  scale: float = 1.0):
-        super(FrameArtist, self).__init__()
+        super().__init__()
         self.collection = collection
         self.frame = frame
         self.scale = scale or 1.0

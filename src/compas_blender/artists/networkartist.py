@@ -1,4 +1,3 @@
-# from __future__ import annotations
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -9,7 +8,6 @@ import bpy
 from functools import partial
 
 import compas_blender
-from compas_blender.artists._artist import BaseArtist
 from compas.datastructures import Network
 from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict

@@ -23,7 +23,7 @@ class RobotModelArtist(BaseRobotModelArtist):
                  model: RobotModel,
                  collection: bpy.types.Collection = None):
         self.collection = collection or model.name
-        super(RobotModelArtist, self).__init__(model)
+        super().__init__(model)
 
     @property
     def collection(self) -> bpy.types.Collection:
