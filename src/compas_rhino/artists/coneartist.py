@@ -4,56 +4,34 @@ from __future__ import division
 
 from compas.utilities import pairwise
 import compas_rhino
-from ._shapeartist import ShapeArtist
+from compas.artists import ShapeArtist
+from ._artist import RhinoArtist
 
 
-class ConeArtist(ShapeArtist):
+class ConeArtist(RhinoArtist, ShapeArtist):
     """Artist for drawing cone shapes.
 
     Parameters
     ----------
     shape : :class:`compas.geometry.Cone`
         A COMPAS cone.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.ShapeArtist` for all other parameters.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import random
-        from compas.geometry import Pointcloud
-        from compas.geometry import Cone
-        from compas.geometry import Translation
-        from compas.utilities import i_to_rgb
-
-        import compas_rhino
-        from compas_rhino.artists import ConeArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 200)
-        tpl = Cone([[[0, 0, 0], [0, 0, 1]], 0.2], 0.8)
-
-        vertices, faces = tpl.to_vertices_and_faces(4)
-
-        compas_rhino.clear_layer("Test::ConeArtist")
-
-        for point in pcl.points[:len(pcl) // 2]:
-            cone = tpl.transformed(Translation.from_vector(point))
-            artist = ConeArtist(cone, color=i_to_rgb(random.random()), layer="Test::ConeArtist")
-            artist.draw(u=16)
+    layer : str, optional
+        The layer that should contain the drawing.
 
     """
 
-    def draw(self, u=10, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
+    def __init__(self, cone, layer=None):
+        super(ConeArtist, self).__init__(cone)
+        self.layer = layer
+
+    def draw(self, u=None, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the cone associated with the artist.
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``10``.
+            Default is ``~ConeArtist.u``.
         show_vertices : bool, optional
             Default is ``False``.
         show_edges : bool, optional
@@ -68,6 +46,7 @@ class ConeArtist(ShapeArtist):
         list
             The GUIDs of the objects created in Rhino.
         """
+        u = u or self.u
         vertices, faces = self.shape.to_vertices_and_faces(u=u)
         vertices = [list(vertex) for vertex in vertices]
         guids = []
@@ -86,10 +65,9 @@ class ConeArtist(ShapeArtist):
             guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         if show_faces:
             if join_faces:
-                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.name, color=self.color, disjoint=True)
+                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.shape.name, color=self.color, disjoint=True)
                 guids.append(guid)
             else:
                 polygons = [{'points': [vertices[index] for index in face], 'color': self.color} for face in faces]
                 guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
-        self._guids = guids
         return guids

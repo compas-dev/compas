@@ -69,8 +69,6 @@ Base Classes
     :nosignatures:
 
     RhinoArtist
-    PrimitiveArtist
-    ShapeArtist
 
 """
 from __future__ import absolute_import
@@ -105,8 +103,6 @@ from compas.datastructures import VolMesh
 from compas.robots import RobotModel
 
 from ._artist import RhinoArtist
-from ._primitiveartist import PrimitiveArtist
-from ._shapeartist import ShapeArtist
 
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
@@ -171,8 +167,6 @@ def new_artist_rhino(cls, *args, **kwargs):
 
 __all__ = [
     'RhinoArtist',
-    'PrimitiveArtist',
-    'ShapeArtist',
     'CircleArtist',
     'FrameArtist',
     'LineArtist',

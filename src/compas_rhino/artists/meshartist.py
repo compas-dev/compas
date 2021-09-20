@@ -12,13 +12,13 @@ from compas.geometry import scale_vector
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_points
 
-from compas.artists.meshartist import MeshArtist
+from compas.artists import MeshArtist
 from ._artist import RhinoArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
-class MeshArtist(MeshArtist, RhinoArtist):
+class MeshArtist(RhinoArtist, MeshArtist):
     """Artists for drawing mesh data structures.
 
     Parameters
@@ -42,7 +42,45 @@ class MeshArtist(MeshArtist, RhinoArtist):
     # draw
     # ==========================================================================
 
-    def draw(self, color=None, disjoint=False):
+    def draw(self, vertices=None, edges=None, faces=None, vertexcolor=None, edgecolor=None, facecolor=None, join_faces=False):
+        """Draw the network using the chosen visualisation settings.
+
+        Parameters
+        ----------
+        vertices : list, optional
+            A list of vertices to draw.
+            Default is ``None``, in which case all vertices are drawn.
+        edges : list, optional
+            A list of edges to draw.
+            The default is ``None``, in which case all edges are drawn.
+        faces : list, optional
+            A selection of faces to draw.
+            The default is ``None``, in which case all faces are drawn.
+        vertexcolor : tuple or dict of tuple, optional
+            The color specififcation for the vertices.
+            The default color is the value of ``~MeshArtist.default_vertexcolor``.
+        edgecolor : tuple or dict of tuple, optional
+            The color specififcation for the edges.
+            The default color is the value of ``~MeshArtist.default_edgecolor``.
+        facecolor : tuple or dict of tuple, optional
+            The color specififcation for the faces.
+            The default color is the value of ``~MeshArtist.default_facecolor``.
+        join_faces : bool, optional
+            Join the faces into 1 mesh.
+            Default is ``False``, in which case the faces are drawn as individual meshes.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+
+        """
+        guids = self.draw_vertices(vertices=vertices, color=vertexcolor)
+        guids += self.draw_edges(edges=edges, color=edgecolor)
+        guids += self.draw_faces(faces=faces, color=facecolor, join_faces=join_faces)
+        return guids
+
+    def draw_mesh(self, color=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
 
         Parameters

@@ -4,57 +4,36 @@ from __future__ import division
 
 from compas.utilities import pairwise
 import compas_rhino
-from ._shapeartist import ShapeArtist
+from compas.artists import ShapeArtist
+from ._artist import RhinoArtist
 
 
-class CapsuleArtist(ShapeArtist):
+class CapsuleArtist(RhinoArtist, ShapeArtist):
     """Artist for drawing capsule shapes.
 
     Parameters
     ----------
-    shape : :class:`compas.geometry.Capsule`
+    capsule : :class:`compas.geometry.Capsule`
         A COMPAS capsule.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.ShapeArtist` for all other parameters.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import random
-        from compas.geometry import Pointcloud
-        from compas.geometry import Capsule
-        from compas.geometry import Translation
-        from compas.utilities import i_to_rgb
-
-        import compas_rhino
-        from compas_rhino.artists import CapsuleArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Capsule([[0, 0, 0], [0.8, 0, 0]], 0.15)
-
-        compas_rhino.clear_layer("Test::CapsuleArtist")
-
-        for point in pcl.points:
-            capsule = tpl.transformed(Translation.from_vector(point))
-            artist = CapsuleArtist(capsule, color=i_to_rgb(random.random()), layer="Test::CapsuleArtist")
-            artist.draw()
-
+    layer : str, optional
+        The layer that should contain the drawing.
     """
 
-    def draw(self, u=10, v=10, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
+    def __init__(self, capsule, layer=None):
+        super(CapsuleArtist, self).__init__(capsule)
+        self.layer = layer
+
+    def draw(self, u=None, v=None, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the capsule associated with the artist.
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``10``.
+            Default is ``~CapsuleArtist.u``.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``10``.
+            Default is ``~CapsuleArtist.v``.
         show_vertices : bool, optional
             Default is ``False``.
         show_edges : bool, optional
@@ -69,6 +48,8 @@ class CapsuleArtist(ShapeArtist):
         list
             The GUIDs of the objects created in Rhino.
         """
+        u = u or self.u
+        v = v or self.v
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
         vertices = [list(vertex) for vertex in vertices]
         guids = []
@@ -87,10 +68,9 @@ class CapsuleArtist(ShapeArtist):
             guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         if show_faces:
             if join_faces:
-                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.name, color=self.color, disjoint=True)
+                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.shape.name, color=self.color, disjoint=True)
                 guids.append(guid)
             else:
                 polygons = [{'points': [vertices[index] for index in face], 'color': self.color} for face in faces]
                 guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
-        self._guids = guids
         return guids

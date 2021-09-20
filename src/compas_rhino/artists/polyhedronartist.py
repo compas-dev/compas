@@ -3,44 +3,24 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from ._shapeartist import ShapeArtist
+from compas.artists import ShapeArtist
+from ._artist import RhinoArtist
 
 
-class PolyhedronArtist(ShapeArtist):
+class PolyhedronArtist(RhinoArtist, ShapeArtist):
     """Artist for drawing polyhedron shapes.
 
     Parameters
     ----------
-    shape : :class:`compas.geometry.Polyhedron`
+    polyhedron : :class:`compas.geometry.Polyhedron`
         A COMPAS polyhedron.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.ShapeArtist` for all other parameters.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import random
-        from compas.geometry import Pointcloud
-        from compas.geometry import Polyhedron
-        from compas.geometry import Translation
-        from compas.utilities import i_to_rgb
-
-        import compas_rhino
-        from compas_rhino.artists import PolyhedronArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Polyhedron.from_platonicsolid(12)
-
-        compas_rhino.clear_layer("Test::PolyhedronArtist")
-
-        for point in pcl.points:
-            polyhedron = tpl.transformed(Translation.from_vector(point))
-            artist = PolyhedronArtist(polyhedron, color=i_to_rgb(random.random()), layer="Test::PolyhedronArtist")
-            artist.draw()
+    layer : str, optional
+        The layer that should contain the drawing.
     """
+
+    def __init__(self, polyhedron, layer=None):
+        super(PolyhedronArtist, self).__init__(polyhedron)
+        self.layer = layer
 
     def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the polyhedron associated with the artist.
@@ -73,10 +53,9 @@ class PolyhedronArtist(ShapeArtist):
         if show_faces:
             faces = self.shape.faces
             if join_faces:
-                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.name, color=self.color, disjoint=True)
+                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.shape.name, color=self.color, disjoint=True)
                 guids.append(guid)
             else:
                 polygons = [{'points': [vertices[index] for index in face], 'color': self.color} for face in faces]
                 guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
-        self._guids = guids
         return guids

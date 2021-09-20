@@ -8,12 +8,13 @@ import compas_rhino
 from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict
 
+from compas.artists import NetworkArtist
 from ._artist import RhinoArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
-class NetworkArtist(RhinoArtist):
+class NetworkArtist(RhinoArtist, NetworkArtist):
     """Artist for drawing network data structures.
 
     Parameters
@@ -61,8 +62,8 @@ class NetworkArtist(RhinoArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        guids = self.draw_nodes()
-        guids += self.draw_edges()
+        guids = self.draw_nodes(nodes=nodes, color=nodecolor)
+        guids += self.draw_edges(edges=edges, color=edgecolor)
         return guids
 
     def draw_nodes(self, nodes=None, color=None):
