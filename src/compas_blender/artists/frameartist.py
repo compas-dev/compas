@@ -1,3 +1,9 @@
+import bpy
+from typing import List
+from typing import Optional
+
+from compas.geometry import Frame
+
 import compas_blender
 from compas_blender.artists import BaseArtist
 
@@ -55,7 +61,10 @@ class FrameArtist(BaseArtist):
             artist.draw()
 
     """
-    def __init__(self, frame, collection=None, scale=1.0):
+    def __init__(self,
+                 frame: Frame,
+                 collection: Optional[bpy.types.Collection] = None,
+                 scale: float = 1.0):
         super(FrameArtist, self).__init__()
         self.collection = collection
         self.frame = frame
@@ -65,7 +74,7 @@ class FrameArtist(BaseArtist):
         self.color_yaxis = (0, 255, 0)
         self.color_zaxis = (0, 0, 255)
 
-    def draw(self):
+    def draw(self) -> None:
         """Draw the frame.
 
         Returns
@@ -76,7 +85,7 @@ class FrameArtist(BaseArtist):
         self.draw_origin()
         self.draw_axes()
 
-    def draw_origin(self):
+    def draw_origin(self) -> List[bpy.types.Object]:
         """Draw the origin of the frame.
 
         Returns
@@ -93,7 +102,7 @@ class FrameArtist(BaseArtist):
         self.objects += objects
         return objects
 
-    def draw_axes(self):
+    def draw_axes(self) -> List[bpy.types.Object]:
         """Draw the axes of the frame.
 
         Returns
