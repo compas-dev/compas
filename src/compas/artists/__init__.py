@@ -13,6 +13,11 @@ Classes
     :nosignatures:
 
     Artist
+    MeshArtist
+    NetworkArtist
+    PrimitiveArtist
+    ShapeArtist
+    VolMeshArtist
 
 
 Exceptions
@@ -31,8 +36,18 @@ from __future__ import division
 
 from .exceptions import DataArtistNotRegistered
 from .artist import Artist
+from .meshartist import MeshArtist
+from .networkartist import NetworkArtist
+from .primitiveartist import PrimitiveArtist
+from .shapeartist import ShapeArtist
+from .volmeshartist import VolMeshArtist
 
 __all__ = [
     'DataArtistNotRegistered',
     'Artist',
+    'MeshArtist',
+    'NetworkArtist',
+    'PrimitiveArtist',
+    'ShapeArtist',
+    'VolMeshArtist',
 ]
