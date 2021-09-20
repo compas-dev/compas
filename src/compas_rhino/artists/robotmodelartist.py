@@ -19,10 +19,6 @@ import compas_rhino
 from compas_rhino.artists import RhinoArtist
 from compas_rhino.geometry.transformations import xform_from_transformation
 
-__all__ = [
-    'RobotModelArtist',
-]
-
 
 class RobotModelArtist(BaseRobotModelArtist, RhinoArtist):
     """Visualizer for robots inside a Rhino environment.

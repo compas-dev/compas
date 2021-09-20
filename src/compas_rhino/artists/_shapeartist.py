@@ -4,9 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.datastructures import Mesh
-from compas_rhino.artists._artist import RhinoArtist
-
-__all__ = ['ShapeArtist']
+from ._artist import RhinoArtist
 
 
 class ShapeArtist(RhinoArtist):

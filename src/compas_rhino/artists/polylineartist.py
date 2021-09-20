@@ -3,10 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
-
-
-__all__ = ['PolylineArtist']
+from ._primitiveartist import PrimitiveArtist
 
 
 class PolylineArtist(PrimitiveArtist):

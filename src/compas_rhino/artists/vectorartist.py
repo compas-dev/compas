@@ -4,10 +4,7 @@ from __future__ import division
 
 from compas.geometry import Point
 import compas_rhino
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
-
-
-__all__ = ['VectorArtist']
+from ._primitiveartist import PrimitiveArtist
 
 
 class VectorArtist(PrimitiveArtist):
