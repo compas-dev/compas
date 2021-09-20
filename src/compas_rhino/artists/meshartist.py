@@ -5,8 +5,6 @@ from __future__ import division
 from functools import partial
 import compas_rhino
 
-from compas_rhino.artists._artist import RhinoArtist
-
 from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
 from compas.geometry import add_vectors
@@ -14,14 +12,13 @@ from compas.geometry import scale_vector
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_points
 
+from compas.artists.meshartist import MeshArtist
+from ._artist import RhinoArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
-__all__ = ['MeshArtist']
-
-
-class MeshArtist(RhinoArtist):
+class MeshArtist(MeshArtist, RhinoArtist):
     """Artists for drawing mesh data structures.
 
     Parameters
@@ -30,112 +27,29 @@ class MeshArtist(RhinoArtist):
         A COMPAS mesh.
     layer : str, optional
         The name of the layer that will contain the mesh.
-
-    Attributes
-    ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        The COMPAS mesh associated with the artist.
-    layer : str
-        The layer in which the mesh should be contained.
-    color_vertices : 3-tuple
-        Default color of the vertices.
-    color_edges : 3-tuple
-        Default color of the edges.
-    color_faces : 3-tuple
-        Default color of the faces.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import compas
-        from compas.datastructures import Mesh
-        from compas_rhino.artists import MeshArtist
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        artist = MeshArtist(mesh, layer='COMPAS::MeshArtist')
-        artist.clear_layer()
-        artist.draw_faces(join_faces=True)
-        artist.draw_vertices(color={key: '#ff0000' for key in mesh.vertices_on_boundary()})
-        artist.draw_edges()
-        artist.redraw()
-
     """
 
     def __init__(self, mesh, layer=None):
-        super(MeshArtist, self).__init__()
-        self._mesh = None
-        self._vertex_xyz = None
-        self.mesh = mesh
+        super(MeshArtist, self).__init__(mesh)
         self.layer = layer
-        self.color_vertices = (255, 255, 255)
-        self.color_edges = (0, 0, 0)
-        self.color_faces = (0, 0, 0)
-
-    @property
-    def mesh(self):
-        return self._mesh
-
-    @mesh.setter
-    def mesh(self, mesh):
-        self._mesh = mesh
-        self._vertex_xyz = None
-
-    @property
-    def vertex_xyz(self):
-        """dict:
-        The view coordinates of the mesh vertices.
-        The view coordinates default to the actual mesh coordinates.
-        """
-        if not self._vertex_xyz:
-            return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
-        return self._vertex_xyz
-
-    @vertex_xyz.setter
-    def vertex_xyz(self, vertex_xyz):
-        self._vertex_xyz = vertex_xyz
-
-    # ==========================================================================
-    # clear
-    # ==========================================================================
 
     def clear_by_name(self):
         """Clear all objects in the "namespace" of the associated mesh."""
         guids = compas_rhino.get_objects(name="{}.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
-
     # ==========================================================================
     # draw
     # ==========================================================================
 
-    def draw(self):
-        """Draw the mesh using the chosen visualisation settings.
-
-        Returns
-        -------
-        list
-            The GUIDs of the created Rhino objects.
-
-        """
-        guids = self.draw_vertices()
-        guids += self.draw_faces()
-        guids += self.draw_edges()
-        return guids
-
-    def draw_mesh(self, color=(0, 0, 0), disjoint=False):
+    def draw(self, color=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
 
         Parameters
         ----------
         color : tuple, optional
             The color of the mesh.
-            Default is black, ``(0, 0, 0)``.
+            Default is the value of ``~MeshArtist.default_color``.
         disjoint : bool, optional
             Draw the faces of the mesh with disjoint vertices.
             Default is ``False``.
@@ -150,7 +64,8 @@ class MeshArtist(RhinoArtist):
         The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
-        vertex_index = self.mesh.key_index()
+        color = color or self.default_color
+        vertex_index = self.mesh.vertex_index()
         vertex_xyz = self.vertex_xyz
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
         faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
@@ -183,7 +98,7 @@ class MeshArtist(RhinoArtist):
             Default is ``None``, in which case all vertices are drawn.
         color : tuple or dict of tuple, optional
             The color specififcation for the vertices.
-            The default is white, ``(255, 255, 255)``.
+            The default is the value of ``~MeshArtist.default_vertexcolor``.
 
         Returns
         -------
@@ -191,15 +106,16 @@ class MeshArtist(RhinoArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        self.vertex_color = color
         vertices = vertices or list(self.mesh.vertices())
         vertex_xyz = self.vertex_xyz
-        vertex_color = colordict(color, vertices, default=self.color_vertices)
         points = []
         for vertex in vertices:
             points.append({
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.mesh.name, vertex),
-                'color': vertex_color[vertex]})
+                'color': self.vertex_color.get(vertex, self.default_vertexcolor)
+            })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_faces(self, faces=None, color=None, join_faces=False):
@@ -212,7 +128,7 @@ class MeshArtist(RhinoArtist):
             The default is ``None``, in which case all faces are drawn.
         color : tuple or dict of tuple, optional
             The color specififcation for the faces.
-            The default color is black ``(0, 0, 0)``.
+            The default color is the value of ``~MeshArtist.default_facecolor``.
         join_faces : bool, optional
             Join the faces into 1 mesh.
             Default is ``False``, in which case the faces are drawn as individual meshes.
@@ -223,23 +139,23 @@ class MeshArtist(RhinoArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        self.face_color = color
         faces = faces or list(self.mesh.faces())
         vertex_xyz = self.vertex_xyz
-        face_color = colordict(color, faces, default=self.color_faces)
         facets = []
         for face in faces:
             facets.append({
                 'points': [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                 'name': "{}.face.{}".format(self.mesh.name, face),
-                'color': face_color[face]})
+                'color': self.face_color.get(face, self.default_facecolor)
+            })
         guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
         if not join_faces:
             return guids
         guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
         compas_rhino.rs.ObjectLayer(guid, self.layer)
         compas_rhino.rs.ObjectName(guid, '{}'.format(self.mesh.name))
-        if color:
-            compas_rhino.rs.ObjectColor(guid, color)
+        compas_rhino.rs.ObjectColor(guid, color)
         return [guid]
 
     def draw_edges(self, edges=None, color=None):
@@ -252,7 +168,7 @@ class MeshArtist(RhinoArtist):
             The default is ``None``, in which case all edges are drawn.
         color : tuple or dict of tuple, optional
             The color specififcation for the edges.
-            The default color is black, ``(0, 0, 0)``.
+            The default color is the value of ``~MeshArtist.default_edgecolor``.
 
         Returns
         -------
@@ -260,16 +176,17 @@ class MeshArtist(RhinoArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        self.edge_color = color
         edges = edges or list(self.mesh.edges())
         vertex_xyz = self.vertex_xyz
-        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             lines.append({
                 'start': vertex_xyz[edge[0]],
                 'end': vertex_xyz[edge[1]],
-                'color': edge_color[edge],
-                'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)})
+                'color': self.edge_color.get(edge, self.default_edgecolor),
+                'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)
+            })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
@@ -309,7 +226,8 @@ class MeshArtist(RhinoArtist):
                 'end': b,
                 'color': color,
                 'name': "{}.vertexnormal.{}".format(self.mesh.name, vertex),
-                'arrow': 'end'})
+                'arrow': 'end'
+            })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_facenormals(self, faces=None, color=(0, 255, 255), scale=1.0):
@@ -345,7 +263,8 @@ class MeshArtist(RhinoArtist):
                 'end': b,
                 'name': "{}.facenormal.{}".format(self.mesh.name, face),
                 'color': color,
-                'arrow': 'end'})
+                'arrow': 'end'
+            })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================

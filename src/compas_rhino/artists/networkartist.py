@@ -4,15 +4,13 @@ from __future__ import division
 
 from functools import partial
 import compas_rhino
-from compas_rhino.artists._artist import RhinoArtist
+
 from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict
 
+from ._artist import RhinoArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
-
-
-__all__ = ['NetworkArtist']
 
 
 class NetworkArtist(RhinoArtist):
@@ -24,72 +22,38 @@ class NetworkArtist(RhinoArtist):
         A COMPAS network.
     layer : str, optional
         The parent layer of the network.
-
-    Attributes
-    ----------
-    network : :class:`compas.datastructures.Network`
-        The COMPAS network associated with the artist.
-    layer : str
-        The layer in which the network should be contained.
-    color_nodes : 3-tuple
-        Default color of the nodes.
-    color_edges : 3-tuple
-        Default color of the edges.
-
     """
 
     def __init__(self, network, layer=None):
-        super(NetworkArtist, self).__init__()
-        self._network = None
-        self._node_xyz = None
-        self.network = network
+        super(NetworkArtist, self).__init__(network)
         self.layer = layer
-        self.color_nodes = (255, 255, 255)
-        self.color_edges = (0, 0, 0)
-
-    @property
-    def network(self):
-        return self._network
-
-    @network.setter
-    def network(self, network):
-        self._network = network
-        self._node_xyz = None
-
-    @property
-    def node_xyz(self):
-        """dict:
-        The view coordinates of the network nodes.
-        The view coordinates default to the actual node coordinates.
-        """
-        if not self._node_xyz:
-            return {node: self.network.node_attributes(node, 'xyz') for node in self.network.nodes()}
-        return self._node_xyz
-
-    @node_xyz.setter
-    def node_xyz(self, node_xyz):
-        self._node_xyz = node_xyz
-
-    # ==========================================================================
-    # clear
-    # ==========================================================================
 
     def clear_by_name(self):
         """Clear all objects in the "namespace" of the associated network."""
         guids = compas_rhino.get_objects(name="{}.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
-
     # ==========================================================================
     # draw
     # ==========================================================================
 
-    def draw(self):
+    def draw(self, nodes=None, edges=None, nodecolor=None, edgecolor=None):
         """Draw the network using the chosen visualisation settings.
+
+        Parameters
+        ----------
+        nodes : list, optional
+            A list of nodes to draw.
+            Default is ``None``, in which case all nodes are drawn.
+        edges : list, optional
+            A list of edges to draw.
+            The default is ``None``, in which case all edges are drawn.
+        nodecolor : tuple or dict of tuple, optional
+            The color specififcation for the nodes.
+            The default color is the value of ``~NetworkArtist.default_nodecolor``.
+        edgecolor : tuple or dict of tuple, optional
+            The color specififcation for the edges.
+            The default color is the value of ``~NetworkArtist.default_edgecolor``.
 
         Returns
         -------
@@ -109,9 +73,9 @@ class NetworkArtist(RhinoArtist):
         nodes : list, optional
             A list of nodes to draw.
             Default is ``None``, in which case all nodes are drawn.
-        color : 3-tuple or dict of 3-tuples, optional
+        color : tuple or dict of tuple, optional
             The color specififcation for the nodes.
-            The default color is ``(255, 255, 255)``.
+            The default color is the value of ``~NetworkArtist.default_nodecolor``.
 
         Returns
         -------
@@ -119,15 +83,16 @@ class NetworkArtist(RhinoArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        self.node_color = color
         node_xyz = self.node_xyz
         nodes = nodes or list(self.network.nodes())
-        node_color = colordict(color, nodes, default=self.color_nodes)
         points = []
         for node in nodes:
             points.append({
                 'pos': node_xyz[node],
                 'name': "{}.node.{}".format(self.network.name, node),
-                'color': node_color[node]})
+                'color': self.node_color.get(node, self.default_nodecolor)
+            })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
@@ -138,9 +103,9 @@ class NetworkArtist(RhinoArtist):
         edges : list, optional
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
-        color : 3-tuple or dict of 3-tuple, optional
+        color : tuple or dict of tuple, optional
             The color specififcation for the edges.
-            The default color is ``(0, 0, 0)``.
+            The default color is the value of ``~NetworkArtist.default_edgecolor``.
 
         Returns
         -------
@@ -148,16 +113,17 @@ class NetworkArtist(RhinoArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        self.edge_color = color
         node_xyz = self.node_xyz
         edges = edges or list(self.network.edges())
-        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             lines.append({
                 'start': node_xyz[edge[0]],
                 'end': node_xyz[edge[1]],
-                'color': edge_color[edge],
-                'name': "{}.edge.{}-{}".format(self.network.name, *edge)})
+                'color': self.edge_color.get(edge, self.default_edgecolor),
+                'name': "{}.edge.{}-{}".format(self.network.name, *edge)
+            })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
