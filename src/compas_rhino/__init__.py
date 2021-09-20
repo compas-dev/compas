@@ -42,6 +42,11 @@ def clear():
     delete_objects(guids, purge=True)  # noqa: F405
 
 
+def redraw():
+    rs.EnableRedraw(True)
+    rs.Redraw()
+
+
 def _check_rhino_version(version):
     supported_versions = ['5.0', '6.0', '7.0']
 
@@ -88,7 +93,7 @@ def _get_ironpython_lib_path_mac(version):
     lib_paths = {
         '5.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents'],
         '6.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A'],
-        '7.0': ['/', 'Applications', 'Rhino 7.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A']
+        '7.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A']
     }
     return os.path.join(*lib_paths.get(version) + ['Resources', 'ManagedPlugIns', 'RhinoDLR_Python.rhp', 'Lib'])
 
