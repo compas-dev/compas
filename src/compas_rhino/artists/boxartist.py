@@ -18,9 +18,8 @@ class BoxArtist(RhinoArtist, ShapeArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, box, layer=None):
-        super(BoxArtist, self).__init__(box)
-        self.layer = layer
+    def __init__(self, box, layer=None, **kwargs):
+        super(BoxArtist, self).__init__(shape=box, layer=layer, **kwargs)
 
     def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the box associated with the artist.

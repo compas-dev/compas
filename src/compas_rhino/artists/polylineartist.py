@@ -16,9 +16,8 @@ class PolylineArtist(RhinoArtist, PrimitiveArtist):
         A COMPAS polyline.
     """
 
-    def __init__(self, polyline, layer=None):
-        super(PolylineArtist, self).__init__(polyline)
-        self.layer = layer
+    def __init__(self, polyline, layer=None, **kwargs):
+        super(PolylineArtist, self).__init__(primitive=polyline, layer=layer, **kwargs)
 
     def draw(self, show_points=False):
         """Draw the polyline.

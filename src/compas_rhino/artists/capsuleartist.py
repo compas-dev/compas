@@ -19,9 +19,8 @@ class CapsuleArtist(RhinoArtist, ShapeArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, capsule, layer=None):
-        super(CapsuleArtist, self).__init__(capsule)
-        self.layer = layer
+    def __init__(self, capsule, layer=None, **kwargs):
+        super(CapsuleArtist, self).__init__(shape=capsule, layer=layer, **kwargs)
 
     def draw(self, u=None, v=None, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the capsule associated with the artist.

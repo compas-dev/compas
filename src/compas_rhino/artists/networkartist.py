@@ -25,9 +25,8 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         The parent layer of the network.
     """
 
-    def __init__(self, network, layer=None):
-        super(NetworkArtist, self).__init__(network)
-        self.layer = layer
+    def __init__(self, network, layer=None, **kwargs):
+        super(NetworkArtist, self).__init__(network=network, layer=layer, **kwargs)
 
     def clear_by_name(self):
         """Clear all objects in the "namespace" of the associated network."""

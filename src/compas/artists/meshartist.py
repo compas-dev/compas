@@ -65,8 +65,8 @@ class MeshArtist(Artist):
     default_edgecolor = (0, 0, 0)
     default_facecolor = (0, 0, 0)
 
-    def __init__(self, mesh):
-        super(MeshArtist, self).__init__()
+    def __init__(self, mesh, **kwargs):
+        super(MeshArtist, self).__init__(**kwargs)
         self._mesh = None
         self._vertices = None
         self._edges = None

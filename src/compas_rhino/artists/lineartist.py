@@ -18,9 +18,8 @@ class LineArtist(RhinoArtist, PrimitiveArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, line, layer=None):
-        super(LineArtist, self).__init__(line)
-        self.layer = layer
+    def __init__(self, line, layer=None, **kwargs):
+        super(LineArtist, self).__init__(primitive=line, layer=layer, **kwargs)
 
     def draw(self, show_points=False):
         """Draw the line.

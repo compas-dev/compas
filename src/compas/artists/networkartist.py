@@ -56,8 +56,8 @@ class NetworkArtist(Artist):
     default_nodecolor = (255, 255, 255)
     default_edgecolor = (0, 0, 0)
 
-    def __init__(self, network):
-        super(NetworkArtist, self).__init__()
+    def __init__(self, network, **kwargs):
+        super(NetworkArtist, self).__init__(**kwargs)
         self._network = None
         self._nodes = None
         self._edges = None

@@ -19,9 +19,8 @@ class TorusArtist(RhinoArtist, ShapeArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, torus, layer=None):
-        super(TorusArtist, self).__init__(torus)
-        self.layer = layer
+    def __init__(self, torus, layer=None, **kwargs):
+        super(TorusArtist, self).__init__(shape=torus, layer=layer, **kwargs)
 
     def draw(self, u=None, v=None, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the torus associated with the artist.

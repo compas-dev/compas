@@ -18,9 +18,8 @@ class PolygonArtist(RhinoArtist, PrimitiveArtist):
         The name of the layer that will contain the mesh.
     """
 
-    def __init__(self, polygon, layer=None):
-        super(PolygonArtist, self).__init__(polygon)
-        self.layer = layer
+    def __init__(self, polygon, layer=None, **kwargs):
+        super(PolygonArtist, self).__init__(primitive=polygon, layer=layer, **kwargs)
 
     def draw(self, show_points=False, show_edges=False, show_face=True):
         """Draw the polygon.

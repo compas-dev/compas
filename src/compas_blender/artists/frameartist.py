@@ -1,14 +1,16 @@
 import bpy
 from typing import List
 from typing import Optional
+from typing import Any
 
 from compas.geometry import Frame
 
 import compas_blender
+from compas.artists import PrimitiveArtist
 from .artist import BlenderArtist
 
 
-class FrameArtist(BlenderArtist):
+class FrameArtist(BlenderArtist, PrimitiveArtist):
     """Artist for drawing frames.
 
     Parameters
@@ -37,34 +39,13 @@ class FrameArtist(BlenderArtist):
         Default is ``(0, 255, 0)``.
     color_zaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 255)``.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        from compas.geometry import Pointcloud
-        from compas.geometry import Frame
-
-        from compas_blender.artists import FrameArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-
-
-        for point in pcl.points:
-            frame = tpl.copy()
-            frame.point = point
-            artist = FrameArtist(frame)
-            artist.draw()
-
     """
     def __init__(self,
                  frame: Frame,
                  collection: Optional[bpy.types.Collection] = None,
-                 scale: float = 1.0):
-        super().__init__()
-        self.collection = collection
-        self.frame = frame
+                 scale: float = 1.0,
+                 **kwargs: Any):
+        super().__init__(primitive=frame, collection=collection or frame.name, **kwargs)
         self.scale = scale or 1.0
         self.color_origin = (0, 0, 0)
         self.color_xaxis = (255, 0, 0)

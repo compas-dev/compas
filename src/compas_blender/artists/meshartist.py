@@ -3,6 +3,7 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 from typing import Union
+from typing import Any
 
 import bpy
 
@@ -15,13 +16,14 @@ from compas.geometry import centroid_points
 from compas.geometry import scale_vector
 
 from compas.utilities import color_to_colordict
+from compas.artists import MeshArtist
 from .artist import BlenderArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
 Color = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
-class MeshArtist(BlenderArtist):
+class MeshArtist(BlenderArtist, MeshArtist):
     """A mesh artist defines functionality for visualising COMPAS meshes in Blender.
 
     Parameters
@@ -34,23 +36,13 @@ class MeshArtist(BlenderArtist):
     mesh : :class:`compas.datastructures.Mesh`
         The COMPAS mesh associated with the artist.
 
-    Examples
-    --------
-    .. code-block:: python
-
-        import compas
-        from compas.datastructures import Mesh
-        from compas_blender.artists import MeshArtist
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        MeshArtist(mesh).draw()
-
     """
 
-    def __init__(self, mesh: Mesh):
-        super().__init__()
-        self._collection = None
+    def __init__(self,
+                 mesh: Mesh,
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 **kwargs: Any):
+        super().__init__(mesh=mesh, collection=collection or mesh.name, **kwargs)
         self._vertexcollection = None
         self._edgecollection = None
         self._facecollection = None
@@ -59,184 +51,57 @@ class MeshArtist(BlenderArtist):
         self._vertexlabelcollection = None
         self._edgelabelcollection = None
         self._facelabelcollection = None
-        self._object_vertex = {}
-        self._object_edge = {}
-        self._object_face = {}
-        self._object_vertexnormal = {}
-        self._object_facenormal = {}
-        self._object_vertexlabel = {}
-        self._object_edgelabel = {}
-        self._object_facelabel = {}
-        self.color_vertices = (1.0, 1.0, 1.0)
-        self.color_edges = (0.0, 0.0, 0.0)
-        self.color_faces = (0.7, 0.7, 0.7)
-        self.show_vertices = True
-        self.show_edges = True
-        self.show_faces = True
-        self.mesh = mesh
-
-    @property
-    def collection(self) -> bpy.types.Collection:
-        if not self._collection:
-            self._collection = compas_blender.create_collection(self.mesh.name)
-        return self._collection
 
     @property
     def vertexcollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::Vertices"
         if not self._vertexcollection:
-            self._vertexcollection = compas_blender.create_collections_from_path(path)[1]
+            self._vertexcollection = compas_blender.create_collection('Vertices', parent=self.collection)
         return self._vertexcollection
 
     @property
     def edgecollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::Edges"
         if not self._edgecollection:
-            self._edgecollection = compas_blender.create_collections_from_path(path)[1]
+            self._edgecollection = compas_blender.create_collection('Edges', parent=self.collection)
         return self._edgecollection
 
     @property
     def facecollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::Faces"
         if not self._facecollection:
-            self._facecollection = compas_blender.create_collections_from_path(path)[1]
+            self._facecollection = compas_blender.create_collection('Faces', parent=self.collection)
         return self._facecollection
 
     @property
     def vertexnormalcollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::VertexNormals"
         if not self._vertexnormalcollection:
-            self._vertexnormalcollection = compas_blender.create_collections_from_path(path)[1]
+            self._vertexnormalcollection = compas_blender.create_collection('VertexNormals', parent=self.collection)
         return self._vertexnormalcollection
 
     @property
     def facenormalcollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::FaceNormals"
         if not self._facenormalcollection:
-            self._facenormalcollection = compas_blender.create_collections_from_path(path)[1]
+            self._facenormalcollection = compas_blender.create_collection('FaceNormals', parent=self.collection)
         return self._facenormalcollection
 
     @property
     def vertexlabelcollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::VertexLabels"
         if not self._vertexlabelcollection:
-            self._vertexlabelcollection = compas_blender.create_collections_from_path(path)[1]
+            self._vertexlabelcollection = compas_blender.create_collection('VertexLabels', parent=self.collection)
         return self._vertexlabelcollection
 
     @property
     def edgelabelcollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::EdgeLabels"
         if not self._edgelabelcollection:
-            self._edgelabelcollection = compas_blender.create_collections_from_path(path)[1]
+            self._edgelabelcollection = compas_blender.create_collection('EdgeLabels', parent=self.collection)
         return self._edgelabelcollection
 
     @property
     def facelabelcollection(self) -> bpy.types.Collection:
-        path = f"{self.mesh.name}::FaceLabels"
         if not self._facelabelcollection:
-            self._facelabelcollection = compas_blender.create_collections_from_path(path)[1]
+            self._facelabelcollection = compas_blender.create_collection('FaceLabels', parent=self.collection)
         return self._facelabelcollection
 
-    @property
-    def object_vertex(self) -> Dict[bpy.types.Object, int]:
-        """Map between Blender object objects and mesh vertex identifiers."""
-        return self._object_vertex
-
-    @object_vertex.setter
-    def object_vertex(self, values):
-        self._object_vertex = dict(values)
-
-    @property
-    def object_edge(self) -> Dict[bpy.types.Object, Tuple[int, int]]:
-        """Map between Blender object objects and mesh edge identifiers."""
-        return self._object_edge
-
-    @object_edge.setter
-    def object_edge(self, values):
-        self._object_edge = dict(values)
-
-    @property
-    def object_face(self) -> Dict[bpy.types.Object, int]:
-        """Map between Blender object objects and mesh face identifiers."""
-        return self._object_face
-
-    @object_face.setter
-    def object_face(self, values):
-        self._object_face = dict(values)
-
-    @property
-    def object_vertexnormal(self) -> Dict[bpy.types.Object, int]:
-        """Map between Blender object objects and mesh vertex normal identifiers."""
-        return self._object_vertexnormal
-
-    @object_vertexnormal.setter
-    def object_vertexnormal(self, values):
-        self._object_vertexnormal = dict(values)
-
-    @property
-    def object_facenormal(self) -> Dict[bpy.types.Object, int]:
-        """Map between Blender object objects and mesh face normal identifiers."""
-        return self._object_facenormal
-
-    @object_facenormal.setter
-    def object_facenormal(self, values):
-        self._object_facenormal = dict(values)
-
-    @property
-    def object_vertexlabel(self) -> Dict[bpy.types.Object, int]:
-        """Map between Blender object objects and mesh vertex label identifiers."""
-        return self._object_vertexlabel
-
-    @object_vertexlabel.setter
-    def object_vertexlabel(self, values):
-        self._object_vertexlabel = dict(values)
-
-    @property
-    def object_edgelabel(self) -> Dict[bpy.types.Object, Tuple[int, int]]:
-        """Map between Blender object objects and mesh edge label identifiers."""
-        return self._object_edgelabel
-
-    @object_edgelabel.setter
-    def object_edgelabel(self, values):
-        self._object_edgelabel = dict(values)
-
-    @property
-    def object_facelabel(self) -> Dict[bpy.types.Object, int]:
-        """Map between Blender object objects and mesh face label identifiers."""
-        return self._object_facelabel
-
-    @object_facelabel.setter
-    def object_facelabel(self, values):
-        self._object_facelabel = dict(values)
-
     # ==========================================================================
-    # clear
-    # ==========================================================================
-
-    def clear(self) -> None:
-        """Clear all objects previously drawn by this artist.
-        """
-        objects = []
-        objects += list(self.object_vertex)
-        objects += list(self.object_edge)
-        objects += list(self.object_face)
-        objects += list(self.object_vertexnormal)
-        objects += list(self.object_facenormal)
-        objects += list(self.object_vertexlabel)
-        objects += list(self.object_edgelabel)
-        objects += list(self.object_facelabel)
-        compas_blender.delete_objects(objects, purge_data=True)
-        self._object_vertex = {}
-        self._object_edge = {}
-        self._object_face = {}
-        self._object_vertexnormal = {}
-        self._object_facenormal = {}
-        self._object_vertexlabel = {}
-        self._object_edgelabel = {}
-        self._object_facelabel = {}
-
-    # ==========================================================================
-    # components
+    # draw
     # ==========================================================================
 
     def draw(self) -> None:
@@ -249,17 +114,15 @@ class MeshArtist(BlenderArtist):
 
         """
         self.clear()
-        if self.show_vertices:
-            self.draw_vertices()
-        if self.show_faces:
-            self.draw_faces()
-        if self.show_edges:
-            self.draw_edges()
+        self.draw_vertices()
+        self.draw_faces()
+        self.draw_edges()
 
     def draw_mesh(self) -> List[bpy.types.Object]:
         """Draw the mesh."""
         vertices, faces = self.mesh.to_vertices_and_faces()
         obj = compas_blender.draw_mesh(vertices, faces, name=self.mesh.name, collection=self.collection)
+        self.objects += [obj]
         return [obj]
 
     def draw_vertices(self,
@@ -280,18 +143,18 @@ class MeshArtist(BlenderArtist):
         list of :class:`bpy.types.Object`
 
         """
+        self.vertex_color = color
         vertices = vertices or list(self.mesh.vertices())
-        vertex_color = colordict(color, vertices, default=self.color_vertices)
         points = []
         for vertex in vertices:
             points.append({
                 'pos': self.mesh.vertex_coordinates(vertex),
                 'name': f"{self.mesh.name}.vertex.{vertex}",
-                'color': vertex_color[vertex],
+                'color': self.vertex_color.get(vertex, self.default_vertexcolor),
                 'radius': 0.01
             })
         objects = compas_blender.draw_points(points, self.vertexcollection)
-        self.object_vertex = zip(objects, vertices)
+        self.objects += objects
         return objects
 
     def draw_faces(self,
@@ -312,17 +175,17 @@ class MeshArtist(BlenderArtist):
         list of :class:`bpy.types.Object`
 
         """
+        self.face_color = color
         faces = faces or list(self.mesh.faces())
-        face_color = colordict(color, faces, default=self.color_faces)
         facets = []
         for face in faces:
             facets.append({
                 'points': self.mesh.face_coordinates(face),
                 'name': f"{self.mesh.name}.face.{face}",
-                'color': face_color[face]
+                'color': self.face_color.get(face, self.default_facecolor)
             })
         objects = compas_blender.draw_faces(facets, self.facecollection)
-        self.object_face = zip(objects, faces)
+        self.objects += objects
         return objects
 
     def draw_edges(self,
@@ -343,18 +206,18 @@ class MeshArtist(BlenderArtist):
         list of :class:`bpy.types.Object`
 
         """
+        self.edge_color = color
         edges = edges or list(self.mesh.edges())
-        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             lines.append({
                 'start': self.mesh.vertex_coordinates(edge[0]),
                 'end': self.mesh.vertex_coordinates(edge[1]),
-                'color': edge_color[edge],
+                'color': self.edge_color.get(edge, self.default_edgecolor),
                 'name': f"{self.mesh.name}.edge.{edge[0]}-{edge[1]}"
             })
         objects = compas_blender.draw_lines(lines, self.edgecollection)
-        self.object_edge = zip(objects, edges)
+        self.objects += objects
         return objects
 
     # ==========================================================================
@@ -397,7 +260,7 @@ class MeshArtist(BlenderArtist):
                 'name': "{}.vertexnormal.{}".format(self.mesh.name, vertex)
             })
         objects = compas_blender.draw_lines(lines, collection=self.vertexnormalcollection)
-        self.object_vertexnormal = zip(objects, vertices)
+        self.objects += objects
         return objects
 
     def draw_facenormals(self,
@@ -438,7 +301,7 @@ class MeshArtist(BlenderArtist):
                 'color': face_color[face]
             })
         objects = compas_blender.draw_lines(lines, collection=self.facenormalcollection)
-        self.object_facenormal = zip(objects, faces)
+        self.objects += objects
         return objects
 
     # ==========================================================================
@@ -480,7 +343,7 @@ class MeshArtist(BlenderArtist):
                 'text': vertex_text[vertex],
                 'color': vertex_color[vertex]})
         objects = compas_blender.draw_texts(labels, collection=self.vertexlabelcollection)
-        self.object_vertexlabel = zip(objects, vertex_text)
+        self.objects += objects
         return objects
 
     def draw_edgelabels(self,
@@ -517,7 +380,7 @@ class MeshArtist(BlenderArtist):
                 'name': "{}.edgelabel.{}-{}".format(self.mesh.name, *edge),
                 'text': edge_text[edge]})
         objects = compas_blender.draw_texts(labels, collection=self.edgelabelcollection, color=edge_color)
-        self.object_edgelabel = zip(objects, edge_text)
+        self.objects += objects
         return objects
 
     def draw_facelabels(self,
@@ -556,5 +419,5 @@ class MeshArtist(BlenderArtist):
                 'name': "{}.facelabel.{}".format(self.mesh.name, face),
                 'text': face_text[face]})
         objects = compas_blender.draw_texts(labels, collection=self.collection, color=face_color)
-        self.object_facelabel = zip(objects, face_text)
+        self.objects += objects
         return objects

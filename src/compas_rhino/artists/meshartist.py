@@ -29,9 +29,8 @@ class MeshArtist(RhinoArtist, MeshArtist):
         The name of the layer that will contain the mesh.
     """
 
-    def __init__(self, mesh, layer=None):
-        super(MeshArtist, self).__init__(mesh)
-        self.layer = layer
+    def __init__(self, mesh, layer=None, **kwargs):
+        super(MeshArtist, self).__init__(mesh=mesh, layer=layer, **kwargs)
 
     def clear_by_name(self):
         """Clear all objects in the "namespace" of the associated mesh."""

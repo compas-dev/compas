@@ -20,9 +20,8 @@ class ConeArtist(RhinoArtist, ShapeArtist):
 
     """
 
-    def __init__(self, cone, layer=None):
-        super(ConeArtist, self).__init__(cone)
-        self.layer = layer
+    def __init__(self, cone, layer=None, **kwargs):
+        super(ConeArtist, self).__init__(shape=cone, layer=layer, **kwargs)
 
     def draw(self, u=None, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the cone associated with the artist.

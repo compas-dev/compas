@@ -82,8 +82,8 @@ class VolMeshArtist(Artist):
     default_facecolor = (210, 210, 210)
     default_cellcolor = (255, 0, 0)
 
-    def __init__(self, volmesh):
-        super(VolMeshArtist, self).__init__()
+    def __init__(self, volmesh, **kwargs):
+        super(VolMeshArtist, self).__init__(**kwargs)
         self._volmesh = None
         self._vertices = None
         self._edges = None

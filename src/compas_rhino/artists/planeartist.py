@@ -17,9 +17,8 @@ class PlaneArtist(RhinoArtist, PrimitiveArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, plane, layer=None):
-        super(PlaneArtist, self).__init__(plane)
-        self.layer = layer
+    def __init__(self, plane, layer=None, **kwargs):
+        super(PlaneArtist, self).__init__(primitive=plane, layer=layer, **kwargs)
 
     def draw(self):
         """Draw the plane.

@@ -20,7 +20,7 @@ from compas_rhino.artists import RhinoArtist
 from compas_rhino.geometry.transformations import xform_from_transformation
 
 
-class RobotModelArtist(BaseRobotModelArtist, RhinoArtist):
+class RobotModelArtist(RhinoArtist, BaseRobotModelArtist):
     """Visualizer for robots inside a Rhino environment.
 
     Parameters
@@ -31,9 +31,8 @@ class RobotModelArtist(BaseRobotModelArtist, RhinoArtist):
         The name of the layer that will contain the robot meshes.
     """
 
-    def __init__(self, model, layer=None):
-        super(RobotModelArtist, self).__init__(model)
-        self.layer = layer
+    def __init__(self, model, layer=None, **kwargs):
+        super(RobotModelArtist, self).__init__(model=model, layer=layer, **kwargs)
 
     def transform(self, native_mesh, transformation):
         T = xform_from_transformation(transformation)

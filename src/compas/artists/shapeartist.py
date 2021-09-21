@@ -37,8 +37,8 @@ class ShapeArtist(Artist):
 
     default_color = (255, 255, 255)
 
-    def __init__(self, shape, color=None):
-        super(ShapeArtist, self).__init__()
+    def __init__(self, shape, color=None, **kwargs):
+        super(ShapeArtist, self).__init__(**kwargs)
         self._u = None
         self._v = None
         self._shape = None

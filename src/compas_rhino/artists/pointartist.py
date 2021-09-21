@@ -18,9 +18,8 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, point, layer=None):
-        super(PointArtist, self).__init__(point)
-        self.layer = layer
+    def __init__(self, point, layer=None, **kwargs):
+        super(PointArtist, self).__init__(primitive=point, layer=layer, **kwargs)
 
     def draw(self):
         """Draw the point.

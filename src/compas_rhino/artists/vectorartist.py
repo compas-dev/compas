@@ -19,9 +19,8 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, vector, layer=None):
-        super(VectorArtist, self).__init__(vector)
-        self.layer = layer
+    def __init__(self, vector, layer=None, **kwargs):
+        super(VectorArtist, self).__init__(primitive=vector, layer=layer, **kwargs)
 
     def draw(self, point=None, show_point=False):
         """Draw the vector.

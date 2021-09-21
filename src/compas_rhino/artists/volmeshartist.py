@@ -25,9 +25,8 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         The name of the layer that will contain the volmesh.
     """
 
-    def __init__(self, volmesh, layer=None):
-        super(VolMeshArtist, self).__init__(volmesh)
-        self.layer = layer
+    def __init__(self, volmesh, layer=None, **kwargs):
+        super(VolMeshArtist, self).__init__(volmesh=volmesh, layer=layer, **kwargs)
 
     def clear_by_name(self):
         """Clear all objects in the "namespace" of the associated volmesh."""

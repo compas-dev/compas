@@ -34,9 +34,8 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
         Default is ``(0, 0, 255)``.
     """
 
-    def __init__(self, frame, layer=None, scale=1.0):
-        super(FrameArtist, self).__init__(frame)
-        self.layer = layer
+    def __init__(self, frame, layer=None, scale=1.0, **kwargs):
+        super(FrameArtist, self).__init__(primitive=frame, layer=layer, **kwargs)
         self.scale = scale or 1.0
         self.color_origin = (0, 0, 0)
         self.color_xaxis = (255, 0, 0)

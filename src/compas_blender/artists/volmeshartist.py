@@ -1,16 +1,15 @@
-from .meshartist import MeshArtist
+from typing import Optional
+from typing import Union
+from typing import Any
+
+import bpy
+from compas.artists import MeshArtist
+from .artist import BlenderArtist
 
 
-class VolMeshArtist(MeshArtist):
+class VolMeshArtist(BlenderArtist, MeshArtist):
 
-    def __init__(self, volmesh):
-        super().__init__()
-        self.volmesh = volmesh
-
-    @property
-    def volmesh(self):
-        return self.datastructure
-
-    @volmesh.setter
-    def volmesh(self, volmesh):
-        self.datastructure = volmesh
+    def __init__(self, volmesh,
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 **kwargs: Any):
+        super().__init__(volmesh=volmesh, collection=collection or volmesh.name, **kwargs)

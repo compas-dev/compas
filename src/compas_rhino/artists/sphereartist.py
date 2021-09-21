@@ -19,9 +19,8 @@ class SphereArtist(RhinoArtist, ShapeArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, sphere, layer=None):
-        super(SphereArtist, self).__init__(sphere)
-        self.layer = layer
+    def __init__(self, sphere, layer=None, **kwargs):
+        super(SphereArtist, self).__init__(shape=sphere, layer=layer, **kwargs)
 
     def draw(self, u=None, v=None, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the sphere associated with the artist.

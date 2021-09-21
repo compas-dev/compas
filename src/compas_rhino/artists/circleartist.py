@@ -19,9 +19,8 @@ class CircleArtist(RhinoArtist, PrimitiveArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, circle, layer=None):
-        super(CircleArtist, self).__init__(circle)
-        self.layer = layer
+    def __init__(self, circle, layer=None, **kwargs):
+        super(CircleArtist, self).__init__(primitive=circle, layer=layer, **kwargs)
 
     def draw(self, show_point=False, show_normal=False):
         """Draw the circle.

@@ -19,9 +19,8 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, cylinder, layer=None):
-        super(CylinderArtist, self).__init__(cylinder)
-        self.layer = layer
+    def __init__(self, cylinder, layer=None, **kwargs):
+        super(CylinderArtist, self).__init__(shape=cylinder, layer=layer, **kwargs)
 
     def draw(self, u=None, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the cylinder associated with the artist.

@@ -18,9 +18,8 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
         The layer that should contain the drawing.
     """
 
-    def __init__(self, polyhedron, layer=None):
-        super(PolyhedronArtist, self).__init__(polyhedron)
-        self.layer = layer
+    def __init__(self, polyhedron, layer=None, **kwargs):
+        super(PolyhedronArtist, self).__init__(shape=polyhedron, layer=layer, **kwargs)
 
     def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the polyhedron associated with the artist.
