@@ -15,12 +15,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Geometry` base class.
 * Added `__add__`, `__sub__`, `__and__` to `compas.geometry.Shape` for boolean operations using binary operators.
 * Added `is_closed` to `compas.geometry.Polyhedron`.
+* Added `Plane.offset`.
+* Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
+* Added `compas_blender.artists.RobotModelArtist.clear`.
 
 ### Changed
 
 * Fixed bug in `compas_blender.draw_texts`.
 * Changed default resolution for shape discretisation to 16 for both u and v where relevant.
 * Changed base class of `compas.geometry.Primitive` and `compas.geometry.Shape` to `compas.geometry.Geometry`.
+* `compas_blender.artists.RobotModelArtist.collection` can be assigned as a Blender collection or a name.
+* Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
 
 ### Removed
 
