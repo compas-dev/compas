@@ -10,7 +10,7 @@ import compas_blender
 from compas.datastructures import Mesh
 from compas.geometry import Transformation, Shape
 from compas.robots import RobotModel
-from compas.robots.base_artist import BaseRobotModelArtist
+from compas.artists import BaseRobotModelArtist
 from .artist import BlenderArtist
 
 

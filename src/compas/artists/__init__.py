@@ -39,6 +39,7 @@ from .artist import Artist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .primitiveartist import PrimitiveArtist
+from .robotmodelartist import RobotModelArtist
 from .shapeartist import ShapeArtist
 from .volmeshartist import VolMeshArtist
 
@@ -48,6 +49,7 @@ __all__ = [
     'MeshArtist',
     'NetworkArtist',
     'PrimitiveArtist',
+    'RobotModelArtist',
     'ShapeArtist',
     'VolMeshArtist',
 ]

@@ -13,7 +13,7 @@ from Rhino.DocObjects.ObjectMaterialSource import MaterialFromObject
 
 from compas.geometry import centroid_polygon
 from compas.utilities import pairwise
-from compas.robots.base_artist import BaseRobotModelArtist
+from compas.artists import BaseRobotModelArtist
 
 import compas_rhino
 from compas_rhino.artists import RhinoArtist
