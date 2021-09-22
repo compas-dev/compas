@@ -23,10 +23,13 @@ Classes
 .. autosummary::
     :toctree: generated/
 
+    BoxArtist
+    CapsuleArtist
     FrameArtist
     NetworkArtist
     MeshArtist
     RobotModelArtist
+    SphereArtist
 
 """
 import inspect
@@ -36,6 +39,7 @@ from compas.artists import Artist
 from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Box
+from compas.geometry import Capsule
 from compas.geometry import Frame
 from compas.geometry import Sphere
 from compas.datastructures import Mesh
@@ -44,6 +48,7 @@ from compas.robots import RobotModel
 
 from .artist import BlenderArtist  # noqa: F401
 from .boxartist import BoxArtist
+from .capsuleartist import CapsuleArtist
 from .frameartist import FrameArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
@@ -52,6 +57,7 @@ from .sphereartist import SphereArtist
 
 
 Artist.register(Box, BoxArtist)
+Artist.register(Capsule, CapsuleArtist)
 Artist.register(Frame, FrameArtist)
 Artist.register(Mesh, MeshArtist)
 Artist.register(Network, NetworkArtist)
