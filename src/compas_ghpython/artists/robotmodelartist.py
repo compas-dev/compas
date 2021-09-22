@@ -6,12 +6,12 @@ from compas.utilities import rgb_to_rgb
 
 from compas_rhino.geometry.transformations import xtransform
 
-from compas.artists import BaseRobotModelArtist
+from compas.artists import RobotModelArtist
 from compas_ghpython.utilities import draw_mesh
 from .artist import GHArtist
 
 
-class RobotModelArtist(GHArtist, BaseRobotModelArtist):
+class RobotModelArtist(GHArtist, RobotModelArtist):
     """Artist for drawing robot models.
 
     Parameters

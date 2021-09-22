@@ -13,7 +13,7 @@ Classes
     :nosignatures:
 
     Artist
-    BaseRobotModelArtist
+    RobotModelArtist
     MeshArtist
     NetworkArtist
     PrimitiveArtist
@@ -40,9 +40,11 @@ from .artist import Artist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .primitiveartist import PrimitiveArtist
-from .robotmodelartist import BaseRobotModelArtist
+from .robotmodelartist import RobotModelArtist
 from .shapeartist import ShapeArtist
 from .volmeshartist import VolMeshArtist
+
+BaseRobotModelArtist = RobotModelArtist
 
 __all__ = [
     'DataArtistNotRegistered',
@@ -50,7 +52,7 @@ __all__ = [
     'MeshArtist',
     'NetworkArtist',
     'PrimitiveArtist',
-    'BaseRobotModelArtist',
+    'RobotModelArtist',
     'ShapeArtist',
     'VolMeshArtist',
 ]

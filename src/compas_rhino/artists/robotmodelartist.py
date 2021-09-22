@@ -13,14 +13,14 @@ from Rhino.DocObjects.ObjectMaterialSource import MaterialFromObject
 
 from compas.geometry import centroid_polygon
 from compas.utilities import pairwise
-from compas.artists import BaseRobotModelArtist
+from compas.artists import RobotModelArtist
 
 import compas_rhino
 from compas_rhino.artists import RhinoArtist
 from compas_rhino.geometry.transformations import xform_from_transformation
 
 
-class RobotModelArtist(RhinoArtist, BaseRobotModelArtist):
+class RobotModelArtist(RhinoArtist, RobotModelArtist):
     """Artist for drawing robot models.
 
     Parameters

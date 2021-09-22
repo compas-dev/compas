@@ -49,7 +49,7 @@ class AbstractRobotModelArtist(object):
         raise NotImplementedError
 
 
-class BaseRobotModelArtist(AbstractRobotModelArtist, Artist):
+class RobotModelArtist(AbstractRobotModelArtist, Artist):
     """Provides common functionality to most robot model artist implementations.
 
     In **COMPAS**, the `artists` are classes that assist with the visualization of
@@ -69,7 +69,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist, Artist):
     """
 
     def __init__(self, model):
-        super(BaseRobotModelArtist, self).__init__()
+        super(RobotModelArtist, self).__init__()
         self.model = model
         self.create()
         self.scale_factor = 1.

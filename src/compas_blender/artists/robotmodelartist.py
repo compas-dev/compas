@@ -10,11 +10,11 @@ import compas_blender
 from compas.datastructures import Mesh
 from compas.geometry import Transformation, Shape
 from compas.robots import RobotModel
-from compas.artists import BaseRobotModelArtist
+from compas.artists import RobotModelArtist
 from .artist import BlenderArtist
 
 
-class RobotModelArtist(BlenderArtist, BaseRobotModelArtist):
+class RobotModelArtist(BlenderArtist, RobotModelArtist):
     """Visualizer for robot models inside a Blender environment.
 
     Parameters
