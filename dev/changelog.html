@@ -109,6 +109,10 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Added</h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code>, <code class="docutils literal notranslate"><span class="pre">draw_edgelabels</span></code>, <code class="docutils literal notranslate"><span class="pre">draw_facelabels</span></code>, <code class="docutils literal notranslate"><span class="pre">draw_vertexnormals</span></code>, and <code class="docutils literal notranslate"><span class="pre">draw_facenormals</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.MeshArtist</span></code>.</p></li>
+<li><p>Added optional <code class="docutils literal notranslate"><span class="pre">triangulated</span></code> flag to <code class="docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code> of all shapes.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Geometry</span></code> base class.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">__add__</span></code>, <code class="docutils literal notranslate"><span class="pre">__sub__</span></code>, <code class="docutils literal notranslate"><span class="pre">__and__</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code> for boolean operations using binary operators.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">is_closed</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyhedron</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">Plane.offset</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_node_labels</span></code> and <code class="docutils literal notranslate"><span class="pre">draw_edgelabels</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.NetworkArtist</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.RobotModelArtist.clear</span></code>.</p></li>
@@ -118,6 +122,8 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_blender.draw_texts</span></code>.</p></li>
+<li><p>Changed default resolution for shape discretisation to 16 for both u and v where relevant.</p></li>
+<li><p>Changed base class of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Geometry</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compas_blender.artists.RobotModelArtist.collection</span></code> can be assigned as a Blender collection or a name.</p></li>
 <li><p>Generalized the parameter <code class="docutils literal notranslate"><span class="pre">color</span></code> of <code class="docutils literal notranslate"><span class="pre">compas_blender.draw_texts</span></code> and various label drawing methods.</p></li>
 </ul>
