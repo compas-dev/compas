@@ -48,6 +48,7 @@ from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Polyhedron
 from compas.geometry import Sphere
+from compas.geometry import Torus
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.robots import RobotModel
@@ -63,6 +64,7 @@ from .networkartist import NetworkArtist
 from .polyhedronartist import PolyhedronArtist
 from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
+from .torusartist import TorusArtist
 
 
 Artist.register(Box, BoxArtist)
@@ -75,6 +77,7 @@ Artist.register(Network, NetworkArtist)
 Artist.register(Polyhedron, PolyhedronArtist)
 Artist.register(RobotModel, RobotModelArtist)
 Artist.register(Sphere, SphereArtist)
+Artist.register(Torus, TorusArtist)
 
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['bpy'])
@@ -102,4 +105,5 @@ __all__ = [
     'PolyhedronArtist',
     'RobotModelArtist',
     'SphereArtist',
+    'TorusArtist',
 ]
