@@ -11,7 +11,7 @@ from compas.geometry import transform_points
 from compas.geometry import Frame
 from compas.geometry import Plane
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
 
 
 class Torus(Shape):
@@ -208,17 +208,17 @@ class Torus(Shape):
     # methods
     # ==========================================================================
 
-    def to_vertices_and_faces(self, u=10, v=10):
+    def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
         """Returns a list of vertices and faces
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``10``.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``10``.
+        triangulated: bool, optional
+            Flag indicating that the faces have to be triangulated.
 
         Returns
         -------
@@ -256,6 +256,17 @@ class Torus(Shape):
                 c = ii * v + jj
                 d = i * v + jj
                 faces.append([a, b, c, d])
+
+        if triangulated:
+            triangles = []
+            for face in faces:
+                if len(face) == 4:
+                    triangles.append(face[0:3])
+                    triangles.append([face[0], face[2], face[3]])
+                else:
+                    triangles.append(face)
+            faces = triangles
+
         return vertices, faces
 
     def transform(self, transformation):
