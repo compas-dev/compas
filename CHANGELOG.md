@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `Plane.offset`
 * Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
 * Added optional `triangulated` flag to `to_vertices_and_faces` of all shapes.
 * Added `compas.geometry.Geometry` base class.
