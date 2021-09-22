@@ -68,6 +68,25 @@ class Shape(Geometry):
         return Polyhedron(V, F)
 
     def __and__(self, other):
+        """Compute the boolean intersection using the "&" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`Solid`
+            The solid to intersect with.
+
+        Returns
+        -------
+        :class:`Solid`
+            The resulting solid.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box.from_width_height_depth(2, 2, 2)
+        >>> B = Sphere([1, 1, 1], 1.0)
+        >>> C = A & B
+        """
         from compas.geometry import boolean_intersection_mesh_mesh
         from compas.geometry import Polyhedron
         A = self.to_vertices_and_faces(triangulated=True)
@@ -76,4 +95,23 @@ class Shape(Geometry):
         return Polyhedron(V, F)
 
     def __or__(self, other):
+        """Compute the boolean union using the "|" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`Solid`
+            The solid to add.
+
+        Returns
+        -------
+        :class:`Solid`
+            The resulting solid.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box.from_width_height_depth(2, 2, 2)
+        >>> B = Sphere([1, 1, 1], 1.0)
+        >>> C = A | B
+        """
         return self.__add__(other)
