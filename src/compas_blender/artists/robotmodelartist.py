@@ -21,6 +21,8 @@ class RobotModelArtist(BlenderArtist, BaseRobotModelArtist):
     ----------
     model : :class:`compas.robots.RobotModel`
         Robot model.
+    collection: str or :class:`bpy.types.Collection`
+        The name of the collection the object belongs to.
     """
 
     def __init__(self,

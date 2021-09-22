@@ -26,15 +26,19 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
     ----------
     network : :class:`compas.datastructures.Network`
         A COMPAS network.
-    settings : dict, optional
-        A dict with custom visualisation settings.
+    collection: str or :class:`bpy.types.Collection`
+        The name of the collection the object belongs to.
 
     Attributes
     ----------
-    network : :class:`compas.datastructures.Network`
-        The COMPAS network associated with the artist.
-    settings : dict
-        Default settings for color, scale, tolerance, ...
+    nodecollection : :class:`bpy.types.Collection`
+        The collection containing the nodes.
+    edgecollection : :class:`bpy.types.Collection`
+        The collection containing the edges.
+    nodelabelcollection : :class:`bpy.types.Collection`
+        The collection containing the node labels.
+    edgelabelcollection : :class:`bpy.types.Collection`
+        The collection containing the edge labels.
 
     """
 

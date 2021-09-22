@@ -3,6 +3,7 @@ from typing import Union
 from typing import Any
 
 import bpy
+
 from compas.artists import MeshArtist
 from .artist import BlenderArtist
 

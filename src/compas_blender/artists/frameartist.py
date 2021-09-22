@@ -1,7 +1,9 @@
-import bpy
 from typing import List
 from typing import Optional
 from typing import Any
+from typing import Union
+
+import bpy
 
 from compas.geometry import Frame
 
@@ -17,8 +19,8 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
     ----------
     frame: :class:`compas.geometry.Frame`
         A COMPAS frame.
-    collection: str
-        The name of the frame's collection.
+    collection: str or :class:`bpy.types.Collection`
+        The name of the collection the object belongs to.
     scale: float, optional
         Scale factor that controls the length of the axes.
 
@@ -42,7 +44,7 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
     """
     def __init__(self,
                  frame: Frame,
-                 collection: Optional[bpy.types.Collection] = None,
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
                  scale: float = 1.0,
                  **kwargs: Any):
         super().__init__(primitive=frame, collection=collection or frame.name, **kwargs)

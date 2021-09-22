@@ -30,11 +30,23 @@ class MeshArtist(BlenderArtist, MeshArtist):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
+    collection: str or :class:`bpy.types.Collection`
+        The name of the collection the object belongs to.
 
     Attributes
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        The COMPAS mesh associated with the artist.
+    vertexcollection : :class:`bpy.types.Collection`
+        The collection containing the vertices.
+    edgecollection : :class:`bpy.types.Collection`
+        The collection containing the edges.
+    facecollection : :class:`bpy.types.Collection`
+        The collection containing the faces.
+    vertexlabelcollection : :class:`bpy.types.Collection`
+        The collection containing the vertex labels.
+    edgelabelcollection : :class:`bpy.types.Collection`
+        The collection containing the edge labels.
+    facelabelcollection : :class:`bpy.types.Collection`
+        The collection containing the face labels.
 
     """
 

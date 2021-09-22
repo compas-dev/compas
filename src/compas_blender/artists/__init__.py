@@ -37,6 +37,7 @@ from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Box
 from compas.geometry import Frame
+from compas.geometry import Sphere
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.robots import RobotModel
@@ -46,10 +47,8 @@ from .boxartist import BoxArtist
 from .frameartist import FrameArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
-from .robotmodelartist import (  # noqa: F401
-    BaseRobotModelArtist,
-    RobotModelArtist
-)
+from .robotmodelartist import RobotModelArtist
+from .sphereartist import SphereArtist
 
 
 Artist.register(Box, BoxArtist)
@@ -57,6 +56,7 @@ Artist.register(Frame, FrameArtist)
 Artist.register(Mesh, MeshArtist)
 Artist.register(Network, NetworkArtist)
 Artist.register(RobotModel, RobotModelArtist)
+Artist.register(Sphere, SphereArtist)
 
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['bpy'])
@@ -74,8 +74,10 @@ def new_artist_blender(cls, *args, **kwargs):
 
 
 __all__ = [
+    'BoxArtist',
     'FrameArtist',
     'NetworkArtist',
     'MeshArtist',
-    'RobotModelArtist'
+    'RobotModelArtist',
+    'SphereArtist',
 ]

@@ -3,39 +3,50 @@ from typing import Any
 from typing import Union
 
 import bpy
+
 import compas_blender
-from compas.geometry import Box
+from compas.geometry import Sphere
 from compas.artists import ShapeArtist
 from .artist import BlenderArtist
 
 
-class BoxArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing box shapes.
+class SphereArtist(BlenderArtist, ShapeArtist):
+    """Artist for drawing sphere shapes.
 
     Parameters
     ----------
-    box : :class:`compas.geometry.Box`
-        A COMPAS box.
+    sphere : :class:`compas.geometry.Sphere`
+        A COMPAS sphere.
     collection: str or :class:`bpy.types.Collection`
         The name of the collection the object belongs to.
     """
 
     def __init__(self,
-                 box: Box,
+                 sphere: Sphere,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any):
-        super().__init__(shape=box, collection=collection or box.name, **kwargs)
+        super().__init__(shape=sphere, collection=collection or sphere.name, **kwargs)
 
-    def draw(self):
-        """Draw the box associated with the artist.
+    def draw(self, u=None, v=None):
+        """Draw the sphere associated with the artist.
+
+        Parameters
+        ----------
+        u : int, optional
+            Number of faces in the "u" direction.
+            Default is ``~SphereArtist.u``.
+        v : int, optional
+            Number of faces in the "v" direction.
+            Default is ``~SphereArtist.v``.
 
         Returns
         -------
         list
             The objects created in Blender.
         """
-        vertices = self.shape.vertices
-        faces = self.shape.faces
+        u = u or self.u
+        v = v or self.v
+        vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
         objects = []
         obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
         objects.append(obj)
