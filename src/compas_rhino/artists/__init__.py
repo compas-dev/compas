@@ -157,6 +157,7 @@ def new_artist_rhino(cls, *args, **kwargs):
     dtype = type(data)
     if dtype not in Artist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
+    # TODO: move this to the plugin module and/or to a dedicated function
     cls = Artist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.ismethod(value):
