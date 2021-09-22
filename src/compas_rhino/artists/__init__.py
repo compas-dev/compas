@@ -103,7 +103,6 @@ from compas.datastructures import VolMesh
 from compas.robots import RobotModel
 
 from .artist import RhinoArtist
-
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
@@ -112,7 +111,6 @@ from .pointartist import PointArtist
 from .polygonartist import PolygonArtist
 from .polylineartist import PolylineArtist
 from .vectorartist import VectorArtist
-
 from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .coneartist import ConeArtist
@@ -120,35 +118,30 @@ from .cylinderartist import CylinderArtist
 from .polyhedronartist import PolyhedronArtist
 from .sphereartist import SphereArtist
 from .torusartist import TorusArtist
-
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
-
 from .robotmodelartist import RobotModelArtist
 
-RhinoArtist.register(Circle, CircleArtist)
-RhinoArtist.register(Frame, FrameArtist)
-RhinoArtist.register(Line, LineArtist)
-RhinoArtist.register(Plane, PlaneArtist)
-RhinoArtist.register(Point, PointArtist)
-RhinoArtist.register(Polygon, PolygonArtist)
-RhinoArtist.register(Polyline, PolylineArtist)
-RhinoArtist.register(Vector, VectorArtist)
-
-RhinoArtist.register(Box, BoxArtist)
-RhinoArtist.register(Capsule, CapsuleArtist)
-RhinoArtist.register(Cone, ConeArtist)
-RhinoArtist.register(Cylinder, CylinderArtist)
-RhinoArtist.register(Polyhedron, PolyhedronArtist)
-RhinoArtist.register(Sphere, SphereArtist)
-RhinoArtist.register(Torus, TorusArtist)
-
-RhinoArtist.register(Mesh, MeshArtist)
-RhinoArtist.register(Network, NetworkArtist)
-RhinoArtist.register(VolMesh, VolMeshArtist)
-
-RhinoArtist.register(RobotModel, RobotModelArtist)
+Artist.register(Circle, CircleArtist)
+Artist.register(Frame, FrameArtist)
+Artist.register(Line, LineArtist)
+Artist.register(Plane, PlaneArtist)
+Artist.register(Point, PointArtist)
+Artist.register(Polygon, PolygonArtist)
+Artist.register(Polyline, PolylineArtist)
+Artist.register(Vector, VectorArtist)
+Artist.register(Box, BoxArtist)
+Artist.register(Capsule, CapsuleArtist)
+Artist.register(Cone, ConeArtist)
+Artist.register(Cylinder, CylinderArtist)
+Artist.register(Polyhedron, PolyhedronArtist)
+Artist.register(Sphere, SphereArtist)
+Artist.register(Torus, TorusArtist)
+Artist.register(Mesh, MeshArtist)
+Artist.register(Network, NetworkArtist)
+Artist.register(VolMesh, VolMeshArtist)
+Artist.register(RobotModel, RobotModelArtist)
 
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['Rhino'])

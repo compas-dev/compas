@@ -86,6 +86,7 @@ def new_artist_blender(cls, *args, **kwargs):
     dtype = type(data)
     if dtype not in Artist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
+    # TODO: move this to the plugin module and/or to a dedicated function
     cls = Artist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.isfunction(value):
