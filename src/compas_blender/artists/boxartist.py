@@ -34,8 +34,7 @@ class BoxArtist(BlenderArtist, ShapeArtist):
         list
             The objects created in Blender.
         """
-        vertices = self.shape.vertices
-        faces = self.shape.faces
+        vertices, faces = self.shape.to_vertices_and_faces()
         objects = []
         obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
         objects.append(obj)
