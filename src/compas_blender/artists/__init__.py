@@ -35,12 +35,14 @@ from compas.plugins import plugin
 from compas.artists import Artist
 from compas.artists import DataArtistNotRegistered
 
+from compas.geometry import Box
 from compas.geometry import Frame
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.robots import RobotModel
 
 from .artist import BlenderArtist  # noqa: F401
+from .boxartist import BoxArtist
 from .frameartist import FrameArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
@@ -50,6 +52,7 @@ from .robotmodelartist import (  # noqa: F401
 )
 
 
+Artist.register(Box, BoxArtist)
 Artist.register(Frame, FrameArtist)
 Artist.register(Mesh, MeshArtist)
 Artist.register(Network, NetworkArtist)
