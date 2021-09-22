@@ -5,39 +5,36 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas.geometry import Capsule
+from compas.geometry import Cone
 from compas.artists import ShapeArtist
 from .artist import BlenderArtist
 
 
-class CapsuleArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing capsule shapes.
+class ConeArtist(BlenderArtist, ShapeArtist):
+    """Artist for drawing cone shapes.
 
     Parameters
     ----------
-    capsule : :class:`compas.geometry.Capsule`
-        A COMPAS capsule.
+    cone : :class:`compas.geometry.Cone`
+        A COMPAS cone.
     collection: str or :class:`bpy.types.Collection`
         The name of the collection the object belongs to.
     """
 
     def __init__(self,
-                 capsule: Capsule,
+                 cone: Cone,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any):
-        super().__init__(shape=capsule, collection=collection or capsule.name, **kwargs)
+        super().__init__(shape=cone, collection=collection or cone.name, **kwargs)
 
-    def draw(self, u=None, v=None):
-        """Draw the capsule associated with the artist.
+    def draw(self, u=None):
+        """Draw the cone associated with the artist.
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CapsuleArtist.u``.
-        v : int, optional
-            Number of faces in the "v" direction.
-            Default is ``~CapsuleArtist.v``.
+            Default is ``~ConeArtist.u``.
 
         Returns
         -------
@@ -45,8 +42,7 @@ class CapsuleArtist(BlenderArtist, ShapeArtist):
             The objects created in Blender.
         """
         u = u or self.u
-        v = v or self.v
-        vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
+        vertices, faces = self.shape.to_vertices_and_faces(u=u)
         objects = []
         obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
         objects.append(obj)

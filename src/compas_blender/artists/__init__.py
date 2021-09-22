@@ -25,9 +25,12 @@ Classes
 
     BoxArtist
     CapsuleArtist
+    ConeArtist
+    CylinderArtist
     FrameArtist
     NetworkArtist
     MeshArtist
+    PolyhedronArtist
     RobotModelArtist
     SphereArtist
 
@@ -40,7 +43,10 @@ from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Box
 from compas.geometry import Capsule
+from compas.geometry import Cone
+from compas.geometry import Cylinder
 from compas.geometry import Frame
+from compas.geometry import Polyhedron
 from compas.geometry import Sphere
 from compas.datastructures import Mesh
 from compas.datastructures import Network
@@ -49,18 +55,24 @@ from compas.robots import RobotModel
 from .artist import BlenderArtist  # noqa: F401
 from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
+from .coneartist import ConeArtist
+from .cylinderartist import CylinderArtist
 from .frameartist import FrameArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
+from .polyhedronartist import PolyhedronArtist
 from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
 
 
 Artist.register(Box, BoxArtist)
 Artist.register(Capsule, CapsuleArtist)
+Artist.register(Cone, ConeArtist)
+Artist.register(Cylinder, CylinderArtist)
 Artist.register(Frame, FrameArtist)
 Artist.register(Mesh, MeshArtist)
 Artist.register(Network, NetworkArtist)
+Artist.register(Polyhedron, PolyhedronArtist)
 Artist.register(RobotModel, RobotModelArtist)
 Artist.register(Sphere, SphereArtist)
 
@@ -81,9 +93,13 @@ def new_artist_blender(cls, *args, **kwargs):
 
 __all__ = [
     'BoxArtist',
+    'CapsuleArtist',
+    'ConeArtist',
+    'CylinderArtist',
     'FrameArtist',
-    'NetworkArtist',
     'MeshArtist',
+    'NetworkArtist',
+    'PolyhedronArtist',
     'RobotModelArtist',
     'SphereArtist',
 ]

@@ -5,39 +5,39 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas.geometry import Capsule
+from compas.geometry import Cylinder
 from compas.artists import ShapeArtist
 from .artist import BlenderArtist
 
 
-class CapsuleArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing capsule shapes.
+class CylinderArtist(BlenderArtist, ShapeArtist):
+    """Artist for drawing cylinder shapes.
 
     Parameters
     ----------
-    capsule : :class:`compas.geometry.Capsule`
-        A COMPAS capsule.
+    cylinder : :class:`compas.geometry.Cylinder`
+        A COMPAS cylinder.
     collection: str or :class:`bpy.types.Collection`
         The name of the collection the object belongs to.
     """
 
     def __init__(self,
-                 capsule: Capsule,
+                 cylinder: Cylinder,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any):
-        super().__init__(shape=capsule, collection=collection or capsule.name, **kwargs)
+        super().__init__(shape=cylinder, collection=collection or cylinder.name, **kwargs)
 
     def draw(self, u=None, v=None):
-        """Draw the capsule associated with the artist.
+        """Draw the cylinder associated with the artist.
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CapsuleArtist.u``.
+            Default is ``~CylinderArtist.u``.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~CapsuleArtist.v``.
+            Default is ``~CylinderArtist.v``.
 
         Returns
         -------
