@@ -21,7 +21,7 @@ from compas_rhino.geometry.transformations import xform_from_transformation
 
 
 class RobotModelArtist(RhinoArtist, BaseRobotModelArtist):
-    """Visualizer for robots inside a Rhino environment.
+    """Artist for drawing robot models.
 
     Parameters
     ----------

@@ -6,56 +6,26 @@ from functools import partial
 
 import Rhino
 
-import compas_ghpython
-from compas_ghpython.artists._artist import BaseArtist
-
-# from compas.geometry import centroid_polygon
 from compas.utilities import color_to_colordict
-# from compas.utilities import pairwise
 
+import compas_ghpython
+from compas.artists import VolMeshArtist
+from .artist import GHArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
-__all__ = ['VolMeshArtist']
-
-
-class VolMeshArtist(BaseArtist):
-    """A volmesh artist defines functionality for visualising COMPAS volmeshes in GhPython.
+class VolMeshArtist(GHArtist, VolMeshArtist):
+    """Artist for drawing volmesh data structures.
 
     Parameters
     ----------
     volmesh : :class:`compas.datastructures.VolMesh`
         A COMPAS volmesh.
-
-    Attributes
-    ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        The COMPAS volmesh associated with the artist.
-    color_vertices : 3-tuple
-        Default color of the vertices.
-    color_edges : 3-tuple
-        Default color of the edges.
-    color_faces : 3-tuple
-        Default color of the faces.
-
     """
 
-    def __init__(self, volmesh):
-        self._volmesh = None
-        self.volmesh = volmesh
-        self.color_vertices = (255, 255, 255)
-        self.color_edges = (0, 0, 0)
-        self.color_faces = (210, 210, 210)
-
-    @property
-    def volmesh(self):
-        """compas.datastructures.VolMesh: The volmesh that should be painted."""
-        return self._volmesh
-
-    @volmesh.setter
-    def volmesh(self, volmesh):
-        self._volmesh = volmesh
+    def __init__(self, volmesh, **kwargs):
+        super(VolMeshArtist, self).__init__(volmesh=volmesh, **kwargs)
 
     def draw(self):
         """"""
@@ -66,60 +36,29 @@ class VolMeshArtist(BaseArtist):
 
         Parameters
         ----------
-        vertices : list, optional
-            A selection of vertices to draw.
+        vertices : list
+            A list of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
-        color : 3-tuple or dict of 3-tuple, optional
+        color : str, tuple, dict
             The color specififcation for the vertices.
-            The default color is ``(255, 255, 255)``.
+            The default color of the vertices is ``~VolMeshArtist.default_vertexcolor``.
 
         Returns
         -------
         list of :class:`Rhino.Geometry.Point3d`
 
         """
+        self.vertex_color = color
         vertices = vertices or list(self.volmesh.vertices())
-        vertex_color = colordict(color, vertices, default=self.color_vertices)
+        vertex_xyz = self.vertex_xyz
         points = []
         for vertex in vertices:
             points.append({
-                'pos': self.volmesh.vertex_coordinates(vertex),
+                'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.volmesh.name, vertex),
-                'color': vertex_color[vertex]})
+                'color': self.vertex_color.get(vertex, self.default_vertexcolor)
+            })
         return compas_ghpython.draw_points(points)
-
-    def draw_faces(self, faces=None, color=None, join_faces=False):
-        """Draw a selection of faces.
-
-        Parameters
-        ----------
-        faces : list
-            A selection of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        color : 3-tuple or dict of 3-tuple, optional
-            The color specififcation for the faces.
-            The default color is ``(210, 210, 210)``.
-
-        Returns
-        -------
-        list of :class:`Rhino.Geometry.Mesh`
-
-        """
-        faces = faces or list(self.volmesh.faces())
-        face_color = colordict(color, faces, default=self.color_faces)
-        faces_ = []
-        for face in faces:
-            faces_.append({
-                'points': self.volmesh.face_coordinates(face),
-                'name': "{}.face.{}".format(self.volmesh.name, face),
-                'color': face_color[face]})
-        meshes = compas_ghpython.draw_faces(faces_)
-        if not join_faces:
-            return meshes
-        joined_mesh = Rhino.Geometry.Mesh()
-        for mesh in meshes:
-            joined_mesh.Append(mesh)
-        return [joined_mesh]
 
     def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
@@ -127,25 +66,61 @@ class VolMeshArtist(BaseArtist):
         Parameters
         ----------
         edges : list, optional
-            A selection of edges to draw.
+            A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
-        color : 3-tuple or dict of 3-tuple, optional
+        color : str, tuple, dict
             The color specififcation for the edges.
-            The default color is ``(0, 0, 0)``.
+            The default color is ``~VolMeshArtist.default_edgecolor``.
 
         Returns
         -------
         list of :class:`Rhino.Geometry.Line`
 
         """
+        self.edge_color = color
         edges = edges or list(self.volmesh.edges())
-        edge_color = colordict(color, edges, default=self.color_edges)
+        vertex_xyz = self.vertex_xyz
         lines = []
         for edge in edges:
-            start, end = self.volmesh.edge_coordinates(*edge)
             lines.append({
-                'start': start,
-                'end': end,
-                'color': edge_color[edge],
-                'name': "{}.edge.{}-{}".format(self.volmesh.name, *edge)})
+                'start': vertex_xyz[edge[0]],
+                'end': vertex_xyz[edge[1]],
+                'color': self.edge_color.get(edge, self.default_edgecolor),
+                'name': "{}.edge.{}-{}".format(self.volmesh.name, *edge)
+            })
         return compas_ghpython.draw_lines(lines)
+
+    def draw_faces(self, faces=None, color=None, join_faces=False):
+        """Draw a selection of faces.
+
+        Parameters
+        ----------
+        faces : list, optional
+            A list of faces to draw.
+            The default is ``None``, in which case all faces are drawn.
+        color : str, tuple, dict
+            The color specififcation for the faces.
+            The default color is ``~VolMeshArtist.default_facecolor``.
+
+        Returns
+        -------
+        list of :class:`Rhino.Geometry.Mesh`
+
+        """
+        self.face_color = color
+        faces = faces or list(self.volmesh.faces())
+        vertex_xyz = self.vertex_xyz
+        facets = []
+        for face in faces:
+            facets.append({
+                'points': [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)],
+                'name': "{}.face.{}".format(self.volmesh.name, face),
+                'color': self.face_color.get(face, self.default_facecolor)
+            })
+        meshes = compas_ghpython.draw_faces(facets)
+        if not join_faces:
+            return meshes
+        joined_mesh = Rhino.Geometry.Mesh()
+        for mesh in meshes:
+            joined_mesh.Append(mesh)
+        return [joined_mesh]

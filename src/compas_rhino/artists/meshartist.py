@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 from functools import partial
-import compas_rhino
 
 from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
@@ -12,6 +11,7 @@ from compas.geometry import scale_vector
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_points
 
+import compas_rhino
 from compas.artists import MeshArtist
 from .artist import RhinoArtist
 
@@ -118,8 +118,6 @@ class MeshArtist(RhinoArtist, MeshArtist):
                 vertices.append(centroid_polygon([vertices[index] for index in face]))
                 for a, b in pairwise(face + face[0:1]):
                     new_faces.append([centroid, a, b, b])
-            else:
-                continue
         layer = self.layer
         name = "{}".format(self.mesh.name)
         guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
@@ -130,7 +128,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list
+        vertices : list, optional
             A selection of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : tuple or dict of tuple, optional

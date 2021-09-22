@@ -84,7 +84,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        vertices : list
+        vertices : list, optional
             A list of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : str, tuple, dict
@@ -114,7 +114,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        edges : list
+        edges : list, optional
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : str, tuple, dict
@@ -145,7 +145,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        faces : list
+        faces : list, optional
             A list of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : str, tuple, dict

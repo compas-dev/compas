@@ -53,7 +53,7 @@ from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.robots import RobotModel
 
-from .artist import BlenderArtist  # noqa: F401
+from .artist import BlenderArtist
 from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .coneartist import ConeArtist
@@ -95,6 +95,7 @@ def new_artist_blender(cls, *args, **kwargs):
 
 
 __all__ = [
+    'BlenderArtist',
     'BoxArtist',
     'CapsuleArtist',
     'ConeArtist',

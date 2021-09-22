@@ -5,16 +5,16 @@ artists
 
 .. currentmodule:: compas_ghpython.artists
 
-.. rst-class:: lead
 
-Artists for visualising (painting) COMPAS objects with GHPython.
-Artists convert COMPAS objects to Rhino geometry and data.
+Base Classes
+============
 
-.. code-block:: python
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-    pass
+    GHArtist
 
-----
 
 Geometry Artists
 ================
@@ -51,24 +51,10 @@ Robot Artist
 
     RobotModelArtist
 
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseArtist
-    PrimitiveArtist
-    ShapeArtist
-
 """
 from __future__ import absolute_import
 
-from ._artist import BaseArtist
-from ._primitiveartist import PrimitiveArtist
-from ._shapeartist import ShapeArtist
+from .artist import GHArtist
 
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
@@ -83,7 +69,7 @@ from .volmeshartist import VolMeshArtist
 from .robotmodelartist import RobotModelArtist
 
 __all__ = [
-    'BaseArtist',
+    'GHArtist',
     'PrimitiveArtist',
     'ShapeArtist',
     'CircleArtist',

@@ -3,25 +3,21 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from .artist import GHArtist
 
 
-__all__ = ['PointArtist']
-
-
-class PointArtist(PrimitiveArtist):
+class PointArtist(GHArtist, PrimitiveArtist):
     """Artist for drawing points.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Point`
+    point : :class:`compas.geometry.Point`
         A COMPAS point.
-
-    Other Parameters
-    ----------------
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
-
     """
+
+    def __init__(self, point, **kwargs):
+        super(PointArtist, self).__init__(primitive=point, **kwargs)
 
     def draw(self):
         """Draw the point.
