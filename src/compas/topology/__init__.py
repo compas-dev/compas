@@ -85,12 +85,13 @@ from .orientation import (
 )
 from .connectivity import adjacency_from_edges
 
-if compas.IPY:
+if compas.RHINO:
     from .orientation_rhino import (
         face_adjacency_rhino,
         unify_cycles_rhino
     )
-else:
+
+if not compas.IPY:
     from .orientation_numpy import (
         face_adjacency_numpy,
         unify_cycles_numpy
@@ -114,12 +115,13 @@ __all__ = [
     'adjacency_from_edges'
 ]
 
-if compas.IPY:
+if compas.RHINO:
     __all__ += [
         'face_adjacency_rhino',
         'unify_cycles_rhino',
     ]
-else:
+
+if not compas.IPY:
     __all__ += [
         'face_adjacency_numpy',
         'unify_cycles_numpy',
