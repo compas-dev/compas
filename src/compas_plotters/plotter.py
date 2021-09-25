@@ -6,7 +6,7 @@ import tempfile
 from PIL import Image
 
 import compas
-from compas_plotters import Artist
+from .artists import Artist
 
 
 class Plotter:
@@ -221,14 +221,19 @@ class Plotter:
         xspan = xmax - xmin + padding
         yspan = ymax - ymin + padding
         data_aspect = xspan / yspan
+        xlim = [xmin - 0.1 * xspan, xmax + 0.1 * xspan]
+        ylim = [ymin - 0.1 * yspan, ymax + 0.1 * yspan]
         if data_aspect < fig_aspect:
             scale = fig_aspect / data_aspect
-            self.axes.set_xlim(scale * (xmin - 0.1 * xspan), scale * (xmax + 0.1 * xspan))
-            self.axes.set_ylim(ymin - 0.1 * yspan, ymax + 0.1 * yspan)
+            xlim[0] *= scale
+            xlim[1] *= scale
         else:
             scale = data_aspect / fig_aspect
-            self.axes.set_xlim(xmin - 0.1 * xspan, xmax + 0.1 * xspan)
-            self.axes.set_ylim(scale * (ymin - 0.1 * yspan), scale * (ymax + 0.1 * yspan))
+            ylim[0] *= scale
+            ylim[1] *= scale
+        self.viewbox = (xlim, ylim)
+        self.axes.set_xlim(*xlim)
+        self.axes.set_ylim(*ylim)
         self.axes.autoscale_view()
 
     def add(self,

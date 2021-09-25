@@ -1,13 +1,18 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
 from typing_extensions import Literal
+
 from matplotlib.lines import Line2D
 from compas.geometry import Polyline
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class PolylineArtist(Artist):
+class PolylineArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS polylines."""
 
     zorder: int = 1000
@@ -17,15 +22,25 @@ class PolylineArtist(Artist):
                  draw_points: bool = True,
                  linewidth: float = 1.0,
                  linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 color: Color = (0, 0, 0)):
-        super(PolylineArtist, self).__init__(polyline)
+                 color: Color = (0, 0, 0),
+                 **kwargs: Any):
+
+        super().__init__(primitive=polyline, **kwargs)
+
         self._mpl_line = None
         self._point_artists = []
         self.draw_points = draw_points
-        self.polyline = polyline
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.color = color
+
+    @property
+    def polyline(self):
+        return self.primitive
+
+    @polyline.setter
+    def polyline(self, polyline):
+        self.primitive = polyline
 
     @property
     def data(self) -> List[List[float]]:

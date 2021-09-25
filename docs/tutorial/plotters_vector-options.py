@@ -15,4 +15,5 @@ for index, (a, b) in enumerate(pairwise(pointcloud)):
 plotter.add(b, size=10, edgecolor=(1, 0, 0))
 
 plotter.zoom_extents()
+plotter.show()
 plotter.save('docs/_images/tutorial/plotters_vector-options.png', dpi=300)

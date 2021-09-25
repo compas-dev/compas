@@ -1,31 +1,14 @@
-from abc import ABC
-from abc import abstractmethod
 from abc import abstractproperty
 
-_ITEM_ARTIST = {}
+from compas.artists import Artist
 
 
-class Artist(ABC):
+class PlotterArtist(Artist):
     """Base class for all plotter artists."""
 
-    def __init__(self, item):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.plotter = None
-        self.item = item
-
-    @staticmethod
-    def register(item_type, artist_type):
-        _ITEM_ARTIST[item_type] = artist_type
-
-    @staticmethod
-    def build(item, **kwargs):
-        artist_type = _ITEM_ARTIST[type(item)]
-        artist = artist_type(item, **kwargs)
-        return artist
-
-    @staticmethod
-    def build_as(item, artist_type, **kwargs):
-        artist = artist_type(item, **kwargs)
-        return artist
 
     def viewbox(self):
         xlim = self.plotter.axes.get_xlim()
@@ -38,13 +21,5 @@ class Artist(ABC):
     def data(self):
         raise NotImplementedError
 
-    @abstractmethod
-    def draw(self):
-        pass
-
-    @abstractmethod
-    def redraw(self):
-        pass
-
-    def update_data(self):
-        raise NotImplementedError
+    def update_data(self) -> None:
+        self.plotter.axes.update_datalim(self.data)

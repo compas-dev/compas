@@ -44,6 +44,11 @@ class Artist(object):
         artist = artist_type(item, **kwargs)
         return artist
 
+    @staticmethod
+    def build_as(item, artist_type, **kwargs):
+        artist = artist_type(item, **kwargs)
+        return artist
+
     @abstractmethod
     def draw(self):
         raise NotImplementedError

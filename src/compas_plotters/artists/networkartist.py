@@ -3,13 +3,13 @@ from typing_extensions import Literal
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.patches import Circle
 from compas.datastructures import Network
-from compas_plotters.artists import Artist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class NetworkArtist(Artist):
-    """"""
+class NetworkArtist(PlotterArtist):
+    """Artist for COMPAS network data structures."""
 
     default_nodecolor: Color = (1, 1, 1)
     default_edgecolor: Color = (0, 0, 0)
@@ -29,7 +29,9 @@ class NetworkArtist(Artist):
                  nodecolor: Color = (1, 1, 1),
                  edgewidth: float = 1.0,
                  edgecolor: Color = (0, 0, 0)):
-        super(NetworkArtist, self).__init__(network)
+
+        super().__init__(network)
+
         self._mpl_node_collection = None
         self._mpl_edge_collection = None
         self._nodecolor = None

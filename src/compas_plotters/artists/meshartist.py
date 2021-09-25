@@ -1,15 +1,21 @@
-from typing import Dict, Tuple, List, Union
+from typing import Dict
+from typing import Tuple
+from typing import List
+from typing import Union
+from typing import Optional
+from typing import Any
 from typing_extensions import Literal
 from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.patches import Polygon as PolygonPatch
 from matplotlib.patches import Circle
 from compas.datastructures import Mesh
-from compas_plotters.artists import Artist
+from compas.artists import MeshArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class MeshArtist(Artist):
+class MeshArtist(PlotterArtist, MeshArtist):
     """Artist for COMPAS mesh data structures."""
 
     default_vertexcolor: Color = (1, 1, 1)
@@ -28,160 +34,164 @@ class MeshArtist(Artist):
                  show_vertices: bool = True,
                  show_edges: bool = True,
                  show_faces: bool = True,
+                 vertices: Optional[List[int]] = None,
+                 edges: Optional[List[int]] = None,
+                 faces: Optional[List[int]] = None,
                  vertexsize: int = 5,
                  sizepolicy: Literal['relative', 'absolute'] = 'relative',
                  vertexcolor: Color = (1, 1, 1),
                  edgewidth: float = 1.0,
                  edgecolor: Color = (0, 0, 0),
-                 facecolor: Color = (0.9, 0.9, 0.9)):
-        super(MeshArtist, self).__init__(mesh)
+                 facecolor: Color = (0.9, 0.9, 0.9),
+                 **kwargs: Any):
+
+        super().__init__(mesh=mesh, **kwargs)
+
         self._mpl_vertex_collection = None
         self._mpl_edge_collection = None
         self._mpl_face_collection = None
-        self._vertexcolor = None
-        self._edgecolor = None
-        self._facecolor = None
-        self._edgewidth = None
-        self.mesh = mesh
+        self._edge_width = None
+        self.vertices = vertices
+        self.edges = edges
+        self.faces = faces
         self.show_vertices = show_vertices
         self.show_edges = show_edges
         self.show_faces = show_faces
         self.vertexsize = vertexsize
         self.sizepolicy = sizepolicy
-        self.vertexcolor = vertexcolor
         self.edgewidth = edgewidth
-        self.edgecolor = edgecolor
-        self.facecolor = facecolor
+        self.vertex_color = vertexcolor
+        self.edge_color = edgecolor
+        self.face_color = facecolor
 
     @property
-    def vertexcolor(self) -> Dict[int, Color]:
-        """dict: Vertex colors."""
-        return self._vertexcolor
+    def item(self):
+        return self.mesh
 
-    @vertexcolor.setter
-    def vertexcolor(self, vertexcolor: Union[Color, Dict[int, Color]]):
-        if isinstance(vertexcolor, dict):
-            self._vertexcolor = vertexcolor
-        elif len(vertexcolor) == 3 and all(isinstance(c, (int, float)) for c in vertexcolor):
-            self._vertexcolor = {vertex: vertexcolor for vertex in self.mesh.vertices()}
-        else:
-            self._vertexcolor = {}
+    @item.setter
+    def item(self, item: Mesh):
+        self.mesh = item
 
     @property
-    def edgecolor(self) -> Dict[Tuple[int, int], Color]:
-        """dict: Edge colors."""
-        return self._edgecolor
-
-    @edgecolor.setter
-    def edgecolor(self, edgecolor: Union[Color, Dict[Tuple[int, int], Color]]):
-        if isinstance(edgecolor, dict):
-            self._edgecolor = edgecolor
-        elif len(edgecolor) == 3 and all(isinstance(c, (int, float)) for c in edgecolor):
-            self._edgecolor = {edge: edgecolor for edge in self.mesh.edges()}
-        else:
-            self._edgecolor = {}
-
-    @property
-    def facecolor(self) -> Dict[int, Color]:
-        """dict: Face colors."""
-        return self._facecolor
-
-    @facecolor.setter
-    def facecolor(self, facecolor: Union[Color, Dict[int, Color]]):
-        if isinstance(facecolor, dict):
-            self._facecolor = facecolor
-        elif len(facecolor) == 3 and all(isinstance(c, (int, float)) for c in facecolor):
-            self._facecolor = {face: facecolor for face in self.mesh.faces()}
-        else:
-            self._facecolor = {}
-
-    @property
-    def edgewidth(self) -> Dict[Tuple[int, int], float]:
+    def edge_width(self) -> Dict[Tuple[int, int], float]:
         """dict: Edge widths."""
-        return self._edgewidth
+        if not self._edge_width:
+            self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}
+        return self._edge_width
 
-    @edgewidth.setter
-    def edgewidth(self, edgewidth: Union[float, Dict[Tuple[int, int], float]]):
+    @edge_width.setter
+    def edge_width(self, edgewidth: Union[float, Dict[Tuple[int, int], float]]):
         if isinstance(edgewidth, dict):
-            self._edgewidth = edgewidth
+            self._edge_width = edgewidth
         elif isinstance(edgewidth, (int, float)):
-            self._edgewidth = {edge: edgewidth for edge in self.mesh.edges()}
-        else:
-            self._edgewidth = {}
+            self._edge_width = {edge: edgewidth for edge in self.mesh.edges()}
 
     @property
     def data(self) -> List[List[float]]:
         return self.mesh.vertices_attributes('xy')
 
-    def draw(self) -> None:
+    def draw(self,
+             vertices=None,
+             edges=None,
+             faces=None,
+             vertexcolor=None,
+             edgecolor=None,
+             facecolor=None) -> None:
         """Draw the mesh."""
-        vertex_xy = {vertex: self.mesh.vertex_attributes(vertex, 'xy') for vertex in self.mesh.vertices()}
-
         if self.show_faces:
-            polygons = []
-            facecolors = []
-            edgecolors = []
-            linewidths = []
-            for face in self.mesh.faces():
-                data = [vertex_xy[vertex] for vertex in self.mesh.face_vertices(face)]
-                polygons.append(PolygonPatch(data))
-                facecolors.append(self.facecolor.get(face, self.default_facecolor))
-                edgecolors.append((0, 0, 0))
-                linewidths.append(0.1)
-            collection = PatchCollection(
-                polygons,
-                facecolors=facecolors,
-                edgecolors=edgecolors,
-                lw=linewidths,
-                alpha=1.0,
-                linestyle='solid',
-                zorder=self.zorder_faces
-            )
-            self.plotter.axes.add_collection(collection)
-            self._mpl_face_collection = collection
+            self.draw_faces(faces=faces, color=facecolor)
 
         if self.show_edges:
-            lines = []
-            colors = []
-            widths = []
-            for edge in self.mesh.edges():
-                lines.append([vertex_xy[edge[0]], vertex_xy[edge[1]]])
-                colors.append(self.edgecolor.get(edge, self.default_edgecolor))
-                widths.append(self.edgewidth.get(edge, self.default_edgewidth))
-            collection = LineCollection(
-                lines,
-                linewidths=widths,
-                colors=colors,
-                linestyle='solid',
-                alpha=1.0,
-                zorder=self.zorder_edges
-            )
-            self.plotter.axes.add_collection(collection)
-            self._mpl_edge_collection = collection
+            self.draw_edges(edges=edges, color=edgecolor)
 
         if self.show_vertices:
-            if self.sizepolicy == 'absolute':
-                size = self.vertexsize / self.plotter.dpi
-            else:
-                size = self.vertexsize / self.mesh.number_of_vertices()
-            circles = []
-            for vertex in self.mesh.vertices():
-                x, y = vertex_xy[vertex]
-                circle = Circle(
-                    [x, y],
-                    radius=size,
-                    facecolor=self.vertexcolor.get(vertex, self.default_vertexcolor),
-                    edgecolor=(0, 0, 0),
-                    lw=0.3,
-                )
-                circles.append(circle)
-            collection = PatchCollection(
-                circles,
-                match_original=True,
-                zorder=self.zorder_vertices,
-                alpha=1.0
+            self.draw_vertices(vertices=vertices, color=vertexcolor)
+
+    def draw_vertices(self, vertices=None, color=None, text=None):
+        if vertices:
+            self.vertices = vertices
+        if color:
+            self.vertex_color = color
+
+        if self.sizepolicy == 'absolute':
+            size = self.vertexsize / self.plotter.dpi
+        else:
+            size = self.vertexsize / self.mesh.number_of_vertices()
+
+        circles = []
+        for vertex in self.vertices:
+            x, y = self.vertex_xyz[vertex][:2]
+            circle = Circle(
+                [x, y],
+                radius=size,
+                facecolor=self.vertex_color.get(vertex, self.default_vertexcolor),
+                edgecolor=(0, 0, 0),
+                lw=0.3,
             )
-            self.plotter.axes.add_collection(collection)
+            circles.append(circle)
+
+        collection = PatchCollection(
+            circles,
+            match_original=True,
+            zorder=self.zorder_vertices,
+            alpha=1.0
+        )
+        self.plotter.axes.add_collection(collection)
+        self._mpl_vertex_collection = collection
+
+    def draw_edges(self, edges=None, color=None, text=None):
+        if edges:
+            self.edges = edges
+        if color:
+            self.edge_color = color
+
+        lines = []
+        colors = []
+        widths = []
+        for edge in self.edges:
+            lines.append([self.vertex_xyz[edge[0]][:2], self.vertex_xyz[edge[1]][:2]])
+            colors.append(self.edge_color.get(edge, self.default_edgecolor))
+            widths.append(self.edge_width.get(edge, self.default_edgewidth))
+
+        collection = LineCollection(
+            lines,
+            linewidths=widths,
+            colors=colors,
+            linestyle='solid',
+            alpha=1.0,
+            zorder=self.zorder_edges
+        )
+        self.plotter.axes.add_collection(collection)
+        self._mpl_edge_collection = collection
+
+    def draw_faces(self, faces=None, color=None, text=None):
+        if faces:
+            self.faces = faces
+        if color:
+            self.face_color = color
+
+        polygons = []
+        facecolors = []
+        edgecolors = []
+        linewidths = []
+        for face in self.faces:
+            data = [self.vertex_xyz[vertex][:2] for vertex in self.mesh.face_vertices(face)]
+            polygons.append(PolygonPatch(data))
+            facecolors.append(self.face_color.get(face, self.default_facecolor))
+            edgecolors.append((0, 0, 0))
+            linewidths.append(0.1)
+
+        collection = PatchCollection(
+            polygons,
+            facecolors=facecolors,
+            edgecolors=edgecolors,
+            lw=linewidths,
+            alpha=1.0,
+            linestyle='solid',
+            zorder=self.zorder_faces
+        )
+        self.plotter.axes.add_collection(collection)
+        self._mpl_face_collection = collection
 
     def redraw(self) -> None:
         raise NotImplementedError

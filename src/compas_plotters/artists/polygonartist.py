@@ -1,13 +1,18 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
 from typing_extensions import Literal
+
 from matplotlib.patches import Polygon as PolygonPatch
 from compas.geometry import Polygon
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class PolygonArtist(Artist):
+class PolygonArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS polygons."""
 
     zorder: int = 1000
@@ -19,16 +24,26 @@ class PolygonArtist(Artist):
                  facecolor: Color = (1.0, 1.0, 1.0),
                  edgecolor: Color = (0, 0, 0),
                  fill: bool = True,
-                 alpha: float = 1.0):
-        super(PolygonArtist, self).__init__(polygon)
+                 alpha: float = 1.0,
+                 **kwargs: Any):
+
+        super().__init__(primitive=polygon, **kwargs)
+
         self._mpl_polygon = None
-        self.polygon = polygon
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.facecolor = facecolor
         self.edgecolor = edgecolor
         self.fill = fill
         self.alpha = alpha
+
+    @property
+    def polygon(self):
+        return self.primitive
+
+    @polygon.setter
+    def polygon(self, polygon):
+        self.primitive = polygon
 
     @property
     def data(self) -> List[List[float]]:

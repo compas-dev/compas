@@ -142,7 +142,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         """
         self.vertex_color = color
-        vertices = vertices or list(self.mesh.vertices())
+        vertices = vertices or self.vertices
         vertex_xyz = self.vertex_xyz
         points = []
         for vertex in vertices:
@@ -175,7 +175,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         """
         self.face_color = color
-        faces = faces or list(self.mesh.faces())
+        faces = faces or self.faces
         vertex_xyz = self.vertex_xyz
         facets = []
         for face in faces:
@@ -212,7 +212,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         """
         self.edge_color = color
-        edges = edges or list(self.mesh.edges())
+        edges = edges or self.edges
         vertex_xyz = self.vertex_xyz
         lines = []
         for edge in edges:

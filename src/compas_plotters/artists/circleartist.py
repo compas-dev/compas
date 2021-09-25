@@ -1,13 +1,18 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
 from typing_extensions import Literal
+
 from matplotlib.patches import Circle as CirclePatch
 from compas.geometry import Circle
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class CircleArtist(Artist):
+class CircleArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS circles."""
 
     zorder: int = 1000
@@ -19,16 +24,26 @@ class CircleArtist(Artist):
                  facecolor: Color = (1.0, 1.0, 1.0),
                  edgecolor: Color = (0, 0, 0),
                  fill: bool = True,
-                 alpha: float = 1.0):
-        super(CircleArtist, self).__init__(circle)
+                 alpha: float = 1.0,
+                 **kwargs: Any):
+
+        super().__init__(primitive=circle, **kwargs)
+
         self._mpl_circle = None
-        self.circle = circle
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.facecolor = facecolor
         self.edgecolor = edgecolor
         self.fill = fill
         self.alpha = alpha
+
+    @property
+    def circle(self):
+        return self.primitive
+
+    @circle.setter
+    def circle(self, circle):
+        self.primitive = circle
 
     @property
     def data(self) -> List[List[float]]:
@@ -43,9 +58,6 @@ class CircleArtist(Artist):
         points[2][1] -= self.circle.radius
         points[3][1] += self.circle.radius
         return points
-
-    def update_data(self) -> None:
-        self.plotter.axes.update_datalim(self.data)
 
     def draw(self) -> None:
         circle = CirclePatch(

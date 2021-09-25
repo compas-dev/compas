@@ -1,14 +1,19 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
 from typing_extensions import Literal
+
 from matplotlib.lines import Line2D
 from compas.geometry import Point, Line
 from compas.geometry import intersection_line_box_xy
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class LineArtist(Artist):
+class LineArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS lines."""
 
     zorder: int = 1000
@@ -19,18 +24,28 @@ class LineArtist(Artist):
                  draw_as_segment: bool = False,
                  linewidth: float = 1.0,
                  linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 color: Color = (0, 0, 0)):
-        super(LineArtist, self).__init__(line)
+                 color: Color = (0, 0, 0),
+                 **kwargs: Any):
+
+        super().__init__(primitive=line, **kwargs)
+
         self._mpl_line = None
         self._start_artist = None
         self._end_artist = None
         self._segment_artist = None
         self.draw_points = draw_points
         self.draw_as_segment = draw_as_segment
-        self.line = line
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.color = color
+
+    @property
+    def line(self):
+        return self.primitive
+
+    @line.setter
+    def line(self, line):
+        self.primitive = line
 
     def clip(self) -> List[Point]:
         """Compute the clipping points of the line for the current view box."""
@@ -74,7 +89,7 @@ class LineArtist(Artist):
                     self._end_artist = self.plotter.add(self.line.end, edgecolor=self.color)
 
     def redraw(self) -> None:
-        if self._draw_as_segment:
+        if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
             self._mpl_line.set_xdata([x0, x1])

@@ -1,13 +1,18 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
+
 from matplotlib.patches import Circle
 from matplotlib.transforms import ScaledTranslation
 from compas.geometry import Point
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class PointArtist(Artist):
+class PointArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS points."""
 
     zorder: int = 9000
@@ -16,14 +21,24 @@ class PointArtist(Artist):
                  point: Point,
                  size: int = 5,
                  facecolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0, 0, 0)):
-        super(PointArtist, self).__init__(point)
+                 edgecolor: Color = (0, 0, 0),
+                 **kwargs: Any):
+
+        super().__init__(primitive=point, **kwargs)
+
         self._mpl_circle = None
         self._size = None
-        self.point = point
         self.size = size
         self.facecolor = facecolor
         self.edgecolor = edgecolor
+
+    @property
+    def point(self):
+        return self.primitive
+
+    @point.setter
+    def point(self, point):
+        self.primitive = point
 
     @property
     def _T(self):
@@ -43,9 +58,6 @@ class PointArtist(Artist):
     @property
     def data(self) -> List[List[float]]:
         return [self.point[:2]]
-
-    def update_data(self) -> None:
-        self.plotter.axes.update_datalim(self.data)
 
     def draw(self) -> None:
         circle = Circle(
