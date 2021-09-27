@@ -53,7 +53,7 @@ class NetworkArtist(Artist):
 
     """
 
-    default_nodecolor = (255, 255, 255)
+    default_nodecolor = (1, 1, 1)
     default_edgecolor = (0, 0, 0)
 
     def __init__(self, network, **kwargs):
@@ -199,4 +199,12 @@ class NetworkArtist(Artist):
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
         """
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_nodes(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_edges(self):
         raise NotImplementedError

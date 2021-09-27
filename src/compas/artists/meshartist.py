@@ -61,9 +61,9 @@ class MeshArtist(Artist):
     """
 
     default_color = (0, 0, 0)
-    default_vertexcolor = (255, 255, 255)
+    default_vertexcolor = (1, 1, 1)
     default_edgecolor = (0, 0, 0)
-    default_facecolor = (255, 255, 255)
+    default_facecolor = (1, 1, 1)
 
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__(**kwargs)
@@ -74,10 +74,10 @@ class MeshArtist(Artist):
         self._color = None
         self._vertex_xyz = None
         self._vertex_color = None
-        self._edge_color = None
-        self._face_color = None
         self._vertex_text = None
+        self._edge_color = None
         self._edge_text = None
+        self._face_color = None
         self._face_text = None
         self.mesh = mesh
 
@@ -133,7 +133,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_xyz(self):
-        if not self._vertex_xyz:
+        if self._vertex_xyz is None:
             return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
         return self._vertex_xyz
 
@@ -143,7 +143,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_color(self):
-        if not self._vertex_color:
+        if self._vertex_color is None:
             self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
         return self._vertex_color
 
@@ -155,34 +155,8 @@ class MeshArtist(Artist):
             self._vertex_color = {vertex: vertex_color for vertex in self.mesh.vertices()}
 
     @property
-    def edge_color(self):
-        if not self._edge_color:
-            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
-        return self._edge_color
-
-    @edge_color.setter
-    def edge_color(self, edge_color):
-        if isinstance(edge_color, dict):
-            self._edge_color = edge_color
-        elif is_color_rgb(edge_color):
-            self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
-
-    @property
-    def face_color(self):
-        if not self._face_color:
-            self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
-        return self._face_color
-
-    @face_color.setter
-    def face_color(self, face_color):
-        if isinstance(face_color, dict):
-            self._face_color = face_color
-        elif is_color_rgb(face_color):
-            self._face_color = {face: face_color for face in self.mesh.faces()}
-
-    @property
     def vertex_text(self):
-        if not self._vertex_text:
+        if self._vertex_text is None:
             self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}
         return self._vertex_text
 
@@ -196,8 +170,21 @@ class MeshArtist(Artist):
             self._vertex_text = text
 
     @property
+    def edge_color(self):
+        if self._edge_color is None:
+            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
+        return self._edge_color
+
+    @edge_color.setter
+    def edge_color(self, edge_color):
+        if isinstance(edge_color, dict):
+            self._edge_color = edge_color
+        elif is_color_rgb(edge_color):
+            self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
+
+    @property
     def edge_text(self):
-        if not self._edge_text:
+        if self._edge_text is None:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
         return self._edge_text
 
@@ -211,8 +198,21 @@ class MeshArtist(Artist):
             self._edge_text = text
 
     @property
+    def face_color(self):
+        if self._face_color is None:
+            self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
+        return self._face_color
+
+    @face_color.setter
+    def face_color(self, face_color):
+        if isinstance(face_color, dict):
+            self._face_color = face_color
+        elif is_color_rgb(face_color):
+            self._face_color = {face: face_color for face in self.mesh.faces()}
+
+    @property
     def face_text(self):
-        if not self._face_text:
+        if self._face_text is None:
             self._face_text = {face: str(face) for face in self.mesh.faces()}
         return self._face_text
 
@@ -280,4 +280,16 @@ class MeshArtist(Artist):
             The text labels for the faces
             as a text dict, mapping specific faces to specific text labels.
         """
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_vertices(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_edges(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_faces(self):
         raise NotImplementedError

@@ -21,10 +21,11 @@ class BlenderArtist(Artist):
     def __init__(self,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any):
+
         super().__init__(**kwargs)
+
         self._collection = None
         self.collection = collection
-        self.objects = []
 
     @property
     def collection(self) -> bpy.types.Collection:
@@ -39,9 +40,6 @@ class BlenderArtist(Artist):
         else:
             raise Exception('Collection must be of type `str` or `bpy.types.Collection`.')
 
-    def clear(self):
+    def clear(self) -> None:
         """Delete all objects created by the artist."""
-        if not self.objects:
-            return
-        compas_blender.delete_objects(self.objects)
-        self.objects = []
+        compas_blender.delete_objects(self.collection.objects)

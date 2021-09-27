@@ -25,7 +25,6 @@ class CircleArtist(GHArtist, PrimitiveArtist):
         Returns
         -------
         :class:`Rhino.Geometry.Circle`
-
         """
         circles = [self._get_args(self.primitive, self.color)]
         return compas_ghpython.draw_circles(circles)[0]

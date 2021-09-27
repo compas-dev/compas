@@ -25,7 +25,6 @@ class PointArtist(GHArtist, PrimitiveArtist):
         Returns
         -------
         :class:`Rhino.Geometry.Point3d`
-
         """
         points = [self._get_args(self.primitive)]
         return compas_ghpython.draw_points(points)[0]

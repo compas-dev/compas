@@ -57,29 +57,32 @@ from .ellipseartist import EllipseArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 
-Artist.register(Point, PointArtist)
-Artist.register(Vector, VectorArtist)
-Artist.register(Line, LineArtist)
-Artist.register(Polyline, PolylineArtist)
-Artist.register(Polygon, PolygonArtist)
-Artist.register(Circle, CircleArtist)
-Artist.register(Ellipse, EllipseArtist)
-Artist.register(Mesh, MeshArtist)
-Artist.register(Network, NetworkArtist)
-
 
 @plugin(category='factories', pluggable_name='new_artist', trylast=True, requires=['matplotlib'])
 def new_artist_plotter(cls, *args, **kwargs):
+    PlotterArtist.register(Point, PointArtist)
+    PlotterArtist.register(Vector, VectorArtist)
+    PlotterArtist.register(Line, LineArtist)
+    PlotterArtist.register(Polyline, PolylineArtist)
+    PlotterArtist.register(Polygon, PolygonArtist)
+    PlotterArtist.register(Circle, CircleArtist)
+    PlotterArtist.register(Ellipse, EllipseArtist)
+    PlotterArtist.register(Mesh, MeshArtist)
+    PlotterArtist.register(Network, NetworkArtist)
+
     data = args[0]
     dtype = type(data)
-    if dtype not in Artist.ITEM_ARTIST:
+    if dtype not in PlotterArtist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No Plotter artist is registered for this data type: {}'.format(dtype))
+
     # TODO: move this to the plugin module and/or to a dedicated function
-    cls = Artist.ITEM_ARTIST[dtype]
+
+    cls = PlotterArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.isfunction(value):
             if hasattr(value, '__isabstractmethod__'):
                 raise Exception('Abstract method not implemented: {}'.format(value))
+
     return super(Artist, cls).__new__(cls)
 
 

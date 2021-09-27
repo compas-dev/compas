@@ -77,10 +77,10 @@ class VolMeshArtist(Artist):
 
     """
 
-    default_vertexcolor = (255, 255, 255)
+    default_vertexcolor = (1, 1, 1)
     default_edgecolor = (0, 0, 0)
-    default_facecolor = (210, 210, 210)
-    default_cellcolor = (255, 0, 0)
+    default_facecolor = (0.8, 0.8, 0.8)
+    default_cellcolor = (1, 0, 0)
 
     def __init__(self, volmesh, **kwargs):
         super(VolMeshArtist, self).__init__(**kwargs)
@@ -345,4 +345,20 @@ class VolMeshArtist(Artist):
             The text labels for the cells
             as a text dict, mapping specific cells to specific text labels.
         """
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_vertices(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_edges(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_faces(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_cells(self):
         raise NotImplementedError

@@ -67,31 +67,33 @@ from .sphereartist import SphereArtist
 from .torusartist import TorusArtist
 
 
-Artist.register(Box, BoxArtist)
-Artist.register(Capsule, CapsuleArtist)
-Artist.register(Cone, ConeArtist)
-Artist.register(Cylinder, CylinderArtist)
-Artist.register(Frame, FrameArtist)
-Artist.register(Mesh, MeshArtist)
-Artist.register(Network, NetworkArtist)
-Artist.register(Polyhedron, PolyhedronArtist)
-Artist.register(RobotModel, RobotModelArtist)
-Artist.register(Sphere, SphereArtist)
-Artist.register(Torus, TorusArtist)
-
-
-@plugin(category='factories', pluggable_name='new_artist', requires=['bpy'])
+@plugin(category='factories', pluggable_name='new_artist', tryfirst=True, requires=['bpy'])
 def new_artist_blender(cls, *args, **kwargs):
+    BlenderArtist.register(Box, BoxArtist)
+    BlenderArtist.register(Capsule, CapsuleArtist)
+    BlenderArtist.register(Cone, ConeArtist)
+    BlenderArtist.register(Cylinder, CylinderArtist)
+    BlenderArtist.register(Frame, FrameArtist)
+    BlenderArtist.register(Mesh, MeshArtist)
+    BlenderArtist.register(Network, NetworkArtist)
+    BlenderArtist.register(Polyhedron, PolyhedronArtist)
+    BlenderArtist.register(RobotModel, RobotModelArtist)
+    BlenderArtist.register(Sphere, SphereArtist)
+    BlenderArtist.register(Torus, TorusArtist)
+
     data = args[0]
     dtype = type(data)
-    if dtype not in Artist.ITEM_ARTIST:
+    if dtype not in BlenderArtist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
+
     # TODO: move this to the plugin module and/or to a dedicated function
-    cls = Artist.ITEM_ARTIST[dtype]
+
+    cls = BlenderArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.isfunction(value):
             if hasattr(value, '__isabstractmethod__'):
                 raise Exception('Abstract method not implemented: {}'.format(value))
+
     return super(Artist, cls).__new__(cls)
 
 

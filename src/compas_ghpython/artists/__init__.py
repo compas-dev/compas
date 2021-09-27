@@ -58,6 +58,7 @@ import inspect
 
 from compas.plugins import plugin
 from compas.artists import Artist
+from compas.artists import ShapeArtist
 from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Circle
@@ -81,28 +82,47 @@ from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
 from .robotmodelartist import RobotModelArtist
 
-Artist.register(Circle, CircleArtist)
-Artist.register(Frame, FrameArtist)
-Artist.register(Line, LineArtist)
-Artist.register(Point, PointArtist)
-Artist.register(Polyline, PolylineArtist)
-Artist.register(Mesh, MeshArtist)
-Artist.register(Network, NetworkArtist)
-Artist.register(VolMesh, VolMeshArtist)
+ShapeArtist.default_color = (255, 255, 255)
+
+MeshArtist.default_color = (0, 0, 0)
+MeshArtist.default_vertexcolor = (255, 255, 255)
+MeshArtist.default_edgecolor = (0, 0, 0)
+MeshArtist.default_facecolor = (255, 255, 255)
+
+NetworkArtist.default_nodecolor = (255, 255, 255)
+NetworkArtist.default_edgecolor = (0, 0, 0)
+
+VolMeshArtist.default_color = (0, 0, 0)
+VolMeshArtist.default_vertexcolor = (255, 255, 255)
+VolMeshArtist.default_edgecolor = (0, 0, 0)
+VolMeshArtist.default_facecolor = (255, 255, 255)
+VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['ghpythonlib'])
 def new_artist_gh(cls, *args, **kwargs):
+    GHArtist.register(Circle, CircleArtist)
+    GHArtist.register(Frame, FrameArtist)
+    GHArtist.register(Line, LineArtist)
+    GHArtist.register(Point, PointArtist)
+    GHArtist.register(Polyline, PolylineArtist)
+    GHArtist.register(Mesh, MeshArtist)
+    GHArtist.register(Network, NetworkArtist)
+    GHArtist.register(VolMesh, VolMeshArtist)
+
     data = args[0]
     dtype = type(data)
-    if dtype not in Artist.ITEM_ARTIST:
+    if dtype not in GHArtist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
+
     # TODO: move this to the plugin module and/or to a dedicated function
-    cls = Artist.ITEM_ARTIST[dtype]
+
+    cls = GHArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.ismethod(value):
             if hasattr(value, '__isabstractmethod__'):
                 raise Exception('Abstract method not implemented')
+
     return super(Artist, cls).__new__(cls)
 
 

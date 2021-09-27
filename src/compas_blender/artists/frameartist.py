@@ -47,7 +47,9 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  scale: float = 1.0,
                  **kwargs: Any):
+
         super().__init__(primitive=frame, collection=collection or frame.name, **kwargs)
+
         self.scale = scale or 1.0
         self.color_origin = (0, 0, 0)
         self.color_xaxis = (255, 0, 0)
@@ -78,9 +80,7 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
                 'color': self.color_origin,
                 'radius': 0.01
             }]
-        objects = compas_blender.draw_points(points, self.collection)
-        self.objects += objects
-        return objects
+        return compas_blender.draw_points(points, self.collection)
 
     def draw_axes(self) -> List[bpy.types.Object]:
         """Draw the axes of the frame.
@@ -98,6 +98,4 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
             {'start': origin, 'end': Y, 'color': self.color_yaxis, 'name': f"{self.frame.name}.yaxis"},
             {'start': origin, 'end': Z, 'color': self.color_zaxis, 'name': f"{self.frame.name}.zaxis"},
         ]
-        objects = compas_blender.draw_lines(lines, self.collection)
-        self.objects += objects
-        return objects
+        return compas_blender.draw_lines(lines, self.collection)

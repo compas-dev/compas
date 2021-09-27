@@ -31,7 +31,6 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         Default is ``(0, 255, 0)``.
     color_zaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 255)``.
-
     """
 
     def __init__(self, frame, scale=1.0, **kwargs):
@@ -48,7 +47,6 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         Returns
         -------
         :class:`Rhino.Geometry.Plane`
-
         """
         return compas_ghpython.draw_frame(self.primitive)
 
@@ -58,7 +56,6 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         Returns
         -------
         :class:`Rhino.Geometry.Point`
-
         """
         point, _ = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
         return compas_ghpython.draw_points([point])[0]
@@ -69,7 +66,6 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         Returns
         -------
         list of :class:`Rhino.Geometry.Line`
-
         """
         _, lines = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
         return compas_ghpython.draw_lines(lines)

@@ -35,7 +35,7 @@ class ShapeArtist(Artist):
         The default is ``16`` and the minimum ``3``.
     """
 
-    default_color = (255, 255, 255)
+    default_color = (1, 1, 1)
 
     def __init__(self, shape, color=None, **kwargs):
         super(ShapeArtist, self).__init__(**kwargs)

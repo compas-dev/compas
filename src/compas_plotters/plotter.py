@@ -6,7 +6,7 @@ import tempfile
 from PIL import Image
 
 import compas
-from .artists import Artist
+from .artists import PlotterArtist
 
 
 class Plotter:
@@ -182,12 +182,12 @@ class Plotter:
         self.figure.canvas.set_window_title(value)
 
     @property
-    def artists(self) -> List[Artist]:
-        """list of :class:`compas_plotters.artists.Artist`"""
+    def artists(self) -> List[PlotterArtist]:
+        """list of :class:`compas_plotters.artists.PlotterArtist`"""
         return self._artists
 
     @artists.setter
-    def artists(self, artists: List[Artist]):
+    def artists(self, artists: List[PlotterArtist]):
         self._artists = artists
 
     # =========================================================================
@@ -245,12 +245,12 @@ class Plotter:
                         compas.geometry.Polyline,
                         compas.geometry.Vector,
                         compas.datastructures.Mesh],
-            artist: Optional[Artist] = None,
-            **kwargs) -> Artist:
+            artist: Optional[PlotterArtist] = None,
+            **kwargs) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure to the plot.
         """
         if not artist:
-            artist = Artist.build(item, **kwargs)
+            artist = PlotterArtist.build(item, **kwargs)
         artist.plotter = self
         artist.draw()
         self._artists.append(artist)
@@ -265,16 +265,16 @@ class Plotter:
                            compas.geometry.Polyline,
                            compas.geometry.Vector,
                            compas.datastructures.Mesh],
-               artist_type: Artist,
-               **kwargs) -> Artist:
+               artist_type: PlotterArtist,
+               **kwargs) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure using a specific artist type."""
-        artist = Artist.build_as(item, artist_type, **kwargs)
+        artist = PlotterArtist.build_as(item, artist_type, **kwargs)
         artist.plotter = self
         artist.draw()
         self._artists.append(artist)
         return artist
 
-    def add_from_list(self, items, **kwargs) -> List[Artist]:
+    def add_from_list(self, items, **kwargs) -> List[PlotterArtist]:
         """Add multiple COMPAS geometry objects and/or data structures from a list."""
         artists = []
         for item in items:
@@ -290,7 +290,7 @@ class Plotter:
                          compas.geometry.Polygon,
                          compas.geometry.Polyline,
                          compas.geometry.Vector,
-                         compas.datastructures.Mesh]) -> Artist:
+                         compas.datastructures.Mesh]) -> PlotterArtist:
         """Find a geometry object or data structure in the plot."""
         for artist in self._artists:
             if item is artist.item:

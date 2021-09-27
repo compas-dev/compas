@@ -46,7 +46,6 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         Returns
         -------
         list of :class:`Rhino.Geometry.Point3d`
-
         """
         self.vertex_color = color
         vertices = vertices or list(self.volmesh.vertices())
@@ -75,7 +74,6 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         Returns
         -------
         list of :class:`Rhino.Geometry.Line`
-
         """
         self.edge_color = color
         edges = edges or list(self.volmesh.edges())
@@ -105,7 +103,6 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         Returns
         -------
         list of :class:`Rhino.Geometry.Mesh`
-
         """
         self.face_color = color
         faces = faces or list(self.volmesh.faces())

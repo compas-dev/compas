@@ -77,6 +77,7 @@ import inspect
 
 from compas.plugins import plugin
 from compas.artists import Artist
+from compas.artists import ShapeArtist
 from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Circle
@@ -123,39 +124,58 @@ from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
 from .robotmodelartist import RobotModelArtist
 
-Artist.register(Circle, CircleArtist)
-Artist.register(Frame, FrameArtist)
-Artist.register(Line, LineArtist)
-Artist.register(Plane, PlaneArtist)
-Artist.register(Point, PointArtist)
-Artist.register(Polygon, PolygonArtist)
-Artist.register(Polyline, PolylineArtist)
-Artist.register(Vector, VectorArtist)
-Artist.register(Box, BoxArtist)
-Artist.register(Capsule, CapsuleArtist)
-Artist.register(Cone, ConeArtist)
-Artist.register(Cylinder, CylinderArtist)
-Artist.register(Polyhedron, PolyhedronArtist)
-Artist.register(Sphere, SphereArtist)
-Artist.register(Torus, TorusArtist)
-Artist.register(Mesh, MeshArtist)
-Artist.register(Network, NetworkArtist)
-Artist.register(VolMesh, VolMeshArtist)
-Artist.register(RobotModel, RobotModelArtist)
+ShapeArtist.default_color = (255, 255, 255)
+
+MeshArtist.default_color = (0, 0, 0)
+MeshArtist.default_vertexcolor = (255, 255, 255)
+MeshArtist.default_edgecolor = (0, 0, 0)
+MeshArtist.default_facecolor = (255, 255, 255)
+
+NetworkArtist.default_nodecolor = (255, 255, 255)
+NetworkArtist.default_edgecolor = (0, 0, 0)
+
+VolMeshArtist.default_color = (0, 0, 0)
+VolMeshArtist.default_vertexcolor = (255, 255, 255)
+VolMeshArtist.default_edgecolor = (0, 0, 0)
+VolMeshArtist.default_facecolor = (255, 255, 255)
+VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['Rhino'])
 def new_artist_rhino(cls, *args, **kwargs):
+    RhinoArtist.register(Circle, CircleArtist)
+    RhinoArtist.register(Frame, FrameArtist)
+    RhinoArtist.register(Line, LineArtist)
+    RhinoArtist.register(Plane, PlaneArtist)
+    RhinoArtist.register(Point, PointArtist)
+    RhinoArtist.register(Polygon, PolygonArtist)
+    RhinoArtist.register(Polyline, PolylineArtist)
+    RhinoArtist.register(Vector, VectorArtist)
+    RhinoArtist.register(Box, BoxArtist)
+    RhinoArtist.register(Capsule, CapsuleArtist)
+    RhinoArtist.register(Cone, ConeArtist)
+    RhinoArtist.register(Cylinder, CylinderArtist)
+    RhinoArtist.register(Polyhedron, PolyhedronArtist)
+    RhinoArtist.register(Sphere, SphereArtist)
+    RhinoArtist.register(Torus, TorusArtist)
+    RhinoArtist.register(Mesh, MeshArtist)
+    RhinoArtist.register(Network, NetworkArtist)
+    RhinoArtist.register(VolMesh, VolMeshArtist)
+    RhinoArtist.register(RobotModel, RobotModelArtist)
+
     data = args[0]
     dtype = type(data)
-    if dtype not in Artist.ITEM_ARTIST:
+    if dtype not in RhinoArtist.ITEM_ARTIST:
         raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
+
     # TODO: move this to the plugin module and/or to a dedicated function
-    cls = Artist.ITEM_ARTIST[dtype]
+
+    cls = RhinoArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.ismethod(value):
             if hasattr(value, '__isabstractmethod__'):
                 raise Exception('Abstract method not implemented')
+
     return super(Artist, cls).__new__(cls)
 
 

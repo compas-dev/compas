@@ -50,7 +50,6 @@ class NetworkArtist(GHArtist, NetworkArtist):
         Returns
         -------
         list of :class:`Rhino.Geometry.Point3d`
-
         """
         self.node_color = color
         node_xyz = self.node_xyz
@@ -79,7 +78,6 @@ class NetworkArtist(GHArtist, NetworkArtist):
         Returns
         -------
         list of :class:`Rhino.Geometry.Line`
-
         """
         self.edge_color = color
         node_xyz = self.node_xyz

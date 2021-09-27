@@ -25,6 +25,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
                  torus: Torus,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any):
+
         super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
 
     def draw(self, u=None, v=None):
@@ -47,8 +48,5 @@ class TorusArtist(BlenderArtist, ShapeArtist):
         u = u or self.u
         v = v or self.v
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        objects = []
         obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
-        objects.append(obj)
-        self.objects += objects
-        return objects
+        return [obj]

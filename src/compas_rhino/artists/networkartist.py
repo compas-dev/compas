@@ -23,14 +23,62 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         A COMPAS network.
     layer : str, optional
         The parent layer of the network.
+    nodes : list of int, optional
+        A list of node identifiers.
+        Default is ``None``, in which case all nodes are drawn.
+    edges : list, optional
+        A list of edge keys (as uv pairs) identifying which edges to draw.
+        The default is ``None``, in which case all edges are drawn.
+    nodecolor : rgb-tuple or dict of rgb-tuples, optional
+        The color specification for the nodes.
+    edgecolor : rgb-tuple or dict of rgb-tuples, optional
+        The color specification for the edges.
+    show_nodes : bool, optional
+    show_edges : bool, optional
     """
 
-    def __init__(self, network, layer=None, **kwargs):
+    def __init__(self,
+                 network,
+                 layer=None,
+                 nodes=None,
+                 edges=None,
+                 nodecolor=None,
+                 edgecolor=None,
+                 show_nodes=True,
+                 show_edges=True,
+                 **kwargs):
+
         super(NetworkArtist, self).__init__(network=network, layer=layer, **kwargs)
 
-    def clear_by_name(self):
-        """Clear all objects in the "namespace" of the associated network."""
+        self.nodes = nodes
+        self.edges = edges
+        self.node_color = nodecolor
+        self.edge_color = edgecolor
+        self.show_nodes = show_nodes
+        self.show_edges = show_edges
+
+    # ==========================================================================
+    # clear
+    # ==========================================================================
+
+    def clear(self):
         guids = compas_rhino.get_objects(name="{}.*".format(self.network.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_nodes(self):
+        guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.network.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_edges(self):
+        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.network.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_nodelabels(self):
+        guids = compas_rhino.get_objects(name="{}.nodexlabel.*".format(self.network.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_edgelabels(self):
+        guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     # ==========================================================================
@@ -59,8 +107,8 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         -------
         list
             The GUIDs of the created Rhino objects.
-
         """
+        self.clear()
         guids = self.draw_nodes(nodes=nodes, color=nodecolor)
         guids += self.draw_edges(edges=edges, color=edgecolor)
         return guids
@@ -81,11 +129,10 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         -------
         list
             The GUIDs of the created Rhino objects.
-
         """
         self.node_color = color
         node_xyz = self.node_xyz
-        nodes = nodes or list(self.network.nodes())
+        nodes = nodes or self.nodes
         points = []
         for node in nodes:
             points.append({
@@ -111,11 +158,10 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         -------
         list
             The GUIDs of the created Rhino objects.
-
         """
         self.edge_color = color
         node_xyz = self.node_xyz
-        edges = edges or list(self.network.edges())
+        edges = edges or self.edges
         lines = []
         for edge in edges:
             lines.append({
@@ -146,25 +192,25 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         -------
         list
             The GUIDs of the created Rhino objects.
-
         """
         if not text or text == 'key':
-            node_text = {node: str(node) for node in self.network.nodes()}
+            node_text = {node: str(node) for node in self.nodes}
         elif text == 'index':
-            node_text = {node: str(index) for index, node in enumerate(self.network.nodes())}
+            node_text = {node: str(index) for index, node in enumerate(self.nodes)}
         elif isinstance(text, dict):
             node_text = text
         else:
             raise NotImplementedError
         node_xyz = self.node_xyz
-        node_color = colordict(color, node_text.keys(), default=self.color_nodes)
+        node_color = colordict(color, node_text.keys(), default=self.default_nodecolor)
         labels = []
         for node in node_text:
             labels.append({
                 'pos': node_xyz[node],
                 'name': "{}.nodelabel.{}".format(self.network.name, node),
                 'color': node_color[node],
-                'text': node_text[node]})
+                'text': node_text[node]
+            })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
@@ -183,21 +229,21 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         -------
         list
             The GUIDs of the created Rhino objects.
-
         """
         if text is None:
-            edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}
+            edge_text = {edge: "{}-{}".format(*edge) for edge in self.edges}
         elif isinstance(text, dict):
             edge_text = text
         else:
             raise NotImplementedError
         node_xyz = self.node_xyz
-        edge_color = colordict(color, edge_text.keys(), default=self.color_edges)
+        edge_color = colordict(color, edge_text.keys(), default=self.default_edgecolor)
         labels = []
         for edge in edge_text:
             labels.append({
                 'pos': centroid_points([node_xyz[edge[0]], node_xyz[edge[1]]]),
                 'name': "{}.edgelabel.{}-{}".format(self.network.name, *edge),
                 'color': edge_color[edge],
-                'text': edge_text[edge]})
+                'text': edge_text[edge]
+            })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
