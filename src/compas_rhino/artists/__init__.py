@@ -143,6 +143,8 @@ VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['Rhino'])
 def new_artist_rhino(cls, *args, **kwargs):
+    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+
     RhinoArtist.register(Circle, CircleArtist)
     RhinoArtist.register(Frame, FrameArtist)
     RhinoArtist.register(Line, LineArtist)
@@ -164,13 +166,17 @@ def new_artist_rhino(cls, *args, **kwargs):
     RhinoArtist.register(RobotModel, RobotModelArtist)
 
     data = args[0]
-    dtype = type(data)
-    if dtype not in RhinoArtist.ITEM_ARTIST:
-        raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
+
+    if 'artist_type' in kwargs:
+        cls = kwargs['artist_type']
+    else:
+        dtype = type(data)
+        if dtype not in RhinoArtist.ITEM_ARTIST:
+            raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
+        cls = RhinoArtist.ITEM_ARTIST[dtype]
 
     # TODO: move this to the plugin module and/or to a dedicated function
 
-    cls = RhinoArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.ismethod(value):
             if hasattr(value, '__isabstractmethod__'):

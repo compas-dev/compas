@@ -60,6 +60,8 @@ from .networkartist import NetworkArtist
 
 @plugin(category='factories', pluggable_name='new_artist', trylast=True, requires=['matplotlib'])
 def new_artist_plotter(cls, *args, **kwargs):
+    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+
     PlotterArtist.register(Point, PointArtist)
     PlotterArtist.register(Vector, VectorArtist)
     PlotterArtist.register(Line, LineArtist)
@@ -71,13 +73,17 @@ def new_artist_plotter(cls, *args, **kwargs):
     PlotterArtist.register(Network, NetworkArtist)
 
     data = args[0]
-    dtype = type(data)
-    if dtype not in PlotterArtist.ITEM_ARTIST:
-        raise DataArtistNotRegistered('No Plotter artist is registered for this data type: {}'.format(dtype))
+
+    if 'artist_type' in kwargs:
+        cls = kwargs['artist_type']
+    else:
+        dtype = type(data)
+        if dtype not in PlotterArtist.ITEM_ARTIST:
+            raise DataArtistNotRegistered('No Plotter artist is registered for this data type: {}'.format(dtype))
+        cls = PlotterArtist.ITEM_ARTIST[dtype]
 
     # TODO: move this to the plugin module and/or to a dedicated function
 
-    cls = PlotterArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.isfunction(value):
             if hasattr(value, '__isabstractmethod__'):

@@ -250,7 +250,7 @@ class Plotter:
         """Add a COMPAS geometry object or data structure to the plot.
         """
         if not artist:
-            artist = PlotterArtist.build(item, **kwargs)
+            artist = PlotterArtist(item, **kwargs)
         artist.plotter = self
         artist.draw()
         self._artists.append(artist)
@@ -268,7 +268,7 @@ class Plotter:
                artist_type: PlotterArtist,
                **kwargs) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure using a specific artist type."""
-        artist = PlotterArtist.build_as(item, artist_type, **kwargs)
+        artist = PlotterArtist(item, artist_type=artist_type, **kwargs)
         artist.plotter = self
         artist.draw()
         self._artists.append(artist)

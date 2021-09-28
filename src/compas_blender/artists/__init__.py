@@ -69,6 +69,8 @@ from .torusartist import TorusArtist
 
 @plugin(category='factories', pluggable_name='new_artist', tryfirst=True, requires=['bpy'])
 def new_artist_blender(cls, *args, **kwargs):
+    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+
     BlenderArtist.register(Box, BoxArtist)
     BlenderArtist.register(Capsule, CapsuleArtist)
     BlenderArtist.register(Cone, ConeArtist)
@@ -82,13 +84,17 @@ def new_artist_blender(cls, *args, **kwargs):
     BlenderArtist.register(Torus, TorusArtist)
 
     data = args[0]
-    dtype = type(data)
-    if dtype not in BlenderArtist.ITEM_ARTIST:
-        raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
+
+    if 'artist_type' in kwargs:
+        cls = kwargs['artist_type']
+    else:
+        dtype = type(data)
+        if dtype not in BlenderArtist.ITEM_ARTIST:
+            raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
+        cls = BlenderArtist.ITEM_ARTIST[dtype]
 
     # TODO: move this to the plugin module and/or to a dedicated function
 
-    cls = BlenderArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.isfunction(value):
             if hasattr(value, '__isabstractmethod__'):

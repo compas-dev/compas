@@ -101,6 +101,8 @@ VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['ghpythonlib'])
 def new_artist_gh(cls, *args, **kwargs):
+    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+
     GHArtist.register(Circle, CircleArtist)
     GHArtist.register(Frame, FrameArtist)
     GHArtist.register(Line, LineArtist)
@@ -111,13 +113,17 @@ def new_artist_gh(cls, *args, **kwargs):
     GHArtist.register(VolMesh, VolMeshArtist)
 
     data = args[0]
-    dtype = type(data)
-    if dtype not in GHArtist.ITEM_ARTIST:
-        raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
+
+    if 'artist_type' in kwargs:
+        cls = kwargs['artist_type']
+    else:
+        dtype = type(data)
+        if dtype not in GHArtist.ITEM_ARTIST:
+            raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
+        cls = GHArtist.ITEM_ARTIST[dtype]
 
     # TODO: move this to the plugin module and/or to a dedicated function
 
-    cls = GHArtist.ITEM_ARTIST[dtype]
     for name, value in inspect.getmembers(cls):
         if inspect.ismethod(value):
             if hasattr(value, '__isabstractmethod__'):

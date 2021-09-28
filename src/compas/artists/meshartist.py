@@ -60,10 +60,10 @@ class MeshArtist(Artist):
         Mapping between faces and text labels.
     """
 
-    default_color = (0, 0, 0)
-    default_vertexcolor = (1, 1, 1)
-    default_edgecolor = (0, 0, 0)
-    default_facecolor = (1, 1, 1)
+    default_color = (0.0, 0.0, 0.0)
+    default_vertexcolor = (1.0, 1.0, 1.0)
+    default_edgecolor = (0.0, 0.0, 0.0)
+    default_facecolor = (1.0, 1.0, 1.0)
 
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__(**kwargs)
