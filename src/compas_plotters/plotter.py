@@ -9,7 +9,16 @@ import compas
 from .artists import PlotterArtist
 
 
-class Plotter:
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class Plotter(metaclass=Singleton):
     """Plotter for the visualization of COMPAS geometry.
 
     Parameters
@@ -211,6 +220,7 @@ class Plotter:
         width, height = self.figsize
         fig_aspect = width / height
         data = []
+        print(self.artists)
         for artist in self.artists:
             data += artist.data
         x, y = zip(* data)
@@ -251,7 +261,6 @@ class Plotter:
         """
         if not artist:
             artist = PlotterArtist(item, **kwargs)
-        artist.plotter = self
         artist.draw()
         self._artists.append(artist)
         return artist
@@ -269,7 +278,6 @@ class Plotter:
                **kwargs) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure using a specific artist type."""
         artist = PlotterArtist(item, artist_type=artist_type, **kwargs)
-        artist.plotter = self
         artist.draw()
         self._artists.append(artist)
         return artist
