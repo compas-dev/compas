@@ -53,9 +53,6 @@ class NetworkArtist(PlotterArtist):
     zorder_edges : int
     """
 
-    default_nodesize: int = 5
-    default_edgewidth: float = 1.0
-
     zorder_edges: int = 2000
     zorder_nodes: int = 3000
 
@@ -74,19 +71,15 @@ class NetworkArtist(PlotterArtist):
 
         super().__init__(network=network, **kwargs)
 
-        self._nodecollection = None
-        self._edgecollection = None
-        self._edge_width = None
-
         self.nodes = nodes
         self.edges = edges
         self.node_color = nodecolor
+        self.node_size = nodesize
         self.edge_color = edgecolor
         self.edge_width = edgewidth
         self.show_nodes = show_nodes
         self.show_edges = show_edges
 
-        self.nodesize = nodesize
         self.sizepolicy = sizepolicy
 
     @property
@@ -99,26 +92,12 @@ class NetworkArtist(PlotterArtist):
         self.network = item
 
     @property
-    def edge_width(self) -> Dict[Tuple[int, int], float]:
-        """dict: Edge widths."""
-        return self._edge_width
-
-    @edge_width.setter
-    def edge_width(self, edgewidth: Union[float, Dict[Tuple[int, int], float]]):
-        if isinstance(edgewidth, dict):
-            self._edge_width = edgewidth
-        elif isinstance(edgewidth, (int, float)):
-            self._edge_width = {edge: edgewidth for edge in self.network.edges()}
-        else:
-            self._edge_width = {}
-
-    @property
     def data(self) -> List[List[float]]:
         return self.network.nodes_attributes('xy')
 
-    def clear(self):
-        self.clear_nodes()
-        self.clear_edges()
+    # ==============================================================================
+    # clear and draw
+    # ==============================================================================
 
     def clear_nodes(self):
         if self._nodecollection:
@@ -156,9 +135,6 @@ class NetworkArtist(PlotterArtist):
         if self.show_edges:
             self.draw_edges(edges=edges, color=edgecolor)
 
-    def redraw(self) -> None:
-        raise NotImplementedError
-
     def draw_nodes(self,
                    nodes: Optional[List[int]] = None,
                    color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> None:
@@ -173,23 +149,17 @@ class NetworkArtist(PlotterArtist):
             The color specification for the nodes.
         """
         self.clear_nodes()
-
         if nodes:
             self.nodes = nodes
         if color:
             self.node_color = color
-
-        if self.sizepolicy == 'absolute':
-            size = self.nodesize / self.plotter.dpi
-        else:
-            size = self.nodesize / self.network.number_of_nodes()
 
         circles = []
         for node in self.nodes:
             x, y = self.node_xyz[node][:2]
             circle = Circle(
                 [x, y],
-                radius=size,
+                radius=self.node_size.get(node, self.default_nodesize),
                 facecolor=self.node_color.get(node, self.default_nodecolor),
                 edgecolor=(0, 0, 0),
                 lw=0.3,
@@ -219,7 +189,6 @@ class NetworkArtist(PlotterArtist):
             The color specification for the edges.
         """
         self.clear_edges()
-
         if edges:
             self.edges = edges
         if color:

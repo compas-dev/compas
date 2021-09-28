@@ -26,6 +26,8 @@ class MeshArtist(Artist):
         The default color for edges that do not have a specified color.
     default_facecolor : tuple
         The default color for faces that do not have a specified color.
+    default_vertexsize : int
+    default_edgewidth : float
 
     Attributes
     ----------
@@ -65,8 +67,12 @@ class MeshArtist(Artist):
     default_edgecolor = (0.0, 0.0, 0.0)
     default_facecolor = (1.0, 1.0, 1.0)
 
+    default_vertexsize = 5
+    default_edgewidth = 1.0
+
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__(**kwargs)
+
         self._mesh = None
         self._vertices = None
         self._edges = None
@@ -75,10 +81,22 @@ class MeshArtist(Artist):
         self._vertex_xyz = None
         self._vertex_color = None
         self._vertex_text = None
+        self._vertex_size = None
         self._edge_color = None
         self._edge_text = None
+        self._edge_width = None
         self._face_color = None
         self._face_text = None
+
+        self._vertexcollection = None
+        self._edgecollection = None
+        self._facecollection = None
+        self._vertexnormalcollection = None
+        self._facenormalcollection = None
+        self._vertexlabelcollection = None
+        self._edgelabelcollection = None
+        self._facelabelcollection = None
+
         self.mesh = mesh
 
     @property
@@ -170,6 +188,19 @@ class MeshArtist(Artist):
             self._vertex_text = text
 
     @property
+    def vertex_size(self):
+        if not self._vertex_size:
+            self._vertex_size = {vertex: self.default_vertexsize for vertex in self.mesh.vertices()}
+        return self._vertex_size
+
+    @vertex_size.setter
+    def vertex_size(self, vertexsize):
+        if isinstance(vertexsize, dict):
+            self._vertex_size = vertexsize
+        elif isinstance(vertexsize, (int, float)):
+            self._vertex_size = {vertex: vertexsize for vertex in self.mesh.vertices()}
+
+    @property
     def edge_color(self):
         if self._edge_color is None:
             self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
@@ -196,6 +227,19 @@ class MeshArtist(Artist):
             self._edge_text = {edge: str(index) for index, edge in enumerate(self.mesh.edges())}
         elif isinstance(text, dict):
             self._edge_text = text
+
+    @property
+    def edge_width(self):
+        if not self._edge_width:
+            self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}
+        return self._edge_width
+
+    @edge_width.setter
+    def edge_width(self, edgewidth):
+        if isinstance(edgewidth, dict):
+            self._edge_width = edgewidth
+        elif isinstance(edgewidth, (int, float)):
+            self._edge_width = {edge: edgewidth for edge in self.mesh.edges()}
 
     @property
     def face_color(self):
@@ -293,3 +337,8 @@ class MeshArtist(Artist):
     @abstractmethod
     def clear_faces(self):
         raise NotImplementedError
+
+    def clear(self):
+        self.clear_vertices()
+        self.clear_edges()
+        self.clear_faces()

@@ -54,15 +54,10 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
     Class Attributes
     ----------------
-    default_vertexsize : int
-    default_edgewidth : float
     zorder_vertices : int
     zorder_edges : int
     zorder_faces : int
     """
-
-    default_vertexsize: int = 5
-    default_edgewidth: float = 1.0
 
     zorder_faces: int = 1000
     zorder_edges: int = 2000
@@ -86,32 +81,35 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         super().__init__(mesh=mesh, **kwargs)
 
-        self._edge_width = None
-
-        self._vertexcollection = None
-        self._edgecollection = None
-        self._facecollection = None
-        self._vertexnormalcollection = None
-        self._facenormalcollection = None
-        self._vertexlabelcollection = None
-        self._edgelabelcollection = None
-        self._facelabelcollection = None
+        self.sizepolicy = sizepolicy
 
         self.vertices = vertices
         self.edges = edges
         self.faces = faces
-
         self.vertex_color = vertexcolor
+        self.vertex_size = vertexsize
         self.edge_color = edgecolor
-        self.face_color = facecolor
         self.edge_width = edgewidth
-
+        self.face_color = facecolor
         self.show_vertices = show_vertices
         self.show_edges = show_edges
         self.show_faces = show_faces
 
-        self.vertexsize = vertexsize
-        self.sizepolicy = sizepolicy
+    @property
+    def vertex_size(self):
+        if not self._vertex_size:
+            factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.mesh.number_of_vertices()
+            size = self.default_vertexsize / factor
+            self._vertex_size = {vertex: size for vertex in self.mesh.vertices()}
+        return self._vertex_size
+
+    @vertex_size.setter
+    def vertex_size(self, vertexsize):
+        factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.mesh.number_of_vertices()
+        if isinstance(vertexsize, dict):
+            self.vertex_size.update({vertex: size / factor for vertex, size in vertexsize.items()})
+        elif isinstance(vertexsize, (int, float)):
+            self._vertex_size = {vertex: vertexsize / factor for vertex in self.mesh.vertices()}
 
     @property
     def item(self):
@@ -123,27 +121,12 @@ class MeshArtist(PlotterArtist, MeshArtist):
         self.mesh = item
 
     @property
-    def edge_width(self) -> Dict[Tuple[int, int], float]:
-        """dict: Edge widths."""
-        if not self._edge_width:
-            self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}
-        return self._edge_width
-
-    @edge_width.setter
-    def edge_width(self, edgewidth: Union[float, Dict[Tuple[int, int], float]]):
-        if isinstance(edgewidth, dict):
-            self._edge_width = edgewidth
-        elif isinstance(edgewidth, (int, float)):
-            self._edge_width = {edge: edgewidth for edge in self.mesh.edges()}
-
-    @property
     def data(self) -> List[List[float]]:
         return self.mesh.vertices_attributes('xy')
 
-    def clear(self):
-        self.clear_vertices()
-        self.clear_edges()
-        self.clear_faces()
+    # ==============================================================================
+    # clear and draw
+    # ==============================================================================
 
     def clear_vertices(self) -> None:
         if self._vertexcollection:
@@ -196,9 +179,6 @@ class MeshArtist(PlotterArtist, MeshArtist):
         if self.show_faces:
             self.draw_faces(faces=faces, color=facecolor)
 
-    def redraw(self) -> None:
-        raise NotImplementedError
-
     def draw_vertices(self,
                       vertices: Optional[List[int]] = None,
                       color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
@@ -218,23 +198,17 @@ class MeshArtist(PlotterArtist, MeshArtist):
         None
         """
         self.clear_vertices()
-
         if vertices:
             self.vertices = vertices
         if color:
             self.vertex_color = color
-
-        if self.sizepolicy == 'absolute':
-            size = self.vertexsize / self.plotter.dpi
-        else:
-            size = self.vertexsize / self.mesh.number_of_vertices()
 
         circles = []
         for vertex in self.vertices:
             x, y = self.vertex_xyz[vertex][:2]
             circle = Circle(
                 [x, y],
-                radius=size,
+                radius=self.vertex_size.get(vertex, self.default_vertexsize),
                 facecolor=self.vertex_color.get(vertex, self.default_vertexcolor),
                 edgecolor=(0, 0, 0),
                 lw=0.3,
@@ -269,7 +243,6 @@ class MeshArtist(PlotterArtist, MeshArtist):
         None
         """
         self.clear_edges()
-
         if edges:
             self.edges = edges
         if color:
@@ -313,7 +286,6 @@ class MeshArtist(PlotterArtist, MeshArtist):
         None
         """
         self.clear_faces()
-
         if faces:
             self.faces = faces
         if color:

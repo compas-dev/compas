@@ -66,11 +66,6 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
         super().__init__(network=network, collection=collection or network.name, **kwargs)
 
-        self._nodecollection = None
-        self._edgecollection = None
-        self._nodelabelcollection = None
-        self._edgelabelcollection = None
-
         self.nodes = nodes
         self.edges = edges
         self.node_color = nodecolor
@@ -101,6 +96,26 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         if not self._edgelabelcollection:
             self._edgelabelcollection = compas_blender.create_collection('EdgeLabels', parent=self.collection)
         return self._edgelabelcollection
+
+    # ==========================================================================
+    # clear
+    # ==========================================================================
+
+    def clear_nodes(self):
+        compas_blender.delete_objects(self.nodecollection.objects)
+
+    def clear_edges(self):
+        compas_blender.delete_objects(self.edgecollection.objects)
+
+    def clear_nodelabels(self):
+        compas_blender.delete_objects(self.nodelabelcollection.objects)
+
+    def clear_edgelabels(self):
+        compas_blender.delete_objects(self.edgelabelcollection.objects)
+
+    # ==========================================================================
+    # draw
+    # ==========================================================================
 
     def draw(self,
              nodes: Optional[List[int]] = None,

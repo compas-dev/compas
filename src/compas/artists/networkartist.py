@@ -56,8 +56,12 @@ class NetworkArtist(Artist):
     default_nodecolor = (1, 1, 1)
     default_edgecolor = (0, 0, 0)
 
+    default_nodesize = 5
+    default_edgewidth = 1.0
+
     def __init__(self, network, **kwargs):
         super(NetworkArtist, self).__init__(**kwargs)
+
         self._network = None
         self._nodes = None
         self._edges = None
@@ -66,6 +70,12 @@ class NetworkArtist(Artist):
         self._edge_color = None
         self._node_text = None
         self._edge_text = None
+
+        self._nodecollection = None
+        self._edgecollection = None
+        self._nodelabelcollection = None
+        self._edgelabelcollection = None
+
         self.network = network
 
     @property
@@ -121,6 +131,19 @@ class NetworkArtist(Artist):
             self._node_color = {node: node_color for node in self.network.nodes()}
 
     @property
+    def node_size(self):
+        if not self._node_size:
+            self._node_size = {node: self.default_nodesize for node in self.network.vertices()}
+        return self._node_size
+
+    @node_size.setter
+    def node_size(self, nodesize):
+        if isinstance(nodesize, dict):
+            self._node_size = nodesize
+        elif isinstance(nodesize, (int, float)):
+            self._node_size = {node: nodesize for node in self.network.vertices()}
+
+    @property
     def edge_color(self):
         if not self._edge_color:
             self._edge_color = {edge: self.default_edgecolor for edge in self.network.edges()}
@@ -163,6 +186,19 @@ class NetworkArtist(Artist):
         elif isinstance(text, dict):
             self._edge_text = text
 
+    @property
+    def edge_width(self):
+        if not self._edge_width:
+            self._edge_width = {edge: self.default_edgewidth for edge in self.network.edges()}
+        return self._edge_width
+
+    @edge_width.setter
+    def edge_width(self, edgewidth):
+        if isinstance(edgewidth, dict):
+            self._edge_width = edgewidth
+        elif isinstance(edgewidth, (int, float)):
+            self._edge_width = {edge: edgewidth for edge in self.network.edges()}
+
     @abstractmethod
     def draw_nodes(self, nodes=None, color=None, text=None):
         """Draw the nodes of the network.
@@ -184,7 +220,7 @@ class NetworkArtist(Artist):
 
     @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
-        """Draw the edges of the mesh.
+        """Draw the edges of the network.
 
         Parameters
         ----------
@@ -208,3 +244,7 @@ class NetworkArtist(Artist):
     @abstractmethod
     def clear_edges(self):
         raise NotImplementedError
+
+    def clear(self):
+        self.clear_nodes()
+        self.clear_edges()

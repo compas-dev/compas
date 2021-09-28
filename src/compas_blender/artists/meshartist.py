@@ -86,15 +86,6 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
         super().__init__(mesh=mesh, collection=collection or mesh.name, **kwargs)
 
-        self._vertexcollection = None
-        self._edgecollection = None
-        self._facecollection = None
-        self._vertexnormalcollection = None
-        self._facenormalcollection = None
-        self._vertexlabelcollection = None
-        self._edgelabelcollection = None
-        self._facelabelcollection = None
-
         self.vertices = vertices
         self.edges = edges
         self.faces = faces

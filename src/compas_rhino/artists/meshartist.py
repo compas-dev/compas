@@ -49,11 +49,9 @@ class MeshArtist(RhinoArtist, MeshArtist):
         self.vertices = vertices
         self.edges = edges
         self.faces = faces
-
         self.vertex_color = vertexcolor
         self.edge_color = edgecolor
         self.face_color = facecolor
-
         self.show_mesh = show_mesh
         self.show_vertices = show_vertices
         self.show_edges = show_edges
