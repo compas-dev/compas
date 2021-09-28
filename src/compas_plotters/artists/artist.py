@@ -8,7 +8,14 @@ class PlotterArtist(Artist):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.plotter = None
+        self._plotter = None
+
+    @property
+    def plotter(self):
+        if not self._plotter:
+            from compas_plotters import Plotter
+            self._plotter = Plotter()
+        return self._plotter
 
     def viewbox(self):
         xlim = self.plotter.axes.get_xlim()
