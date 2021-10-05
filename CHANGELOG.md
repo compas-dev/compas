@@ -9,6 +9,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
+* Added optional `triangulated` flag to `to_vertices_and_faces` of all shapes.
+* Added `compas.geometry.Geometry` base class.
+* Added `__add__`, `__sub__`, `__and__` to `compas.geometry.Shape` for boolean operations using binary operators.
+* Added `is_closed` to `compas.geometry.Polyhedron`.
+* Added `Plane.offset`.
+* Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
+* Added `compas_blender.artists.RobotModelArtist.clear`.
+
+### Changed
+
+* Fixed bug in `compas_blender.draw_texts`.
+* Changed default resolution for shape discretisation to 16 for both u and v where relevant.
+* Changed base class of `compas.geometry.Primitive` and `compas.geometry.Shape` to `compas.geometry.Geometry`.
+* `compas_blender.artists.RobotModelArtist.collection` can be assigned as a Blender collection or a name.
+* Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
+* Changed `compas.IPY` to `compas.RHINO` in `orientation_rhino`.
+
+### Removed
+
+
+## [1.8.1] 2021-09-08
+
+### Added
+
+### Changed
+
+### Removed
+
+
+## [1.8.0] 2021-09-08
+
+### Added
+
 * Added pluggable function `trimesh_slice` in `compas_rhino`.
 * Added equality comparison for pointclouds.
 * Added `compas.data.is_sequence_of_uint`.
@@ -23,6 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoCylinder`.
 * Added `compas_rhino.geometry.RhinoPolyline`.
 * Added `compas_rhino.geometry.RhinoSphere`.
+* Added `meshes` method to artists of `compas.robots.RobotModel`.
+* Added `FrameArtist` class to `compas_blender`.
 
 ### Changed
 
@@ -34,8 +70,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.drawing.draw_breps` to assume provided polygon is closed and automatically add missing corner to polycurve constructor.
 * Changed conversion of edges and faces to uniques keys for the data dicts to use the string representation of a sorted tuple of identifiers.
 * Added `dtype` to JSON decoding error message.
+* Moved `compas.datastructures.mesh.core.halfedge.HalfEdge` to `compas.datastructures.halfedge.halfedge.HalfEdge`
+* Moved `compas.datastructures.network.core.graph.Graph` to `compas.datastructures.graph.graph.Graph`.
 
 ### Removed
+
+* Removed `compas.datastructures.mesh.core.mesh.BaseMesh`.
+
+* Removed `compas.datastructures.BaseNetwork`.
 
 ## [1.7.1] 2021-06-14
 

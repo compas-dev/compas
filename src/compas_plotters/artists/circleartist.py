@@ -1,4 +1,5 @@
-from typing import Literal, Tuple, List
+from typing import Tuple, List
+from typing_extensions import Literal
 from matplotlib.patches import Circle as CirclePatch
 from compas.geometry import Circle
 from compas_plotters.artists import Artist

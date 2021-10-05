@@ -16,7 +16,7 @@ class Plotter:
     ----------
     view : tuple, optional
         The area of the axes that should be zoomed into view.
-        DEfault is ``([-10, 10], [-3, 10])``.
+        Default is ``([-10, 10], [-3, 10])``.
     figsize : tuple, optional
         The size of the figure in inches.
         Default is ``(8, 5)``

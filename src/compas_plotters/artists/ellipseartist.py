@@ -1,4 +1,5 @@
-from typing import Literal, Tuple, List
+from typing import Tuple, List
+from typing_extensions import Literal
 from matplotlib.patches import Ellipse as EllipsePatch
 from compas.geometry import Ellipse
 from compas_plotters.artists import Artist

@@ -5,6 +5,15 @@ geometry
 
 .. currentmodule:: compas.geometry
 
+Base Class
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Geometry
+
 Classes
 =======
 
@@ -851,6 +860,9 @@ if not compas.IPY:
         world_to_local_coordinates_numpy,
         local_to_world_coordinates_numpy
     )
+
+from .geometry import Geometry
+
 from .primitives import (  # noqa: E402
     Primitive,
     Bezier,
@@ -1235,9 +1247,8 @@ __all__ = [
     'trimesh_remesh_along_isoline',
     'trimesh_slice',
 
-    'KDTree',
+    'Geometry',
 
-    'Pointcloud',
     'Primitive',
     'Bezier',
     'Circle',
@@ -1259,6 +1270,9 @@ __all__ = [
     'Polyhedron',
     'Sphere',
     'Torus',
+
+    'Pointcloud',
+    'KDTree',
 
     'Projection',
     'Reflection',
