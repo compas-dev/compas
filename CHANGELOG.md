@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Plane.offset`.
 * Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
 * Added `compas_blender.artists.RobotModelArtist.clear`.
+* Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
 
 ### Changed
 
