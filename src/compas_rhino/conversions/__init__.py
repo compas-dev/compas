@@ -3,7 +3,7 @@
 interop
 ********************************************************************************
 
-.. currentmodule:: compas_rhino.interop
+.. currentmodule:: compas_rhino.conversions
 
 .. rst-class:: lead
 
