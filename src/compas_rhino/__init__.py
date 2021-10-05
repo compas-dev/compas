@@ -10,9 +10,9 @@ compas_rhino
 
     compas_rhino.artists
     compas_rhino.conduits
+    compas_rhino.conversions
     compas_rhino.forms
     compas_rhino.geometry
-    compas_rhino.interop
     compas_rhino.objects
     compas_rhino.utilities
 
