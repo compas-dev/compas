@@ -6,18 +6,8 @@ artists
 .. currentmodule:: compas_ghpython.artists
 
 
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    GHArtist
-
-
-Geometry Artists
-================
+Primitive Artists
+=================
 
 .. autosummary::
     :toctree: generated/
@@ -50,6 +40,16 @@ Robot Artist
     :nosignatures:
 
     RobotModelArtist
+
+
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    GHArtist
 
 """
 from __future__ import absolute_import

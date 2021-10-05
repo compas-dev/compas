@@ -8,6 +8,51 @@ artists
 Artists for visualising (painting) COMPAS data structures in Blender.
 
 
+Primitive Artists
+=================
+
+.. autosummary::
+    :toctree: generated/
+
+    FrameArtist
+
+
+Shape Artists
+=============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    BoxArtist
+    CapsuleArtist
+    ConeArtist
+    CylinderArtist
+    SphereArtist
+    PolyhedronArtist
+
+
+Datastructure Artists
+=====================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    NetworkArtist
+    MeshArtist
+
+
+Robot Artist
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RobotModelArtist
+
+
 Base Classes
 ============
 
@@ -15,24 +60,6 @@ Base Classes
     :toctree: generated/
 
     BlenderArtist
-
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-
-    BoxArtist
-    CapsuleArtist
-    ConeArtist
-    CylinderArtist
-    FrameArtist
-    NetworkArtist
-    MeshArtist
-    PolyhedronArtist
-    RobotModelArtist
-    SphereArtist
 
 """
 import inspect

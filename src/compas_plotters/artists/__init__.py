@@ -6,8 +6,8 @@ compas_plotters.artists
 .. currentmodule:: compas_plotters.artists
 
 
-Classes
-=======
+Primitive Artists
+=================
 
 .. autosummary::
     :toctree: generated/
@@ -21,12 +21,25 @@ Classes
     CircleArtist
     EllipseArtist
 
+Datastructure Artists
+=====================
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     MeshArtist
     NetworkArtist
+
+
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    PlotterArtist
 
 """
 import inspect
