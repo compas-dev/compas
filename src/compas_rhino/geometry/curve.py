@@ -49,7 +49,7 @@ class RhinoCurve(BaseRhinoGeometry):
             elif isinstance(geometry, Ellipse):
                 geometry = ellipse_to_rhino_curve(geometry)
             else:
-                raise ConversionError('The geometry cannot be convertex to a curve.')
+                raise ConversionError('The geometry cannot be converted to a curve.')
         curve = cls()
         curve.geometry = geometry
         return curve
