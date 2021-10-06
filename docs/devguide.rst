@@ -390,10 +390,12 @@ Advanced options
 
 There are a few additional options that plugins can use:
 
-* ``requires``: List of required python modules. COMPAS will filter out plugins if their
+* ``requires``: List of requirements. COMPAS will filter out plugins if their
   requirements list is not satisfied at runtime. This allows to have multiple implementations
-  of the same operation and have them selected based on which packages are installed.
-  on the system. Eg. `requires=['scipy']`.
+  of the same operation and have them selected based on different criteria.
+  The requirement can either be a packages name string (e.g. ``requires=['scipy']``) or
+  a ``callable``, in which any arbitrary check can be implemented
+  (e.g. ``requires=[lambda: is_rhino_active()]``).
 * ``tryfirst`` and ``trylast``: Plugins cannot control the exact priority they will have
   but they can indicate whether to try to prioritize them or demote them as fallback using
   these two boolean parameters.
