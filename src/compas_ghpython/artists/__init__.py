@@ -71,6 +71,8 @@ from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
+from compas.robots import RobotModel
+
 from .artist import GHArtist
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
@@ -121,6 +123,7 @@ def new_artist_gh(cls, *args, **kwargs):
     GHArtist.register(Mesh, MeshArtist)
     GHArtist.register(Network, NetworkArtist)
     GHArtist.register(VolMesh, VolMeshArtist)
+    GHArtist.register(RobotModel, RobotModelArtist)
 
     data = args[0]
 
