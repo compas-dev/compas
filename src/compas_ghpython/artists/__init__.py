@@ -107,7 +107,7 @@ def verify_gh_context():
         import scriptcontext as sc
 
         return not isinstance(sc.doc, Rhino.RhinoDoc)
-    except:
+    except:            # noqa: E722
         return False
 
 
