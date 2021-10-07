@@ -116,10 +116,10 @@ under the Scripting tab.</p>
 </div>
 <section id="installation">
 <h2>Installation</h2>
-<p>These instructions are for the latest Blender 2.83 LTS which ships with Python 3.7
-If you don’t have an environment yet with Python 3.7 and COMPAS you can create one with <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
+<p>These instructions are for the latest Blender 2.93 LTS which ships with Python 3.9
+If you don’t have an environment yet with Python 3.9 and COMPAS you can create one with <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
-conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS --yes
+conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 COMPAS --yes
 </code></pre></div>
 </div>
 <p>Configuring Blender to use the newly installed environment is slightly different per OS.</p>
@@ -139,28 +139,33 @@ conda create -n blender <span class="nv">python</span><span class="o">=</span><s
     </div>
     <div class="card-body">
         <div class="tab-content"><div class="tab-pane active" id="replace_python_windows"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.83\\2.83&quot;</span>
+python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.93\\2.93&quot;</span>
 </code></pre></div>
 </div>
-<p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.83\\2.83</span></code> might be different on your system.
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.93\\2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
 <div class="tab-pane" id="replace_python_osx"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.83
+python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.93
 </code></pre></div>
 </div>
-<p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.83</span></code> might be different on your system.
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
 <div class="tab-pane" id="replace_python_linux"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install ~/Blender/2.83
+python -m compas_blender.install ~/Blender/2.93
 </code></pre></div>
 </div>
-<p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.83</span></code> might be different on your system.
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div></div>
 </div>
-</div></section>
+</div><p>On Windows and OSX, if Blender is installed in the default location, you can simply provide the version number.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+python -m compas_blender.install -v <span class="m">2</span>.93
+</code></pre></div>
+</div>
+</section>
 <section id="add-ons">
 <h2>Add-ons</h2>
 <p>For some Blender add-ons, not only the version of Python has to match, but also the version of Numpy.
@@ -300,6 +305,27 @@ Artists are currently only available for data structures and robots.</p>
 <p>There is also no official system yet for making custom COMPAS tools in Blender.
 Therefore, COMPAS Blender development is somewhat limited to individual scripts.</p>
 </section>
+<section id="known-issues">
+<h2>Known Issues</h2>
+<p>On Windows, Blender sometimes has issues with finding NumPy libraries.
+If this is the case, the problem can usually be solved by reinstalling NumPy in your environment using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
+However, to avoid issues with other packages that were already installed and depend on a specific version of NumPy,
+you should install the same version as the one installed originally by <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -c <span class="s2">&quot;import numpy; print(numpy.__version__)&quot;</span>
+</code></pre></div>
+</div>
+<p>If the above is, for example, <code class="docutils literal notranslate"><span class="pre">1.20.3</span></code></p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install --force-reinstall <span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.20.3
+</code></pre></div>
+</div>
+<p>Alternatively, you can create a new environment and simply install entire COMPAS using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 cython planarity --yes
+conda activate blender
+pip install compas
+python -m compas_blender.install
+</code></pre></div>
+</div>
+</section>
 </section>
 
         
@@ -363,6 +389,7 @@ Therefore, COMPAS Blender development is somewhat limited to individual scripts.
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#limitations">Limitations</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#known-issues">Known Issues</a></li>
 </ul>
 </li>
 </ul>
