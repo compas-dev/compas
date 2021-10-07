@@ -38,13 +38,15 @@ class ShapeArtist(Artist):
     default_color = (1, 1, 1)
 
     def __init__(self, shape, color=None, **kwargs):
-        super(ShapeArtist, self).__init__(**kwargs)
+        super(ShapeArtist, self).__init__()
         self._u = None
         self._v = None
         self._shape = None
         self._color = None
         self.shape = shape
         self.color = color
+        self.u = kwargs.get('u')
+        self.v = kwargs.get('v')
 
     @property
     def shape(self):
@@ -73,7 +75,7 @@ class ShapeArtist(Artist):
 
     @u.setter
     def u(self, u):
-        if u > 3:
+        if u and u > 3:
             self._u = u
 
     @property
@@ -84,5 +86,5 @@ class ShapeArtist(Artist):
 
     @v.setter
     def v(self, v):
-        if v > 3:
+        if v and v > 3:
             self._v = v

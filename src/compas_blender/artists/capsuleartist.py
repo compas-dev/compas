@@ -28,11 +28,13 @@ class CapsuleArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=capsule, collection=collection or capsule.name, **kwargs)
 
-    def draw(self, u=None, v=None):
+    def draw(self, color=None, u=None, v=None):
         """Draw the capsule associated with the artist.
 
         Parameters
         ----------
+        color : tuple of float, optional
+            The RGB color of the capsule.
         u : int, optional
             Number of faces in the "u" direction.
             Default is ``~CapsuleArtist.u``.
@@ -47,6 +49,7 @@ class CapsuleArtist(BlenderArtist, ShapeArtist):
         """
         u = u or self.u
         v = v or self.v
+        color = color or self.color
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
+        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
         return [obj]

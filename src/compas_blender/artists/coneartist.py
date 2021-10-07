@@ -28,11 +28,13 @@ class ConeArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=cone, collection=collection or cone.name, **kwargs)
 
-    def draw(self, u=None):
+    def draw(self, color=None, u=None):
         """Draw the cone associated with the artist.
 
         Parameters
         ----------
+        color : tuple of float, optional
+            The RGB color of the cone.
         u : int, optional
             Number of faces in the "u" direction.
             Default is ``~ConeArtist.u``.
@@ -43,6 +45,7 @@ class ConeArtist(BlenderArtist, ShapeArtist):
             The objects created in Blender.
         """
         u = u or self.u
+        color = color or self.color
         vertices, faces = self.shape.to_vertices_and_faces(u=u)
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
+        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
         return [obj]

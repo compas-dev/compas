@@ -27,14 +27,20 @@ class BoxArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=box, collection=collection or box.name, **kwargs)
 
-    def draw(self):
+    def draw(self, color=None):
         """Draw the box associated with the artist.
+
+        Parameters
+        ----------
+        color : tuple of float, optional
+            The RGB color of the box.
 
         Returns
         -------
         list
             The objects created in Blender.
         """
+        color = color or self.color
         vertices, faces = self.shape.to_vertices_and_faces()
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
+        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
         return [obj]

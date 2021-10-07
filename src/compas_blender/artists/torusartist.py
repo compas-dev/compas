@@ -28,11 +28,13 @@ class TorusArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
 
-    def draw(self, u=None, v=None):
+    def draw(self, color=None, u=None, v=None):
         """Draw the torus associated with the artist.
 
         Parameters
         ----------
+        color : tuple of float, optional
+            The RGB color of the torus.
         u : int, optional
             Number of faces in the "u" direction.
             Default is ``~TorusArtist.u``.
@@ -47,6 +49,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
         """
         u = u or self.u
         v = v or self.v
+        color = color or self.color
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
+        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
         return [obj]

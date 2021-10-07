@@ -27,14 +27,20 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=polyhedron, collection=collection or polyhedron.name, **kwargs)
 
-    def draw(self):
+    def draw(self, color=None):
         """Draw the polyhedron associated with the artist.
+
+        Parameters
+        ----------
+        color : tuple of float, optional
+            The RGB color of the polyhedron.
 
         Returns
         -------
         list
             The objects created in Blender.
         """
+        color = color or self.color
         vertices, faces = self.shape.to_vertices_and_faces()
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=self.color, collection=self.collection)
+        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
         return [obj]
