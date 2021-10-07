@@ -141,7 +141,17 @@ VolMeshArtist.default_facecolor = (255, 255, 255)
 VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
-@plugin(category='factories', pluggable_name='new_artist', requires=['Rhino'])
+def verify_rhino_context():
+    try:
+        import Rhino
+        import scriptcontext as sc
+
+        return isinstance(sc.doc, Rhino.RhinoDoc)
+    except:
+        return False
+
+
+@plugin(category='factories', pluggable_name='new_artist', requires=['Rhino', verify_rhino_context])
 def new_artist_rhino(cls, *args, **kwargs):
     # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
 
@@ -180,7 +190,7 @@ def new_artist_rhino(cls, *args, **kwargs):
     for name, value in inspect.getmembers(cls):
         if inspect.ismethod(value):
             if hasattr(value, '__isabstractmethod__'):
-                raise Exception('Abstract method not implemented')
+                raise Exception('Abstract method not implemented: {}'.format(value))
 
     return super(Artist, cls).__new__(cls)
 

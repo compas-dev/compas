@@ -71,6 +71,8 @@ from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
+from compas.robots import RobotModel
+
 from .artist import GHArtist
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
@@ -99,7 +101,17 @@ VolMeshArtist.default_facecolor = (255, 255, 255)
 VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
-@plugin(category='factories', pluggable_name='new_artist', requires=['ghpythonlib'])
+def verify_gh_context():
+    try:
+        import Rhino
+        import scriptcontext as sc
+
+        return not isinstance(sc.doc, Rhino.RhinoDoc)
+    except:
+        return False
+
+
+@plugin(category='factories', pluggable_name='new_artist', requires=['ghpythonlib', verify_gh_context])
 def new_artist_gh(cls, *args, **kwargs):
     # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
 
@@ -111,6 +123,7 @@ def new_artist_gh(cls, *args, **kwargs):
     GHArtist.register(Mesh, MeshArtist)
     GHArtist.register(Network, NetworkArtist)
     GHArtist.register(VolMesh, VolMeshArtist)
+    GHArtist.register(RobotModel, RobotModelArtist)
 
     data = args[0]
 
@@ -127,7 +140,7 @@ def new_artist_gh(cls, *args, **kwargs):
     for name, value in inspect.getmembers(cls):
         if inspect.ismethod(value):
             if hasattr(value, '__isabstractmethod__'):
-                raise Exception('Abstract method not implemented')
+                raise Exception('Abstract method not implemented: {}'.format(value))
 
     return super(Artist, cls).__new__(cls)
 
