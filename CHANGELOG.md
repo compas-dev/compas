@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed bug in constructor `@data.setter` in `compas.datastructures.HalfFace`.
 * Fixed bug in `compas_blender.draw_texts`.
 * Changed default resolution for shape discretisation to 16 for both u and v where relevant.
 * Changed base class of `compas.geometry.Primitive` and `compas.geometry.Shape` to `compas.geometry.Geometry`.
