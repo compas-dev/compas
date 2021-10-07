@@ -323,9 +323,9 @@ def plugin(method=None, category=None, requires=None, tryfirst=False, trylast=Fa
         An optional string to group or categorize plugins.
     requires : list, optional
         Optionally defines a list of requirements that should be fulfilled
-        for this plugin to be used. The requirement can either be a packages
-        name (``str``) or a ``callable``, in which any arbitrary check can be
-        implemented.
+        for this plugin to be used. The requirement can either be a package
+        name (``str``) or a ``callable`` with a boolean return value,
+        in which any arbitrary check can be implemented.
     tryfirst : bool, optional
         Plugins can declare a preferred priority by setting this to ``True``.
         By default ``False``.
