@@ -42,7 +42,7 @@ def clear():
             bpy.data.collections.remove(block)
 
 
-def redraw(self):
+def redraw():
     """Trigger a redraw."""
     bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 

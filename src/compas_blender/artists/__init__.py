@@ -64,6 +64,8 @@ Base Classes
 """
 import inspect
 
+import compas_blender
+
 from compas.plugins import plugin
 from compas.artists import Artist
 from compas.artists import DataArtistNotRegistered
@@ -94,21 +96,37 @@ from .sphereartist import SphereArtist
 from .torusartist import TorusArtist
 
 
+@plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
+def clear_blender():
+    compas_blender.clear()
+
+
+@plugin(category='drawing-utils', pluggable_name='redraw', requires=['bpy'])
+def redraw_blender():
+    compas_blender.redraw()
+
+
+artists_registered = False
+
+
 @plugin(category='factories', pluggable_name='new_artist', tryfirst=True, requires=['bpy'])
 def new_artist_blender(cls, *args, **kwargs):
     # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+    global artists_registered
 
-    BlenderArtist.register(Box, BoxArtist)
-    BlenderArtist.register(Capsule, CapsuleArtist)
-    BlenderArtist.register(Cone, ConeArtist)
-    BlenderArtist.register(Cylinder, CylinderArtist)
-    BlenderArtist.register(Frame, FrameArtist)
-    BlenderArtist.register(Mesh, MeshArtist)
-    BlenderArtist.register(Network, NetworkArtist)
-    BlenderArtist.register(Polyhedron, PolyhedronArtist)
-    BlenderArtist.register(RobotModel, RobotModelArtist)
-    BlenderArtist.register(Sphere, SphereArtist)
-    BlenderArtist.register(Torus, TorusArtist)
+    if not artists_registered:
+        BlenderArtist.register(Box, BoxArtist)
+        BlenderArtist.register(Capsule, CapsuleArtist)
+        BlenderArtist.register(Cone, ConeArtist)
+        BlenderArtist.register(Cylinder, CylinderArtist)
+        BlenderArtist.register(Frame, FrameArtist)
+        BlenderArtist.register(Mesh, MeshArtist)
+        BlenderArtist.register(Network, NetworkArtist)
+        BlenderArtist.register(Polyhedron, PolyhedronArtist)
+        BlenderArtist.register(RobotModel, RobotModelArtist)
+        BlenderArtist.register(Sphere, SphereArtist)
+        BlenderArtist.register(Torus, TorusArtist)
+        artists_registered = True
 
     data = args[0]
 
