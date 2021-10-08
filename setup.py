@@ -66,7 +66,9 @@ setup(
     zip_safe=False,
     install_requires=requirements,
     python_requires='>=2.7',
-    extras_require=optional_requirements,
+    extras_require={
+        'planarity': ['planarity'],
+    },
     entry_points={
         'console_scripts': [
             'compas_rpc=compas.rpc.__main__:main'
