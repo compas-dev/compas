@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added pluggable `compas.artists.new_artist`.
 * Added plugin `compas_rhino.artists.new_artist_rhino`.
 * Added plugin `compas_blender.artists.new_artist_blender`.
-* Added 'compas.artist.DataArtistNotRegistered'.
+* Added `compas.artist.DataArtistNotRegistered`.
 * Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
 * Added `compas_blender.artists.RobotModelArtist.clear`.
 * Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
