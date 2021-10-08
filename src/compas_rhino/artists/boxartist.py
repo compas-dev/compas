@@ -21,40 +21,25 @@ class BoxArtist(RhinoArtist, ShapeArtist):
     def __init__(self, box, layer=None, **kwargs):
         super(BoxArtist, self).__init__(shape=box, layer=layer, **kwargs)
 
-    def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
+    def draw(self, color=None):
         """Draw the box associated with the artist.
 
         Parameters
         ----------
-        show_vertices : bool, optional
-            Default is ``False``.
-        show_edges : bool, optional
-            Default is ``False``.
-        show_faces : bool, optional
-            Default is ``True``.
-        join_faces : bool, optional
-            Default is ``True``.
+        color : tuple of float, optional
+            The RGB color of the box.
 
         Returns
         -------
         list
             The GUIDs of the objects created in Rhino.
         """
+        color = color or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]
-        guids = []
-        if show_vertices:
-            points = [{'pos': point, 'color': self.color, 'name': self.shape.name} for point in vertices]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        if show_edges:
-            edges = self.shape.edges
-            lines = [{'start': vertices[i], 'end': vertices[j], 'color': self.color, 'name': self.shape.name} for i, j in edges]
-            guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        if show_faces:
-            faces = self.shape.faces
-            if join_faces:
-                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.shape.name, color=self.color, disjoint=True)
-                guids.append(guid)
-            else:
-                polygons = [{'points': [vertices[index] for index in face], 'color': self.color, 'name': self.shape.name} for face in faces]
-                guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
-        return guids
+        polygons = [{'points': [vertices[index] for index in face]} for face in self.shape.faces]
+        guids = compas_rhino.draw_faces(polygons, clear=False, redraw=False)
+        guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
+        compas_rhino.rs.ObjectLayer(guid, self.layer)
+        compas_rhino.rs.ObjectName(guid, self.shape.name)
+        compas_rhino.rs.ObjectColor(guid, color)
+        return [guid]
