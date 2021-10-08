@@ -111,19 +111,25 @@ def verify_gh_context():
         return False
 
 
+artists_registered = False
+
+
 @plugin(category='factories', pluggable_name='new_artist', requires=['ghpythonlib', verify_gh_context])
 def new_artist_gh(cls, *args, **kwargs):
     # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+    global artists_registered
 
-    GHArtist.register(Circle, CircleArtist)
-    GHArtist.register(Frame, FrameArtist)
-    GHArtist.register(Line, LineArtist)
-    GHArtist.register(Point, PointArtist)
-    GHArtist.register(Polyline, PolylineArtist)
-    GHArtist.register(Mesh, MeshArtist)
-    GHArtist.register(Network, NetworkArtist)
-    GHArtist.register(VolMesh, VolMeshArtist)
-    GHArtist.register(RobotModel, RobotModelArtist)
+    if not artists_registered:
+        GHArtist.register(Circle, CircleArtist)
+        GHArtist.register(Frame, FrameArtist)
+        GHArtist.register(Line, LineArtist)
+        GHArtist.register(Point, PointArtist)
+        GHArtist.register(Polyline, PolylineArtist)
+        GHArtist.register(Mesh, MeshArtist)
+        GHArtist.register(Network, NetworkArtist)
+        GHArtist.register(VolMesh, VolMeshArtist)
+        GHArtist.register(RobotModel, RobotModelArtist)
+        artists_registered = True
 
     data = args[0]
 

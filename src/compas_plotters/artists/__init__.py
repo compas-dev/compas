@@ -71,19 +71,34 @@ from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 
 
-@plugin(category='factories', pluggable_name='new_artist', trylast=True, requires=['matplotlib'])
+def verify_not_blender():
+    try:
+        import bpy  # noqa: F401
+    except ImportError:
+        return True
+    else:
+        return False
+
+
+artists_registered = False
+
+
+@plugin(category='factories', pluggable_name='new_artist', trylast=True, requires=['matplotlib', verify_not_blender])
 def new_artist_plotter(cls, *args, **kwargs):
     # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+    global artists_registered
 
-    PlotterArtist.register(Point, PointArtist)
-    PlotterArtist.register(Vector, VectorArtist)
-    PlotterArtist.register(Line, LineArtist)
-    PlotterArtist.register(Polyline, PolylineArtist)
-    PlotterArtist.register(Polygon, PolygonArtist)
-    PlotterArtist.register(Circle, CircleArtist)
-    PlotterArtist.register(Ellipse, EllipseArtist)
-    PlotterArtist.register(Mesh, MeshArtist)
-    PlotterArtist.register(Network, NetworkArtist)
+    if not artists_registered:
+        PlotterArtist.register(Point, PointArtist)
+        PlotterArtist.register(Vector, VectorArtist)
+        PlotterArtist.register(Line, LineArtist)
+        PlotterArtist.register(Polyline, PolylineArtist)
+        PlotterArtist.register(Polygon, PolygonArtist)
+        PlotterArtist.register(Circle, CircleArtist)
+        PlotterArtist.register(Ellipse, EllipseArtist)
+        PlotterArtist.register(Mesh, MeshArtist)
+        PlotterArtist.register(Network, NetworkArtist)
+        artists_registered = True
 
     data = args[0]
 
