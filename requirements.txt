@@ -12,7 +12,7 @@ networkx
 numba
 numpy >= 1.15.4
 pillow
-planarity
+planarity ; sys_platform != 'win32'
 pycollada
 schema
 jsonschema

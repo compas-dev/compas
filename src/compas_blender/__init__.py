@@ -14,6 +14,9 @@ compas_blender
     compas_blender.utilities
 
 """
+import os
+import compas
+
 try:
     import bpy  # noqa: F401
 except ImportError:
@@ -42,6 +45,42 @@ def clear():
 
 
 __version__ = '1.8.1'
+
+
+def _check_blender_version(version):
+    supported_versions = ['2.83', '2.93']
+
+    if not version:
+        return '2.93'
+
+    if version not in supported_versions:
+        raise Exception('Unsupported Blender version: {}'.format(version))
+
+    return version
+
+
+def _get_default_blender_installation_path(version):
+    version = _check_blender_version(version)
+
+    if compas.OSX:
+        path = _get_default_blender_installation_path_mac(version)
+    elif compas.WINDOWS:
+        path = _get_default_blender_installation_path_windows(version)
+    else:
+        raise Exception('Unsupported platform.')
+
+    if not os.path.exists(path):
+        raise Exception("The default installation folder for Blender {} doesn't exist.".format(version))
+
+    return path
+
+
+def _get_default_blender_installation_path_mac(version):
+    return '/Applications/Blender.app/Contents/Resources/{}'.format(version)
+
+
+def _get_default_blender_installation_path_windows(version):
+    return os.path.expandvars('%PROGRAMFILES%/Blender Foundation/Blender {}/{}'.format(version, version))
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
