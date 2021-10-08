@@ -102,6 +102,7 @@ from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
 from compas.robots import RobotModel
+import compas_rhino
 
 from .artist import RhinoArtist
 from .circleartist import CircleArtist
@@ -149,6 +150,16 @@ def verify_rhino_context():
         return isinstance(sc.doc, Rhino.RhinoDoc)
     except:            # noqa: E722
         return False
+
+
+@plugin(category='drawing-utils', pluggable_name='clear', requires=['Rhino', verify_rhino_context])
+def clear_rhino():
+    compas_rhino.clear()
+
+
+@plugin(category='drawing-utils', pluggable_name='redraw', requires=['Rhino', verify_rhino_context])
+def redraw_rhino():
+    compas_rhino.redraw()
 
 
 @plugin(category='factories', pluggable_name='new_artist', requires=['Rhino', verify_rhino_context])
