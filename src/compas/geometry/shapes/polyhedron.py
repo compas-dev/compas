@@ -4,9 +4,10 @@ from __future__ import division
 
 from math import sqrt
 from compas.geometry import transform_points
+from compas.geometry import centroid_polygon
 from compas.utilities import pairwise
 
-from compas.geometry.shapes._shape import Shape
+from ._shape import Shape
 
 
 class Polyhedron(Shape):
@@ -95,7 +96,7 @@ class Polyhedron(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polyhedron({0!r}, {1!r})'.format(self.vertices, self.faces)
+        return '<Polyhedron with {} vertices and {} faces>'.format(len(self.vertices), len(self.faces))
 
     def __len__(self):
         return 2
@@ -164,16 +165,19 @@ class Polyhedron(Shape):
 
         """
         if f == 4:
-            return cls(* tetrahedron())
-        if f == 6:
-            return cls(* hexahedron())
-        if f == 8:
-            return cls(* octahedron())
-        if f == 12:
-            return cls(* dodecahedron())
-        if f == 20:
-            return cls(* icosahedron())
-        raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
+            vertices, faces = tetrahedron()
+        elif f == 6:
+            vertices, faces = hexahedron()
+        elif f == 8:
+            vertices, faces = octahedron()
+        elif f == 12:
+            vertices, faces = dodecahedron()
+        elif f == 20:
+            vertices, faces = icosahedron()
+        else:
+            raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
+        solid = cls(vertices, faces)
+        return solid
 
     @classmethod
     def from_halfspaces(cls, halfspaces, interior_point):
@@ -263,8 +267,13 @@ class Polyhedron(Shape):
     # methods
     # ==========================================================================
 
-    def to_vertices_and_faces(self):
+    def to_vertices_and_faces(self, triangulated=False):
         """Returns a list of vertices and faces.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            Flag indicating that the faces have to be triangulated.
 
         Returns
         -------
@@ -272,7 +281,35 @@ class Polyhedron(Shape):
             A list of vertex locations and a list of faces,
             with each face defined as a list of indices into the list of vertices.
         """
-        return self.vertices, self.faces
+        if triangulated:
+            vertices = self.vertices[:]
+            faces = []
+            for face in self.faces:
+                if len(face) > 3:
+                    centroid = centroid_polygon([vertices[index] for index in face])
+                    index = len(vertices)
+                    vertices.append(centroid)
+                    for a, b in pairwise(face):
+                        faces.append([a, b, index])
+                else:
+                    faces.append(face)
+        else:
+            vertices = self.vertices
+            faces = self.faces
+        return vertices, faces
+
+    def is_closed(self):
+        """Verify that the polyhedron forms a closed surface.
+
+        Returns
+        -------
+        bool
+            True if the polyhedron is closed.
+            False otherwise.
+        """
+        from compas.datastructures import Mesh
+        mesh = Mesh.from_vertices_and_faces(self.vertices, self.faces)
+        return mesh.is_closed()
 
     def transform(self, transformation):
         """Transform the polyhedron.

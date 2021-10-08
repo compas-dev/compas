@@ -8,7 +8,7 @@ from compas.geometry import Transformation
 from compas.geometry import Frame
 from compas.geometry import Vector
 
-from compas.geometry.shapes._shape import Shape
+from ._shape import Shape
 
 
 class Box(Shape):
@@ -519,6 +519,29 @@ class Box(Shape):
     # methods
     # ==========================================================================
 
+    def to_vertices_and_faces(self, triangulated=False):
+        """Returns a list of vertices and faces.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            Flag indicating that the faces have to be triangulated.
+
+        Returns
+        -------
+        (vertices, faces)
+            A list of vertex locations and a list of faces,
+            with each face defined as a list of indices into the list of vertices.
+        """
+        if triangulated:
+            faces = []
+            for a, b, c, d in self.faces:
+                faces.append([a, b, c])
+                faces.append([a, c, d])
+        else:
+            faces = self.faces
+        return self.vertices, faces
+
     def contains(self, point):
         """Verify if the box contains a given point.
 
@@ -537,17 +560,6 @@ class Box(Shape):
                 if -0.5 * self.zsize < point[2] < +0.5 * self.zsize:
                     return True
         return False
-
-    def to_vertices_and_faces(self):
-        """Returns a list of vertices and faces.
-
-        Returns
-        -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
-            with each face defined as a list of indices into the list of vertices.
-        """
-        return self.vertices, self.faces
 
     def transform(self, transformation):
         """Transform the box.
