@@ -36,10 +36,11 @@ class BoxArtist(RhinoArtist, ShapeArtist):
         """
         color = color or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]
-        polygons = [{'points': [vertices[index] for index in face]} for face in self.shape.faces]
-        guids = compas_rhino.draw_faces(polygons, clear=False, redraw=False)
-        guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
-        compas_rhino.rs.ObjectLayer(guid, self.layer)
-        compas_rhino.rs.ObjectName(guid, self.shape.name)
-        compas_rhino.rs.ObjectColor(guid, color)
+        faces = self.shape.faces
+        guid = compas_rhino.draw_mesh(vertices,
+                                      faces,
+                                      layer=self.layer,
+                                      name=self.shape.name,
+                                      color=color,
+                                      disjoint=True)
         return [guid]
