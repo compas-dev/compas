@@ -2,6 +2,9 @@ import os
 import sys
 import tempfile
 
+import compas
+import compas_blender
+
 from compas._os import copy
 from compas._os import create_symlinks
 from compas._os import remove
@@ -41,7 +44,7 @@ def unregister():
 """
 
 
-def install(blender_path):
+def install(blender_path, version=None):
     """Install COMPAS for Blender.
 
     Parameters
@@ -49,18 +52,43 @@ def install(blender_path):
     blender_path : str
         The path to the folder with the version number of Blender.
         For example, on Mac: ``'/Applications/Blender.app/Contents/Resources/2.83'``.
-        On Windows: ``'%PROGRAMFILES%\\Blender Foundation\\Blender\\2.83'``.
+        On Windows: ``'%PROGRAMFILES%/Blender Foundation/Blender 2.83/2.83'``.
+    version : {'2.83', '2.93'}, optional
+        The version number of Blender.
+        Default is ``'2.93'``.
 
     Examples
     --------
     .. code-block:: bash
 
-        $ python -m compas_blender.install /Applications/Blender.app/Contents/Resources/2.83
+        $ python -m compas_blender.install
+
+    .. code-block:: bash
+
+        $ python -m compas_blender.install -v 2.93
+
+    .. code-block:: bash
+
+        $ python -m compas_blender.install /Applications/Blender.app/Contents/Resources/2.93
 
     """
     if not os.environ.get('CONDA_PREFIX'):
         print('Conda environment not found. The installation into Blender requires an active conda environment with a matching Python version to continue.')
         sys.exit(-1)
+
+    if not version and not blender_path:
+        version = '2.93'
+
+    if version and blender_path:
+        print('Both options cannot be provided simultaneously. Provide the full installation path, or the version with flag -v.')
+        sys.exit(-1)
+
+    if version:
+        if compas.LINUX:
+            print('Version-based installs are currently not supported for Linux. Please provide the full installation path with the -p option.')
+            sys.exit(-1)
+
+        blender_path = compas_blender._get_default_blender_installation_path(version)
 
     if not os.path.exists(blender_path):
         raise FileNotFoundError('Blender version folder not found.')
@@ -122,7 +150,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('versionpath', help="The path to the folder with the version number of Blender.")
+    parser.add_argument('blenderpath', nargs='?', help="The path to the folder with the version number of Blender.")
+    parser.add_argument('-v', '--version', choices=['2.83', '2.93'], help="The version of Blender to install COMPAS in.")
+
     args = parser.parse_args()
 
-    install(args.versionpath)
+    install(args.blenderpath, version=args.version)

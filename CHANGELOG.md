@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
 * Added `compas_blender.artists.RobotModelArtist.clear`.
 * Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
+* Added version-based installation for Blender.
 
 ### Changed
 
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `compas_blender.artists.RobotModelArtist.collection` can be assigned as a Blender collection or a name.
 * Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
 * Changed `compas.IPY` to `compas.RHINO` in `orientation_rhino`.
+* Changed `planarity` to `requires_extra` for pip installations.
 
 ### Removed
 
