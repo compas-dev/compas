@@ -8,15 +8,15 @@ from math import pi
 
 from itertools import product
 
-import compas
+# import compas
 
 from compas.geometry import angle_vectors_xy
 from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
 
-if not compas.IPY:
-    import planarity
+# if not compas.IPY:
+#     import planarity
 
 
 __all__ = [
@@ -198,6 +198,12 @@ def network_is_planar(network):
     --------
     >>>
     """
+    try:
+        import planarity
+    except ImportError:
+        print("Planarity is not installed.")
+        raise
+
     return planarity.is_planar(list(network.edges()))
 
 
