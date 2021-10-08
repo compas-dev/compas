@@ -220,7 +220,6 @@ class Plotter(metaclass=Singleton):
         width, height = self.figsize
         fig_aspect = width / height
         data = []
-        print(self.artists)
         for artist in self.artists:
             data += artist.data
         x, y = zip(* data)
