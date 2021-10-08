@@ -6,6 +6,16 @@ from abc import abstractmethod
 from compas.plugins import pluggable
 
 
+@pluggable(category='drawing-utils')
+def clear():
+    raise NotImplementedError
+
+
+@pluggable(category='drawing-utils')
+def redraw():
+    raise NotImplementedError
+
+
 @pluggable(category='factories')
 def new_artist(cls, *args, **kwargs):
     raise NotImplementedError
@@ -19,6 +29,14 @@ class Artist(object):
 
     def __new__(cls, *args, **kwargs):
         return new_artist(cls, *args, **kwargs)
+
+    @staticmethod
+    def clear():
+        return clear()
+
+    @staticmethod
+    def redraw():
+        return redraw()
 
     @staticmethod
     def register(item_type, artist_type):
