@@ -1,4 +1,5 @@
-from typing import Literal, Tuple, List
+from typing import Tuple, List
+from typing_extensions import Literal
 from matplotlib.patches import Polygon as PolygonPatch
 from compas.geometry import Polygon
 from compas_plotters.artists import Artist

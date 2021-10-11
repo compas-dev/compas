@@ -28,13 +28,13 @@ class FrameArtist(PrimitiveArtist):
     scale : float
         Scale factor that controls the length of the axes.
         Default is ``1.0``.
-    color_origin : tuple of 3 int between 0 abd 255
+    color_origin : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 0)``.
-    color_xaxis : tuple of 3 int between 0 abd 255
+    color_xaxis : tuple of 3 int between 0 and 255
         Default is ``(255, 0, 0)``.
-    color_yaxis : tuple of 3 int between 0 abd 255
+    color_yaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 255, 0)``.
-    color_zaxis : tuple of 3 int between 0 abd 255
+    color_zaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 255)``.
 
     Examples

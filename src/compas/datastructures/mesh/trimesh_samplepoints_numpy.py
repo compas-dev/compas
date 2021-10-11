@@ -1,7 +1,4 @@
-from typing import Tuple, Union
-
 from numpy import array
-from numpy import ndarray
 from numpy.random import choice
 from numpy.random import rand
 from numpy import sqrt
@@ -11,15 +8,13 @@ from numpy.linalg import norm
 from numpy import clip
 from numpy import finfo
 
-from compas.datastructures.mesh.core import BaseMesh
-
 
 __all__ = [
     'trimesh_samplepoints_numpy',
 ]
 
 
-def trimesh_samplepoints_numpy(mesh: BaseMesh, num_points: int = 1000, return_normals: bool = False) -> Union[ndarray, Tuple[ndarray, ndarray]]:
+def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
     """Compute sample points on a triangle mesh surface
 
     Parameters

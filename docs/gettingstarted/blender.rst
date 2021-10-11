@@ -9,18 +9,26 @@ Blender ships with its own embedded version of Python. Therefore, the simplest
 Python by the Python of a `conda` environment that already has COMPAS installed.
 
 It is important that the version of Python installed in the `conda` environment matches
-the version of Python that was originally shipped with Blender. For Blender 2.8x and 2.9x
-this is Python 3.7x.
+the version of Python that was originally shipped with Blender. For Blender 2.83 LTS
+the version of the bundled Python is 3.7, and for 2.93 LTS it is 3.9.
+
+.. note::
+
+    To find out which Python is shipped with your Blender installation, just open Blender
+    and have a look at the Interactive Python Console that is part of the UI
+    under the Scripting tab.
+
 
 Installation
 ============
 
-If you don't have an environment yet with Python 3.7 and COMPAS you can create one with ``conda``.
+These instructions are for the latest Blender 2.93 LTS which ships with Python 3.9
+If you don't have an environment yet with Python 3.9 and COMPAS you can create one with ``conda``.
 
 .. code-block:: bash
 
     conda config --add channels conda-forge
-    conda create -n blender python=3.7 COMPAS
+    conda create -n blender python=3.9 COMPAS --yes
 
 Configuring Blender to use the newly installed environment is slightly different per OS.
 
@@ -50,11 +58,10 @@ Configuring Blender to use the newly installed environment is slightly different
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install "%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91"
+    python -m compas_blender.install "%PROGRAMFILES%\\Blender Foundation\\Blender 2.93\\2.93"
 
-Note that the path ``%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91`` might be different
-if you have another version of Blender intalled.
-Check your version of Blender and change the path accordingly.
+Note that the path ``%PROGRAMFILES%\\Blender Foundation\\Blender 2.93\\2.93`` might be different on your system.
+Check your Blender installation and change the path accordingly.
 
 .. raw:: html
 
@@ -64,11 +71,10 @@ Check your version of Blender and change the path accordingly.
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
+    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.93
 
-Note that the path ``/Applications/blender.app/Contents/Resources/2.91`` might be different
-if you have another version of Blender intalled.
-Check your version of Blender and change the path accordingly.
+Note that the path ``/Applications/blender.app/Contents/Resources/2.93`` might be different on your system.
+Check your Blender installation and change the path accordingly.
 
 .. raw:: html
 
@@ -78,19 +84,28 @@ Check your version of Blender and change the path accordingly.
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install ~/Blender/2.91
+    python -m compas_blender.install ~/Blender/2.93
 
-Note that the path ``~/Blender/2.91`` might be different for your setup.
-
-.. raw:: html
-
-    </div>
+Note that the path ``~/Blender/2.93`` might be different on your system.
+Check your Blender installation and change the path accordingly.
 
 .. raw:: html
 
     </div>
+
+.. raw:: html
+
     </div>
     </div>
+    </div>
+
+On Windows and OSX, if Blender is installed in the default location, you can simply provide the version number.
+
+.. code-block:: bash
+
+    conda activate blender
+    python -m compas_blender.install -v 2.93
+
 
 Add-ons
 =======
@@ -183,7 +198,7 @@ Just add the following to your ``.bash_profile`` or ``.bashrc``.
 
 .. code-block:: bash
 
-    export PATH="~/Blender/2.91:$PATH"
+    export PATH="~/Blender/2.83:$PATH"
 
 Note that this path might be different on your system.
 
@@ -274,9 +289,36 @@ Collections
 Limitations
 ===========
 
-``compas_blender`` is not yet as well developed as, ``compas_rhino`` and ``compas_ghpython``.
+``compas_blender`` is not yet as well developed as ``compas_rhino`` and ``compas_ghpython``.
 For example, COMPAS geometry objects do not yet have a corresponding artist in ``compas_blender``.
 Artists are currently only available for data structures and robots.
 
 There is also no official system yet for making custom COMPAS tools in Blender.
 Therefore, COMPAS Blender development is somewhat limited to individual scripts.
+
+Known Issues
+============
+
+On Windows, Blender sometimes has issues with finding NumPy libraries.
+If this is the case, the problem can usually be solved by reinstalling NumPy in your environment using ``pip``.
+However, to avoid issues with other packages that were already installed and depend on a specific version of NumPy,
+you should install the same version as the one installed originally by ``conda``.
+
+.. code-block:: bash
+
+    python -c "import numpy; print(numpy.__version__)"
+
+If the above is, for example, ``1.20.3``
+
+.. code-block:: bash
+
+    pip install --force-reinstall numpy==1.20.3
+
+Alternatively, you can create a new environment and simply install entire COMPAS using ``pip``.
+
+.. code-block:: bash
+
+    conda create -n blender python=3.9 cython planarity --yes
+    conda activate blender
+    pip install compas
+    python -m compas_blender.install

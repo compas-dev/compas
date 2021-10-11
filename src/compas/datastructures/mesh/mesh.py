@@ -6,7 +6,7 @@ import collections
 import sys
 from math import pi
 
-from compas.datastructures.mesh.core.halfedge import HalfEdge
+import compas
 
 from compas.files import OBJ
 from compas.files import OFF
@@ -37,12 +37,44 @@ from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
 
+from compas.datastructures import HalfEdge
 
-__all__ = ['BaseMesh']
+from .operations import mesh_collapse_edge
+from .operations import mesh_split_edge
+from .operations import mesh_split_face
+from .operations import mesh_merge_faces
+
+from .bbox import mesh_bounding_box
+from .bbox import mesh_bounding_box_xy
+from .combinatorics import mesh_is_connected
+from .combinatorics import mesh_connected_components
+from .duality import mesh_dual
+from .orientation import mesh_face_adjacency
+from .orientation import mesh_flip_cycles
+from .orientation import mesh_unify_cycles
+from .slice import mesh_slice_plane
+from .smoothing import mesh_smooth_centroid
+from .smoothing import mesh_smooth_area
+from .subdivision import mesh_subdivide
+from .transformations import mesh_transform
+from .transformations import mesh_transformed
+from .triangulation import mesh_quads_to_triangles
 
 
-class BaseMesh(HalfEdge):
+class Mesh(HalfEdge):
     """Geometric implementation of a half edge data structure for polygon meshses.
+
+    Parameters
+    ----------
+    name: str, optional
+        The name of the graph.
+        Defaults to "Graph".
+    default_vertex_attributes: dict, optional
+        Default values for vertex attributes.
+    default_edge_attributes: dict, optional
+        Default values for edge attributes.
+    default_face_attributes: dict, optional
+        Default values for face attributes.
 
     Attributes
     ----------
@@ -73,10 +105,52 @@ class BaseMesh(HalfEdge):
 
     """
 
-    def __init__(self):
-        super(BaseMesh, self).__init__()
-        self.attributes.update({'name': 'Mesh'})
-        self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
+    bounding_box = mesh_bounding_box
+    bounding_box_xy = mesh_bounding_box_xy
+    collapse_edge = mesh_collapse_edge
+    connected_components = mesh_connected_components
+    dual = mesh_dual
+    face_adjacency = mesh_face_adjacency
+    flip_cycles = mesh_flip_cycles
+    is_connected = mesh_is_connected
+    merge_faces = mesh_merge_faces
+    slice_plane = mesh_slice_plane
+    smooth_centroid = mesh_smooth_centroid
+    smooth_area = mesh_smooth_area
+    split_edge = mesh_split_edge
+    split_face = mesh_split_face
+    subdivide = mesh_subdivide
+    transform = mesh_transform
+    transformed = mesh_transformed
+    unify_cycles = mesh_unify_cycles
+    quads_to_triangles = mesh_quads_to_triangles
+
+    if not compas.IPY:
+        from .bbox_numpy import mesh_oriented_bounding_box_numpy
+        from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
+
+        obb_numpy = mesh_oriented_bounding_box_numpy
+        obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy
+
+    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
+        name = name or 'Mesh'
+        _default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        _default_edge_attributes = {}
+        _default_face_attributes = {}
+        if default_vertex_attributes:
+            _default_vertex_attributes.update(default_vertex_attributes)
+        if default_edge_attributes:
+            _default_edge_attributes.update(default_edge_attributes)
+        if default_face_attributes:
+            _default_face_attributes.update(default_face_attributes)
+        super(Mesh, self).__init__(name=name,
+                                   default_vertex_attributes=_default_vertex_attributes,
+                                   default_edge_attributes=_default_edge_attributes,
+                                   default_face_attributes=_default_face_attributes)
+
+    def __str__(self):
+        tpl = "<Mesh with {} vertices, {} faces, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # customisation

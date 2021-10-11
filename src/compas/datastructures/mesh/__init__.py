@@ -4,7 +4,11 @@ from __future__ import print_function
 
 from compas import IPY
 
-from .core import *  # noqa: F401 F403
+if not IPY:
+    from .matrices import *  # noqa: F401 F403
+
+from .operations import *  # noqa: F401 F403
+from .clean import *  # noqa: F401 F403
 
 from .bbox import *  # noqa: F401 F403
 from .combinatorics import *  # noqa: F401 F403
@@ -36,7 +40,7 @@ if not IPY:
     from .transformations_numpy import *  # noqa: F401 F403
     from .trimesh_samplepoints_numpy import *  # noqa: F401 F403
 
-from ._mesh import *  # noqa: F401 F403
+from .mesh import Mesh  # noqa: F401
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

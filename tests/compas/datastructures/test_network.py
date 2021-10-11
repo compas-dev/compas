@@ -1,6 +1,5 @@
 import pytest
 
-import compas
 from compas.datastructures import Network
 
 
@@ -33,7 +32,9 @@ def test_add_node():
 
 
 def test_non_planar(k5_network):
-    if compas.IPY:
+    try:
+        import planarity  # noqa: F401
+    except ImportError:
         return
 
     from compas.datastructures import network_is_planar
@@ -41,7 +42,9 @@ def test_non_planar(k5_network):
 
 
 def test_planar(k5_network):
-    if compas.IPY:
+    try:
+        import planarity  # noqa: F401
+    except ImportError:
         return
 
     from compas.datastructures import network_is_planar

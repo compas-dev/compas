@@ -25,7 +25,7 @@ __all__ = [
     'abstractstaticmethod',
     'abstractclassmethod',
     'memoize',
-    'print_profile'
+    'print_profile',
 ]
 
 
