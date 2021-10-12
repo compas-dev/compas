@@ -162,3 +162,15 @@ class MeshArtist(GHArtist, MeshArtist):
                 'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)
             })
         return compas_ghpython.draw_lines(lines)
+
+    def clear_edges(self):
+        """GH Artists are state-less. Clear does not have any effect."""
+        pass
+
+    def clear_vertices(self):
+        """GH Artists are state-less. Clear does not have any effect."""
+        pass
+
+    def clear_faces(self):
+        """GH Artists are state-less. Clear does not have any effect."""
+        pass
