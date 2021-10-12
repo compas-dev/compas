@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
 * Changed `compas.IPY` to `compas.RHINO` in `orientation_rhino`.
 * Changed `planarity` to `requires_extra` for pip installations.
+* Fixed bug in handling of ngonal meshes in `compas_ghpython` artists / drawing functions.
 
 ### Removed
 
