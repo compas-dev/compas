@@ -23,7 +23,7 @@
   
   
   
-    <link rel="prev" title="VolMeshArtist.clear_layer" href="compas_rhino.artists.VolMeshArtist.clear_layer.html" />
+    <link rel="prev" title="VolMeshArtist.clear_vertices" href="compas_rhino.artists.VolMeshArtist.clear_vertices.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -110,11 +110,31 @@
 <h1>VolMeshArtist.draw</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.artists.VolMeshArtist.draw">
-<span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/volmeshartist.py#L93"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Draw the volmesh using the chosen visualisation settings.</p>
+<span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cellcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/volmeshartist.py#L40"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Draw the network using the chosen visualisation settings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>settings</strong> (<em>dict, optional</em>) – Dictionary of visualisation settings that will be merged with the settings of the artist.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>list, optional</em>) – A list of vertices to draw.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all vertices are drawn.</p></li>
+<li><p><strong>edges</strong> (<em>list, optional</em>) – A list of edges to draw.
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
+<li><p><strong>faces</strong> (<em>list, optional</em>) – A selection of faces to draw.
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are drawn.</p></li>
+<li><p><strong>cells</strong> (<em>list, optional</em>) – A selection of cells to draw.
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all cells are drawn.</p></li>
+<li><p><strong>vertexcolor</strong> (<em>tuple or dict of tuple, optional</em>) – The color specififcation for the vertices.
+The default color is the value of <code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_vertexcolor</span></code>.</p></li>
+<li><p><strong>edgecolor</strong> (<em>tuple or dict of tuple, optional</em>) – The color specififcation for the edges.
+The default color is the value of <code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_edgecolor</span></code>.</p></li>
+<li><p><strong>facecolor</strong> (<em>tuple or dict of tuple, optional</em>) – The color specififcation for the faces.
+The default color is the value of <code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_facecolor</span></code>.</p></li>
+<li><p><strong>cellcolor</strong> (<em>tuple or dict of tuple, optional</em>) – The color specififcation for the cells.
+The default color is the value of <code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_cellcolor</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -180,11 +200,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_rhino.artists.VolMeshArtist.clear_layer.html" title="VolMeshArtist.clear_layer" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_rhino.artists.VolMeshArtist.clear_vertices.html" title="VolMeshArtist.clear_vertices" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            VolMeshArtist.clear_layer
+            VolMeshArtist.clear_vertices
           </div>
         </a>
       

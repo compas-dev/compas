@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="FrameArtist.draw" href="compas_ghpython.artists.FrameArtist.draw.html" />
+    <link rel="next" title="FrameArtist.clear" href="compas_ghpython.artists.FrameArtist.clear.html" />
   
   
   
-    <link rel="prev" title="CircleArtist.draw" href="compas_ghpython.artists.CircleArtist.draw.html" />
+    <link rel="prev" title="CircleArtist.register" href="compas_ghpython.artists.CircleArtist.register.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,32 +108,28 @@
 <h1>FrameArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_ghpython.artists.FrameArtist">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">FrameArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/frameartist.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas_ghpython.artists.PrimitiveArtist.html#compas_ghpython.artists.PrimitiveArtist" title="compas_ghpython.artists._primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists._primitiveartist.PrimitiveArtist</span></code></a></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">FrameArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/frameartist.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#compas_ghpython.artists.GHArtist" title="compas_ghpython.artists.artist.GHArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists.artist.GHArtist</span></code></a>, <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.primitiveartist.PrimitiveArtist</span></code></a></p>
 <p>Artist for drawing frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>compas.geometry.Frame</em>) – A COMPAS frame.</p></li>
-<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the frame.</p></li>
+<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – A COMPAS frame.</p></li>
 <li><p><strong>scale</strong> (<em>float, optional</em>) – The scale of the vectors representing the axes of the frame.
 Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>scale</strong> (<em>float</em>)</p></li>
-<li><p><strong>color_origin</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
-<li><p><strong>color_xaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
-<li><p><strong>color_yaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
-<li><p><strong>color_zaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – Scale factor that controls the length of the axes.
+Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>color_origin</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>color_xaxis</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>color_yaxis</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">255,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>color_zaxis</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -141,14 +137,26 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.draw.html#compas_ghpython.artists.FrameArtist.draw" title="compas_ghpython.artists.FrameArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.clear.html#compas_ghpython.artists.FrameArtist.clear" title="compas_ghpython.artists.FrameArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.draw.html#compas_ghpython.artists.FrameArtist.draw" title="compas_ghpython.artists.FrameArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.draw_axes.html#compas_ghpython.artists.FrameArtist.draw_axes" title="compas_ghpython.artists.FrameArtist.draw_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_axes</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.draw_axes.html#compas_ghpython.artists.FrameArtist.draw_axes" title="compas_ghpython.artists.FrameArtist.draw_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_axes</span></code></a>()</p></td>
 <td><p>Draw the frame's axes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.draw_collection.html#compas_ghpython.artists.FrameArtist.draw_collection" title="compas_ghpython.artists.FrameArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.draw_origin.html#compas_ghpython.artists.FrameArtist.draw_origin" title="compas_ghpython.artists.FrameArtist.draw_origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_origin</span></code></a>()</p></td>
 <td><p>Draw the frame's origin.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.redraw.html#compas_ghpython.artists.FrameArtist.redraw" title="compas_ghpython.artists.FrameArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.FrameArtist.register.html#compas_ghpython.artists.FrameArtist.register" title="compas_ghpython.artists.FrameArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -211,20 +219,20 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_ghpython.artists.CircleArtist.draw.html" title="CircleArtist.draw" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_ghpython.artists.CircleArtist.register.html" title="CircleArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            CircleArtist.draw
+            CircleArtist.register
           </div>
         </a>
       
 
       
-        <a href="compas_ghpython.artists.FrameArtist.draw.html" title="FrameArtist.draw" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_ghpython.artists.FrameArtist.clear.html" title="FrameArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            FrameArtist.draw
+            FrameArtist.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

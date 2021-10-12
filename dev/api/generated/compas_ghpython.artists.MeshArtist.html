@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist.draw" href="compas_ghpython.artists.MeshArtist.draw.html" />
+    <link rel="next" title="MeshArtist.clear" href="compas_ghpython.artists.MeshArtist.clear.html" />
   
   
   
-    <link rel="prev" title="PolylineArtist.draw" href="compas_ghpython.artists.PolylineArtist.draw.html" />
+    <link rel="prev" title="PolylineArtist.register" href="compas_ghpython.artists.PolylineArtist.register.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,35 +108,14 @@
 <h1>MeshArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_ghpython.artists.MeshArtist">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/meshartist.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas_ghpython.artists.BaseArtist.html#compas_ghpython.artists.BaseArtist" title="compas_ghpython.artists._artist.BaseArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists._artist.BaseArtist</span></code></a></p>
-<p>A mesh artist defines functionality for visualising COMPAS meshes in GhPython.</p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/meshartist.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#compas_ghpython.artists.GHArtist" title="compas_ghpython.artists.artist.GHArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists.artist.GHArtist</span></code></a>, <a class="reference internal" href="compas.artists.MeshArtist.html#compas.artists.MeshArtist" title="compas.artists.meshartist.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.meshartist.MeshArtist</span></code></a></p>
+<p>Artist for drawing mesh data structures.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The COMPAS mesh associated with the artist.</p></li>
-<li><p><strong>color_vertices</strong> (<em>3-tuple</em>) – Default color of the vertices.</p></li>
-<li><p><strong>color_edges</strong> (<em>3-tuple</em>) – Default color of the edges.</p></li>
-<li><p><strong>color_faces</strong> (<em>3-tuple</em>) – Default color of the faces.</p></li>
-</ul>
-</dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_ghpython.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
-
-<span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">join_faces</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">()})</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -144,17 +123,38 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.clear.html#compas_ghpython.artists.MeshArtist.clear" title="compas_ghpython.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.clear_edges.html#compas_ghpython.artists.MeshArtist.clear_edges" title="compas_ghpython.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>()</p></td>
+<td><p>GH Artists are state-less.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.clear_faces.html#compas_ghpython.artists.MeshArtist.clear_faces" title="compas_ghpython.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a>()</p></td>
+<td><p>GH Artists are state-less.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.clear_vertices.html#compas_ghpython.artists.MeshArtist.clear_vertices" title="compas_ghpython.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>()</p></td>
+<td><p>GH Artists are state-less.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw.html#compas_ghpython.artists.MeshArtist.draw" title="compas_ghpython.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([color])</p></td>
 <td><p>Draw the mesh as a RhinoMesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_edges.html#compas_ghpython.artists.MeshArtist.draw_edges" title="compas_ghpython.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_collection.html#compas_ghpython.artists.MeshArtist.draw_collection" title="compas_ghpython.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_edges.html#compas_ghpython.artists.MeshArtist.draw_edges" title="compas_ghpython.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_faces.html#compas_ghpython.artists.MeshArtist.draw_faces" title="compas_ghpython.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color, join_faces])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_faces.html#compas_ghpython.artists.MeshArtist.draw_faces" title="compas_ghpython.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color, join_faces])</p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_vertices.html#compas_ghpython.artists.MeshArtist.draw_vertices" title="compas_ghpython.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_vertices.html#compas_ghpython.artists.MeshArtist.draw_vertices" title="compas_ghpython.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
 <td><p>Draw a selection of vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.redraw.html#compas_ghpython.artists.MeshArtist.redraw" title="compas_ghpython.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.register.html#compas_ghpython.artists.MeshArtist.register" title="compas_ghpython.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -217,20 +217,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_ghpython.artists.PolylineArtist.draw.html" title="PolylineArtist.draw" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_ghpython.artists.PolylineArtist.register.html" title="PolylineArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            PolylineArtist.draw
+            PolylineArtist.register
           </div>
         </a>
       
 
       
-        <a href="compas_ghpython.artists.MeshArtist.draw.html" title="MeshArtist.draw" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_ghpython.artists.MeshArtist.clear.html" title="MeshArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            MeshArtist.draw
+            MeshArtist.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

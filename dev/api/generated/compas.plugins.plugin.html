@@ -120,8 +120,10 @@ for matching.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> (<em>callable</em>) – The method to decorate as <code class="docutils literal notranslate"><span class="pre">plugin</span></code>.</p></li>
 <li><p><strong>category</strong> (<em>str, optional</em>) – An optional string to group or categorize plugins.</p></li>
-<li><p><strong>requires</strong> (<em>list of str, optional</em>) – Optionally defines a list of packages that should be importable
-for this plugin to be used.</p></li>
+<li><p><strong>requires</strong> (<em>list, optional</em>) – Optionally defines a list of requirements that should be fulfilled
+for this plugin to be used. The requirement can either be a package
+name (<code class="docutils literal notranslate"><span class="pre">str</span></code>) or a <code class="docutils literal notranslate"><span class="pre">callable</span></code> with a boolean return value,
+in which any arbitrary check can be implemented.</p></li>
 <li><p><strong>tryfirst</strong> (<em>bool, optional</em>) – Plugins can declare a preferred priority by setting this to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
 By default <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>trylast</strong> (<em>bool, optional</em>) – Alternatively, a plugin can demote itself to be least preferable
@@ -162,6 +164,7 @@ of different packages.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>

@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="TorusArtist.redraw" href="compas_rhino.artists.TorusArtist.redraw.html" />
+    <link rel="next" title="TorusArtist.draw_collection" href="compas_rhino.artists.TorusArtist.draw_collection.html" />
   
   
   
@@ -110,19 +110,16 @@
 <h1>TorusArtist.draw</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.artists.TorusArtist.draw">
-<span class="sig-prename descclassname"><span class="pre">TorusArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/torusartist.py#L47"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">TorusArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/torusartist.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the torus associated with the artist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> (<em>tuple of float, optional</em>) – The RGB color of the torus.</p></li>
 <li><p><strong>u</strong> (<em>int, optional</em>) – Number of faces in the “u” direction.
-Default is <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p></li>
+Default is <code class="docutils literal notranslate"><span class="pre">~TorusArtist.u</span></code>.</p></li>
 <li><p><strong>v</strong> (<em>int, optional</em>) – Number of faces in the “v” direction.
-Default is <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p></li>
-<li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>show_faces</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>join_faces</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+Default is <code class="docutils literal notranslate"><span class="pre">~TorusArtist.v</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -202,10 +199,10 @@ Default is <code class="docutils literal notranslate"><span class="pre">10</span
       
 
       
-        <a href="compas_rhino.artists.TorusArtist.redraw.html" title="TorusArtist.redraw" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.TorusArtist.draw_collection.html" title="TorusArtist.draw_collection" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            TorusArtist.redraw
+            TorusArtist.draw_collection
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

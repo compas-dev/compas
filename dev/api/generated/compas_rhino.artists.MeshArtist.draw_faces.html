@@ -110,7 +110,7 @@
 <h1>MeshArtist.draw_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.artists.MeshArtist.draw_faces">
-<span class="sig-prename descclassname"><span class="pre">MeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/meshartist.py#L205"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">MeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/meshartist.py#L257"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw a selection of faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -118,7 +118,7 @@
 <li><p><strong>faces</strong> (<em>list, optional</em>) – A selection of faces to draw.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are drawn.</p></li>
 <li><p><strong>color</strong> (<em>tuple or dict of tuple, optional</em>) – The color specififcation for the faces.
-The default color is black <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+The default color is the value of <code class="docutils literal notranslate"><span class="pre">~MeshArtist.default_facecolor</span></code>.</p></li>
 <li><p><strong>join_faces</strong> (<em>bool, optional</em>) – Join the faces into 1 mesh.
 Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>, in which case the faces are drawn as individual meshes.</p></li>
 </ul>

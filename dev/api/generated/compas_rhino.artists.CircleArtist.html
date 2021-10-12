@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="CircleArtist.build" href="compas_rhino.artists.CircleArtist.build.html" />
+    <link rel="next" title="CircleArtist.clear" href="compas_rhino.artists.CircleArtist.clear.html" />
   
   
   
@@ -108,37 +108,17 @@
 <h1>CircleArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.artists.CircleArtist">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">CircleArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/circleartist.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.html#compas_rhino.artists.PrimitiveArtist" title="compas_rhino.artists._primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists._primitiveartist.PrimitiveArtist</span></code></a></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">CircleArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/circleartist.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.artist.RhinoArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.artist.RhinoArtist</span></code></a>, <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.primitiveartist.PrimitiveArtist</span></code></a></p>
 <p>Artist for drawing circles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>primitive</strong> (<a class="reference internal" href="compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a>) – A COMPAS circle.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>circle</strong> (<a class="reference internal" href="compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a>) – A COMPAS circle.</p></li>
+<li><p><strong>layer</strong> (<em>str, optional</em>) – The layer that should contain the drawing.</p></li>
+</ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>See <a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.html#compas_rhino.artists.PrimitiveArtist" title="compas_rhino.artists.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.PrimitiveArtist</span></code></a> for all other parameters.</p>
-<p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Circle</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_rgb</span>
-
-<span class="kn">import</span> <span class="nn">compas_rhino</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">CircleArtist</span>
-
-<span class="n">pcl</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">tpl</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="mf">0.7</span><span class="p">)</span>
-
-<span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="s2">&quot;Test::CircleArtist&quot;</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-    <span class="n">circle</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">circle</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
-    <span class="n">artist</span> <span class="o">=</span> <span class="n">CircleArtist</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()),</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;Test::CircleArtist&quot;</span><span class="p">)</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -146,17 +126,17 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.build.html#compas_rhino.artists.CircleArtist.build" title="compas_rhino.artists.CircleArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p>Build an artist corresponding to the item type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.clear.html#compas_rhino.artists.CircleArtist.clear" title="compas_rhino.artists.CircleArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.clear.html#compas_rhino.artists.CircleArtist.clear" title="compas_rhino.artists.CircleArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.clear_layer.html#compas_rhino.artists.CircleArtist.clear_layer" title="compas_rhino.artists.CircleArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the layer containing the artist.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.clear_layer.html#compas_rhino.artists.CircleArtist.clear_layer" title="compas_rhino.artists.CircleArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.draw.html#compas_rhino.artists.CircleArtist.draw" title="compas_rhino.artists.CircleArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([show_point, show_normal])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.draw.html#compas_rhino.artists.CircleArtist.draw" title="compas_rhino.artists.CircleArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([show_point, show_normal])</p></td>
 <td><p>Draw the circle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.draw_collection.html#compas_rhino.artists.CircleArtist.draw_collection" title="compas_rhino.artists.CircleArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CircleArtist.redraw.html#compas_rhino.artists.CircleArtist.redraw" title="compas_rhino.artists.CircleArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
@@ -239,10 +219,10 @@
       
 
       
-        <a href="compas_rhino.artists.CircleArtist.build.html" title="CircleArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.CircleArtist.clear.html" title="CircleArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            CircleArtist.build
+            CircleArtist.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

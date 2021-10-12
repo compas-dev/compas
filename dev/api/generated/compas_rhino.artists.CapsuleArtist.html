@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="CapsuleArtist.build" href="compas_rhino.artists.CapsuleArtist.build.html" />
+    <link rel="next" title="CapsuleArtist.clear" href="compas_rhino.artists.CapsuleArtist.clear.html" />
   
   
   
@@ -108,37 +108,17 @@
 <h1>CapsuleArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.artists.CapsuleArtist">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">CapsuleArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/capsuleartist.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas_rhino.artists.ShapeArtist.html#compas_rhino.artists.ShapeArtist" title="compas_rhino.artists._shapeartist.ShapeArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists._shapeartist.ShapeArtist</span></code></a></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">CapsuleArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/capsuleartist.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.artist.RhinoArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.artist.RhinoArtist</span></code></a>, <a class="reference internal" href="compas.artists.ShapeArtist.html#compas.artists.ShapeArtist" title="compas.artists.shapeartist.ShapeArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.shapeartist.ShapeArtist</span></code></a></p>
 <p>Artist for drawing capsule shapes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Capsule.html#compas.geometry.Capsule" title="compas.geometry.Capsule"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Capsule</span></code></a>) – A COMPAS capsule.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>capsule</strong> (<a class="reference internal" href="compas.geometry.Capsule.html#compas.geometry.Capsule" title="compas.geometry.Capsule"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Capsule</span></code></a>) – A COMPAS capsule.</p></li>
+<li><p><strong>layer</strong> (<em>str, optional</em>) – The layer that should contain the drawing.</p></li>
+</ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>See <a class="reference internal" href="compas_rhino.artists.ShapeArtist.html#compas_rhino.artists.ShapeArtist" title="compas_rhino.artists.ShapeArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.ShapeArtist</span></code></a> for all other parameters.</p>
-<p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Capsule</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Translation</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_rgb</span>
-
-<span class="kn">import</span> <span class="nn">compas_rhino</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">CapsuleArtist</span>
-
-<span class="n">pcl</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">tpl</span> <span class="o">=</span> <span class="n">Capsule</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="mf">0.15</span><span class="p">)</span>
-
-<span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="s2">&quot;Test::CapsuleArtist&quot;</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-    <span class="n">capsule</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
-    <span class="n">artist</span> <span class="o">=</span> <span class="n">CapsuleArtist</span><span class="p">(</span><span class="n">capsule</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()),</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;Test::CapsuleArtist&quot;</span><span class="p">)</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -146,17 +126,17 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.build.html#compas_rhino.artists.CapsuleArtist.build" title="compas_rhino.artists.CapsuleArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p>Build an artist corresponding to the item type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.clear.html#compas_rhino.artists.CapsuleArtist.clear" title="compas_rhino.artists.CapsuleArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.clear.html#compas_rhino.artists.CapsuleArtist.clear" title="compas_rhino.artists.CapsuleArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.clear_layer.html#compas_rhino.artists.CapsuleArtist.clear_layer" title="compas_rhino.artists.CapsuleArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the main layer of the artist.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.clear_layer.html#compas_rhino.artists.CapsuleArtist.clear_layer" title="compas_rhino.artists.CapsuleArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.draw.html#compas_rhino.artists.CapsuleArtist.draw" title="compas_rhino.artists.CapsuleArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([u, v, show_vertices, show_edges, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.draw.html#compas_rhino.artists.CapsuleArtist.draw" title="compas_rhino.artists.CapsuleArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([color, u, v])</p></td>
 <td><p>Draw the capsule associated with the artist.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.draw_collection.html#compas_rhino.artists.CapsuleArtist.draw_collection" title="compas_rhino.artists.CapsuleArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.redraw.html#compas_rhino.artists.CapsuleArtist.redraw" title="compas_rhino.artists.CapsuleArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
@@ -239,10 +219,10 @@
       
 
       
-        <a href="compas_rhino.artists.CapsuleArtist.build.html" title="CapsuleArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.CapsuleArtist.clear.html" title="CapsuleArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            CapsuleArtist.build
+            CapsuleArtist.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

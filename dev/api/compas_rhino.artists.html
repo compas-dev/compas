@@ -104,20 +104,6 @@
           
           <span class="target" id="module-compas_rhino.artists"></span><section id="artists">
 <h1>artists</h1>
-<p class="lead">Artists for visualising (painting) COMPAS objects in Rhino.
-Artists convert COMPAS objects to Rhino geometry and data.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_off</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.off&#39;</span><span class="p">))</span>
-
-<span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::tubemesh.off&#39;</span><span class="p">)</span>
-
-<span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</code></pre></div>
-</div>
 <section id="primitive-artists">
 <h2>Primitive Artists</h2>
 <table class="longtable docutils align-default">
@@ -214,7 +200,7 @@ Artists convert COMPAS objects to Rhino geometry and data.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.artists.RobotModelArtist.html#compas_rhino.artists.RobotModelArtist" title="compas_rhino.artists.RobotModelArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RobotModelArtist</span></code></a></p></td>
-<td><p>Visualizer for robots inside a Rhino environment.</p></td>
+<td><p>Artist for drawing robot models.</p></td>
 </tr>
 </tbody>
 </table>
@@ -227,14 +213,8 @@ Artists convert COMPAS objects to Rhino geometry and data.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.artists.BaseArtist.html#compas_rhino.artists.BaseArtist" title="compas_rhino.artists.BaseArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseArtist</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.RhinoArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoArtist</span></code></a></p></td>
 <td><p>Base class for all Rhino artists.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.artists.PrimitiveArtist.html#compas_rhino.artists.PrimitiveArtist" title="compas_rhino.artists.PrimitiveArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrimitiveArtist</span></code></a></p></td>
-<td><p>Base class for artists for geometry primitives.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.artists.ShapeArtist.html#compas_rhino.artists.ShapeArtist" title="compas_rhino.artists.ShapeArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShapeArtist</span></code></a></p></td>
-<td><p>Base class for artists for geometric shapes.</p></td>
 </tr>
 </tbody>
 </table>

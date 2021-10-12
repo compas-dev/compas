@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="FrameArtist.build" href="compas_blender.artists.FrameArtist.build.html" />
+    <link rel="next" title="FrameArtist.clear" href="compas_blender.artists.FrameArtist.clear.html" />
   
   
   
-    <link rel="prev" title="BaseArtist.register" href="compas_blender.artists.BaseArtist.register.html" />
+    <link rel="prev" title="artists" href="../compas_blender.artists.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,14 +108,14 @@
 <h1>FrameArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_blender.artists.FrameArtist">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">FrameArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.primitives.frame.Frame"><span class="pre">compas.geometry.primitives.frame.Frame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bpy.types.Collection</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/frameartist.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BaseArtist.html#compas_blender.artists.BaseArtist" title="compas_blender.artists._artist.BaseArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists._artist.BaseArtist</span></code></a></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">FrameArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/frameartist.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.artist.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.BlenderArtist</span></code></a>, <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.primitiveartist.PrimitiveArtist</span></code></a></p>
 <p>Artist for drawing frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – A COMPAS frame.</p></li>
-<li><p><strong>collection</strong> (<em>str</em>) – The name of the frame’s collection.</p></li>
+<li><p><strong>collection</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The name of the collection the object belongs to.</p></li>
 <li><p><strong>scale</strong> (<em>float, optional</em>) – Scale factor that controls the length of the axes.</p></li>
 </ul>
 </dd>
@@ -132,22 +132,6 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
 </ul>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
-
-<span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">FrameArtist</span>
-
-<span class="n">pcl</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">tpl</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-
-<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-    <span class="n">frame</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
-    <span class="n">artist</span> <span class="o">=</span> <span class="n">FrameArtist</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -155,26 +139,26 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.build.html#compas_blender.artists.FrameArtist.build" title="compas_blender.artists.FrameArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p>Build an artist corresponding to the item type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.clear.html#compas_blender.artists.FrameArtist.clear" title="compas_blender.artists.FrameArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.clear.html#compas_blender.artists.FrameArtist.clear" title="compas_blender.artists.FrameArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p>Delete all objects created by the artist.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.draw.html#compas_blender.artists.FrameArtist.draw" title="compas_blender.artists.FrameArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.draw.html#compas_blender.artists.FrameArtist.draw" title="compas_blender.artists.FrameArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.draw_axes.html#compas_blender.artists.FrameArtist.draw_axes" title="compas_blender.artists.FrameArtist.draw_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_axes</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.draw_axes.html#compas_blender.artists.FrameArtist.draw_axes" title="compas_blender.artists.FrameArtist.draw_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_axes</span></code></a>()</p></td>
 <td><p>Draw the axes of the frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.draw_collection.html#compas_blender.artists.FrameArtist.draw_collection" title="compas_blender.artists.FrameArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.draw_origin.html#compas_blender.artists.FrameArtist.draw_origin" title="compas_blender.artists.FrameArtist.draw_origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_origin</span></code></a>()</p></td>
 <td><p>Draw the origin of the frame.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.redraw.html#compas_blender.artists.FrameArtist.redraw" title="compas_blender.artists.FrameArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
-<td><p>Trigger a redraw.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.FrameArtist.register.html#compas_blender.artists.FrameArtist.register" title="compas_blender.artists.FrameArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
-<td><p>Register a type of COMPAS object with a Blender artist.</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -239,20 +223,20 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_blender.artists.BaseArtist.register.html" title="BaseArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="../compas_blender.artists.html" title="artists" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            BaseArtist.register
+            artists
           </div>
         </a>
       
 
       
-        <a href="compas_blender.artists.FrameArtist.build.html" title="FrameArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_blender.artists.FrameArtist.clear.html" title="FrameArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            FrameArtist.build
+            FrameArtist.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

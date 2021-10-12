@@ -114,6 +114,11 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">__add__</span></code>, <code class="docutils literal notranslate"><span class="pre">__sub__</span></code>, <code class="docutils literal notranslate"><span class="pre">__and__</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code> for boolean operations using binary operators.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">is_closed</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyhedron</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">Plane.offset</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artists.Artist</span></code>.</p></li>
+<li><p>Added pluggable <code class="docutils literal notranslate"><span class="pre">compas.artists.new_artist</span></code>.</p></li>
+<li><p>Added plugin <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.new_artist_rhino</span></code>.</p></li>
+<li><p>Added plugin <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.new_artist_blender</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artist.DataArtistNotRegistered</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_node_labels</span></code> and <code class="docutils literal notranslate"><span class="pre">draw_edgelabels</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.NetworkArtist</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.RobotModelArtist.clear</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.geometry.booleans</span></code> as plugin for boolean pluggables.</p></li>
@@ -124,6 +129,8 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_blender.draw_texts</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.BaseArtist</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.RhinoArtist</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.BaseArtist</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.BlenderArtist</span></code>.</p></li>
 <li><p>Changed default resolution for shape discretisation to 16 for both u and v where relevant.</p></li>
 <li><p>Changed base class of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Primitive</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Geometry</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compas_blender.artists.RobotModelArtist.collection</span></code> can be assigned as a Blender collection or a name.</p></li>
