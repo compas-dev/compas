@@ -16,8 +16,6 @@ Color = Tuple[float, float, float]
 class LineArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS lines."""
 
-    zorder: int = 1000
-
     def __init__(self,
                  line: Line,
                  draw_points: bool = False,
@@ -25,6 +23,7 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
                  linewidth: float = 1.0,
                  linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
                  color: Color = (0, 0, 0),
+                 zorder: int = 1000,
                  **kwargs: Any):
 
         super().__init__(primitive=line, **kwargs)
@@ -38,6 +37,7 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.color = color
+        self.zorder = zorder
 
     @property
     def line(self):

@@ -15,8 +15,6 @@ Color = Tuple[float, float, float]
 class PolygonArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS polygons."""
 
-    zorder: int = 1000
-
     def __init__(self,
                  polygon: Polygon,
                  linewidth: float = 1.0,
@@ -25,6 +23,7 @@ class PolygonArtist(PlotterArtist, PrimitiveArtist):
                  edgecolor: Color = (0, 0, 0),
                  fill: bool = True,
                  alpha: float = 1.0,
+                 zorder: int = 1000,
                  **kwargs: Any):
 
         super().__init__(primitive=polygon, **kwargs)
@@ -36,6 +35,7 @@ class PolygonArtist(PlotterArtist, PrimitiveArtist):
         self.edgecolor = edgecolor
         self.fill = fill
         self.alpha = alpha
+        self.zorder = zorder
 
     @property
     def polygon(self):

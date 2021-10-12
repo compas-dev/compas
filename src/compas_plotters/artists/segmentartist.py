@@ -15,14 +15,13 @@ Color = Tuple[float, float, float]
 class SegmentArtist(PlotterArtist, PrimitiveArtist):
     """Artist for drawing COMPAS lines as segments."""
 
-    zorder: int = 2000
-
     def __init__(self,
                  line: Line,
                  draw_points: bool = False,
                  linewidth: float = 2.0,
                  linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
                  color: Color = (0.0, 0.0, 0.0),
+                 zorder: int = 2000,
                  **kwargs: Any):
 
         super().__init__(primitive=line, **kwargs)
@@ -34,6 +33,7 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
         self.linestyle = linestyle
         self.linewidth = linewidth
         self.color = color
+        self.zorder = zorder
 
     @property
     def line(self):

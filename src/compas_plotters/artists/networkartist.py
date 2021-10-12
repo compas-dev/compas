@@ -53,9 +53,6 @@ class NetworkArtist(PlotterArtist):
     zorder_edges : int
     """
 
-    zorder_edges: int = 2000
-    zorder_nodes: int = 3000
-
     def __init__(self,
                  network: Network,
                  nodes: Optional[List[int]] = None,
@@ -67,6 +64,7 @@ class NetworkArtist(PlotterArtist):
                  show_edges: bool = True,
                  nodesize: int = 5,
                  sizepolicy: Literal['relative', 'absolute'] = 'relative',
+                 zorder: int = 2000,
                  **kwargs):
 
         super().__init__(network=network, **kwargs)
@@ -79,8 +77,16 @@ class NetworkArtist(PlotterArtist):
         self.edge_width = edgewidth
         self.show_nodes = show_nodes
         self.show_edges = show_edges
-
         self.sizepolicy = sizepolicy
+        self.zorder = zorder
+
+    @property
+    def zorder_edges(self):
+        return self.zorder
+
+    @property
+    def zorder_nodes(self):
+        return self.zorder + 10
 
     @property
     def item(self):

@@ -1,5 +1,6 @@
 import os
 from typing import Callable, Optional, Tuple, List, Union
+from typing_extensions import Literal
 import matplotlib
 import matplotlib.pyplot as plt
 import tempfile
@@ -37,7 +38,8 @@ class Plotter(metaclass=Singleton):
                  figsize: Tuple[float, float] = (8.0, 5.0),
                  dpi: float = 100,
                  bgcolor: Tuple[float, float, float] = (1.0, 1.0, 1.0),
-                 show_axes: bool = False):
+                 show_axes: bool = False,
+                 zstack: Literal['natural', 'zorder'] = 'zorder'):
         self._show_axes = show_axes
         self._bgcolor = None
         self._viewbox = None
@@ -47,6 +49,7 @@ class Plotter(metaclass=Singleton):
         self.figsize = figsize
         self.dpi = dpi
         self.bgcolor = bgcolor
+        self.zstack = zstack
 
     @property
     def viewbox(self) -> Tuple[Tuple[float, float], Tuple[float, float]]:
@@ -259,7 +262,11 @@ class Plotter(metaclass=Singleton):
         """Add a COMPAS geometry object or data structure to the plot.
         """
         if not artist:
-            artist = PlotterArtist(item, **kwargs)
+            if self.zstack == 'natural':
+                zorder = 1000 + len(self._artists) * 100
+                artist = PlotterArtist(item, zorder=zorder, **kwargs)
+            else:
+                artist = PlotterArtist(item, **kwargs)
         artist.draw()
         self._artists.append(artist)
         return artist

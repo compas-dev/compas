@@ -15,14 +15,13 @@ Color = Tuple[float, float, float]
 class PolylineArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS polylines."""
 
-    zorder: int = 1000
-
     def __init__(self,
                  polyline: Polyline,
                  draw_points: bool = True,
                  linewidth: float = 1.0,
                  linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
                  color: Color = (0, 0, 0),
+                 zorder: int = 1000,
                  **kwargs: Any):
 
         super().__init__(primitive=polyline, **kwargs)
@@ -33,6 +32,7 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.color = color
+        self.zorder = zorder
 
     @property
     def polyline(self):

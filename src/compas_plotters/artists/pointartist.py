@@ -15,13 +15,12 @@ Color = Tuple[float, float, float]
 class PointArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS points."""
 
-    zorder: int = 9000
-
     def __init__(self,
                  point: Point,
                  size: int = 5,
                  facecolor: Color = (1.0, 1.0, 1.0),
                  edgecolor: Color = (0, 0, 0),
+                 zorder: int = 9000,
                  **kwargs: Any):
 
         super().__init__(primitive=point, **kwargs)
@@ -31,6 +30,7 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
         self.size = size
         self.facecolor = facecolor
         self.edgecolor = edgecolor
+        self.zorder = zorder
 
     @property
     def point(self):

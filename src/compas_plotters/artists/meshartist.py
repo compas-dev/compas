@@ -59,10 +59,6 @@ class MeshArtist(PlotterArtist, MeshArtist):
     zorder_faces : int
     """
 
-    zorder_faces: int = 1000
-    zorder_edges: int = 2000
-    zorder_vertices: int = 3000
-
     def __init__(self,
                  mesh: Mesh,
                  vertices: Optional[List[int]] = None,
@@ -77,6 +73,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
                  show_faces: bool = True,
                  vertexsize: int = 5,
                  sizepolicy: Literal['relative', 'absolute'] = 'relative',
+                 zorder: int = 1000,
                  **kwargs: Any):
 
         super().__init__(mesh=mesh, **kwargs)
@@ -94,6 +91,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         self.show_vertices = show_vertices
         self.show_edges = show_edges
         self.show_faces = show_faces
+        self.zorder = zorder
 
     @property
     def vertex_size(self):
@@ -110,6 +108,18 @@ class MeshArtist(PlotterArtist, MeshArtist):
             self.vertex_size.update({vertex: size / factor for vertex, size in vertexsize.items()})
         elif isinstance(vertexsize, (int, float)):
             self._vertex_size = {vertex: vertexsize / factor for vertex in self.mesh.vertices()}
+
+    @property
+    def zorder_faces(self):
+        return self.zorder + 10
+
+    @property
+    def zorder_edges(self):
+        return self.zorder + 20
+
+    @property
+    def zorder_vertices(self):
+        return self.zorder + 30
 
     @property
     def item(self):

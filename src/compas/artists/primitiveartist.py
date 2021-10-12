@@ -33,7 +33,7 @@ class PrimitiveArtist(Artist):
     default_color = (0, 0, 0)
 
     def __init__(self, primitive, color=None, **kwargs):
-        super(PrimitiveArtist, self).__init__(**kwargs)
+        super(PrimitiveArtist, self).__init__()
         self._primitive = None
         self._color = None
         self.primitive = primitive
