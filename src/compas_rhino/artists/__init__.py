@@ -5,24 +5,6 @@ artists
 
 .. currentmodule:: compas_rhino.artists
 
-.. rst-class:: lead
-
-Artists for visualising (painting) COMPAS objects in Rhino.
-Artists convert COMPAS objects to Rhino geometry and data.
-
-.. code-block:: python
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas_rhino.artists import MeshArtist
-
-    mesh = Mesh.from_off(compas.get('tubemesh.off'))
-
-    artist = MeshArtist(mesh, layer='COMPAS::tubemesh.off')
-
-    artist.clear_layer()
-    artist.draw()
-
 
 Primitive Artists
 =================
@@ -86,12 +68,17 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    BaseArtist
-    PrimitiveArtist
-    ShapeArtist
+    RhinoArtist
 
 """
 from __future__ import absolute_import
+
+import inspect
+
+from compas.plugins import plugin
+from compas.artists import Artist
+from compas.artists import ShapeArtist
+from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -115,11 +102,9 @@ from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
 from compas.robots import RobotModel
+import compas_rhino
 
-from ._artist import BaseArtist  # noqa: F401 F403
-from ._primitiveartist import PrimitiveArtist  # noqa: F401 F403
-from ._shapeartist import ShapeArtist  # noqa: F401
-
+from .artist import RhinoArtist
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
@@ -128,7 +113,6 @@ from .pointartist import PointArtist
 from .polygonartist import PolygonArtist
 from .polylineartist import PolylineArtist
 from .vectorartist import VectorArtist
-
 from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .coneartist import ConeArtist
@@ -136,41 +120,100 @@ from .cylinderartist import CylinderArtist
 from .polyhedronartist import PolyhedronArtist
 from .sphereartist import SphereArtist
 from .torusartist import TorusArtist
-
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
-
 from .robotmodelartist import RobotModelArtist
 
-BaseArtist.register(Circle, CircleArtist)
-BaseArtist.register(Frame, FrameArtist)
-BaseArtist.register(Line, LineArtist)
-BaseArtist.register(Plane, PlaneArtist)
-BaseArtist.register(Point, PointArtist)
-BaseArtist.register(Polygon, PolygonArtist)
-BaseArtist.register(Polyline, PolylineArtist)
-BaseArtist.register(Vector, VectorArtist)
+ShapeArtist.default_color = (255, 255, 255)
 
-BaseArtist.register(Box, BoxArtist)
-BaseArtist.register(Capsule, CapsuleArtist)
-BaseArtist.register(Cone, ConeArtist)
-BaseArtist.register(Cylinder, CylinderArtist)
-BaseArtist.register(Polyhedron, PolyhedronArtist)
-BaseArtist.register(Sphere, SphereArtist)
-BaseArtist.register(Torus, TorusArtist)
+MeshArtist.default_color = (0, 0, 0)
+MeshArtist.default_vertexcolor = (255, 255, 255)
+MeshArtist.default_edgecolor = (0, 0, 0)
+MeshArtist.default_facecolor = (255, 255, 255)
 
-BaseArtist.register(Mesh, MeshArtist)
-BaseArtist.register(Network, NetworkArtist)
-BaseArtist.register(VolMesh, VolMeshArtist)
+NetworkArtist.default_nodecolor = (255, 255, 255)
+NetworkArtist.default_edgecolor = (0, 0, 0)
 
-BaseArtist.register(RobotModel, RobotModelArtist)
+VolMeshArtist.default_color = (0, 0, 0)
+VolMeshArtist.default_vertexcolor = (255, 255, 255)
+VolMeshArtist.default_edgecolor = (0, 0, 0)
+VolMeshArtist.default_facecolor = (255, 255, 255)
+VolMeshArtist.default_cellcolor = (255, 0, 0)
+
+
+def verify_rhino_context():
+    try:
+        import Rhino
+        import scriptcontext as sc
+
+        return isinstance(sc.doc, Rhino.RhinoDoc)
+    except:            # noqa: E722
+        return False
+
+
+artists_registered = False
+
+
+@plugin(category='drawing-utils', pluggable_name='clear', requires=['Rhino', verify_rhino_context])
+def clear_rhino():
+    compas_rhino.clear()
+
+
+@plugin(category='drawing-utils', pluggable_name='redraw', requires=['Rhino', verify_rhino_context])
+def redraw_rhino():
+    compas_rhino.redraw()
+
+
+@plugin(category='factories', pluggable_name='new_artist', requires=['Rhino', verify_rhino_context])
+def new_artist_rhino(cls, *args, **kwargs):
+    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
+    global artists_registered
+
+    if not artists_registered:
+        RhinoArtist.register(Circle, CircleArtist)
+        RhinoArtist.register(Frame, FrameArtist)
+        RhinoArtist.register(Line, LineArtist)
+        RhinoArtist.register(Plane, PlaneArtist)
+        RhinoArtist.register(Point, PointArtist)
+        RhinoArtist.register(Polygon, PolygonArtist)
+        RhinoArtist.register(Polyline, PolylineArtist)
+        RhinoArtist.register(Vector, VectorArtist)
+        RhinoArtist.register(Box, BoxArtist)
+        RhinoArtist.register(Capsule, CapsuleArtist)
+        RhinoArtist.register(Cone, ConeArtist)
+        RhinoArtist.register(Cylinder, CylinderArtist)
+        RhinoArtist.register(Polyhedron, PolyhedronArtist)
+        RhinoArtist.register(Sphere, SphereArtist)
+        RhinoArtist.register(Torus, TorusArtist)
+        RhinoArtist.register(Mesh, MeshArtist)
+        RhinoArtist.register(Network, NetworkArtist)
+        RhinoArtist.register(VolMesh, VolMeshArtist)
+        RhinoArtist.register(RobotModel, RobotModelArtist)
+        artists_registered = True
+
+    data = args[0]
+
+    if 'artist_type' in kwargs:
+        cls = kwargs['artist_type']
+    else:
+        dtype = type(data)
+        if dtype not in RhinoArtist.ITEM_ARTIST:
+            raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
+        cls = RhinoArtist.ITEM_ARTIST[dtype]
+
+    # TODO: move this to the plugin module and/or to a dedicated function
+
+    for name, value in inspect.getmembers(cls):
+        if inspect.ismethod(value):
+            if hasattr(value, '__isabstractmethod__'):
+                raise Exception('Abstract method not implemented: {}'.format(value))
+
+    return super(Artist, cls).__new__(cls)
 
 
 __all__ = [
-    'BaseArtist',
-    'PrimitiveArtist',
-    'ShapeArtist',
+    'RhinoArtist',
     'CircleArtist',
     'FrameArtist',
     'LineArtist',

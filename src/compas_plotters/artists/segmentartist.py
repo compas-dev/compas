@@ -1,32 +1,47 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
 from typing_extensions import Literal
+
 from matplotlib.lines import Line2D
 from compas.geometry import Line
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class SegmentArtist(Artist):
+class SegmentArtist(PlotterArtist, PrimitiveArtist):
     """Artist for drawing COMPAS lines as segments."""
-
-    zorder: int = 2000
 
     def __init__(self,
                  line: Line,
                  draw_points: bool = False,
                  linewidth: float = 2.0,
                  linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 color: Color = (0.0, 0.0, 0.0)):
-        super(SegmentArtist, self).__init__()
+                 color: Color = (0.0, 0.0, 0.0),
+                 zorder: int = 2000,
+                 **kwargs: Any):
+
+        super().__init__(primitive=line, **kwargs)
+
         self._mpl_line = None
         self._start_artist = None
         self._end_artist = None
         self.draw_points = draw_points
         self.linestyle = linestyle
         self.linewidth = linewidth
-        self.line = line
         self.color = color
+        self.zorder = zorder
+
+    @property
+    def line(self):
+        return self.primitive
+
+    @line.setter
+    def line(self, line):
+        self.primitive = line
 
     @property
     def data(self) -> List[List[float]]:

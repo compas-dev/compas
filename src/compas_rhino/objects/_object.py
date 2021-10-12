@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from uuid import uuid4
-from compas_rhino.artists import BaseArtist
+from compas_rhino.artists import RhinoArtist
 
 
 __all__ = ['BaseObject']
@@ -84,7 +84,7 @@ class BaseObject(object):
     @item.setter
     def item(self, item):
         self._item = item
-        self._artist = BaseArtist.build(item)
+        self._artist = RhinoArtist.build(item)
 
     @property
     def artist(self):

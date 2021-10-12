@@ -321,9 +321,11 @@ def plugin(method=None, category=None, requires=None, tryfirst=False, trylast=Fa
         The method to decorate as ``plugin``.
     category : str, optional
         An optional string to group or categorize plugins.
-    requires : list of str, optional
-        Optionally defines a list of packages that should be importable
-        for this plugin to be used.
+    requires : list, optional
+        Optionally defines a list of requirements that should be fulfilled
+        for this plugin to be used. The requirement can either be a package
+        name (``str``) or a ``callable`` with a boolean return value,
+        in which any arbitrary check can be implemented.
     tryfirst : bool, optional
         Plugins can declare a preferred priority by setting this to ``True``.
         By default ``False``.
@@ -414,9 +416,16 @@ class Importer(object):
         return self._cache[module_name]
 
 
+def verify_requirement(manager, requirement):
+    if callable(requirement):
+        return requirement()
+
+    return manager.importer.check_importable(requirement)
+
+
 def is_plugin_selectable(plugin, manager):
     if plugin.opts['requires']:
-        importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
+        importable_requirements = (verify_requirement(manager, requirement) for requirement in plugin.opts['requires'])
 
         if not all(importable_requirements):
             if manager.DEBUG:

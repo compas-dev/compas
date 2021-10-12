@@ -88,7 +88,7 @@ def wrap_drawfunc(f):
     def wrapper(*args, **kwargs):
         layer = kwargs.get('layer', None)
         clear = kwargs.get('clear', False)
-        redraw = kwargs.get('redraw', True)
+        redraw = kwargs.get('redraw', False)
         if layer:
             if not rs.IsLayer(layer):
                 create_layers_from_path(layer)

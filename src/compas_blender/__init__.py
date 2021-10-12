@@ -26,6 +26,7 @@ else:
 
 
 def clear():
+    """Clear all scene objects."""
     # delete all objects
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.delete(use_global=True, confirm=False)
@@ -42,6 +43,11 @@ def clear():
             block.children.unlink(collection)
         if block.users == 0:
             bpy.data.collections.remove(block)
+
+
+def redraw():
+    """Trigger a redraw."""
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
 __version__ = '1.8.1'
@@ -84,6 +90,8 @@ def _get_default_blender_installation_path_windows(version):
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
+
 __all_plugins__ = [
     'compas_blender.geometry.booleans',
+    'compas_blender.artists',
 ]
