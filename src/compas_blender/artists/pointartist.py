@@ -1,20 +1,26 @@
+from typing import Any
 from typing import List
+from typing import Optional
+from typing import Union
 
 import bpy
 
 import compas_blender
-from compas_blender.artists import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from compas.geometry import Point
+from compas.utilities import RGBColor
+from compas_blender.artists import BlenderArtist
 
 
 __all__ = ["PointArtist"]
 
 
-class PointArtist(PrimitiveArtist):
+class PointArtist(BlenderArtist, PrimitiveArtist):
     """Artist for drawing points.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Point`
+    point : :class:`compas.geometry.Point`
         A COMPAS point.
 
     Notes
@@ -38,20 +44,26 @@ class PointArtist(PrimitiveArtist):
             artist.draw()
 
     """
-    def draw(self) -> List[bpy.types.Object]:
+
+    def __init__(self,
+                 point: Point,
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 **kwargs: Any):
+        super().__init__(primitive=point, collection=collection or point.name, **kwargs)
+
+    def draw(self, color: RGBColor = None) -> List[bpy.types.Object]:
         """Draw the point.
 
         Returns
         -------
         list of :class:`bpy.types.Object`
         """
+        color = color or self.color
         points = [{
                 'pos': self.primitive,
-                'name': f"{self.name}",
-                'color': self.color,
+                'name': f"{self.primitive.name}",
+                'color': color,
                 'radius': 0.01
             }]
         objects = compas_blender.draw_points(points, self.collection)
-        self.objects += objects
         return objects
-

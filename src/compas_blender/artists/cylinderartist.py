@@ -1,5 +1,6 @@
-from typing import Optional
 from typing import Any
+from typing import List
+from typing import Optional
 from typing import Union
 
 import bpy
@@ -7,6 +8,7 @@ import bpy
 import compas_blender
 from compas.geometry import Cylinder
 from compas.artists import ShapeArtist
+from compas.utilities import RGBColor
 from .artist import BlenderArtist
 
 
@@ -28,12 +30,12 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=cylinder, collection=collection or cylinder.name, **kwargs)
 
-    def draw(self, color=None, u=None):
+    def draw(self, color: RGBColor = None, u: int = None) -> List[bpy.types.Object]:
         """Draw the cylinder associated with the artist.
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple of float or tuple of int, optional
             The RGB color of the cylinder.
         u : int, optional
             Number of faces in the "u" direction.

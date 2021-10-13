@@ -1,17 +1,21 @@
+from typing import Any
 from typing import List
 from typing import Optional
+from typing import Union
 
 import bpy
 
-from compas.geometry import Point
 import compas_blender
-from compas_blender.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from compas.geometry import Point, Vector
+from compas.utilities import RGBColor
+from compas_blender.artists import BlenderArtist
 
 
 __all__ = ['VectorArtist']
 
 
-class VectorArtist(PrimitiveArtist):
+class VectorArtist(BlenderArtist, PrimitiveArtist):
     """Artist for drawing vectors.
 
     Parameters
@@ -42,11 +46,23 @@ class VectorArtist(PrimitiveArtist):
             artist.draw(point=point)
 
     """
-    def draw(self, point: Optional[Point] = None, show_point: Optional[bool] = False) -> List[bpy.types.Object]:
+
+    def __init__(self,
+                 vector: Vector,
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 **kwargs: Any):
+        super().__init__(primitive=vector, collection=collection, **kwargs)
+
+    def draw(self,
+             color: RGBColor = None,
+             point: Optional[Point] = None,
+             show_point: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the vector.
 
         Parameters
         ----------
+        color : tuple of float or tuple of int, optional
+            The RGB color of the vector.
         point : [float, float, float] or :class:`compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
@@ -56,20 +72,21 @@ class VectorArtist(PrimitiveArtist):
 
         Returns
         -------
-        list of bpy.types.Object
-
-        """
-        """Draw the axes of the frame.
-
-        Returns
-        -------
         list of :class:`bpy.types.Object`
         """
         start = point or (0., 0., 0.)
         end = tuple(map(sum, zip(start, self.primitive)))
+        color = color or self. color
         lines = [
-            {'start': start, 'end': end, 'color': self.color, 'name': f"{self.primitive.name}"},
+            {'start': start, 'end': end, 'color': color, 'name': f"{self.primitive.name}"},
         ]
         objects = compas_blender.draw_lines(lines, self.collection)
-        self.objects += objects
+        if show_point:
+            points = [{
+                'pos': start,
+                'name': f"{self.primitive.name}.origin",
+                'color': (1.0, 1.0, 1.0),
+                'radius': 0.01,
+            }]
+            objects += compas_blender.draw_points(points, self.collection)
         return objects

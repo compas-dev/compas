@@ -1,6 +1,6 @@
+from typing import Any
 from typing import List
 from typing import Optional
-from typing import Any
 from typing import Union
 
 import bpy
@@ -56,16 +56,18 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         self.color_yaxis = (0, 255, 0)
         self.color_zaxis = (0, 0, 255)
 
-    def draw(self) -> None:
+    def draw(self) -> List[bpy.types.Object]:
         """Draw the frame.
 
         Returns
         -------
-        ``None``
+        list of :class:`bpy.types.Object`
         """
         self.clear()
-        self.draw_origin()
-        self.draw_axes()
+        objects = []
+        objects += self.draw_origin()
+        objects += self.draw_axes()
+        return objects
 
     def draw_origin(self) -> List[bpy.types.Object]:
         """Draw the origin of the frame.
@@ -75,8 +77,8 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         list of :class:`bpy.types.Object`
         """
         points = [{
-                'pos': self.frame.point,
-                'name': f"{self.frame.name}.origin",
+                'pos': self.primitive.point,
+                'name': f"{self.primitive.name}.origin",
                 'color': self.color_origin,
                 'radius': 0.01
             }]
@@ -89,13 +91,13 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         -------
         list of :class:`bpy.types.Object`
         """
-        origin = list(self.frame.point)
-        X = list(self.frame.point + self.frame.xaxis.scaled(self.scale))
-        Y = list(self.frame.point + self.frame.yaxis.scaled(self.scale))
-        Z = list(self.frame.point + self.frame.zaxis.scaled(self.scale))
+        origin = list(self.primitive.point)
+        X = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
+        Y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
+        Z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
         lines = [
-            {'start': origin, 'end': X, 'color': self.color_xaxis, 'name': f"{self.frame.name}.xaxis"},
-            {'start': origin, 'end': Y, 'color': self.color_yaxis, 'name': f"{self.frame.name}.yaxis"},
-            {'start': origin, 'end': Z, 'color': self.color_zaxis, 'name': f"{self.frame.name}.zaxis"},
+            {'start': origin, 'end': X, 'color': self.color_xaxis, 'name': f"{self.primitive.name}.xaxis"},
+            {'start': origin, 'end': Y, 'color': self.color_yaxis, 'name': f"{self.primitive.name}.yaxis"},
+            {'start': origin, 'end': Z, 'color': self.color_zaxis, 'name': f"{self.primitive.name}.zaxis"},
         ]
         return compas_blender.draw_lines(lines, self.collection)

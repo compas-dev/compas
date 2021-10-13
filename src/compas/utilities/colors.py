@@ -2,6 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from typing import Tuple
+from typing import Union
+
 import re
 
 try:
@@ -29,6 +32,8 @@ __all__ = [
 
     'Colormap',
 
+    'RGBColor',
+
     'red',
     'green',
     'blue',
@@ -54,6 +59,8 @@ black = 0, 0, 0
 
 
 BASE16 = '0123456789abcdef'
+
+RGBColor = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
 try:

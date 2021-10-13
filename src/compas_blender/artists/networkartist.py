@@ -1,9 +1,9 @@
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
 from typing import Union
-from typing import Any
 
 import bpy
 from functools import partial
@@ -11,12 +11,11 @@ from functools import partial
 import compas_blender
 from compas.datastructures import Network
 from compas.geometry import centroid_points
-from compas.utilities import color_to_colordict
+from compas.utilities import color_to_colordict, RGBColor
 from compas.artists import NetworkArtist
 from .artist import BlenderArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
-Color = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
 class NetworkArtist(BlenderArtist, NetworkArtist):
@@ -58,8 +57,8 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  nodes: Optional[List[int]] = None,
                  edges: Optional[List[int]] = None,
-                 nodecolor: Color = (1, 1, 1),
-                 edgecolor: Color = (0, 0, 0),
+                 nodecolor: RGBColor = (1, 1, 1),
+                 edgecolor: RGBColor = (0, 0, 0),
                  show_nodes: bool = True,
                  show_edges: bool = True,
                  **kwargs: Any):
@@ -120,8 +119,8 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
     def draw(self,
              nodes: Optional[List[int]] = None,
              edges: Optional[Tuple[int, int]] = None,
-             nodecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
-             edgecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+             nodecolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None,
+             edgecolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
              ) -> None:
         """Draw the network.
 
@@ -146,7 +145,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
     def draw_nodes(self,
                    nodes: Optional[List[int]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                   color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
                    ) -> List[bpy.types.Object]:
         """Draw a selection of nodes.
 
@@ -177,7 +176,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
     def draw_edges(self,
                    edges: Optional[Tuple[int, int]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                   color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
                    ) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
@@ -209,7 +208,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
     def draw_nodelabels(self,
                         text: Optional[Dict[int, str]] = None,
-                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                        color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
                         ) -> List[bpy.types.Object]:
         """Draw labels for a selection nodes.
 
@@ -247,7 +246,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
     def draw_edgelabels(self,
                         text: Optional[Dict[Tuple[int, int], str]] = None,
-                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                        color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
                         ) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 

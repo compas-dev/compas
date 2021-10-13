@@ -11,6 +11,7 @@ from compas.datastructures import Mesh
 from compas.geometry import Transformation, Shape
 from compas.robots import RobotModel
 from compas.artists import RobotModelArtist
+from compas.utilities import RGBColor
 from .artist import BlenderArtist
 
 
@@ -37,17 +38,17 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
     def create_geometry(self,
                         geometry: Union[Mesh, Shape],
                         name: str = None,
-                        color: Union[Tuple[int, int, int, int], Tuple[float, float, float, float]] = None
+                        color: Union[RGBColor, Tuple[int, int, int, int], Tuple[float, float, float, float]] = None
                         ) -> bpy.types.Object:
         # Imported colors take priority over a the parameter color
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']
 
         # If we have a color, we'll discard alpha because draw_mesh is hard coded for a=1
-        if color:
+        if color and len(color) == 4:
             r, g, b, _a = color
             color = (r, g, b)
-        else:
+        if not color:
             color = (1., 1., 1.)
 
         v, f = geometry.to_vertices_and_faces()

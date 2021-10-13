@@ -111,6 +111,7 @@ from .colors import (
     red,
     rgb_to_hex,
     rgb_to_rgb,
+    RGBColor,
     white,
     yellow
 )
@@ -123,10 +124,6 @@ from .decorators import (
     abstractstaticmethod,
     memoize,
     print_profile,
-)
-from .descriptors import (
-    Float,
-    RGBColour
 )
 from .encoders import (
     DataDecoder,
@@ -180,6 +177,7 @@ __all__ = [
     'color_to_colordict',
     'color_to_rgb',
     'Colormap',
+    'RGBColor',
     'red',
     'green',
     'blue',
@@ -193,8 +191,6 @@ __all__ = [
     'abstractclassmethod',
     'memoize',
     'print_profile',
-    'Float',
-    'RGBColour',
     'DataDecoder',
     'DataEncoder',
     'gif_from_images',
