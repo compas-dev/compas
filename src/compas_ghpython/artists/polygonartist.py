@@ -34,7 +34,7 @@ class PolygonArtist(GHArtist, PrimitiveArtist):
         Returns
         -------
         list
-            The Rhino points, lines and faces.
+            The Rhino points, lines and face.
         """
         _points = map(list, self.primitive.points)
         result = []

@@ -33,7 +33,7 @@ class VectorArtist(GHArtist, PrimitiveArtist):
         Returns
         -------
         list
-            The Rhino lines.
+            The Rhino line and endpoints, if requested.
 
         """
         if not point:
