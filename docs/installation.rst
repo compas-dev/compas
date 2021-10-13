@@ -79,6 +79,17 @@ Note that installation with ``pip`` is also possible within a ``conda`` environm
     conda activate my-project
     pip install -e .
 
+By default, ``planarity`` is marked as an optional requirement for installation with ``pip`` on Windows.
+To include ``planarity``, add a conditional to the install command.
+
+.. code-block:: bash
+
+    pip install compas[planarity]
+
+.. code-block:: bash
+
+    pip install -e .[planarity]
+
 
 Update with conda
 =================

@@ -18,4 +18,5 @@ for a, b in grouper(pointcloud, 2):
                 draw_points=True)
 
 plotter.zoom_extents()
-plotter.save('docs/_images/tutorial/plotters_line-options.png', dpi=300)
+plotter.show()
+# plotter.save('docs/_images/tutorial/plotters_line-options.png', dpi=300)

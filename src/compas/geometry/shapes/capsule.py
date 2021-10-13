@@ -12,7 +12,7 @@ from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Line
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
 
 
 class Capsule(Shape):
@@ -186,17 +186,17 @@ class Capsule(Shape):
     # methods
     # ==========================================================================
 
-    def to_vertices_and_faces(self, u=10, v=10):
+    def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
         """Returns a list of vertices and faces.
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the 'u' direction.
-            Default is ``10``.
         v : int, optional
             Number of faces in the 'v' direction.
-            Default is ``10``.
+        triangulated: bool, optional
+            Flag indicating that the faces have to be triangulated.
 
         Returns
         -------
@@ -262,6 +262,16 @@ class Capsule(Shape):
             nc = len(vertices) - 3 - j
             nn = len(vertices) - 3 - (j + 1) % u
             faces.append([np, nn, nc])
+
+        if triangulated:
+            triangles = []
+            for face in faces:
+                if len(face) == 4:
+                    triangles.append(face[0:3])
+                    triangles.append([face[0], face[2], face[3]])
+                else:
+                    triangles.append(face)
+            faces = triangles
 
         return vertices, faces
 

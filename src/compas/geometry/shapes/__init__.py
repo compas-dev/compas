@@ -11,6 +11,3 @@ from .cylinder import Cylinder  # noqa: F401
 from .polyhedron import Polyhedron  # noqa: F401
 from .sphere import Sphere  # noqa: F401
 from .torus import Torus  # noqa: F401
-
-
-__all__ = [name for name in dir() if not name.startswith('_')]
