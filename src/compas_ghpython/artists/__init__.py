@@ -189,7 +189,6 @@ def new_artist_gh(cls, *args, **kwargs):
 
 __all__ = [
     'GHArtist',
-    'PrimitiveArtist',
     'ShapeArtist',
     'BoxArtist',
     'CapsuleArtist',
