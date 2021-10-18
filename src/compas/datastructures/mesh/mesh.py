@@ -5,6 +5,7 @@ from __future__ import print_function
 import collections
 import sys
 from math import pi
+from itertools import product
 
 import compas
 
@@ -32,6 +33,9 @@ from compas.geometry import subtract_vectors
 from compas.geometry import sum_vectors
 from compas.geometry import midpoint_line
 from compas.geometry import vector_average
+
+from compas.utilities import linspace
+from compas.utilities import meshgrid
 
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
@@ -611,6 +615,22 @@ class Mesh(HalfEdge):
 
     def to_polygons(self):
         return [self.face_coordinates(fkey) for fkey in self.faces()]
+
+    @classmethod
+    def from_meshgrid(cls, dx, nx, dy=None, ny=None):
+        dy = dy or dx
+        ny = ny or nx
+
+        V, U = meshgrid(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1), indexing='ij')
+
+        quads = [[
+            [U[i + 0][j + 0], V[i + 0][j + 0], 0],
+            [U[i + 0][j + 1], V[i + 0][j + 1], 0],
+            [U[i + 1][j + 1], V[i + 1][j + 1], 0],
+            [U[i + 1][j + 0], V[i + 1][j + 0], 0]
+        ] for i, j in product(range(ny), range(nx))]
+
+        return cls.from_polygons(quads)
 
     # --------------------------------------------------------------------------
     # helpers
