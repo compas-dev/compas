@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
 * Added version-based installation for Blender.
 * Added several shape artists to `compas_ghpython`: `BoxArtist`, `CapsuleArtist`, `ConeArtist`, `CylinderArtist`, `PolygonArtist`, `PolyhedronArtist`, `SphereArtist`, `TorusArtist` and `VectorArtist`.
-
+* Added support for CLR generic dictionaries to the `compas.data` decoders.
 
 ### Changed
 
