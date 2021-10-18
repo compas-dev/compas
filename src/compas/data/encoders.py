@@ -11,7 +11,7 @@ from compas.data.exceptions import DecoderError
 if 'ironpython' in sys.version.lower():
     try:
         from System.Collections.Generic import IDictionary
-    except:
+    except:                 # noqa: E722
         IDictionary = None
 else:
     IDictionary = None
