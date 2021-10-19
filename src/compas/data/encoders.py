@@ -3,8 +3,18 @@ from __future__ import absolute_import
 from __future__ import division
 
 import json
+import sys
 
 from compas.data.exceptions import DecoderError
+
+# We don't do this from `compas.IPY` to avoid circular imports
+if 'ironpython' in sys.version.lower():
+    try:
+        from System.Collections.Generic import IDictionary
+    except:                 # noqa: E722
+        IDictionary = None
+else:
+    IDictionary = None
 
 
 def cls_from_dtype(dtype):
@@ -102,4 +112,10 @@ class DataDecoder(json.JSONDecoder):
         except AttributeError:
             raise DecoderError("The data type can't be found in the specified module: {}.".format(o['dtype']))
 
-        return cls.from_data(o['value'])
+        obj_value = o['value']
+
+        # Kick-off from_data from a rebuilt Python dictionary instead of the C# data type
+        if IDictionary and isinstance(o, IDictionary[str, object]):
+            obj_value = {key: obj_value[key] for key in obj_value.Keys}
+
+        return cls.from_data(obj_value)

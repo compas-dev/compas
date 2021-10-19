@@ -1,4 +1,7 @@
-from typing import Union, Tuple
+from typing import Union
+from typing import Tuple
+from typing import Optional
+from typing import Any
 
 import bpy
 import mathutils
@@ -7,40 +10,26 @@ import compas_blender
 from compas.datastructures import Mesh
 from compas.geometry import Transformation, Shape
 from compas.robots import RobotModel
-from compas.robots.base_artist import BaseRobotModelArtist
-
-__all__ = [
-    'RobotModelArtist',
-]
+from compas.artists import RobotModelArtist
+from .artist import BlenderArtist
 
 
-class RobotModelArtist(BaseRobotModelArtist):
+class RobotModelArtist(BlenderArtist, RobotModelArtist):
     """Visualizer for robot models inside a Blender environment.
 
     Parameters
     ----------
     model : :class:`compas.robots.RobotModel`
         Robot model.
+    collection: str or :class:`bpy.types.Collection`
+        The name of the collection the object belongs to.
     """
 
     def __init__(self,
                  model: RobotModel,
-                 collection: bpy.types.Collection = None):
-        self.collection = collection or model.name
-        super(RobotModelArtist, self).__init__(model)
-
-    @property
-    def collection(self) -> bpy.types.Collection:
-        return self._collection
-
-    @collection.setter
-    def collection(self, value: Union[str, bpy.types.Collection]):
-        if isinstance(value, bpy.types.Collection):
-            self._collection = value
-        elif isinstance(value, str):
-            self._collection = compas_blender.create_collection(value)
-        else:
-            raise Exception('Collection must be of type `str` or `bpy.types.Collection`.')
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 **kwargs: Any):
+        super().__init__(model=model, collection=collection or model.name, **kwargs)
 
     def transform(self, native_mesh: bpy.types.Object, transformation: Transformation) -> None:
         native_mesh.matrix_world = mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world

@@ -10,13 +10,11 @@ from compas.geometry import Transformation
 from compas.robots import Geometry
 from compas.robots.model.link import LinkItem
 
-
-__all__ = [
-    'BaseRobotModelArtist'
-]
+from .artist import Artist
 
 
 class AbstractRobotModelArtist(object):
+
     def transform(self, geometry, transformation):
         """Transforms a CAD-specific geometry using a **COMPAS** transformation.
 
@@ -51,7 +49,7 @@ class AbstractRobotModelArtist(object):
         raise NotImplementedError
 
 
-class BaseRobotModelArtist(AbstractRobotModelArtist):
+class RobotModelArtist(AbstractRobotModelArtist, Artist):
     """Provides common functionality to most robot model artist implementations.
 
     In **COMPAS**, the `artists` are classes that assist with the visualization of
@@ -71,7 +69,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
     """
 
     def __init__(self, model):
-        super(BaseRobotModelArtist, self).__init__()
+        super(RobotModelArtist, self).__init__()
         self.model = model
         self.create()
         self.scale_factor = 1.

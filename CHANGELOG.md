@@ -15,20 +15,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `__add__`, `__sub__`, `__and__` to `compas.geometry.Shape` for boolean operations using binary operators.
 * Added `is_closed` to `compas.geometry.Polyhedron`.
 * Added `Plane.offset`.
+* Added `compas.artists.Artist`.
+* Added pluggable `compas.artists.new_artist`.
+* Added plugin `compas_rhino.artists.new_artist_rhino`.
+* Added plugin `compas_blender.artists.new_artist_blender`.
+* Added `compas.artist.DataArtistNotRegistered`.
 * Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
 * Added `compas_blender.artists.RobotModelArtist.clear`.
 * Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
 * Added version-based installation for Blender.
+* Added several shape artists to `compas_ghpython`: `BoxArtist`, `CapsuleArtist`, `ConeArtist`, `CylinderArtist`, `PolygonArtist`, `PolyhedronArtist`, `SphereArtist`, `TorusArtist` and `VectorArtist`.
+* Added support for CLR generic dictionaries to the `compas.data` decoders.
 
 ### Changed
 
 * Fixed bug in `compas_blender.draw_texts`.
+* Changed `compas_rhino.artists.BaseArtist` to `compas_rhino.artists.RhinoArtist`.
+* Changed `compas_blender.artists.BaseArtist` to `compas_blender.artists.BlenderArtist`.
 * Changed default resolution for shape discretisation to 16 for both u and v where relevant.
 * Changed base class of `compas.geometry.Primitive` and `compas.geometry.Shape` to `compas.geometry.Geometry`.
 * `compas_blender.artists.RobotModelArtist.collection` can be assigned as a Blender collection or a name.
 * Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
 * Changed `compas.IPY` to `compas.RHINO` in `orientation_rhino`.
 * Changed `planarity` to `requires_extra` for pip installations.
+* Fixed bug in handling of ngonal meshes in `compas_ghpython` artists / drawing functions.
 
 ### Removed
 

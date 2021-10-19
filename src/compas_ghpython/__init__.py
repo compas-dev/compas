@@ -69,5 +69,9 @@ def _get_grasshopper_special_folder(version, folder_name):
     return grasshopper_library_path
 
 
-__all_plugins__ = ['compas_ghpython.install', 'compas_ghpython.uninstall']
+__all_plugins__ = [
+    'compas_ghpython.install',
+    'compas_ghpython.uninstall',
+    'compas_ghpython.artists',
+]
 __all__ = [name for name in dir() if not name.startswith('_')]

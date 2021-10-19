@@ -9,6 +9,7 @@ compas
     :maxdepth: 1
     :titlesonly:
 
+    compas.artists
     compas.data
     compas.datastructures
     compas.files

@@ -1,25 +1,26 @@
-import bpy
 from typing import List
 from typing import Optional
+from typing import Any
+from typing import Union
+
+import bpy
 
 from compas.geometry import Frame
 
 import compas_blender
-from compas_blender.artists import BaseArtist
+from compas.artists import PrimitiveArtist
+from .artist import BlenderArtist
 
 
-__all__ = ['FrameArtist']
-
-
-class FrameArtist(BaseArtist):
+class FrameArtist(BlenderArtist, PrimitiveArtist):
     """Artist for drawing frames.
 
     Parameters
     ----------
     frame: :class:`compas.geometry.Frame`
         A COMPAS frame.
-    collection: str
-        The name of the frame's collection.
+    collection: str or :class:`bpy.types.Collection`
+        The name of the collection the object belongs to.
     scale: float, optional
         Scale factor that controls the length of the axes.
 
@@ -40,34 +41,15 @@ class FrameArtist(BaseArtist):
         Default is ``(0, 255, 0)``.
     color_zaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 255)``.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        from compas.geometry import Pointcloud
-        from compas.geometry import Frame
-
-        from compas_blender.artists import FrameArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-
-
-        for point in pcl.points:
-            frame = tpl.copy()
-            frame.point = point
-            artist = FrameArtist(frame)
-            artist.draw()
-
     """
     def __init__(self,
                  frame: Frame,
-                 collection: Optional[bpy.types.Collection] = None,
-                 scale: float = 1.0):
-        super(FrameArtist, self).__init__()
-        self.collection = collection
-        self.frame = frame
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 scale: float = 1.0,
+                 **kwargs: Any):
+
+        super().__init__(primitive=frame, collection=collection or frame.name, **kwargs)
+
         self.scale = scale or 1.0
         self.color_origin = (0, 0, 0)
         self.color_xaxis = (255, 0, 0)
@@ -98,9 +80,7 @@ class FrameArtist(BaseArtist):
                 'color': self.color_origin,
                 'radius': 0.01
             }]
-        objects = compas_blender.draw_points(points, self.collection)
-        self.objects += objects
-        return objects
+        return compas_blender.draw_points(points, self.collection)
 
     def draw_axes(self) -> List[bpy.types.Object]:
         """Draw the axes of the frame.
@@ -118,6 +98,4 @@ class FrameArtist(BaseArtist):
             {'start': origin, 'end': Y, 'color': self.color_yaxis, 'name': f"{self.frame.name}.yaxis"},
             {'start': origin, 'end': Z, 'color': self.color_zaxis, 'name': f"{self.frame.name}.zaxis"},
         ]
-        objects = compas_blender.draw_lines(lines, self.collection)
-        self.objects += objects
-        return objects
+        return compas_blender.draw_lines(lines, self.collection)

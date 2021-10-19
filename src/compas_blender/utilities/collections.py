@@ -13,6 +13,14 @@ __all__ = [
 ]
 
 
+def collection_path(collection, names=[]):
+    for parent in bpy.data.collections:
+        if collection.name in parent.children:
+            names.append(parent.name)
+            collection_path(parent, names)
+    return names
+
+
 def create_collection(name: Text, parent: bpy.types.Collection = None) -> bpy.types.Collection:
     """Create a collection with the given name.
 
@@ -28,13 +36,26 @@ def create_collection(name: Text, parent: bpy.types.Collection = None) -> bpy.ty
     """
     if not name:
         return
-    collection = bpy.data.collections.get(name) or bpy.data.collections.new(name)
+
     if not parent:
-        if collection.name not in bpy.context.scene.collection.children:
-            bpy.context.scene.collection.children.link(collection)
+
+        if name in bpy.data.collections:
+            count = 1
+            newname = f'{name}.{count:04}'
+            while newname in bpy.data.collections:
+                count += 1
+                newname = f'{name}.{count:04}'
+            name = newname
+        collection = bpy.data.collections.new(name)
+        bpy.context.scene.collection.children.link(collection)
     else:
-        if collection.name not in parent.children:
+        path = collection_path(parent)[::-1] + [parent.name]
+        name = "::".join(path) + "::" + name
+        if name not in parent.children:
+            collection = bpy.data.collections.new(name)
             parent.children.link(collection)
+        else:
+            collection = bpy.data.collections.get(name)
     return collection
 
 
