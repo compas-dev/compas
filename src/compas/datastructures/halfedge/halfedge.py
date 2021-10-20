@@ -262,7 +262,7 @@ class HalfEdge(Datastructure):
 
     def vertex_sample(self, n=1):
         """A random sample of the vertices.
-        
+
         Parameters
         ----------
         n : int, optional
@@ -277,7 +277,7 @@ class HalfEdge(Datastructure):
 
     def edge_sample(self, n=1):
         """A random sample of the edges.
-        
+
         Parameters
         ----------
         n : int, optional
@@ -292,7 +292,7 @@ class HalfEdge(Datastructure):
 
     def face_sample(self, n=1):
         """A random sample of the faces.
-        
+
         Parameters
         ----------
         n : int, optional
