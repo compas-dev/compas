@@ -118,7 +118,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         if not self._halfedges:
             self._halfedges = [(u, v) for u in self.mesh.halfedge for v in self.mesh.halfedge[u]]
         return self._halfedges
-    
+
     @halfedges.setter
     def halfedges(self, halfedges):
         self._halfedges = halfedges
@@ -373,7 +373,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
             line.transform(scale)
 
             artist = self.plotter.axes.arrow(
-                line.start[0], line.start[1], 
+                line.start[0], line.start[1],
                 line.vector[0], line.vector[1],
                 width=width,
                 head_width=10 * width,
@@ -462,7 +462,9 @@ class MeshArtist(PlotterArtist, MeshArtist):
                 continue
 
             x, y = self.vertex_xyz[vertex][:2]
-            artist = self.plotter.axes.text(x, y, f'{text}',
+            artist = self.plotter.axes.text(
+                x, y,
+                f'{text}',
                 fontsize=12,
                 family='monospace',
                 ha='center', va='center',
@@ -503,7 +505,8 @@ class MeshArtist(PlotterArtist, MeshArtist):
             x = 0.5 * (x0 + x1)
             y = 0.5 * (y0 + y1)
 
-            artist = self.plotter.axes.text(x, y, f'{text}',
+            artist = self.plotter.axes.text(
+                x, y, f'{text}',
                 fontsize=12,
                 family='monospace',
                 ha='center', va='center',
@@ -541,7 +544,8 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
             x, y, _ = centroid_points_xy([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])
 
-            artist = self.plotter.axes.text(x, y, f'{text}',
+            artist = self.plotter.axes.text(
+                x, y, f'{text}',
                 fontsize=12,
                 family='monospace',
                 ha='center', va='center',
