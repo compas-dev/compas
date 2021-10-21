@@ -260,12 +260,12 @@ class HalfEdge(Datastructure):
         """
         return self.face_vertices(fkey)[0]
 
-    def vertex_sample(self, n=1):
+    def vertex_sample(self, size=1):
         """A random sample of the vertices.
 
         Parameters
         ----------
-        n : int, optional
+        size : int, optional
             The number of vertices in the random sample.
 
         Returns
@@ -273,14 +273,14 @@ class HalfEdge(Datastructure):
         list
             The identifiers of the vertices.
         """
-        return sample(list(self.vertices()), n)
+        return sample(list(self.vertices()), size)
 
-    def edge_sample(self, n=1):
+    def edge_sample(self, size=1):
         """A random sample of the edges.
 
         Parameters
         ----------
-        n : int, optional
+        size : int, optional
             The number of edges in the random sample.
 
         Returns
@@ -288,14 +288,14 @@ class HalfEdge(Datastructure):
         list
             The identifiers of the edges.
         """
-        return sample(list(self.edges()), n)
+        return sample(list(self.edges()), size)
 
-    def face_sample(self, n=1):
+    def face_sample(self, size=1):
         """A random sample of the faces.
 
         Parameters
         ----------
-        n : int, optional
+        size : int, optional
             The number of faces in the random sample.
 
         Returns
@@ -303,7 +303,7 @@ class HalfEdge(Datastructure):
         list
             The identifiers of the faces.
         """
-        return sample(list(self.faces()), n)
+        return sample(list(self.faces()), size)
 
     def key_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
