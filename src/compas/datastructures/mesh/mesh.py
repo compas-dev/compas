@@ -618,6 +618,24 @@ class Mesh(HalfEdge):
 
     @classmethod
     def from_meshgrid(cls, dx, nx, dy=None, ny=None):
+        """Create a mesh from faces and vertices on a regular grid.
+
+        Parameters
+        ----------
+        dx : float
+            The size of the grid in the X direction.
+        nx : int
+            The number of faces in the X direction.
+        dy : float, optional
+            The size of the grid in the Y direction, if different form X.
+        ny : int, optional
+            The number of faces in the Y direction, if different from Y.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+        """
         dy = dy or dx
         ny = ny or nx
 
