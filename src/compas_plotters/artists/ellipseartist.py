@@ -67,6 +67,7 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
             facecolor=self.facecolor,
             edgecolor=self.edgecolor,
             fill=self.fill,
+            alpha=self.alpha,
             zorder=self.zorder)
         self._mpl_ellipse = self.plotter.axes.add_artist(ellipse)
 
