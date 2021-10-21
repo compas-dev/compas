@@ -1,10 +1,61 @@
 from math import sqrt
 
+from compas.plugins import pluggable
 from compas.geometry import Point
 from compas.geometry import Frame
 from compas.utilities import linspace
 
-from ._curve import Curve
+from .curve import Curve
+
+
+@pluggable(category='factories')
+def new_nurbscurve(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_data(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_parameters(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_points(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_step(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_arc(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_circle(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_ellipse(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbscurve_from_line(cls, *args, **kwargs):
+    raise NotImplementedError
 
 
 class NurbsCurve(Curve):
@@ -61,6 +112,9 @@ class NurbsCurve(Curve):
     @property
     def JSONSCHEMANAME(self):
         raise NotImplementedError
+
+    def __new__(cls, *args, **kwargs):
+        return new_nurbscurve(cls, *args, **kwargs)
 
     def __init__(self, name=None):
         super().__init__(name=name)
@@ -147,7 +201,7 @@ class NurbsCurve(Curve):
         .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/M_Rhino_Geometry_NurbsCurve_Create.htm
 
         """
-        raise NotImplementedError
+        return new_nurbscurve_from_points(points, degree=degree)
 
     @classmethod
     def from_interpolation(cls, points, precision=1e-3):

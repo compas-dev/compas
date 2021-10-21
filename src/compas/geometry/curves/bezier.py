@@ -1,6 +1,6 @@
 from compas.geometry import Point
 from compas.geometry import Vector
-from ._curve import Curve
+from .curve import Curve
 
 from math import factorial
 
