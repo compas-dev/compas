@@ -13,11 +13,6 @@ def new_nurbscurve(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-# @pluggable(category='factories')
-# def new_nurbscurve_from_data(cls, *args, **kwargs):
-#     raise NotImplementedError
-
-
 @pluggable(category='factories')
 def new_nurbscurve_from_parameters(cls, *args, **kwargs):
     raise NotImplementedError
@@ -35,26 +30,6 @@ def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
 
 @pluggable(category='factories')
 def new_nurbscurve_from_step(cls, *args, **kwargs):
-    raise NotImplementedError
-
-
-@pluggable(category='factories')
-def new_nurbscurve_from_arc(cls, *args, **kwargs):
-    raise NotImplementedError
-
-
-@pluggable(category='factories')
-def new_nurbscurve_from_circle(cls, *args, **kwargs):
-    raise NotImplementedError
-
-
-@pluggable(category='factories')
-def new_nurbscurve_from_ellipse(cls, *args, **kwargs):
-    raise NotImplementedError
-
-
-@pluggable(category='factories')
-def new_nurbscurve_from_line(cls, *args, **kwargs):
     raise NotImplementedError
 
 
@@ -223,7 +198,7 @@ class NurbsCurve(Curve):
 
     @classmethod
     def from_arc(cls, arc):
-        return new_nurbscurve_from_arc(arc)
+        raise NotImplementedError
 
     @classmethod
     def from_circle(cls, circle):
