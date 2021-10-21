@@ -13,9 +13,9 @@ def new_nurbscurve(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
-def new_nurbscurve_from_data(cls, *args, **kwargs):
-    raise NotImplementedError
+# @pluggable(category='factories')
+# def new_nurbscurve_from_data(cls, *args, **kwargs):
+#     raise NotImplementedError
 
 
 @pluggable(category='factories')
@@ -179,7 +179,7 @@ class NurbsCurve(Curve):
         multiplicities = data['multiplicities']
         degree = data['degree']
         is_periodic = data['is_periodic']
-        return NurbsCurve.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
+        return cls.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
 
     # ==============================================================================
     # Constructors
@@ -188,7 +188,7 @@ class NurbsCurve(Curve):
     @classmethod
     def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
         """Construct a NURBS curve from explicit curve parameters."""
-        raise NotImplementedError
+        return new_nurbscurve_from_parameters(points, weights, knots, multiplicities, degree, is_periodic=False)
 
     @classmethod
     def from_points(cls, points, degree=3):
@@ -214,16 +214,16 @@ class NurbsCurve(Curve):
         .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateHSpline.htm
 
         """
-        raise NotImplementedError
+        return new_nurbscurve_from_interpolation(points, precision=1e-3)
 
     @classmethod
     def from_step(cls, filepath):
         """Load a NURBS curve from an STP file."""
-        raise NotImplementedError
+        return new_nurbscurve_from_step(filepath)
 
     @classmethod
     def from_arc(cls, arc):
-        raise NotImplementedError
+        return new_nurbscurve_from_arc(arc)
 
     @classmethod
     def from_circle(cls, circle):
