@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [1.9.0] 2021-10-21
+
+### Added
+
 * Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
 * Added optional `triangulated` flag to `to_vertices_and_faces` of all shapes.
 * Added `compas.geometry.Geometry` base class.
@@ -26,6 +35,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added version-based installation for Blender.
 * Added several shape artists to `compas_ghpython`: `BoxArtist`, `CapsuleArtist`, `ConeArtist`, `CylinderArtist`, `PolygonArtist`, `PolyhedronArtist`, `SphereArtist`, `TorusArtist` and `VectorArtist`.
 * Added support for CLR generic dictionaries to the `compas.data` decoders.
+* Added `Graph.node_sample`, `Graph.edge_sample`.
+* Added `Halfedge.vertex_sample`, `Halfedge.edge_sample`, `Halfedge.face_sample`.
+* Added `Halfface.vertex_sample`, `Halfface.edge_sample`, `Halfface.face_sample`, `Halfface.cell_sample`.
+* Added `Mesh.from_meshgrid`.
 
 ### Changed
 

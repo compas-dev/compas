@@ -66,6 +66,32 @@ def test_json_schema(mesh):
 
 
 # ==============================================================================
+# Tests - Samples
+# ==============================================================================
+
+
+def test_vertex_sample(mesh):
+    for vertex in mesh.vertex_sample():
+        assert mesh.has_vertex(vertex)
+    for vertex in mesh.vertex_sample(size=mesh.number_of_vertices()):
+        assert mesh.has_vertex(vertex)
+
+
+def test_edge_sample(mesh):
+    for edge in mesh.edge_sample():
+        assert mesh.has_edge(edge)
+    for edge in mesh.edge_sample(size=mesh.number_of_edges()):
+        assert mesh.has_edge(edge)
+
+
+def test_face_sample(mesh):
+    for face in mesh.face_sample():
+        assert mesh.has_face(face)
+    for face in mesh.face_sample(size=mesh.number_of_faces()):
+        assert mesh.has_face(face)
+
+
+# ==============================================================================
 # Tests - Vertex Attributes
 # ==============================================================================
 

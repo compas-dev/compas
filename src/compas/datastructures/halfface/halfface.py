@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from random import choice
+from random import choice, sample
 
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
@@ -267,6 +267,66 @@ class HalfFace(Datastructure):
             The identifier of the vertex of the face.
         """
         return choice(self.halfface_vertices(face))
+
+    def vertex_sample(self, size=1):
+        """Get the identifiers of a set of random vertices.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list of int
+            The identifiers of the vertices.
+        """
+        return sample(list(self.vertices()), size)
+
+    def edge_sample(self, size=1):
+        """Get the identifiers of a set of random edges.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list of int
+            The identifiers of the edges.
+        """
+        return sample(list(self.edges()), size)
+
+    def face_sample(self, size=1):
+        """Get the identifiers of a set of random faces.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list of int
+            The identifiers of the faces.
+        """
+        return sample(list(self.faces()), size)
+
+    def cell_sample(self, size=1):
+        """Get the identifiers of a set of random cells.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list of int
+            The identifiers of the cells.
+        """
+        return sample(list(self.cells()), size)
 
     def vertex_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
