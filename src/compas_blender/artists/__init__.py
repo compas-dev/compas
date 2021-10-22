@@ -96,6 +96,9 @@ from .sphereartist import SphereArtist
 from .torusartist import TorusArtist
 
 
+BaseArtist = BlenderArtist
+
+
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
 def clear_blender():
     compas_blender.clear()
@@ -149,6 +152,7 @@ def new_artist_blender(cls, *args, **kwargs):
 
 
 __all__ = [
+    'BaseArtist',
     'BlenderArtist',
     'BoxArtist',
     'CapsuleArtist',
