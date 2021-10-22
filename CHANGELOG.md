@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `Plane.offset`
+* Added `is_mesh_closed` property to `compas.datastructures.mesh_slice_plane`
+
 ### Changed
 
 ### Removed
