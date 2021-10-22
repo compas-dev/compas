@@ -111,6 +111,7 @@ from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
 from .volmeshartist import VolMeshArtist
 
+
 ShapeArtist.default_color = (255, 255, 255)
 
 MeshArtist.default_color = (0, 0, 0)

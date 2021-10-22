@@ -76,6 +76,10 @@ class IntersectionMeshPlane(object):
         return len(self.intersections) >= 3
 
     @property
+    def is_mesh_closed(self):
+        return self.mesh.is_closed()
+
+    @property
     def positive(self):
         if self.is_none:
             return
@@ -90,7 +94,8 @@ class IntersectionMeshPlane(object):
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
-        mesh.add_face(mesh.vertices_on_boundary())
+        if self.is_mesh_closed:
+            mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
     def is_positive(self, key):
@@ -119,7 +124,8 @@ class IntersectionMeshPlane(object):
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
-        mesh.add_face(mesh.vertices_on_boundary())
+        if self.is_mesh_closed:
+            mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
     def is_negative(self, key):
@@ -140,11 +146,16 @@ class IntersectionMeshPlane(object):
             x = intersection_segment_plane((a, b), self.plane)
             if not x:
                 continue
-            L_ax = length_vector(subtract_vectors(x, a))
-            L_ab = length_vector(subtract_vectors(b, a))
-            t = L_ax / L_ab
-            key = self.mesh.split_edge(u, v, t=t, allow_boundary=True)
-            intersections.append(key)
+            if len(x) == sum([1 for i, j in zip(x, a) if i == j]):
+                intersections.append(u)
+            elif len(x) == sum([1 for i, j in zip(x, b) if i == j]):
+                intersections.append(v)
+            else:
+                L_ax = length_vector(subtract_vectors(x, a))
+                L_ab = length_vector(subtract_vectors(b, a))
+                t = L_ax / L_ab
+                key = self.mesh.split_edge(u, v, t=t, allow_boundary=True)
+                intersections.append(key)
         self._intersections = intersections
 
     def split(self):

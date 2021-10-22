@@ -14,6 +14,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 
+## [1.9.1] 2021-10-22
+
+### Added
+
+* Added `Plane.offset`
+* Added `is_mesh_closed` property to `compas.datastructures.mesh_slice_plane`
+
+### Changed
+
+* Fixed backward compatibility problem with artists by adding back `Artist.build` and `Artist.build_as`.
+* Fixed backward compatibility problem with artists by adding `compas_rhino.artists.BaseArtist` alias for `compas_rhino.artists.RhinoArtist`.
+
+### Removed
+
+
 ## [1.9.0] 2021-10-21
 
 ### Added
