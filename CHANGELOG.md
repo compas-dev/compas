@@ -6,15 +6,55 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+### Added
+
 * Added `Plane.offset`
 * Added `is_mesh_closed` property to `compas.datastructures.mesh_slice_plane`
+
+### Changed
+
+### Removed
+
+
+## [1.9.0] 2021-10-21
+
 ### Added
 
 * Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
+* Added optional `triangulated` flag to `to_vertices_and_faces` of all shapes.
+* Added `compas.geometry.Geometry` base class.
+* Added `__add__`, `__sub__`, `__and__` to `compas.geometry.Shape` for boolean operations using binary operators.
+* Added `is_closed` to `compas.geometry.Polyhedron`.
+* Added `Plane.offset`.
+* Added `compas.artists.Artist`.
+* Added pluggable `compas.artists.new_artist`.
+* Added plugin `compas_rhino.artists.new_artist_rhino`.
+* Added plugin `compas_blender.artists.new_artist_blender`.
+* Added `compas.artist.DataArtistNotRegistered`.
+* Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
+* Added `compas_blender.artists.RobotModelArtist.clear`.
+* Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
+* Added version-based installation for Blender.
+* Added several shape artists to `compas_ghpython`: `BoxArtist`, `CapsuleArtist`, `ConeArtist`, `CylinderArtist`, `PolygonArtist`, `PolyhedronArtist`, `SphereArtist`, `TorusArtist` and `VectorArtist`.
+* Added support for CLR generic dictionaries to the `compas.data` decoders.
+* Added `Graph.node_sample`, `Graph.edge_sample`.
+* Added `Halfedge.vertex_sample`, `Halfedge.edge_sample`, `Halfedge.face_sample`.
+* Added `Halfface.vertex_sample`, `Halfface.edge_sample`, `Halfface.face_sample`, `Halfface.cell_sample`.
+* Added `Mesh.from_meshgrid`.
 
 ### Changed
 
 * Fixed bug in `compas_blender.draw_texts`.
+* Changed `compas_rhino.artists.BaseArtist` to `compas_rhino.artists.RhinoArtist`.
+* Changed `compas_blender.artists.BaseArtist` to `compas_blender.artists.BlenderArtist`.
+* Changed default resolution for shape discretisation to 16 for both u and v where relevant.
+* Changed base class of `compas.geometry.Primitive` and `compas.geometry.Shape` to `compas.geometry.Geometry`.
+* `compas_blender.artists.RobotModelArtist.collection` can be assigned as a Blender collection or a name.
+* Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
+* Changed `compas.IPY` to `compas.RHINO` in `orientation_rhino`.
+* Changed `planarity` to `requires_extra` for pip installations.
+* Fixed bug in handling of ngonal meshes in `compas_ghpython` artists / drawing functions.
 
 ### Removed
 

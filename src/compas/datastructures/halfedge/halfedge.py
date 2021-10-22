@@ -260,6 +260,51 @@ class HalfEdge(Datastructure):
         """
         return self.face_vertices(fkey)[0]
 
+    def vertex_sample(self, size=1):
+        """A random sample of the vertices.
+
+        Parameters
+        ----------
+        size : int, optional
+            The number of vertices in the random sample.
+
+        Returns
+        -------
+        list
+            The identifiers of the vertices.
+        """
+        return sample(list(self.vertices()), size)
+
+    def edge_sample(self, size=1):
+        """A random sample of the edges.
+
+        Parameters
+        ----------
+        size : int, optional
+            The number of edges in the random sample.
+
+        Returns
+        -------
+        list
+            The identifiers of the edges.
+        """
+        return sample(list(self.edges()), size)
+
+    def face_sample(self, size=1):
+        """A random sample of the faces.
+
+        Parameters
+        ----------
+        size : int, optional
+            The number of faces in the random sample.
+
+        Returns
+        -------
+        list
+            The identifiers of the faces.
+        """
+        return sample(list(self.faces()), size)
+
     def key_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
         corresponding index in a vertex list or array.
@@ -2471,10 +2516,27 @@ class HalfEdge(Datastructure):
 
     def halfedge_after(self, u, v):
         face = self.halfedge_face(u, v)
-        w = self.face_vertex_after(face, v)
+        if face is not None:
+            w = self.face_vertex_after(face, v)
+            return v, w
+        nbrs = self.vertex_neighbors(u, ordered=True)
+        w = nbrs[0]
         return v, w
 
     def halfedge_before(self, u, v):
         face = self.halfedge_face(u, v)
-        t = self.face_vertex_before(face, u)
+        if face is not None:
+            t = self.face_vertex_before(face, u)
+            return t, u
+        nbrs = self.vertex_neighbors(u, ordered=True)
+        t = nbrs[-1]
         return t, u
+
+    def vertex_edges(self, vertex):
+        edges = []
+        for nbr in self.vertex_neighbors(vertex):
+            if self.has_edge((vertex, nbr)):
+                edges.append((vertex, nbr))
+            else:
+                edges.append((nbr, vertex))
+        return edges

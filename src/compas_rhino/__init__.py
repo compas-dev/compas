@@ -29,7 +29,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '1.8.1'
+__version__ = '1.9.0'
 
 
 PURGE_ON_DELETE = True
@@ -40,6 +40,11 @@ INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
 def clear():
     guids = get_objects()  # noqa: F405
     delete_objects(guids, purge=True)  # noqa: F405
+
+
+def redraw():
+    rs.EnableRedraw(True)
+    rs.Redraw()
 
 
 def _check_rhino_version(version):
@@ -88,7 +93,7 @@ def _get_ironpython_lib_path_mac(version):
     lib_paths = {
         '5.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents'],
         '6.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A'],
-        '7.0': ['/', 'Applications', 'Rhino 7.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A']
+        '7.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A']
     }
     return os.path.join(*lib_paths.get(version) + ['Resources', 'ManagedPlugIns', 'RhinoDLR_Python.rhp', 'Lib'])
 
@@ -213,4 +218,5 @@ __all_plugins__ = [
     'compas_rhino.geometry.trimesh',
     'compas_rhino.install',
     'compas_rhino.uninstall',
+    'compas_rhino.artists',
 ]

@@ -5,24 +5,6 @@ objects
 
 .. currentmodule:: compas_rhino.objects
 
-.. .. rst-class:: lead
-
-.. code-block:: python
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas_rhino.objects import MeshObject
-
-    mesh = Mesh.from_off(compas.get('tubemesh.off'))
-
-    meshobject = MeshObject(mesh, name='MeshObject', layer='COMPAS::MeshObject')
-    meshobject.draw()
-
-    vertices = meshobject.select_vertices()
-
-    if vertices and meshobject.modify_vertices(vertices):
-        meshobject.draw()
-
 
 NetworkObject
 =============

@@ -1,16 +1,19 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
 from typing_extensions import Literal
+
 from matplotlib.patches import Ellipse as EllipsePatch
 from compas.geometry import Ellipse
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class EllipseArtist(Artist):
+class EllipseArtist(PlotterArtist, PrimitiveArtist):
     """Artist for COMPAS ellipses."""
-
-    zorder: int = 1000
 
     def __init__(self,
                  ellipse: Ellipse,
@@ -19,16 +22,28 @@ class EllipseArtist(Artist):
                  facecolor: Color = (1.0, 1.0, 1.0),
                  edgecolor: Color = (0, 0, 0),
                  fill: bool = True,
-                 alpha: float = 1.0):
-        super(EllipseArtist, self).__init__(ellipse)
+                 alpha: float = 1.0,
+                 zorder: int = 1000,
+                 **kwargs: Any):
+
+        super().__init__(primitive=ellipse, **kwargs)
+
         self._mpl_ellipse = None
-        self.ellipse = ellipse
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.facecolor = facecolor
         self.edgecolor = edgecolor
         self.fill = fill
         self.alpha = alpha
+        self.zorder = zorder
+
+    @property
+    def ellipse(self):
+        return self.primitive
+
+    @ellipse.setter
+    def ellipse(self, ellipse):
+        self.primitive = ellipse
 
     @property
     def data(self) -> List[List[float]]:
@@ -44,9 +59,6 @@ class EllipseArtist(Artist):
         points[3][1] += self.ellipse.minor
         return points
 
-    def update_data(self) -> None:
-        self.plotter.axes.update_datalim(self.data)
-
     def draw(self) -> None:
         ellipse = EllipsePatch(
             self.ellipse.center[:2],
@@ -55,6 +67,7 @@ class EllipseArtist(Artist):
             facecolor=self.facecolor,
             edgecolor=self.edgecolor,
             fill=self.fill,
+            alpha=self.alpha,
             zorder=self.zorder)
         self._mpl_ellipse = self.plotter.axes.add_artist(ellipse)
 

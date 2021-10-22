@@ -80,16 +80,16 @@ def _set_object_color(obj, rgb, alpha=1.0):
 
 def draw_texts(texts: List[Dict],
                collection: Union[Text, bpy.types.Collection] = None,
-               color: Tuple = (1.0, 1.0, 1.0)) -> List[bpy.types.Object]:
+               color: Union[Tuple, Dict] = (1.0, 1.0, 1.0)) -> List[bpy.types.Object]:
     """Draw text objects."""
     bpy.ops.object.text_add()
     empty = bpy.context.object
     _link_object(empty, collection)
-    _set_object_color(empty, color)
     objects = [0] * len(texts)
     for index, data in enumerate(texts):
         obj = empty.copy()
         obj.data = empty.data.copy()
+        _set_object_color(obj, data.get('color', color))
         obj.location = data['pos']
         obj.data.body = data['text']
         obj.scale *= data.get('size', 1)
@@ -314,27 +314,6 @@ def draw_spheres(spheres: List[Dict],
     _link_objects(objects, collection)
     empty.hide_set(True)
     return objects
-
-
-# def draw_spheres(spheres, collection):
-#     add_sphere = compas_blender.bpy.ops.mesh.primitive_uv_sphere_add
-#     objects = []
-#     for sphere in spheres:
-#         add_sphere(location=[0, 0, 0], radius=1.0, segments=10, ring_count=10)
-#         pos = sphere['pos']
-#         radius = sphere['radius']
-#         name = sphere['name']
-#         color = sphere['color']
-#         obj = compas_blender.bpy.context.active_object
-#         obj.location = pos
-#         obj.scale = radius
-#         obj.name = name
-#         compas_blender.drawing.set_object_color(obj, color)
-#         objects.apend(obj)
-#     for o in objects_vertices:
-#         for c in o.user_collection:
-#             c.objects.unlink(o)
-#         collection.objects.link(o)
 
 
 def draw_cubes(cubes: List[Dict],

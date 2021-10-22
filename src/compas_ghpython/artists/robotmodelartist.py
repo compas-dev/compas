@@ -2,21 +2,17 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.robots.base_artist import BaseRobotModelArtist
 from compas.utilities import rgb_to_rgb
 
-from compas_ghpython.utilities import draw_mesh
-from compas_ghpython.artists import BaseArtist
 from compas_rhino.geometry.transformations import xtransform
 
+from compas.artists import RobotModelArtist
+from compas_ghpython.utilities import draw_mesh
+from .artist import GHArtist
 
-__all__ = [
-    'RobotModelArtist',
-]
 
-
-class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
-    """Visualizer for robots inside a Grasshopper environment.
+class RobotModelArtist(GHArtist, RobotModelArtist):
+    """Artist for drawing robot models.
 
     Parameters
     ----------
@@ -24,8 +20,8 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         Robot model.
     """
 
-    def __init__(self, model):
-        super(RobotModelArtist, self).__init__(model)
+    def __init__(self, model, **kwargs):
+        super(RobotModelArtist, self).__init__(model=model, **kwargs)
 
     def transform(self, native_mesh, transformation):
         xtransform(native_mesh, transformation)
@@ -34,13 +30,10 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         if color:
             color = rgb_to_rgb(color[0], color[1], color[2])
         vertices, faces = geometry.to_vertices_and_faces()
-
         mesh = draw_mesh(vertices, faces, color=color)
-
         # Try to fix invalid meshes
         if not mesh.IsValid:
             mesh.FillHoles()
-
         return mesh
 
     def draw(self):

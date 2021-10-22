@@ -314,6 +314,37 @@ class Graph(Datastructure):
         """
         return sample(list(self.edges()), n)
 
+    def node_sample(self, size=1):
+        """Get a list of identifiers of a random set of n nodes.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list
+            The identifiers of the nodes.
+
+        """
+        return sample(list(self.nodes()), size)
+
+    def edge_sample(self, size=1):
+        """Get the identifiers of a set of random edges.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list
+            The identifiers of the random edges.
+        """
+        return sample(list(self.edges()), size)
+
     def key_index(self):
         """Returns a dictionary that maps node dictionary keys to the
         corresponding index in a node list or array.
