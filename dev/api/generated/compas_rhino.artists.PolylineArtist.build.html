@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="PolylineArtist.clear" href="compas_rhino.artists.PolylineArtist.clear.html" />
+    <link rel="next" title="PolylineArtist.build_as" href="compas_rhino.artists.PolylineArtist.build_as.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.8.1
+            1.9.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -110,7 +110,7 @@
 <h1>PolylineArtist.build</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.artists.PolylineArtist.build">
-<em class="property"><span class="pre">static</span> </em><span class="sig-prename descclassname"><span class="pre">PolylineArtist.</span></span><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/_artist.py#L31"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">static</span> </em><span class="sig-prename descclassname"><span class="pre">PolylineArtist.</span></span><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/artist.py#L33"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Build an artist corresponding to the item type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -118,8 +118,8 @@
 For relevant options, see the parameter lists of the matching artist type.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas_rhino.artists.BaseArtist.html#compas_rhino.artists.BaseArtist" title="compas_rhino.artists.BaseArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.BaseArtist</span></code></a> – An artist of the type matching the provided item according to an item-artist map.
-The map is created by registering item-artist type pairs using <code class="docutils literal notranslate"><span class="pre">~BaseArtist.register</span></code>.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.Artist</span></code></a> – An artist of the type matching the provided item according to the item-artist map <code class="docutils literal notranslate"><span class="pre">~Artist.ITEM_ARTIST</span></code>.
+The map is created by registering item-artist type pairs using <code class="docutils literal notranslate"><span class="pre">~Artist.register</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -195,10 +195,10 @@ The map is created by registering item-artist type pairs using <code class="docu
       
 
       
-        <a href="compas_rhino.artists.PolylineArtist.clear.html" title="PolylineArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.PolylineArtist.build_as.html" title="PolylineArtist.build_as" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            PolylineArtist.clear
+            PolylineArtist.build_as
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -244,7 +244,7 @@ The map is created by registering item-artist type pairs using <code class="docu
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.8.1',
+    VERSION           : '1.9.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
