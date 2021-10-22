@@ -125,6 +125,8 @@ from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
 from .robotmodelartist import RobotModelArtist
 
+BaseArtist = RhinoArtist
+
 ShapeArtist.default_color = (255, 255, 255)
 
 MeshArtist.default_color = (0, 0, 0)
@@ -213,6 +215,7 @@ def new_artist_rhino(cls, *args, **kwargs):
 
 
 __all__ = [
+    'BaseArtist',
     'RhinoArtist',
     'CircleArtist',
     'FrameArtist',
