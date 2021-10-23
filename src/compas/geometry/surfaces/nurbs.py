@@ -1,9 +1,35 @@
 from itertools import product
 
+from compas.plugins import pluggable
 from compas.geometry import Point
 from compas.utilities import meshgrid, linspace
 
-from ._surface import Surface
+from .surface import Surface
+
+
+@pluggable(category='factories')
+def new_nurbssurface(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbssurface_from_parameters(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbssurface_from_points(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbssurface_from_fill(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
+@pluggable(category='factories')
+def new_nurbssurface_from_step(cls, *args, **kwargs):
+    raise NotImplementedError
 
 
 class NurbsSurface(Surface):
@@ -60,6 +86,9 @@ class NurbsSurface(Surface):
     @property
     def JSONSCHEMANAME(self):
         raise NotImplementedError
+
+    def __new__(cls, *args, **kwargs):
+        return new_nurbssurface(cls, *args, **kwargs)
 
     def __init__(self, name=None):
         super().__init__(name=name)
@@ -151,12 +180,12 @@ class NurbsSurface(Surface):
     @classmethod
     def from_parameters(cls, points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=False, is_v_periodic=False):
         """Construct a NURBS surface from explicit parameters."""
-        raise NotImplementedError
+        return new_nurbssurface_from_parameters(points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=is_u_periodic, is_v_periodic=is_v_periodic)
 
     @classmethod
     def from_points(cls, points, u_degree=3, v_degree=3):
         """Construct a NURBS surface from control points."""
-        raise NotImplementedError
+        return new_nurbssurface_from_points(points, u_degree=u_degree, v_degree=v_degree)
 
     @classmethod
     def from_meshgrid(cls, nu=10, nv=10):
@@ -173,12 +202,12 @@ class NurbsSurface(Surface):
     @classmethod
     def from_step(cls, filepath):
         """Load a NURBS surface from a STP file."""
-        raise NotImplementedError
+        return new_nurbssurface_from_step(filepath)
 
     @classmethod
     def from_fill(cls, curve1, curve2):
         """Construct a NURBS surface from the infill between two NURBS curves."""
-        raise NotImplementedError
+        return new_nurbssurface_from_fill(curve1, curve2)
 
     # ==============================================================================
     # Conversions
