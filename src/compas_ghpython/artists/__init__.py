@@ -174,9 +174,12 @@ def new_artist_gh(cls, *args, **kwargs):
         cls = kwargs['artist_type']
     else:
         dtype = type(data)
-        if dtype not in GHArtist.ITEM_ARTIST:
+        for type_ in GHArtist.ITEM_ARTIST:
+            if issubclass(dtype, type_):
+                cls = GHArtist.ITEM_ARTIST[dtype]
+                break
+        else:
             raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
-        cls = GHArtist.ITEM_ARTIST[dtype]
 
     # TODO: move this to the plugin module and/or to a dedicated function
 

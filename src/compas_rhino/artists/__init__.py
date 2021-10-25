@@ -200,9 +200,12 @@ def new_artist_rhino(cls, *args, **kwargs):
         cls = kwargs['artist_type']
     else:
         dtype = type(data)
-        if dtype not in RhinoArtist.ITEM_ARTIST:
-            raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
-        cls = RhinoArtist.ITEM_ARTIST[dtype]
+        for type_ in RhinoArtist.ITEM_ARTIST:
+            if issubclass(dtype, type_):
+                cls = RhinoArtist.ITEM_ARTIST[dtype]
+                break
+        else:
+            raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
 
     # TODO: move this to the plugin module and/or to a dedicated function
 

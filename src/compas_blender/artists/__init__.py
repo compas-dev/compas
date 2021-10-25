@@ -134,9 +134,12 @@ def new_artist_blender(cls, *args, **kwargs):
         cls = kwargs['artist_type']
     else:
         dtype = type(data)
-        if dtype not in BlenderArtist.ITEM_ARTIST:
-            raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
-        cls = BlenderArtist.ITEM_ARTIST[dtype]
+        for type_ in BlenderArtist.ITEM_ARTIST:
+            if issubclass(dtype, type_):
+                cls = BlenderArtist.ITEM_ARTIST[dtype]
+                break
+        else:
+            raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
 
     # TODO: move this to the plugin module and/or to a dedicated function
 
