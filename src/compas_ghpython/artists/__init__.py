@@ -176,7 +176,7 @@ def new_artist_gh(cls, *args, **kwargs):
         dtype = type(data)
         for type_ in GHArtist.ITEM_ARTIST:
             if issubclass(dtype, type_):
-                cls = GHArtist.ITEM_ARTIST[dtype]
+                cls = GHArtist.ITEM_ARTIST[type_]
                 break
         else:
             raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))

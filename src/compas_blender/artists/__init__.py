@@ -136,7 +136,7 @@ def new_artist_blender(cls, *args, **kwargs):
         dtype = type(data)
         for type_ in BlenderArtist.ITEM_ARTIST:
             if issubclass(dtype, type_):
-                cls = BlenderArtist.ITEM_ARTIST[dtype]
+                cls = BlenderArtist.ITEM_ARTIST[type_]
                 break
         else:
             raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))

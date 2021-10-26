@@ -202,7 +202,7 @@ def new_artist_rhino(cls, *args, **kwargs):
         dtype = type(data)
         for type_ in RhinoArtist.ITEM_ARTIST:
             if issubclass(dtype, type_):
-                cls = RhinoArtist.ITEM_ARTIST[dtype]
+                cls = RhinoArtist.ITEM_ARTIST[type_]
                 break
         else:
             raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
