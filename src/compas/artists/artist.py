@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import inspect
 from abc import abstractmethod
 
 from compas.artists import DataArtistNotRegistered
@@ -63,12 +64,10 @@ class Artist(object):
         cls = None
         if 'artist_type' in kwargs:
             cls = kwargs['artist_type']
-        elif dtype in Artist.ITEM_ARTIST:
-            cls = Artist.ITEM_ARTIST[dtype]
         else:
-            for type_ in Artist.ITEM_ARTIST:
-                if issubclass(dtype, type_):
-                    cls = Artist.ITEM_ARTIST[type_]
+            for type_ in inspect.getmro(dtype):
+                cls = Artist.ITEM_ARTIST.get(type_)
+                if cls is not None:
                     break
         if cls is None:
             raise DataArtistNotRegistered('No artist is registered for this data type: {}'.format(dtype))
