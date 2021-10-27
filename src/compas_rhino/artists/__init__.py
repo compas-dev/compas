@@ -205,7 +205,7 @@ def new_artist_rhino(cls, *args, **kwargs):
                 cls = RhinoArtist.ITEM_ARTIST[type_]
                 break
         else:
-            raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
+            raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
 
     # TODO: move this to the plugin module and/or to a dedicated function
 

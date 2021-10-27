@@ -139,7 +139,7 @@ def new_artist_blender(cls, *args, **kwargs):
                 cls = BlenderArtist.ITEM_ARTIST[type_]
                 break
         else:
-            raise DataArtistNotRegistered('No GH artist is registered for this data type: {}'.format(dtype))
+            raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
 
     # TODO: move this to the plugin module and/or to a dedicated function
 
