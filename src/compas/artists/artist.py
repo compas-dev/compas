@@ -3,6 +3,8 @@ from __future__ import division
 from __future__ import print_function
 
 from abc import abstractmethod
+
+from compas.artists import DataArtistNotRegistered
 from compas.plugins import pluggable
 
 
@@ -54,6 +56,23 @@ class Artist(object):
     def build_as(item, artist_type, **kwargs):
         artist = artist_type(item, **kwargs)
         return artist
+
+    @staticmethod
+    def get_artist_cls(data, **kwargs):
+        dtype = type(data)
+        cls = None
+        if 'artist_type' in kwargs:
+            cls = kwargs['artist_type']
+        elif dtype in Artist.ITEM_ARTIST:
+            cls = Artist.ITEM_ARTIST[dtype]
+        else:
+            for type_ in Artist.ITEM_ARTIST:
+                if issubclass(dtype, type_):
+                    cls = Artist.ITEM_ARTIST[type_]
+                    break
+        if cls is None:
+            raise DataArtistNotRegistered('No artist is registered for this data type: {}'.format(dtype))
+        return cls
 
     @staticmethod
     def clear():

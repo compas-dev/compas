@@ -73,12 +73,10 @@ Base Classes
 """
 from __future__ import absolute_import
 
-import inspect
-
 from compas.plugins import plugin
+from compas.plugins import PluginValidator
 from compas.artists import Artist
 from compas.artists import ShapeArtist
-from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -196,23 +194,9 @@ def new_artist_rhino(cls, *args, **kwargs):
 
     data = args[0]
 
-    if 'artist_type' in kwargs:
-        cls = kwargs['artist_type']
-    else:
-        dtype = type(data)
-        for type_ in RhinoArtist.ITEM_ARTIST:
-            if issubclass(dtype, type_):
-                cls = RhinoArtist.ITEM_ARTIST[type_]
-                break
-        else:
-            raise DataArtistNotRegistered('No Rhino artist is registered for this data type: {}'.format(dtype))
+    cls = Artist.get_artist_cls(data, **kwargs)
 
-    # TODO: move this to the plugin module and/or to a dedicated function
-
-    for name, value in inspect.getmembers(cls):
-        if inspect.ismethod(value):
-            if hasattr(value, '__isabstractmethod__'):
-                raise Exception('Abstract method not implemented: {}'.format(value))
+    PluginValidator.ensure_implementations(cls)
 
     return super(Artist, cls).__new__(cls)
 
@@ -238,5 +222,5 @@ __all__ = [
     'MeshArtist',
     'NetworkArtist',
     'VolMeshArtist',
-    'RobotModelArtist'
+    'RobotModelArtist',
 ]

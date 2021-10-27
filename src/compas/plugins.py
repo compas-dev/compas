@@ -62,6 +62,7 @@ __all__ = [
     'plugin_manager',
     'PluginManager',
     'PluginNotInstalledError',
+    'PluginValidator',
 ]
 
 
@@ -416,46 +417,56 @@ class Importer(object):
         return self._cache[module_name]
 
 
-def verify_requirement(manager, requirement):
-    if callable(requirement):
-        return requirement()
+class PluginValidator(object):
+    """Plugin Validator handles validation of plugins."""
 
-    return manager.importer.check_importable(requirement)
+    def __init__(self, manager):
+        self.manager = manager
 
+    def verify_requirement(self, requirement):
+        if callable(requirement):
+            return requirement()
 
-def is_plugin_selectable(plugin, manager):
-    if plugin.opts['requires']:
-        importable_requirements = (verify_requirement(manager, requirement) for requirement in plugin.opts['requires'])
+        return self.manager.importer.check_importable(requirement)
 
-        if not all(importable_requirements):
-            if manager.DEBUG:
-                print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
-            return False
+    def is_plugin_selectable(self, plugin):
+        if plugin.opts['requires']:
+            importable_requirements = (self.verify_requirement(requirement) for requirement in plugin.opts['requires'])
 
-    return True
+            if not all(importable_requirements):
+                if self.manager.DEBUG:
+                    print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
+                return False
 
+        return True
 
-def select_plugin(extension_point_url, manager):
-    if manager.DEBUG:
-        print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
+    def select_plugin(self, extension_point_url):
+        if self.manager.DEBUG:
+            print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
 
-    plugins = manager.registry.get(extension_point_url) or []
-    for plugin in plugins:
-        if is_plugin_selectable(plugin, manager):
-            return plugin
+        plugins = self.manager.registry.get(extension_point_url) or []
+        for plugin in plugins:
+            if self.is_plugin_selectable(plugin):
+                return plugin
 
-    # Nothing found, raise
-    raise PluginNotInstalledError('Plugin not found for extension point URL: {}'.format(extension_point_url))
+        # Nothing found, raise
+        raise PluginNotInstalledError('Plugin not found for extension point URL: {}'.format(extension_point_url))
 
+    def collect_plugins(self, extension_point_url):
+        if self.manager.DEBUG:
+            print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
 
-def collect_plugins(extension_point_url, manager):
-    if manager.DEBUG:
-        print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
+        plugins = self.manager.registry.get(extension_point_url) or []
+        return [plugin for plugin in plugins if self.is_plugin_selectable(plugin)]
 
-    plugins = manager.registry.get(extension_point_url) or []
-    return [plugin for plugin in plugins if is_plugin_selectable(plugin, manager)]
+    @staticmethod
+    def ensure_implementations(cls):
+        for name, value in inspect.getmembers(cls):
+            if inspect.isfunction(value):
+                if hasattr(value, '__isabstractmethod__'):
+                    raise Exception('Abstract method not implemented: {}'.format(value))
 
 
 plugin_manager = PluginManager()
-_select_plugin = functools.partial(select_plugin, manager=plugin_manager)
-_collect_plugins = functools.partial(collect_plugins, manager=plugin_manager)
+_select_plugin = PluginValidator(plugin_manager).select_plugin
+_collect_plugins = PluginValidator(plugin_manager).collect_plugins
