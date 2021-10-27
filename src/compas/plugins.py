@@ -469,7 +469,7 @@ class PluginValidator(object):
     @staticmethod
     def ensure_implementations(cls):
         for name, value in inspect.getmembers(cls):
-            if inspect.isfunction(value):
+            if inspect.isfunction(value) or inspect.ismethod(value):
                 if hasattr(value, '__isabstractmethod__'):
                     raise IncompletePluginImplError('Abstract method not implemented: {}'.format(value))
 
