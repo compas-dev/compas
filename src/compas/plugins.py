@@ -400,7 +400,11 @@ class Importer(object):
         try:
             module = __import__(module_name, fromlist=['__name__'], level=0)
             self._cache[module_name] = True
-        except ImportError:
+
+        # There are two types of possible failure modes:
+        # 1) cannot be imported, or
+        # 2) is a python 3 module and we're in IPY, which causes a SyntaxError
+        except (ImportError, SyntaxError):
             self._cache[module_name] = False
 
         return module
