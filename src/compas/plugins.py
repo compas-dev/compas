@@ -45,6 +45,7 @@ Exceptions
     :toctree: generated/
     :nosignatures:
 
+    IncompletePluginImplError
     PluginNotInstalledError
 """
 from __future__ import absolute_import
@@ -60,6 +61,7 @@ __all__ = [
     'pluggable',
     'plugin',
     'plugin_manager',
+    'IncompletePluginImplError',
     'PluginManager',
     'PluginNotInstalledError',
     'PluginValidator',
@@ -82,6 +84,9 @@ def _get_extension_point_url_from_method(domain, category, plugin_method):
     return '{}/{}/{}'.format(domain, category, name).replace('//', '/')
 
 
+class IncompletePluginImplError(Exception):
+    """Exception raised when a plugin does not have implementations for all abstract methods of its base class."""
+    pass
 class PluginImpl(object):
     """Internal data class to keep track of a loaded plugin implementation.
 
@@ -464,7 +469,7 @@ class PluginValidator(object):
         for name, value in inspect.getmembers(cls):
             if inspect.isfunction(value):
                 if hasattr(value, '__isabstractmethod__'):
-                    raise Exception('Abstract method not implemented: {}'.format(value))
+                    raise IncompletePluginImplError('Abstract method not implemented: {}'.format(value))
 
 
 plugin_manager = PluginManager()
