@@ -87,6 +87,8 @@ def _get_extension_point_url_from_method(domain, category, plugin_method):
 class IncompletePluginImplError(Exception):
     """Exception raised when a plugin does not have implementations for all abstract methods of its base class."""
     pass
+
+
 class PluginImpl(object):
     """Internal data class to keep track of a loaded plugin implementation.
 
