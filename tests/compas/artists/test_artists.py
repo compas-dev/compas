@@ -23,21 +23,21 @@ def test_get_artist_cls_with_orderly_registration():
     Artist.register(FakeItem, FakeArtist)
     Artist.register(FakeSubItem, FakeSubArtist)
     item = FakeItem()
-    artist = Artist(item)
-    assert type(artist) == FakeArtist
+    artist = Artist.get_artist_cls(item)
+    assert artist == FakeArtist
 
     item = FakeSubItem()
-    artist = Artist(item)
-    assert type(artist) == FakeSubArtist
+    artist = Artist.get_artist_cls(item)
+    assert artist == FakeSubArtist
 
 
 def test_get_artist_cls_with_out_of_order_registration():
     Artist.register(FakeSubItem, FakeSubArtist)
     Artist.register(FakeItem, FakeArtist)
     item = FakeItem()
-    artist = Artist(item)
-    assert type(artist) == FakeArtist
+    artist = Artist.get_artist_cls(item)
+    assert artist == FakeArtist
 
     item = FakeSubItem()
-    artist = Artist(item)
-    assert type(artist) == FakeSubArtist
+    artist = Artist.get_artist_cls(item)
+    assert artist == FakeSubArtist
