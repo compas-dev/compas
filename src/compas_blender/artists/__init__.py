@@ -62,13 +62,12 @@ Base Classes
     BlenderArtist
 
 """
-import inspect
 
 import compas_blender
 
 from compas.plugins import plugin
+from compas.plugins import PluginValidator
 from compas.artists import Artist
-from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Box
 from compas.geometry import Capsule
@@ -130,20 +129,9 @@ def new_artist_blender(cls, *args, **kwargs):
 
     data = args[0]
 
-    if 'artist_type' in kwargs:
-        cls = kwargs['artist_type']
-    else:
-        dtype = type(data)
-        if dtype not in BlenderArtist.ITEM_ARTIST:
-            raise DataArtistNotRegistered('No Blender artist is registered for this data type: {}'.format(dtype))
-        cls = BlenderArtist.ITEM_ARTIST[dtype]
+    cls = Artist.get_artist_cls(data, **kwargs)
 
-    # TODO: move this to the plugin module and/or to a dedicated function
-
-    for name, value in inspect.getmembers(cls):
-        if inspect.isfunction(value):
-            if hasattr(value, '__isabstractmethod__'):
-                raise Exception('Abstract method not implemented: {}'.format(value))
+    PluginValidator.ensure_implementations(cls)
 
     return super(Artist, cls).__new__(cls)
 
