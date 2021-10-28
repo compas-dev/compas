@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+* Changed new artist registration to check if subclass.
+
+### Removed
+
+
+## [1.9.1] 2021-10-22
+
+### Added
+
+* Added `Plane.offset`.
+* Added `is_mesh_closed` property to `compas.datastructures.mesh_slice_plane`.
+
+### Changed
+
+* Fixed backward compatibility problem with artists by adding back `Artist.build` and `Artist.build_as`.
+* Fixed backward compatibility problem with artists by adding `compas_rhino.artists.BaseArtist` alias for `compas_rhino.artists.RhinoArtist`.
+
+### Removed
+
+
+## [1.9.0] 2021-10-21
+
+### Added
+
 * Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
 * Added optional `triangulated` flag to `to_vertices_and_faces` of all shapes.
 * Added `compas.geometry.Geometry` base class.
@@ -24,6 +50,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.artists.RobotModelArtist.clear`.
 * Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
 * Added version-based installation for Blender.
+* Added several shape artists to `compas_ghpython`: `BoxArtist`, `CapsuleArtist`, `ConeArtist`, `CylinderArtist`, `PolygonArtist`, `PolyhedronArtist`, `SphereArtist`, `TorusArtist` and `VectorArtist`.
+* Added support for CLR generic dictionaries to the `compas.data` decoders.
+* Added `Graph.node_sample`, `Graph.edge_sample`.
+* Added `Halfedge.vertex_sample`, `Halfedge.edge_sample`, `Halfedge.face_sample`.
+* Added `Halfface.vertex_sample`, `Halfface.edge_sample`, `Halfface.face_sample`, `Halfface.cell_sample`.
+* Added `Mesh.from_meshgrid`.
 
 ### Changed
 
@@ -36,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
 * Changed `compas.IPY` to `compas.RHINO` in `orientation_rhino`.
 * Changed `planarity` to `requires_extra` for pip installations.
+* Fixed bug in handling of ngonal meshes in `compas_ghpython` artists / drawing functions.
 
 ### Removed
 
