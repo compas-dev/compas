@@ -79,17 +79,18 @@ from .collections import (
     clear_collections
 )
 from .drawing import (
-    draw_points,
-    draw_pointcloud,
-    draw_lines,
-    draw_polylines,
+    draw_circles,
     draw_cylinders,
-    draw_spheres,
     draw_cubes,
-    draw_pipes,
     draw_faces,
+    draw_lines,
+    draw_mesh,
+    draw_pipes,
+    draw_pointcloud,
+    draw_points,
+    draw_polylines,
+    draw_spheres,
     draw_texts,
-    draw_mesh
 )
 from .misc import unload_modules
 
@@ -108,16 +109,17 @@ __all__ = [
     'create_collections_from_path',
     'clear_collection',
     'clear_collections',
-    'draw_points',
-    'draw_pointcloud',
-    'draw_lines',
-    'draw_polylines',
+    'draw_circles',
     'draw_cylinders',
-    'draw_spheres',
     'draw_cubes',
-    'draw_pipes',
     'draw_faces',
-    'draw_texts',
+    'draw_lines',
     'draw_mesh',
+    'draw_pipes',
+    'draw_pointcloud',
+    'draw_points',
+    'draw_polylines',
+    'draw_spheres',
+    'draw_texts',
     'unload_modules'
 ]

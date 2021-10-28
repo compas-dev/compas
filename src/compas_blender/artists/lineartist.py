@@ -77,7 +77,7 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
             ]
             objects += compas_blender.draw_points(points, collection=self.collection)
         lines = [
-            {'start': start, 'end': end, 'color': self.color, 'name': f"{self.primitive.name}"},
+            {'start': start, 'end': end, 'color': color, 'name': f"{self.primitive.name}"},
         ]
         objects += compas_blender.draw_lines(lines, collection=self.collection)
         return objects
