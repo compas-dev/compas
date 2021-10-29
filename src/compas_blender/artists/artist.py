@@ -26,7 +26,6 @@ class BlenderArtist(Artist):
         self.collection = collection
         super().__init__(**kwargs)
 
-
     @property
     def collection(self) -> bpy.types.Collection:
         return self._collection
