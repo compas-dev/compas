@@ -327,6 +327,10 @@ class MeshArtist(Artist):
         raise NotImplementedError
 
     @abstractmethod
+    def draw_mesh(self):
+        raise NotImplementedError
+
+    @abstractmethod
     def clear_vertices(self):
         raise NotImplementedError
 
