@@ -120,13 +120,13 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         vertexcolor : tuple or dict of tuple, optional
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default color is the value of ``~MeshArtist.default_vertexcolor``.
         edgecolor : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~MeshArtist.default_edgecolor``.
         facecolor : tuple or dict of tuple, optional
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is the value of ``~MeshArtist.default_facecolor``.
         join_faces : bool, optional
             Join the faces into 1 mesh.
@@ -200,7 +200,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default is the value of ``~MeshArtist.default_vertexcolor``.
 
         Returns
@@ -231,7 +231,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~MeshArtist.default_edgecolor``.
 
         Returns
@@ -263,7 +263,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is the value of ``~MeshArtist.default_facecolor``.
         join_faces : bool, optional
             Join the faces into 1 mesh.
