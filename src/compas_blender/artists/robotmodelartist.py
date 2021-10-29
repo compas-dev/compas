@@ -61,7 +61,8 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1, time_limit=timeout)
 
     def clear(self) -> None:
-        compas_blender.delete_objects(self.collection.objects)
+        for obj in self.collection.objects:
+            obj.hide_set(True)
 
     def draw(self) -> None:
         self.draw_visual()
