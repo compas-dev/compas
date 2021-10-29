@@ -102,7 +102,6 @@ class MeshArtist(GHArtist, MeshArtist):
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
         color = color or self.default_color
-        print(self.default_color)
         vertices, faces = self.mesh.to_vertices_and_faces()
         return compas_ghpython.draw_mesh(vertices, faces, color)
 
