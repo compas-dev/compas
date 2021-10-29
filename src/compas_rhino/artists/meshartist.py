@@ -106,7 +106,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
     # ==========================================================================
 
     def draw(self, vertices=None, edges=None, faces=None, vertexcolor=None, edgecolor=None, facecolor=None, join_faces=False):
-        """Draw the mesh using the chosen visualisation settings.
+        """Draw the mesh using the chosen visualization settings.
 
         Parameters
         ----------
