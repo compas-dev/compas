@@ -5,9 +5,7 @@ from __future__ import print_function
 import Rhino
 from functools import partial
 
-from compas.geometry import centroid_polygon
 from compas.utilities import color_to_colordict
-from compas.utilities import pairwise
 
 import compas_ghpython
 from compas.artists import MeshArtist
@@ -25,11 +23,68 @@ class MeshArtist(GHArtist, MeshArtist):
         A COMPAS mesh.
     """
 
-    def __init__(self, mesh, **kwargs):
+    def __init__(self,
+                 mesh,
+                 show_mesh=False,
+                 show_vertices=True,
+                 show_edges=True,
+                 show_faces=True,
+                 **kwargs):
         super(MeshArtist, self).__init__(mesh=mesh, **kwargs)
+        self.show_mesh = show_mesh
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
 
-    def draw(self, color=None):
+    def draw(self, vertices=None, edges=None, faces=None, vertexcolor=None, edgecolor=None, facecolor=None, color=None, join_faces=False):
+        """Draw the mesh using the chosen visualization settings.
+
+        Parameters
+        ----------
+        vertices : list, optional
+            A list of vertices to draw.
+            Default is ``None``, in which case all vertices are drawn.
+        edges : list, optional
+            A list of edges to draw.
+            The default is ``None``, in which case all edges are drawn.
+        faces : list, optional
+            A selection of faces to draw.
+            The default is ``None``, in which case all faces are drawn.
+        vertexcolor : tuple or dict of tuple, optional
+            The color specification for the vertices.
+            The default color is the value of ``~MeshArtist.default_vertexcolor``.
+        edgecolor : tuple or dict of tuple, optional
+            The color specification for the edges.
+            The default color is the value of ``~MeshArtist.default_edgecolor``.
+        facecolor : tuple or dict of tuple, optional
+            The color specification for the faces.
+            The default color is the value of ``~MeshArtist.default_facecolor``.
+        color : tuple, optional
+            The color of the mesh.
+            Default is the value of ``~MeshArtist.default_color``.
+        join_faces : bool, optional
+            Join the faces into 1 mesh.
+            Default is ``False``, in which case the faces are drawn as individual meshes.
+
+        Returns
+        -------
+        list of :class:`Rhino.Geometry.Mesh`, :class:`Rhino.Geometry.Point3d` and :class:`Rhino.Geometry.Line` depending on the selection.
+        """
+        geometry = []
+        if self.show_mesh:
+            geometry.append(self.draw_mesh(color=color))
+        if self.show_vertices:
+            geometry.extend(self.draw_vertices(vertices=vertices, color=vertexcolor))
+        if self.show_edges:
+            geometry.extend(self.draw_edges(edges=edges, color=edgecolor))
+        if self.show_faces:
+            geometry.extend(self.draw_faces(faces=faces, color=facecolor, join_faces=join_faces))
+        return geometry
+
+    def draw_mesh(self, color=None):
         """Draw the mesh as a RhinoMesh.
+
+        This method is an alias for ``~MeshArtist.draw``.
 
         Parameters
         ----------
@@ -47,24 +102,8 @@ class MeshArtist(GHArtist, MeshArtist):
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
         color = color or self.default_color
-        vertex_index = self.mesh.vertex_index()
-        vertex_xyz = self.vertex_xyz
-        vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
-        faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
-        new_faces = []
-        for face in faces:
-            f = len(face)
-            if f == 3:
-                new_faces.append(face + [face[-1]])
-            elif f == 4:
-                new_faces.append(face)
-            elif f > 4:
-                centroid = len(vertices)
-                vertices.append(centroid_polygon(
-                    [vertices[index] for index in face]))
-                for a, b in pairwise(face + face[0:1]):
-                    new_faces.append([centroid, a, b, b])
-        return compas_ghpython.draw_mesh(vertices, new_faces, color)
+        vertices, faces = self.mesh.to_vertices_and_faces()
+        return compas_ghpython.draw_mesh(vertices, faces, color)
 
     def draw_vertices(self, vertices=None, color=None):
         """Draw a selection of vertices.
@@ -75,7 +114,7 @@ class MeshArtist(GHArtist, MeshArtist):
             A selection of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default is the value of ``~MeshArtist.default_vertexcolor``.
 
         Returns
@@ -104,7 +143,7 @@ class MeshArtist(GHArtist, MeshArtist):
             A selection of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is the value of ``~MeshArtist.default_facecolor``.
         join_faces : bool, optional
             Join the faces into 1 mesh.
@@ -142,7 +181,7 @@ class MeshArtist(GHArtist, MeshArtist):
             A selection of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~MeshArtist.default_edgecolor``.
 
         Returns

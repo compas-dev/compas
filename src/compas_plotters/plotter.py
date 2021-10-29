@@ -161,7 +161,7 @@ class Plotter(metaclass=Singleton):
         Parameters
         ----------
         value : str, tuple
-            The color specififcation for the figure background.
+            The color specification for the figure background.
             Colors should be specified in the form of a string (hex colors) or
             as a tuple of normalized RGB components.
 
