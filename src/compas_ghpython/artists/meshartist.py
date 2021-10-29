@@ -40,31 +40,32 @@ class MeshArtist(GHArtist, MeshArtist):
         Returns
         -------
         :class:`Rhino.Geometry.Mesh`
+        """
+        color = color or self.default_color
+        vertices, faces = self.mesh.to_vertices_and_faces()
+        return compas_ghpython.draw_mesh(vertices, faces, color)
+
+    def draw_mesh(self, color=None):
+        """Draw the mesh as a RhinoMesh.
+
+        This method is an alias for ``~MeshArtist.draw``.
+
+        Parameters
+        ----------
+        color : tuple, optional
+            The color of the mesh.
+            Default is the value of ``~MeshArtist.default_color``.
+
+        Returns
+        -------
+        :class:`Rhino.Geometry.Mesh`
 
         Notes
         -----
         The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
-        color = color or self.default_color
-        vertex_index = self.mesh.vertex_index()
-        vertex_xyz = self.vertex_xyz
-        vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
-        faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
-        new_faces = []
-        for face in faces:
-            f = len(face)
-            if f == 3:
-                new_faces.append(face + [face[-1]])
-            elif f == 4:
-                new_faces.append(face)
-            elif f > 4:
-                centroid = len(vertices)
-                vertices.append(centroid_polygon(
-                    [vertices[index] for index in face]))
-                for a, b in pairwise(face + face[0:1]):
-                    new_faces.append([centroid, a, b, b])
-        return compas_ghpython.draw_mesh(vertices, new_faces, color)
+        return self.draw(color)
 
     def draw_vertices(self, vertices=None, color=None):
         """Draw a selection of vertices.
