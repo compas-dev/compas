@@ -108,7 +108,7 @@
 <h1>MeshArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_ghpython.artists.MeshArtist">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/meshartist.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/meshartist.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#compas_ghpython.artists.GHArtist" title="compas_ghpython.artists.artist.GHArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists.artist.GHArtist</span></code></a>, <a class="reference internal" href="compas.artists.MeshArtist.html#compas.artists.MeshArtist" title="compas.artists.meshartist.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.meshartist.MeshArtist</span></code></a></p>
 <p>Artist for drawing mesh data structures.</p>
 <dl class="field-list simple">
@@ -141,8 +141,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.clear_vertices.html#compas_ghpython.artists.MeshArtist.clear_vertices" title="compas_ghpython.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>()</p></td>
 <td><p>GH Artists are state-less.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw.html#compas_ghpython.artists.MeshArtist.draw" title="compas_ghpython.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([color])</p></td>
-<td><p>Draw the mesh as a RhinoMesh.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw.html#compas_ghpython.artists.MeshArtist.draw" title="compas_ghpython.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([vertices, edges, faces, vertexcolor, ...])</p></td>
+<td><p>Draw the mesh using the chosen visualization settings.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_collection.html#compas_ghpython.artists.MeshArtist.draw_collection" title="compas_ghpython.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
 <td><p></p></td>
@@ -153,16 +153,19 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_faces.html#compas_ghpython.artists.MeshArtist.draw_faces" title="compas_ghpython.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color, join_faces])</p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_vertices.html#compas_ghpython.artists.MeshArtist.draw_vertices" title="compas_ghpython.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_mesh.html#compas_ghpython.artists.MeshArtist.draw_mesh" title="compas_ghpython.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>([color])</p></td>
+<td><p>Draw the mesh as a RhinoMesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.draw_vertices.html#compas_ghpython.artists.MeshArtist.draw_vertices" title="compas_ghpython.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.get_artist_cls.html#compas_ghpython.artists.MeshArtist.get_artist_cls" title="compas_ghpython.artists.MeshArtist.get_artist_cls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_artist_cls</span></code></a>(data, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.get_artist_cls.html#compas_ghpython.artists.MeshArtist.get_artist_cls" title="compas_ghpython.artists.MeshArtist.get_artist_cls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_artist_cls</span></code></a>(data, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.redraw.html#compas_ghpython.artists.MeshArtist.redraw" title="compas_ghpython.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.redraw.html#compas_ghpython.artists.MeshArtist.redraw" title="compas_ghpython.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.register.html#compas_ghpython.artists.MeshArtist.register" title="compas_ghpython.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.MeshArtist.register.html#compas_ghpython.artists.MeshArtist.register" title="compas_ghpython.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
