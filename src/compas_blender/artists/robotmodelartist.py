@@ -63,6 +63,9 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
     def clear(self) -> None:
         compas_blender.delete_objects(self.collection.objects)
 
+    def draw(self) -> None:
+        self.draw_visual()
+
     def draw_visual(self) -> None:
         visuals = super(RobotModelArtist, self).draw_visual()
         for visual in visuals:
