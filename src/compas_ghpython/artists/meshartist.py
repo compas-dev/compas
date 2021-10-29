@@ -5,9 +5,7 @@ from __future__ import print_function
 import Rhino
 from functools import partial
 
-from compas.geometry import centroid_polygon
 from compas.utilities import color_to_colordict
-from compas.utilities import pairwise
 
 import compas_ghpython
 from compas.artists import MeshArtist
