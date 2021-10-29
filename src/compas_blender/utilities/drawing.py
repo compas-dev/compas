@@ -17,6 +17,7 @@ __all__ = [
     'draw_lines',
     'draw_mesh',
     'draw_pipes',
+    'draw_planes',
     'draw_pointcloud',
     'draw_points',
     'draw_polylines',
@@ -258,7 +259,7 @@ def draw_faces(faces: List[Dict],
 
 def draw_circles(circles: List[Dict],
                  collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
-    """Draw circles."""
+    """Draw circle objects as mesh primitives."""
     from math import acos
     from math import atan2
     bpy.ops.mesh.primitive_circle_add()
@@ -274,6 +275,30 @@ def draw_circles(circles: List[Dict],
         obj.rotation_euler[2] = atan2(normal[1], normal[0])
         obj.location = point
         obj.scale = ((radius, radius, 1.0))
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    empty.hide_set(True)
+    return objects
+
+
+def draw_planes(planes: List[Dict],
+                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw plane objects as mesh primitives."""
+    from math import acos
+    from math import atan2
+    bpy.ops.mesh.primitive_plane_add()
+    empty = bpy.context.object
+    _link_object(empty, collection)
+    objects = [0] * len(planes)
+    for index, data in enumerate(planes):
+        obj = empty.copy()
+        obj.name = data.get('name', 'plane')
+        point, normal = data.get('plane', ((0.0, 0.0, 0.0), (0.0, 0.0, 1.0)))
+        obj.rotation_euler[1] = acos(normal[2])
+        obj.rotation_euler[2] = atan2(normal[1], normal[0])
+        obj.location = point
         rgb = data.get('color', [1.0, 1.0, 1.0])
         _set_object_color(obj, rgb)
         objects[index] = obj
