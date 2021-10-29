@@ -57,7 +57,7 @@ class MeshArtist(GHArtist, MeshArtist):
             The color specififcation for the edges.
             The default color is the value of ``~MeshArtist.default_edgecolor``.
         facecolor : tuple or dict of tuple, optional
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is the value of ``~MeshArtist.default_facecolor``.
         color : tuple, optional
             The color of the mesh.
