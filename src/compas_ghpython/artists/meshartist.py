@@ -37,7 +37,7 @@ class MeshArtist(GHArtist, MeshArtist):
         self.show_faces = show_faces
 
     def draw(self, vertices=None, edges=None, faces=None, vertexcolor=None, edgecolor=None, facecolor=None, color=None, join_faces=False):
-        """Draw the mesh using the chosen visualisation settings.
+        """Draw the mesh using the chosen visualization settings.
 
         Parameters
         ----------
