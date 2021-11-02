@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Changed new artist registration to check if subclass.
+* Fixed `RobotModelArtist` for blender: missing abstract method impl and handle init order.
 
 ### Removed
 
