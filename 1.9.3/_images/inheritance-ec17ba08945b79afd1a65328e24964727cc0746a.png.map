@@ -1,0 +1,11 @@
+<map id="inheritanceffff3f7e20" name="inheritanceffff3f7e20">
+<area shape="rect" id="node1" href="generated/compas.robots.Axis.html#compas.robots.Axis" target="_top" title="Representation of an axis or vector." alt="" coords="226,8,339,46"/>
+<area shape="rect" id="node2" href="generated/compas.data.Data.html#compas.data.Data" target="_top" title="Abstract base class for all COMPAS data objects." alt="" coords="8,271,121,308"/>
+<area shape="rect" id="node3" href="generated/compas.robots.Calibration.html#compas.robots.Calibration" target="_top" title="Reference positions of the joint, used to calibrate the absolute position." alt="" coords="219,83,346,121"/>
+<area shape="rect" id="node4" href="generated/compas.robots.ChildLink.html#compas.robots.ChildLink" target="_top" title="Describes a child relation between a joint and its child link." alt="" coords="226,158,339,196"/>
+<area shape="rect" id="node5" href="generated/compas.robots.Dynamics.html#compas.robots.Dynamics" target="_top" title="Physical properties of the joint used for simulation of dynamics." alt="" coords="224,233,341,271"/>
+<area shape="rect" id="node6" href="generated/compas.robots.Limit.html#compas.robots.Limit" target="_top" title="Joint limit properties." alt="" coords="226,308,339,346"/>
+<area shape="rect" id="node7" href="generated/compas.robots.Mimic.html#compas.robots.Mimic" target="_top" title="Description of joint mimic." alt="" coords="226,383,339,421"/>
+<area shape="rect" id="node8" href="generated/compas.robots.ParentLink.html#compas.robots.ParentLink" target="_top" title="Describes a parent relation between a joint its parent link." alt="" coords="221,458,344,496"/>
+<area shape="rect" id="node9" href="generated/compas.robots.SafetyController.html#compas.robots.SafetyController" target="_top" title="Safety controller properties." alt="" coords="196,533,369,571"/>
+</map>
