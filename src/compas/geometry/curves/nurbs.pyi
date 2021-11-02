@@ -10,7 +10,7 @@ from compas.geometry import Ellipse
 from compas.geometry import Box
 from compas.geometry import Frame
 
-from ._curve import Curve
+from .curve import Curve
 
 
 class NurbsCurve(Curve):

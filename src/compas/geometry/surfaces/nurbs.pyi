@@ -7,7 +7,7 @@ from compas.geometry import Point, Vector, Line, Frame, Box
 from compas.geometry import Transformation
 
 from ..curves import NurbsCurve
-from ._surface import Surface
+from .surface import Surface
 
 
 class NurbsSurface(Surface):
