@@ -642,10 +642,10 @@ class Mesh(HalfEdge):
         V, U = meshgrid(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1), indexing='ij')
 
         quads = [[
-            [U[i + 0][j + 0], V[i + 0][j + 0], 0],
-            [U[i + 0][j + 1], V[i + 0][j + 1], 0],
-            [U[i + 1][j + 1], V[i + 1][j + 1], 0],
-            [U[i + 1][j + 0], V[i + 1][j + 0], 0]
+            [U[i + 0][j + 0], V[i + 0][j + 0], 0.0],
+            [U[i + 0][j + 1], V[i + 0][j + 1], 0.0],
+            [U[i + 1][j + 1], V[i + 1][j + 1], 0.0],
+            [U[i + 1][j + 0], V[i + 1][j + 0], 0.0]
         ] for i, j in product(range(ny), range(nx))]
 
         return cls.from_polygons(quads)
