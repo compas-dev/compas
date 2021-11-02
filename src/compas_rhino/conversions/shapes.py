@@ -124,7 +124,7 @@ def cylinder_to_compas(cylinder):
     -------
     :class:`compas.geometry.Cylinder`
     """
-    return Cylinder(Circle(plane_to_compas(cylinder.BasePlane), cylinder.Radius), cylinder.Height1 - cylinder.Height2)
+    return Cylinder(Circle(plane_to_compas(cylinder.BasePlane), cylinder.Radius), cylinder.TotalHeight)
 
 
 def cylinder_to_rhino(cylinder):
