@@ -393,12 +393,12 @@ class NurbsCurve(Curve):
 
     def space(self, n=10):
         """Compute evenly spaced parameters over the curve domain."""
-        u, v = self.domain
-        return linspace(u, v, n)
+        start, end = self.domain
+        return linspace(start, end, n)
 
     def xyz(self, n=10):
         """Compute point locations corresponding to evenly spaced parameters over the curve domain."""
-        return [self.point_at(param) for param in self.space(n)]
+        return [self.point_at(t) for t in self.space(n)]
 
     def locus(self, resolution=100):
         """Compute the locus of all points on the curve.
@@ -416,12 +416,12 @@ class NurbsCurve(Curve):
         """
         return self.xyz(resolution)
 
-    def point_at(self, u):
+    def point_at(self, t):
         """Compute a point on the curve.
 
         Parameters
         ----------
-        u : float
+        t : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
@@ -431,12 +431,12 @@ class NurbsCurve(Curve):
         """
         raise NotImplementedError
 
-    def tangent_at(self, u):
+    def tangent_at(self, t):
         """Compute the tangent vector at a point on the curve.
 
         Parameters
         ----------
-        u : float
+        t : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
@@ -447,12 +447,12 @@ class NurbsCurve(Curve):
         """
         raise NotImplementedError
 
-    def curvature_at(self, u):
+    def curvature_at(self, t):
         """Compute the curvature at a point on the curve.
 
         Parameters
         ----------
-        u : float
+        t : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
@@ -463,12 +463,12 @@ class NurbsCurve(Curve):
         """
         raise NotImplementedError
 
-    def frame_at(self, u):
+    def frame_at(self, t):
         """Compute the local frame at a point on the curve.
 
         Parameters
         ----------
-        u : float
+        t : float
             The value of the curve parameter. Must be between 0 and 1.
 
         Returns
