@@ -368,4 +368,3 @@ class RhinoSurface(RhinoGeometry):
     #         else:
     #             kinks += extremities
     #     return list(set(kinks))
-
