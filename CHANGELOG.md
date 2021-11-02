@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `draw_mesh` method to `compas_ghpython.artists.MeshArtist` to match all other mesh artists.
+
 ### Changed
+
+* Changed new artist registration to check if subclass.
 
 ### Removed
 
@@ -18,8 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `Plane.offset`
-* Added `is_mesh_closed` property to `compas.datastructures.mesh_slice_plane`
+* Added `Plane.offset`.
+* Added `is_mesh_closed` property to `compas.datastructures.mesh_slice_plane`.
 
 ### Changed
 

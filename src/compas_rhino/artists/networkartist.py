@@ -97,10 +97,10 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         nodecolor : tuple or dict of tuple, optional
-            The color specififcation for the nodes.
+            The color specification for the nodes.
             The default color is the value of ``~NetworkArtist.default_nodecolor``.
         edgecolor : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~NetworkArtist.default_edgecolor``.
 
         Returns
@@ -122,7 +122,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             A list of nodes to draw.
             Default is ``None``, in which case all nodes are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the nodes.
+            The color specification for the nodes.
             The default color is the value of ``~NetworkArtist.default_nodecolor``.
 
         Returns
@@ -151,7 +151,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~NetworkArtist.default_edgecolor``.
 
         Returns
