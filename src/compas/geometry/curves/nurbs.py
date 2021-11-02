@@ -445,7 +445,7 @@ class NurbsCurve(Curve):
             The corresponding tangent vector.
 
         """
-        pass
+        raise NotImplementedError
 
     def curvature_at(self, u):
         """Compute the curvature at a point on the curve.
