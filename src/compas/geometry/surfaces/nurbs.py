@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from itertools import product
 
 from compas.plugins import pluggable
@@ -91,7 +95,7 @@ class NurbsSurface(Surface):
         return new_nurbssurface(cls, *args, **kwargs)
 
     def __init__(self, name=None):
-        super().__init__(name=name)
+        super(NurbsSurface, None).__init__(name=name)
         self._points = None
 
     def __eq__(self, other):

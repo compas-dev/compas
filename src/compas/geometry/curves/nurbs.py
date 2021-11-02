@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from math import sqrt
 
 from compas.plugins import pluggable
@@ -92,7 +96,7 @@ class NurbsCurve(Curve):
         return new_nurbscurve(cls, *args, **kwargs)
 
     def __init__(self, name=None):
-        super().__init__(name=name)
+        super(NurbsCurve, None).__init__(name=name)
 
     def __eq__(self, other):
         raise NotImplementedError
