@@ -95,7 +95,7 @@ class NurbsSurface(Surface):
         return new_nurbssurface(cls, *args, **kwargs)
 
     def __init__(self, name=None):
-        super(NurbsSurface, None).__init__(name=name)
+        super(NurbsSurface, self).__init__(name=name)
         self._points = None
 
     def __eq__(self, other):

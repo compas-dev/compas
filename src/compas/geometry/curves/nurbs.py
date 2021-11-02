@@ -96,7 +96,7 @@ class NurbsCurve(Curve):
         return new_nurbscurve(cls, *args, **kwargs)
 
     def __init__(self, name=None):
-        super(NurbsCurve, None).__init__(name=name)
+        super(NurbsCurve, self).__init__(name=name)
 
     def __eq__(self, other):
         raise NotImplementedError
