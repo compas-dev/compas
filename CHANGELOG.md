@@ -19,6 +19,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 
+## [1.9.3] 2021-11-02
+
+### Added
+
+### Changed
+
+* Changed default path for Rhino 7 legacy install cleanup to Rhino7.app in `compas_rhino.__init__.py`.
+* Changed z-coordinate of `compas.datastructures.Mesh.from_meshgrid` to `0.0` instead of `0`. 
+
+### Removed
+
+
 ## [1.9.2] 2021-11-02
 
 ### Added
