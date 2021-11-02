@@ -29,7 +29,7 @@ class RhinoSurface(RhinoGeometry):
             The Rhino surface wrapper.
         """
         if not isinstance(geometry, Rhino.Geometry.Surface):
-            raise NotImplementedError
+            raise TypeError("The input geometry is not of type `Rhino.Geometry.Surface`: {}".format(type(geometry)))
         surface = cls()
         surface.geometry = geometry
         return surface
