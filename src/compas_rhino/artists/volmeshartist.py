@@ -55,16 +55,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             A selection of cells to draw.
             The default is ``None``, in which case all cells are drawn.
         vertexcolor : tuple or dict of tuple, optional
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default color is the value of ``~VolMeshArtist.default_vertexcolor``.
         edgecolor : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~VolMeshArtist.default_edgecolor``.
         facecolor : tuple or dict of tuple, optional
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is the value of ``~VolMeshArtist.default_facecolor``.
         cellcolor : tuple or dict of tuple, optional
-            The color specififcation for the cells.
+            The color specification for the cells.
             The default color is the value of ``~VolMeshArtist.default_cellcolor``.
 
         Returns
@@ -88,7 +88,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             A list of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : str, tuple, dict
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default color of the vertices is ``~VolMeshArtist.default_vertexcolor``.
 
         Returns
@@ -118,7 +118,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : str, tuple, dict
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is ``~VolMeshArtist.default_edgecolor``.
 
         Returns
@@ -149,7 +149,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             A list of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : str, tuple, dict
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is ``~VolMeshArtist.default_facecolor``.
 
         Returns
@@ -179,7 +179,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             A list of cells to draw.
             The default is ``None``, in which case all cells are drawn.
         color : str, tuple, dict
-            The color specififcation for the cells.
+            The color specification for the cells.
             The default color is ``~VolMeshArtist.default_cellcolor``.
 
         Returns
