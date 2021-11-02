@@ -792,7 +792,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
             else:
                 if MeshNgon:
                     points = [vertices[vertex] for vertex in face]
-                    centroid = centroid_points(points)
+                    centroid = centroid_polygon(points)
                     indices = []
                     for point in points:
                         indices.append(mesh.Vertices.Add(* point))
@@ -880,16 +880,16 @@ def draw_faces(faces, **kwargs):
             continue
         if v == 3:
             mfaces = [[0, 1, 2, 2]]
-        else:
-            mfaces = [list(range(v))]
         # else:
-        #     mfaces = _face_to_max_quad(points, range(v))
-        #     if vertexcolors:
-        #         r, g, b = [sum(component) / v for component in zip(*vertexcolors)]
-        #         r = int(min(max(0, r), 255))
-        #         g = int(min(max(0, g), 255))
-        #         b = int(min(max(0, b), 255))
-        #         vertexcolors.append((r, g, b))
+        #     mfaces = [list(range(v))]
+        else:
+            mfaces = _face_to_max_quad(points, range(v))
+            if vertexcolors:
+                r, g, b = [sum(component) / v for component in zip(*vertexcolors)]
+                r = int(min(max(0, r), 255))
+                g = int(min(max(0, g), 255))
+                b = int(min(max(0, b), 255))
+                vertexcolors.append((r, g, b))
 
         guid = draw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
 
