@@ -117,20 +117,20 @@ class RhinoMesh(RhinoGeometry):
         face, point = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
         return list(point)
 
-    # def closest_points(self, points, maxdist=None):
-    #     """Compute the closest points on the mesh to a list of input points.
+    def closest_points(self, points, maxdist=None):
+        """Compute the closest points on the mesh to a list of input points.
 
-    #     Parameters
-    #     ----------
-    #     points : list of point
-    #         The input points.
-    #     maxdist : float, optional
-    #         The maximum distance between the closest point and the mesh.
-    #         Default is ``0.0``.
+        Parameters
+        ----------
+        points : list of point
+            The input points.
+        maxdist : float, optional
+            The maximum distance between the closest point and the mesh.
+            Default is ``0.0``.
 
-    #     Returns
-    #     -------
-    #     list of point
-    #         The XYZ coordinates of the closest points.
-    #     """
-    #     return [self.closest_point(point, maxdist) for point in points]
+        Returns
+        -------
+        list of point
+            The XYZ coordinates of the closest points.
+        """
+        return [self.closest_point(point, maxdist) for point in points]

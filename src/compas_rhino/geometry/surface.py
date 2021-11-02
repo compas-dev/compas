@@ -124,6 +124,32 @@ class RhinoSurface(RhinoGeometry):
         """
         return compas_rhino.rs.EvaluateSurface(self.guid, * compas_rhino.rs.SurfaceClosestPoint(self.guid, xyz))
 
+    def closest_points(self, points):
+        return [self.closest_point(point) for point in points]
+
+    # def closest_point_on_boundaries(self, xyz):
+    #     """Return the XYZ coordinates of the closest point on the boundaries of the surface from input XYZ-coordinates.
+
+    #     Parameters
+    #     ----------
+    #     xyz : list
+    #         XYZ coordinates.
+
+    #     Returns
+    #     -------
+    #     list
+    #         The XYZ coordinates of the closest point on the boundaries of the surface.
+
+    #     """
+    #     from compas_rhino.geometry.curve import RhinoCurve
+    #     borders = self.borders(type=0)
+    #     proj_dist = {tuple(proj_xyz): distance_point_point(xyz, proj_xyz) for proj_xyz in [RhinoCurve(border).closest_point(xyz) for border in borders]}
+    #     compas_rhino.delete_objects(borders)
+    #     return min(proj_dist, key=proj_dist.get)
+
+    # def closest_points_on_boundaries(self, points):
+    #     return [self.closest_point_on_boundaries(point) for point in points]
+
     # def space(self, density=(10, 10)):
     #     """Construct a parameter grid overt the UV space of the surface.
 
@@ -343,28 +369,3 @@ class RhinoSurface(RhinoGeometry):
     #             kinks += extremities
     #     return list(set(kinks))
 
-    # def closest_points(self, points):
-    #     return [self.closest_point(point) for point in points]
-
-    # def closest_point_on_boundaries(self, xyz):
-    #     """Return the XYZ coordinates of the closest point on the boundaries of the surface from input XYZ-coordinates.
-
-    #     Parameters
-    #     ----------
-    #     xyz : list
-    #         XYZ coordinates.
-
-    #     Returns
-    #     -------
-    #     list
-    #         The XYZ coordinates of the closest point on the boundaries of the surface.
-
-    #     """
-    #     from compas_rhino.geometry.curve import RhinoCurve
-    #     borders = self.borders(type=0)
-    #     proj_dist = {tuple(proj_xyz): distance_point_point(xyz, proj_xyz) for proj_xyz in [RhinoCurve(border).closest_point(xyz) for border in borders]}
-    #     compas_rhino.delete_objects(borders)
-    #     return min(proj_dist, key=proj_dist.get)
-
-    # def closest_points_on_boundaries(self, points):
-    #     return [self.closest_point_on_boundaries(point) for point in points]

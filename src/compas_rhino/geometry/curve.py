@@ -129,6 +129,24 @@ class RhinoCurve(RhinoGeometry):
             return [x, y, z]
         return [x, y, z, t]
 
+    def closest_points(self, points, maxdist=0.0):
+        """Compute the closest points on the curve to a list of point locations.
+
+        Parameters
+        ----------
+        points : list
+            The point locations.
+        maxdist : float, optional
+            The maximum distance between the closest points and the curve.
+            Default is ``0.0``.
+
+        Returns
+        -------
+        list
+            A list of closest point locations.
+        """
+        return [self.closest_point(point, maxdist) for point in points]
+
     # def is_line(self):
     #     """Determine if the curve is a line.
 
@@ -209,24 +227,6 @@ class RhinoCurve(RhinoGeometry):
     #         False otherwise.
     #     """
     #     return compas_rhino.rs.IsCurveClosed(self.guid)
-
-    # def closest_points(self, points, maxdist=0.0):
-    #     """Compute the closest points on the curve to a list of point locations.
-
-    #     Parameters
-    #     ----------
-    #     points : list
-    #         The point locations.
-    #     maxdist : float, optional
-    #         The maximum distance between the closest points and the curve.
-    #         Default is ``0.0``.
-
-    #     Returns
-    #     -------
-    #     list
-    #         A list of closest point locations.
-    #     """
-    #     return [self.closest_point(point, maxdist) for point in points]
 
     # def length(self):
     #     """Return the length of the curve.
