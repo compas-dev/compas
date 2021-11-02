@@ -9,11 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [1.9.2] 2021-11-02
+
+### Added
+
 * Added `draw_mesh` method to `compas_ghpython.artists.MeshArtist` to match all other mesh artists.
 
 ### Changed
 
 * Changed new artist registration to check if subclass.
+* Fixed `RobotModelArtist` for blender: missing abstract method impl and handle init order.
 
 ### Removed
 

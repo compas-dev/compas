@@ -60,20 +60,28 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
     def redraw(self, timeout: float = 0.0) -> None:
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1, time_limit=timeout)
 
-    def clear(self) -> None:
-        compas_blender.delete_objects(self.collection.objects)
+    def _ensure_geometry(self):
+        if len(self.collection.objects) == 0:
+            self.create()
+
+    def draw(self) -> None:
+        self._ensure_geometry()
+        self.draw_visual()
 
     def draw_visual(self) -> None:
+        self._ensure_geometry()
         visuals = super(RobotModelArtist, self).draw_visual()
         for visual in visuals:
             visual.hide_set(False)
 
     def draw_collision(self) -> None:
+        self._ensure_geometry()
         collisions = super(RobotModelArtist, self).draw_collision()
         for collision in collisions:
             collision.hide_set(False)
 
     def draw_attached_meshes(self) -> None:
+        self._ensure_geometry()
         meshes = super(RobotModelArtist, self).draw_attached_meshes()
         for mesh in meshes:
             mesh.hide_set(False)
