@@ -100,7 +100,6 @@ Curves
     :nosignatures:
 
     Curve
-    BezierCurve
     NurbsCurve
 
 
@@ -973,7 +972,6 @@ if not compas.IPY:
 
 from .curves import (
     Curve,
-    BezierCurve,
     NurbsCurve
 )
 
@@ -1286,7 +1284,6 @@ __all__ = [
     'PointCollection',
 
     'Curve',
-    'BezierCurve',
     'NurbsCurve',
 
     'Surface',
