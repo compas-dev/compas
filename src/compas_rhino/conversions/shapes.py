@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry import Plane
 from compas.geometry import Circle
 from compas.geometry import Box
 from compas.geometry import Sphere
@@ -20,6 +21,7 @@ from .primitives import point_to_rhino
 from .primitives import plane_to_compas_frame
 from .primitives import plane_to_compas
 from .primitives import point_to_compas
+from .primitives import vector_to_compas
 
 
 def box_to_compas(box):
@@ -96,7 +98,8 @@ def cone_to_compas(cone):
     -------
     :class:`compas.geometry.Cone`
     """
-    return Cone(Circle(plane_to_compas(cone.Plane), cone.Radius), cone.Height)
+    plane = Plane(cone.BasePoint, vector_to_compas(cone.Plane.Normal).inverted())
+    return Cone(Circle(plane, cone.Radius), cone.Height)
 
 
 def cone_to_rhino(cone):
