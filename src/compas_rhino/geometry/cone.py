@@ -8,10 +8,10 @@ from compas.geometry import Cone
 from ..conversions import cone_to_rhino
 from ..conversions import cone_to_compas
 from ..conversions import ConversionError
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoCone(BaseRhinoGeometry):
+class RhinoCone(RhinoGeometry):
     """Wrapper for Rhino cone objects.
     """
 

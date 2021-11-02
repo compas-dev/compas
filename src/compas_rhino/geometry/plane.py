@@ -8,10 +8,10 @@ from ..conversions import plane_to_rhino
 from ..conversions import frame_to_rhino
 from ..conversions import plane_to_compas
 from ..conversions import plane_to_compas_frame
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoPlane(BaseRhinoGeometry):
+class RhinoPlane(RhinoGeometry):
     """Wrapper for Rhino plane objects.
 
     Notes

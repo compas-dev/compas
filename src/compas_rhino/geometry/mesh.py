@@ -5,13 +5,13 @@ from __future__ import division
 import Rhino
 import compas_rhino
 from compas.datastructures import Mesh
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
 __all__ = ['RhinoMesh']
 
 
-class RhinoMesh(BaseRhinoGeometry):
+class RhinoMesh(RhinoGeometry):
     """Wrapper for Rhino mesh objects.
     """
 

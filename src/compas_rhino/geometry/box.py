@@ -8,10 +8,10 @@ from compas.geometry import Box
 from ..conversions import box_to_rhino
 from ..conversions import box_to_compas
 from ..conversions import ConversionError
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoBox(BaseRhinoGeometry):
+class RhinoBox(RhinoGeometry):
     """Wrapper for Rhino box objects.
     """
 

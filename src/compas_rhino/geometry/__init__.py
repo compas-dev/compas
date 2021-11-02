@@ -16,7 +16,7 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    BaseRhinoGeometry
+    RhinoGeometry
     RhinoBox
     RhinoCircle
     RhinoCone
@@ -35,7 +35,7 @@ Classes
 """
 from __future__ import absolute_import
 
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 from .box import RhinoBox
 from .circle import RhinoCircle
@@ -53,7 +53,7 @@ from .surface import RhinoSurface
 from .vector import RhinoVector
 
 __all__ = [
-    'BaseRhinoGeometry',
+    'RhinoGeometry',
     'RhinoBox',
     'RhinoCircle',
     'RhinoCone',

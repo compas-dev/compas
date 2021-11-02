@@ -5,10 +5,10 @@ from __future__ import print_function
 import Rhino
 from ..conversions import vector_to_rhino
 from ..conversions import vector_to_compas
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoVector(BaseRhinoGeometry):
+class RhinoVector(RhinoGeometry):
     """Wrapper for Rhino vectors.
     """
 

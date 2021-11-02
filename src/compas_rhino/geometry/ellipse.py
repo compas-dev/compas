@@ -5,10 +5,10 @@ from __future__ import division
 import Rhino
 from ..conversions import ellipse_to_compas
 from ..conversions import ellipse_to_rhino
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoEllipse(BaseRhinoGeometry):
+class RhinoEllipse(RhinoGeometry):
     """Wrapper for Rhino ellipse objects.
     """
 

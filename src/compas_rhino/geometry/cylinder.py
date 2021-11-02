@@ -8,10 +8,10 @@ from compas.geometry import Cylinder
 from ..conversions import cylinder_to_rhino
 from ..conversions import cylinder_to_compas
 from ..conversions import ConversionError
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoCylinder(BaseRhinoGeometry):
+class RhinoCylinder(RhinoGeometry):
     """Wrapper for Rhino cylinder objects.
     """
 

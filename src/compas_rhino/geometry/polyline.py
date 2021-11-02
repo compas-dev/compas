@@ -6,10 +6,10 @@ import Rhino
 import compas_rhino
 from ..conversions import polyline_to_compas
 from ..conversions import polyline_to_rhino
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoPolyline(BaseRhinoGeometry):
+class RhinoPolyline(RhinoGeometry):
     """Wrapper for Rhino polyline objects.
     """
 

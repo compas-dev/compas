@@ -8,10 +8,7 @@ import compas_rhino
 from compas.utilities import abstractclassmethod
 
 
-__all__ = ['BaseRhinoGeometry']
-
-
-class BaseRhinoGeometry(object):
+class RhinoGeometry(object):
     """Base class for Rhino Geometry and DocObject wrappers.
 
     Attributes
@@ -30,7 +27,7 @@ class BaseRhinoGeometry(object):
     """
 
     def __init__(self):
-        super(BaseRhinoGeometry, self).__init__()
+        super(RhinoGeometry, self).__init__()
         self.guid = None
         self.object = None
         self.geometry = None
@@ -72,7 +69,7 @@ class BaseRhinoGeometry(object):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.BaseRhinoGeometry`
+        :class:`compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
         """
         obj = compas_rhino.find_object(guid)
@@ -89,7 +86,7 @@ class BaseRhinoGeometry(object):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.BaseRhinoGeometry`
+        :class:`compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
         """
         wrapper = cls()
@@ -106,7 +103,7 @@ class BaseRhinoGeometry(object):
     def from_selection(cls):
         pass
 
-    def to_compas(self, cls=None):
+    def to_compas(self):
         raise NotImplementedError
 
     def transform(self, T):

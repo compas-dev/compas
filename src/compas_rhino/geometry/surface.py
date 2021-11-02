@@ -7,14 +7,11 @@ import compas_rhino
 from compas.utilities import memoize
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join
-# from compas.geometry import angle_vectors
-# from compas.geometry import distance_point_point
-# from compas.utilities import geometric_key
 from ..conversions import point_to_compas
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoSurface(BaseRhinoGeometry):
+class RhinoSurface(RhinoGeometry):
     """Wrapper for Rhino surface objects."""
 
     @classmethod
@@ -48,84 +45,6 @@ class RhinoSurface(BaseRhinoGeometry):
         """
         guid = compas_rhino.select_surface()
         return cls.from_guid(guid)
-
-    # def to_brep(self, facefilter=None, cleanup=True):
-    #     pass
-
-    # def brep_to_compas_mesh(self, cls=None, facefilter=None, cleanup=True):
-    #     """Convert the surface brep loops to a COMPAS mesh.
-
-    #     Parameters
-    #     ----------
-    #     cls: :class:`compas.datastructures.Mesh`, optional
-    #         The type of COMPAS mesh.
-    #     facefilter: callable, optional
-    #         A filter for selection which Brep faces to include.
-    #         If provided, the filter should return ``True`` or ``False`` per face.
-    #         A very simple filter that includes all faces is ``def facefilter(face): return True``.
-    #         Default parameter value is ``None`` in which case all faces are included.
-    #     cleanup: bool, optional
-    #         Flag indicating to clean up the result.
-    #         Cleaning up means to remove isolated faces and unused vertices.
-    #         Default is ``True``.
-
-    #     Returns
-    #     -------
-    #     :class:`compas.datastructures.Mesh`
-    #         The resulting mesh.
-
-    #     """
-    #     if not self.geometry.HasBrepForm:
-    #         return
-    #     brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
-    #     if facefilter and callable(facefilter):
-    #         brepfaces = [face for face in brep.Faces if facefilter(face)]
-    #     else:
-    #         brepfaces = brep.Faces
-    #     # vertex maps and face lists
-    #     gkey_xyz = {}
-    #     faces = []
-    #     for face in brepfaces:
-    #         loop = face.OuterLoop
-    #         curve = loop.To3dCurve()
-    #         segments = curve.Explode()
-    #         a = segments[0].PointAtStart
-    #         b = segments[0].PointAtEnd
-    #         a_gkey = geometric_key(a)
-    #         b_gkey = geometric_key(b)
-    #         gkey_xyz[a_gkey] = a
-    #         gkey_xyz[b_gkey] = b
-    #         face = [a_gkey, b_gkey]
-    #         for segment in segments[1:-1]:
-    #             b = segment.PointAtEnd
-    #             b_gkey = geometric_key(b)
-    #             face.append(b_gkey)
-    #             gkey_xyz[b_gkey] = b
-    #         faces.append(face)
-    #     # vertices and faces
-    #     gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
-    #     vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
-    #     faces = [[gkey_index[gkey] for gkey in face] for face in faces]
-    #     # remove duplicates from vertexlist
-    #     polygons = []
-    #     for temp in faces:
-    #         face = []
-    #         for vertex in temp:
-    #             if vertex not in face:
-    #                 face.append(vertex)
-    #         polygons.append(face)
-    #     # define mesh type
-    #     cls = cls or Mesh
-    #     # create mesh
-    #     mesh = cls.from_vertices_and_faces(vertices, polygons)
-    #     mesh.name = self.name
-    #     # remove isolated faces
-    #     if cleanup:
-    #         for face in list(mesh.faces()):
-    #             if not mesh.face_neighbors(face):
-    #                 mesh.delete_face(face)
-    #         mesh.remove_unused_vertices()
-    #     return mesh
 
     def to_compas_mesh(self, nu, nv=None, weld=False, facefilter=None, cls=None):
         """Convert the surface to a COMPAS mesh.
@@ -204,10 +123,6 @@ class RhinoSurface(BaseRhinoGeometry):
 
         """
         return compas_rhino.rs.EvaluateSurface(self.guid, * compas_rhino.rs.SurfaceClosestPoint(self.guid, xyz))
-
-    # ==========================================================================
-    #
-    # ==========================================================================
 
     # def space(self, density=(10, 10)):
     #     """Construct a parameter grid overt the UV space of the surface.

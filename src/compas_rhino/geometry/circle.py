@@ -5,10 +5,10 @@ from __future__ import division
 import Rhino
 from ..conversions import circle_to_compas
 from ..conversions import circle_to_rhino
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoCircle(BaseRhinoGeometry):
+class RhinoCircle(RhinoGeometry):
     """Wrapper for Rhino circle objects.
     """
 

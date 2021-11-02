@@ -8,10 +8,10 @@ from compas.geometry import Sphere
 from ..conversions import sphere_to_rhino
 from ..conversions import sphere_to_compas
 from ..conversions import ConversionError
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoSphere(BaseRhinoGeometry):
+class RhinoSphere(RhinoGeometry):
     """Wrapper for Rhino sphere objects.
     """
 

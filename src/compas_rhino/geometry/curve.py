@@ -15,10 +15,10 @@ from ..conversions import curve_to_compas_ellipse
 from ..conversions import curve_to_compas_polyline
 from ..conversions import curve_to_compas_line
 from ..conversions import ConversionError
-from ._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-class RhinoCurve(BaseRhinoGeometry):
+class RhinoCurve(RhinoGeometry):
     """Wrapper for Rhino curve objects.
     """
 
