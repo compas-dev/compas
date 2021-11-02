@@ -98,7 +98,7 @@ def network_update_node_attributes(network, nodes, names=None):
         ``False`` otherwise.
 
     """
-    names = names or network.default_node_attributes.nodes()
+    names = names or network.default_node_attributes.keys()
     names = sorted(names)
     values = network.node_attributes(nodes[0], names)
     if len(nodes) > 1:
@@ -142,7 +142,7 @@ def network_update_edge_attributes(network, edges, names=None):
         ``False`` otherwise.
 
     """
-    names = names or network.default_edge_attributes.edges()
+    names = names or network.default_edge_attributes.keys()
     names = sorted(names)
     edge = edges[0]
     values = network.edge_attributes(edge, names)
@@ -256,7 +256,7 @@ def mesh_update_vertex_attributes(mesh, vertices, names=None):
         False otherwise.
 
     """
-    names = names or mesh.default_vertex_attributes.vertices()
+    names = names or mesh.default_vertex_attributes.keys()
     names = sorted(names)
     values = mesh.vertex_attributes(vertices[0], names)
     if len(vertices) > 1:
@@ -299,7 +299,7 @@ def mesh_update_face_attributes(mesh, faces, names=None):
         ``False`` otherwise.
 
     """
-    names = names or mesh.default_face_attributes.faces()
+    names = names or mesh.default_face_attributes.keys()
     names = sorted(names)
     values = mesh.face_attributes(faces[0], names)
     if len(faces) > 1:
@@ -343,7 +343,7 @@ def mesh_update_edge_attributes(mesh, edges, names=None):
         ``False`` otherwise.
 
     """
-    names = names or mesh.default_edge_attributes.edges()
+    names = names or mesh.default_edge_attributes.keys()
     names = sorted(names)
     edge = edges[0]
     values = mesh.edge_attributes(edge, names)
