@@ -28,9 +28,40 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
     def __init__(self, volmesh, layer=None, **kwargs):
         super(VolMeshArtist, self).__init__(volmesh=volmesh, layer=layer, **kwargs)
 
-    def clear_by_name(self):
-        """Clear all objects in the "namespace" of the associated volmesh."""
+    # ==========================================================================
+    # clear
+    # ==========================================================================
+
+    def clear(self):
         guids = compas_rhino.get_objects(name="{}.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_vertices(self):
+        guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_edges(self):
+        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_faces(self):
+        guids = compas_rhino.get_objects(name="{}.face.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_cells(self):
+        guids = compas_rhino.get_objects(name="{}.cell.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_vertexlabels(self):
+        guids = compas_rhino.get_objects(name="{}.vertexlabel.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_edgelabels(self):
+        guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
+
+    def clear_facelabels(self):
+        guids = compas_rhino.get_objects(name="{}.facelabel.*".format(self.volmesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     # ==========================================================================
