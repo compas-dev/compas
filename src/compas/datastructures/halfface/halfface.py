@@ -161,6 +161,7 @@ class HalfFace(Datastructure):
         dfa = data.get('dfa') or {}
         dca = data.get('dca') or {}
         vertex = data.get('vertex') or {}
+        halfface = data.get('halfface') or {}
         cell = data.get('cell') or {}
         edge_data = data.get('edge_data') or {}
         face_data = data.get('face_data') or {}
@@ -190,12 +191,17 @@ class HalfFace(Datastructure):
             attr = vertex[v] or {}
             self.add_vertex(int(v), attr_dict=attr)
 
+        for f in halfface:
+            attr = face_data.get(f) or {}
+            self.add_halfface(halfface[f], fkey=int(f), attr_dict=attr)
+
         for c in cell:
             attr = cell_data.get(c) or {}
             faces = []
             for u in cell[c]:
                 for v in cell[c][u]:
-                    faces.append(cell[c][u][v])
+                    f = cell[c][u][v]
+                    faces.append(halfface[str(f)])
             self.add_cell(faces, ckey=int(c), attr_dict=attr)
 
         for e in edge_data:
@@ -268,27 +274,33 @@ class HalfFace(Datastructure):
         """
         return choice(self.halfface_vertices(face))
 
-    def vertex_index(self):
+    def key_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
         corresponding index in a vertex list or array.
 
         Returns
         -------
         dict
-            A dictionary of vertex-index pairs.
-        """
-        return {vertex: index for index, vertex in enumerate(self.vertices())}
+            A dictionary of key-index pairs.
 
-    def index_vertex(self):
+        """
+        return {key: index for index, key in enumerate(self.vertices())}
+
+    vertex_index = key_index
+
+    def index_key(self):
         """Returns a dictionary that maps the indices of a vertex list to
-        keys in the vertex dictionary.
+        keys in a vertex dictionary.
 
         Returns
         -------
         dict
-            A dictionary of index-vertex pairs.
+            A dictionary of index-key pairs.
+
         """
         return dict(enumerate(self.vertices()))
+
+    index_vertex = index_key
 
     # --------------------------------------------------------------------------
     # builders
@@ -748,7 +760,8 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate. The callable takes 2 parameters:
+            ``key``, ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the vertices and their data attributes.
             Default is ``False``.
@@ -833,7 +846,8 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 3 parameters: ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate. The callable takes 3 parameters:
+            ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the vertices and their data attributes.
             Default is ``False``.
@@ -919,7 +933,8 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate. The callable takes 2 parameters:
+            ``key``, ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the faces and their data attributes.
             Default is ``False``.
@@ -1005,7 +1020,8 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate. The callable takes 2 parameters:
+            ``key``, ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the cells and their data attributes.
             Default is ``False``.
@@ -1352,7 +1368,9 @@ class HalfFace(Datastructure):
                 self._edge_data[key][name] = value
             return
         if not names:
-            return EdgeAttributeView(self.default_edge_attributes, self._edge_data, key)
+            key = str(tuple(sorted(edge)))
+            return EdgeAttributeView(self.default_edge_attributes,
+                                     self._edge_data.setdefault(key, {}))
         values = []
         for name in names:
             value = self.edge_attribute(edge, name)
@@ -1547,7 +1565,8 @@ class HalfFace(Datastructure):
                 self._face_data[key][name] = value
             return
         if not names:
-            return FaceAttributeView(self.default_face_attributes, self._face_data, key)
+            return FaceAttributeView(self.default_face_attributes,
+                                     self._face_data.setdefault(key, {}))
         values = []
         for name in names:
             value = self.face_attribute(face, name)
