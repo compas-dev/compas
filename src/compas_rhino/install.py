@@ -55,8 +55,7 @@ def install(version=None, packages=None):
     scripts_path = compas_rhino._get_scripts_path(version)
 
     print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
-    print('Location scripts folder: {}'.format(scripts_path))
-    print()
+    print('{}\n'.format(scripts_path))
 
     results = []
     symlinks_to_install = []
@@ -125,9 +124,7 @@ def install(version=None, packages=None):
             exit_code = -1
 
     if exit_code == 0 and len(installed_packages):
-        print()
-        print('Running post-installation steps...')
-        print()
+        print('\nRunning post-installation steps...\n')
         if not _run_post_execution_steps(after_rhino_install(installed_packages)):
             exit_code = -1
 
@@ -156,9 +153,7 @@ def _run_post_execution_steps(steps_generator):
                 post_execution_errors.append(ValueError('Step ran without errors but result is wrongly formatted: {}'.format(str(item))))
 
     if post_execution_errors:
-        print()
-        print('One or more errors occurred:')
-        print()
+        print('\nOne or more errors occurred:\n')
         for error in post_execution_errors:
             print('   - {}'.format(repr(error)))
 
