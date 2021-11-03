@@ -15,13 +15,21 @@ class RhinoMesh(RhinoGeometry):
     """Wrapper for Rhino mesh objects.
     """
 
-    # @property
-    # def vertices(self):
-    #     return [map(float, point) for point in compas_rhino.rs.MeshVertices(self.geometry)]
+    @property
+    def vertices(self):
+        if self.geometry:
+            vertices = [[point.X, point.Y, point.Z] for point in self.geometry.Vertices]
+        else:
+            vertices = []
+        return vertices
 
-    # @property
-    # def faces(self):
-    #     return map(list, compas_rhino.rs.MeshFaceVertices(self.geometry))
+    @property
+    def faces(self):
+        if self.geometry:
+            faces = [[face.A, face.B, face.C] if face.IsTriangle else [face.A, face.B, face.C, face.D] for face in self.geometry.Faces]
+        else:
+            faces = []
+        return faces
 
     # @property
     # def vertex_colors(self):
