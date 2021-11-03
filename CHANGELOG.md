@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 * Add abstract methods to `compas_rhino.artists.volmeshartist`.
 
 ### Changed
 
 * Fixed bug in directions of `compas.datastructures.Mesh.from_meshgrid`.
+* Fixed bug in Rhino mesh face drawing.
 
 ### Removed
 
