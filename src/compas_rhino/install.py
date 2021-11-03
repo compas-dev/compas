@@ -50,6 +50,8 @@ def install(version=None, packages=None):
     packages = _filter_installable_packages(version, packages)
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+    # We install COMPAS packages in the scripts folder
+    # instead of directly as IPy module.
     scripts_path = compas_rhino._get_scripts_path(version)
 
     print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
@@ -62,15 +64,20 @@ def install(version=None, packages=None):
     exit_code = 0
 
     for package in packages:
-        package_path = compas_rhino._get_package_path(importlib.import_module(package))
         symlink_path = os.path.join(scripts_path, package)
+        if os.path.exists(symlink_path):
+            symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
+
+        package_path = compas_rhino._get_package_path(importlib.import_module(package))
         symlinks_to_install.append(dict(name=package, source_path=package_path, link=symlink_path))
-        symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
 
         # Handle legacy install location
-        legacy_path = os.path.join(ipylib_path, package)
-        if os.path.exists(legacy_path):
-            symlinks_to_uninstall.append(dict(name=package, link=legacy_path))
+        # This does not always work,
+        # and especially not in cases where it is in any case not necessary :)
+        if ipylib_path:
+            legacy_path = os.path.join(ipylib_path, package)
+            if os.path.exists(legacy_path):
+                symlinks_to_uninstall.append(dict(name=package, link=legacy_path))
 
     # First uninstall existing copies of packages requested for installation
     symlinks = [link['link'] for link in symlinks_to_uninstall]
@@ -81,8 +88,10 @@ def install(version=None, packages=None):
             results.append((uninstall_data['name'], 'ERROR: Cannot remove symlink, try to run as administrator.'))
 
     # Handle legacy bootstrapper
-    if not compas_rhino._try_remove_bootstrapper(ipylib_path):
-        results.append(('compas_bootstrapper', 'ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.'))
+    # Again, only if possible...
+    if ipylib_path:
+        if not compas_rhino._try_remove_bootstrapper(ipylib_path):
+            results.append(('compas_bootstrapper', 'ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.'))
 
     # Ready to start installing
     symlinks = [(link['source_path'], link['link']) for link in symlinks_to_install]
@@ -122,7 +131,7 @@ def install(version=None, packages=None):
         if not _run_post_execution_steps(after_rhino_install(installed_packages)):
             exit_code = -1
 
-    print('\nCompleted.')
+    print('\nInstall completed.')
     if exit_code != 0:
         sys.exit(exit_code)
 
