@@ -7,7 +7,6 @@ from functools import wraps
 import compas_rhino
 
 from compas.geometry import centroid_polygon
-from compas.geometry import centroid_points
 from compas.utilities import pairwise
 
 from compas_rhino.utilities import create_layers_from_path
@@ -815,7 +814,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
                 mesh.Faces.AddFace(*face)
             else:
                 if MeshNgon:
-                    centroid = centroid_points([vertices[index] for index in face])
+                    centroid = centroid_polygon([vertices[index] for index in face])
                     c = mesh.Vertices.Add(* centroid)
                     facets = []
                     for i, j in pairwise(face + face[:1]):
@@ -878,10 +877,10 @@ def draw_faces(faces, **kwargs):
 
         if v < 3:
             continue
-        if v == 3:
+        elif v == 3:
             mfaces = [[0, 1, 2, 2]]
-        # else:
-        #     mfaces = [list(range(v))]
+        elif v == 4:
+            mfaces = [[0, 1, 2, 3]]
         else:
             mfaces = _face_to_max_quad(points, range(v))
             if vertexcolors:
