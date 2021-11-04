@@ -92,6 +92,28 @@ Transformations
     Translation
 
 
+Curves
+------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Curve
+    NurbsCurve
+
+
+Surfaces
+--------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Surface
+    NurbsSurface
+
+
 Functions
 =========
 
@@ -948,6 +970,16 @@ if not compas.IPY:
         PointCollectionNumpy
     )
 
+from .curves import (
+    Curve,
+    NurbsCurve
+)
+
+from .surfaces import (
+    Surface,
+    NurbsSurface
+)
+
 __all__ = [
     'close',
     'allclose',
@@ -1250,6 +1282,12 @@ __all__ = [
 
     'Collection',
     'PointCollection',
+
+    'Curve',
+    'NurbsCurve',
+
+    'Surface',
+    'NurbsSurface'
 ]
 
 if not compas.IPY:
@@ -1275,5 +1313,5 @@ if not compas.IPY:
         'delaunay_from_points_numpy',
         'voronoi_from_points_numpy',
         'CollectionNumpy',
-        'PointCollectionNumpy'
+        'PointCollectionNumpy',
     ]
