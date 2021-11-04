@@ -9,12 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Add abstract methods to `compas_rhino.artists.volmeshartist`.
-
 * Added `compas.geometry.Curve` and `compas.geometry.NurbsCurve`.
 * Added `compas.geometry.Surface` and `compas.geometry.NurbsSurface`.
 * Added pluggables for `compas.geometry.NurbsCurve.__new__`, `compas.geometry.NurbsCurve.from_parameters`, `compas.geometry.NurbsCurve.from_points`, `compas.geometry.NurbsCurve.from_interpolation`, `compas.geometry.NurbsCurve.from_step`.
 * Added pluggables for `compas.geometry.NurbsSurface.__new__`, `compas.geometry.NurbsSurface.from_parameters`, `compas.geometry.NurbsSurface.from_points`, `compas.geometry.NurbsSurface.from_fill`, `compas.geometry.NurbsSurface.from_step`.
+* Added missing implementations for abstract clear methods of `compas_rhino.artists.volmeshartist`.
 
 ### Changed
 
