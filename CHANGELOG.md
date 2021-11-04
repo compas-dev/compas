@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add abstract methods to `compas_rhino.artists.volmeshartist`.
 
+* Added `compas.geometry.Curve` and `compas.geometry.NurbsCurve`.
+* Added `compas.geometry.Surface` and `compas.geometry.NurbsSurface`.
+* Added pluggables for `compas.geometry.NurbsCurve.__new__`, `compas.geometry.NurbsCurve.from_parameters`, `compas.geometry.NurbsCurve.from_points`, `compas.geometry.NurbsCurve.from_interpolation`, `compas.geometry.NurbsCurve.from_step`.
+* Added pluggables for `compas.geometry.NurbsSurface.__new__`, `compas.geometry.NurbsSurface.from_parameters`, `compas.geometry.NurbsSurface.from_points`, `compas.geometry.NurbsSurface.from_fill`, `compas.geometry.NurbsSurface.from_step`.
+
 * Added `compas_rhino.geometry.RhinoBox`, `compas_rhino.geometry.RhinoCircle`, `compas_rhino.geometry.RhinoCone`, `compas_rhino.geometry.RhinoCurve`, `compas_rhino.geometry.RhinoCylinder`, `compas_rhino.geometry.RhinoEllipse`, `compas_rhino.geometry.RhinoLine`, `compas_rhino.geometry.RhinoMesh`, `compas_rhino.geometry.RhinoPlane`, `compas_rhino.geometry.RhinoPoint`, `compas_rhino.geometry.RhinoPolyline`, `compas_rhino.geometry.RhinoSphere`, `compas_rhino.geometry.RhinoSurface`, `compas_rhino.geometry.RhinoVector` as wrappers for working with Rhino geometry through geometry conversions or coercion of doc objects.
 * Added `compas_rhino.conversions` from COMPAS geometry to Rhino geometry and vice versa, for primitives, shapes, curves, surfaces, meshes.
 * Added `compas_rhino.coercion` from Rhino doc objects to Rhino geometry compatible with COMPAS geometry.
