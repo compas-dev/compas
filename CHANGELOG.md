@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug in directions of `compas.datastructures.Mesh.from_meshgrid`.
 * Fixed bug in Rhino mesh face drawing.
+* Fixed bug related to legacy uninstall on Rhino for Mac.
 
 ### Removed
 
