@@ -38,14 +38,39 @@ def uninstall_plugin(plugin, version=None):
         version = '6.0'
 
     python_plugins_path = compas_rhino._get_python_plugins_path(version)
+    plugin_name = plugin.split('{')[0]
 
-    destination = os.path.join(python_plugins_path, plugin)
+    symlinks = []
+    dirs = []
 
-    print('Uninstalling PlugIn {} from Rhino PythonPlugIns.'.format(plugin))
+    for name in os.listdir(python_plugins_path):
+        path = os.path.join(python_plugins_path, name)
 
-    remove_symlink(destination)
+        if os.path.islink(path):
+            if name.split('{')[0] == plugin_name:
+                symlinks.append(name)
 
-    print('PlugIn {} Uninstalled.'.format(plugin))
+        elif os.path.isdir(path):
+            if name.split('{')[0] == plugin_name:
+                dirs.append(name)
+
+    print('\nUninstalling PlugIn {} from Rhino PythonPlugIns:'.format(plugin_name))
+
+    if not symlinks and not dirs:
+        print('Nothing to uninstall...\n')
+
+    else:
+        for name in symlinks:
+            print('- {}'.format(name))
+            destination = os.path.join(python_plugins_path, name)
+            remove_symlink(destination)
+
+        for name in dirs:
+            print('- {}'.format(name))
+            destination = os.path.join(python_plugins_path, name)
+            os.rmdir(destination)
+
+        print('\nPlugIn {} Uninstalled.\n'.format(plugin_name))
 
 
 # ==============================================================================

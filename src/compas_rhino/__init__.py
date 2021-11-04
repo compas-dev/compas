@@ -72,7 +72,12 @@ def _get_ironpython_lib_path(version):
         raise Exception('Unsupported platform')
 
     if not os.path.exists(ironpython_lib_path):
-        raise Exception("The lib folder for IronPython does not exist in this location: {}".format(ironpython_lib_path))
+        # This does not always work.
+        # Especially not on (new) macs.
+        # However, since it is only used to clean up potential old installations
+        # it does not seem crucial anymore.
+        ironpython_lib_path = None
+        print("The lib folder for IronPython does not exist in this location: {}".format(ironpython_lib_path))
 
     return ironpython_lib_path
 
@@ -213,6 +218,7 @@ def _try_remove_bootstrapper(path):
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
+
 __all_plugins__ = [
     'compas_rhino.geometry.booleans',
     'compas_rhino.geometry.trimesh',
