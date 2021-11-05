@@ -3,38 +3,38 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-import compas_rhino
+
 from compas.geometry import Line
 from compas.geometry import Circle
 from compas.geometry import Ellipse
-from ..conversions import circle_to_rhino_curve
-from ..conversions import ellipse_to_rhino_curve
-from ..conversions import line_to_rhino_curve
-from ..conversions import curve_to_compas_circle
-from ..conversions import curve_to_compas_ellipse
-from ..conversions import curve_to_compas_polyline
-from ..conversions import curve_to_compas_line
-from ..conversions import ConversionError
+
+from compas_rhino.conversions import circle_to_rhino_curve
+from compas_rhino.conversions import ellipse_to_rhino_curve
+from compas_rhino.conversions import line_to_rhino_curve
+from compas_rhino.conversions import curve_to_compas_circle
+from compas_rhino.conversions import curve_to_compas_ellipse
+from compas_rhino.conversions import curve_to_compas_polyline
+from compas_rhino.conversions import curve_to_compas_line
+from compas_rhino.conversions import ConversionError
+
 from ._geometry import RhinoGeometry
 
 
 class RhinoCurve(RhinoGeometry):
-    """Wrapper for Rhino curve objects.
-    """
+    """Wrapper for Rhino curves."""
 
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a curve wrapper from an existing geometry object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Curve` or :class:`compas.geometry.Line` or :class:`compas.geometry.Circle` or :class:`compas.geometry.Ellipse`
+        geometry : :rhino:`Rhino_Geometry_Curve` or :class:`compas.geometry.Line` or :class:`compas.geometry.Circle` or :class:`compas.geometry.Ellipse`
             The geometry object defining a curve.
-
-        Returns
-        -------
-        :class:`RhinoCurve`
-            The Rhino curve wrapper.
 
         Raises
         ------
@@ -50,21 +50,7 @@ class RhinoCurve(RhinoGeometry):
                 geometry = ellipse_to_rhino_curve(geometry)
             else:
                 raise ConversionError('The geometry cannot be converted to a curve.')
-        curve = cls()
-        curve.geometry = geometry
-        return curve
-
-    @classmethod
-    def from_selection(cls):
-        """Construct a curve wrapper by selecting an existing Rhino curve object.
-
-        Returns
-        -------
-        :class:`RhinoCurve`
-            The Rhino curve wrapper.
-        """
-        guid = compas_rhino.select_curve()
-        return cls.from_guid(guid)
+        self._geometry = geometry
 
     def to_compas_circle(self):
         """Convert the curve to a COMPAS circle.

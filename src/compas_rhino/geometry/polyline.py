@@ -3,50 +3,37 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-import compas_rhino
-from ..conversions import polyline_to_compas
-from ..conversions import polyline_to_rhino
+
+from compas_rhino.conversions import polyline_to_compas
+from compas_rhino.conversions import polyline_to_rhino
+
 from ._geometry import RhinoGeometry
 
 
 class RhinoPolyline(RhinoGeometry):
-    """Wrapper for Rhino polyline objects.
-    """
+    """Wrapper for Rhino polylines."""
 
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a line from an existing Rhino polyline geometry object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Polyline` or :class:`compas.geometry.Polyline` or list of points
+        geometry : :rhino:`Rhino_Geometry_Polyline` or :class:`compas.geometry.Polyline` or list of points
             The input geometry.
 
-        Returns
-        -------
-        :class:`RhinoPolyline`
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a polyline.
         """
         if not isinstance(geometry, Rhino.Geometry.Polyline):
             geometry = polyline_to_rhino(geometry)
-        polyline = cls()
-        polyline.geometry = geometry
-        return polyline
-
-    @classmethod
-    def from_selection(cls):
-        """Construct a polyline wrapper by selecting an existing Rhino polyline object.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        :class:`RhinoPolyline`
-            The Rhino polyline wrapper.
-        """
-        guid = compas_rhino.select_polyline()
-        return cls.from_guid(guid)
+        self._geometry = geometry
 
     def to_compas(self):
         """Convert the polyline to a COMPAS geometry object.

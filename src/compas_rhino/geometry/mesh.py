@@ -3,17 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-import compas_rhino
+
 from compas.datastructures import Mesh
+
 from ._geometry import RhinoGeometry
 
 
-__all__ = ['RhinoMesh']
-
-
 class RhinoMesh(RhinoGeometry):
-    """Wrapper for Rhino mesh objects.
-    """
+    """Wrapper for Rhino meshes."""
 
     @property
     def vertices(self):
@@ -31,51 +28,53 @@ class RhinoMesh(RhinoGeometry):
             faces = []
         return faces
 
-    # @property
-    # def vertex_colors(self):
-    #     return map(list, compas_rhino.rs.MeshVertexColors(self.guid))
+    @property
+    def vertexnormals(self):
+        if self.geometry:
+            # self.geometry.ComputeNormals()
+            # self.geometry.UnitizeNormals()
+            normals = [[vector.X, vector.Y, vector.Z] for vector in self.geometry.Normals]
+        else:
+            normals = []
+        return normals
 
-    # @vertex_colors.setter
-    # def vertex_colors(self, colors):
-    #     compas_rhino.rs.MeshVertexColors(self.guid, colors)
+    @property
+    def facenormals(self):
+        if self.geometry:
+            # self.geometry.ComputeFaceNormals()
+            # self.geometry.UnitizeFaceNormals()
+            normals = [[vector.X, vector.Y, vector.Z] for vector in self.geometry.FaceNormals]
+        else:
+            normals = []
+        return normals
 
-    # @property
-    # def border(self):
-    #     return compas_rhino.rs.DuplicateMeshBorder(self.guid)
+    @property
+    def vertexcolors(self):
+        if self.geometry:
+            colors = [[color.R, color.G, color.B] for color in self.geometry.VertexColors]
+        else:
+            colors = []
+        return colors
 
-    @classmethod
-    def from_selection(cls):
-        """Construct a mesh wrapper by selecting an existing Rhino mesh object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        None
-
-        Returns
-        -------
-        :class:`RhinoMesh`
-            The wrapped line.
-        """
-        guid = compas_rhino.select_mesh()
-        return cls.from_guid(guid)
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a mesh wrapper from an existing Rhino geometry object.
-
-        Parameters
-        ----------
-        geometry: :class:`Rhino.Geometry.Mesh`
+        geometry: :rhino:`Rhino_Geometry_Mesh`
             A Rhino mesh geometry.
 
-        Returns
-        -------
-        :class:`RhinoMesh`
-            The wrapped line.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a mesh.
         """
-        mesh = cls()
-        mesh.geometry = geometry
-        return mesh
+        self._geometry = geometry
 
     def to_compas(self, cls=None):
         """Convert a Rhino mesh to a COMPAS mesh.

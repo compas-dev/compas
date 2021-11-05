@@ -3,64 +3,30 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-import compas_rhino
+
 from compas.geometry import Box
-from ..conversions import box_to_rhino
-from ..conversions import box_to_compas
-from ..conversions import ConversionError
+from compas_rhino.conversions import box_to_rhino
+from compas_rhino.conversions import box_to_compas
+from compas_rhino.conversions import ConversionError
+
 from ._geometry import RhinoGeometry
 
 
 class RhinoBox(RhinoGeometry):
-    """Wrapper for Rhino box objects.
-    """
+    """Wrapper for Rhino boxes."""
 
-    @classmethod
-    def from_object(cls, obj):
-        """Construct a box wrapper from an existing Rhino object.
+    @property
+    def geometry(self):
+        return self._geometry
 
-        Parameters
-        ----------
-        obj : :class:`Rhino.DocObjects.ExtrusionObject`
-            The Rhino object.
-
-        Returns
-        -------
-        :class:`RhinoBox`
-            The Rhino box wrapper.
-
-        Raises
-        ------
-        :class:`ConversionError`
-            If the Rhino (extrusion) object cannot be converted to a box.
-        """
-        wrapper = cls()
-        wrapper.guid = obj.Id
-        wrapper.object = obj
-        geometry = obj.Geometry
-        if not isinstance(geometry, Rhino.Geometry.Box):
-            if isinstance(geometry, Rhino.Geometry.Extrusion):
-                plane = geometry.GetPathPlane(0)
-                box = geometry.GetBoundingBox(plane)
-                geometry = Rhino.Geometry.Box(plane, box)
-            else:
-                raise ConversionError('Rhino object cannot be converted to a box: {}'.format(obj))
-        wrapper.geometry = geometry
-        return wrapper
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a box wrapper from an existing geometry object.
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Box` or :class:`compas.geometry.Box`
+        geometry : :rhino:`Rhino_Geometry_Box` or :class:`compas.geometry.Box`
             The geometry object defining a box.
-
-        Returns
-        -------
-        :class:`RhinoBox`
-            The Rhino box wrapper.
 
         Raises
         ------
@@ -76,21 +42,8 @@ class RhinoBox(RhinoGeometry):
                 geometry = box_to_rhino(geometry)
             else:
                 raise ConversionError('Geometry object cannot be converted to a box: {}'.format(geometry))
-        box = cls()
-        box.geometry = geometry
-        return box
 
-    @classmethod
-    def from_selection(cls):
-        """Construct a box wrapper by selecting an existing Rhino curve object.
-
-        Returns
-        -------
-        :class:`RhinoBox`
-            The Rhino box wrapper.
-        """
-        guid = compas_rhino.select_object()
-        return cls.from_guid(guid)
+        self._geometry = geometry
 
     def to_compas(self):
         """Convert to a COMPAS geometry object.

@@ -3,34 +3,37 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino
-from ..conversions import vector_to_rhino
-from ..conversions import vector_to_compas
+
+from compas_rhino.conversions import vector_to_rhino
+from compas_rhino.conversions import vector_to_compas
+
 from ._geometry import RhinoGeometry
 
 
 class RhinoVector(RhinoGeometry):
-    """Wrapper for Rhino vectors.
-    """
+    """Wrapper for Rhino vectors."""
 
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a vector wrapper from an existing geometry object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Vector3d` or :class:`compas.geometry.Vector` or list of float
+        geometry : :rhino:`Rhino_Geometry_Vector3d` or :class:`compas.geometry.Vector` or list of float
             The input geometry.
 
-        Returns
-        -------
-        :class:`RhinoVector`
-            The Rhino vector wrapper.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a vector.
         """
         if not isinstance(geometry, Rhino.Geometry.Vector3d):
             geometry = vector_to_rhino(geometry)
-        vector = cls()
-        vector.geometry = geometry
-        return vector
+        self._geometry = geometry
 
     def to_compas(self):
         """Convert the wrapper to a COMPAS object.

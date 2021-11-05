@@ -3,38 +3,37 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-from ..conversions import circle_to_compas
-from ..conversions import circle_to_rhino
+
+from compas_rhino.conversions import circle_to_compas
+from compas_rhino.conversions import circle_to_rhino
+
 from ._geometry import RhinoGeometry
 
 
 class RhinoCircle(RhinoGeometry):
-    """Wrapper for Rhino circle objects.
-    """
+    """Wrapper for Rhino circles."""
 
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a circle wrapper from an existing geometry object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Circle` or :class:`compas.geometry.Circle`
+        geometry : :rhino:`Rhino_Geometry_Circle` or :class:`compas.geometry.Circle`
             The geometry object defining a circle.
 
-        Returns
-        -------
-        :class:`RhinoCircle`
-            The Rhino circle wrapper.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a box.
         """
         if not isinstance(geometry, Rhino.Geometry.Circle):
             geometry = circle_to_rhino(geometry)
-        circle = cls()
-        circle.geometry = geometry
-        return circle
-
-    @classmethod
-    def from_selection(cls):
-        raise NotImplementedError
+        self._geometry = geometry
 
     def to_compas(self):
         """Convert to a COMPAS geometry object.

@@ -3,38 +3,37 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-from ..conversions import ellipse_to_compas
-from ..conversions import ellipse_to_rhino
+
+from compas_rhino.conversions import ellipse_to_compas
+from compas_rhino.conversions import ellipse_to_rhino
+
 from ._geometry import RhinoGeometry
 
 
 class RhinoEllipse(RhinoGeometry):
-    """Wrapper for Rhino ellipse objects.
-    """
+    """Wrapper for Rhino ellipses."""
 
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct an ellipse wrapper from an existing geometry object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Ellipse` or :class:`compas.geometry.Ellipse`
+        geometry : :rhino:`Rhino_Geometry_Ellipse` or :class:`compas.geometry.Ellipse`
             The geometry object defining an ellipse.
 
-        Returns
-        -------
-        :class:`RhinoEllipse`
-            The Rhino ellipse wrapper.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to an ellipse.
         """
         if not isinstance(geometry, Rhino.Geometry.Ellipse):
             geometry = ellipse_to_rhino(geometry)
-        plane = cls()
-        plane.geometry = geometry
-        return plane
-
-    @classmethod
-    def from_selection(cls):
-        raise NotImplementedError
+        self._geometry = geometry
 
     def to_compas(self):
         """Convert to a COMPAS geometry object.

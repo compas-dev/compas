@@ -4,47 +4,39 @@ from __future__ import division
 
 import Rhino
 import compas_rhino
+
 from compas.utilities import memoize
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join
-from ..conversions import point_to_compas
+from compas_rhino.conversions import point_to_compas
+
 from ._geometry import RhinoGeometry
 
 
 class RhinoSurface(RhinoGeometry):
-    """Wrapper for Rhino surface objects."""
+    """Wrapper for Rhino surfaces."""
 
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a surface wrapper from an existing geometry object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : :class:`Rhino.Geometry.Surface`
+        geometry : :rhino:`Rhino_Geometry_Surface`
             The geometry object defining a surface.
 
-        Returns
-        -------
-        :class:`RhinoSurface`
-            The Rhino surface wrapper.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a surface.
         """
         if not isinstance(geometry, Rhino.Geometry.Surface):
             raise TypeError("The input geometry is not of type `Rhino.Geometry.Surface`: {}".format(type(geometry)))
-        surface = cls()
-        surface.geometry = geometry
-        return surface
-
-    @classmethod
-    def from_selection(cls):
-        """Construct a surface wrapper by selecting an existing Rhino curve object.
-
-        Returns
-        -------
-        :class:`RhinoSurface`
-            The Rhino surface wrapper.
-        """
-        guid = compas_rhino.select_surface()
-        return cls.from_guid(guid)
+        self._geometry = geometry
 
     def to_compas_mesh(self, nu, nv=None, weld=False, facefilter=None, cls=None):
         """Convert the surface to a COMPAS mesh.

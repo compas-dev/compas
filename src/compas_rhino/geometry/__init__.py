@@ -52,6 +52,8 @@ from .sphere import RhinoSphere
 from .surface import RhinoSurface
 from .vector import RhinoVector
 
+BaseRhinoGeometry = RhinoGeometry
+
 __all__ = [
     'RhinoGeometry',
     'RhinoBox',
