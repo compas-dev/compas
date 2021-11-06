@@ -2092,43 +2092,30 @@ class HalfEdge(Datastructure):
         list of tuple of int
             The edges on the same loop as the given edge.
         """
-        if self.is_edge_on_boundary(*edge):
-            return self._edge_loop_on_boundary(edge)
-
-        edges = []
-
-        v, u = edge
-        edges.append((u, v))
-        while True:
-            if v == edge[1]:
-                break
-            nbrs = self.vertex_neighbors(v, ordered=True)
-            if len(nbrs) != 4:
-                break
-            i = nbrs.index(u)
-            u = v
-            v = nbrs[i - 2]
-            edges.append((u, v))
-
-        edges[:] = [(u, v) for v, u in edges[::-1]]
-        if edges[0][0] == edges[-1][1]:
-            return edges
-
         u, v = edge
-        while True:
-            nbrs = self.vertex_neighbors(v, ordered=True)
-            if len(nbrs) != 4:
-                break
-            i = nbrs.index(u)
-            u = v
-            v = nbrs[i - 2]
-            edges.append((u, v))
-
-        return edges
+        uv_loop = self.halfedge_loop((u, v))
+        if uv_loop[0][0] == uv_loop[-1][1]:
+            return uv_loop
+        vu_loop = self.halfedge_loop((v, u))
+        vu_loop[:] = [(u, v) for v, u in vu_loop[::-1]]
+        return vu_loop + uv_loop
 
     def halfedge_loop(self, edge):
-        """Find all edges on the same loop as the halfedge, in the direction of the halfedge."""
+        """Find all edges on the same loop as the halfedge, in the direction of the halfedge.
+
+        Parameters
+        ----------
+        edge : tuple of int
+            The identifier of the starting edge.
+
+        Returns
+        -------
+        list of tuple of int
+            The edges on the same loop as the given edge.
+        """
         u, v = edge
+        if self.is_edge_on_boundary(u, v):
+            return self._halfedge_loop_on_boundary(edge)
         edges = [(u, v)]
         while True:
             nbrs = self.vertex_neighbors(v, ordered=True)
@@ -2142,47 +2129,38 @@ class HalfEdge(Datastructure):
                 break
         return edges
 
-    def _edge_loop_on_boundary(self, uv):
-        """Find all edges on the same loop as a given edge on the boundary."""
-        edges = []
-        current, previous = uv
-        edges.append((previous, current))
+    def _halfedge_loop_on_boundary(self, edge):
+        """Find all edges on the same loop as the halfedge, in the direction of the halfedge, if the halfedge is on the boundary.
+        
+        Parameters
+        ----------
+        edge : tuple of int
+            The identifier of the starting edge.
+
+        Returns
+        -------
+        list of tuple of int
+            The edges on the same loop as the given edge.
+        """
+        u, v = edge
+        edges = [(u, v)]
         while True:
-            if current == uv[1]:
-                break
-            nbrs = self.vertex_neighbors(current)
+            nbrs = self.vertex_neighbors(v)
             if len(nbrs) == 2:
                 break
             nbr = None
             for temp in nbrs:
-                if temp == previous:
+                if temp == u:
                     continue
-                if self.is_edge_on_boundary(current, temp):
+                if self.is_edge_on_boundary(v, temp):
                     nbr = temp
                     break
             if nbr is None:
                 break
-            previous, current = current, nbr
-            edges.append((previous, current))
-        edges[:] = [(u, v) for v, u in edges[::-1]]
-        if edges[0][0] == edges[-1][1]:
-            return edges
-        previous, current = uv
-        while True:
-            nbrs = self.vertex_neighbors(current)
-            if len(nbrs) == 2:
+            u, v = v, nbr
+            edges.append((u, v))
+            if v == edges[0][0]:
                 break
-            nbr = None
-            for temp in nbrs:
-                if temp == previous:
-                    continue
-                if self.is_edge_on_boundary(current, temp):
-                    nbr = temp
-                    break
-            if nbr is None:
-                break
-            previous, current = current, nbr
-            edges.append((previous, current))
         return edges
 
     def edge_strip(self, edge):
