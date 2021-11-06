@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added halfedge loops in `compas.datastructures.Halfedge.halfedge_loop`.
+* Added halfedge strips in `compas.datastructures.Halfedge.halfedge_strip`.
+
 ### Changed
+
+* Fixed bug in continuous loops in `compas.datastructures.Halfedge.edge_loop`.
+* Fixed bug in continuous strips in `compas.datastructures.Halfedge.edge_strip`.
 
 ### Removed
 

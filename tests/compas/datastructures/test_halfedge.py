@@ -1,7 +1,11 @@
 import pytest
 
 import compas
+
+from compas.geometry import Sphere
+
 from compas.datastructures import HalfEdge
+from compas.datastructures import Mesh
 
 
 # ==============================================================================
@@ -33,6 +37,13 @@ def face_key():
 @pytest.fixture
 def edge_key():
     return (0, 1)
+
+
+@pytest.fixture
+def sphere():
+    sphere = Sphere([0, 0, 0], 1.0)
+    mesh = Mesh.from_shape(sphere, u=16, v=16)
+    return mesh
 
 
 # ==============================================================================
@@ -240,3 +251,30 @@ def test_del_edge_attribute_in_view(mesh, edge_key):
     del attrs["foo"]
     with pytest.raises(KeyError):
         attrs["foo"]
+
+
+# ==============================================================================
+# Tests - Loops & Strip
+# ==============================================================================
+
+def test_loops_and_strips(sphere):
+    poles = list(sphere.vertices_where({'vertex_degree': 16}))
+
+    for nbr in sphere.vertex_neighbors(poles[0]):
+        meridian = sphere.edge_loop((poles[0], nbr))
+
+        assert len(meridian) == 16, meridian
+        assert meridian[0][0] == poles[0]
+        assert meridian[-1][1] == poles[1]
+
+        for edge in meridian[1:-1]:
+            strip = sphere.edge_strip(edge)
+
+            assert len(strip) == 17, strip
+            assert strip[0] == strip[-1]
+
+        for edge in meridian[1:-1]:
+            ring = sphere.edge_loop(sphere.halfedge_before(*edge))
+
+            assert len(ring) == 16, ring
+            assert ring[0][0] == ring[-1][1]
