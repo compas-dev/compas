@@ -229,14 +229,14 @@ def mesh_split_face(mesh, fkey, u, v):
 
 def mesh_split_strip(mesh, edge):
     """Split the srip of faces corresponding to a given edge.
-    
+
     Parameters
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The input mesh.
     edge : tuple of int
         The edge identifying the strip.
-    
+
     Returns
     -------
     list of int
