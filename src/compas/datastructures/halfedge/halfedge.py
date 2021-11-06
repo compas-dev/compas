@@ -2131,7 +2131,7 @@ class HalfEdge(Datastructure):
 
     def _halfedge_loop_on_boundary(self, edge):
         """Find all edges on the same loop as the halfedge, in the direction of the halfedge, if the halfedge is on the boundary.
-        
+
         Parameters
         ----------
         edge : tuple of int
