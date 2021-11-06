@@ -2098,7 +2098,7 @@ class HalfEdge(Datastructure):
             return uv_loop
         vu_loop = self.halfedge_loop((v, u))
         vu_loop[:] = [(u, v) for v, u in vu_loop[::-1]]
-        return vu_loop + uv_loop
+        return vu_loop + uv_loop[1:]
 
     def halfedge_loop(self, edge):
         """Find all edges on the same loop as the halfedge, in the direction of the halfedge.
