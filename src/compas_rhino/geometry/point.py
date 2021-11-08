@@ -3,106 +3,61 @@ from __future__ import absolute_import
 from __future__ import division
 
 import Rhino
-import compas_rhino
-from compas.geometry import Point
 
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import point_to_compas
 
-
-__all__ = ['RhinoPoint']
+from .vector import RhinoVector
 
 
-class RhinoPoint(BaseRhinoGeometry):
-    """Wrapper for Rhino point objects.
-
-    Attributes
-    ----------
-    x (read-only) : float
-        The X coordinate.
-    y (read-only) : float
-        The Y coordinate.
-    z (read-only) : float
-        The Z coordinate.
-    xyz (read-only) : list
-        The XYZ coordinates.
-
-    """
-
-    def __init__(self):
-        super(RhinoPoint, self).__init__()
+class RhinoPoint(RhinoVector):
+    """Wrapper for Rhino points."""
 
     @property
-    def x(self):
-        return self.geometry.X
+    def object(self):
+        return self._object
 
-    @property
-    def y(self):
-        return self.geometry.Y
-
-    @property
-    def z(self):
-        return self.geometry.Z
-
-    @property
-    def xyz(self):
-        return [self.x, self.y, self.z]
-
-    @classmethod
-    def from_guid(cls, guid):
-        """Construct a Rhino object wrapper from the GUID of an existing Rhino object.
+    @object.setter
+    def object(self, obj):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        guid : str
-            The GUID of the Rhino object.
+        obj : :rhino:`Rhino_DocObjects_PointObject`
+            The input object.
 
-        Returns
-        -------
-        :class:`compas_rhino.geometry.BaseRhinoGeometry`
-            The Rhino object wrapper.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a point.
+
         """
-        obj = compas_rhino.find_object(guid)
-        wrapper = cls()
-        wrapper.guid = obj.Id
-        wrapper.object = obj
-        wrapper.geometry = obj.Geometry.Location
-        return wrapper
+        self._guid = obj.Id
+        self._object = obj
+        self.geometry = obj.Geometry.Location
 
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a point wrapper from an existing geometry object.
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : point or :class:`Rhino.Geometry.Point3d`
+        geometry : :rhino:`Rhino_Geometry_Point3d` or :class:`compas.geometry.Point` or list of float
             The input geometry.
 
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoPoint`
-            The wrapped point.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a plane.
+
         """
         if not isinstance(geometry, Rhino.Geometry.Point3d):
-            geometry = Rhino.Geometry.Point3d(* geometry)
-        point = cls()
-        point.geometry = geometry
-        return point
-
-    @classmethod
-    def from_selection(cls):
-        """Construct as point wrapper from a selected point object.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoPoint`
-            The wrapped point.
-        """
-        guid = compas_rhino.select_point()
-        return cls.from_guid(guid)
+            geometry = point_to_rhino(geometry)
+        self._geometry = geometry
 
     def to_compas(self):
         """Convert the wrapper to a COMPAS point.
@@ -112,10 +67,10 @@ class RhinoPoint(BaseRhinoGeometry):
         :class:`compas.geometry.Point`
             A COMPAS point.
         """
-        return Point(self.x, self.y, self.z)
+        return point_to_compas(self.geometry)
 
     def closest_point(self, point, maxdist=0.0, return_param=False):
-        """Compute the closest point on a curve to a point in space.
+        """Compute the closest point to a point in space.
 
         Parameters
         ----------
@@ -130,8 +85,8 @@ class RhinoPoint(BaseRhinoGeometry):
 
         Returns
         -------
-        list
+        tuple
             The XYZ coordinates of the point.
 
         """
-        return self.xyz
+        return self.geometry.X, self.geometry.Y, self.geometry.Z
