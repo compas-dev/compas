@@ -3,6 +3,7 @@ import pytest
 import compas
 
 from compas.geometry import Sphere
+from compas.geometry import Box
 
 from compas.datastructures import HalfEdge
 from compas.datastructures import Mesh
@@ -43,6 +44,19 @@ def edge_key():
 def sphere():
     sphere = Sphere([0, 0, 0], 1.0)
     mesh = Mesh.from_shape(sphere, u=16, v=16)
+    return mesh
+
+
+@pytest.fixture
+def box():
+    box = Box.from_corner_corner_height([0, 0, 0], [1, 1, 0], 1.0)
+    mesh = Mesh.from_shape(box)
+    return mesh
+
+
+@pytest.fixture
+def grid():
+    mesh = Mesh.from_meshgrid(dx=10, nx=10)
     return mesh
 
 
@@ -278,3 +292,21 @@ def test_loops_and_strips(sphere):
 
             assert len(ring) == 16, ring
             assert ring[0][0] == ring[-1][1]
+
+
+def test_split_strip_closed(box):
+    edge = box.edge_sample()[0]
+
+    box.split_strip(edge)
+
+    assert box.is_valid()
+    assert box.number_of_faces() == 10
+
+
+def test_split_strip_open(grid):
+    edge = grid.edge_sample()[0]
+
+    grid.split_strip(edge)
+
+    assert grid.is_valid()
+    assert grid.number_of_faces() == 110

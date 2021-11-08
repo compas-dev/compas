@@ -244,21 +244,20 @@ def mesh_split_strip(mesh, edge):
     """
     strip = mesh.edge_strip(edge)
     is_closed = strip[0] == strip[-1]
-    if is_closed:
-        strip[:] = strip[:-1]
 
     ngons = []
     splits = []
-    for u, v in strip:
+    for u, v in strip[:-1]:
         ngons.append(mesh.halfedge_face(u, v))
-        splits.append(mesh.split_edge(u, v, t=0.5))
+        splits.append(mesh.split_edge(u, v, t=0.5, allow_boundary=True))
 
     if is_closed:
-        vertices = splits + splits[:1]
+        splits.append(splits[0])
     else:
-        vertices = splits
+        u, v = strip[-1]
+        splits.append(mesh.split_edge(u, v, t=0.5, allow_boundary=True))
 
-    for (u, v), ngon in zip(pairwise(vertices), ngons):
+    for (u, v), ngon in zip(pairwise(splits), ngons):
         mesh.split_face(ngon, u, v)
 
-    return vertices
+    return splits
