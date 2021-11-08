@@ -642,7 +642,7 @@ class Mesh(HalfEdge):
         faces = [[
             i * (ny + 1) + j,
             (i + 1) * (ny + 1) + j,
-            (i + 1) * (ny + 1) + j + 1, 
+            (i + 1) * (ny + 1) + j + 1,
             i * (ny + 1) + j + 1
         ] for i, j in product(range(nx), range(ny))]
 
