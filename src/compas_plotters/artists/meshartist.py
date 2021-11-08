@@ -238,6 +238,9 @@ class MeshArtist(PlotterArtist, MeshArtist):
         if self.show_faces:
             self.draw_faces(faces=faces, color=facecolor)
 
+    def draw_mesh(self):
+        raise NotImplementedError
+
     def draw_vertices(self,
                       vertices: Optional[List[int]] = None,
                       color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug in continuous loops in `compas.datastructures.Halfedge.edge_loop`.
 * Fixed bug in continuous strips in `compas.datastructures.Halfedge.edge_strip`.
+* Changed abstract method `compas.artists.MeshArtist.draw_mesh` to implemented method in `compas_plotters.artists.MeshArtist.draw_mesh`.
 
 ### Removed
 
