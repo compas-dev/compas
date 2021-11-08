@@ -1,4 +1,5 @@
 import pytest
+import random
 
 import compas
 
@@ -334,3 +335,26 @@ def test_loops_and_strips_open_corner(grid):
     assert edge in loop
     assert len(loop) == 10
     assert edge == loop[-1]
+
+
+def test_loops_and_strips_open_boundary(grid):
+    assert grid.number_of_edges() == 220
+
+    edge = random.choice(grid.edges_on_boundary())
+    u, v = edge
+
+    loop = grid.edge_loop(edge)
+    strip = grid.edge_strip(edge)
+    
+    assert edge in strip
+    assert len(strip) == 11
+    assert grid.is_edge_on_boundary(* strip[0])
+    assert grid.is_edge_on_boundary(* strip[-1])
+
+    assert edge in loop
+    assert len(loop) == 10
+
+    if grid.halfedge[u][v] is None:
+        assert edge == strip[-1]
+    else:
+        assert edge == strip[0]
