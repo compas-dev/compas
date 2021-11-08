@@ -4,94 +4,84 @@ from __future__ import division
 
 import Rhino
 
-import compas_rhino
 from compas.datastructures import Mesh
 
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
+from ._geometry import RhinoGeometry
 
 
-__all__ = ['RhinoMesh']
-
-
-class RhinoMesh(BaseRhinoGeometry):
-    """Wrapper for Rhino mesh objects.
-
-    Attributes
-    ----------
-    vertices (read-only) : list of point
-        The coordinates of the vertices of the mesh.
-    faces (read-only) : list of list of int
-        Faces defined as lists of references into the list of vertices.
-    vertex_color : list
-        The colors of the vertices.
-        Setting this to ``None`` unsets the vertex colors.
-    border (read-only) : list
-        The GUIDs of the border curves.
-    """
-
-    def __init__(self):
-        super(RhinoMesh, self).__init__()
+class RhinoMesh(RhinoGeometry):
+    """Wrapper for Rhino meshes."""
 
     @property
     def vertices(self):
-        return [map(float, point) for point in compas_rhino.rs.MeshVertices(self.geometry)]
+        if self.geometry:
+            vertices = [[point.X, point.Y, point.Z] for point in self.geometry.Vertices]
+        else:
+            vertices = []
+        return vertices
 
     @property
     def faces(self):
-        return map(list, compas_rhino.rs.MeshFaceVertices(self.geometry))
+        if self.geometry:
+            faces = [[face.A, face.B, face.C] if face.IsTriangle else [face.A, face.B, face.C, face.D] for face in self.geometry.Faces]
+        else:
+            faces = []
+        return faces
 
     @property
-    def vertex_colors(self):
-        return map(list, compas_rhino.rs.MeshVertexColors(self.guid))
-
-    @vertex_colors.setter
-    def vertex_colors(self, colors):
-        compas_rhino.rs.MeshVertexColors(self.guid, colors)
+    def vertexnormals(self):
+        if self.geometry:
+            # self.geometry.ComputeNormals()
+            # self.geometry.UnitizeNormals()
+            normals = [[vector.X, vector.Y, vector.Z] for vector in self.geometry.Normals]
+        else:
+            normals = []
+        return normals
 
     @property
-    def border(self):
-        return compas_rhino.rs.DuplicateMeshBorder(self.guid)
+    def facenormals(self):
+        if self.geometry:
+            # self.geometry.ComputeFaceNormals()
+            # self.geometry.UnitizeFaceNormals()
+            normals = [[vector.X, vector.Y, vector.Z] for vector in self.geometry.FaceNormals]
+        else:
+            normals = []
+        return normals
 
-    @classmethod
-    def from_selection(cls):
-        """Construct a mesh wrapper by selecting an existing Rhino mesh object.
+    @property
+    def vertexcolors(self):
+        if self.geometry:
+            colors = [[color.R, color.G, color.B] for color in self.geometry.VertexColors]
+        else:
+            colors = []
+        return colors
+
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        None
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoMesh`
-            The wrapped line.
-        """
-        guid = compas_rhino.select_mesh()
-        return cls.from_guid(guid)
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a mesh wrapper from an existing Rhino geometry object.
-
-        Parameters
-        ----------
-        geometry : :class:`Rhino.Geometry.Mesh`
+        geometry: :rhino:`Rhino_Geometry_Mesh`
             A Rhino mesh geometry.
 
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoMesh`
-            The wrapped line.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a mesh.
         """
-        mesh = cls()
-        mesh.geometry = geometry
-        return mesh
+        self._geometry = geometry
 
     def to_compas(self, cls=None):
         """Convert a Rhino mesh to a COMPAS mesh.
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
+        cls: :class:`compas.datastructures.Mesh`, optional
             The mesh type.
 
         Returns
@@ -120,9 +110,9 @@ class RhinoMesh(BaseRhinoGeometry):
 
         Parameters
         ----------
-        point : point
+        point: point
             A point location.
-        maxdist : float, optional
+        maxdist: float, optional
             The maximum distance between the closest point and the mesh.
             Default is ``0.0``.
 
