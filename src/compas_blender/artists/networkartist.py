@@ -11,7 +11,8 @@ from functools import partial
 import compas_blender
 from compas.datastructures import Network
 from compas.geometry import centroid_points
-from compas.utilities import color_to_colordict, RGBColor
+from compas.utilities import color_to_colordict
+from compas.utilities import RGBColor
 from compas.artists import NetworkArtist
 from .artist import BlenderArtist
 

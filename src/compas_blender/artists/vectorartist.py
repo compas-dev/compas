@@ -7,7 +7,8 @@ import bpy
 
 import compas_blender
 from compas.artists import PrimitiveArtist
-from compas.geometry import Point, Vector
+from compas.geometry import Point
+from compas.geometry import Vector
 from compas.utilities import RGBColor
 from compas_blender.artists import BlenderArtist
 

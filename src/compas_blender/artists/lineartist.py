@@ -48,7 +48,7 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any
                  ):
-        super().__init__(shape=line, collection=collection or line.name, **kwargs)
+        super().__init__(primitive=line, collection=collection or line.name, **kwargs)
 
     def draw(self, color: RGBColor = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the line.
