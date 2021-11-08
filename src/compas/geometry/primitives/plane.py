@@ -303,15 +303,15 @@ class Plane(Primitive):
         """Returns a new offset plane by a given distance.
         Plane normal is used as positive direction.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         plane: :class:`compas.geometry.Plane`
             The plane to be offset.
         distance: :obj:`float`
             The offset distance.
 
         Returns
-        --------
+        -------
         :class:`Plane`
             The offset plane.
         """
