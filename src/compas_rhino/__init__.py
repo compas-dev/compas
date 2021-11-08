@@ -10,6 +10,7 @@ compas_rhino
 
     compas_rhino.artists
     compas_rhino.conduits
+    compas_rhino.conversions
     compas_rhino.forms
     compas_rhino.geometry
     compas_rhino.objects
@@ -29,7 +30,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '1.9.1'
+__version__ = '1.10.0'
 
 
 PURGE_ON_DELETE = True
@@ -72,7 +73,12 @@ def _get_ironpython_lib_path(version):
         raise Exception('Unsupported platform')
 
     if not os.path.exists(ironpython_lib_path):
-        raise Exception("The lib folder for IronPython does not exist in this location: {}".format(ironpython_lib_path))
+        # This does not always work.
+        # Especially not on (new) macs.
+        # However, since it is only used to clean up potential old installations
+        # it does not seem crucial anymore.
+        ironpython_lib_path = None
+        print("The lib folder for IronPython does not exist in this location: {}".format(ironpython_lib_path))
 
     return ironpython_lib_path
 
@@ -93,7 +99,7 @@ def _get_ironpython_lib_path_mac(version):
     lib_paths = {
         '5.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents'],
         '6.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A'],
-        '7.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A']
+        '7.0': ['/', 'Applications', 'Rhino7.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A']
     }
     return os.path.join(*lib_paths.get(version) + ['Resources', 'ManagedPlugIns', 'RhinoDLR_Python.rhp', 'Lib'])
 
@@ -213,6 +219,7 @@ def _try_remove_bootstrapper(path):
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
+
 __all_plugins__ = [
     'compas_rhino.geometry.booleans',
     'compas_rhino.geometry.trimesh',

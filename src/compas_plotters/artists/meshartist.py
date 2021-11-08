@@ -238,6 +238,9 @@ class MeshArtist(PlotterArtist, MeshArtist):
         if self.show_faces:
             self.draw_faces(faces=faces, color=facecolor)
 
+    def draw_mesh(self):
+        raise NotImplementedError
+
     def draw_vertices(self,
                       vertices: Optional[List[int]] = None,
                       color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
@@ -511,7 +514,8 @@ class MeshArtist(PlotterArtist, MeshArtist):
                 family='monospace',
                 ha='center', va='center',
                 zorder=10000,
-                color=(0, 0, 0)
+                color=(0, 0, 0),
+                bbox=dict(boxstyle='round, pad=0.3', facecolor=(1, 1, 1), edgecolor=None, linewidth=0)
             )
             labels.append(artist)
 
@@ -551,7 +555,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
                 ha='center', va='center',
                 zorder=10000,
                 color=(0, 0, 0),
-                bbox=dict(boxstyle='circle, pad=0.7', facecolor=(1, 1, 1), edgecolor=(0.5, 0.5, 0.5), linestyle=':')
+                bbox=dict(boxstyle='circle, pad=0.5', facecolor=(1, 1, 1), edgecolor=(0.5, 0.5, 0.5), linestyle=':')
             )
             labels.append(artist)
 

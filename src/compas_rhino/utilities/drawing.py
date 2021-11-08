@@ -7,12 +7,13 @@ from functools import wraps
 import compas_rhino
 
 from compas.geometry import centroid_polygon
-from compas.geometry import centroid_points
 from compas.utilities import pairwise
 
 from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
 from compas_rhino.utilities import clear_current_layer
+
+import System
 
 from System.Collections.Generic import List
 from System.Drawing.Color import FromArgb
@@ -792,7 +793,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
             else:
                 if MeshNgon:
                     points = [vertices[vertex] for vertex in face]
-                    centroid = centroid_points(points)
+                    centroid = centroid_polygon(points)
                     indices = []
                     for point in points:
                         indices.append(mesh.Vertices.Add(* point))
@@ -815,7 +816,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
                 mesh.Faces.AddFace(*face)
             else:
                 if MeshNgon:
-                    centroid = centroid_points([vertices[index] for index in face])
+                    centroid = centroid_polygon([vertices[index] for index in face])
                     c = mesh.Vertices.Add(* centroid)
                     facets = []
                     for i, j in pairwise(face + face[:1]):
@@ -825,19 +826,22 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
 
     mesh.Normals.ComputeNormals()
     mesh.Compact()
+
     guid = add_mesh(mesh)
-    if guid:
+
+    if guid != System.Guid.Empty:
         obj = find_object(guid)
-        attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
-        else:
-            attr.ColorSource = ColorFromLayer
-        if name:
-            attr.Name = name
-        obj.CommitChanges()
-    return guid
+        if obj:
+            attr = obj.Attributes
+            if color:
+                attr.ObjectColor = FromArgb(*color)
+                attr.ColorSource = ColorFromObject
+            else:
+                attr.ColorSource = ColorFromLayer
+            if name:
+                attr.Name = name
+            obj.CommitChanges()
+        return guid
 
 
 @wrap_drawfunc
@@ -878,18 +882,12 @@ def draw_faces(faces, **kwargs):
 
         if v < 3:
             continue
-        if v == 3:
+        elif v == 3:
             mfaces = [[0, 1, 2, 2]]
+        elif v == 4:
+            mfaces = [[0, 1, 2, 3]]
         else:
             mfaces = [list(range(v))]
-        # else:
-        #     mfaces = _face_to_max_quad(points, range(v))
-        #     if vertexcolors:
-        #         r, g, b = [sum(component) / v for component in zip(*vertexcolors)]
-        #         r = int(min(max(0, r), 255))
-        #         g = int(min(max(0, g), 255))
-        #         b = int(min(max(0, b), 255))
-        #         vertexcolors.append((r, g, b))
 
         guid = draw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
 

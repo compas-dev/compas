@@ -11,7 +11,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed bug in combination of `compas_rhino.artists.MeshArtist.draw_mesh` and `compas_rhino.utilities.drawing.draw_mesh`.
+* Changed abstract method `compas.artists.MeshArtist.draw_mesh` to implemented method in `compas_plotters.artists.MeshArtist.draw_mesh`.
+
+### Removed
+
+
+## [1.10.0] 2021-11-04
+
+### Added
+
+* Added `compas.geometry.Curve` and `compas.geometry.NurbsCurve`.
+* Added `compas.geometry.Surface` and `compas.geometry.NurbsSurface`.
+* Added pluggables for `compas.geometry.NurbsCurve.__new__`, `compas.geometry.NurbsCurve.from_parameters`, `compas.geometry.NurbsCurve.from_points`, `compas.geometry.NurbsCurve.from_interpolation`, `compas.geometry.NurbsCurve.from_step`.
+* Added pluggables for `compas.geometry.NurbsSurface.__new__`, `compas.geometry.NurbsSurface.from_parameters`, `compas.geometry.NurbsSurface.from_points`, `compas.geometry.NurbsSurface.from_fill`, `compas.geometry.NurbsSurface.from_step`.
+* Added missing implementations for abstract clear methods of `compas_rhino.artists.volmeshartist`.
+
+* Added `compas_rhino.geometry.RhinoBox`, `compas_rhino.geometry.RhinoCircle`, `compas_rhino.geometry.RhinoCone`, `compas_rhino.geometry.RhinoCurve`, `compas_rhino.geometry.RhinoCylinder`, `compas_rhino.geometry.RhinoEllipse`, `compas_rhino.geometry.RhinoLine`, `compas_rhino.geometry.RhinoMesh`, `compas_rhino.geometry.RhinoPlane`, `compas_rhino.geometry.RhinoPoint`, `compas_rhino.geometry.RhinoPolyline`, `compas_rhino.geometry.RhinoSphere`, `compas_rhino.geometry.RhinoSurface`, `compas_rhino.geometry.RhinoVector` as wrappers for working with Rhino geometry through geometry conversions or coercion of doc objects.
+* Added `compas_rhino.conversions` from COMPAS geometry to Rhino geometry and vice versa, for primitives, shapes, curves, surfaces, meshes.
+* Added `compas_rhino.coercion` from Rhino doc objects to Rhino geometry compatible with COMPAS geometry.
+
+### Changed
+
+* Fixed bug in directions of `compas.datastructures.Mesh.from_meshgrid`.
+* Fixed bug in Rhino mesh face drawing.
+* Fixed bug related to legacy uninstall on Rhino for Mac.
+
+### Removed
+
+
+## [1.9.3] 2021-11-02
+
+### Added
+
+### Changed
+
+* Changed default path for Rhino 7 legacy install cleanup to Rhino7.app in `compas_rhino.__init__.py`.
+* Changed z-coordinate of `compas.datastructures.Mesh.from_meshgrid` to `0.0` instead of `0`.
+
+### Removed
+
+
+## [1.9.2] 2021-11-02
+
+### Added
+
+* Added `draw_mesh` method to `compas_ghpython.artists.MeshArtist` to match all other mesh artists.
+
+### Changed
+
 * Changed new artist registration to check if subclass.
+* Fixed `RobotModelArtist` for blender: missing abstract method impl and handle init order.
 
 ### Removed
 
@@ -92,6 +142,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added general plotter for geometry objects and data structures based on the artist registration mechanism.
 * Added support for multimesh files to OBJ reader/writer.
 * Added support for attaching and detaching meshes in `compas.robots.RobotModelArtist` and drawing them.
+* Added `compas.geometry.NurbsCurve`.
+* Added `compas.geometry.NurbsSurface`.
+* Added `compas_rhino.conversions`.
+* Added `compas_rhino.geometry.RhinoBox`.
+* Added `compas_rhino.geometry.RhinoCone`.
+* Added `compas_rhino.geometry.RhinoCylinder`.
+* Added `compas_rhino.geometry.RhinoPolyline`.
+* Added `compas_rhino.geometry.RhinoSphere`.
 * Added `meshes` method to artists of `compas.robots.RobotModel`.
 * Added `FrameArtist` class to `compas_blender`.
 

@@ -3,56 +3,37 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino
-from compas.geometry import Vector
 
-from compas_rhino.geometry.point import RhinoPoint
+from compas_rhino.conversions import vector_to_rhino
+from compas_rhino.conversions import vector_to_compas
+
+from ._geometry import RhinoGeometry
 
 
-__all__ = ['RhinoVector']
+class RhinoVector(RhinoGeometry):
+    """Wrapper for Rhino vectors."""
 
+    @property
+    def geometry(self):
+        return self._geometry
 
-class RhinoVector(RhinoPoint):
-    """Wrapper for a Rhino vector objects.
-
-    Attributes
-    ----------
-    x (read-only) : float
-        The X coordinate.
-    y (read-only) : float
-        The Y coordinate.
-    z (read-only) : float
-        The Z coordinate.
-    xyz (read-only) : list
-        The XYZ coordinates.
-
-    """
-
-    def __init__(self):
-        super(RhinoVector, self).__init__()
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        """Construct a vector wrapper from an existing geometry object.
+    @geometry.setter
+    def geometry(self, geometry):
+        """Set the geometry of the wrapper.
 
         Parameters
         ----------
-        geometry : vector or :class:`Rhino.Geometry.Point3d` or :class:`Rhino.Geometry.Vector3d`
+        geometry : :rhino:`Rhino_Geometry_Vector3d` or :class:`compas.geometry.Vector` or list of float
             The input geometry.
 
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoVector`
-            The wrapped vector.
+        Raises
+        ------
+        :class:`ConversionError`
+            If the geometry cannot be converted to a vector.
         """
-        if not isinstance(geometry, (Rhino.Geometry.Vector3d, Rhino.Geometry.Point3d)):
-            geometry = Rhino.Geometry.Vector3d(geometry[0], geometry[1], geometry[2])
-        vector = cls()
-        vector.geometry = geometry
-        return vector
-
-    @classmethod
-    def from_selection(cls):
-        raise NotImplementedError
+        if not isinstance(geometry, Rhino.Geometry.Vector3d):
+            geometry = vector_to_rhino(geometry)
+        self._geometry = geometry
 
     def to_compas(self):
         """Convert the wrapper to a COMPAS object.
@@ -60,6 +41,6 @@ class RhinoVector(RhinoPoint):
         Returns
         -------
         :class:`compas.geometry.Vector`
-            The COMPAS vector.
+            A COMPAS vector.
         """
-        return Vector(self.x, self.y, self.z)
+        return vector_to_compas(self.geometry)
