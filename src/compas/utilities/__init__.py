@@ -125,6 +125,10 @@ from .decorators import (
     memoize,
     print_profile,
 )
+from .descriptors import (
+    Float,
+    RGBColour
+)
 from .encoders import (
     DataDecoder,
     DataEncoder
@@ -191,6 +195,8 @@ __all__ = [
     'abstractclassmethod',
     'memoize',
     'print_profile',
+    'Float',
+    'RGBColour',
     'DataDecoder',
     'DataEncoder',
     'gif_from_images',
