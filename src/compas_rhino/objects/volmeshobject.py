@@ -2,24 +2,25 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from functools import reduce
+from operator import mul
+
 import compas_rhino
+
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from compas_rhino.objects._modify import mesh_update_attributes
-from compas_rhino.objects._modify import mesh_update_vertex_attributes
-from compas_rhino.objects._modify import mesh_update_face_attributes
-from compas_rhino.objects._modify import mesh_update_edge_attributes
-from compas_rhino.objects._modify import mesh_move_vertex
-from compas_rhino.objects._modify import mesh_move_vertices
-from compas_rhino.objects._modify import mesh_move_face
+from ._modify import mesh_update_attributes
+from ._modify import mesh_update_vertex_attributes
+from ._modify import mesh_update_face_attributes
+from ._modify import mesh_update_edge_attributes
+from ._modify import mesh_move_vertex
+from ._modify import mesh_move_vertices
+from ._modify import mesh_move_face
 
-from compas_rhino.objects._object import BaseObject
-
-
-__all__ = ['VolMeshObject']
+from ._object import BaseObject
 
 
 class VolMeshObject(BaseObject):
@@ -109,8 +110,6 @@ class VolMeshObject(BaseObject):
         Setting this location will make a copy of the provided point object.
         Moving the original point will thus not affect the object's location.
         """
-        if not self._location:
-            self._location = Point(0, 0, 0)
         return self._location
 
     @location.setter
@@ -123,8 +122,6 @@ class VolMeshObject(BaseObject):
         A uniform scaling factor for the object in the scene.
         The scale is applied relative to the location of the object in the scene.
         """
-        if not self._scale:
-            self._scale = 1.0
         return self._scale
 
     @scale.setter
@@ -137,8 +134,6 @@ class VolMeshObject(BaseObject):
         The rotation angles around the 3 axis of the coordinate system
         with the origin placed at the location of the object in the scene.
         """
-        if not self._rotation:
-            self._rotation = [0, 0, 0]
         return self._rotation
 
     @rotation.setter
@@ -148,21 +143,27 @@ class VolMeshObject(BaseObject):
     @property
     def vertex_xyz(self):
         """dict : The view coordinates of the volmesh object."""
-        origin = Point(0, 0, 0)
-        if self.anchor is not None:
+        stack = []
+        if self.anchor is not None and self.location is not None:
             xyz = self.volmesh.vertex_attributes(self.anchor, 'xyz')
+            origin = Point(0, 0, 0)
             point = Point(* xyz)
             T1 = Translation.from_vector(origin - point)
+            stack.append(T1)
+        if self.scale is not None:
             S = Scale.from_factors([self.scale] * 3)
+            stack.append(S)
+        if self.rotation is not None:
             R = Rotation.from_euler_angles(self.rotation)
+            stack.append(R)
+        if self.location is not None:
             T2 = Translation.from_vector(self.location)
-            X = T2 * R * S * T1
+            stack.append(T2)
+        if stack:
+            X = reduce(mul, stack)
+            volmesh = self.volmesh.transformed(X)
         else:
-            S = Scale.from_factors([self.scale] * 3)
-            R = Rotation.from_euler_angles(self.rotation)
-            T = Translation.from_vector(self.location)
-            X = T * R * S
-        volmesh = self.volmesh.transformed(X)
+            volmesh = self.volmesh
         vertex_xyz = {vertex: volmesh.vertex_attributes(vertex, 'xyz') for vertex in volmesh.vertices()}
         return vertex_xyz
 
