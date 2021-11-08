@@ -310,3 +310,13 @@ def test_split_strip_open(grid):
 
     assert grid.is_valid()
     assert grid.number_of_faces() == 110
+
+
+def test_split_strip_open_corner(grid):
+    corner = list(grid.vertices_where({'vertex_degree': 2}))[0]
+
+    for edge in grid.vertex_edges(corner):
+        grid.split_strip(edge)
+
+    assert grid.is_valid()
+    assert grid.number_of_faces() == 121
