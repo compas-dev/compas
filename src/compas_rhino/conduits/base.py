@@ -36,6 +36,10 @@ class BaseConduit(Rhino.Display.DisplayConduit):
         finally:
             self.disable()
 
+    def CalculateBoundingBox(self, e):
+        bbox = Rhino.Geometry.BoundingBox(-1000, -1000, -1000, 1000, 1000, 1000)
+        e.IncludeBoundingBox(bbox)
+
     def enable(self):
         """Enable the conduit."""
         self.Enabled = True
