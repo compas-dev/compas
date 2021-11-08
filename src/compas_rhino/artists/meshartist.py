@@ -174,21 +174,21 @@ class MeshArtist(RhinoArtist, MeshArtist):
         vertex_xyz = self.vertex_xyz
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
         faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
-        new_faces = []
-        for face in faces:
-            f = len(face)
-            if f == 3:
-                new_faces.append(face + face[-1:])
-            elif f == 4:
-                new_faces.append(face)
-            elif f > 4:
-                centroid = len(vertices)
-                vertices.append(centroid_polygon([vertices[index] for index in face]))
-                for a, b in pairwise(face + face[0:1]):
-                    new_faces.append([centroid, a, b, b])
+        # new_faces = []
+        # for face in faces:
+        #     f = len(face)
+        #     if f == 3:
+        #         new_faces.append(face + face[-1:])
+        #     elif f == 4:
+        #         new_faces.append(face)
+        #     elif f > 4:
+        #         centroid = len(vertices)
+        #         vertices.append(centroid_polygon([vertices[index] for index in face]))
+        #         for a, b in pairwise(face + face[0:1]):
+        #             new_faces.append([centroid, a, b, b])
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
-        guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
+        guid = compas_rhino.draw_mesh(vertices, faces, layer=layer, name=name, color=color, disjoint=disjoint)
         return [guid]
 
     def draw_vertices(self, vertices=None, color=None):
