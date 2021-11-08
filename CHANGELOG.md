@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added halfedge loops in `compas.datastructures.Halfedge.halfedge_loop`.
 * Added halfedge strips in `compas.datastructures.Halfedge.halfedge_strip`.
 * Added `compas.datastructures.mesh_split_strip` and `compas.datastructures.Mesh.split_strip`.
+* Added boundingbox to `compas_rhino.conduits.BaseConduit`
 
 ### Changed
 
