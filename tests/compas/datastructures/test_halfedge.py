@@ -271,7 +271,7 @@ def test_del_edge_attribute_in_view(mesh, edge_key):
 # Tests - Loops & Strip
 # ==============================================================================
 
-def test_loops_and_strips(sphere):
+def test_loops_and_strips_closed(sphere):
     poles = list(sphere.vertices_where({'vertex_degree': 16}))
 
     for nbr in sphere.vertex_neighbors(poles[0]):
@@ -292,7 +292,6 @@ def test_loops_and_strips(sphere):
 
             assert len(ring) == 16, ring
             assert ring[0][0] == ring[-1][1]
-
 
 def test_split_strip_closed(box):
     edge = box.edge_sample()[0]
@@ -320,3 +319,53 @@ def test_split_strip_open_corner(grid):
 
     assert grid.is_valid()
     assert grid.number_of_faces() == 121
+
+
+def test_loops_and_strips_open(grid):
+    assert grid.number_of_edges() == 220
+
+    edge = 47, 48
+    strip = grid.edge_strip(edge)
+    loop = grid.edge_loop(edge)
+
+    assert edge in strip
+    assert len(strip) == 11
+    assert grid.is_edge_on_boundary(* strip[0])
+    assert grid.is_edge_on_boundary(* strip[-1])
+
+    assert edge in loop
+    assert len(loop) == 10
+    assert grid.is_vertex_on_boundary(loop[0][0])
+    assert grid.is_vertex_on_boundary(loop[-1][1])
+
+
+def test_loops_and_strips_open_corner(grid):
+    assert grid.number_of_edges() == 220
+
+    edge = 0, 1
+    loop = grid.edge_loop(edge)
+    strip = grid.edge_strip(edge)
+
+    assert edge in strip
+    assert len(strip) == 11
+    assert grid.is_edge_on_boundary(* strip[0])
+    assert grid.is_edge_on_boundary(* strip[-1])
+    assert edge == strip[-1]
+
+    assert edge in loop
+    assert len(loop) == 10
+    assert edge == loop[0]
+
+    edge = 1, 0
+    loop = grid.edge_loop(edge)
+    strip = grid.edge_strip(edge)
+
+    assert edge in strip
+    assert len(strip) == 11
+    assert grid.is_edge_on_boundary(* strip[0])
+    assert grid.is_edge_on_boundary(* strip[-1])
+    assert edge == strip[0]
+
+    assert edge in loop
+    assert len(loop) == 10
+    assert edge == loop[-1]
