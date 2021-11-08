@@ -25,7 +25,6 @@ class BaseConduit(Rhino.Display.DisplayConduit):
     def __init__(self, refreshrate=1):
         super(BaseConduit, self).__init__()
         self.refreshrate = refreshrate
-        self._boundingbox = None
 
     @contextmanager
     def enabled(self):
@@ -36,13 +35,6 @@ class BaseConduit(Rhino.Display.DisplayConduit):
             print(e)
         finally:
             self.disable()
-
-    @property
-    def boundingbox(self):
-        if self.boundgbox is None:
-            boundingbox = self.CalculateBoundingBox()
-            self._boundingbox = boundingbox
-        return self._boundingbox
 
     def CalculateBoundingBox(self, e):
         bbox = Rhino.Geometry.BoundingBox(-1000, -1000, -1000, 1000, 1000, 1000)
