@@ -45,6 +45,7 @@ from compas.datastructures import HalfEdge
 from .operations import mesh_collapse_edge
 from .operations import mesh_split_edge
 from .operations import mesh_split_face
+from .operations import mesh_split_strip
 from .operations import mesh_merge_faces
 
 from .bbox import mesh_bounding_box
@@ -122,6 +123,7 @@ class Mesh(HalfEdge):
     smooth_area = mesh_smooth_area
     split_edge = mesh_split_edge
     split_face = mesh_split_face
+    split_strip = mesh_split_strip
     subdivide = mesh_subdivide
     transform = mesh_transform
     transformed = mesh_transformed

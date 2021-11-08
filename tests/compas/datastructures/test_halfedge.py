@@ -4,6 +4,7 @@ import random
 import compas
 
 from compas.geometry import Sphere
+from compas.geometry import Box
 
 from compas.datastructures import HalfEdge
 from compas.datastructures import Mesh
@@ -44,6 +45,13 @@ def edge_key():
 def sphere():
     sphere = Sphere([0, 0, 0], 1.0)
     mesh = Mesh.from_shape(sphere, u=16, v=16)
+    return mesh
+
+
+@pytest.fixture
+def box():
+    box = Box.from_corner_corner_height([0, 0, 0], [1, 1, 0], 1.0)
+    mesh = Mesh.from_shape(box)
     return mesh
 
 
@@ -358,3 +366,31 @@ def test_loops_and_strips_open_boundary(grid):
         assert edge == strip[-1]
     else:
         assert edge == strip[0]
+
+
+def test_split_strip_closed(box):
+    edge = box.edge_sample()[0]
+
+    box.split_strip(edge)
+
+    assert box.is_valid()
+    assert box.number_of_faces() == 10
+
+
+def test_split_strip_open(grid):
+    edge = grid.edge_sample()[0]
+
+    grid.split_strip(edge)
+
+    assert grid.is_valid()
+    assert grid.number_of_faces() == 110
+
+
+def test_split_strip_open_corner(grid):
+    corner = list(grid.vertices_where({'vertex_degree': 2}))[0]
+
+    for edge in grid.vertex_edges(corner):
+        grid.split_strip(edge)
+
+    assert grid.is_valid()
+    assert grid.number_of_faces() == 121
