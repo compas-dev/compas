@@ -111,6 +111,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <section id="changed">
 <h3>Changed</h3>
 <ul class="simple">
+<li><p>Fixed bug in combination of <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist.draw_mesh</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_rhino.utilities.drawing.draw_mesh</span></code>.</p></li>
 <li><p>Changed abstract method <code class="docutils literal notranslate"><span class="pre">compas.artists.MeshArtist.draw_mesh</span></code> to implemented method in <code class="docutils literal notranslate"><span class="pre">compas_plotters.artists.MeshArtist.draw_mesh</span></code>.</p></li>
 </ul>
 </section>
@@ -128,6 +129,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added pluggables for <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve.__new__</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve.from_parameters</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve.from_points</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve.from_interpolation</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve.from_step</span></code>.</p></li>
 <li><p>Added pluggables for <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.__new__</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.from_parameters</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.from_points</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.from_fill</span></code>, <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.from_step</span></code>.</p></li>
 <li><p>Added missing implementations for abstract clear methods of <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.volmeshartist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBox</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCircle</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCone</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCurve</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCylinder</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoEllipse</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoLine</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoMesh</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPlane</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPoint</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPolyline</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoSphere</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoSurface</span></code>, <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoVector</span></code> as wrappers for working with Rhino geometry through geometry conversions or coercion of doc objects.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions</span></code> from COMPAS geometry to Rhino geometry and vice versa, for primitives, shapes, curves, surfaces, meshes.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.coercion</span></code> from Rhino doc objects to Rhino geometry compatible with COMPAS geometry.</p></li>
 </ul>
 </section>
 <section id="id3">
@@ -267,6 +271,14 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added general plotter for geometry objects and data structures based on the artist registration mechanism.</p></li>
 <li><p>Added support for multimesh files to OBJ reader/writer.</p></li>
 <li><p>Added support for attaching and detaching meshes in <code class="docutils literal notranslate"><span class="pre">compas.robots.RobotModelArtist</span></code> and drawing them.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBox</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCone</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCylinder</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPolyline</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoSphere</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">meshes</span></code> method to artists of <code class="docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">FrameArtist</span></code> class to <code class="docutils literal notranslate"><span class="pre">compas_blender</span></code>.</p></li>
 </ul>

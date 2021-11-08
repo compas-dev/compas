@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="objects" href="compas_rhino.objects.html" />
+    <link rel="next" title="RhinoGeometry" href="generated/compas_rhino.geometry.RhinoGeometry.html" />
   
   
   
@@ -105,501 +105,61 @@
           <span class="target" id="module-compas_rhino.geometry"></span><section id="geometry">
 <h1>geometry</h1>
 <p class="lead">Wrappers for Rhino objects that can be used to convert Rhino geometry and data to COMPAS objects.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas_rhino</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="kn">import</span> <span class="n">RhinoMesh</span>
-
-<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_mesh</span><span class="p">()</span>
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">RhinoMesh</span><span class="o">.</span><span class="n">from_guid</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span><span class="o">.</span><span class="n">to_compas</span><span class="p">()</span>
-</code></pre></div>
-</div>
-<section id="baserhinogeometry">
-<h2>BaseRhinoGeometry</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.BaseRhinoGeometry">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">BaseRhinoGeometry</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Base class for Rhino geometry objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the object.</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.BaseRhinoGeometry.from_geometry">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.BaseRhinoGeometry.from_guid">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_guid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guid</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a Rhino object wrapper from the GUID of an existing Rhino object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>guid</strong> (<em>str</em>) – The GUID of the Rhino object.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.BaseRhinoGeometry" title="compas_rhino.geometry.BaseRhinoGeometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.BaseRhinoGeometry</span></code></a> – The Rhino object wrapper.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.BaseRhinoGeometry.from_object">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a Rhino object wrapper from an existing Rhino object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>obj</strong> (<em>Rhino.DocObjects.RhinoObject</em>) – The Rhino object.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.BaseRhinoGeometry" title="compas_rhino.geometry.BaseRhinoGeometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.BaseRhinoGeometry</span></code></a> – The Rhino object wrapper.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.BaseRhinoGeometry.from_selection">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.BaseRhinoGeometry.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.BaseRhinoGeometry.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/_geometry.py#L110"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Transform the Rhino object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>T</strong> (<a class="reference internal" href="generated/compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a> or Rhino.Geomtry.Transform) – The transformation matrix.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>None</em> – The Rhino object is transformed in place.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="rhinopoint">
-<h2>RhinoPoint</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPoint">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoPoint</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/point.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wrapper for Rhino point objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x (read-only)</strong> (<em>float</em>) – The X coordinate.</p></li>
-<li><p><strong>y (read-only)</strong> (<em>float</em>) – The Y coordinate.</p></li>
-<li><p><strong>z (read-only)</strong> (<em>float</em>) – The Z coordinate.</p></li>
-<li><p><strong>xyz (read-only)</strong> (<em>list</em>) – The XYZ coordinates.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPoint.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a point wrapper from an existing geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (point or <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Point3d</span></code>) – The input geometry.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoPoint" title="compas_rhino.geometry.RhinoPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPoint</span></code></a> – The wrapped point.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPoint.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Construct as point wrapper from a selected point object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>None</strong></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoPoint" title="compas_rhino.geometry.RhinoPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPoint</span></code></a> – The wrapped point.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPoint.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/point.py#L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert the wrapper to a COMPAS point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><a class="reference internal" href="generated/compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a> – A COMPAS point.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="rhinovector">
-<h2>RhinoVector</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoVector">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoVector</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/vector.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wrapper for a Rhino vector objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x (read-only)</strong> (<em>float</em>) – The X coordinate.</p></li>
-<li><p><strong>y (read-only)</strong> (<em>float</em>) – The Y coordinate.</p></li>
-<li><p><strong>z (read-only)</strong> (<em>float</em>) – The Z coordinate.</p></li>
-<li><p><strong>xyz (read-only)</strong> (<em>list</em>) – The XYZ coordinates.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoVector.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a vector wrapper from an existing geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (vector or <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Point3d</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Vector3d</span></code>) – The input geometry.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoVector" title="compas_rhino.geometry.RhinoVector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoVector</span></code></a> – The wrapped vector.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoVector.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoVector.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/vector.py#L57"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert the wrapper to a COMPAS object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><a class="reference internal" href="generated/compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a> – The COMPAS vector.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="rhinoline">
-<h2>RhinoLine</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoLine">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoLine</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/line.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wrapper for a Rhino line objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>start (read-only)</strong> (<em>Rhino.Geometry.Point3d</em>) – The starting point of the line.</p></li>
-<li><p><strong>end (read-only)</strong> (<em>Rhino.Geometry.Point3d</em>) – The end point of the line.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoLine.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a line from an existing Rhino line geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (two points or <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Line</span></code>) – The input geometry.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoLine.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Construct a line wrapper by selecting an existing Rhino line object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>None</strong></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoLine" title="compas_rhino.geometry.RhinoLine"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoLine</span></code></a> – The wrapped line.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoLine.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/line.py#L75"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert the line to a COMPAS geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><a class="reference internal" href="generated/compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a> – The equivalent COMPAS geometry line.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="rhinoplane">
-<h2>RhinoPlane</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPlane">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoPlane</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/plane.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wrapper for a Rhino plane objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point (read-only)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Point3d</span></code>) – Base point of the plane.</p></li>
-<li><p><strong>normal (read-only)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Vector3d</span></code>) – The normal vector of the plane.</p></li>
-<li><p><strong>xaxis (read-only)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Vector3d</span></code>) – The X axis of the plane.</p></li>
-<li><p><strong>yaxis (read-only)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Vector3d</span></code>) – The Y axis of the plane.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>In Rhino, a plane and a frame are equivalent.
-Therefore, the COMPAS conversion function of this class returns a frame object instead of a plane.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPlane.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a plane wrapper from an existing geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (tuple of point and normal or <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Plane</span></code> or <a class="reference internal" href="generated/compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a> or <a class="reference internal" href="generated/compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – The geometry object defining a plane.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoPlane" title="compas_rhino.geometry.RhinoPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoPlane</span></code></a> – The wrapped plane.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPlane.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoPlane.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/plane.py#L92"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert to a COMPAS geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><a class="reference internal" href="generated/compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a> – A COMPAS frame object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="rhinomesh">
-<h2>RhinoMesh</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoMesh">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoMesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/mesh.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wrapper for Rhino mesh objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices (read-only)</strong> (<em>list of point</em>) – The coordinates of the vertices of the mesh.</p></li>
-<li><p><strong>faces (read-only)</strong> (<em>list of list of int</em>) – Faces defined as lists of references into the list of vertices.</p></li>
-<li><p><strong>vertex_color</strong> (<em>list</em>) – The colors of the vertices.
-Setting this to <code class="docutils literal notranslate"><span class="pre">None</span></code> unsets the vertex colors.</p></li>
-<li><p><strong>border (read-only)</strong> (<em>list</em>) – The GUIDs of the border curves.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoMesh.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a mesh wrapper from an existing Rhino geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Mesh</span></code>) – A Rhino mesh geometry.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoMesh" title="compas_rhino.geometry.RhinoMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoMesh</span></code></a> – The wrapped line.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoMesh.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Construct a mesh wrapper by selecting an existing Rhino mesh object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>None</strong></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoMesh" title="compas_rhino.geometry.RhinoMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoMesh</span></code></a> – The wrapped line.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoMesh.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/mesh.py#L89"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert a Rhino mesh to a COMPAS mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cls</strong> (<a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The mesh type.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – The equivalent COMPAS mesh.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="rhinocurve">
-<h2>RhinoCurve</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoCurve">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoCurve</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curve.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wrapper for Rhino curve objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>None</strong></p>
-</dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>start (read-only)</strong> (<em>Rhino.Geometry.Point3d</em>) – The start point of the curve.</p></li>
-<li><p><strong>end (read-only)</strong> (<em>Rhino.Geometry.Point3d</em>) – The end point of the curve.</p></li>
-<li><p><strong>points (read-only)</strong> (<em>list of RhinoGeometry.Point3d</em>) – List of points between start and end, defining the geometry of the curve.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rhinocurve</span> <span class="o">=</span> <span class="n">RhinoCurve</span><span class="o">.</span><span class="n">from_guid</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">rhinocurve</span><span class="o">.</span><span class="n">to_compas</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">rhinocurve</span><span class="o">.</span><span class="n">is_line</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">isinstance</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Line</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">rhinocurve</span><span class="o">.</span><span class="n">is_polyline</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">isinstance</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polyline</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">True</span>
-</code></pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoCurve.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoCurve.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Construct a curve wrapper by selecting an existing Rhino curve object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>None</strong></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#compas_rhino.geometry.RhinoCurve" title="compas_rhino.geometry.RhinoCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCurve</span></code></a> – The wrapped curve.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoCurve.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curve.py#L85"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert the curve to an equivalent geometry object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p><a class="reference internal" href="generated/compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a> – If the curve is a line (if it is a linear segment between two points).</p></li>
-<li><p><a class="reference internal" href="generated/compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a> – If the curve is a polyline (if it is comprised of multiple line segments).</p></li>
-<li><p><a class="reference internal" href="generated/compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a> – If the curve is a circle.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="rhinosurface">
-<h2>RhinoSurface</h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoSurface">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoSurface</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/surface.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wrapper for Rhino surface objects.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoSurface.from_geometry">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoSurface.from_selection">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="compas_rhino.geometry.RhinoSurface.to_compas">
-<span class="sig-name descname"><span class="pre">to_compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/surface.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert the surface b-rep loops to a COMPAS mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cls</strong> (<a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The type of COMPAS mesh.</p></li>
-<li><p><strong>facefilter</strong> (<em>callable, optional</em>) – A filter for selection which Brep faces to include.
-If provided, the filter should return <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> per face.
-A very simple filter that includes all faces is <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">facefilter(face):</span> <span class="pre">return</span> <span class="pre">True</span></code>.
-Default parameter value is <code class="docutils literal notranslate"><span class="pre">None</span></code> in which case all faces are included.</p></li>
-<li><p><strong>cleanup</strong> (<em>bool, optional</em>) – Flag indicating to clean up the result.
-Cleaning up means to remove isolated faces and unused vertices.
-Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – The resulting mesh.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas_rhino</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="kn">import</span> <span class="n">RhinoSurface</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
-</code></pre></div>
-</div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">facefilter</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">success</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">GetSurfaceSize</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
-<span class="gp">... </span>            <span class="k">return</span> <span class="kc">True</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="kc">False</span>
-<span class="gp">...</span>
-</code></pre></div>
-</div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_surface</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">surf</span> <span class="o">=</span> <span class="n">RhinoSurface</span><span class="o">.</span><span class="n">from_guid</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">surf</span><span class="o">.</span><span class="n">to_compas</span><span class="p">(</span><span class="n">facefilter</span><span class="o">=</span><span class="n">facefilter</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;Blocks&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
+<section id="classes">
+<h2>Classes</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoGeometry.html#compas_rhino.geometry.RhinoGeometry" title="compas_rhino.geometry.RhinoGeometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoGeometry</span></code></a></p></td>
+<td><p>Base class for Rhino Geometry and DocObject wrappers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoBox.html#compas_rhino.geometry.RhinoBox" title="compas_rhino.geometry.RhinoBox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoBox</span></code></a></p></td>
+<td><p>Wrapper for Rhino boxes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoCircle.html#compas_rhino.geometry.RhinoCircle" title="compas_rhino.geometry.RhinoCircle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoCircle</span></code></a></p></td>
+<td><p>Wrapper for Rhino circles.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoCone.html#compas_rhino.geometry.RhinoCone" title="compas_rhino.geometry.RhinoCone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoCone</span></code></a></p></td>
+<td><p>Wrapper for Rhino cones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoCurve.html#compas_rhino.geometry.RhinoCurve" title="compas_rhino.geometry.RhinoCurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoCurve</span></code></a></p></td>
+<td><p>Wrapper for Rhino curves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoCylinder.html#compas_rhino.geometry.RhinoCylinder" title="compas_rhino.geometry.RhinoCylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoCylinder</span></code></a></p></td>
+<td><p>Wrapper for Rhino cylinders.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoEllipse.html#compas_rhino.geometry.RhinoEllipse" title="compas_rhino.geometry.RhinoEllipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoEllipse</span></code></a></p></td>
+<td><p>Wrapper for Rhino ellipses.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoLine.html#compas_rhino.geometry.RhinoLine" title="compas_rhino.geometry.RhinoLine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoLine</span></code></a></p></td>
+<td><p>Wrapper for Rhino lines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoMesh.html#compas_rhino.geometry.RhinoMesh" title="compas_rhino.geometry.RhinoMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoMesh</span></code></a></p></td>
+<td><p>Wrapper for Rhino meshes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoPlane.html#compas_rhino.geometry.RhinoPlane" title="compas_rhino.geometry.RhinoPlane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoPlane</span></code></a></p></td>
+<td><p>Wrapper for Rhino planes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoPoint.html#compas_rhino.geometry.RhinoPoint" title="compas_rhino.geometry.RhinoPoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoPoint</span></code></a></p></td>
+<td><p>Wrapper for Rhino points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoPolyline.html#compas_rhino.geometry.RhinoPolyline" title="compas_rhino.geometry.RhinoPolyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoPolyline</span></code></a></p></td>
+<td><p>Wrapper for Rhino polylines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoSphere.html#compas_rhino.geometry.RhinoSphere" title="compas_rhino.geometry.RhinoSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoSphere</span></code></a></p></td>
+<td><p>Wrapper for Rhino spheres.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoSurface.html#compas_rhino.geometry.RhinoSurface" title="compas_rhino.geometry.RhinoSurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoSurface</span></code></a></p></td>
+<td><p>Wrapper for Rhino surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoVector.html#compas_rhino.geometry.RhinoVector" title="compas_rhino.geometry.RhinoVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoVector</span></code></a></p></td>
+<td><p>Wrapper for Rhino vectors.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
@@ -629,6 +189,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">True</sp
 <li class="nav-item active"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.conduits.html">conduits</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.forms.html">forms</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.objects.html">objects</a></li>
@@ -658,14 +219,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">True</sp
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#baserhinogeometry">BaseRhinoGeometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rhinopoint">RhinoPoint</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rhinovector">RhinoVector</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rhinoline">RhinoLine</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rhinoplane">RhinoPlane</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rhinomesh">RhinoMesh</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rhinocurve">RhinoCurve</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rhinosurface">RhinoSurface</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
 </ul>
@@ -690,10 +244,10 @@ Default is <code class="docutils literal notranslate"><span class="pre">True</sp
       
 
       
-        <a href="compas_rhino.objects.html" title="objects" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="generated/compas_rhino.geometry.RhinoGeometry.html" title="RhinoGeometry" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            objects
+            RhinoGeometry
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
