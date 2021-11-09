@@ -45,10 +45,9 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
             color = geometry.attributes['mesh_color.diffuse']
 
         # If we have a color, we'll discard alpha because draw_mesh is hard coded for a=1
-        if color and len(color) == 4:
-            r, g, b, _a = color
-            color = (r, g, b)
-        if not color:
+        if color:
+            color = color[:3]
+        else:
             color = (1., 1., 1.)
 
         v, f = geometry.to_vertices_and_faces()

@@ -31,9 +31,9 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
 
     def draw(self,
              color: Optional[RGBColor] = None,
-             show_points=False,
-             show_edges=False,
-             show_face=True) -> List[bpy.types.Object]:
+             show_points: bool = False,
+             show_edges: bool = False,
+             show_face: bool = True) -> List[bpy.types.Object]:
         """Draw the polygon.
 
         Parameters
