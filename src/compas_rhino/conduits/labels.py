@@ -5,11 +5,8 @@ from __future__ import division
 from System.Drawing.Color import FromArgb
 from Rhino.Geometry import Point3d
 
-from compas_rhino.conduits.base import BaseConduit
 from compas.utilities import color_to_rgb
-
-
-__all__ = ['LabelsConduit']
+from .base import BaseConduit
 
 
 class LabelsConduit(BaseConduit):

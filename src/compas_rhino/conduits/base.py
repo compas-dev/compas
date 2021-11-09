@@ -9,9 +9,6 @@ import Rhino
 import scriptcontext as sc
 
 
-__all__ = ['BaseConduit']
-
-
 class BaseConduit(Rhino.Display.DisplayConduit):
     """Base class for conduits.
 
