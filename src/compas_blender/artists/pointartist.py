@@ -6,9 +6,9 @@ from typing import Union
 import bpy
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.artists import PrimitiveArtist
 from compas.geometry import Point
-from compas.utilities import RGBColor
 from compas_blender.artists import BlenderArtist
 
 

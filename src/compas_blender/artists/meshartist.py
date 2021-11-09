@@ -10,13 +10,13 @@ import bpy
 from functools import partial
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.datastructures import Mesh
 from compas.geometry import add_vectors
 from compas.geometry import centroid_points
 from compas.geometry import scale_vector
 
 from compas.utilities import color_to_colordict
-from compas.utilities import RGBColor
 from compas.artists import MeshArtist
 from .artist import BlenderArtist
 

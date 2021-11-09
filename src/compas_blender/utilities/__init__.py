@@ -92,6 +92,7 @@ from .drawing import (
     draw_polylines,
     draw_spheres,
     draw_texts,
+    RGBColor,
 )
 from .misc import unload_modules
 
@@ -123,5 +124,6 @@ __all__ = [
     'draw_polylines',
     'draw_spheres',
     'draw_texts',
+    'RGBColor',
     'unload_modules'
 ]

@@ -6,10 +6,10 @@ from typing import Union
 import bpy
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.geometry import add_vectors
 from compas.geometry import Circle
 from compas.artists import PrimitiveArtist
-from compas.utilities import RGBColor
 from .artist import BlenderArtist
 
 

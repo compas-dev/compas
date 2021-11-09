@@ -7,11 +7,11 @@ import bpy
 import mathutils
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.datastructures import Mesh
 from compas.geometry import Transformation, Shape
 from compas.robots import RobotModel
 from compas.artists import RobotModelArtist
-from compas.utilities import RGBColor
 from .artist import BlenderArtist
 
 

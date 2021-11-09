@@ -1,6 +1,10 @@
 import bpy
 
-from typing import Dict, List, Union, Tuple, Text
+from typing import Dict
+from typing import List
+from typing import Union
+from typing import Tuple
+from typing import Text
 
 from compas_blender.utilities import create_collection
 
@@ -23,7 +27,11 @@ __all__ = [
     'draw_polylines',
     'draw_spheres',
     'draw_texts',
+    'RGBColor',
 ]
+
+
+RGBColor = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
 def _link_object(obj, collection=None, layer=None):

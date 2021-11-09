@@ -111,7 +111,6 @@ from .colors import (
     red,
     rgb_to_hex,
     rgb_to_rgb,
-    RGBColor,
     white,
     yellow
 )
@@ -181,7 +180,6 @@ __all__ = [
     'color_to_colordict',
     'color_to_rgb',
     'Colormap',
-    'RGBColor',
     'red',
     'green',
     'blue',

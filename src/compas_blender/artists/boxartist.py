@@ -5,9 +5,9 @@ from typing import Union
 
 import bpy
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.geometry import Box
 from compas.artists import ShapeArtist
-from compas.utilities import RGBColor
 from .artist import BlenderArtist
 
 
