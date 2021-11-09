@@ -96,6 +96,8 @@ class NetworkObject(BaseObject):
         Setting this location will make a copy of the provided point object.
         Moving the original point will thus not affect the object's location.
         """
+        if not self._location:
+            self._location = Point(0, 0, 0)
         return self._location
 
     @location.setter
@@ -108,6 +110,8 @@ class NetworkObject(BaseObject):
         A uniform scaling factor for the object in the scene.
         The scale is applied relative to the location of the object in the scene.
         """
+        if not self._scale:
+            self._scale = 1.0
         return self._scale
 
     @scale.setter
@@ -120,6 +124,8 @@ class NetworkObject(BaseObject):
         The rotation angles around the 3 axis of the coordinate system
         with the origin placed at the location of the object in the scene.
         """
+        if not self._rotation:
+            self._rotation = [0, 0, 0]
         return self._rotation
 
     @rotation.setter
@@ -129,24 +135,24 @@ class NetworkObject(BaseObject):
     @property
     def node_xyz(self):
         """dict : The view coordinates of the mesh object."""
+        origin = Point(0, 0, 0)
         stack = []
-        if self.anchor is not None and self.location is not None:
-            xyz = self.network.vertex_attributes(self.anchor, 'xyz')
-            origin = Point(0, 0, 0)
-            point = Point(* xyz)
-            T1 = Translation.from_vector(origin - point)
-            stack.append(T1)
-        if self.scale is not None:
+        if self.scale != 1.0:
             S = Scale.from_factors([self.scale] * 3)
             stack.append(S)
-        if self.rotation is not None:
+        if self.rotation != [0, 0, 0]:
             R = Rotation.from_euler_angles(self.rotation)
             stack.append(R)
-        if self.location is not None:
+        if self.location != origin:
+            if self.anchor is not None:
+                xyz = self.network.vertex_attributes(self.anchor, 'xyz')
+                point = Point(* xyz)
+                T1 = Translation.from_vector(origin - point)
+                stack.insert(0, T1)
             T2 = Translation.from_vector(self.location)
             stack.append(T2)
         if stack:
-            X = reduce(mul, stack)
+            X = reduce(mul, stack[::-1])
             network = self.network.transformed(X)
         else:
             network = self.network

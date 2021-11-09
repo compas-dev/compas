@@ -35,7 +35,6 @@ from compas.geometry import midpoint_line
 from compas.geometry import vector_average
 
 from compas.utilities import linspace
-from compas.utilities import meshgrid
 
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
@@ -46,6 +45,7 @@ from compas.datastructures import HalfEdge
 from .operations import mesh_collapse_edge
 from .operations import mesh_split_edge
 from .operations import mesh_split_face
+from .operations import mesh_split_strip
 from .operations import mesh_merge_faces
 
 from .bbox import mesh_bounding_box
@@ -123,6 +123,7 @@ class Mesh(HalfEdge):
     smooth_area = mesh_smooth_area
     split_edge = mesh_split_edge
     split_face = mesh_split_face
+    split_strip = mesh_split_strip
     subdivide = mesh_subdivide
     transform = mesh_transform
     transformed = mesh_transformed
@@ -639,16 +640,15 @@ class Mesh(HalfEdge):
         dy = dy or dx
         ny = ny or nx
 
-        U, V = meshgrid(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1), indexing='ij')
-
-        quads = [[
-            [U[i + 0][j + 0], V[i + 0][j + 0], 0.0],
-            [U[i + 0][j + 1], V[i + 0][j + 1], 0.0],
-            [U[i + 1][j + 1], V[i + 1][j + 1], 0.0],
-            [U[i + 1][j + 0], V[i + 1][j + 0], 0.0]
+        vertices = [[x, y, 0.0] for x, y in product(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))]
+        faces = [[
+            i * (ny + 1) + j,
+            (i + 1) * (ny + 1) + j,
+            (i + 1) * (ny + 1) + j + 1,
+            i * (ny + 1) + j + 1
         ] for i, j in product(range(nx), range(ny))]
 
-        return cls.from_polygons(quads)
+        return cls.from_vertices_and_faces(vertices, faces)
 
     # --------------------------------------------------------------------------
     # helpers

@@ -11,7 +11,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+### Removed
+
+
+## [1.11.1] 2021-11-09
+
+### Added
+
+### Changed
+
+### Removed
+
+
+## [1.11.0] 2021-11-08
+
+### Added
+
+* Added halfedge loops in `compas.datastructures.Halfedge.halfedge_loop`.
+* Added halfedge strips in `compas.datastructures.Halfedge.halfedge_strip`.
+* Added `compas.datastructures.mesh_split_strip` and `compas.datastructures.Mesh.split_strip`.
+* Added boundingbox to `compas_rhino.conduits.BaseConduit`
+
+### Changed
+
 * Fixed bug in combination of `compas_rhino.artists.MeshArtist.draw_mesh` and `compas_rhino.utilities.drawing.draw_mesh`.
+* Fixed bug in continuous loops in `compas.datastructures.Halfedge.edge_loop`.
+* Fixed bug in continuous strips in `compas.datastructures.Halfedge.edge_strip`.
 * Changed abstract method `compas.artists.MeshArtist.draw_mesh` to implemented method in `compas_plotters.artists.MeshArtist.draw_mesh`.
 
 ### Removed

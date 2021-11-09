@@ -5,10 +5,6 @@ geometry
 
 .. currentmodule:: compas_rhino.geometry
 
-.. rst-class:: lead
-
-Wrappers for Rhino objects that can be used to convert Rhino geometry and data to COMPAS objects.
-
 Classes
 =======
 

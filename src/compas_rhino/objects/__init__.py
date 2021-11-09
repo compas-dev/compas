@@ -5,32 +5,16 @@ objects
 
 .. currentmodule:: compas_rhino.objects
 
+Classes
+=======
 
-NetworkObject
-=============
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-.. autoclass:: NetworkObject
-    :members: clear, draw, select_nodes, select_edges, modify_nodes, modify_edges
-    :no-show-inheritance:
-
-----
-
-MeshObject
-==========
-
-.. autoclass:: MeshObject
-    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
-    :no-show-inheritance:
-
-----
-
-VolMeshObject
-=============
-
-.. autoclass:: VolMeshObject
-    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
-    :no-show-inheritance:
-
+    MeshObject
+    NetworkObject
+    VolMeshObject
 
 """
 from __future__ import absolute_import
