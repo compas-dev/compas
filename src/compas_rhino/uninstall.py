@@ -45,12 +45,20 @@ def uninstall(version=None, packages=None):
     if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
-    packages = _filter_installed_packages(version, packages)
-
-    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
     # We install COMPAS packages in the scripts folder
     # instead of directly as IPy module.
     scripts_path = compas_rhino._get_scripts_path(version)
+
+    # This is for old installs
+    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+
+    if not packages:
+        packages = []
+        for name in os.listdir(scripts_path):
+            if name.startswith('compas') and not name.endswith('.py'):
+                packages.append(name)
+
+    packages = _filter_installed_packages(version, packages)
 
     print('Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}'.format(version, scripts_path))
 
@@ -60,8 +68,7 @@ def uninstall(version=None, packages=None):
 
     for package in packages:
         symlink_path = os.path.join(scripts_path, package)
-        if os.path.exists(symlink_path):
-            symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
+        symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
 
         # Handle legacy install location
         # This does not always work,
