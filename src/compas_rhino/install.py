@@ -54,16 +54,6 @@ def install(version=None, packages=None):
     # This is for old installs
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
-    # If no specific packages are provided for installation
-    # everything should be removed first,
-    # and not just the default packages
-    # or the packages that the bootstrapper is aware of.
-    if not packages:
-        packages = []
-        for name in os.listdir(scripts_path):
-            if name.startswith('compas') and not name.endswith('.py'):
-                packages.append(name)
-
     packages = _filter_installable_packages(version, packages)
 
     print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
@@ -73,6 +63,17 @@ def install(version=None, packages=None):
     symlinks_to_install = []
     symlinks_to_uninstall = []
     exit_code = 0
+
+    for name in os.listdir(scripts_path):
+        if name.startswith('compas') and not name.endswith('.py'):
+            try:
+                importlib.import_module(name)
+            except ImportError:
+                symlink_path = os.path.join(scripts_path, name)
+                symlinks_to_uninstall.append(dict(name=name, link=symlink_path))
+            else:
+                if name not in packages:
+                    packages.append(name)
 
     for package in packages:
         symlink_path = os.path.join(scripts_path, package)
