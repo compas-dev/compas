@@ -27,7 +27,7 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
                  polygon: Polygon,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any):
-        super(PolygonArtist, self).__init__(primitive=polygon, collection=collection, **kwargs)
+        super().__init__(primitive=polygon, collection=collection or polygon.name, **kwargs)
 
     def draw(self,
              color: RGBColor = None,
@@ -55,12 +55,12 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
         color = color or self.color
         objects = []
         if show_points:
-            points = [{'pos': point, 'color': color, 'name': self.primitive.name} for point in _points]
+            points = [{'pos': point, 'color': color, 'name': self.primitive.name, 'radius': 0.01} for point in _points]
             objects += compas_blender.draw_points(points, collection=self.collection)
         if show_edges:
             lines = [{'start': list(a), 'end': list(b), 'color': color, 'name': self.primitive.name} for a, b in self.primitive.lines]
             objects += compas_blender.draw_lines(lines, collection=self.collection)
         if show_face:
-            polygons = [{'points': _points, 'color': color, 'name': self.primitive.name}]
+            polygons = [{'points': list(_points), 'color': color, 'name': self.primitive.name}]
             objects += compas_blender.draw_faces(polygons, collection=self.collection)
         return objects
