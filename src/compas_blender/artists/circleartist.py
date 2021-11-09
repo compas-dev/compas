@@ -48,8 +48,8 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
             The objects created in Blender.
         """
         color = color or self.color
-        point = list(self.primitive.plane.point)
-        normal = list(self.primitive.plane.normal)
+        point = self.primitive.plane.point
+        normal = self.primitive.plane.normal
         plane = point, normal
         radius = self.primitive.radius
         objects = []

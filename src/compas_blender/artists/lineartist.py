@@ -67,8 +67,8 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
 
         """
         color = color or self.color
-        start = list(self.primitive.start)
-        end = list(self.primitive.end)
+        start = self.primitive.start
+        end = self.primitive.end
         objects = []
         if show_points:
             points = [

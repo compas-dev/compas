@@ -91,10 +91,10 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         -------
         list of :class:`bpy.types.Object`
         """
-        origin = list(self.primitive.point)
-        X = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
-        Y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
-        Z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
+        origin = self.primitive.point
+        X = self.primitive.point + self.primitive.xaxis.scaled(self.scale)
+        Y = self.primitive.point + self.primitive.yaxis.scaled(self.scale)
+        Z = self.primitive.point + self.primitive.zaxis.scaled(self.scale)
         lines = [
             {'start': origin, 'end': X, 'color': self.color_xaxis, 'name': f"{self.primitive.name}.xaxis"},
             {'start': origin, 'end': Y, 'color': self.color_yaxis, 'name': f"{self.primitive.name}.yaxis"},
