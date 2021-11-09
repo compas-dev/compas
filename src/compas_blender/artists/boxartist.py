@@ -29,7 +29,7 @@ class BoxArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=box, collection=collection or box.name, **kwargs)
 
-    def draw(self, color: RGBColor = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[RGBColor] = None) -> List[bpy.types.Object]:
         """Draw the box associated with the artist.
 
         Parameters

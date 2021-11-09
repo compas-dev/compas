@@ -30,7 +30,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
 
-    def draw(self, color: RGBColor = None, u: int = None, v: int = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[RGBColor] = None, u: Optional[int] = None, v: Optional[int] = None) -> List[bpy.types.Object]:
         """Draw the torus associated with the artist.
 
         Parameters

@@ -30,7 +30,7 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=cylinder, collection=collection or cylinder.name, **kwargs)
 
-    def draw(self, color: RGBColor = None, u: int = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[RGBColor] = None, u: int = None) -> List[bpy.types.Object]:
         """Draw the cylinder associated with the artist.
 
         Parameters

@@ -30,7 +30,7 @@ class SphereArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=sphere, collection=collection or sphere.name, **kwargs)
 
-    def draw(self, color: RGBColor = None, u: int = None, v: int = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[RGBColor] = None, u: int = None, v: int = None) -> List[bpy.types.Object]:
         """Draw the sphere associated with the artist.
 
         Parameters

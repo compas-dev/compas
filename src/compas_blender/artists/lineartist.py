@@ -50,7 +50,7 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
                  ):
         super().__init__(primitive=line, collection=collection or line.name, **kwargs)
 
-    def draw(self, color: RGBColor = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[RGBColor] = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the line.
 
         Parameters

@@ -55,7 +55,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         super().__init__(primitive=vector, collection=collection or vector.name, **kwargs)
 
     def draw(self,
-             color: RGBColor = None,
+             color: Optional[RGBColor] = None,
              point: Optional[Point] = None,
              show_point: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the vector.

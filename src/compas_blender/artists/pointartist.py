@@ -51,7 +51,7 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
                  **kwargs: Any):
         super().__init__(primitive=point, collection=collection or point.name, **kwargs)
 
-    def draw(self, color: RGBColor = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[RGBColor] = None) -> List[bpy.types.Object]:
         """Draw the point.
 
         Returns

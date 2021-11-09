@@ -30,7 +30,7 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
                  **kwargs: Any):
         super().__init__(primitive=circle, collection=collection or circle.name, **kwargs)
 
-    def draw(self,  color: RGBColor = None, show_point=False, show_normal=False) -> List[bpy.types.Object]:
+    def draw(self,  color: Optional[RGBColor] = None, show_point=False, show_normal=False) -> List[bpy.types.Object]:
         """Draw the circle.
 
         Parameters

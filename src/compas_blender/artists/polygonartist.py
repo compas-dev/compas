@@ -30,7 +30,7 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
         super().__init__(primitive=polygon, collection=collection or polygon.name, **kwargs)
 
     def draw(self,
-             color: RGBColor = None,
+             color: Optional[RGBColor] = None,
              show_points=False,
              show_edges=False,
              show_face=True) -> List[bpy.types.Object]:
