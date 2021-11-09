@@ -12,9 +12,6 @@ from compas.geometry import Point
 from compas_blender.artists import BlenderArtist
 
 
-__all__ = ["PointArtist"]
-
-
 class PointArtist(BlenderArtist, PrimitiveArtist):
     """Artist for drawing points.
 

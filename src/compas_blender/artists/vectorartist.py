@@ -13,9 +13,6 @@ from compas.geometry import Point
 from compas.geometry import Vector
 
 
-__all__ = ['VectorArtist']
-
-
 class VectorArtist(BlenderArtist, PrimitiveArtist):
     """Artist for drawing vectors.
 
