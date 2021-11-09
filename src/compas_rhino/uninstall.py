@@ -52,6 +52,10 @@ def uninstall(version=None, packages=None):
     # This is for old installs
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
+    # If no specific packages are provided for uninstall
+    # everything should be removed,
+    # and not just the default packages
+    # or the packages that the bootstrapper is aware of.
     if not packages:
         packages = []
         for name in os.listdir(scripts_path):
