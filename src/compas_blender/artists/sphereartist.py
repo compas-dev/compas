@@ -1,10 +1,12 @@
 from typing import Optional
 from typing import Any
+from typing import List
 from typing import Union
 
 import bpy
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.geometry import Sphere
 from compas.artists import ShapeArtist
 from .artist import BlenderArtist
@@ -28,12 +30,12 @@ class SphereArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=sphere, collection=collection or sphere.name, **kwargs)
 
-    def draw(self, color=None, u=None, v=None):
+    def draw(self, color: Optional[RGBColor] = None, u: int = None, v: int = None) -> List[bpy.types.Object]:
         """Draw the sphere associated with the artist.
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple of float or tuple of int, optional
             The RGB color of the sphere.
         u : int, optional
             Number of faces in the "u" direction.
