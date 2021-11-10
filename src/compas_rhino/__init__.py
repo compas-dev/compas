@@ -226,4 +226,5 @@ __all_plugins__ = [
     'compas_rhino.install',
     'compas_rhino.uninstall',
     'compas_rhino.artists',
+    'compas_rhino.geometry.curves',
 ]
