@@ -11,10 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `CircleArtist`, `LineArtist`, `PointArtist`, `PolygonArtist`, `PolylineArtist`, and `VectorArtist` to `compas_blender`.
 * Added `draw_circles` and `draw_planes` to `compas_blender`.
+* Added `compas_rhino.geometry.curves` plugins for `compas.geometry.curves` pluggables.
 
 ### Changed
 
 * Replaced implementation of `RGBColour` and `Float` with deprecation warning in `compas.utilities.descriptors`.
+* Moved all Rhino geometry and objects wrappers to `compas_rhino.conversions`.
 
 ### Removed
 
