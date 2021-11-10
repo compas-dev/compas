@@ -14,14 +14,14 @@ from Rhino.Geometry import Sphere as RhinoSphere
 from Rhino.Geometry import Cone as RhinoCone
 from Rhino.Geometry import Cylinder as RhinoCylinder
 
-from .primitives import plane_to_rhino
-from .primitives import circle_to_rhino
-from .primitives import frame_to_rhino
-from .primitives import point_to_rhino
-from .primitives import plane_to_compas_frame
-from .primitives import plane_to_compas
-from .primitives import point_to_compas
-from .primitives import vector_to_compas
+from ._primitives import plane_to_rhino
+from ._primitives import circle_to_rhino
+from ._primitives import frame_to_rhino
+from ._primitives import point_to_rhino
+from ._primitives import plane_to_compas_frame
+from ._primitives import plane_to_compas
+from ._primitives import point_to_compas
+from ._primitives import vector_to_compas
 
 
 def box_to_compas(box):

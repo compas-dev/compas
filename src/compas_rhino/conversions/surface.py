@@ -8,7 +8,8 @@ import compas_rhino
 from compas.utilities import memoize
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join
-from compas_rhino.conversions import point_to_compas
+
+from ._primitives import point_to_compas
 
 from ._geometry import RhinoGeometry
 

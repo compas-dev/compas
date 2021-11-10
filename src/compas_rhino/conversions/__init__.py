@@ -9,6 +9,30 @@ conversions
 
 Conversions between Rhino geometry objects (:mod:`Rhino.Geometry`) and COMPAS geometry objects (:mod:`compas.geometry`).
 
+Classes
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RhinoGeometry
+    RhinoBox
+    RhinoCircle
+    RhinoCone
+    RhinoCurve
+    RhinoCylinder
+    RhinoEllipse
+    RhinoLine
+    RhinoMesh
+    RhinoPlane
+    RhinoPoint
+    RhinoPolyline
+    RhinoSphere
+    RhinoSurface
+    RhinoVector
+
+
 Exceptions
 ==========
 
@@ -19,8 +43,11 @@ Exceptions
     ConversionError
 
 
+Functions
+=========
+
 Primitives
-==========
+----------
 
 .. autosummary::
     :toctree: generated/
@@ -47,7 +74,7 @@ Primitives
 
 
 Shapes
-======
+------
 
 .. autosummary::
     :toctree: generated/
@@ -64,7 +91,7 @@ Shapes
 
 
 Curves
-======
+------
 
 .. autosummary::
     :toctree: generated/
@@ -80,7 +107,7 @@ Curves
 
 
 Surfaces
-========
+--------
 
 .. autosummary::
     :toctree: generated/
@@ -90,9 +117,9 @@ Surfaces
 """
 from __future__ import absolute_import
 
-from .exceptions import ConversionError
+from ._exceptions import ConversionError
 
-from .primitives import (
+from ._primitives import (
     point_to_rhino,
     vector_to_rhino,
     line_to_rhino,
@@ -113,7 +140,7 @@ from .primitives import (
     polyline_to_compas,
     polygon_to_compas
 )
-from .shapes import (
+from ._shapes import (
     box_to_rhino,
     sphere_to_rhino,
     cone_to_rhino,
@@ -124,7 +151,7 @@ from .shapes import (
     cone_to_compas,
     cylinder_to_compas,
 )
-from .curves import (
+from ._curves import (
     line_to_rhino_curve,
     circle_to_rhino_curve,
     ellipse_to_rhino_curve,
@@ -134,6 +161,25 @@ from .curves import (
     curve_to_compas_line,
     curve_to_compas_polyline
 )
+
+from ._geometry import RhinoGeometry
+
+from .box import RhinoBox
+from .circle import RhinoCircle
+from .cone import RhinoCone
+from .curve import RhinoCurve
+from .cylinder import RhinoCylinder
+from .ellipse import RhinoEllipse
+from .line import RhinoLine
+from .mesh import RhinoMesh
+from .plane import RhinoPlane
+from .point import RhinoPoint
+from .polyline import RhinoPolyline
+from .sphere import RhinoSphere
+from .surface import RhinoSurface
+from .vector import RhinoVector
+
+BaseRhinoGeometry = RhinoGeometry
 
 # geometry to geometry conversions
 # Rhino object to geometry conversions
@@ -179,4 +225,20 @@ __all__ = [
     'curve_to_compas_ellipse',
     'curve_to_compas_line',
     'curve_to_compas_polyline',
+
+    'RhinoGeometry',
+    'RhinoBox',
+    'RhinoCircle',
+    'RhinoCone',
+    'RhinoCurve',
+    'RhinoCylinder',
+    'RhinoEllipse',
+    'RhinoLine',
+    'RhinoMesh',
+    'RhinoPlane',
+    'RhinoPoint',
+    'RhinoPolyline',
+    'RhinoSphere',
+    'RhinoSurface',
+    'RhinoVector',
 ]

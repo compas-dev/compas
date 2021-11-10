@@ -8,14 +8,15 @@ from compas.geometry import Line
 from compas.geometry import Circle
 from compas.geometry import Ellipse
 
-from compas_rhino.conversions import circle_to_rhino_curve
-from compas_rhino.conversions import ellipse_to_rhino_curve
-from compas_rhino.conversions import line_to_rhino_curve
-from compas_rhino.conversions import curve_to_compas_circle
-from compas_rhino.conversions import curve_to_compas_ellipse
-from compas_rhino.conversions import curve_to_compas_polyline
-from compas_rhino.conversions import curve_to_compas_line
-from compas_rhino.conversions import ConversionError
+from ._exceptions import ConversionError
+
+from ._curves import circle_to_rhino_curve
+from ._curves import ellipse_to_rhino_curve
+from ._curves import line_to_rhino_curve
+from ._curves import curve_to_compas_circle
+from ._curves import curve_to_compas_ellipse
+from ._curves import curve_to_compas_polyline
+from ._curves import curve_to_compas_line
 
 from ._geometry import RhinoGeometry
 

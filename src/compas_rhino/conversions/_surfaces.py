@@ -6,8 +6,8 @@ from compas.geometry import Point
 
 from Rhino.Geometry import NurbsSurface as RhinoNurbsSurface
 
-from .primitives import point_to_rhino
-from .primitives import point_to_compas
+from ._primitives import point_to_rhino
+from ._primitives import point_to_compas
 
 
 def surface_to_compas_data(surface):
