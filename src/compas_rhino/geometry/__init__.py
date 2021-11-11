@@ -39,10 +39,10 @@ TriMesh
     :toctree: generated/
     :nosignatures:
 
-    trimesh_gaussian_curvature
-    trimesh_mean_curvature
-    trimesh_principal_curvature
-    trimesh_slice
+    trimesh.trimesh_gaussian_curvature
+    trimesh.trimesh_mean_curvature
+    trimesh.trimesh_principal_curvature
+    trimesh.trimesh_slice
 
 """
 from __future__ import absolute_import
