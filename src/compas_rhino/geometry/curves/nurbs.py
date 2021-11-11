@@ -199,11 +199,11 @@ class RhinoNurbsCurve(NurbsCurve):
     @classmethod
     def from_step(cls, filepath):
         """Load a NURBS curve from an STP file."""
-        pass
+        raise NotImplementedError
 
     @classmethod
     def from_arc(cls, arc, degree, pointcount=None):
-        pass
+        raise NotImplementedError
 
     @classmethod
     def from_circle(cls, circle):
@@ -256,13 +256,13 @@ class RhinoNurbsCurve(NurbsCurve):
 
     def to_step(self, filepath, schema="AP203"):
         """Write the curve geometry to a STP file."""
-        pass
+        raise NotImplementedError
 
     def to_line(self):
-        pass
+        raise NotImplementedError
 
     def to_polyline(self):
-        pass
+        raise NotImplementedError
 
     # ==============================================================================
     # Rhino
