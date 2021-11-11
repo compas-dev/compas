@@ -31,8 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Changed `compas_rhino.uninstall` to also remove broken symlinks if no specific packages are provided for installation.
-* Changed `compas_rhino.install` to also remove broken symlinks if no specific packages are provided for installation.
+* Changed `compas_rhino.uninstall` to also remove broken symlinks if no specific packages are provided for un-installation.
+* Changed `compas_rhino.install` to also remove broken symlinks.
 
 ### Removed
 
