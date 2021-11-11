@@ -114,6 +114,15 @@ Surfaces
     :nosignatures:
 
 
+Transformations
+---------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    xform_to_rhino
+
 """
 from __future__ import absolute_import
 
@@ -161,6 +170,9 @@ from ._curves import (
     curve_to_compas_line,
     curve_to_compas_polyline
 )
+from ._transformations import (
+    xform_to_rhino
+)
 
 from ._geometry import RhinoGeometry
 
@@ -181,8 +193,6 @@ from .vector import RhinoVector
 
 BaseRhinoGeometry = RhinoGeometry
 
-# geometry to geometry conversions
-# Rhino object to geometry conversions
 
 __all__ = [
     'ConversionError',
@@ -225,6 +235,8 @@ __all__ = [
     'curve_to_compas_ellipse',
     'curve_to_compas_line',
     'curve_to_compas_polyline',
+
+    'xform_to_rhino',
 
     'RhinoGeometry',
     'RhinoBox',

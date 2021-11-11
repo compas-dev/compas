@@ -1,5 +1,9 @@
 from __future__ import absolute_import
 
-from .xforms import *  # noqa : F401 F403
+import warnings
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+warnings.warn(
+    "Conversion functions for transformations have been moved to `compas_rhino.conversions`.",
+    DeprecationWarning)
+
+from compas_rhino.conversions._transformations import *  # noqa : F401 F403
