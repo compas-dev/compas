@@ -53,6 +53,18 @@ class RhinoCurve(RhinoGeometry):
                 raise ConversionError('The geometry cannot be converted to a curve.')
         self._geometry = geometry
 
+    def to_compas(self):
+        """Convert the curve to a COMPAS curve.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        """
+        from compas.geometry import NurbsCurve
+        curve = NurbsCurve()
+        curve.rhino_curve = self.geometry
+        return curve
+
     def to_compas_circle(self):
         """Convert the curve to a COMPAS circle.
 
