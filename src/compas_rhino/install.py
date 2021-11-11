@@ -56,14 +56,29 @@ def install(version=None, packages=None):
 
     packages = _filter_installable_packages(version, packages)
 
-    print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
-    print('{}\n'.format(scripts_path))
-
     results = []
     symlinks_to_install = []
     symlinks_to_uninstall = []
     exit_code = 0
 
+    # check all installable packages
+    # add the packages that can't be imported from the current env to the list of symlinks to uninstall
+    # and remove the package name from the list of installable packages
+    # make a copy of the list to avoid problems with removing items
+    # note: perhaps this should already happen in the filter function...
+    for name in packages[:]:
+        try:
+            importlib.import_module(name)
+        except ImportError:
+            symlink_path = os.path.join(scripts_path, name)
+            symlinks_to_uninstall.append(dict(name=name, link=symlink_path))
+            packages.remove(name)
+
+    # check all the compas packages/folders in the scripts directory
+    # if one of them is not importable from the current env
+    # it should be listed for un-installation
+    # otherwise it should be added to the list of packages to install
+    # if it wasn't already in there
     for name in os.listdir(scripts_path):
         if name.startswith('compas') and not name.endswith('.py'):
             try:
@@ -75,6 +90,9 @@ def install(version=None, packages=None):
                 if name not in packages:
                     packages.append(name)
 
+    # add all of the packages in the list of installable packages
+    # to the list of symlinks to uninstall
+    # and to the list of symlinks to install
     for package in packages:
         symlink_path = os.path.join(scripts_path, package)
         symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
@@ -104,10 +122,21 @@ def install(version=None, packages=None):
         if not compas_rhino._try_remove_bootstrapper(ipylib_path):
             results.append(('compas_bootstrapper', 'ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.'))
 
+    # -------------------------
     # Ready to start installing
+    # -------------------------
+
+    # create new symlinks and register the results
     symlinks = [(link['source_path'], link['link']) for link in symlinks_to_install]
     install_results = compas._os.create_symlinks(symlinks)
 
+    # set the exit code based on the installation results
+    if not all(install_results):
+        exit_code = -1
+
+    # make a list of installed packages
+    # based on the installation results
+    # and update the general results list
     installed_packages = []
     for install_data, success in zip(symlinks_to_install, install_results):
         if success:
@@ -117,9 +146,7 @@ def install(version=None, packages=None):
             result = 'ERROR: Cannot create symlink, try to run as administrator.'
         results.append((install_data['name'], result))
 
-    if not all(install_results):
-        exit_code = -1
-
+    # finalize the general results list with info about the bootstrapper
     if exit_code == -1:
         results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not install bootstrapper, try uninstalling first'))
     else:
@@ -129,9 +156,13 @@ def install(version=None, packages=None):
         except:  # noqa: E722
             results.append(('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
 
+    # output the outcome of the installation process
+    # perhaps we should more info here
+    print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
+    print('{}\n'.format(scripts_path))
+
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
-
         if status != 'OK':
             exit_code = -1
 
