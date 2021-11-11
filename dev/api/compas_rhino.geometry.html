@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="boolean_difference_mesh_mesh" href="generated/compas_rhino.geometry.booleans.boolean_difference_mesh_mesh.html" />
+    <link rel="next" title="RhinoNurbsCurve" href="generated/compas_rhino.geometry.RhinoNurbsCurve.html" />
   
   
   
@@ -104,6 +104,20 @@
           
           <span class="target" id="module-compas_rhino.geometry"></span><section id="geometry">
 <h1>geometry</h1>
+<section id="classes">
+<h2>Classes</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.RhinoNurbsCurve.html#compas_rhino.geometry.RhinoNurbsCurve" title="compas_rhino.geometry.RhinoNurbsCurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoNurbsCurve</span></code></a></p></td>
+<td><p>Class representing a NURBS curve based on the NurbsCurve of Rhino.Geometry.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="plugins">
 <h2>Plugins</h2>
 <section id="booleans">
@@ -135,19 +149,19 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.curves.new_nurbscurve.html#compas_rhino.geometry.curves.new_nurbscurve" title="compas_rhino.geometry.curves.new_nurbscurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves.new_nurbscurve</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Create a new empty Nurbs curve.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.curves.new_nurbscurve_from_interpolation.html#compas_rhino.geometry.curves.new_nurbscurve_from_interpolation" title="compas_rhino.geometry.curves.new_nurbscurve_from_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves.new_nurbscurve_from_interpolation</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Construct a NURBS curve by interpolating a set of points.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.curves.new_nurbscurve_from_parameters.html#compas_rhino.geometry.curves.new_nurbscurve_from_parameters" title="compas_rhino.geometry.curves.new_nurbscurve_from_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves.new_nurbscurve_from_parameters</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Create a new Nurbs curve from explicit curve parameters.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.curves.new_nurbscurve_from_points.html#compas_rhino.geometry.curves.new_nurbscurve_from_points" title="compas_rhino.geometry.curves.new_nurbscurve_from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves.new_nurbscurve_from_points</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Construct a NURBS curve from control points.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.curves.new_nurbscurve_from_step.html#compas_rhino.geometry.curves.new_nurbscurve_from_step" title="compas_rhino.geometry.curves.new_nurbscurve_from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves.new_nurbscurve_from_step</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Create a new Nurbs curve from the data contained in a step file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -160,6 +174,18 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.trimesh.trimesh_gaussian_curvature.html#compas_rhino.geometry.trimesh.trimesh_gaussian_curvature" title="compas_rhino.geometry.trimesh.trimesh_gaussian_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh.trimesh_gaussian_curvature</span></code></a></p></td>
+<td><p>Compute the discrete Gaussian curvature of a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.trimesh.trimesh_mean_curvature.html#compas_rhino.geometry.trimesh.trimesh_mean_curvature" title="compas_rhino.geometry.trimesh.trimesh_mean_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh.trimesh_mean_curvature</span></code></a></p></td>
+<td><p>Compute the discrete mean curvature of a triangle mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.trimesh.trimesh_principal_curvature.html#compas_rhino.geometry.trimesh.trimesh_principal_curvature" title="compas_rhino.geometry.trimesh.trimesh_principal_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh.trimesh_principal_curvature</span></code></a></p></td>
+<td><p>Compute the principal curvature of a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.geometry.trimesh.trimesh_slice.html#compas_rhino.geometry.trimesh.trimesh_slice" title="compas_rhino.geometry.trimesh.trimesh_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh.trimesh_slice</span></code></a></p></td>
+<td><p>Slice a mesh by a list of planes.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -222,6 +248,7 @@
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#plugins">Plugins</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#booleans">Booleans</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#curves">Curves</a></li>
@@ -252,10 +279,10 @@
       
 
       
-        <a href="generated/compas_rhino.geometry.booleans.boolean_difference_mesh_mesh.html" title="boolean_difference_mesh_mesh" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="generated/compas_rhino.geometry.RhinoNurbsCurve.html" title="RhinoNurbsCurve" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            boolean_difference_mesh_mesh
+            RhinoNurbsCurve
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
