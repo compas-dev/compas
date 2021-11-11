@@ -524,8 +524,10 @@ class RhinoNurbsCurve(NurbsCurve):
             The nearest point on the curve, if ``parameter`` is false.
             The nearest as (point, parameter) tuple, if ``parameter`` is true.
         """
-        point, t = self.rhino_curve.ClosestPoint(point_to_rhino(point))
-        point = point_to_compas(point)
+        result, t = self.rhino_curve.ClosestPoint(point_to_rhino(point))
+        if not result:
+            return
+        point = self.point_at(t)
         if return_parameter:
             return point, t
         return point
