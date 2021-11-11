@@ -9,9 +9,12 @@ except ImportError:
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
+from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import circle_to_rhino
 from compas_rhino.conversions import ellipse_to_rhino
 from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import plane_to_compas_frame
 
 import Rhino.Geometry
 
@@ -176,7 +179,19 @@ class RhinoNurbsCurve(NurbsCurve):
         raise NotImplementedError
 
     @classmethod
-    def from_arc(cls, arc, degree, pointcount=None):
+    def from_arc(cls, arc):
+        """Construct a NURBS curve from an arc.
+
+        This construction method is similar to the method ``CreateFromArc`` of the Rhino API for NURBS curves [1]_.
+
+        References
+        ----------
+        .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromArc.htm
+
+        """
+        # curve = cls()
+        # curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromArc(arc_to_rhino(arc))
+        # return curve
         raise NotImplementedError
 
     @classmethod
@@ -233,9 +248,11 @@ class RhinoNurbsCurve(NurbsCurve):
         raise NotImplementedError
 
     def to_line(self):
+        """Convert the NURBS curve to a line."""
         raise NotImplementedError
 
     def to_polyline(self):
+        """Convert the NURBS curve to a polyline."""
         raise NotImplementedError
 
     # ==============================================================================
@@ -248,58 +265,72 @@ class RhinoNurbsCurve(NurbsCurve):
 
     @property
     def points(self):
+        """list of :class:`compas.geometry.Point`: The control points."""
         return [point_to_compas(point) for point in self.rhino_curve.Points]
 
     @property
     def weights(self):
+        """list of float: The weights of the control points."""
         return [point.Weight for point in self.rhino_curve.Points]
 
     @property
     def knots(self):
+        """list of float: Knots without repeating elements."""
         return [key for key, _ in groupby(self.rhino_curve.Knots)]
 
     @property
     def knotsequence(self):
+        """list of float: Knots with multiplicities."""
         return list(self.rhino_curve.Knots)
 
     @property
     def multiplicities(self):
+        """list of int: Multiplicities of the knots."""
         return [len(list(group)) for _, group in groupby(self.rhino_curve.Knots)]
 
     @property
     def degree(self):
+        """int: The degree of the curve (degree = order - 1)."""
         return self.rhino_curve.Degree
 
     @property
     def dimension(self):
+        """int: The dimension of the curve."""
         return self.rhino_curve.Dimension
 
     @property
     def domain(self):
-        return self.rhino_curve.Domain
+        """tuple of float: The parameter domain of the curve."""
+        return self.rhino_curve.Domain.T0, self.rhino_curve.Domain.T1
 
     @property
     def order(self):
+        """int: The order of the curve (order = degree + 1)."""
         return self.rhino_curve.Order
 
     @property
     def start(self):
+        """:class:`compas.geometry.Point`: The point at the start of the curve."""
         return point_to_compas(self.rhino_curve.PointAtStart)
 
     @property
     def end(self):
+        """:class:`compas.geometry.Point`: The point at the end of the curve."""
         return point_to_compas(self.rhino_curve.PointAtEnd)
 
     @property
     def is_closed(self):
+        """bool"""
         return self.rhino_curve.IsClosed
 
     @property
     def is_periodic(self):
+        """bool"""
         return self.rhino_curve.IsPeriodic
 
     @property
     def is_rational(self):
+        """bool"""
         return self.rhino_curve.IsRational
 
     # ==============================================================================
@@ -308,18 +339,22 @@ class RhinoNurbsCurve(NurbsCurve):
 
     def copy(self):
         """Make an independent copy of the current curve."""
-        return RhinoNurbsCurve.from_parameters(
-            self.points,
-            self.weights,
-            self.knots,
-            self.multiplicities,
-            self.degree,
-            self.is_periodic
-        )
+        # return RhinoNurbsCurve.from_parameters(
+        #     self.points,
+        #     self.weights,
+        #     self.knots,
+        #     self.multiplicities,
+        #     self.degree,
+        #     self.is_periodic
+        # )
+        cls = type(self)
+        curve = cls()
+        curve.rhino_curve = self.rhino_curve.Duplicate()
+        return curve
 
     def transform(self, T):
         """Transform this curve."""
-        raise NotImplementedError
+        self.rhino_curve.Transform(xform_to_rhino(T))
 
     def transformed(self, T):
         """Transform a copy of the curve."""
@@ -329,7 +364,7 @@ class RhinoNurbsCurve(NurbsCurve):
 
     def reverse(self):
         """Reverse the parametrisation of the curve."""
-        raise NotImplementedError
+        self.rhino_curve.Reverse()
 
     def space(self, n=10):
         """Compute evenly spaced parameters over the curve domain."""
@@ -356,7 +391,7 @@ class RhinoNurbsCurve(NurbsCurve):
         """
         return self.xyz(resolution)
 
-    def point_at(self, u):
+    def point_at(self, t):
         """Compute a point on the curve.
 
         Parameters
@@ -366,10 +401,11 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             the corresponding point on the curve.
         """
-        raise NotImplementedError
+        point = self.rhino_curve.PointAt(t)
+        return point_to_compas(point)
 
     def tangent_at(self, t):
         """Compute the tangent vector at a point on the curve.
@@ -381,11 +417,12 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The corresponding tangent vector.
 
         """
-        raise NotImplementedError
+        vector = self.rhino_curve.TangentAt(t)
+        return vector_to_compas(vector)
 
     def curvature_at(self, t):
         """Compute the curvature at a point on the curve.
@@ -397,11 +434,12 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The corresponding curvature vector.
 
         """
-        raise NotImplementedError
+        vector = self.rhino_curve.CurvatureAt(t)
+        return vector_to_compas(vector)
 
     def frame_at(self, t):
         """Compute the local frame at a point on the curve.
@@ -413,11 +451,12 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Returns
         -------
-        Frame
+        :class:`compas.geometry.Frame`
             The corresponding local frame.
 
         """
-        raise NotImplementedError
+        plane = self.rhino_curve.FrameAt(t)
+        return plane_to_compas_frame(plane)
 
     def closest_point(self, point, parameter=False):
         """Compute the closest point on the curve to a given point.
