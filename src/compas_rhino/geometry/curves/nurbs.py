@@ -15,6 +15,7 @@ from compas_rhino.conversions import ellipse_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import box_to_compas
 
 import Rhino.Geometry
 
@@ -458,43 +459,93 @@ class RhinoNurbsCurve(NurbsCurve):
         plane = self.rhino_curve.FrameAt(t)
         return plane_to_compas_frame(plane)
 
-    def closest_point(self, point, parameter=False):
+    def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the curve to a given point.
 
         Parameters
         ----------
         point : Point
             The point to project orthogonally to the curve.
-        parameter : bool, optional
-            Return the projected point as well as the curve parameter.
+        return_parameter : bool, optional
+            Return the curve parameter in addition to the projected point.
 
         Returns
         -------
-        Point or tuple
+        :class:`compas.geometry.Point` or tuple of :class:`compas.geometry.Point` and float
             The nearest point on the curve, if ``parameter`` is false.
             The nearest as (point, parameter) tuple, if ``parameter`` is true.
         """
-        raise NotImplementedError
+        point, t = self.rhino_curve.ClosestPoint(point)
+        point = point_to_compas(point)
+        if return_parameter:
+            return point, t
+        return point
 
-    def divide_by_count(self, count):
-        """Divide the curve into a specific number of equal length segments."""
-        raise NotImplementedError
+    def divide_by_count(self, count, return_points=False):
+        """Divide the curve into a specific number of equal length segments.
 
-    def divide_by_length(self, length):
-        """Divide the curve into segments of specified length."""
-        raise NotImplementedError
+        Parameters
+        ----------
+        count : int
+            The number of segments.
+        return_points : bool, optional
+            If ``True``, return the list of division parameters,
+            and the points corresponding to those parameters.
+            If ``False``, return only the list of parameters.
 
-    def aabb(self, precision=0.0):
-        """Compute the axis aligned bounding box of the curve."""
-        raise NotImplementedError
+        Returns
+        -------
+        list of float or tuple of list of float and list of :class:`compas.geometry.Point`
+            The parameters defining the discretisation,
+            and potentially the points corresponding to those parameters.
+        """
+        params = self.rhino_curve.DivideByCount(count, True)
+        if return_points:
+            points = [self.point_at(t) for t in params]
+            return params, points
+        return params
+
+    def divide_by_length(self, length, return_points=False):
+        """Divide the curve into segments of specified length.
+
+        Parameters
+        ----------
+        length : float
+            The length of the segments.
+        return_points : bool, optional
+            If ``True``, return the list of division parameters,
+            and the points corresponding to those parameters.
+            If ``False``, return only the list of parameters.
+
+        Returns
+        -------
+        list of float or tuple of list of float and list of :class:`compas.geometry.Point`
+            The parameters defining the discretisation,
+            and potentially the points corresponding to those parameters.
+        """
+        params = self.rhino_curve.DivideByLength(length, True)
+        if return_points:
+            points = [self.point_at(t) for t in params]
+            return params, points
+        return params
+
+    def aabb(self):
+        """Compute the axis aligned bounding box of the curve.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+        """
+        box = self.rhino_curve.getBoundingBox(True)
+        return box_to_compas(box)
 
     def obb(self, precision=0.0):
         """Compute the oriented bounding box of the curve."""
         raise NotImplementedError
 
-    def length(self, precision=1e-3):
+    def length(self, precision=1e-8):
         """Compute the length of the curve."""
-        raise NotImplementedError
+        return self.rhino_curve.GetLength(precision)
 
     def segment(self, u, v, precision=1e-3):
         """Modifies this curve by segmenting it between the parameters u and v.
