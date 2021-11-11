@@ -36,7 +36,8 @@ class RhinoSurface(RhinoGeometry):
             If the geometry cannot be converted to a surface.
         """
         if not isinstance(geometry, Rhino.Geometry.Surface):
-            raise TypeError("The input geometry is not of type `Rhino.Geometry.Surface`: {}".format(type(geometry)))
+            if not isinstance(geometry, Rhino.Geometry.Brep):
+                raise TypeError("Geometry cannot be interpreted as a `Rhino.Geometry.Surface`: {}".format(type(geometry)))
         self._geometry = geometry
 
     def to_compas_mesh(self, nu, nv=None, weld=False, facefilter=None, cls=None):
