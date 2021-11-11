@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved all Rhino geometry and objects wrappers to `compas_rhino.conversions`.
 * Fixed bug in `compas_rhino.conversions.RhinoSurface.from_geometry`.
 * Changed `compas_rhino.conversions.RhinoLine.from_geometry` to accept line curves.
+* Fixed bug in `compas_rhino.geometry.RhinoNurbsCurve.closest_point`.
 
 ### Removed
 

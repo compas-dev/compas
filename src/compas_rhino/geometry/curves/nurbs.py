@@ -513,7 +513,7 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Parameters
         ----------
-        point : Point
+        point : :class:`compas.geometry.Point`
             The point to project orthogonally to the curve.
         return_parameter : bool, optional
             Return the curve parameter in addition to the projected point.
@@ -524,7 +524,7 @@ class RhinoNurbsCurve(NurbsCurve):
             The nearest point on the curve, if ``parameter`` is false.
             The nearest as (point, parameter) tuple, if ``parameter`` is true.
         """
-        point, t = self.rhino_curve.ClosestPoint(point)
+        point, t = self.rhino_curve.ClosestPoint(point_to_rhino(point))
         point = point_to_compas(point)
         if return_parameter:
             return point, t
