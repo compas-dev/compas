@@ -12,43 +12,70 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    RhinoGeometry
-    RhinoBox
-    RhinoCircle
-    RhinoCone
-    RhinoCurve
-    RhinoCylinder
-    RhinoEllipse
-    RhinoLine
-    RhinoMesh
-    RhinoPlane
-    RhinoPoint
-    RhinoPolyline
-    RhinoSphere
-    RhinoSurface
-    RhinoVector
+    RhinoNurbsCurve
+
+
+Plugins
+=======
+
+Booleans
+--------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    booleans.boolean_difference_mesh_mesh
+    booleans.boolean_intersection_mesh_mesh
+    booleans.boolean_union_mesh_mesh
+
+Curves
+------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    curves.new_nurbscurve
+    curves.new_nurbscurve_from_interpolation
+    curves.new_nurbscurve_from_parameters
+    curves.new_nurbscurve_from_points
+    curves.new_nurbscurve_from_step
+
+TriMesh
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh.trimesh_gaussian_curvature
+    trimesh.trimesh_mean_curvature
+    trimesh.trimesh_principal_curvature
+    trimesh.trimesh_slice
 
 """
 from __future__ import absolute_import
 
-from ._geometry import RhinoGeometry
+from compas_rhino.conversions import RhinoGeometry
 
-from .box import RhinoBox
-from .circle import RhinoCircle
-from .cone import RhinoCone
-from .curve import RhinoCurve
-from .cylinder import RhinoCylinder
-from .ellipse import RhinoEllipse
-from .line import RhinoLine
-from .mesh import RhinoMesh
-from .plane import RhinoPlane
-from .point import RhinoPoint
-from .polyline import RhinoPolyline
-from .sphere import RhinoSphere
-from .surface import RhinoSurface
-from .vector import RhinoVector
+from compas_rhino.conversions import RhinoBox
+from compas_rhino.conversions import RhinoCircle
+from compas_rhino.conversions import RhinoCone
+from compas_rhino.conversions import RhinoCurve
+from compas_rhino.conversions import RhinoCylinder
+from compas_rhino.conversions import RhinoEllipse
+from compas_rhino.conversions import RhinoLine
+from compas_rhino.conversions import RhinoMesh
+from compas_rhino.conversions import RhinoPlane
+from compas_rhino.conversions import RhinoPoint
+from compas_rhino.conversions import RhinoPolyline
+from compas_rhino.conversions import RhinoSphere
+from compas_rhino.conversions import RhinoSurface
+from compas_rhino.conversions import RhinoVector
 
-BaseRhinoGeometry = RhinoGeometry
+from .curves import RhinoNurbsCurve
+
 
 __all__ = [
     'RhinoGeometry',
@@ -66,4 +93,6 @@ __all__ = [
     'RhinoSphere',
     'RhinoSurface',
     'RhinoVector',
+
+    'RhinoNurbsCurve'
 ]

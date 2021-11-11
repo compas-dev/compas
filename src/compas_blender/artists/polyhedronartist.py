@@ -1,9 +1,11 @@
-from typing import Optional
 from typing import Any
+from typing import List
+from typing import Optional
 from typing import Union
 
 import bpy
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.geometry import Polyhedron
 from compas.artists import ShapeArtist
 from .artist import BlenderArtist
@@ -27,7 +29,7 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=polyhedron, collection=collection or polyhedron.name, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self, color: Optional[RGBColor] = None) -> List[bpy.types.Object]:
         """Draw the polyhedron associated with the artist.
 
         Parameters

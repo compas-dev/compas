@@ -5,10 +5,10 @@ from __future__ import division
 import Rhino
 
 from compas.geometry import Frame
-from compas_rhino.conversions import plane_to_rhino
-from compas_rhino.conversions import frame_to_rhino
-from compas_rhino.conversions import plane_to_compas
-from compas_rhino.conversions import plane_to_compas_frame
+from ._primitives import plane_to_rhino
+from ._primitives import frame_to_rhino
+from ._primitives import plane_to_compas
+from ._primitives import plane_to_compas_frame
 
 from ._geometry import RhinoGeometry
 

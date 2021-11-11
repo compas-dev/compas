@@ -4,8 +4,10 @@ from __future__ import division
 
 import Rhino
 
-from compas_rhino.conversions import line_to_compas
-from compas_rhino.conversions import line_to_rhino
+from ._primitives import line_to_compas
+from ._primitives import line_to_rhino
+
+from ._curves import curve_to_compas_line
 
 from ._geometry import RhinoGeometry
 
@@ -32,6 +34,8 @@ class RhinoLine(RhinoGeometry):
             If the geometry cannot be converted to a line.
         """
         if not isinstance(geometry, Rhino.Geometry.Line):
+            if isinstance(geometry, Rhino.Geometry.Curve):
+                geometry = curve_to_compas_line(geometry)
             geometry = line_to_rhino(geometry)
         self._geometry = geometry
 

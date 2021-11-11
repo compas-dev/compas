@@ -1,15 +1,16 @@
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
 from typing import Union
-from typing import Any
 
 import bpy
 
 from functools import partial
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.datastructures import Mesh
 from compas.geometry import add_vectors
 from compas.geometry import centroid_points
@@ -20,7 +21,6 @@ from compas.artists import MeshArtist
 from .artist import BlenderArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
-Color = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
 class MeshArtist(BlenderArtist, MeshArtist):
@@ -75,9 +75,9 @@ class MeshArtist(BlenderArtist, MeshArtist):
                  vertices: Optional[List[int]] = None,
                  edges: Optional[List[int]] = None,
                  faces: Optional[List[int]] = None,
-                 vertexcolor: Optional[Color] = None,
-                 edgecolor: Optional[Color] = None,
-                 facecolor: Optional[Color] = None,
+                 vertexcolor: Optional[RGBColor] = None,
+                 edgecolor: Optional[RGBColor] = None,
+                 facecolor: Optional[RGBColor] = None,
                  show_mesh: bool = False,
                  show_vertices: bool = True,
                  show_edges: bool = True,
@@ -166,16 +166,29 @@ class MeshArtist(BlenderArtist, MeshArtist):
              vertices: Optional[List[int]] = None,
              edges: Optional[List[Tuple[int, int]]] = None,
              faces: Optional[List[int]] = None,
-             vertexcolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
-             edgecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
-             facecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+             vertexcolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None,
+             edgecolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None,
+             facecolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
              ) -> None:
-        """Draw the mesh using the chosen visualisation settings.
+        """Draw the mesh using the chosen visualization settings.
 
         Parameters
         ----------
-        settings : dict, optional
-            Dictionary of visualisation settings that will be merged with the settings of the artist.
+        vertices : list
+            A list of vertex keys identifying which vertices to draw.
+            Default is ``None``, in which case all vertices are drawn.
+        edges : list
+            A list of edge keys (as uv pairs) identifying which edges to draw.
+            The default is ``None``, in which case all edges are drawn.
+        faces : list
+            A list of face keys identifying which faces to draw.
+            The default is ``None``, in which case all faces are drawn.
+        vertexcolor : rgb-tuple or dict of rgb-tuple
+            The color specification for the vertices.
+        edgecolor : rgb-tuple or dict of rgb-tuple
+            The color specification for the edges.
+        facecolor : rgb-tuple or dict of rgb-tuple
+            The color specification for the faces.
 
         """
         self.clear()
@@ -196,7 +209,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_vertices(self,
                       vertices: Optional[List[int]] = None,
-                      color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                      color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
                       ) -> List[bpy.types.Object]:
         """Draw a selection of vertices.
 
@@ -226,7 +239,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_edges(self,
                    edges: Optional[List[Tuple[int, int]]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                   color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
                    ) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
@@ -257,7 +270,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_faces(self,
                    faces: Optional[List[int]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
+                   color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
                    ) -> List[bpy.types.Object]:
         """Draw a selection of faces.
 
@@ -290,7 +303,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_vertexnormals(self,
                            vertices: Optional[List[int]] = None,
-                           color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+                           color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None,
                            scale: float = 1.0) -> List[bpy.types.Object]:
         """Draw the normals at the vertices of the mesh.
 
@@ -327,7 +340,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_facenormals(self,
                          faces: Optional[List[List[int]]] = None,
-                         color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+                         color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None,
                          scale: float = 1.0) -> List[bpy.types.Object]:
         """Draw the normals of the faces.
 
@@ -368,7 +381,8 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_vertexlabels(self,
                           text: Optional[Dict[int, str]] = None,
-                          color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
+                          color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                          ) -> List[bpy.types.Object]:
         """Draw labels for a selection vertices.
 
         Parameters
@@ -405,7 +419,8 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_edgelabels(self,
                         text: Optional[Dict[Tuple[int, int], str]] = None,
-                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
+                        color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                        ) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters
@@ -439,7 +454,8 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_facelabels(self,
                         text: Optional[Dict[int, str]] = None,
-                        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> List[bpy.types.Object]:
+                        color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                        ) -> List[bpy.types.Object]:
         """Draw labels for a selection of faces.
 
         Parameters

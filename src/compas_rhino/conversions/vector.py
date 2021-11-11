@@ -4,8 +4,8 @@ from __future__ import print_function
 
 import Rhino
 
-from compas_rhino.conversions import vector_to_rhino
-from compas_rhino.conversions import vector_to_compas
+from ._primitives import vector_to_rhino
+from ._primitives import vector_to_compas
 
 from ._geometry import RhinoGeometry
 
