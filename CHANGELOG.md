@@ -13,12 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `draw_circles` and `draw_planes` to `compas_blender`.
 * Added `compas_rhino.geometry.curves` plugins for `compas.geometry.curves` pluggables.
 * Added `compas_rhino.geometry.RhinoNurbsCurve`.
+* Modify `to_compas_mesh` in `compas_rhino.conversions.RhinoSurface` to use brep loops
 
 ### Changed
 
 * Replaced implementation of `RGBColour` and `Float` with deprecation warning in `compas.utilities.descriptors`.
 * Moved all Rhino geometry and objects wrappers to `compas_rhino.conversions`.
 * Fixed bug in `compas_rhino.conversions.RhinoSurface.from_geometry`.
+* Rename existing `to_compas_mesh` to `to_compas_quadmesh` to `compas_rhino.conversions.RhinoSurface`.
 
 ### Removed
 
