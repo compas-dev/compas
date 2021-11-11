@@ -5,6 +5,45 @@ geometry
 
 .. currentmodule:: compas_rhino.geometry
 
+Plugins
+=======
+
+Booleans
+--------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    booleans.boolean_difference_mesh_mesh
+    booleans.boolean_intersection_mesh_mesh
+    booleans.boolean_union_mesh_mesh
+
+Curves
+------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    curves.new_nurbscurve
+    curves.new_nurbscurve_from_interpolation
+    curves.new_nurbscurve_from_parameters
+    curves.new_nurbscurve_from_points
+    curves.new_nurbscurve_from_step
+
+TriMesh
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh_gaussian_curvature
+    trimesh_mean_curvature
+    trimesh_principal_curvature
+    trimesh_slice
+
 """
 from __future__ import absolute_import
 
@@ -26,6 +65,7 @@ from compas_rhino.conversions import RhinoSurface
 from compas_rhino.conversions import RhinoVector
 
 BaseRhinoGeometry = RhinoGeometry
+
 
 __all__ = [
     'RhinoGeometry',
