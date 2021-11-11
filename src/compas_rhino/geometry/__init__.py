@@ -5,6 +5,16 @@ geometry
 
 .. currentmodule:: compas_rhino.geometry
 
+Classes
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RhinoNurbsCurve
+
+
 Plugins
 =======
 
@@ -64,7 +74,7 @@ from compas_rhino.conversions import RhinoSphere
 from compas_rhino.conversions import RhinoSurface
 from compas_rhino.conversions import RhinoVector
 
-BaseRhinoGeometry = RhinoGeometry
+from .curves import RhinoNurbsCurve
 
 
 __all__ = [
@@ -83,4 +93,6 @@ __all__ = [
     'RhinoSphere',
     'RhinoSurface',
     'RhinoVector',
+
+    'RhinoNurbsCurve'
 ]

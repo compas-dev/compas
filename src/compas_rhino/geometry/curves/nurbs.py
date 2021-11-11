@@ -42,25 +42,25 @@ class RhinoNurbsCurve(NurbsCurve):
 
     Attributes
     ----------
-    points: List[Point]
+    points: list of :class:`compas.geometry.Point`
         The control points of the curve.
-    weights: List[float]
+    weights: list of float
         The weights of the control points.
-    knots: List[float]
+    knots: list of float
         The knot vector, without duplicates.
-    multiplicities: List[int]
+    multiplicities: list of int
         The multiplicities of the knots in the knot vector.
-    knotsequence: List[float]
+    knotsequence: list of float
         The knot vector, with repeating values according to the multiplicities.
     degree: int
         The degree of the polynomials.
     order: int
         The order of the curve.
-    domain: Tuple[float, float]
+    domain: tuple of float
         The parameter domain.
-    start: :class:`Point`
+    start: :class:`compas.geometry.Point`
         The point corresponding to the start of the parameter domain.
-    end: :class:`Point`
+    end: :class:`compas.geometry.Point`
         The point corresponding to the end of the parameter domain.
     is_closed: bool
         True if the curve is closed.
@@ -123,22 +123,47 @@ class RhinoNurbsCurve(NurbsCurve):
 
     @classmethod
     def from_rhino(cls, rhino_curve):
-        """Construct a NURBS curve from an existing Rhino BSplineCurve."""
+        """Construct a NURBS curve from an existing Rhino curve.
+
+        Parameters
+        ----------
+        rhino_curve : Rhino.Geometry.NurbsCurve
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+
+        """
         curve = cls()
         curve.rhino_curve = rhino_curve
         return curve
 
     @classmethod
-    def from_parameters(cls,
-                        points,
-                        weights,
-                        knots,
-                        multiplicities,
-                        degree,
-                        is_periodic=False):
-        """Construct a NURBS curve from explicit curve parameters."""
+    def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
+        """Construct a NURBS curve from explicit curve parameters.
+
+        Parameters
+        ----------
+        points : list of :class:`compas.geometry.Point`
+            The control points.
+        weights : list of float
+            The control point weights.
+        knots : list of float
+            The curve knots, without duplicates.
+        multiplicities : list of int
+            The multiplicities of the knots.
+        degree : int
+            The degree of the curve.
+        is_periodic : bool, optional
+            Flag indicating whether the curve is periodic or not.
+            Note that this parameters is currently not supported.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+
+        """
         curve = cls()
-        # set periodicity => aparently not possible
         curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
         return curve
 
@@ -146,11 +171,18 @@ class RhinoNurbsCurve(NurbsCurve):
     def from_points(cls, points, degree=3, is_periodic=False):
         """Construct a NURBS curve from control points.
 
-        This construction method is similar to the method ``Create`` of the Rhino API for NURBS curves [1]_.
-
-        References
+        Parameters
         ----------
-        .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/M_Rhino_Geometry_NurbsCurve_Create.htm
+        points : list of :class:`compas.geometry.Point`
+            The control points.
+        degree : int
+            The degree of the curve.
+        is_periodic : bool, optional
+            Flag indicating whether the curve is periodic or not.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         points[:] = [point_to_rhino(point) for point in points]
@@ -162,12 +194,17 @@ class RhinoNurbsCurve(NurbsCurve):
     def from_interpolation(cls, points, precision=1e-3):
         """Construct a NURBS curve by interpolating a set of points.
 
-        This construction method is similar to the method ``CreateHSpline`` of the Rhino API for NURBS curves [1]_.
-
-        References
+        Parameters
         ----------
-        .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateHSpline.htm
-        .. [2] https://dev.opencascade.org/doc/occt-7.4.0/refman/html/class_geom_a_p_i___interpolate.html
+        points : list of :class:`compas.geometry.Point`
+            The control points.
+        precision : float, optional
+            The required precision of the interpolation.
+            This parameter is currently not supported.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         curve = cls()
@@ -183,11 +220,14 @@ class RhinoNurbsCurve(NurbsCurve):
     def from_arc(cls, arc):
         """Construct a NURBS curve from an arc.
 
-        This construction method is similar to the method ``CreateFromArc`` of the Rhino API for NURBS curves [1]_.
-
-        References
+        Parameters
         ----------
-        .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromArc.htm
+        arc : :class:`compas.geometry.Arc`
+            An arc geometry.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         # curve = cls()
@@ -199,11 +239,14 @@ class RhinoNurbsCurve(NurbsCurve):
     def from_circle(cls, circle):
         """Construct a NURBS curve from a circle.
 
-        This construction method is similar to the method ``CreateFromCircle`` of the Rhino API for NURBS curves [1]_.
-
-        References
+        Parameters
         ----------
-        .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromCircle.htm
+        circle : :class:`compas.geometry.Circle`
+            A circle geometry.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         curve = cls()
@@ -214,11 +257,14 @@ class RhinoNurbsCurve(NurbsCurve):
     def from_ellipse(cls, ellipse):
         """Construct a NURBS curve from an ellipse.
 
-        This construction method is similar to the method ``CreateFromEllipse`` of the Rhino API for NURBS curves [1]_.
-
-        References
+        Parameters
         ----------
-        .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromEllipse.htm
+        ellipse : :class:`compas.geometry.Ellipse`
+            An ellipse geometry.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         curve = cls()
@@ -229,11 +275,14 @@ class RhinoNurbsCurve(NurbsCurve):
     def from_line(cls, line):
         """Construct a NURBS curve from a line.
 
-        This construction method is similar to the method ``CreateFromLine`` of the Rhino API for NURBS curves [1]_.
-
-        References
+        Parameters
         ----------
-        .. [1] https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromLine.htm
+        line : :class:`compas.geometry.Line`
+            A line geometry.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         curve = cls()
