@@ -1,5 +1,5 @@
 # flake8: noqa
-cython
+cython <= 0.29.23
 ezdxf
 imageio <= 2.6; python_version < '3.5'
 imageio >= 2.7; python_version >= '3.5'
