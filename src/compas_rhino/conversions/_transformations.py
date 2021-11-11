@@ -2,17 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
-
-if compas.RHINO:
-    from Rhino.Geometry import Transform
-
-__all__ = [
-    'xform_from_transformation',
-    'xform_from_transformation_matrix',
-    'xtransform',
-    'xtransformed'
-]
+from Rhino.Geometry import Transform
 
 
 def xform_from_transformation(transformation):
@@ -35,6 +25,9 @@ def xform_from_transformation(transformation):
     return transform
 
 
+xform_to_rhino = xform_from_transformation
+
+
 def xform_from_transformation_matrix(transformation_matrix):
     """Creates a Rhino Transform instance from 4x4 transformation matrix.
 
@@ -53,6 +46,9 @@ def xform_from_transformation_matrix(transformation_matrix):
         for j in range(0, 4):
             transform[i, j] = transformation_matrix[i][j]
     return transform
+
+
+xform_matrix_to_rhino = xform_from_transformation_matrix
 
 
 def xtransform(geo, transformation):

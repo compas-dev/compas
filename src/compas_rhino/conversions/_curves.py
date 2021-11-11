@@ -4,15 +4,15 @@ from __future__ import division
 
 from compas.geometry import Line
 
-from .exceptions import ConversionError
+from ._exceptions import ConversionError
 
-from .primitives import line_to_rhino
-from .primitives import circle_to_rhino
-from .primitives import ellipse_to_rhino
-from .primitives import point_to_compas
-from .primitives import circle_to_compas
-from .primitives import ellipse_to_compas
-from .primitives import polyline_to_compas
+from ._primitives import line_to_rhino
+from ._primitives import circle_to_rhino
+from ._primitives import ellipse_to_rhino
+from ._primitives import point_to_compas
+from ._primitives import circle_to_compas
+from ._primitives import ellipse_to_compas
+from ._primitives import polyline_to_compas
 
 from Rhino.Geometry import NurbsCurve as RhinoNurbsCurve
 

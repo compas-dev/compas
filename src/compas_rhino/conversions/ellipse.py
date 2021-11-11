@@ -4,14 +4,14 @@ from __future__ import division
 
 import Rhino
 
-from compas_rhino.conversions import circle_to_compas
-from compas_rhino.conversions import circle_to_rhino
+from ._primitives import ellipse_to_compas
+from ._primitives import ellipse_to_rhino
 
 from ._geometry import RhinoGeometry
 
 
-class RhinoCircle(RhinoGeometry):
-    """Wrapper for Rhino circles."""
+class RhinoEllipse(RhinoGeometry):
+    """Wrapper for Rhino ellipses."""
 
     @property
     def geometry(self):
@@ -23,16 +23,16 @@ class RhinoCircle(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Circle` or :class:`compas.geometry.Circle`
-            The geometry object defining a circle.
+        geometry : :rhino:`Rhino_Geometry_Ellipse` or :class:`compas.geometry.Ellipse`
+            The geometry object defining an ellipse.
 
         Raises
         ------
         :class:`ConversionError`
-            If the geometry cannot be converted to a box.
+            If the geometry cannot be converted to an ellipse.
         """
-        if not isinstance(geometry, Rhino.Geometry.Circle):
-            geometry = circle_to_rhino(geometry)
+        if not isinstance(geometry, Rhino.Geometry.Ellipse):
+            geometry = ellipse_to_rhino(geometry)
         self._geometry = geometry
 
     def to_compas(self):
@@ -40,7 +40,7 @@ class RhinoCircle(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Circle`
-            A COMPAS circle.
+        :class:`compas.geometry.Ellipse`
+            A COMPAS ellipse.
         """
-        return circle_to_compas(self.geometry)
+        return ellipse_to_compas(self.geometry)

@@ -4,8 +4,8 @@ from __future__ import division
 
 import Rhino
 
-from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import point_to_compas
+from ._primitives import point_to_rhino
+from ._primitives import point_to_compas
 
 from .vector import RhinoVector
 

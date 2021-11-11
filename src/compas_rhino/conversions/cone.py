@@ -5,9 +5,11 @@ from __future__ import division
 import Rhino
 
 from compas.geometry import Cone
-from compas_rhino.conversions import cone_to_rhino
-from compas_rhino.conversions import cone_to_compas
-from compas_rhino.conversions import ConversionError
+
+from ._exceptions import ConversionError
+
+from ._shapes import cone_to_rhino
+from ._shapes import cone_to_compas
 
 from ._geometry import RhinoGeometry
 
