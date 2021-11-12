@@ -146,11 +146,7 @@ class IntersectionMeshPlane(object):
             x = intersection_segment_plane((a, b), self.plane)
             if not x:
                 continue
-            if len(x) == sum([1 for i, j in zip(x, a) if i == j]):
-                intersections.append(u)
-            elif len(x) == sum([1 for i, j in zip(x, b) if i == j]):
-                intersections.append(v)
-            else:
+            if not len(x) == sum([1 for i, j in zip(x, a) if i == j]) and not len(x) == sum([1 for i, j in zip(x, b) if i == j]):
                 L_ax = length_vector(subtract_vectors(x, a))
                 L_ab = length_vector(subtract_vectors(b, a))
                 t = L_ax / L_ab
