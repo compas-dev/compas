@@ -5,7 +5,7 @@ from __future__ import division
 import Rhino
 import compas_rhino
 
-from compas.utilities import memoize
+from compas.utilities import memoize, geometric_key
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join
 
@@ -40,7 +40,104 @@ class RhinoSurface(RhinoGeometry):
                 raise TypeError("Geometry cannot be interpreted as a `Rhino.Geometry.Surface`: {}".format(type(geometry)))
         self._geometry = geometry
 
-    def to_compas_mesh(self, nu, nv=None, weld=False, facefilter=None, cls=None):
+    def to_compas_mesh(self, cls=None, facefilter=None, cleanup=True):
+        """Convert the surface b-rep loops to a COMPAS mesh.
+
+        Parameters
+        ----------
+        cls : :class:`compas.datastructures.Mesh`, optional
+            The type of COMPAS mesh.
+        facefilter : callable, optional
+            A filter for selection which Brep faces to include.
+            If provided, the filter should return ``True`` or ``False`` per face.
+            A very simple filter that includes all faces is ``def facefilter(face): return True``.
+            Default parameter value is ``None`` in which case all faces are included.
+        cleanup : bool, optional
+            Flag indicating to clean up the result.
+            Cleaning up means to remove isolated faces and unused vertices.
+            Default is ``True``.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            The resulting mesh.
+
+        Examples
+        --------
+        >>> import compas_rhino
+        >>> from compas_rhino.geometry import RhinoSurface
+        >>> from compas_rhino.artists import MeshArtist
+
+        >>> def facefilter(face):
+        ...     success, w, h = face.GetSurfaceSize()
+        ...     if success:
+        ...         if w > 10 and h > 10:
+        ...             return True
+        ...     return False
+        ...
+
+        >>> guid = compas_rhino.select_surface()
+        >>> surf = RhinoSurface.from_guid(guid)
+        >>> mesh = surf.to_compas(facefilter=facefilter)
+
+        >>> artist = MeshArtist(mesh, layer="Blocks")
+        >>> artist.clear_layer()
+        >>> artist.draw()
+
+        """
+        if not self.geometry.HasBrepForm:
+            return
+        brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
+        if facefilter and callable(facefilter):
+            brepfaces = [face for face in brep.Faces if facefilter(face)]
+        else:
+            brepfaces = brep.Faces
+        # vertex maps and face lists
+        gkey_xyz = {}
+        faces = []
+        for face in brepfaces:
+            loop = face.OuterLoop
+            curve = loop.To3dCurve()
+            segments = curve.Explode()
+            a = segments[0].PointAtStart
+            b = segments[0].PointAtEnd
+            a_gkey = geometric_key(a)
+            b_gkey = geometric_key(b)
+            gkey_xyz[a_gkey] = a
+            gkey_xyz[b_gkey] = b
+            face = [a_gkey, b_gkey]
+            for segment in segments[1:-1]:
+                b = segment.PointAtEnd
+                b_gkey = geometric_key(b)
+                face.append(b_gkey)
+                gkey_xyz[b_gkey] = b
+            faces.append(face)
+        # vertices and faces
+        gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
+        vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
+        faces = [[gkey_index[gkey] for gkey in face] for face in faces]
+        # remove duplicates from vertexlist
+        polygons = []
+        for temp in faces:
+            face = []
+            for vertex in temp:
+                if vertex not in face:
+                    face.append(vertex)
+            polygons.append(face)
+        # define mesh type
+        cls = cls or Mesh
+        # create mesh
+        mesh = cls.from_vertices_and_faces(vertices, polygons)
+        mesh.name = self.name
+        # remove isolated faces
+        if cleanup:
+            for face in list(mesh.faces()):
+                if not mesh.face_neighbors(face):
+                    mesh.delete_face(face)
+            mesh.remove_unused_vertices()
+        return mesh
+
+    def to_compas_quadmesh(self, nu, nv=None, weld=False, facefilter=None, cls=None):
         """Convert the surface to a COMPAS mesh.
 
         Parameters

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `draw_circles` and `draw_planes` to `compas_blender`.
 * Added `compas_rhino.geometry.curves` plugins for `compas.geometry.curves` pluggables.
 * Added `compas_rhino.geometry.RhinoNurbsCurve`.
+* Added to `to_compas_quadmesh` to `compas_rhino.conversions.RhinoSurface`.
 
 ### Changed
 
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas_rhino.conversions.RhinoSurface.from_geometry`.
 * Changed `compas_rhino.conversions.RhinoLine.from_geometry` to accept line curves.
 * Fixed bug in `compas_rhino.geometry.RhinoNurbsCurve.closest_point`.
+* Modify `to_compas_mesh` in `compas_rhino.conversions.RhinoSurface` to use brep loops.
 
 ### Removed
 
