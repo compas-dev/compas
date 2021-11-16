@@ -31,7 +31,7 @@ class Assembly(Datastructure):
         return 'assembly'
 
     def __init__(self, name=None, **kwargs):
-        super(Assembly, None).__init__()
+        super(Assembly, self).__init__()
         self.attributes = {}
         self.graph = Graph()
         self.parts = {}
