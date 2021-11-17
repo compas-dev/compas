@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `draw_circles` and `draw_planes` to `compas_blender`.
 * Added `compas_rhino.geometry.curves` plugins for `compas.geometry.curves` pluggables.
 * Added `compas_rhino.geometry.RhinoNurbsCurve`.
-* Added to `to_compas_quadmesh` to `compas_rhino.conversions.RhinoSurface`.
+* Added `to_compas_quadmesh` to `compas_rhino.conversions.RhinoSurface`.
 
 ### Changed
 
