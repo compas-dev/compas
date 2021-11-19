@@ -19,17 +19,21 @@ __all__ = [
 ]
 
 
-def install(version=None, packages=None):
+def install(version=None, packages=None, clean=False):
     """Install COMPAS for Rhino.
 
     Parameters
     ----------
-    version : {'5.0', '6.0', '7.0'}, optional
+    version : {'5.0', '6.0', '7.0', '8.0'}, optional
         The version number of Rhino.
         Default is ``'6.0'``.
     packages : list of str, optional
         List of packages to install or None to use default package list.
-        Default is ``['compas', 'compas_rhino', 'compas_ghpython']``.
+        Default is the result of ``installable_rhino_packages``,
+        which collects all installable packages in the current environment.
+    clean : bool, optional
+        If ``True``, this will clean up the entire scripts folder and remove
+        also existing symlinks that are not importable in the current environment.
 
     Examples
     --------
@@ -44,7 +48,7 @@ def install(version=None, packages=None):
 
     """
 
-    if version not in ('5.0', '6.0', '7.0'):
+    if version not in ('5.0', '6.0', '7.0', '8.0'):
         version = '6.0'
 
     # We install COMPAS packages in the scripts folder
@@ -70,25 +74,29 @@ def install(version=None, packages=None):
         try:
             importlib.import_module(name)
         except ImportError:
-            symlink_path = os.path.join(scripts_path, name)
-            symlinks_to_uninstall.append(dict(name=name, link=symlink_path))
+            path = os.path.join(scripts_path, name)
+            symlinks_to_uninstall.append(dict(name=name, link=path))
             packages.remove(name)
 
-    # check all the compas packages/folders in the scripts directory
-    # if one of them is not importable from the current env
-    # it should be listed for un-installation
-    # otherwise it should be added to the list of packages to install
-    # if it wasn't already in there
+    # Also remove all broken symlinks from the scripts folder
+    # because ... they're broken!
+    # If it is an actual folder or a file, leave it alone
+    # because probably someone put it there on purpose.
     for name in os.listdir(scripts_path):
-        if name.startswith('compas') and not name.endswith('.py'):
-            try:
-                importlib.import_module(name)
-            except ImportError:
-                symlink_path = os.path.join(scripts_path, name)
-                symlinks_to_uninstall.append(dict(name=name, link=symlink_path))
+        path = os.path.join(scripts_path, name)
+        if os.path.islink(path):
+            if not os.path.exists(path):
+                symlinks_to_uninstall.append(dict(name=name, link=path))
             else:
-                if name not in packages:
-                    packages.append(name)
+                if clean:
+                    try:
+                        importlib.import_module(name)
+                    except ImportError:
+                        path = os.path.join(scripts_path, name)
+                        symlinks_to_uninstall.append(dict(name=name, link=path))
+                    else:
+                        if name not in packages:
+                            packages.append(name)
 
     # add all of the packages in the list of installable packages
     # to the list of symlinks to uninstall
@@ -314,9 +322,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0', help="The version of Rhino to install the packages in.")
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0', '8.0'], default='6.0', help="The version of Rhino to install the packages in.")
     parser.add_argument('-p', '--packages', nargs='+', help="The packages to install.")
+    parser.add_argument('--clean', dest='clean', default=False, action='store_true')
 
     args = parser.parse_args()
 
-    install(version=args.version, packages=args.packages)
+    install(version=args.version, packages=args.packages, clean=args.clean)

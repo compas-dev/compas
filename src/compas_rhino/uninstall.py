@@ -23,7 +23,7 @@ def uninstall(version=None, packages=None):
 
     Parameters
     ----------
-    version : {'5.0', '6.0', '7.0'}, optional
+    version : {'5.0', '6.0', '7.0', '8.0'}, optional
         The version number of Rhino.
         Default is ``'6.0'``.
     packages : list of str, optional
@@ -42,7 +42,7 @@ def uninstall(version=None, packages=None):
         python -m compas_rhino.uninstall -v 6.0
 
     """
-    if version not in ('5.0', '6.0', '7.0'):
+    if version not in ('5.0', '6.0', '7.0', '8.0'):
         version = '6.0'
 
     # We install COMPAS packages in the scripts folder
@@ -52,17 +52,16 @@ def uninstall(version=None, packages=None):
     # This is for old installs
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
-    # If no specific packages are provided for uninstall
-    # everything should be removed,
-    # and not just the default packages
-    # or the packages that the bootstrapper is aware of.
-    if not packages:
-        packages = []
-        for name in os.listdir(scripts_path):
-            if name.startswith('compas') and not name.endswith('.py'):
-                packages.append(name)
-
     packages = _filter_installed_packages(version, packages)
+
+    # Also remove all broken symlinks
+    # because ... they're broken!
+    for name in os.listdir(scripts_path):
+        path = os.path.join(scripts_path, name)
+        if os.path.islink(path):
+            if not os.path.exists(path):
+                if name not in packages:
+                    packages.append(name)
 
     print('Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}'.format(version, scripts_path))
 
@@ -208,7 +207,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0', help="The version of Rhino to install the packages in.")
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0', '8.0'], default='6.0', help="The version of Rhino to install the packages in.")
     parser.add_argument('-p', '--packages', nargs='+', help="The packages to uninstall.")
 
     args = parser.parse_args()
