@@ -36,6 +36,8 @@ __version__ = '1.12.0'
 PURGE_ON_DELETE = True
 
 INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
+SUPPORTED_VERSIONS = ['5.0', '6.0', '7.0', '8.0']
+DEFAULT_VERSION = '6.0'
 
 
 def clear():
@@ -49,12 +51,10 @@ def redraw():
 
 
 def _check_rhino_version(version):
-    supported_versions = ['5.0', '6.0', '7.0']
-
     if not version:
-        return '6.0'
+        return DEFAULT_VERSION
 
-    if version not in supported_versions:
+    if version not in SUPPORTED_VERSIONS:
         raise Exception('Unsupported Rhino version: {}'.format(version))
 
     return version
@@ -99,7 +99,8 @@ def _get_ironpython_lib_path_mac(version):
     lib_paths = {
         '5.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents'],
         '6.0': ['/', 'Applications', 'Rhinoceros.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A'],
-        '7.0': ['/', 'Applications', 'Rhino7.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A']
+        '7.0': ['/', 'Applications', 'Rhino7.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A'],
+        '8.0': ['/', 'Applications', 'Rhino8.app', 'Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A'],
     }
     return os.path.join(*lib_paths.get(version) + ['Resources', 'ManagedPlugIns', 'RhinoDLR_Python.rhp', 'Lib'])
 
