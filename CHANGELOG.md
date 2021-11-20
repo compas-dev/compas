@@ -9,9 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino.DEFAULT_VERSION`.
+* Added `clean` option to `compas_rhino.install` to remove existing symlinks if they cannot be imported from the current environment.
+
 ### Changed
 
 * Updated `pr-checks` workflow for checking Changelog entry.
+
+* Changed `compas_rhino.install` to remove broken symlinks.
+* Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
+* Changed `compas_rhino.uninstall` to remove broken symlinks.
+* Changed `compas_rhino.install_plugin` to remove broken symlinks.
 
 ### Removed
 
