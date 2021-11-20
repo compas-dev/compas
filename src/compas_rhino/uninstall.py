@@ -122,7 +122,7 @@ def uninstall(version=None, packages=None):
         if ipylib_path:
             if not compas_rhino._try_remove_bootstrapper(ipylib_path):
                 results.append(('compas_bootstrapper', 'ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.'))
-    
+
     # -------------------------
     # Output results
     # -------------------------
