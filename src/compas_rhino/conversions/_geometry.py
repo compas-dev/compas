@@ -148,7 +148,7 @@ class RhinoGeometry(object):
         :class:`ConversionError`
             If the geometry cannot be converted to the geometry type of the wrapper.
         """
-        wrapper = cls
+        wrapper = cls()
         wrapper.geometry = geometry
         return wrapper
 
