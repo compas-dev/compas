@@ -18,7 +18,7 @@ Classes
 
 """
 
-__version__ = '1.12.0'
+__version__ = '1.12.1'
 
 from .core import *  # noqa: F401 F403
 # from .artists import *  # noqa: F401 F403
