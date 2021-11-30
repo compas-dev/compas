@@ -35,7 +35,7 @@ jobs:
     
     outputs:
       commit_type: ${{ steps.docs.outputs.commit_type }}
-      current_patch: ${{ steps.docs.outputs.current_patch }}
+      current_version: ${{ steps.docs.outputs.current_version }}
   
   docVersions:
     needs: build
@@ -49,7 +49,7 @@ jobs:
 
       - uses: compas-dev/compas-actions.docversions@v1.2.0
         with:
-          current_patch: ${{ needs.build.outputs.current_patch }}
+          current_version: ${{ needs.build.outputs.current_version }}
 
       - name: Deploy docs
         if: success()
