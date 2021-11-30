@@ -78,7 +78,7 @@ def _get_ironpython_lib_path(version):
         # However, since it is only used to clean up potential old installations
         # it does not seem crucial anymore.
         ironpython_lib_path = None
-        print("The lib folder for IronPython does not exist in this location: {}".format(ironpython_lib_path))
+        # print("The lib folder for IronPython does not exist in this location: {}".format(ironpython_lib_path))
 
     return ironpython_lib_path
 

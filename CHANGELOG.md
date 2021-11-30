@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Moved import of `subprocess` to top of file `compas._os.py`.
+
 ### Removed
 
 
