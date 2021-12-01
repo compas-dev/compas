@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+* Fixed bug in `mesh_slice_plane()` , `Mesh.slice_plane()`.
 
 ### Removed
 
