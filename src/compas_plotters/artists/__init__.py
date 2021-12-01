@@ -42,11 +42,10 @@ Base Classes
     PlotterArtist
 
 """
-import inspect
 
 from compas.plugins import plugin
+from compas.plugins import PluginValidator
 from compas.artists import Artist
-from compas.artists import DataArtistNotRegistered
 
 from compas.geometry import Point
 from compas.geometry import Vector
@@ -102,20 +101,9 @@ def new_artist_plotter(cls, *args, **kwargs):
 
     data = args[0]
 
-    if 'artist_type' in kwargs:
-        cls = kwargs['artist_type']
-    else:
-        dtype = type(data)
-        if dtype not in PlotterArtist.ITEM_ARTIST:
-            raise DataArtistNotRegistered('No Plotter artist is registered for this data type: {}'.format(dtype))
-        cls = PlotterArtist.ITEM_ARTIST[dtype]
+    cls = Artist.get_artist_cls(data, **kwargs)
 
-    # TODO: move this to the plugin module and/or to a dedicated function
-
-    for name, value in inspect.getmembers(cls):
-        if inspect.isfunction(value):
-            if hasattr(value, '__isabstractmethod__'):
-                raise Exception('Abstract method not implemented: {}'.format(value))
+    PluginValidator.ensure_implementations(cls)
 
     return super(Artist, cls).__new__(cls)
 
@@ -130,5 +118,5 @@ __all__ = [
     'CircleArtist',
     'EllipseArtist',
     'MeshArtist',
-    'NetworkArtist'
+    'NetworkArtist',
 ]

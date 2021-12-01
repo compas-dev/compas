@@ -7,6 +7,7 @@ import os
 import shutil
 import sys
 import tempfile
+import subprocess
 
 try:
     NotADirectoryError
@@ -113,7 +114,6 @@ def is_blender():
 
 
 if is_windows():
-    import subprocess
     import ctypes
     import ctypes.wintypes
 
@@ -146,6 +146,9 @@ if is_windows():
     INFINITE = -1
 
 
+# seems a bit weird that this is done here, since it is only relevant for Rhino/GH
+# also, perhasps it makes more sense this is done at the top of the file
+# since it defines a few module-wide variables
 try:
     from compas_bootstrapper import PYTHON_DIRECTORY
 except:  # noqa: E722

@@ -21,11 +21,10 @@ class BlenderArtist(Artist):
     def __init__(self,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
                  **kwargs: Any):
-
-        super().__init__(**kwargs)
-
+        # Initialize collection before even calling super because other classes depend on that
         self._collection = None
         self.collection = collection
+        super().__init__(**kwargs)
 
     @property
     def collection(self) -> bpy.types.Collection:

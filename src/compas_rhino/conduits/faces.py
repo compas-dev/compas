@@ -11,10 +11,7 @@ from System.Drawing.Color import FromArgb
 from Rhino.Geometry import Point3d
 
 from compas.utilities import color_to_rgb
-from compas_rhino.conduits.base import BaseConduit
-
-
-__all__ = ['FacesConduit']
+from .base import BaseConduit
 
 
 class FacesConduit(BaseConduit):

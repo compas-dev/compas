@@ -1,9 +1,11 @@
-from typing import Optional
 from typing import Any
+from typing import List
+from typing import Optional
 from typing import Union
 
 import bpy
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.geometry import Box
 from compas.artists import ShapeArtist
 from .artist import BlenderArtist
@@ -27,7 +29,7 @@ class BoxArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=box, collection=collection or box.name, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self, color: Optional[RGBColor] = None) -> List[bpy.types.Object]:
         """Draw the box associated with the artist.
 
         Parameters

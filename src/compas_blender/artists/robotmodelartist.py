@@ -7,6 +7,7 @@ import bpy
 import mathutils
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.datastructures import Mesh
 from compas.geometry import Transformation, Shape
 from compas.robots import RobotModel
@@ -37,7 +38,7 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
     def create_geometry(self,
                         geometry: Union[Mesh, Shape],
                         name: str = None,
-                        color: Union[Tuple[int, int, int, int], Tuple[float, float, float, float]] = None
+                        color: Union[RGBColor, Tuple[int, int, int, int], Tuple[float, float, float, float]] = None
                         ) -> bpy.types.Object:
         # Imported colors take priority over a the parameter color
         if 'mesh_color.diffuse' in geometry.attributes:
@@ -45,8 +46,7 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
 
         # If we have a color, we'll discard alpha because draw_mesh is hard coded for a=1
         if color:
-            r, g, b, _a = color
-            color = (r, g, b)
+            color = color[:3]
         else:
             color = (1., 1., 1.)
 
@@ -60,20 +60,28 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
     def redraw(self, timeout: float = 0.0) -> None:
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1, time_limit=timeout)
 
-    def clear(self) -> None:
-        compas_blender.delete_objects(self.collection.objects)
+    def _ensure_geometry(self):
+        if len(self.collection.objects) == 0:
+            self.create()
+
+    def draw(self) -> None:
+        self._ensure_geometry()
+        self.draw_visual()
 
     def draw_visual(self) -> None:
+        self._ensure_geometry()
         visuals = super(RobotModelArtist, self).draw_visual()
         for visual in visuals:
             visual.hide_set(False)
 
     def draw_collision(self) -> None:
+        self._ensure_geometry()
         collisions = super(RobotModelArtist, self).draw_collision()
         for collision in collisions:
             collision.hide_set(False)
 
     def draw_attached_meshes(self) -> None:
+        self._ensure_geometry()
         meshes = super(RobotModelArtist, self).draw_attached_meshes()
         for mesh in meshes:
             mesh.hide_set(False)

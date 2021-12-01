@@ -1,10 +1,12 @@
 from typing import Optional
 from typing import Any
+from typing import List
 from typing import Union
 
 import bpy
 
 import compas_blender
+from compas_blender.utilities import RGBColor
 from compas.geometry import Torus
 from compas.artists import ShapeArtist
 from .artist import BlenderArtist
@@ -28,12 +30,12 @@ class TorusArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
 
-    def draw(self, color=None, u=None, v=None):
+    def draw(self, color: Optional[RGBColor] = None, u: Optional[int] = None, v: Optional[int] = None) -> List[bpy.types.Object]:
         """Draw the torus associated with the artist.
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple of float or tuple of int, optional
             The RGB color of the torus.
         u : int, optional
             Number of faces in the "u" direction.

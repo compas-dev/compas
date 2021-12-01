@@ -30,7 +30,7 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
         point : [float, float, float] or :class:`compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
-        show_points : bool, optional
+        show_point : bool, optional
             Show the point of application of the vector.
             Default is ``False``.
 

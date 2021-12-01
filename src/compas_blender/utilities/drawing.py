@@ -1,6 +1,10 @@
 import bpy
 
-from typing import Dict, List, Union, Tuple, Text
+from typing import Dict
+from typing import List
+from typing import Union
+from typing import Tuple
+from typing import Text
 
 from compas_blender.utilities import create_collection
 
@@ -10,18 +14,24 @@ from compas.geometry import subtract_vectors
 
 
 __all__ = [
-    'draw_points',
-    'draw_pointcloud',
-    'draw_lines',
-    'draw_polylines',
+    'draw_circles',
     'draw_cylinders',
-    'draw_spheres',
     'draw_cubes',
-    'draw_pipes',
     'draw_faces',
-    'draw_texts',
+    'draw_lines',
     'draw_mesh',
+    'draw_pipes',
+    'draw_planes',
+    'draw_pointcloud',
+    'draw_points',
+    'draw_polylines',
+    'draw_spheres',
+    'draw_texts',
+    'RGBColor',
 ]
+
+
+RGBColor = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 
 def _link_object(obj, collection=None, layer=None):
@@ -255,6 +265,56 @@ def draw_faces(faces: List[Dict],
     return objects
 
 
+def draw_circles(circles: List[Dict],
+                 collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw circle objects as mesh primitives."""
+    from math import acos
+    from math import atan2
+    bpy.ops.mesh.primitive_circle_add()
+    empty = bpy.context.object
+    _link_object(empty, collection)
+    objects = [0] * len(circles)
+    for index, data in enumerate(circles):
+        obj = empty.copy()
+        obj.name = data.get('name', 'circle')
+        radius = data.get('radius', 1.0)
+        point, normal = data.get('plane', ((0.0, 0.0, 0.0), (0.0, 0.0, 1.0)))
+        obj.rotation_euler[1] = acos(normal[2])
+        obj.rotation_euler[2] = atan2(normal[1], normal[0])
+        obj.location = point
+        obj.scale = ((radius, radius, 1.0))
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    empty.hide_set(True)
+    return objects
+
+
+def draw_planes(planes: List[Dict],
+                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw plane objects as mesh primitives."""
+    from math import acos
+    from math import atan2
+    bpy.ops.mesh.primitive_plane_add()
+    empty = bpy.context.object
+    _link_object(empty, collection)
+    objects = [0] * len(planes)
+    for index, data in enumerate(planes):
+        obj = empty.copy()
+        obj.name = data.get('name', 'plane')
+        point, normal = data.get('plane', ((0.0, 0.0, 0.0), (0.0, 0.0, 1.0)))
+        obj.rotation_euler[1] = acos(normal[2])
+        obj.rotation_euler[2] = atan2(normal[1], normal[0])
+        obj.location = point
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    empty.hide_set(True)
+    return objects
+
+
 # ==============================================================================
 # Shapes
 # ==============================================================================
@@ -292,7 +352,7 @@ def draw_cylinders(cylinders: List[Dict],
 
 # these objects are all linked.
 # therefore they cannot have different colors
-# also, if the linked mesh data block is chaged, it will affect all objects
+# also, if the linked mesh data block is changed, it will affect all objects
 def draw_spheres(spheres: List[Dict],
                  collection: Union[Text, bpy.types.Collection] = None,
                  uv: int = 10) -> List[bpy.types.Object]:

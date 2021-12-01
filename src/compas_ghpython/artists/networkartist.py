@@ -44,7 +44,7 @@ class NetworkArtist(GHArtist, NetworkArtist):
             The selection of nodes that should be drawn.
             Default is ``None``, in which case all nodes are drawn.
         color: 3-tuple or dict of 3-tuple, optional
-            The color specififcation for the nodes.
+            The color specification for the nodes.
             The default color is ``(255, 255, 255)``.
 
         Returns
@@ -72,7 +72,7 @@ class NetworkArtist(GHArtist, NetworkArtist):
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~NetworkArtist.default_edgecolor``.
 
         Returns

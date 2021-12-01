@@ -2,21 +2,22 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from functools import reduce
+from operator import mul
+
 import compas_rhino
+
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from compas_rhino.objects._modify import network_update_attributes
-from compas_rhino.objects._modify import network_update_node_attributes
-from compas_rhino.objects._modify import network_update_edge_attributes
-from compas_rhino.objects._modify import network_move_node
+from ._modify import network_update_attributes
+from ._modify import network_update_node_attributes
+from ._modify import network_update_edge_attributes
+from ._modify import network_move_node
 
-from compas_rhino.objects._object import BaseObject
-
-
-__all__ = ['NetworkObject']
+from ._object import BaseObject
 
 
 class NetworkObject(BaseObject):
@@ -135,20 +136,26 @@ class NetworkObject(BaseObject):
     def node_xyz(self):
         """dict : The view coordinates of the mesh object."""
         origin = Point(0, 0, 0)
-        if self.anchor is not None:
-            xyz = self.network.node_attributes(self.anchor, 'xyz')
-            point = Point(* xyz)
-            T1 = Translation.from_vector(origin - point)
+        stack = []
+        if self.scale != 1.0:
             S = Scale.from_factors([self.scale] * 3)
+            stack.append(S)
+        if self.rotation != [0, 0, 0]:
             R = Rotation.from_euler_angles(self.rotation)
+            stack.append(R)
+        if self.location != origin:
+            if self.anchor is not None:
+                xyz = self.network.vertex_attributes(self.anchor, 'xyz')
+                point = Point(* xyz)
+                T1 = Translation.from_vector(origin - point)
+                stack.insert(0, T1)
             T2 = Translation.from_vector(self.location)
-            X = T2 * R * S * T1
+            stack.append(T2)
+        if stack:
+            X = reduce(mul, stack[::-1])
+            network = self.network.transformed(X)
         else:
-            S = Scale.from_factors([self.scale] * 3)
-            R = Rotation.from_euler_angles(self.rotation)
-            T = Translation.from_vector(self.location)
-            X = T * R * S
-        network = self.network.transformed(X)
+            network = self.network
         node_xyz = {network: network.node_attributes(node, 'xyz') for node in network.nodes()}
         return node_xyz
 

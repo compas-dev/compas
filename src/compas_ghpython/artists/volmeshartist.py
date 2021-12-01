@@ -40,7 +40,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
             A list of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : str, tuple, dict
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default color of the vertices is ``~VolMeshArtist.default_vertexcolor``.
 
         Returns
@@ -68,7 +68,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : str, tuple, dict
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is ``~VolMeshArtist.default_edgecolor``.
 
         Returns
@@ -97,7 +97,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
             A list of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : str, tuple, dict
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is ``~VolMeshArtist.default_facecolor``.
 
         Returns

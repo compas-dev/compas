@@ -6,9 +6,6 @@ from uuid import uuid4
 from compas_rhino.artists import RhinoArtist
 
 
-__all__ = ['BaseObject']
-
-
 _ITEM_OBJECT = {}
 
 
@@ -84,7 +81,7 @@ class BaseObject(object):
     @item.setter
     def item(self, item):
         self._item = item
-        self._artist = RhinoArtist.build(item)
+        self._artist = RhinoArtist(item)
 
     @property
     def artist(self):

@@ -5,10 +5,8 @@ from __future__ import division
 from functools import partial
 
 from compas.utilities import color_to_colordict
-from compas.utilities import pairwise
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
-from compas.geometry import centroid_polygon
 from compas.geometry import centroid_points
 
 import compas_rhino
@@ -106,7 +104,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
     # ==========================================================================
 
     def draw(self, vertices=None, edges=None, faces=None, vertexcolor=None, edgecolor=None, facecolor=None, join_faces=False):
-        """Draw the network using the chosen visualisation settings.
+        """Draw the mesh using the chosen visualization settings.
 
         Parameters
         ----------
@@ -120,13 +118,13 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         vertexcolor : tuple or dict of tuple, optional
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default color is the value of ``~MeshArtist.default_vertexcolor``.
         edgecolor : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~MeshArtist.default_edgecolor``.
         facecolor : tuple or dict of tuple, optional
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is the value of ``~MeshArtist.default_facecolor``.
         join_faces : bool, optional
             Join the faces into 1 mesh.
@@ -174,21 +172,9 @@ class MeshArtist(RhinoArtist, MeshArtist):
         vertex_xyz = self.vertex_xyz
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
         faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
-        new_faces = []
-        for face in faces:
-            f = len(face)
-            if f == 3:
-                new_faces.append(face + face[-1:])
-            elif f == 4:
-                new_faces.append(face)
-            elif f > 4:
-                centroid = len(vertices)
-                vertices.append(centroid_polygon([vertices[index] for index in face]))
-                for a, b in pairwise(face + face[0:1]):
-                    new_faces.append([centroid, a, b, b])
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
-        guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
+        guid = compas_rhino.draw_mesh(vertices, faces, layer=layer, name=name, color=color, disjoint=disjoint)
         return [guid]
 
     def draw_vertices(self, vertices=None, color=None):
@@ -200,7 +186,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the vertices.
+            The color specification for the vertices.
             The default is the value of ``~MeshArtist.default_vertexcolor``.
 
         Returns
@@ -231,7 +217,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the edges.
+            The color specification for the edges.
             The default color is the value of ``~MeshArtist.default_edgecolor``.
 
         Returns
@@ -263,7 +249,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             A selection of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : tuple or dict of tuple, optional
-            The color specififcation for the faces.
+            The color specification for the faces.
             The default color is the value of ``~MeshArtist.default_facecolor``.
         join_faces : bool, optional
             Join the faces into 1 mesh.
