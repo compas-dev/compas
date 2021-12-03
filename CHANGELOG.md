@@ -11,11 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-<<<<<<< refs/remotes/compas-dev/main
-=======
 * Fixed bug in `normal_polygon` in `compas.geometry._core`.
 
->>>>>>> changelog
 ### Removed
 
 
