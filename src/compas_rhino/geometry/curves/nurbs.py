@@ -316,72 +316,86 @@ class RhinoNurbsCurve(NurbsCurve):
     @property
     def points(self):
         """list of :class:`compas.geometry.Point`: The control points."""
-        return [point_to_compas(point) for point in self.rhino_curve.Points]
+        if self.rhino_curve:
+            return [point_to_compas(point) for point in self.rhino_curve.Points]
 
     @property
     def weights(self):
         """list of float: The weights of the control points."""
-        return [point.Weight for point in self.rhino_curve.Points]
+        if self.rhino_curve:
+            return [point.Weight for point in self.rhino_curve.Points]
 
     @property
     def knots(self):
         """list of float: Knots without repeating elements."""
-        return [key for key, _ in groupby(self.rhino_curve.Knots)]
+        if self.rhino_curve:
+            return [key for key, _ in groupby(self.rhino_curve.Knots)]
 
     @property
     def knotsequence(self):
         """list of float: Knots with multiplicities."""
-        return list(self.rhino_curve.Knots)
+        if self.rhino_curve:
+            return list(self.rhino_curve.Knots)
 
     @property
     def multiplicities(self):
         """list of int: Multiplicities of the knots."""
-        return [len(list(group)) for _, group in groupby(self.rhino_curve.Knots)]
+        if self.rhino_curve:
+            return [len(list(group)) for _, group in groupby(self.rhino_curve.Knots)]
 
     @property
     def degree(self):
         """int: The degree of the curve (degree = order - 1)."""
-        return self.rhino_curve.Degree
+        if self.rhino_curve:
+            return self.rhino_curve.Degree
 
     @property
     def dimension(self):
         """int: The dimension of the curve."""
-        return self.rhino_curve.Dimension
+        if self.rhino_curve:
+            return self.rhino_curve.Dimension
 
     @property
     def domain(self):
         """tuple of float: The parameter domain of the curve."""
-        return self.rhino_curve.Domain.T0, self.rhino_curve.Domain.T1
+        if self.rhino_curve:
+            return self.rhino_curve.Domain.T0, self.rhino_curve.Domain.T1
 
     @property
     def order(self):
         """int: The order of the curve (order = degree + 1)."""
-        return self.rhino_curve.Order
+        if self.rhino_curve:
+            return self.rhino_curve.Order
 
     @property
     def start(self):
         """:class:`compas.geometry.Point`: The point at the start of the curve."""
-        return point_to_compas(self.rhino_curve.PointAtStart)
+        if self.rhino_curve:
+            return point_to_compas(self.rhino_curve.PointAtStart)
 
     @property
     def end(self):
         """:class:`compas.geometry.Point`: The point at the end of the curve."""
-        return point_to_compas(self.rhino_curve.PointAtEnd)
+        if self.rhino_curve:
+            return point_to_compas(self.rhino_curve.PointAtEnd)
 
     @property
     def is_closed(self):
         """bool"""
-        return self.rhino_curve.IsClosed
+        if self.rhino_curve:
+            return self.rhino_curve.IsClosed
 
     @property
     def is_periodic(self):
         """bool"""
-        return self.rhino_curve.IsPeriodic
+        if self.rhino_curve:
+            return self.rhino_curve.IsPeriodic
 
     @property
     def is_rational(self):
         """bool"""
-        return self.rhino_curve.IsRational
+        if self.rhino_curve:
+            return self.rhino_curve.IsRational
 
     # ==============================================================================
     # Methods
@@ -389,14 +403,6 @@ class RhinoNurbsCurve(NurbsCurve):
 
     def copy(self):
         """Make an independent copy of the current curve."""
-        # return RhinoNurbsCurve.from_parameters(
-        #     self.points,
-        #     self.weights,
-        #     self.knots,
-        #     self.multiplicities,
-        #     self.degree,
-        #     self.is_periodic
-        # )
         cls = type(self)
         curve = cls()
         curve.rhino_curve = self.rhino_curve.Duplicate()
