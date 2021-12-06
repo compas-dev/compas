@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Updated `pr-checks` workflow for checking Changelog entry.
+
 ### Removed
 
 
