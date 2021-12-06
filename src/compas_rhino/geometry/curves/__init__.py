@@ -5,7 +5,7 @@ from compas.plugins import plugin
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve(cls, *args, **kwargs):
+def new_nurbscurve(*args, **kwargs):
     """Create a new empty Nurbs curve."""
     return super(NurbsCurve, RhinoNurbsCurve).__new__(RhinoNurbsCurve)
 
@@ -38,7 +38,7 @@ def new_nurbscurve_from_points(*args, **kwargs):
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
+def new_nurbscurve_from_interpolation(*args, **kwargs):
     """Construct a NURBS curve by interpolating a set of points.
 
     Parameters
@@ -58,6 +58,6 @@ def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve_from_step(cls, *args, **kwargs):
+def new_nurbscurve_from_step(*args, **kwargs):
     """Create a new Nurbs curve from the data contained in a step file."""
     return RhinoNurbsCurve.from_step(*args, **kwargs)

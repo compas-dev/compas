@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Updated `pr-checks` workflow for checking Changelog entry.
+* Fixed return value of attributes of empty `compas_rhino.geometry.RhinoNurbsCurve`.
+* Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve`.
+* Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_interpolation`.
+* Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_step`.
 
 ### Removed
 

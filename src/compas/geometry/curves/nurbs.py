@@ -13,27 +13,27 @@ from .curve import Curve
 
 
 @pluggable(category='factories')
-def new_nurbscurve(cls, *args, **kwargs):
+def new_nurbscurve(*args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_parameters(cls, *args, **kwargs):
+def new_nurbscurve_from_parameters(*args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_points(cls, *args, **kwargs):
+def new_nurbscurve_from_points(*args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
+def new_nurbscurve_from_interpolation(*args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_step(cls, *args, **kwargs):
+def new_nurbscurve_from_step(*args, **kwargs):
     raise NotImplementedError
 
 
@@ -93,7 +93,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     def __new__(cls, *args, **kwargs):
-        return new_nurbscurve(cls, *args, **kwargs)
+        return new_nurbscurve(*args, **kwargs)
 
     def __init__(self, name=None):
         super(NurbsCurve, self).__init__(name=name)
