@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino.DEFAULT_VERSION`.
+* Added `clean` option to `compas_rhino.install` to remove existing symlinks if they cannot be imported from the current environment.
 * Added basic implementation of `compas.datastructures.Assembly`.
 
 ### Changed
@@ -18,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve`.
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_interpolation`.
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_step`.
+
+* Changed `compas_rhino.install` to remove broken symlinks.
+* Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
+* Changed `compas_rhino.uninstall` to remove broken symlinks.
+* Changed `compas_rhino.install_plugin` to remove broken symlinks.
+* Changed default Rhino version for installation to `7.0`.
 
 ### Removed
 
@@ -40,6 +48,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in `compas_rhino.conversions.RhinoPoint.from_geometry`.
+* Changed `compas_rhino.install` to remove broken symlinks.
+* Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
+* Changed `compas_rhino.uninstall` to remove broken symlinks.
+* Changed `compas_rhino.install_plugin` to remove broken symlinks.
 
 ### Removed
 
