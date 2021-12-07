@@ -37,7 +37,7 @@ PURGE_ON_DELETE = True
 
 INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
 SUPPORTED_VERSIONS = ['5.0', '6.0', '7.0', '8.0']
-DEFAULT_VERSION = '6.0'
+DEFAULT_VERSION = '7.0'
 
 
 def clear():

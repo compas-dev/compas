@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
 * Changed `compas_rhino.uninstall` to remove broken symlinks.
 * Changed `compas_rhino.install_plugin` to remove broken symlinks.
+* Changed default Rhino version for installation to `7.0`.
 
 ### Removed
 
