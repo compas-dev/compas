@@ -9,9 +9,6 @@ import Rhino
 import scriptcontext as sc
 
 
-__all__ = ['BaseConduit']
-
-
 class BaseConduit(Rhino.Display.DisplayConduit):
     """Base class for conduits.
 
@@ -35,6 +32,10 @@ class BaseConduit(Rhino.Display.DisplayConduit):
             print(e)
         finally:
             self.disable()
+
+    def CalculateBoundingBox(self, e):
+        bbox = Rhino.Geometry.BoundingBox(-1000, -1000, -1000, 1000, 1000, 1000)
+        e.IncludeBoundingBox(bbox)
 
     def enable(self):
         """Enable the conduit."""

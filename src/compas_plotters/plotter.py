@@ -1,15 +1,25 @@
 import os
 from typing import Callable, Optional, Tuple, List, Union
+from typing_extensions import Literal
 import matplotlib
 import matplotlib.pyplot as plt
 import tempfile
 from PIL import Image
 
 import compas
-from compas_plotters import Artist
+from .artists import PlotterArtist
 
 
-class Plotter:
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class Plotter(metaclass=Singleton):
     """Plotter for the visualization of COMPAS geometry.
 
     Parameters
@@ -28,7 +38,8 @@ class Plotter:
                  figsize: Tuple[float, float] = (8.0, 5.0),
                  dpi: float = 100,
                  bgcolor: Tuple[float, float, float] = (1.0, 1.0, 1.0),
-                 show_axes: bool = False):
+                 show_axes: bool = False,
+                 zstack: Literal['natural', 'zorder'] = 'zorder'):
         self._show_axes = show_axes
         self._bgcolor = None
         self._viewbox = None
@@ -38,6 +49,7 @@ class Plotter:
         self.figsize = figsize
         self.dpi = dpi
         self.bgcolor = bgcolor
+        self.zstack = zstack
 
     @property
     def viewbox(self) -> Tuple[Tuple[float, float], Tuple[float, float]]:
@@ -149,7 +161,7 @@ class Plotter:
         Parameters
         ----------
         value : str, tuple
-            The color specififcation for the figure background.
+            The color specification for the figure background.
             Colors should be specified in the form of a string (hex colors) or
             as a tuple of normalized RGB components.
 
@@ -182,12 +194,12 @@ class Plotter:
         self.figure.canvas.set_window_title(value)
 
     @property
-    def artists(self) -> List[Artist]:
-        """list of :class:`compas_plotters.artists.Artist`"""
+    def artists(self) -> List[PlotterArtist]:
+        """list of :class:`compas_plotters.artists.PlotterArtist`"""
         return self._artists
 
     @artists.setter
-    def artists(self, artists: List[Artist]):
+    def artists(self, artists: List[PlotterArtist]):
         self._artists = artists
 
     # =========================================================================
@@ -221,14 +233,19 @@ class Plotter:
         xspan = xmax - xmin + padding
         yspan = ymax - ymin + padding
         data_aspect = xspan / yspan
+        xlim = [xmin - 0.1 * xspan, xmax + 0.1 * xspan]
+        ylim = [ymin - 0.1 * yspan, ymax + 0.1 * yspan]
         if data_aspect < fig_aspect:
             scale = fig_aspect / data_aspect
-            self.axes.set_xlim(scale * (xmin - 0.1 * xspan), scale * (xmax + 0.1 * xspan))
-            self.axes.set_ylim(ymin - 0.1 * yspan, ymax + 0.1 * yspan)
+            xlim[0] *= scale
+            xlim[1] *= scale
         else:
             scale = data_aspect / fig_aspect
-            self.axes.set_xlim(xmin - 0.1 * xspan, xmax + 0.1 * xspan)
-            self.axes.set_ylim(scale * (ymin - 0.1 * yspan), scale * (ymax + 0.1 * yspan))
+            ylim[0] *= scale
+            ylim[1] *= scale
+        self.viewbox = (xlim, ylim)
+        self.axes.set_xlim(*xlim)
+        self.axes.set_ylim(*ylim)
         self.axes.autoscale_view()
 
     def add(self,
@@ -240,13 +257,16 @@ class Plotter:
                         compas.geometry.Polyline,
                         compas.geometry.Vector,
                         compas.datastructures.Mesh],
-            artist: Optional[Artist] = None,
-            **kwargs) -> Artist:
+            artist: Optional[PlotterArtist] = None,
+            **kwargs) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure to the plot.
         """
         if not artist:
-            artist = Artist.build(item, **kwargs)
-        artist.plotter = self
+            if self.zstack == 'natural':
+                zorder = 1000 + len(self._artists) * 100
+                artist = PlotterArtist(item, zorder=zorder, **kwargs)
+            else:
+                artist = PlotterArtist(item, **kwargs)
         artist.draw()
         self._artists.append(artist)
         return artist
@@ -260,16 +280,15 @@ class Plotter:
                            compas.geometry.Polyline,
                            compas.geometry.Vector,
                            compas.datastructures.Mesh],
-               artist_type: Artist,
-               **kwargs) -> Artist:
+               artist_type: PlotterArtist,
+               **kwargs) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure using a specific artist type."""
-        artist = Artist.build_as(item, artist_type, **kwargs)
-        artist.plotter = self
+        artist = PlotterArtist(item, artist_type=artist_type, **kwargs)
         artist.draw()
         self._artists.append(artist)
         return artist
 
-    def add_from_list(self, items, **kwargs) -> List[Artist]:
+    def add_from_list(self, items, **kwargs) -> List[PlotterArtist]:
         """Add multiple COMPAS geometry objects and/or data structures from a list."""
         artists = []
         for item in items:
@@ -285,7 +304,7 @@ class Plotter:
                          compas.geometry.Polygon,
                          compas.geometry.Polyline,
                          compas.geometry.Vector,
-                         compas.datastructures.Mesh]) -> Artist:
+                         compas.datastructures.Mesh]) -> PlotterArtist:
         """Find a geometry object or data structure in the plot."""
         for artist in self._artists:
             if item is artist.item:

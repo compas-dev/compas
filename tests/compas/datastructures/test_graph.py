@@ -53,6 +53,25 @@ def test_graph_json_schema(graph):
 
 
 # ==============================================================================
+# Tests - Samples
+# ==============================================================================
+
+
+def test_node_sample(graph):
+    for node in graph.node_sample():
+        assert graph.has_node(node)
+    for node in graph.node_sample(size=graph.number_of_nodes()):
+        assert graph.has_node(node)
+
+
+def test_edge_sample(graph):
+    for edge in graph.edge_sample():
+        assert graph.has_edge(*edge)
+    for edge in graph.edge_sample(size=graph.number_of_edges()):
+        assert graph.has_edge(*edge)
+
+
+# ==============================================================================
 # Tests - Attributes
 # ==============================================================================
 

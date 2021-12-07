@@ -9,6 +9,7 @@ compas
     :maxdepth: 1
     :titlesonly:
 
+    compas.artists
     compas.data
     compas.datastructures
     compas.files
@@ -90,7 +91,7 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '1.8.1'
+__version__ = '1.12.2'
 
 version = LooseVersion(compas.__version__)
 versionstring = version.vstring.split('-')[0]
