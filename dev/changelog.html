@@ -107,6 +107,10 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h2>Unreleased</h2>
 <section id="added">
 <h3>Added</h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.DEFAULT_VERSION</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">clean</span></code> option to <code class="docutils literal notranslate"><span class="pre">compas_rhino.install</span></code> to remove existing symlinks if they cannot be imported from the current environment.</p></li>
+</ul>
 </section>
 <section id="changed">
 <h3>Changed</h3>
@@ -116,6 +120,11 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed error in parameter list of <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.curves.new_nurbscurve</span></code>.</p></li>
 <li><p>Fixed error in parameter list of <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.curves.new_nurbscurve_from_interpolation</span></code>.</p></li>
 <li><p>Fixed error in parameter list of <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.curves.new_nurbscurve_from_step</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install</span></code> to remove broken symlinks.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install</span></code> to reinstall broken symlinks if they can be imported from the current environment.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.uninstall</span></code> to remove broken symlinks.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install_plugin</span></code> to remove broken symlinks.</p></li>
+<li><p>Changed default Rhino version for installation to <code class="docutils literal notranslate"><span class="pre">7.0</span></code>.</p></li>
 </ul>
 </section>
 <section id="removed">
@@ -146,6 +155,10 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions.RhinoPoint.from_geometry</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install</span></code> to remove broken symlinks.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install</span></code> to reinstall broken symlinks if they can be imported from the current environment.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.uninstall</span></code> to remove broken symlinks.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install_plugin</span></code> to remove broken symlinks.</p></li>
 </ul>
 </section>
 <section id="id8">
