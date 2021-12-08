@@ -33,12 +33,22 @@ class Assembly(Datastructure):
     def __init__(self, name=None, **kwargs):
         super(Assembly, self).__init__()
         self.attributes = {'name': name or 'Assembly'}
+        self.attributes.update(kwargs)
         self.graph = Graph()
         self._parts = {}
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
         return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
+
+    @property
+    def name(self):
+        """str : The name of the assembly."""
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
 
     @property
     def data(self):
