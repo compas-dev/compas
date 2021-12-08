@@ -134,7 +134,8 @@ class Part(Datastructure):
 
     @property
     def geometry(self):
-        # this is a temp solution
+        # TODO: this is a temp solution
+        # TODO: add memoization or some other kind of caching
         A = Mesh.from_shape(self.shape)
         for shape, operation in self.features:
             A.quads_to_triangles()

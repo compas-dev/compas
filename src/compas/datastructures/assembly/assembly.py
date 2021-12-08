@@ -130,9 +130,21 @@ class Assembly(Datastructure):
         for node in self.graph.nodes():
             yield self.graph.node_attribute(node, 'part')
 
-    def connections(self):
-        """The connections between the parts."""
-        return self.graph.edges()
+    def connections(self, data=False):
+        """Iterate over the connections between the parts.
+
+        Parameters
+        ----------
+        data : bool, optional
+            If ``True``, yield both the identifier and the attributes of each connection.
+
+        Yields
+        ------
+        tuple
+            The next connection identifier (u, v), if ``data`` is ``False``.
+            Otherwise, the next connector identifier and its attributes as a ((u, v), attr) tuple.
+        """
+        return self.graph.edges(data)
 
     def find(self, guid):
         """Find a part in the assembly by its GUID.
