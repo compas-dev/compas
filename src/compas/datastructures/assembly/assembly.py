@@ -34,7 +34,7 @@ class Assembly(Datastructure):
         super(Assembly, self).__init__()
         self.attributes = {'name': name or 'Assembly'}
         self.graph = Graph()
-        self.parts = {}
+        self._parts = {}
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
@@ -78,7 +78,7 @@ class Assembly(Datastructure):
         """
         key = self.graph.add_node(key=key, part=part, **kwargs)
         part.key = key
-        self.parts[part.guid] = part
+        self._parts[part.guid] = part
         return key
 
     def add_connection(self, a, b, **kwargs):
@@ -139,4 +139,4 @@ class Assembly(Datastructure):
             The identified part, if any.
 
         """
-        return self.parts.get(guid)
+        return self._parts.get(guid)
