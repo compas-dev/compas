@@ -195,7 +195,7 @@ def install(version=None, packages=None, clean=False):
 
     if exit_code == 0 and len(installed_packages):
         print('\nRunning post-installation steps...\n')
-        if not _run_post_execution_steps(after_rhino_install(installed_packages)):
+        if not _run_post_execution_steps(after_rhino_install(installed_packages, version)):
             exit_code = -1
 
     print('\nInstall completed.')
@@ -265,7 +265,7 @@ def installable_rhino_packages():
 
 
 @compas.plugins.pluggable(category='install', selector='collect_all')
-def after_rhino_install(installed_packages):
+def after_rhino_install(installed_packages, version):
     """Allows extensions to execute actions after install to Rhino is done.
 
     Extensions providing Rhino or Grasshopper features
