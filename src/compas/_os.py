@@ -101,16 +101,15 @@ def is_rhino():
         import Rhino  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
 
 
 def is_grasshopper():
     try:
         import Rhino
-        import scriptcontext as sc
-        return not isinstance(sc.doc, Rhino.RhinoDoc)
-    except:            # noqa: E722
+        import scriptcontext
+        return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
+    except ImportError:
         return False
 
 
@@ -119,8 +118,7 @@ def is_blender():
         import bpy  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
 
 
 if is_windows():

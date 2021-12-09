@@ -141,16 +141,6 @@ VolMeshArtist.default_facecolor = (255, 255, 255)
 VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
-# def verify_rhino_context():
-#     try:
-#         import Rhino
-#         import scriptcontext as sc
-
-#         return isinstance(sc.doc, Rhino.RhinoDoc)
-#     except:            # noqa: E722
-#         return False
-
-
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['Rhino'])
 def clear_rhino():
     compas_rhino.clear()
@@ -161,8 +151,8 @@ def redraw_rhino():
     compas_rhino.redraw()
 
 
-@plugin(category='factories', pluggable_name='register_artists', requires=['Rhino'])
-def register_artists_rhino():
+@plugin(category='factories', requires=['Rhino'])
+def register_artists():
         Artist.register(Circle, CircleArtist, context='Rhino')
         Artist.register(Frame, FrameArtist, context='Rhino')
         Artist.register(Line, LineArtist, context='Rhino')

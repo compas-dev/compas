@@ -21,57 +21,6 @@ compas
     compas.topology
     compas.utilities
 
-Utility functions
-=================
-
-JSON handling
--------------
-
-.. autofunction:: json_dump
-
-.. autofunction:: json_dumps
-
-.. autofunction:: json_load
-
-.. autofunction:: json_loads
-
-Precision
----------
-
-.. autofunction:: set_precision
-
-.. autodata:: PRECISION
-
-Execution context
------------------
-
-.. autofunction:: is_windows
-
-.. autofunction:: is_linux
-
-.. autofunction:: is_osx
-
-.. autofunction:: is_mono
-
-.. autofunction:: is_ironpython
-
-.. autofunction:: is_rhino
-
-.. autofunction:: is_blender
-
-.. autodata:: WINDOWS
-
-.. autodata:: LINUX
-
-.. autodata:: OSX
-
-.. autodata:: MONO
-
-.. autodata:: IPY
-
-.. autodata:: RHINO
-
-.. autodata:: BLENDER
 
 """
 from __future__ import print_function
