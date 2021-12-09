@@ -31,7 +31,7 @@ import decimal
 from distutils.version import LooseVersion
 
 import compas._os
-from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender, is_grasshopper
+from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
 from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
