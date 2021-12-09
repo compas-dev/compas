@@ -99,9 +99,6 @@ RHINO = is_rhino()
 BLENDER = is_blender()
 """bool: True if the current context is Blender, False otherwise."""
 
-GH = is_grasshopper()
-"""bool: True if the current context is GrassHopper, False otherwise."""
-
 
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__

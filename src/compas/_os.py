@@ -108,9 +108,9 @@ def is_grasshopper():
     try:
         import Rhino
         import scriptcontext
-        return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
     except ImportError:
         return False
+    return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
 
 
 def is_blender():
