@@ -46,6 +46,7 @@ from .volmeshartist import VolMeshArtist
 
 BaseRobotModelArtist = RobotModelArtist
 
+
 __all__ = [
     'DataArtistNotRegistered',
     'Artist',

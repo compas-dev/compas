@@ -295,7 +295,10 @@ def pluggable(pluggable_method=None, category=None, selector='first_match', doma
             elif selector == 'collect_all':
                 results = []
 
-                for plugin_impl in _collect_plugins(extension_point_url):
+                plugin_impls = _collect_plugins(extension_point_url)
+                print('Implementations:', plugin_impls)
+
+                for plugin_impl in plugin_impls:
                     try:
                         result = plugin_impl.method(*args, **kwargs)
                         results.append(result)
@@ -468,6 +471,7 @@ class PluginValidator(object):
             print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
 
         plugins = self.manager.registry.get(extension_point_url) or []
+        print('Collected plugins:', plugins)
         return [plugin for plugin in plugins if self.is_plugin_selectable(plugin)]
 
     @staticmethod

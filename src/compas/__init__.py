@@ -82,7 +82,7 @@ import decimal
 from distutils.version import LooseVersion
 
 import compas._os
-from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
+from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender, is_grasshopper
 from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
@@ -149,6 +149,9 @@ RHINO = is_rhino()
 
 BLENDER = is_blender()
 """bool: True if the current context is Blender, False otherwise."""
+
+GH = is_grasshopper()
+"""bool: True if the current context is GrassHopper, False otherwise."""
 
 
 # Check if COMPAS is installed from git

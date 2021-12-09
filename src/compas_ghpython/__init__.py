@@ -18,7 +18,7 @@ import compas_rhino
 
 # TODO: I believe this should be removed, as it pulls all utilities funcs
 # into first-level instead of the usual second-level namespace
-if compas.RHINO:
+if compas.GH:
     from .utilities import *  # noqa: F401 F403
 
 

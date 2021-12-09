@@ -30,5 +30,5 @@ __all__ = [
 ]
 
 __all_plugins__ = [
-    'compas_plotters.artists',
+    # 'compas_plotters.artists',
 ]

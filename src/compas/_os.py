@@ -37,7 +37,8 @@ __all__ = [
     'is_mono',
     'is_ironpython',
     'is_rhino',
-    'is_blender'
+    'is_blender',
+    'is_grasshopper'
 ]
 
 
@@ -102,6 +103,15 @@ def is_rhino():
         return False
     else:
         return True
+
+
+def is_grasshopper():
+    try:
+        import Rhino
+        import scriptcontext as sc
+        return not isinstance(sc.doc, Rhino.RhinoDoc)
+    except:            # noqa: E722
+        return False
 
 
 def is_blender():
