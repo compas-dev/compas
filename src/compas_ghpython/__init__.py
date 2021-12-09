@@ -19,7 +19,7 @@ import compas_rhino
 __version__ = '1.12.2'
 
 if compas.is_rhino():
-    from .utilities import *
+    from .utilities import *  # noqa: F401 F403
 
 
 def get_grasshopper_plugin_path(version):
