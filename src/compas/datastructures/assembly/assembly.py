@@ -32,13 +32,23 @@ class Assembly(Datastructure):
 
     def __init__(self, name=None, **kwargs):
         super(Assembly, self).__init__()
-        self.attributes = {}
+        self.attributes = {'name': name or 'Assembly'}
+        self.attributes.update(kwargs)
         self.graph = Graph()
-        self.parts = {}
+        self._parts = {}
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
         return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
+
+    @property
+    def name(self):
+        """str : The name of the assembly."""
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
 
     @property
     def data(self):
@@ -76,9 +86,11 @@ class Assembly(Datastructure):
             The identifier of the part in the current assembly graph.
 
         """
+        if part.guid in self._parts:
+            raise AssemblyError('Part already added to the assembly')
         key = self.graph.add_node(key=key, part=part, **kwargs)
         part.key = key
-        self.parts[part.guid] = part
+        self._parts[part.guid] = part
         return key
 
     def add_connection(self, a, b, **kwargs):
@@ -120,9 +132,21 @@ class Assembly(Datastructure):
         for node in self.graph.nodes():
             yield self.graph.node_attribute(node, 'part')
 
-    def connections(self):
-        """The connections between the parts."""
-        return self.graph.edges()
+    def connections(self, data=False):
+        """Iterate over the connections between the parts.
+
+        Parameters
+        ----------
+        data : bool, optional
+            If ``True``, yield both the identifier and the attributes of each connection.
+
+        Yields
+        ------
+        tuple
+            The next connection identifier (u, v), if ``data`` is ``False``.
+            Otherwise, the next connector identifier and its attributes as a ((u, v), attr) tuple.
+        """
+        return self.graph.edges(data)
 
     def find(self, guid):
         """Find a part in the assembly by its GUID.
@@ -139,4 +163,4 @@ class Assembly(Datastructure):
             The identified part, if any.
 
         """
-        return self.parts.get(guid)
+        return self._parts.get(guid)

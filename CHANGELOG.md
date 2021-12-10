@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas_rhino.DEFAULT_VERSION`.
 * Added `clean` option to `compas_rhino.install` to remove existing symlinks if they cannot be imported from the current environment.
+* Added basic implementation of `compas.datastructures.Assembly`.
 
 ### Changed
 

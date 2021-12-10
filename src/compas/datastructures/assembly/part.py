@@ -74,10 +74,11 @@ class Part(Datastructure):
     def JSONSCHEMANAME(self):
         return 'part'
 
-    def __init__(self, name, frame=None, shape=None, features=None, **kwargs):
+    def __init__(self, name=None, frame=None, shape=None, features=None, **kwargs):
         super(Part, self).__init__()
         self._frame = None
         self.attributes = {'name': name or 'Part'}
+        self.attributes.update(kwargs)
         self.key = None
         self.frame = frame
         self.shape = shape or Shape([], [])
@@ -87,6 +88,15 @@ class Part(Datastructure):
     def __str__(self):
         tpl = "<Part with shape {} and features {}>"
         return tpl.format(self.shape, self.features)
+
+    @property
+    def name(self):
+        """str : The name of the part."""
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
 
     @property
     def data(self):
@@ -124,7 +134,8 @@ class Part(Datastructure):
 
     @property
     def geometry(self):
-        # this is a temp solution
+        # TODO: this is a temp solution
+        # TODO: add memoization or some other kind of caching
         A = Mesh.from_shape(self.shape)
         for shape, operation in self.features:
             A.quads_to_triangles()
