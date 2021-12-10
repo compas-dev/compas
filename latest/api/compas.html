@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.12.2
+            1.13.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -85,7 +85,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-9 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
         
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-3 bg-white px-0">
@@ -117,293 +117,6 @@
 <li class="toctree-l1"><a class="reference internal" href="compas.utilities.html">utilities</a></li>
 </ul>
 </div>
-<section id="utility-functions">
-<h2>Utility functions</h2>
-<section id="json-handling">
-<h3>JSON handling</h3>
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.json_dump">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">json_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/json.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Write a collection of COMPAS object data to a JSON file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>any</em>) – Any JSON serializable object.
-This includes any (combination of) COMPAS object(s).</p></li>
-<li><p><strong>fp</strong> (<em>path string or file-like object</em>) – A writeable file-like object or the path to a file.</p></li>
-<li><p><strong>pretty</strong> (<em>bool, optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> to format the output with indentation, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>None</em></p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Vector</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="s1">&#39;data.json&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;data.json&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">==</span> <span class="n">data2</span>
-<span class="go">True</span>
-</code></pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.json_dumps">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">json_dumps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/json.py#L43"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Write a collection of COMPAS objects to a JSON string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>any</em>) – Any JSON serializable object.
-This includes any (combination of) COMPAS object(s).</p></li>
-<li><p><strong>pretty</strong> (<em>bool, optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> to format the output with indentation, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>str</em></p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Vector</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_dumps</span><span class="p">(</span><span class="n">data1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">==</span> <span class="n">data2</span>
-<span class="go">True</span>
-</code></pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.json_load">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">json_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/json.py#L72"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Read COMPAS object data from a JSON file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fp</strong> (<em>path string, file-like object or URL string</em>) – A readable path, a file-like object or a URL pointing to a file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>data</em> – The (COMPAS) data contained in the file.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Vector</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="s1">&#39;data.json&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;data.json&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">==</span> <span class="n">data2</span>
-<span class="go">True</span>
-</code></pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.json_loads">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">json_loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/json.py#L99"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Read COMPAS object data from a JSON string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – A JSON data string.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>data</em> – The (COMPAS) data contained in the string.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Vector</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_dumps</span><span class="p">(</span><span class="n">data1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">==</span> <span class="n">data2</span>
-<span class="go">True</span>
-</code></pre></div>
-</div>
-</dd></dl>
-
-</section>
-<section id="precision">
-<h3>Precision</h3>
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.set_precision">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">set_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas.py#L185"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Set the precision used by geometric maps.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>precision</strong> (<em>float</em>) – The precision as a floating point number.
-For example, <code class="docutils literal notranslate"><span class="pre">0.0001</span></code>.</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This function converts the floating point number to a string formatting
-specifier and assigns the specifier to <code class="docutils literal notranslate"><span class="pre">compas.PRECISION</span></code>.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">set_precision</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">PRECISION</span>
-<span class="go">&#39;3f&#39;</span>
-</code></pre></div>
-</div>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.PRECISION">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">PRECISION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'3f'</span></em></dt>
-<dd><p>str:
-The precision used by COMPAS for generation of geometric keys,
-for the comparison of point locations,
-for the parsing of geometry files,
-and for the generation of human-readable representations of geometry objects.</p>
-<p>The string is in the format used by the Python string formating mini language
-for formatting numbers.
-Float formatting (<code class="docutils literal notranslate"><span class="pre">'&lt;x&gt;f'</span></code>) and integer formatting (<code class="docutils literal notranslate"><span class="pre">'d'</span></code>) specifiers are supported.</p>
-</dd></dl>
-
-</section>
-<section id="execution-context">
-<h3>Execution context</h3>
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.is_windows">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">is_windows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/_os.py#L44"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Check if the operating system is Windows.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>bool</em> – True if the OS is Windows. False otherwise</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.is_linux">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">is_linux</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/_os.py#L58"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Check if the operating system is Linux.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>bool</em> – True if the OS is Linux. False otherwise</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.is_osx">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">is_osx</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/_os.py#L70"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.is_mono">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">is_mono</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/_os.py#L74"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Check if the operating system is running on Mono.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>bool</em> – True if the OS is running on Mono. False otherwise</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.is_ironpython">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">is_ironpython</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/_os.py#L86"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Check if the Python implementation is IronPython.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>bool</em> – True if the implementation is IronPython. False otherwise</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.is_rhino">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">is_rhino</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/_os.py#L98"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="compas.is_blender">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">is_blender</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/_os.py#L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.WINDOWS">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">WINDOWS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
-<dd><p>True if the current operating system is Windows, False otherwise.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.LINUX">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">LINUX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em></dt>
-<dd><p>True if the current operating system is Linux, False otherwise.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.OSX">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">OSX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
-<dd><p>True if the current operating system is OSX, False otherwise.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.MONO">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">MONO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
-<dd><p>True if the current operating system is Mono, False otherwise.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.IPY">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">IPY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
-<dd><p>True if the current Python implementation is IronPython, False otherwise.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.RHINO">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">RHINO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em></dt>
-<dd><p>True if the current context is Rhino, False otherwise.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="compas.BLENDER">
-<span class="sig-prename descclassname"><span class="pre">compas.</span></span><span class="sig-name descname"><span class="pre">BLENDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em></dt>
-<dd><p>True if the current context is Blender, False otherwise.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-</section>
 </section>
 
         
@@ -461,22 +174,6 @@ Float formatting (<code class="docutils literal notranslate"><span class="pre">'
       </div>
       <!-- sidebar -->
       <!-- toc -->
-      
-      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-        
-        <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#utility-functions">Utility functions</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#json-handling">JSON handling</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#precision">Precision</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#execution-context">Execution context</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      </div>
       
       <!-- toc -->
     </div>
@@ -545,7 +242,7 @@ Float formatting (<code class="docutils literal notranslate"><span class="pre">'
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.12.2',
+    VERSION           : '1.13.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
