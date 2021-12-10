@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed default Rhino version for installation to `7.0`.
 * Fixed bug in `compas_ghpython` related to importing `Grasshopper` prematurely.
 * Changed `compas.artists.Artist.ITAM_ARTIST` to context-based dict.
+* Changed `compas_rhino.__init__.py` functions.
+* Changed `compas_ghpython.__init__.py` functions.
 
 ### Removed
 

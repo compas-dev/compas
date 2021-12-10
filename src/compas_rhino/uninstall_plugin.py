@@ -21,7 +21,7 @@ def uninstall_plugin(plugin, version=None):
         The name of the plugin.
     version : {'5.0', '6.0', '7.0', '8.0'}, optional
         The version of Rhino for which the plugin should be uninstalled.
-        Default is ``'6.0'``.
+        Default is ``'7.0'``.
 
     Notes
     -----
