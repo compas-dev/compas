@@ -242,6 +242,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoCylinder`.
 * Added `compas_rhino.geometry.RhinoPolyline`.
 * Added `compas_rhino.geometry.RhinoSphere`.
+* Added basic implementation of `compas.datastructures.Assembly`.
 * Added `meshes` method to artists of `compas.robots.RobotModel`.
 * Added `FrameArtist` class to `compas_blender`.
 
