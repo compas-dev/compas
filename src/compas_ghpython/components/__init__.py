@@ -66,6 +66,7 @@ def install_userobjects(source):
     """
     version = get_version_from_args()
 
+    # this dstdir potentially doesn't exist
     dstdir = get_grasshopper_userobjects_path(version)
     userobjects = glob.glob(os.path.join(source, '*.ghuser'))
 
