@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_ghpython
+import compas_ghpython.utilities
 from compas.artists import PrimitiveArtist
 from .artist import GHArtist
 
@@ -27,7 +27,7 @@ class PointArtist(GHArtist, PrimitiveArtist):
         :class:`Rhino.Geometry.Point3d`
         """
         points = [self._get_args(self.primitive)]
-        return compas_ghpython.draw_points(points)[0]
+        return compas_ghpython.utilities.draw_points(points)[0]
 
     @staticmethod
     def _get_args(primitive):

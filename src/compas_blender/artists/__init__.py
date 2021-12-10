@@ -72,7 +72,6 @@ Base Classes
 import compas_blender
 
 from compas.plugins import plugin
-from compas.plugins import PluginValidator
 from compas.artists import Artist
 
 from compas.geometry import Box
@@ -115,6 +114,7 @@ from .vectorartist import VectorArtist
 
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
 def clear_blender():
+    print('doing it')
     compas_blender.clear()
 
 
@@ -123,41 +123,26 @@ def redraw_blender():
     compas_blender.redraw()
 
 
-artists_registered = False
-
-
-@plugin(category='factories', pluggable_name='new_artist', tryfirst=True, requires=['bpy'])
-def new_artist_blender(cls, *args, **kwargs):
-    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
-    global artists_registered
-
-    if not artists_registered:
-        BlenderArtist.register(Box, BoxArtist)
-        BlenderArtist.register(Capsule, CapsuleArtist)
-        BlenderArtist.register(Circle, CircleArtist)
-        BlenderArtist.register(Cone, ConeArtist)
-        BlenderArtist.register(Cylinder, CylinderArtist)
-        BlenderArtist.register(Frame, FrameArtist)
-        BlenderArtist.register(Line, LineArtist)
-        BlenderArtist.register(Mesh, MeshArtist)
-        BlenderArtist.register(Network, NetworkArtist)
-        BlenderArtist.register(Point, PointArtist)
-        BlenderArtist.register(Polygon, PolygonArtist)
-        BlenderArtist.register(Polyhedron, PolyhedronArtist)
-        BlenderArtist.register(Polyline, PolylineArtist)
-        BlenderArtist.register(RobotModel, RobotModelArtist)
-        BlenderArtist.register(Sphere, SphereArtist)
-        BlenderArtist.register(Torus, TorusArtist)
-        BlenderArtist.register(Vector, VectorArtist)
-        artists_registered = True
-
-    data = args[0]
-
-    cls = Artist.get_artist_cls(data, **kwargs)
-
-    PluginValidator.ensure_implementations(cls)
-
-    return super(Artist, cls).__new__(cls)
+@plugin(category='factories', requires=['bpy'])
+def register_artists():
+    Artist.register(Box, BoxArtist, context='Blender')
+    Artist.register(Capsule, CapsuleArtist, context='Blender')
+    Artist.register(Circle, CircleArtist, context='Blender')
+    Artist.register(Cone, ConeArtist, context='Blender')
+    Artist.register(Cylinder, CylinderArtist, context='Blender')
+    Artist.register(Frame, FrameArtist, context='Blender')
+    Artist.register(Line, LineArtist, context='Blender')
+    Artist.register(Mesh, MeshArtist, context='Blender')
+    Artist.register(Network, NetworkArtist, context='Blender')
+    Artist.register(Point, PointArtist, context='Blender')
+    Artist.register(Polygon, PolygonArtist, context='Blender')
+    Artist.register(Polyhedron, PolyhedronArtist, context='Blender')
+    Artist.register(Polyline, PolylineArtist, context='Blender')
+    Artist.register(RobotModel, RobotModelArtist, context='Blender')
+    Artist.register(Sphere, SphereArtist, context='Blender')
+    Artist.register(Torus, TorusArtist, context='Blender')
+    Artist.register(Vector, VectorArtist, context='Blender')
+    print('Blender Artists registered.')
 
 
 __all__ = [
