@@ -19,6 +19,8 @@ Classes
     Mesh
     Network
     VolMesh
+    Assembly
+    Part
 
 
 Functions
@@ -171,8 +173,16 @@ VolMesh
     volmesh_transformed
 
 
+Assembly
+--------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
 """
 from __future__ import absolute_import
+
 import compas
 
 from .datastructure import Datastructure
@@ -282,6 +292,11 @@ from .volmesh import (
     volmesh_bounding_box,
     volmesh_transform,
     volmesh_transformed
+)
+
+from .assembly import (
+    Assembly,
+    Part
 )
 
 if not compas.IPY:
@@ -421,6 +436,9 @@ __all__ = [
     'volmesh_bounding_box',
     'volmesh_transform',
     'volmesh_transformed',
+    # Assemblies
+    'Assembly',
+    'Part',
 ]
 
 if not compas.IPY:
