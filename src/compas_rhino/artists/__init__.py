@@ -74,7 +74,6 @@ Base Classes
 from __future__ import absolute_import
 
 from compas.plugins import plugin
-from compas.plugins import PluginValidator
 from compas.artists import Artist
 from compas.artists import ShapeArtist
 
@@ -142,63 +141,38 @@ VolMeshArtist.default_facecolor = (255, 255, 255)
 VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
-def verify_rhino_context():
-    try:
-        import Rhino
-        import scriptcontext as sc
-
-        return isinstance(sc.doc, Rhino.RhinoDoc)
-    except:            # noqa: E722
-        return False
-
-
-artists_registered = False
-
-
-@plugin(category='drawing-utils', pluggable_name='clear', requires=['Rhino', verify_rhino_context])
+@plugin(category='drawing-utils', pluggable_name='clear', requires=['Rhino'])
 def clear_rhino():
     compas_rhino.clear()
 
 
-@plugin(category='drawing-utils', pluggable_name='redraw', requires=['Rhino', verify_rhino_context])
+@plugin(category='drawing-utils', pluggable_name='redraw', requires=['Rhino'])
 def redraw_rhino():
     compas_rhino.redraw()
 
 
-@plugin(category='factories', pluggable_name='new_artist', requires=['Rhino', verify_rhino_context])
-def new_artist_rhino(cls, *args, **kwargs):
-    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
-    global artists_registered
-
-    if not artists_registered:
-        RhinoArtist.register(Circle, CircleArtist)
-        RhinoArtist.register(Frame, FrameArtist)
-        RhinoArtist.register(Line, LineArtist)
-        RhinoArtist.register(Plane, PlaneArtist)
-        RhinoArtist.register(Point, PointArtist)
-        RhinoArtist.register(Polygon, PolygonArtist)
-        RhinoArtist.register(Polyline, PolylineArtist)
-        RhinoArtist.register(Vector, VectorArtist)
-        RhinoArtist.register(Box, BoxArtist)
-        RhinoArtist.register(Capsule, CapsuleArtist)
-        RhinoArtist.register(Cone, ConeArtist)
-        RhinoArtist.register(Cylinder, CylinderArtist)
-        RhinoArtist.register(Polyhedron, PolyhedronArtist)
-        RhinoArtist.register(Sphere, SphereArtist)
-        RhinoArtist.register(Torus, TorusArtist)
-        RhinoArtist.register(Mesh, MeshArtist)
-        RhinoArtist.register(Network, NetworkArtist)
-        RhinoArtist.register(VolMesh, VolMeshArtist)
-        RhinoArtist.register(RobotModel, RobotModelArtist)
-        artists_registered = True
-
-    data = args[0]
-
-    cls = Artist.get_artist_cls(data, **kwargs)
-
-    PluginValidator.ensure_implementations(cls)
-
-    return super(Artist, cls).__new__(cls)
+@plugin(category='factories', requires=['Rhino'])
+def register_artists():
+    Artist.register(Circle, CircleArtist, context='Rhino')
+    Artist.register(Frame, FrameArtist, context='Rhino')
+    Artist.register(Line, LineArtist, context='Rhino')
+    Artist.register(Plane, PlaneArtist, context='Rhino')
+    Artist.register(Point, PointArtist, context='Rhino')
+    Artist.register(Polygon, PolygonArtist, context='Rhino')
+    Artist.register(Polyline, PolylineArtist, context='Rhino')
+    Artist.register(Vector, VectorArtist, context='Rhino')
+    Artist.register(Box, BoxArtist, context='Rhino')
+    Artist.register(Capsule, CapsuleArtist, context='Rhino')
+    Artist.register(Cone, ConeArtist, context='Rhino')
+    Artist.register(Cylinder, CylinderArtist, context='Rhino')
+    Artist.register(Polyhedron, PolyhedronArtist, context='Rhino')
+    Artist.register(Sphere, SphereArtist, context='Rhino')
+    Artist.register(Torus, TorusArtist, context='Rhino')
+    Artist.register(Mesh, MeshArtist, context='Rhino')
+    Artist.register(Network, NetworkArtist, context='Rhino')
+    Artist.register(VolMesh, VolMeshArtist, context='Rhino')
+    Artist.register(RobotModel, RobotModelArtist, context='Rhino')
+    print('Rhino Artists registered.')
 
 
 __all__ = [

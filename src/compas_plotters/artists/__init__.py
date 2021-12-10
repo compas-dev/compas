@@ -44,7 +44,6 @@ Base Classes
 """
 
 from compas.plugins import plugin
-from compas.plugins import PluginValidator
 from compas.artists import Artist
 
 from compas.geometry import Point
@@ -70,42 +69,17 @@ from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 
 
-def verify_not_blender():
-    try:
-        import bpy  # noqa: F401
-    except ImportError:
-        return True
-    else:
-        return False
-
-
-artists_registered = False
-
-
-@plugin(category='factories', pluggable_name='new_artist', trylast=True, requires=['matplotlib', verify_not_blender])
-def new_artist_plotter(cls, *args, **kwargs):
-    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
-    global artists_registered
-
-    if not artists_registered:
-        PlotterArtist.register(Point, PointArtist)
-        PlotterArtist.register(Vector, VectorArtist)
-        PlotterArtist.register(Line, LineArtist)
-        PlotterArtist.register(Polyline, PolylineArtist)
-        PlotterArtist.register(Polygon, PolygonArtist)
-        PlotterArtist.register(Circle, CircleArtist)
-        PlotterArtist.register(Ellipse, EllipseArtist)
-        PlotterArtist.register(Mesh, MeshArtist)
-        PlotterArtist.register(Network, NetworkArtist)
-        artists_registered = True
-
-    data = args[0]
-
-    cls = Artist.get_artist_cls(data, **kwargs)
-
-    PluginValidator.ensure_implementations(cls)
-
-    return super(Artist, cls).__new__(cls)
+@plugin(category='factories', requires=['matplotlib'])
+def register_artists():
+    Artist.register(Point, PointArtist, context='Plotter')
+    Artist.register(Vector, VectorArtist, context='Plotter')
+    Artist.register(Line, LineArtist, context='Plotter')
+    Artist.register(Polyline, PolylineArtist, context='Plotter')
+    Artist.register(Polygon, PolygonArtist, context='Plotter')
+    Artist.register(Circle, CircleArtist, context='Plotter')
+    Artist.register(Ellipse, EllipseArtist, context='Plotter')
+    Artist.register(Mesh, MeshArtist, context='Plotter')
+    Artist.register(Network, NetworkArtist, context='Plotter')
 
 
 __all__ = [

@@ -25,7 +25,7 @@ import os
 import compas
 import compas._os
 
-if compas.RHINO:
+if compas.is_rhino():
     import rhinoscriptsyntax as rs  # noqa: F401
     from .utilities import *  # noqa: F401 F403
 

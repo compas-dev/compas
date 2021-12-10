@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.DEFAULT_VERSION`.
 * Added `clean` option to `compas_rhino.install` to remove existing symlinks if they cannot be imported from the current environment.
 * Added basic implementation of `compas.datastructures.Assembly`.
+* Added `compas.is_grasshopper`.
+* Added `compas.GH`.
+* Added `compas.artists.Artist.CONTEXT`.
+* Added `compas.artists.Artist.AVAILABLE_CONTEXTS`.
+* Added `compas.artists.artist.register_artists` pluggable.
 
 ### Changed
 
@@ -20,14 +25,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve`.
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_interpolation`.
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_step`.
-
 * Changed `compas_rhino.install` to remove broken symlinks.
 * Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
 * Changed `compas_rhino.uninstall` to remove broken symlinks.
 * Changed `compas_rhino.install_plugin` to remove broken symlinks.
 * Changed default Rhino version for installation to `7.0`.
+* Fixed bug in `compas_ghpython` related to importing `Grasshopper` prematurely.
+* Changed `compas.artists.Artist.ITAM_ARTIST` to context-based dict.
 
 ### Removed
+
+* Removed `compas.artists.artist.new_artist` pluggable.
 
 
 ## [1.12.2] 2021-11-30
