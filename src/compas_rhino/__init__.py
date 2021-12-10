@@ -147,7 +147,7 @@ def _get_app_folder(version):
             '5': ['/', 'Applications', 'Rhinoceros.app'],
             '6': ['/', 'Applications', 'Rhinoceros.app'],
             '7': ['/', 'Applications', 'Rhino 7.app', ],
-            '8': ['/', 'Applications', 'Rhino 8.app', ]
+            '8': ['/', 'Applications', 'RhinoWIP.app', ]
         }
         app = os.path.join(*paths[version])
 
