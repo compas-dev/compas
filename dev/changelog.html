@@ -110,6 +110,11 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.DEFAULT_VERSION</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">clean</span></code> option to <code class="docutils literal notranslate"><span class="pre">compas_rhino.install</span></code> to remove existing symlinks if they cannot be imported from the current environment.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.is_grasshopper</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.GH</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artists.Artist.CONTEXT</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artists.Artist.AVAILABLE_CONTEXTS</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artists.artist.register_artists</span></code> pluggable.</p></li>
 </ul>
 </section>
 <section id="changed">
@@ -125,10 +130,15 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.uninstall</span></code> to remove broken symlinks.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.install_plugin</span></code> to remove broken symlinks.</p></li>
 <li><p>Changed default Rhino version for installation to <code class="docutils literal notranslate"><span class="pre">7.0</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_ghpython</span></code> related to importing <code class="docutils literal notranslate"><span class="pre">Grasshopper</span></code> prematurely.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.artists.Artist.ITAM_ARTIST</span></code> to context-based dict.</p></li>
 </ul>
 </section>
 <section id="removed">
 <h3>Removed</h3>
+<ul class="simple">
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.artists.artist.new_artist</span></code> pluggable.</p></li>
+</ul>
 </section>
 </section>
 <section id="id1">
