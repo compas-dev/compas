@@ -10,71 +10,18 @@ conduits
 Display conduits can be used to visualize iterative processes
 with less of a performance penalty than with regular geometry objects.
 
-.. code-block:: python
+Classes
+=======
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas_rhino.artists import MeshArtist
-    from compas_rhino.conduits import LinesConduit
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-    fixed = list(mesh.vertices_where({'vertex_degree': 2})
-
-    artist = MeshArtist(mesh, layer="COMPAS::faces.obj")
-    artist.clear_layer()
-    artist.draw_mesh()
-    artist.redraw()
-
-    conduit = LinesConduit()
-
-    def redraw(k, args):
-        conduit.lines = [mesh.edge_coordinates(*edges) for edge in mesh.edges()]
-        conduit.redraw()
-
-    with conduit.enabled():
-        mesh.smooth_centroid(
-            fixed=fixed),
-            kmax=100,
-            callback=redraw)
-
-
-BaseConduit
-===========
-
-.. autoclass:: BaseConduit
-    :members: enabled, enable, disable, redraw
-
-----
-
-Faces Conduit
-=============
-
-.. autoclass:: FacesConduit
-    :no-show-inheritance:
-
-----
-
-Lines Conduit
-=============
-
-.. autoclass:: LinesConduit
-    :no-show-inheritance:
-
-----
-
-Points Conduit
-==============
-
-.. autoclass:: PointsConduit
-    :no-show-inheritance:
-
-----
-
-Labels Conduit
-==============
-
-.. autoclass:: LabelsConduit
-    :no-show-inheritance:
+    BaseConduit
+    FacesConduit
+    LabelsConduit
+    LinesConduit
+    PointsConduit
 
 """
 from __future__ import absolute_import

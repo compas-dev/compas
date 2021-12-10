@@ -5,108 +5,94 @@ geometry
 
 .. currentmodule:: compas_rhino.geometry
 
-.. rst-class:: lead
+Classes
+=======
 
-Wrappers for Rhino objects that can be used to convert Rhino geometry and data to COMPAS objects.
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-.. code-block:: python
-
-    import compas_rhino
-    from compas_rhino.geometry import RhinoMesh
-
-    guid = compas_rhino.select_mesh()
-    mesh = RhinoMesh.from_guid(guid).to_compas()
+    RhinoNurbsCurve
 
 
-BaseRhinoGeometry
-=================
+Plugins
+=======
 
-.. autoclass:: BaseRhinoGeometry
-    :members: from_geometry, from_selection, to_compas, from_guid, from_object, transform
+Booleans
+--------
 
-----
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-RhinoPoint
-==========
+    booleans.boolean_difference_mesh_mesh
+    booleans.boolean_intersection_mesh_mesh
+    booleans.boolean_union_mesh_mesh
 
-.. autoclass:: RhinoPoint
-    :members: from_geometry, from_selection, to_compas
-    :no-show-inheritance:
+Curves
+------
 
-----
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-RhinoVector
-===========
+    curves.new_nurbscurve
+    curves.new_nurbscurve_from_interpolation
+    curves.new_nurbscurve_from_parameters
+    curves.new_nurbscurve_from_points
+    curves.new_nurbscurve_from_step
 
-.. autoclass:: RhinoVector
-    :members: from_geometry, from_selection, to_compas
-    :no-show-inheritance:
+TriMesh
+-------
 
-----
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-RhinoLine
-=========
-
-.. autoclass:: RhinoLine
-    :members: from_geometry, from_selection, to_compas
-    :no-show-inheritance:
-
-----
-
-RhinoPlane
-==========
-
-.. autoclass:: RhinoPlane
-    :members: from_geometry, from_selection, to_compas
-    :no-show-inheritance:
-
-----
-
-RhinoMesh
-=========
-
-.. autoclass:: RhinoMesh
-    :members: from_geometry, from_selection, to_compas
-    :no-show-inheritance:
-
-----
-
-RhinoCurve
-==========
-
-.. autoclass:: RhinoCurve
-    :members: from_geometry, from_selection, to_compas
-    :no-show-inheritance:
-
-----
-
-RhinoSurface
-============
-
-.. autoclass:: RhinoSurface
-    :members: from_geometry, from_selection, to_compas
-    :no-show-inheritance:
+    trimesh.trimesh_gaussian_curvature
+    trimesh.trimesh_mean_curvature
+    trimesh.trimesh_principal_curvature
+    trimesh.trimesh_slice
 
 """
 from __future__ import absolute_import
 
-from ._geometry import BaseRhinoGeometry
+from compas_rhino.conversions import RhinoGeometry
 
-from .curve import RhinoCurve
-from .line import RhinoLine
-from .mesh import RhinoMesh
-from .plane import RhinoPlane
-from .point import RhinoPoint
-from .surface import RhinoSurface
-from .vector import RhinoVector
+from compas_rhino.conversions import RhinoBox
+from compas_rhino.conversions import RhinoCircle
+from compas_rhino.conversions import RhinoCone
+from compas_rhino.conversions import RhinoCurve
+from compas_rhino.conversions import RhinoCylinder
+from compas_rhino.conversions import RhinoEllipse
+from compas_rhino.conversions import RhinoLine
+from compas_rhino.conversions import RhinoMesh
+from compas_rhino.conversions import RhinoPlane
+from compas_rhino.conversions import RhinoPoint
+from compas_rhino.conversions import RhinoPolyline
+from compas_rhino.conversions import RhinoSphere
+from compas_rhino.conversions import RhinoSurface
+from compas_rhino.conversions import RhinoVector
+
+from .curves import RhinoNurbsCurve
+
 
 __all__ = [
-    'BaseRhinoGeometry',
+    'RhinoGeometry',
+    'RhinoBox',
+    'RhinoCircle',
+    'RhinoCone',
     'RhinoCurve',
+    'RhinoCylinder',
+    'RhinoEllipse',
     'RhinoLine',
     'RhinoMesh',
     'RhinoPlane',
     'RhinoPoint',
+    'RhinoPolyline',
+    'RhinoSphere',
     'RhinoSurface',
-    'RhinoVector'
+    'RhinoVector',
+
+    'RhinoNurbsCurve'
 ]

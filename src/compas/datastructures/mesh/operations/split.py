@@ -2,10 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.utilities import pairwise
+
 
 __all__ = [
     'mesh_split_edge',
     'mesh_split_face',
+    'mesh_split_strip',
     'trimesh_split_edge',
 ]
 
@@ -222,3 +225,39 @@ def mesh_split_face(mesh, fkey, u, v):
     del mesh.face[fkey]
 
     return f, g
+
+
+def mesh_split_strip(mesh, edge):
+    """Split the srip of faces corresponding to a given edge.
+
+    Parameters
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        The input mesh.
+    edge : tuple of int
+        The edge identifying the strip.
+
+    Returns
+    -------
+    list of int
+        The split vertices in the same order as the edges of the strip.
+    """
+    strip = mesh.edge_strip(edge)
+    is_closed = strip[0] == strip[-1]
+
+    ngons = []
+    splits = []
+    for u, v in strip[:-1]:
+        ngons.append(mesh.halfedge_face(u, v))
+        splits.append(mesh.split_edge(u, v, t=0.5, allow_boundary=True))
+
+    if is_closed:
+        splits.append(splits[0])
+    else:
+        u, v = strip[-1]
+        splits.append(mesh.split_edge(u, v, t=0.5, allow_boundary=True))
+
+    for (u, v), ngon in zip(pairwise(splits), ngons):
+        mesh.split_face(ngon, u, v)
+
+    return splits

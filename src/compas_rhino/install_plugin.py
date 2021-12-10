@@ -17,7 +17,7 @@ def install_plugin(plugin, version=None):
     ----------
     plugin : str
         The path to the plugin folder.
-    version : {'5.0', '6.0', '7.0'}, optional
+    version : {'5.0', '6.0', '7.0', '8.0'}, optional
         The version of Rhino for which the plugin should be installed.
         Default is ``'6.0'``.
 
@@ -58,17 +58,53 @@ def install_plugin(plugin, version=None):
         python -m compas_rhino.install_plugin -v 7.0 ui/Rhino/XXX
 
     """
-    if version not in ('5.0', '6.0', '7.0'):
-        version = '6.0'
-
     if not os.path.isdir(plugin):
         raise Exception('Cannot find the plugin: {}'.format(plugin))
 
+    version = compas_rhino._check_rhino_version(version)
+
     plugin_dir = os.path.abspath(plugin)
 
+    # Clean up the plugin directory
+    # by removing all broken symlinks
+    # because ... they're broken!
+
+    symlinks_to_remove = []
+
+    for name in os.listdir(plugin_dir):
+        path = os.path.join(plugin_dir, name)
+        if os.path.islink(path):
+            if not os.path.exists(path):
+                symlinks_to_remove.append(dict(name=name, link=path))
+
+    symlinks_removed = []
+    symlinks_unremoved = []
+
+    if symlinks_to_remove:
+        symlinks = [link['link'] for link in symlinks_to_remove]
+        removal_results = remove_symlinks(symlinks)
+        for uninstall_data, success in zip(symlinks_to_remove, removal_results):
+            if success:
+                symlinks_removed.append(uninstall_data['name'])
+            else:
+                symlinks_unremoved.append(uninstall_data['name'])
+
+    if symlinks_removed:
+        print('\nThe following package symlinks are broken and were removed:\n')
+        for name in symlinks_removed:
+            print('   {}'.format(name.ljust(20)))
+
+    if symlinks_unremoved:
+        print('\nThe following package symlinks are broken but could not be removed:\n')
+        for name in symlinks_unremoved:
+            print('   {}'.format(name.ljust(20)))
+
+    # -----------------------------
+    # proceed with the installation
+    # -----------------------------
+
     plugin_path, plugin_name = os.path.split(plugin_dir)
-    if not plugin_path:
-        plugin_path = os.getcwd()
+    plugin_path = plugin_path or os.getcwd()
 
     plugin_dev = os.path.join(plugin_dir, 'dev')
 
@@ -98,15 +134,13 @@ def install_plugin(plugin, version=None):
     source = plugin_dir
     destination = os.path.join(python_plugins_path, plugin_fullname)
 
-    print('Installing PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
+    print('\nInstalling PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
 
     remove_symlinks([destination])
     create_symlinks([(source, destination)])
 
-    print()
-    print('PlugIn {} Installed.'.format(plugin_name))
-    print()
-    print('Restart Rhino and open the Python editor at least once to make it available.')
+    print('\nPlugIn {} Installed.'.format(plugin_name))
+    print('\nRestart Rhino and open the Python editor at least once to make it available.')
 
 
 # ==============================================================================
@@ -118,10 +152,16 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='COMPAS Rhino PLugin Installation command-line utility.')
+        description='COMPAS Rhino Plugin Installation command-line utility.')
 
     parser.add_argument('plugin', help="The path to the plugin directory.")
-    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0', help="The version of Rhino.")
+    parser.add_argument(
+        '-v',
+        '--version',
+        choices=compas_rhino.SUPPORTED_VERSIONS,
+        default=compas_rhino.DEFAULT_VERSION,
+        help="The version of Rhino."
+    )
 
     args = parser.parse_args()
 

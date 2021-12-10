@@ -110,6 +110,7 @@ Mesh
     mesh_smooth_centroid
     mesh_split_edge
     mesh_split_face
+    mesh_split_strip
     mesh_subdivide_catmullclark
     mesh_subdivide_corner
     mesh_subdivide_doosabin
@@ -256,6 +257,7 @@ from .mesh import (
     mesh_smooth_centroid,
     mesh_split_edge,
     mesh_split_face,
+    mesh_split_strip,
     mesh_subdivide_catmullclark,
     mesh_subdivide_corner,
     mesh_subdivide_doosabin,
@@ -400,6 +402,7 @@ __all__ = [
     'mesh_smooth_centroid',
     'mesh_split_edge',
     'mesh_split_face',
+    'mesh_split_strip',
     'mesh_subdivide_catmullclark',
     'mesh_subdivide_corner',
     'mesh_subdivide_doosabin',

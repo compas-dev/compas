@@ -5,6 +5,7 @@ from __future__ import print_function
 import collections
 import sys
 from math import pi
+from itertools import product
 
 import compas
 
@@ -33,6 +34,8 @@ from compas.geometry import sum_vectors
 from compas.geometry import midpoint_line
 from compas.geometry import vector_average
 
+from compas.utilities import linspace
+
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
@@ -42,6 +45,7 @@ from compas.datastructures import HalfEdge
 from .operations import mesh_collapse_edge
 from .operations import mesh_split_edge
 from .operations import mesh_split_face
+from .operations import mesh_split_strip
 from .operations import mesh_merge_faces
 
 from .bbox import mesh_bounding_box
@@ -119,6 +123,7 @@ class Mesh(HalfEdge):
     smooth_area = mesh_smooth_area
     split_edge = mesh_split_edge
     split_face = mesh_split_face
+    split_strip = mesh_split_strip
     subdivide = mesh_subdivide
     transform = mesh_transform
     transformed = mesh_transformed
@@ -611,6 +616,39 @@ class Mesh(HalfEdge):
 
     def to_polygons(self):
         return [self.face_coordinates(fkey) for fkey in self.faces()]
+
+    @classmethod
+    def from_meshgrid(cls, dx, nx, dy=None, ny=None):
+        """Create a mesh from faces and vertices on a regular grid.
+
+        Parameters
+        ----------
+        dx : float
+            The size of the grid in the X direction.
+        nx : int
+            The number of faces in the X direction.
+        dy : float, optional
+            The size of the grid in the Y direction, if different form X.
+        ny : int, optional
+            The number of faces in the Y direction, if different from Y.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+        """
+        dy = dy or dx
+        ny = ny or nx
+
+        vertices = [[x, y, 0.0] for x, y in product(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))]
+        faces = [[
+            i * (ny + 1) + j,
+            (i + 1) * (ny + 1) + j,
+            (i + 1) * (ny + 1) + j + 1,
+            i * (ny + 1) + j + 1
+        ] for i, j in product(range(nx), range(ny))]
+
+        return cls.from_vertices_and_faces(vertices, faces)
 
     # --------------------------------------------------------------------------
     # helpers

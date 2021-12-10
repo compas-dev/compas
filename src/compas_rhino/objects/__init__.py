@@ -5,50 +5,16 @@ objects
 
 .. currentmodule:: compas_rhino.objects
 
-.. .. rst-class:: lead
+Classes
+=======
 
-.. code-block:: python
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas_rhino.objects import MeshObject
-
-    mesh = Mesh.from_off(compas.get('tubemesh.off'))
-
-    meshobject = MeshObject(mesh, name='MeshObject', layer='COMPAS::MeshObject')
-    meshobject.draw()
-
-    vertices = meshobject.select_vertices()
-
-    if vertices and meshobject.modify_vertices(vertices):
-        meshobject.draw()
-
-
-NetworkObject
-=============
-
-.. autoclass:: NetworkObject
-    :members: clear, draw, select_nodes, select_edges, modify_nodes, modify_edges
-    :no-show-inheritance:
-
-----
-
-MeshObject
-==========
-
-.. autoclass:: MeshObject
-    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
-    :no-show-inheritance:
-
-----
-
-VolMeshObject
-=============
-
-.. autoclass:: VolMeshObject
-    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
-    :no-show-inheritance:
-
+    MeshObject
+    NetworkObject
+    VolMeshObject
 
 """
 from __future__ import absolute_import
