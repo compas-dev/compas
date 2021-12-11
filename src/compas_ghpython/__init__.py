@@ -39,7 +39,7 @@ __all_plugins__ = [
 
 
 def _get_grasshopper_special_folder(version, folder_name):
-    grasshopper = compas_rhino._get_grasshopper_plugin_path(version)
+    grasshopper = compas_rhino._get_rhino_grasshopperplugin_path(version)
     return os.path.join(grasshopper, folder_name)
 
 
@@ -50,7 +50,7 @@ def _get_grasshopper_special_folder(version, folder_name):
 
 def get_grasshopper_managedplugin_path(version):
     version = compas_rhino._check_rhino_version(version)
-    managedplugins = compas_rhino._get_managedplugins_path(version)
+    managedplugins = compas_rhino._get_rhino_managedplugins_path(version)
 
     if compas.WINDOWS:
         gh_managedplugin_path = os.path.join(managedplugins, 'Grasshopper')

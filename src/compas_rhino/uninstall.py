@@ -46,10 +46,10 @@ def uninstall(version=None, packages=None):
 
     # We install COMPAS packages in the scripts folder
     # instead of directly as IPy module.
-    scripts_path = compas_rhino._get_scripts_path(version)
+    scripts_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
-    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+    ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
 
     # Filter the provided list of packages
     # If no packages are provided
@@ -149,8 +149,8 @@ def uninstall(version=None, packages=None):
 
 
 def _filter_installed_packages(version, packages):
-    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
-    scripts_path = compas_rhino._get_scripts_path(version)
+    ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
+    scripts_path = compas_rhino._get_rhino_scripts_path(version)
 
     compas_bootstrapper = compas_rhino._get_bootstrapper_path(scripts_path)
     bootstrapper_data = compas_rhino._get_bootstrapper_data(compas_bootstrapper)

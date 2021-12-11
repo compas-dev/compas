@@ -36,7 +36,7 @@ def uninstall_plugin(plugin, version=None):
     """
     version = compas_rhino._check_rhino_version(version)
 
-    python_plugins_path = compas_rhino._get_python_plugins_path(version)
+    python_plugins_path = compas_rhino._get_rhino_pythonplugins_path(version)
     plugin_name = plugin.split('{')[0]
 
     symlinks = []

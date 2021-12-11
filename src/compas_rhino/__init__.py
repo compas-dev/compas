@@ -136,7 +136,7 @@ def _try_remove_bootstrapper(path):
 # =============================================================================
 
 
-def _get_app_folder(version):
+def _get_rhino_application_folder(version):
     version = _check_rhino_version(version)
     version = version.split('.')[0]   # take the major only
 
@@ -165,7 +165,7 @@ def _get_app_folder(version):
 # =============================================================================
 
 
-def _get_appdata_folder():
+def _get_rhino_appdata_folder():
     if compas.WINDOWS:
         app = os.path.join(os.getenv('APPDATA'), 'McNeel', 'Rhinoceros')
 
@@ -186,8 +186,8 @@ def _get_appdata_folder():
 # =============================================================================
 
 
-def _get_scripts_path(version):
-    appdata = _get_appdata_folder()
+def _get_rhino_scripts_path(version):
+    appdata = _get_rhino_appdata_folder()
     version = _check_rhino_version(version)
     scripts_path = os.path.join(appdata, '{}'.format(version), 'scripts')
 
@@ -202,8 +202,8 @@ def _get_scripts_path(version):
 # =============================================================================
 
 
-def _get_managedplugins_path(version):
-    app = _get_app_folder(version)
+def _get_rhino_managedplugins_path(version):
+    app = _get_rhino_application_folder(version)
 
     if compas.WINDOWS:
         managedplugins_path = os.path.join(app, 'Plug-ins')
@@ -222,8 +222,8 @@ def _get_managedplugins_path(version):
 # =============================================================================
 
 
-def _get_plugins_path(version):
-    appdata = _get_appdata_folder()
+def _get_rhino_plugins_path(version):
+    appdata = _get_rhino_appdata_folder()
     version = _check_rhino_version(version)
 
     if compas.WINDOWS:
@@ -246,9 +246,9 @@ def _get_plugins_path(version):
 # =============================================================================
 
 
-def _get_python_plugins_path(version):
+def _get_rhino_pythonplugins_path(version):
     version = _check_rhino_version(version)
-    return os.path.join(_get_plugins_path(version), 'PythonPlugins')
+    return os.path.join(_get_rhino_plugins_path(version), 'PythonPlugins')
 
 
 # =============================================================================
@@ -256,9 +256,9 @@ def _get_python_plugins_path(version):
 # =============================================================================
 
 
-def _get_ironpython_plugin_path(version):
+def _get_rhino_ironpythonplugin_path(version):
     version = _check_rhino_version(version)
-    return os.path.join(_get_plugins_path(version), 'IronPython ({})'.format(IRONPYTHON_PLUGIN_GUID))
+    return os.path.join(_get_rhino_plugins_path(version), 'IronPython ({})'.format(IRONPYTHON_PLUGIN_GUID))
 
 
 # =============================================================================
@@ -266,14 +266,14 @@ def _get_ironpython_plugin_path(version):
 # =============================================================================
 
 
-def _get_grasshopper_plugin_path(version):
+def _get_rhino_grasshopperplugin_path(version):
     version = _check_rhino_version(version)
 
     if compas.WINDOWS:
         gh_path = os.path.join(os.getenv('APPDATA'), 'Grasshopper')
 
     elif compas.OSX:
-        gh_path = os.path.join(_get_plugins_path(version), 'Grasshopper ({})'.format(GRASSHOPPER_PLUGIN_GUID))
+        gh_path = os.path.join(_get_rhino_plugins_path(version), 'Grasshopper ({})'.format(GRASSHOPPER_PLUGIN_GUID))
 
     else:
         raise Exception('Unsupported platform')
@@ -289,14 +289,14 @@ def _get_grasshopper_plugin_path(version):
 # =============================================================================
 
 
-def _get_ironpython_lib_path(version):
+def _get_rhino_ironpython_lib_path(version):
     version = _check_rhino_version(version)
 
     if compas.WINDOWS:
-        ipy_lib_path = _get_ironpython_lib_path_win32(version)
+        ipy_lib_path = _get_rhino_ironpython_lib_path_win32(version)
 
     elif compas.OSX:
-        ipy_lib_path = _get_ironpython_lib_path_mac(version)
+        ipy_lib_path = _get_rhino_ironpython_lib_path_mac(version)
 
     if not os.path.exists(ipy_lib_path):
         ipy_lib_path = None
@@ -305,12 +305,12 @@ def _get_ironpython_lib_path(version):
     return ipy_lib_path
 
 
-def _get_ironpython_lib_path_win32(version):
-    return os.path.join(_get_ironpython_plugin_path(version), 'settings', 'lib')
+def _get_rhino_ironpython_lib_path_win32(version):
+    return os.path.join(_get_rhino_ironpythonplugin_path(version), 'settings', 'lib')
 
 
 # For 5.0 this is correct
 # For +6 we should switch to the same path as on windows
 # which is not in the managed plugins but in the appdata plugins
-def _get_ironpython_lib_path_mac(version):
-    return os.path.join(_get_managedplugins_path(version), 'RhinoDLR_Python.rhp', 'Lib')
+def _get_rhino_ironpython_lib_path_mac(version):
+    return os.path.join(_get_rhino_managedplugins_path(version), 'RhinoDLR_Python.rhp', 'Lib')
