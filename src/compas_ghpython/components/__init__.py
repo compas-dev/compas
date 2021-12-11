@@ -104,10 +104,15 @@ def uninstall_userobjects(userobjects):
     version = get_version_from_args()
     dstdir = get_grasshopper_userobjects_path(version)
 
+    userobjects = []
+    for name in os.listdir(dstdir):        
+        if name.lower().startswith('compas'):
+            userobjects.append(name)
+
     symlinks = []
-    for src in userobjects:
-        dst = os.path.join(dstdir, os.path.basename(src))
-        symlinks.append(dst)
+    for obj in userobjects:
+        path = os.path.join(dstdir, os.path.basename(obj))
+        symlinks.append(path)
 
     removed = remove_symlinks(symlinks)
 
