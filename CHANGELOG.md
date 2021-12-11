@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_ghpython.fetch_ghio_lib` to simplify the loading of Grasshopper's IO library for extension developers.
+
 ### Changed
 
 ### Removed
@@ -52,9 +54,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.install_plugin` to remove broken symlinks.
 * Changed default Rhino version for installation to `7.0`.
 * Fixed bug in `compas_ghpython` related to importing `Grasshopper` prematurely.
-* Changed `compas.artists.Artist.ITAM_ARTIST` to context-based dict.
+* Changed `compas.artists.Artist.ITEM_ARTIST` to context-based dict.
 * Changed `compas_rhino.__init__.py` functions.
 * Changed `compas_ghpython.__init__.py` functions.
+* Renamed `compas_ghpython.get_grasshopper_plugin_path` to `compas_ghpython.get_grasshopper_managedplugin_path`.
 
 ### Removed
 

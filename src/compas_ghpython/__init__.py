@@ -12,7 +12,11 @@ compas_ghpython
     compas_ghpython.utilities
 
 """
+import io
 import os
+import urllib
+import zipfile
+
 import compas
 import compas_rhino
 
@@ -24,7 +28,8 @@ if compas.is_rhino():
 __all__ = [
     'get_grasshopper_managedplugin_path',
     'get_grasshopper_library_path',
-    'get_grasshopper_userobjects_path'
+    'get_grasshopper_userobjects_path',
+    'fetch_ghio_lib'
 ]
 __all_plugins__ = [
     'compas_ghpython.install',
@@ -82,3 +87,22 @@ def get_grasshopper_library_path(version):
 def get_grasshopper_userobjects_path(version):
     """Retrieve Grasshopper's user objects path"""
     return _get_grasshopper_special_folder(version, 'UserObjects')
+
+# =============================================================================
+# GH_IO Dll
+# =============================================================================
+
+def fetch_ghio_lib(target_folder='temp'):
+    """Fetch the GH_IO.dll library from the NuGet packaging system."""
+    ghio_dll = 'GH_IO.dll'
+    filename = 'lib/net48/' + ghio_dll
+
+    response = urllib.request.urlopen('https://www.nuget.org/api/v2/package/Grasshopper/')
+    dst_file = os.path.join(target_folder, ghio_dll)
+    zip_file = zipfile.ZipFile(io.BytesIO(response.read()))
+
+    with zip_file.open(filename, 'r') as zipped_dll:
+        with open(dst_file, 'wb') as fp:
+            fp.write(zipped_dll.read())
+
+    return dst_file
