@@ -267,14 +267,16 @@ def _get_ironpython_plugin_path(version):
 
 
 def _get_grasshopper_plugin_path(version):
-    appdata = _get_appdata_folder()
     version = _check_rhino_version(version)
 
     if compas.WINDOWS:
-        gh_path = os.path.join(appdata, 'Grasshopper')
+        gh_path = os.path.join(os.getenv('APPDATA'), 'Grasshopper')
 
     elif compas.OSX:
         gh_path = os.path.join(_get_plugins_path(version), 'Grasshopper ({})'.format(GRASSHOPPER_PLUGIN_GUID))
+
+    else:
+        raise Exception('Unsupported platform')
 
     if not os.path.exists(gh_path):
         raise Exception("The grasshopper folder does not exist in this location: {}".format(gh_path))
