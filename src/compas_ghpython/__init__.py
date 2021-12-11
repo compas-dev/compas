@@ -88,9 +88,11 @@ def get_grasshopper_userobjects_path(version):
     """Retrieve Grasshopper's user objects path"""
     return _get_grasshopper_special_folder(version, 'UserObjects')
 
+
 # =============================================================================
 # GH_IO Dll
 # =============================================================================
+
 
 def fetch_ghio_lib(target_folder='temp'):
     """Fetch the GH_IO.dll library from the NuGet packaging system."""
