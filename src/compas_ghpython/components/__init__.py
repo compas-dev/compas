@@ -105,7 +105,7 @@ def uninstall_userobjects(userobjects):
     dstdir = get_grasshopper_userobjects_path(version)
 
     userobjects = []
-    for name in os.listdir(dstdir):        
+    for name in os.listdir(dstdir):
         if name.lower().startswith('compas'):
             userobjects.append(name)
 
