@@ -189,7 +189,7 @@ def prepare_changelog(ctx):
 
 
 @task(help={
-      'gh_io_folder': 'Folder where GH_IO.dll is located. Defaults to the Rhino 6.0 installation folder (platform-specific).',
+      'gh_io_folder': 'Folder where GH_IO.dll is located. If not specified, it will try to download from NuGet.',
       'ironpython': 'Command for running the IronPython executable. Defaults to `ipy`.'})
 def build_ghuser_components(ctx, gh_io_folder=None, ironpython=None):
     """Build Grasshopper user objects from source"""
@@ -199,9 +199,11 @@ def build_ghuser_components(ctx, gh_io_folder=None, ironpython=None):
             source_dir = os.path.abspath('src/compas_ghpython/components')
             target_dir = os.path.join(source_dir, 'ghuser')
             ctx.run('git clone https://github.com/compas-dev/compas-actions.ghpython_components.git {}'.format(action_dir))
+
             if not gh_io_folder:
+                gh_io_folder = 'temp'
                 import compas_ghpython
-                gh_io_folder = compas_ghpython.get_grasshopper_plugin_path('6.0')
+                compas_ghpython.fetch_ghio_lib(gh_io_folder)
 
             if not ironpython:
                 ironpython = 'ipy'
