@@ -60,7 +60,7 @@ class NetworkArtist(Artist):
     default_edgewidth = 1.0
 
     def __init__(self, network, **kwargs):
-        super(NetworkArtist, self).__init__(**kwargs)
+        super(NetworkArtist, self).__init__()
 
         self._network = None
         self._nodes = None
@@ -133,7 +133,7 @@ class NetworkArtist(Artist):
     @property
     def node_size(self):
         if not self._node_size:
-            self._node_size = {node: self.default_nodesize for node in self.network.vertices()}
+            self._node_size = {node: self.default_nodesize for node in self.network.nodes()}
         return self._node_size
 
     @node_size.setter
@@ -141,7 +141,7 @@ class NetworkArtist(Artist):
         if isinstance(nodesize, dict):
             self._node_size = nodesize
         elif isinstance(nodesize, (int, float)):
-            self._node_size = {node: nodesize for node in self.network.vertices()}
+            self._node_size = {node: nodesize for node in self.network.nodes()}
 
     @property
     def edge_color(self):
