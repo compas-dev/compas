@@ -1,3 +1,4 @@
+.. _tutorial_plotters:
 **************
 Plotters
 **************

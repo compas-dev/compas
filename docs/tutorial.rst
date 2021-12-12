@@ -14,4 +14,5 @@ Tutorial
     tutorial/numericaldata
     tutorial/rpc
     tutorial/geomaps
+    tutorial/visualization
     tutorial/plotters
