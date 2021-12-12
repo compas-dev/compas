@@ -9,7 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_plotters.artists.NetworkArtist.draw_nodelabels`.
+* Added `compas_plotters.artists.NetworkArtist.draw_edgelabels`.
+* Added `compas_plotters.Plotter.fontsize`.
+
 ### Changed
+
+* Fixed bug in inheritance of `compas_plotters.artists.NetworkArtist`.
+* Changed `compas_plotters.artists.MeshArtist.draw_edges` to ignore edge direction for assignment of edge colors and widths.
+* Changed `compas_plotters.artists.MeshArtist.draw_vertexlabels` to use `compas_plotters.Plotter.fontsize`.
+* Changed `compas_plotters.artists.MeshArtist.draw_edgelabels` to use `compas_plotters.Plotter.fontsize`.
+* Changed `compas_plotters.artists.MeshArtist.draw_facelabels` to use `compas_plotters.Plotter.fontsize`.
 
 ### Removed
 

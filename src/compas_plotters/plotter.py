@@ -33,6 +33,8 @@ class Plotter(metaclass=Singleton):
 
     """
 
+    fontsize = 12
+
     def __init__(self,
                  view: Tuple[Tuple[float, float], Tuple[float, float]] = ((-8.0, 16.0), (-5.0, 10.0)),
                  figsize: Tuple[float, float] = (8.0, 5.0),

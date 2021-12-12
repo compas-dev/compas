@@ -9,12 +9,14 @@ from matplotlib.collections import LineCollection, PatchCollection
 from matplotlib.patches import Circle
 
 from compas.datastructures import Network
+from compas.artists import NetworkArtist
+from compas.utilities.colors import is_color_light
 from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class NetworkArtist(PlotterArtist):
+class NetworkArtist(PlotterArtist, NetworkArtist):
     """Artist for COMPAS network data structures.
 
     Parameters
@@ -57,18 +59,19 @@ class NetworkArtist(PlotterArtist):
                  network: Network,
                  nodes: Optional[List[int]] = None,
                  edges: Optional[List[int]] = None,
-                 nodecolor: Color = (1, 1, 1),
-                 edgecolor: Color = (0, 0, 0),
+                 nodecolor: Color = (1.0, 1.0, 1.0),
+                 edgecolor: Color = (0.0, 0.0, 0.0),
                  edgewidth: float = 1.0,
                  show_nodes: bool = True,
                  show_edges: bool = True,
                  nodesize: int = 5,
                  sizepolicy: Literal['relative', 'absolute'] = 'relative',
-                 zorder: int = 2000,
+                 zorder: int = 1000,
                  **kwargs):
 
         super().__init__(network=network, **kwargs)
 
+        self.sizepolicy = sizepolicy
         self.nodes = nodes
         self.edges = edges
         self.node_color = nodecolor
@@ -77,16 +80,15 @@ class NetworkArtist(PlotterArtist):
         self.edge_width = edgewidth
         self.show_nodes = show_nodes
         self.show_edges = show_edges
-        self.sizepolicy = sizepolicy
         self.zorder = zorder
 
     @property
     def zorder_edges(self):
-        return self.zorder
+        return self.zorder + 10
 
     @property
     def zorder_nodes(self):
-        return self.zorder + 10
+        return self.zorder + 20
 
     @property
     def item(self):
@@ -100,6 +102,22 @@ class NetworkArtist(PlotterArtist):
     @property
     def data(self) -> List[List[float]]:
         return self.network.nodes_attributes('xy')
+
+    @property
+    def node_size(self):
+        if not self._node_size:
+            factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.network.number_of_nodes()
+            size = self.default_nodesize / factor
+            self._node_size = {node: size for node in self.network.nodes()}
+        return self._node_size
+
+    @node_size.setter
+    def node_size(self, nodesize):
+        factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.network.number_of_nodes()
+        if isinstance(nodesize, dict):
+            self.node_size.update({node: size / factor for node, size in nodesize.items()})
+        elif isinstance(nodesize, (int, float)):
+            self._node_size = {node: nodesize / factor for node in self.network.nodes()}
 
     # ==============================================================================
     # clear and draw
@@ -218,3 +236,91 @@ class NetworkArtist(PlotterArtist):
         )
         self.plotter.axes.add_collection(collection)
         self._edgecollection = collection
+
+    def draw_nodelabels(self, text: Optional[Dict[int, str]] = None) -> None:
+        """Draw a selection of node labels.
+
+        Parameters
+        ----------
+        text : dict of int to str, optional
+            A node-label map.
+            If not text dict is provided, the node identifiers are drawn.
+
+        Returns
+        -------
+        None
+        """
+        if self._nodelabelcollection:
+            for artist in self._nodelabelcollection:
+                artist.remove()
+
+        if text:
+            self.node_text = text
+
+        labels = []
+        for node in self.nodes:
+            bgcolor = self.node_color.get(node, self.default_nodecolor)
+            color = (0, 0, 0) if is_color_light(bgcolor) else (1, 1, 1)
+
+            text = self.node_text.get(node, None)
+            print(text)
+            if text is None:
+                continue
+
+            x, y = self.node_xyz[node][:2]
+            artist = self.plotter.axes.text(
+                x, y,
+                f'{text}',
+                fontsize=self.plotter.fontsize,
+                family='monospace',
+                ha='center', va='center',
+                zorder=10000,
+                color=color
+            )
+            labels.append(artist)
+
+        self._nodelabelcollection = labels
+
+    def draw_edgelabels(self, text: Optional[Dict[int, str]] = None) -> None:
+        """Draw a selection of edge labels.
+
+        Parameters
+        ----------
+        text : dict of tuple of int to str
+            An edge-label map.
+
+        Returns
+        -------
+        None
+        """
+        if self._edgelabelcollection:
+            for artist in self._edgelabelcollection:
+                artist.remove()
+
+        if text:
+            self.edge_text = text
+
+        labels = []
+        for edge in self.edges:
+            u, v = edge
+            text = self.edge_text.get(edge, self.edge_text.get((v, u), None))
+            if text is None:
+                continue
+
+            x0, y0 = self.node_xyz[edge[0]][:2]
+            x1, y1 = self.node_xyz[edge[1]][:2]
+            x = 0.5 * (x0 + x1)
+            y = 0.5 * (y0 + y1)
+
+            artist = self.plotter.axes.text(
+                x, y, f'{text}',
+                fontsize=self.plotter.fontsize,
+                family='monospace',
+                ha='center', va='center',
+                zorder=10000,
+                color=(0, 0, 0),
+                bbox=dict(boxstyle='round, pad=0.3', facecolor=(1, 1, 1), edgecolor=None, linewidth=0)
+            )
+            labels.append(artist)
+
+        self._edgelabelcollection = labels
