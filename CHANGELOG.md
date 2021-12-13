@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.artists.Artist.clear_scene`.
+* Added `compas.artists.Artist.redraw_scene`.
+
 ### Changed
 
 ### Removed
