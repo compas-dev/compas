@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_plotters.artists.NetworkArtist.draw_nodelabels`.
 * Added `compas_plotters.artists.NetworkArtist.draw_edgelabels`.
 * Added `compas_plotters.Plotter.fontsize`.
+* Added `compas_rhino.geometry.RhinoNurbsSurface`.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_parameters` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_points` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_fill` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_step` plugin.
 
 ### Changed
 

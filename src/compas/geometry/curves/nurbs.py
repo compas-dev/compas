@@ -104,7 +104,7 @@ class NurbsCurve(Curve):
     def __str__(self):
         lines = [
             'NurbsCurve',
-            '------------',
+            '----------',
             'Points: {}'.format(self.points),
             'Weights: {}'.format(self.weights),
             'Knots: {}'.format(self.knots),
