@@ -13,6 +13,7 @@ Classes
     :nosignatures:
 
     RhinoNurbsCurve
+    RhinoNurbsSurface
 
 
 Plugins
@@ -75,6 +76,7 @@ from compas_rhino.conversions import RhinoSurface
 from compas_rhino.conversions import RhinoVector
 
 from .curves import RhinoNurbsCurve
+from .surfaces import RhinoNurbsSurface
 
 
 __all__ = [
@@ -94,5 +96,6 @@ __all__ = [
     'RhinoSurface',
     'RhinoVector',
 
-    'RhinoNurbsCurve'
+    'RhinoNurbsCurve',
+    'RhinoNurbsSurface',
 ]

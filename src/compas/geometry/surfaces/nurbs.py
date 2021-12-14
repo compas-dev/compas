@@ -333,7 +333,7 @@ class NurbsSurface(Surface):
         from compas.datastructures import Mesh
 
         nv = nv or nu
-        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nv + 1), self.v_space(nv + 1))]
+        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
         faces = [[
             i * (nv + 1) + j,
             (i + 1) * (nv + 1) + j,
@@ -556,9 +556,7 @@ class NurbsSurface(Surface):
         nv : int, optional
             The size of the grid in the V direction.
         """
-        import numpy as np
-        U, V = np.meshgrid(self.u_space(nu), self.v_space(nv), indexing='ij')
-        return [self.point_at(U[i, j], V[i, j]) for i, j in product(np.arange(nu), np.arange(nv))]
+        return [self.point_at(i, j) for i, j in product(self.u_space(nu), self.v_space(nv))]
 
     def point_at(self, u, v):
         """Compute a point on the surface.

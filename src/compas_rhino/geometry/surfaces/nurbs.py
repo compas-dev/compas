@@ -12,6 +12,7 @@ from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import box_to_compas
+from compas_rhino.conversions import RhinoCurve
 
 import Rhino.Geometry
 
@@ -226,11 +227,12 @@ class RhinoNurbsSurface(NurbsSurface):
         -------
         :class:`compas.geometry.NurbsSurface`
         """
+        points = list(zip(*points))
         u_count = len(points[0])
         v_count = len(points)
         points[:] = [point_to_rhino(point) for row in points for point in row]
         surface = cls()
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(points, u_count, v_count, u_degree, v_degree)
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(points, v_count, u_count, u_degree, v_degree)
         return surface
 
     @classmethod
@@ -281,9 +283,9 @@ class RhinoNurbsSurface(NurbsSurface):
     def points(self):
         if self.rhino_surface:
             points = []
-            for i in range(self.rhino_surface.Points.CountV):
+            for i in range(self.rhino_surface.Points.CountU):
                 row = []
-                for j in range(self.rhino_surface.Points.CountU):
+                for j in range(self.rhino_surface.Points.CountV):
                     row.append(point_to_compas(self.rhino_surface.Points.GetControlPoint(i, j).Location))
                 points.append(row)
             return points
@@ -292,9 +294,9 @@ class RhinoNurbsSurface(NurbsSurface):
     def weights(self):
         if self.rhino_surface:
             weights = []
-            for i in range(self.rhino_surface.Points.CountV):
+            for i in range(self.rhino_surface.Points.CountU):
                 row = []
-                for j in range(self.rhino_surface.Points.CountU):
+                for j in range(self.rhino_surface.Points.CountV):
                     row.append(self.rhino_surface.Points.GetWeight(i, j))
                 weights.append(row)
             return weights
@@ -374,7 +376,8 @@ class RhinoNurbsSurface(NurbsSurface):
         -------
         :class:`compas.geometry.NurbsCurve`
         """
-        raise NotImplementedError
+        curve = self.rhino_surface.IsoCurve(1, u)
+        return RhinoCurve.from_geometry(curve).to_compas()
 
     def v_isocurve(self, v):
         """Compute the isoparametric curve at parameter v.
@@ -387,7 +390,8 @@ class RhinoNurbsSurface(NurbsSurface):
         -------
         :class:`compas.geometry.NurbsCurve`
         """
-        raise NotImplementedError
+        curve = self.rhino_surface.IsoCurve(0, v)
+        return RhinoCurve.from_geometry(curve).to_compas()
 
     def boundary(self):
         """Compute the boundary curves of the surface.
@@ -440,8 +444,9 @@ class RhinoNurbsSurface(NurbsSurface):
         -------
         :class:`compas.geometry.Frame`
         """
-        plane = self.rhino_surface.FrameAt(u, v)
-        return plane_to_compas_frame(plane)
+        result, plane = self.rhino_surface.FrameAt(u, v)
+        if result:
+            return plane_to_compas_frame(plane)
 
     def closest_point(self, point, return_parameters=False):
         """Compute the closest point on the curve to a given point.
