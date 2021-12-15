@@ -15,11 +15,11 @@ import compas.plugins
 __all__ = [
     'install',
     'installable_rhino_packages',
-    'after_rhino_install',
-    'INSTALLED_VERSION'
+    'after_rhino_install'
 ]
 
 INSTALLED_VERSION = None
+
 
 def install(version=None, packages=None, clean=False):
     """Install COMPAS for Rhino.
