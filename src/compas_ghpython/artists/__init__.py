@@ -64,7 +64,6 @@ Base Classes
 from __future__ import absolute_import
 
 from compas.plugins import plugin
-from compas.plugins import PluginValidator
 from compas.artists import Artist
 from compas.artists import ShapeArtist
 
@@ -127,52 +126,27 @@ VolMeshArtist.default_facecolor = (255, 255, 255)
 VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
-def verify_gh_context():
-    try:
-        import Rhino
-        import scriptcontext as sc
-
-        return not isinstance(sc.doc, Rhino.RhinoDoc)
-    except:            # noqa: E722
-        return False
-
-
-artists_registered = False
-
-
-@plugin(category='factories', pluggable_name='new_artist', requires=['ghpythonlib', verify_gh_context])
-def new_artist_gh(cls, *args, **kwargs):
-    # "lazy registration" seems necessary to avoid item-artist pairs to be overwritten unintentionally
-    global artists_registered
-
-    if not artists_registered:
-        GHArtist.register(Box, BoxArtist)
-        GHArtist.register(Capsule, CapsuleArtist)
-        GHArtist.register(Circle, CircleArtist)
-        GHArtist.register(Cone, ConeArtist)
-        GHArtist.register(Cylinder, CylinderArtist)
-        GHArtist.register(Frame, FrameArtist)
-        GHArtist.register(Line, LineArtist)
-        GHArtist.register(Mesh, MeshArtist)
-        GHArtist.register(Network, NetworkArtist)
-        GHArtist.register(Point, PointArtist)
-        GHArtist.register(Polygon, PolygonArtist)
-        GHArtist.register(Polyhedron, PolyhedronArtist)
-        GHArtist.register(Polyline, PolylineArtist)
-        GHArtist.register(RobotModel, RobotModelArtist)
-        GHArtist.register(Sphere, SphereArtist)
-        GHArtist.register(Torus, TorusArtist)
-        GHArtist.register(Vector, VectorArtist)
-        GHArtist.register(VolMesh, VolMeshArtist)
-        artists_registered = True
-
-    data = args[0]
-
-    cls = Artist.get_artist_cls(data, **kwargs)
-
-    PluginValidator.ensure_implementations(cls)
-
-    return super(Artist, cls).__new__(cls)
+@plugin(category='factories', requires=['Rhino'])
+def register_artists():
+    Artist.register(Box, BoxArtist, context='Grasshopper')
+    Artist.register(Capsule, CapsuleArtist, context='Grasshopper')
+    Artist.register(Circle, CircleArtist, context='Grasshopper')
+    Artist.register(Cone, ConeArtist, context='Grasshopper')
+    Artist.register(Cylinder, CylinderArtist, context='Grasshopper')
+    Artist.register(Frame, FrameArtist, context='Grasshopper')
+    Artist.register(Line, LineArtist, context='Grasshopper')
+    Artist.register(Mesh, MeshArtist, context='Grasshopper')
+    Artist.register(Network, NetworkArtist, context='Grasshopper')
+    Artist.register(Point, PointArtist, context='Grasshopper')
+    Artist.register(Polygon, PolygonArtist, context='Grasshopper')
+    Artist.register(Polyhedron, PolyhedronArtist, context='Grasshopper')
+    Artist.register(Polyline, PolylineArtist, context='Grasshopper')
+    Artist.register(RobotModel, RobotModelArtist, context='Grasshopper')
+    Artist.register(Sphere, SphereArtist, context='Grasshopper')
+    Artist.register(Torus, TorusArtist, context='Grasshopper')
+    Artist.register(Vector, VectorArtist, context='Grasshopper')
+    Artist.register(VolMesh, VolMeshArtist, context='Grasshopper')
+    print('GH Artists registered.')
 
 
 __all__ = [

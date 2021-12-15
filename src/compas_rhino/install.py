@@ -28,7 +28,7 @@ def install(version=None, packages=None, clean=False):
     ----------
     version : {'5.0', '6.0', '7.0', '8.0'}, optional
         The version number of Rhino.
-        Default is ``'6.0'``.
+        Default is ``'7.0'``.
     packages : list of str, optional
         List of packages to install or None to use default package list.
         Default is the result of ``installable_rhino_packages``,
@@ -42,21 +42,21 @@ def install(version=None, packages=None, clean=False):
     .. code-block:: python
 
         import compas_rhino.install
-        compas_rhino.install.install('6.0')
+        compas_rhino.install.install()
 
     .. code-block:: bash
 
-        python -m compas_rhino.install -v 6.0
+        python -m compas_rhino.install
 
     """
     version = compas_rhino._check_rhino_version(version)
 
     # We install COMPAS packages in the scripts folder
     # instead of directly as IPy module.
-    scripts_path = compas_rhino._get_scripts_path(version)
+    scripts_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
-    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+    ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
 
     # Filter the provided list of packages
     # If no packages are provided

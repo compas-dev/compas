@@ -126,7 +126,7 @@ def install_plugin(plugin, version=None):
 
     plugin_fullname = "{}{}".format(__plugin__.title, __plugin__.id)
 
-    python_plugins_path = compas_rhino._get_python_plugins_path(version)
+    python_plugins_path = compas_rhino._get_rhino_pythonplugins_path(version)
 
     if not os.path.exists(python_plugins_path):
         os.mkdir(python_plugins_path)

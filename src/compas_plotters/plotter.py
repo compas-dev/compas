@@ -33,6 +33,8 @@ class Plotter(metaclass=Singleton):
 
     """
 
+    fontsize = 12
+
     def __init__(self,
                  view: Tuple[Tuple[float, float], Tuple[float, float]] = ((-8.0, 16.0), (-5.0, 10.0)),
                  figsize: Tuple[float, float] = (8.0, 5.0),
@@ -264,9 +266,9 @@ class Plotter(metaclass=Singleton):
         if not artist:
             if self.zstack == 'natural':
                 zorder = 1000 + len(self._artists) * 100
-                artist = PlotterArtist(item, zorder=zorder, **kwargs)
+                artist = PlotterArtist(item, zorder=zorder, context='Plotter', **kwargs)
             else:
-                artist = PlotterArtist(item, **kwargs)
+                artist = PlotterArtist(item, context='Plotter', **kwargs)
         artist.draw()
         self._artists.append(artist)
         return artist
@@ -283,7 +285,7 @@ class Plotter(metaclass=Singleton):
                artist_type: PlotterArtist,
                **kwargs) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure using a specific artist type."""
-        artist = PlotterArtist(item, artist_type=artist_type, **kwargs)
+        artist = PlotterArtist(item, artist_type=artist_type, context='Plotter', **kwargs)
         artist.draw()
         self._artists.append(artist)
         return artist

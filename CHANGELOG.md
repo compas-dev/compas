@@ -9,9 +9,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_plotters.artists.NetworkArtist.draw_nodelabels`.
+* Added `compas_plotters.artists.NetworkArtist.draw_edgelabels`.
+* Added `compas_plotters.Plotter.fontsize`.
+* Added `INSTALLED_VERSION` variable to `compas_rhino.install` to interally inform rhino version context post-installation steps.
+
+### Changed
+
+* Fixed bug in inheritance of `compas_plotters.artists.NetworkArtist`.
+* Changed `compas_plotters.artists.MeshArtist.draw_edges` to ignore edge direction for assignment of edge colors and widths.
+* Changed `compas_plotters.artists.MeshArtist.draw_vertexlabels` to use `compas_plotters.Plotter.fontsize`.
+* Changed `compas_plotters.artists.MeshArtist.draw_edgelabels` to use `compas_plotters.Plotter.fontsize`.
+* Changed `compas_plotters.artists.MeshArtist.draw_facelabels` to use `compas_plotters.Plotter.fontsize`.
+
+### Removed
+
+
+## [1.13.2] 2021-12-11
+
+### Added
+
+* Added `compas_ghpython.fetch_ghio_lib` to simplify the loading of Grasshopper's IO library for extension developers.
+
+### Changed
+
+### Removed
+
+
+## [1.13.1] 2021-12-11
+
+### Added
+
+### Changed
+
+* Fixed bug in `Grasshopper` plugin path on Windows.
+* Fixed bug in `Grasshopper` `UserObjects` uninstall.
+
+### Removed
+
+
+## [1.13.0] 2021-12-10
+
+### Added
+
 * Added `compas_rhino.DEFAULT_VERSION`.
 * Added `clean` option to `compas_rhino.install` to remove existing symlinks if they cannot be imported from the current environment.
-* Added `INSTALLED_VERSION` variable to `compas_rhino.install` to interally inform rhino version context post-installation steps.
+* Added basic implementation of `compas.datastructures.Assembly`.
+* Added `compas.is_grasshopper`.
+* Added `compas.GH`.
+* Added `compas.artists.Artist.CONTEXT`.
+* Added `compas.artists.Artist.AVAILABLE_CONTEXTS`.
+* Added `compas.artists.artist.register_artists` pluggable.
 
 ### Changed
 
@@ -20,14 +68,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve`.
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_interpolation`.
 * Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_step`.
-
 * Changed `compas_rhino.install` to remove broken symlinks.
 * Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
 * Changed `compas_rhino.uninstall` to remove broken symlinks.
 * Changed `compas_rhino.install_plugin` to remove broken symlinks.
 * Changed default Rhino version for installation to `7.0`.
+* Fixed bug in `compas_ghpython` related to importing `Grasshopper` prematurely.
+* Changed `compas.artists.Artist.ITEM_ARTIST` to context-based dict.
+* Changed `compas_rhino.__init__.py` functions.
+* Changed `compas_ghpython.__init__.py` functions.
+* Renamed `compas_ghpython.get_grasshopper_plugin_path` to `compas_ghpython.get_grasshopper_managedplugin_path`.
 
 ### Removed
+
+* Removed `compas.artists.artist.new_artist` pluggable.
 
 
 ## [1.12.2] 2021-11-30
@@ -242,6 +296,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoCylinder`.
 * Added `compas_rhino.geometry.RhinoPolyline`.
 * Added `compas_rhino.geometry.RhinoSphere`.
+* Added basic implementation of `compas.datastructures.Assembly`.
 * Added `meshes` method to artists of `compas.robots.RobotModel`.
 * Added `FrameArtist` class to `compas_blender`.
 

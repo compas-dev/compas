@@ -37,7 +37,8 @@ __all__ = [
     'is_mono',
     'is_ironpython',
     'is_rhino',
-    'is_blender'
+    'is_blender',
+    'is_grasshopper'
 ]
 
 
@@ -100,8 +101,16 @@ def is_rhino():
         import Rhino  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
+
+
+def is_grasshopper():
+    try:
+        import Rhino
+        import scriptcontext
+    except ImportError:
+        return False
+    return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
 
 
 def is_blender():
@@ -109,8 +118,7 @@ def is_blender():
         import bpy  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
 
 
 if is_windows():
