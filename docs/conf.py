@@ -14,8 +14,6 @@ import m2r2
 import sphinx_compas_theme
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../src'))
-
 # patches
 
 current_m2r2_setup = m2r2.setup
@@ -38,7 +36,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "1.8.1"
+release = "1.13.2"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -331,7 +329,9 @@ def linkcode_resolve(domain, info):
 
 # extlinks
 
-extlinks = {}
+extlinks = {
+    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s")
+}
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -350,6 +350,6 @@ html_last_updated_fmt = ""
 html_copy_source = False
 html_show_sourcelink = False
 html_permalinks = False
-html_add_permalinks = ""
+html_permalinks_icon = ""
 html_experimental_html5_writer = True
 html_compact_lists = True

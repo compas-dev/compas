@@ -12,40 +12,66 @@ compas_ghpython
     compas_ghpython.utilities
 
 """
+import io
 import os
+import urllib
+import zipfile
+
 import compas
 import compas_rhino
 
-# TODO: I believe this should be removed, as it pulls all utilities funcs
-# into first-level instead of the usual second-level namespace
-if compas.RHINO:
+__version__ = '1.13.2'
+
+if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
 
+__all__ = [
+    'get_grasshopper_managedplugin_path',
+    'get_grasshopper_library_path',
+    'get_grasshopper_userobjects_path',
+    'fetch_ghio_lib'
+]
+__all_plugins__ = [
+    'compas_ghpython.install',
+    'compas_ghpython.uninstall',
+    'compas_ghpython.artists',
+]
 
-__version__ = '1.8.1'
+
+# =============================================================================
+# General Helpers
+# =============================================================================
 
 
-def get_grasshopper_plugin_path(version):
+def _get_grasshopper_special_folder(version, folder_name):
+    grasshopper = compas_rhino._get_rhino_grasshopperplugin_path(version)
+    return os.path.join(grasshopper, folder_name)
+
+
+# =============================================================================
+# Managed Plugin
+# =============================================================================
+
+
+def get_grasshopper_managedplugin_path(version):
     version = compas_rhino._check_rhino_version(version)
+    managedplugins = compas_rhino._get_rhino_managedplugins_path(version)
 
     if compas.WINDOWS:
-        version = version.split('.')[0]   # take the major only
-        grasshopper_plugin_path = os.path.join(os.getenv('ProgramFiles'), 'Rhino {}'.format(version), 'Plug-ins', 'Grasshopper')
+        gh_managedplugin_path = os.path.join(managedplugins, 'Grasshopper')
+
     elif compas.OSX:
-        lib_paths = {
-            '6.0': ['/', 'Applications', 'Rhinoceros.app'],
-            '7.0': ['/', 'Applications', 'Rhino 7.app', ]
-        }
+        gh_managedplugin_path = os.path.join(managedplugins, 'GrasshopperPlugin.rhp')
 
-        if version not in lib_paths:
-            raise Exception('Unsupported Rhino version')
+    if not os.path.exists(gh_managedplugin_path):
+        raise Exception("The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path))
 
-        grasshopper_plugin_path = os.path.join(*lib_paths.get(version) +
-                                               ['Contents', 'Frameworks', 'RhCore.framework', 'Versions', 'A',
-                                                'Resources', 'ManagedPlugIns', 'GrasshopperPlugin.rhp'])
-    else:
-        raise Exception('Unsupported platform')
-    return grasshopper_plugin_path
+    return gh_managedplugin_path
+
+
+# =============================================================================
+# GH Plugin Libraries path
+# =============================================================================
 
 
 def get_grasshopper_library_path(version):
@@ -53,21 +79,32 @@ def get_grasshopper_library_path(version):
     return _get_grasshopper_special_folder(version, 'Libraries')
 
 
+# =============================================================================
+# GH Plugin UserObjects path
+# =============================================================================
+
+
 def get_grasshopper_userobjects_path(version):
     """Retrieve Grasshopper's user objects path"""
     return _get_grasshopper_special_folder(version, 'UserObjects')
 
 
-def _get_grasshopper_special_folder(version, folder_name):
-    if compas.WINDOWS:
-        grasshopper_library_path = os.path.join(os.getenv('APPDATA'), 'Grasshopper', folder_name)
-    elif compas.OSX:
-        grasshopper_library_path = os.path.join(os.getenv('HOME'), 'Library', 'Application Support', 'McNeel', 'Rhinoceros', '{}'.format(version),
-                                                'Plug-ins', 'Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)', folder_name)
-    else:
-        raise Exception('Unsupported platform')
-    return grasshopper_library_path
+# =============================================================================
+# GH_IO Dll
+# =============================================================================
 
 
-__all_plugins__ = ['compas_ghpython.install', 'compas_ghpython.uninstall']
-__all__ = [name for name in dir() if not name.startswith('_')]
+def fetch_ghio_lib(target_folder='temp'):
+    """Fetch the GH_IO.dll library from the NuGet packaging system."""
+    ghio_dll = 'GH_IO.dll'
+    filename = 'lib/net48/' + ghio_dll
+
+    response = urllib.request.urlopen('https://www.nuget.org/api/v2/package/Grasshopper/')
+    dst_file = os.path.join(target_folder, ghio_dll)
+    zip_file = zipfile.ZipFile(io.BytesIO(response.read()))
+
+    with zip_file.open(filename, 'r') as zipped_dll:
+        with open(dst_file, 'wb') as fp:
+            fp.write(zipped_dll.read())
+
+    return dst_file

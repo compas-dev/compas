@@ -2,24 +2,25 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from functools import reduce
+from operator import mul
+
 import compas_rhino
+
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-from compas_rhino.objects._modify import mesh_update_attributes
-from compas_rhino.objects._modify import mesh_update_vertex_attributes
-from compas_rhino.objects._modify import mesh_update_face_attributes
-from compas_rhino.objects._modify import mesh_update_edge_attributes
-from compas_rhino.objects._modify import mesh_move_vertex
-from compas_rhino.objects._modify import mesh_move_vertices
-from compas_rhino.objects._modify import mesh_move_face
+from ._modify import mesh_update_attributes
+from ._modify import mesh_update_vertex_attributes
+from ._modify import mesh_update_face_attributes
+from ._modify import mesh_update_edge_attributes
+from ._modify import mesh_move_vertex
+from ._modify import mesh_move_vertices
+from ._modify import mesh_move_face
 
-from compas_rhino.objects._object import BaseObject
-
-
-__all__ = ['VolMeshObject']
+from ._object import BaseObject
 
 
 class VolMeshObject(BaseObject):
@@ -149,20 +150,26 @@ class VolMeshObject(BaseObject):
     def vertex_xyz(self):
         """dict : The view coordinates of the volmesh object."""
         origin = Point(0, 0, 0)
-        if self.anchor is not None:
-            xyz = self.volmesh.vertex_attributes(self.anchor, 'xyz')
-            point = Point(* xyz)
-            T1 = Translation.from_vector(origin - point)
+        stack = []
+        if self.scale != 1.0:
             S = Scale.from_factors([self.scale] * 3)
+            stack.append(S)
+        if self.rotation != [0, 0, 0]:
             R = Rotation.from_euler_angles(self.rotation)
+            stack.append(R)
+        if self.location != origin:
+            if self.anchor is not None:
+                xyz = self.volmesh.vertex_attributes(self.anchor, 'xyz')
+                point = Point(* xyz)
+                T1 = Translation.from_vector(origin - point)
+                stack.insert(0, T1)
             T2 = Translation.from_vector(self.location)
-            X = T2 * R * S * T1
+            stack.append(T2)
+        if stack:
+            X = reduce(mul, stack[::-1])
+            volmesh = self.volmesh.transformed(X)
         else:
-            S = Scale.from_factors([self.scale] * 3)
-            R = Rotation.from_euler_angles(self.rotation)
-            T = Translation.from_vector(self.location)
-            X = T * R * S
-        volmesh = self.volmesh.transformed(X)
+            volmesh = self.volmesh
         vertex_xyz = {vertex: volmesh.vertex_attributes(vertex, 'xyz') for vertex in volmesh.vertices()}
         return vertex_xyz
 

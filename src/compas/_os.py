@@ -7,6 +7,7 @@ import os
 import shutil
 import sys
 import tempfile
+import subprocess
 
 try:
     NotADirectoryError
@@ -36,7 +37,8 @@ __all__ = [
     'is_mono',
     'is_ironpython',
     'is_rhino',
-    'is_blender'
+    'is_blender',
+    'is_grasshopper'
 ]
 
 
@@ -99,8 +101,16 @@ def is_rhino():
         import Rhino  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
+
+
+def is_grasshopper():
+    try:
+        import Rhino
+        import scriptcontext
+    except ImportError:
+        return False
+    return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
 
 
 def is_blender():
@@ -108,12 +118,10 @@ def is_blender():
         import bpy  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
 
 
 if is_windows():
-    import subprocess
     import ctypes
     import ctypes.wintypes
 
@@ -146,6 +154,9 @@ if is_windows():
     INFINITE = -1
 
 
+# seems a bit weird that this is done here, since it is only relevant for Rhino/GH
+# also, perhasps it makes more sense this is done at the top of the file
+# since it defines a few module-wide variables
 try:
     from compas_bootstrapper import PYTHON_DIRECTORY
 except:  # noqa: E722

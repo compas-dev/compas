@@ -19,6 +19,8 @@ Classes
     Mesh
     Network
     VolMesh
+    Assembly
+    Part
 
 
 Functions
@@ -108,6 +110,7 @@ Mesh
     mesh_smooth_centroid
     mesh_split_edge
     mesh_split_face
+    mesh_split_strip
     mesh_subdivide_catmullclark
     mesh_subdivide_corner
     mesh_subdivide_doosabin
@@ -170,8 +173,16 @@ VolMesh
     volmesh_transformed
 
 
+Assembly
+--------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
 """
 from __future__ import absolute_import
+
 import compas
 
 from .datastructure import Datastructure
@@ -246,6 +257,7 @@ from .mesh import (
     mesh_smooth_centroid,
     mesh_split_edge,
     mesh_split_face,
+    mesh_split_strip,
     mesh_subdivide_catmullclark,
     mesh_subdivide_corner,
     mesh_subdivide_doosabin,
@@ -280,6 +292,11 @@ from .volmesh import (
     volmesh_bounding_box,
     volmesh_transform,
     volmesh_transformed
+)
+
+from .assembly import (
+    Assembly,
+    Part
 )
 
 if not compas.IPY:
@@ -385,6 +402,7 @@ __all__ = [
     'mesh_smooth_centroid',
     'mesh_split_edge',
     'mesh_split_face',
+    'mesh_split_strip',
     'mesh_subdivide_catmullclark',
     'mesh_subdivide_corner',
     'mesh_subdivide_doosabin',
@@ -418,6 +436,9 @@ __all__ = [
     'volmesh_bounding_box',
     'volmesh_transform',
     'volmesh_transformed',
+    # Assemblies
+    'Assembly',
+    'Part',
 ]
 
 if not compas.IPY:

@@ -11,6 +11,9 @@ from System.Drawing import Color
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
 
+from compas.geometry import centroid_points
+from compas.utilities import pairwise
+
 from Rhino.Geometry import Point3d
 from Rhino.Geometry import Vector3d
 from Rhino.Geometry import Line
@@ -26,23 +29,12 @@ from Rhino.Geometry import Mesh
 from Rhino.Geometry import Vector3f
 from Rhino.Geometry import Point2f
 
+try:
+    from Rhino.Geometry import MeshNgon
+except ImportError:
+    MeshNgon = False
+
 TOL = sc.doc.ModelAbsoluteTolerance
-
-
-__all__ = [
-    'draw_frame',
-    'draw_points',
-    'draw_lines',
-    'draw_geodesics',
-    'draw_polylines',
-    'draw_faces',
-    'draw_cylinders',
-    'draw_pipes',
-    'draw_spheres',
-    'draw_mesh',
-    'draw_network',
-    'draw_circles',
-]
 
 
 def draw_frame(frame):
@@ -374,10 +366,22 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
     for a, b, c in vertices:
         mesh.Vertices.Add(a, b, c)
     for face in faces:
-        if len(face) < 4:
-            mesh.Faces.AddFace(face[0], face[1], face[2])
+        f = len(face)
+        if f < 3:
+            continue
+        if f == 3:
+            mesh.Faces.AddFace(*face)
+        elif f == 4:
+            mesh.Faces.AddFace(*face)
         else:
-            mesh.Faces.AddFace(face[0], face[1], face[2], face[3])
+            if MeshNgon:
+                centroid = centroid_points([vertices[index] for index in face])
+                c = mesh.Vertices.Add(*centroid)
+                facets = []
+                for i, j in pairwise(face + face[:1]):
+                    facets.append(mesh.Faces.AddFace(i, j, c))
+                ngon = MeshNgon.Create(face, facets)
+                mesh.Ngons.AddNgon(ngon)
 
     if vertex_normals:
         count = len(vertex_normals)
@@ -394,7 +398,7 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
     if color:
-        count = len(vertices)
+        count = len(mesh.Vertices)
         colors = CreateInstance(Color, count)
         for i in range(count):
             colors[i] = rs.coercecolor(color)

@@ -14,10 +14,7 @@ from Rhino.Geometry import Point3d
 from Rhino.Geometry import Line
 
 from compas.utilities import color_to_rgb
-from compas_rhino.conduits.base import BaseConduit
-
-
-__all__ = ['LinesConduit']
+from .base import BaseConduit
 
 
 class LinesConduit(BaseConduit):
