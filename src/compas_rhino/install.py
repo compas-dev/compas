@@ -15,8 +15,10 @@ import compas.plugins
 __all__ = [
     'install',
     'installable_rhino_packages',
-    'after_rhino_install',
+    'after_rhino_install'
 ]
+
+INSTALLED_VERSION = None
 
 
 def install(version=None, packages=None, clean=False):
@@ -201,6 +203,9 @@ def install(version=None, packages=None, clean=False):
     print('\nInstall completed.')
     if exit_code != 0:
         sys.exit(exit_code)
+
+    global INSTALLED_VERSION
+    INSTALLED_VERSION = version
 
 
 def _run_post_execution_steps(steps_generator):
