@@ -12,7 +12,7 @@ Object - Artist Pairs
 
 Visualization of COMPAS objects is handled by artists.
 Each object type is paired with a corresponding artist type through a naming convention:
-``Box`` - ``BoxArtist``, ``Mesh`` - ``MeshArtist``, ``Robot`` - ``RobotArtist``.
+``Box`` - ``BoxArtist``, ``Mesh`` - ``MeshArtist``, ``RobotModel`` - ``RobotModelArtist``.
 The individual artists are implemented for Rhino, Blender, and Grasshopper with a similar but not identical API,
 and have to be imported accordingly depending on the execution context.
 
