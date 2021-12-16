@@ -79,6 +79,10 @@ class Artist(object):
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
 
+    def __init__(self, *args, **kwargs):
+        super(Artist, self).__init__()
+        self._ids = []
+
     @staticmethod
     def build(item, **kwargs):
         """Build an artist corresponding to the item type.
@@ -106,10 +110,20 @@ class Artist(object):
 
     @staticmethod
     def clear():
+        # deprecated: use `clear_scene` instead
+        return clear()
+
+    @staticmethod
+    def clear_scene():
         return clear()
 
     @staticmethod
     def redraw():
+        # deprecated: use `redraw_scene` instead
+        return redraw()
+
+    @staticmethod
+    def redraw_scene():
         return redraw()
 
     @staticmethod
@@ -117,7 +131,7 @@ class Artist(object):
         Artist.ITEM_ARTIST[context][item_type] = artist_type
 
     @abstractmethod
-    def draw(self):
+    def draw(self, redraw_scene=False):
         raise NotImplementedError
 
     @staticmethod

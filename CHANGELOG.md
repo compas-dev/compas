@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.artists.Artist.clear_scene`.
+* Added `compas.artists.Artist.redraw_scene`.
 * Added `compas_plotters.artists.NetworkArtist.draw_nodelabels`.
 * Added `compas_plotters.artists.NetworkArtist.draw_edgelabels`.
 * Added `compas_plotters.Plotter.fontsize`.

@@ -343,6 +343,7 @@ class MeshArtist(Artist):
         raise NotImplementedError
 
     def clear(self):
+        """Clear all objects previously drawn by the artist."""
         self.clear_vertices()
         self.clear_edges()
         self.clear_faces()
