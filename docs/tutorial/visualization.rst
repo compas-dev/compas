@@ -10,7 +10,8 @@ For information about standalone 3D visualizations, please visit the documentati
 Object - Artist Pairs
 =====================
 
-Visualization of COMPAS objects is handled by artists.
+COMPAS introduces the concept of **artists** for visualization.
+An artist is a class whose primary goal is to perform the necessary conversions to visualize a COMPAS object in the viewport.
 Each object type is paired with a corresponding artist type through a naming convention:
 ``Box`` - ``BoxArtist``, ``Mesh`` - ``MeshArtist``, ``RobotModel`` - ``RobotModelArtist``.
 The individual artists are implemented for Rhino, Blender, and Grasshopper with a similar but not identical API,
