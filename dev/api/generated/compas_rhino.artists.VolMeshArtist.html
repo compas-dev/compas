@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMeshArtist.build" href="compas_rhino.artists.VolMeshArtist.build.html" />
+    <link rel="next" title="VolMeshArtist.clear" href="compas_rhino.artists.VolMeshArtist.clear.html" />
   
   
   
@@ -119,6 +119,90 @@
 </ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_cellcolor</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_edgecolor</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_facecolor</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_vertexcolor</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AVAILABLE_CONTEXTS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONTEXT</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ITEM_ARTIST</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_text</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_text</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_text</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_text</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_xyz</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">volmesh</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -126,73 +210,82 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.build.html#compas_rhino.artists.VolMeshArtist.build" title="compas_rhino.artists.VolMeshArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p>Build an artist corresponding to the item type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.build_as.html#compas_rhino.artists.VolMeshArtist.build_as" title="compas_rhino.artists.VolMeshArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a>(item, artist_type, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear.html#compas_rhino.artists.VolMeshArtist.clear" title="compas_rhino.artists.VolMeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear.html#compas_rhino.artists.VolMeshArtist.clear" title="compas_rhino.artists.VolMeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_cells.html#compas_rhino.artists.VolMeshArtist.clear_cells" title="compas_rhino.artists.VolMeshArtist.clear_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_cells</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_cells.html#compas_rhino.artists.VolMeshArtist.clear_cells" title="compas_rhino.artists.VolMeshArtist.clear_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_cells</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_edgelabels.html#compas_rhino.artists.VolMeshArtist.clear_edgelabels" title="compas_rhino.artists.VolMeshArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_edgelabels.html#compas_rhino.artists.VolMeshArtist.clear_edgelabels" title="compas_rhino.artists.VolMeshArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_edges.html#compas_rhino.artists.VolMeshArtist.clear_edges" title="compas_rhino.artists.VolMeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_edges.html#compas_rhino.artists.VolMeshArtist.clear_edges" title="compas_rhino.artists.VolMeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_facelabels.html#compas_rhino.artists.VolMeshArtist.clear_facelabels" title="compas_rhino.artists.VolMeshArtist.clear_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_facelabels.html#compas_rhino.artists.VolMeshArtist.clear_facelabels" title="compas_rhino.artists.VolMeshArtist.clear_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_faces.html#compas_rhino.artists.VolMeshArtist.clear_faces" title="compas_rhino.artists.VolMeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_faces.html#compas_rhino.artists.VolMeshArtist.clear_faces" title="compas_rhino.artists.VolMeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_vertexlabels.html#compas_rhino.artists.VolMeshArtist.clear_vertexlabels" title="compas_rhino.artists.VolMeshArtist.clear_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_layer.html#compas_rhino.artists.VolMeshArtist.clear_layer" title="compas_rhino.artists.VolMeshArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_vertices.html#compas_rhino.artists.VolMeshArtist.clear_vertices" title="compas_rhino.artists.VolMeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_vertexlabels.html#compas_rhino.artists.VolMeshArtist.clear_vertexlabels" title="compas_rhino.artists.VolMeshArtist.clear_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_vertices.html#compas_rhino.artists.VolMeshArtist.clear_vertices" title="compas_rhino.artists.VolMeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw.html#compas_rhino.artists.VolMeshArtist.draw" title="compas_rhino.artists.VolMeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([vertices, edges, faces, cells, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw.html#compas_rhino.artists.VolMeshArtist.draw" title="compas_rhino.artists.VolMeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the network using the chosen visualisation settings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_celllabels.html#compas_rhino.artists.VolMeshArtist.draw_celllabels" title="compas_rhino.artists.VolMeshArtist.draw_celllabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_celllabels</span></code></a>([text, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_celllabels.html#compas_rhino.artists.VolMeshArtist.draw_celllabels" title="compas_rhino.artists.VolMeshArtist.draw_celllabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_celllabels</span></code></a></p></td>
 <td><p>Draw labels for cells.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_cells.html#compas_rhino.artists.VolMeshArtist.draw_cells" title="compas_rhino.artists.VolMeshArtist.draw_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cells</span></code></a>([cells, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_cells.html#compas_rhino.artists.VolMeshArtist.draw_cells" title="compas_rhino.artists.VolMeshArtist.draw_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cells</span></code></a></p></td>
 <td><p>Draw a selection of cells.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_collection.html#compas_rhino.artists.VolMeshArtist.draw_collection" title="compas_rhino.artists.VolMeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_edgelabels.html#compas_rhino.artists.VolMeshArtist.draw_edgelabels" title="compas_rhino.artists.VolMeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>([text, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_edgelabels.html#compas_rhino.artists.VolMeshArtist.draw_edgelabels" title="compas_rhino.artists.VolMeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a></p></td>
 <td><p>Draw labels for a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_edges.html#compas_rhino.artists.VolMeshArtist.draw_edges" title="compas_rhino.artists.VolMeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_edges.html#compas_rhino.artists.VolMeshArtist.draw_edges" title="compas_rhino.artists.VolMeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_facelabels.html#compas_rhino.artists.VolMeshArtist.draw_facelabels" title="compas_rhino.artists.VolMeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a>([text, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_facelabels.html#compas_rhino.artists.VolMeshArtist.draw_facelabels" title="compas_rhino.artists.VolMeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a></p></td>
 <td><p>Draw labels for a selection of faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_faces.html#compas_rhino.artists.VolMeshArtist.draw_faces" title="compas_rhino.artists.VolMeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_faces.html#compas_rhino.artists.VolMeshArtist.draw_faces" title="compas_rhino.artists.VolMeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_vertexlabels.html#compas_rhino.artists.VolMeshArtist.draw_vertexlabels" title="compas_rhino.artists.VolMeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>([text, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_vertexlabels.html#compas_rhino.artists.VolMeshArtist.draw_vertexlabels" title="compas_rhino.artists.VolMeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a></p></td>
 <td><p>Draw labels for a selection vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_vertices.html#compas_rhino.artists.VolMeshArtist.draw_vertices" title="compas_rhino.artists.VolMeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_vertices.html#compas_rhino.artists.VolMeshArtist.draw_vertices" title="compas_rhino.artists.VolMeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.redraw.html#compas_rhino.artists.VolMeshArtist.redraw" title="compas_rhino.artists.VolMeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.build.html#compas_rhino.artists.VolMeshArtist.build" title="compas_rhino.artists.VolMeshArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p>Build an artist corresponding to the item type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.build_as.html#compas_rhino.artists.VolMeshArtist.build_as" title="compas_rhino.artists.VolMeshArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.register.html#compas_rhino.artists.VolMeshArtist.register" title="compas_rhino.artists.VolMeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type[, context])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.clear_layer.html#compas_rhino.artists.VolMeshArtist.clear_layer" title="compas_rhino.artists.VolMeshArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.draw_collection.html#compas_rhino.artists.VolMeshArtist.draw_collection" title="compas_rhino.artists.VolMeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.redraw.html#compas_rhino.artists.VolMeshArtist.redraw" title="compas_rhino.artists.VolMeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.register.html#compas_rhino.artists.VolMeshArtist.register" title="compas_rhino.artists.VolMeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -271,10 +364,10 @@
       
 
       
-        <a href="compas_rhino.artists.VolMeshArtist.build.html" title="VolMeshArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.VolMeshArtist.clear.html" title="VolMeshArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            VolMeshArtist.build
+            VolMeshArtist.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMeshObject.build" href="compas_rhino.objects.VolMeshObject.build.html" />
+    <link rel="next" title="VolMeshObject.clear" href="compas_rhino.objects.VolMeshObject.clear.html" />
   
   
   
-    <link rel="prev" title="NetworkObject.select_nodes" href="compas_rhino.objects.NetworkObject.select_nodes.html" />
+    <link rel="prev" title="NetworkObject.registered_object_types" href="compas_rhino.objects.NetworkObject.registered_object_types.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -123,6 +123,90 @@
 </ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SETTINGS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchor</span></code></p></td>
+<td><p>The vertex of the volmesh that is anchored to the location of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_cell</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmesh face identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_celllabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmesh celllabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_edge</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmsh edge identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_edgelabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmesh edgelabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_face</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmesh face identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_facelabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmesh facelabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_vertex</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmesh vertex identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_vertexlabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and volmesh vertexlabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guids</span></code></p></td>
+<td><p>The GUIDs of all Rhino objects created by this artist.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></p></td>
+<td><p><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>: The location of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotation</span></code></p></td>
+<td><p>list of float: The rotation angles around the 3 axis of the coordinate system with the origin placed at the location of the object in the scene.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></p></td>
+<td><p>float: A uniform scaling factor for the object in the scene.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_xyz</span></code></p></td>
+<td><p>The view coordinates of the volmesh object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">volmesh</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">artist</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">item</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layer</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scene</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -130,65 +214,74 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.build.html#compas_rhino.objects.VolMeshObject.build" title="compas_rhino.objects.VolMeshObject.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.clear.html#compas_rhino.objects.VolMeshObject.clear" title="compas_rhino.objects.VolMeshObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.clear.html#compas_rhino.objects.VolMeshObject.clear" title="compas_rhino.objects.VolMeshObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear all objects previously drawn by this artist.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.clear_layer.html#compas_rhino.objects.VolMeshObject.clear_layer" title="compas_rhino.objects.VolMeshObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the layer of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.draw.html#compas_rhino.objects.VolMeshObject.draw" title="compas_rhino.objects.VolMeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.draw.html#compas_rhino.objects.VolMeshObject.draw" title="compas_rhino.objects.VolMeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the volmesh using the visualisation settings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify.html#compas_rhino.objects.VolMeshObject.modify" title="compas_rhino.objects.VolMeshObject.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify.html#compas_rhino.objects.VolMeshObject.modify" title="compas_rhino.objects.VolMeshObject.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a></p></td>
 <td><p>Update the attributes of the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify_edges.html#compas_rhino.objects.VolMeshObject.modify_edges" title="compas_rhino.objects.VolMeshObject.modify_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_edges</span></code></a>(edges[, names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify_edges.html#compas_rhino.objects.VolMeshObject.modify_edges" title="compas_rhino.objects.VolMeshObject.modify_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_edges</span></code></a></p></td>
 <td><p>Update the attributes of the edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify_faces.html#compas_rhino.objects.VolMeshObject.modify_faces" title="compas_rhino.objects.VolMeshObject.modify_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_faces</span></code></a>(faces[, names])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify_faces.html#compas_rhino.objects.VolMeshObject.modify_faces" title="compas_rhino.objects.VolMeshObject.modify_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_faces</span></code></a></p></td>
 <td><p>Update the attributes of selected faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify_vertices.html#compas_rhino.objects.VolMeshObject.modify_vertices" title="compas_rhino.objects.VolMeshObject.modify_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_vertices</span></code></a>(vertices[, names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.modify_vertices.html#compas_rhino.objects.VolMeshObject.modify_vertices" title="compas_rhino.objects.VolMeshObject.modify_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_vertices</span></code></a></p></td>
 <td><p>Update the attributes of selected vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move.html#compas_rhino.objects.VolMeshObject.move" title="compas_rhino.objects.VolMeshObject.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move.html#compas_rhino.objects.VolMeshObject.move" title="compas_rhino.objects.VolMeshObject.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a></p></td>
 <td><p>Move the entire volmesh object to a different location.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move_face.html#compas_rhino.objects.VolMeshObject.move_face" title="compas_rhino.objects.VolMeshObject.move_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_face</span></code></a>(face)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move_face.html#compas_rhino.objects.VolMeshObject.move_face" title="compas_rhino.objects.VolMeshObject.move_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_face</span></code></a></p></td>
 <td><p>Move a single face of the volmesh object and update the data structure accordingly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move_vertex.html#compas_rhino.objects.VolMeshObject.move_vertex" title="compas_rhino.objects.VolMeshObject.move_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertex</span></code></a>(vertex)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move_vertex.html#compas_rhino.objects.VolMeshObject.move_vertex" title="compas_rhino.objects.VolMeshObject.move_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertex</span></code></a></p></td>
 <td><p>Move a single vertex of the volmesh object and update the data structure accordingly.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move_vertices.html#compas_rhino.objects.VolMeshObject.move_vertices" title="compas_rhino.objects.VolMeshObject.move_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertices</span></code></a>(vertices)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.move_vertices.html#compas_rhino.objects.VolMeshObject.move_vertices" title="compas_rhino.objects.VolMeshObject.move_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertices</span></code></a></p></td>
 <td><p>Move a multiple vertices of the volmesh object and update the data structure accordingly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.redraw.html#compas_rhino.objects.VolMeshObject.redraw" title="compas_rhino.objects.VolMeshObject.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
-<td><p>Redraw the Rhino scene/view.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.register.html#compas_rhino.objects.VolMeshObject.register" title="compas_rhino.objects.VolMeshObject.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, object_type)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.registered_object_types.html#compas_rhino.objects.VolMeshObject.registered_object_types" title="compas_rhino.objects.VolMeshObject.registered_object_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_object_types</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select.html#compas_rhino.objects.VolMeshObject.select" title="compas_rhino.objects.VolMeshObject.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select.html#compas_rhino.objects.VolMeshObject.select" title="compas_rhino.objects.VolMeshObject.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a></p></td>
 <td><p>Select the object representing the item.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_edges.html#compas_rhino.objects.VolMeshObject.select_edges" title="compas_rhino.objects.VolMeshObject.select_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_edges</span></code></a>([message])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_edges.html#compas_rhino.objects.VolMeshObject.select_edges" title="compas_rhino.objects.VolMeshObject.select_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_edges</span></code></a></p></td>
 <td><p>Select edges of the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_faces.html#compas_rhino.objects.VolMeshObject.select_faces" title="compas_rhino.objects.VolMeshObject.select_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_faces</span></code></a>([message])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_faces.html#compas_rhino.objects.VolMeshObject.select_faces" title="compas_rhino.objects.VolMeshObject.select_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_faces</span></code></a></p></td>
 <td><p>Select faces of the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_vertex.html#compas_rhino.objects.VolMeshObject.select_vertex" title="compas_rhino.objects.VolMeshObject.select_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertex</span></code></a>([message])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_vertex.html#compas_rhino.objects.VolMeshObject.select_vertex" title="compas_rhino.objects.VolMeshObject.select_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertex</span></code></a></p></td>
 <td><p>Select one vertex of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_vertices.html#compas_rhino.objects.VolMeshObject.select_vertices" title="compas_rhino.objects.VolMeshObject.select_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertices</span></code></a>([message])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.select_vertices.html#compas_rhino.objects.VolMeshObject.select_vertices" title="compas_rhino.objects.VolMeshObject.select_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertices</span></code></a></p></td>
 <td><p>Select vertices of the volmesh.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.build.html#compas_rhino.objects.VolMeshObject.build" title="compas_rhino.objects.VolMeshObject.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.clear_layer.html#compas_rhino.objects.VolMeshObject.clear_layer" title="compas_rhino.objects.VolMeshObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
+<td><p>Clear the layer of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.redraw.html#compas_rhino.objects.VolMeshObject.redraw" title="compas_rhino.objects.VolMeshObject.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<td><p>Redraw the Rhino scene/view.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.register.html#compas_rhino.objects.VolMeshObject.register" title="compas_rhino.objects.VolMeshObject.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.VolMeshObject.registered_object_types.html#compas_rhino.objects.VolMeshObject.registered_object_types" title="compas_rhino.objects.VolMeshObject.registered_object_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_object_types</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -256,20 +349,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_rhino.objects.NetworkObject.select_nodes.html" title="NetworkObject.select_nodes" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_rhino.objects.NetworkObject.registered_object_types.html" title="NetworkObject.registered_object_types" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            NetworkObject.select_nodes
+            NetworkObject.registered_object_types
           </div>
         </a>
       
 
       
-        <a href="compas_rhino.objects.VolMeshObject.build.html" title="VolMeshObject.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.objects.VolMeshObject.clear.html" title="VolMeshObject.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            VolMeshObject.build
+            VolMeshObject.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

@@ -154,6 +154,78 @@ revolute joints.</p></li>
 <span class="go">&#39;Configuration((1.571, 3.000, 0.100), (0, 2, 5))&#39;</span>
 </code></pre></div>
 </div>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>The data representing the configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_joint_names</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> when there is a joint name for every value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_dict</span></code></p></td>
+<td><p>A dictionary of joint values by joint name.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_names</span></code></p></td>
+<td><p>&quot;List of joint names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_types</span></code></p></td>
+<td><p>Joint joint_types, e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_values</span></code></p></td>
+<td><p>Joint values expressed in radians or meters, depending on the respective type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prismatic_values</span></code></p></td>
+<td><p>Prismatic joint values in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">revolute_values</span></code></p></td>
+<td><p>Revolute joint values in radians.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type_dict</span></code></p></td>
+<td><p>A dictionary of joint types by joint name.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
+<td><p>The schema of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
+<td><p>The schema of the JSON representation of the data of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMANAME</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a '2-level' import and a class name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsondefinitions</span></code></p></td>
+<td><p>Reusable schema definitions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonstring</span></code></p></td>
+<td><p>The representation of the object data in JSON format.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonvalidator</span></code></p></td>
+<td><p>JSON schema validator for draft 7.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the object.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -161,74 +233,83 @@ revolute joints.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.check_joint_names.html#compas.robots.Configuration.check_joint_names" title="compas.robots.Configuration.check_joint_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_joint_names</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.check_joint_names.html#compas.robots.Configuration.check_joint_names" title="compas.robots.Configuration.check_joint_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_joint_names</span></code></a></p></td>
 <td><p>Raises an error if there is not a joint name for every value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.close_to.html#compas.robots.Configuration.close_to" title="compas.robots.Configuration.close_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_to</span></code></a>(other[, tol])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.close_to.html#compas.robots.Configuration.close_to" title="compas.robots.Configuration.close_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_to</span></code></a></p></td>
 <td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the other <cite>Configuration</cite>'s joint_values are within a certain range.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.copy.html#compas.robots.Configuration.copy" title="compas.robots.Configuration.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
-<td><p>Make an independent copy of the data object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.from_data.html#compas.robots.Configuration.from_data" title="compas.robots.Configuration.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.from_json.html#compas.robots.Configuration.from_json" title="compas.robots.Configuration.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.from_jsonstring.html#compas.robots.Configuration.from_jsonstring" title="compas.robots.Configuration.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.from_prismatic_and_revolute_values.html#compas.robots.Configuration.from_prismatic_and_revolute_values" title="compas.robots.Configuration.from_prismatic_and_revolute_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_prismatic_and_revolute_values</span></code></a>(...[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.from_prismatic_and_revolute_values.html#compas.robots.Configuration.from_prismatic_and_revolute_values" title="compas.robots.Configuration.from_prismatic_and_revolute_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_prismatic_and_revolute_values</span></code></a></p></td>
 <td><p>Construct a configuration from prismatic and revolute joint values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.from_revolute_values.html#compas.robots.Configuration.from_revolute_values" title="compas.robots.Configuration.from_revolute_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_revolute_values</span></code></a>(values[, joint_names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.from_revolute_values.html#compas.robots.Configuration.from_revolute_values" title="compas.robots.Configuration.from_revolute_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_revolute_values</span></code></a></p></td>
 <td><p>Construct a configuration from revolute joint values in radians.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.get.html#compas.robots.Configuration.get" title="compas.robots.Configuration.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(key[, default])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.get.html#compas.robots.Configuration.get" title="compas.robots.Configuration.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.items.html#compas.robots.Configuration.items" title="compas.robots.Configuration.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.items.html#compas.robots.Configuration.items" title="compas.robots.Configuration.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.iter_differences.html#compas.robots.Configuration.iter_differences" title="compas.robots.Configuration.iter_differences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_differences</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.iter_differences.html#compas.robots.Configuration.iter_differences" title="compas.robots.Configuration.iter_differences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_differences</span></code></a></p></td>
 <td><p>Generator over the differences to another <cite>Configuration</cite>'s joint_values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.keys.html#compas.robots.Configuration.keys" title="compas.robots.Configuration.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.keys.html#compas.robots.Configuration.keys" title="compas.robots.Configuration.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.max_difference.html#compas.robots.Configuration.max_difference" title="compas.robots.Configuration.max_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_difference</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.max_difference.html#compas.robots.Configuration.max_difference" title="compas.robots.Configuration.max_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_difference</span></code></a></p></td>
 <td><p>Returns the maximum difference to another <cite>Configuration</cite>'s joint values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.merge.html#compas.robots.Configuration.merge" title="compas.robots.Configuration.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.merge.html#compas.robots.Configuration.merge" title="compas.robots.Configuration.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a></p></td>
 <td><p>Merge the configuration with another configuration in place along joint names.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.merged.html#compas.robots.Configuration.merged" title="compas.robots.Configuration.merged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merged</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.merged.html#compas.robots.Configuration.merged" title="compas.robots.Configuration.merged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merged</span></code></a></p></td>
 <td><p>Get a new <code class="docutils literal notranslate"><span class="pre">Configuration</span></code> with this configuration merged with another configuration.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.scale.html#compas.robots.Configuration.scale" title="compas.robots.Configuration.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(scale_factor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.scale.html#compas.robots.Configuration.scale" title="compas.robots.Configuration.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scales the joint positions of the current configuration.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.scaled.html#compas.robots.Configuration.scaled" title="compas.robots.Configuration.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a>(scale_factor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.scaled.html#compas.robots.Configuration.scaled" title="compas.robots.Configuration.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
 <td><p>Return a scaled copy of this configuration.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.to_data.html#compas.robots.Configuration.to_data" title="compas.robots.Configuration.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.values.html#compas.robots.Configuration.values" title="compas.robots.Configuration.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.copy.html#compas.robots.Configuration.copy" title="compas.robots.Configuration.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.from_data.html#compas.robots.Configuration.from_data" title="compas.robots.Configuration.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.from_json.html#compas.robots.Configuration.from_json" title="compas.robots.Configuration.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.from_jsonstring.html#compas.robots.Configuration.from_jsonstring" title="compas.robots.Configuration.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.to_data.html#compas.robots.Configuration.to_data" title="compas.robots.Configuration.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.to_json.html#compas.robots.Configuration.to_json" title="compas.robots.Configuration.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.to_json.html#compas.robots.Configuration.to_json" title="compas.robots.Configuration.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.to_jsonstring.html#compas.robots.Configuration.to_jsonstring" title="compas.robots.Configuration.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.to_jsonstring.html#compas.robots.Configuration.to_jsonstring" title="compas.robots.Configuration.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.validate_data.html#compas.robots.Configuration.validate_data" title="compas.robots.Configuration.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.validate_data.html#compas.robots.Configuration.validate_data" title="compas.robots.Configuration.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Configuration.validate_json.html#compas.robots.Configuration.validate_json" title="compas.robots.Configuration.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.validate_json.html#compas.robots.Configuration.validate_json" title="compas.robots.Configuration.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Configuration.values.html#compas.robots.Configuration.values" title="compas.robots.Configuration.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</p></td>
-<td><p></p></td>
 </tr>
 </tbody>
 </table>

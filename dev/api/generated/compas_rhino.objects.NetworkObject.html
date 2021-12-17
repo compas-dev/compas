@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="NetworkObject.build" href="compas_rhino.objects.NetworkObject.build.html" />
+    <link rel="next" title="NetworkObject.clear" href="compas_rhino.objects.NetworkObject.clear.html" />
   
   
   
-    <link rel="prev" title="MeshObject.select_vertices" href="compas_rhino.objects.MeshObject.select_vertices.html" />
+    <link rel="prev" title="MeshObject.registered_object_types" href="compas_rhino.objects.MeshObject.registered_object_types.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -123,6 +123,78 @@
 </ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SETTINGS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchor</span></code></p></td>
+<td><p>The node of the network that is anchored to the location of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_edge</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and network edge identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_edgelabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and network edgelabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_node</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and network node identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_nodelabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and network nodelabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guids</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></p></td>
+<td><p><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>: The location of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">network</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_xyz</span></code></p></td>
+<td><p>The view coordinates of the mesh object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotation</span></code></p></td>
+<td><p>list of float: The rotation angles around the 3 axis of the coordinate system with the origin placed at the location of the object in the scene.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></p></td>
+<td><p>float: A uniform scaling factor for the object in the scene.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">artist</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">item</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layer</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scene</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -130,50 +202,59 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.build.html#compas_rhino.objects.NetworkObject.build" title="compas_rhino.objects.NetworkObject.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.clear.html#compas_rhino.objects.NetworkObject.clear" title="compas_rhino.objects.NetworkObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.clear.html#compas_rhino.objects.NetworkObject.clear" title="compas_rhino.objects.NetworkObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear all previously created Rhino objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.clear_layer.html#compas_rhino.objects.NetworkObject.clear_layer" title="compas_rhino.objects.NetworkObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the layer of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.draw.html#compas_rhino.objects.NetworkObject.draw" title="compas_rhino.objects.NetworkObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.draw.html#compas_rhino.objects.NetworkObject.draw" title="compas_rhino.objects.NetworkObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the object representing the network.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.modify.html#compas_rhino.objects.NetworkObject.modify" title="compas_rhino.objects.NetworkObject.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.modify.html#compas_rhino.objects.NetworkObject.modify" title="compas_rhino.objects.NetworkObject.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a></p></td>
 <td><p>Update the attributes of the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.modify_edges.html#compas_rhino.objects.NetworkObject.modify_edges" title="compas_rhino.objects.NetworkObject.modify_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_edges</span></code></a>(edges[, names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.modify_edges.html#compas_rhino.objects.NetworkObject.modify_edges" title="compas_rhino.objects.NetworkObject.modify_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_edges</span></code></a></p></td>
 <td><p>Update the attributes of the edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.modify_nodes.html#compas_rhino.objects.NetworkObject.modify_nodes" title="compas_rhino.objects.NetworkObject.modify_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_nodes</span></code></a>(nodes[, names])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.modify_nodes.html#compas_rhino.objects.NetworkObject.modify_nodes" title="compas_rhino.objects.NetworkObject.modify_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_nodes</span></code></a></p></td>
 <td><p>Update the attributes of the nodes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.move.html#compas_rhino.objects.NetworkObject.move" title="compas_rhino.objects.NetworkObject.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.move.html#compas_rhino.objects.NetworkObject.move" title="compas_rhino.objects.NetworkObject.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a></p></td>
 <td><p>Move the entire mesh object to a different location.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.move_node.html#compas_rhino.objects.NetworkObject.move_node" title="compas_rhino.objects.NetworkObject.move_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_node</span></code></a>(node)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.move_node.html#compas_rhino.objects.NetworkObject.move_node" title="compas_rhino.objects.NetworkObject.move_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_node</span></code></a></p></td>
 <td><p>Move a single node of the network object and update the data structure accordingly.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.redraw.html#compas_rhino.objects.NetworkObject.redraw" title="compas_rhino.objects.NetworkObject.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
-<td><p>Redraw the Rhino scene/view.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.register.html#compas_rhino.objects.NetworkObject.register" title="compas_rhino.objects.NetworkObject.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, object_type)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.registered_object_types.html#compas_rhino.objects.NetworkObject.registered_object_types" title="compas_rhino.objects.NetworkObject.registered_object_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_object_types</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.select.html#compas_rhino.objects.NetworkObject.select" title="compas_rhino.objects.NetworkObject.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.select.html#compas_rhino.objects.NetworkObject.select" title="compas_rhino.objects.NetworkObject.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a></p></td>
 <td><p>Select the object representing the item.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.select_edges.html#compas_rhino.objects.NetworkObject.select_edges" title="compas_rhino.objects.NetworkObject.select_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_edges</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.select_edges.html#compas_rhino.objects.NetworkObject.select_edges" title="compas_rhino.objects.NetworkObject.select_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_edges</span></code></a></p></td>
 <td><p>Select edges of the network.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.select_nodes.html#compas_rhino.objects.NetworkObject.select_nodes" title="compas_rhino.objects.NetworkObject.select_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_nodes</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.select_nodes.html#compas_rhino.objects.NetworkObject.select_nodes" title="compas_rhino.objects.NetworkObject.select_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_nodes</span></code></a></p></td>
 <td><p>Select nodes of the network.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.build.html#compas_rhino.objects.NetworkObject.build" title="compas_rhino.objects.NetworkObject.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.clear_layer.html#compas_rhino.objects.NetworkObject.clear_layer" title="compas_rhino.objects.NetworkObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
+<td><p>Clear the layer of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.redraw.html#compas_rhino.objects.NetworkObject.redraw" title="compas_rhino.objects.NetworkObject.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<td><p>Redraw the Rhino scene/view.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.register.html#compas_rhino.objects.NetworkObject.register" title="compas_rhino.objects.NetworkObject.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.NetworkObject.registered_object_types.html#compas_rhino.objects.NetworkObject.registered_object_types" title="compas_rhino.objects.NetworkObject.registered_object_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_object_types</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -241,20 +322,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_rhino.objects.MeshObject.select_vertices.html" title="MeshObject.select_vertices" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_rhino.objects.MeshObject.registered_object_types.html" title="MeshObject.registered_object_types" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            MeshObject.select_vertices
+            MeshObject.registered_object_types
           </div>
         </a>
       
 
       
-        <a href="compas_rhino.objects.NetworkObject.build.html" title="NetworkObject.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.objects.NetworkObject.clear.html" title="NetworkObject.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            NetworkObject.build
+            NetworkObject.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

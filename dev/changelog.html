@@ -112,6 +112,13 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_plotters.artists.NetworkArtist.draw_edgelabels</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_plotters.Plotter.fontsize</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">INSTALLED_VERSION</span></code> variable to <code class="docutils literal notranslate"><span class="pre">compas_rhino.install</span></code> to interally inform rhino version context post-installation steps.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoNurbsSurface</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.surfaces.new_nurbssurface</span></code> plugin.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.surfaces.new_nurbssurface_from_parameters</span></code> plugin.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.surfaces.new_nurbssurface_from_points</span></code> plugin.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.surfaces.new_nurbssurface_from_fill</span></code> plugin.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.surfaces.new_nurbssurface_from_step</span></code> plugin.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions.RhinoSurface.to_compas</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
@@ -122,6 +129,11 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_plotters.artists.MeshArtist.draw_vertexlabels</span></code> to use <code class="docutils literal notranslate"><span class="pre">compas_plotters.Plotter.fontsize</span></code>.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_plotters.artists.MeshArtist.draw_edgelabels</span></code> to use <code class="docutils literal notranslate"><span class="pre">compas_plotters.Plotter.fontsize</span></code>.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_plotters.artists.MeshArtist.draw_facelabels</span></code> to use <code class="docutils literal notranslate"><span class="pre">compas_plotters.Plotter.fontsize</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions.plane_to_compas_frame</span></code>.</p></li>
+<li><p>Changed implementation of <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.xyz</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.to_mesh</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoNurbsSurface.from_points</span></code> to use transposed points.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions.RhinoSurface.to_compas_mesh</span></code>.</p></li>
 </ul>
 </section>
 <section id="removed">

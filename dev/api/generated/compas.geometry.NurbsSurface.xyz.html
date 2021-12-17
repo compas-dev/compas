@@ -19,11 +19,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="is_ccw_xy" href="compas.geometry.is_ccw_xy.html" />
+    <link rel="next" title="NurbsSurface.from_json" href="compas.geometry.NurbsSurface.from_json.html" />
   
   
   
-    <link rel="prev" title="NurbsSurface.validate_json" href="compas.geometry.NurbsSurface.validate_json.html" />
+    <link rel="prev" title="NurbsSurface.v_space" href="compas.geometry.NurbsSurface.v_space.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -110,8 +110,16 @@
 <h1>NurbsSurface.xyz</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.NurbsSurface.xyz">
-<span class="sig-prename descclassname"><span class="pre">NurbsSurface.</span></span><span class="sig-name descname"><span class="pre">xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/surfaces/nurbs.py#L381"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">NurbsSurface.</span></span><span class="sig-name descname"><span class="pre">xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/surfaces/nurbs.py#L549"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute point locations corresponding to evenly spaced parameters over the surface domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nu</strong> (<em>int, optional</em>) – The size of the grid in the U direction.</p></li>
+<li><p><strong>nv</strong> (<em>int, optional</em>) – The size of the grid in the V direction.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -180,20 +188,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.geometry.NurbsSurface.validate_json.html" title="NurbsSurface.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.geometry.NurbsSurface.v_space.html" title="NurbsSurface.v_space" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            NurbsSurface.validate_json
+            NurbsSurface.v_space
           </div>
         </a>
       
 
       
-        <a href="compas.geometry.is_ccw_xy.html" title="is_ccw_xy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.NurbsSurface.from_json.html" title="NurbsSurface.from_json" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            is_ccw_xy
+            NurbsSurface.from_json
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

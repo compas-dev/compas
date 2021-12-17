@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="RobotModelArtist.attach_mesh" href="compas_blender.artists.RobotModelArtist.attach_mesh.html" />
+    <link rel="next" title="RobotModelArtist.create_geometry" href="compas_blender.artists.RobotModelArtist.create_geometry.html" />
   
   
   
@@ -119,6 +119,27 @@
 </ul>
 </dd>
 </dl>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AVAILABLE_CONTEXTS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONTEXT</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ITEM_ARTIST</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">collection</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -126,70 +147,79 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.attach_mesh.html#compas_blender.artists.RobotModelArtist.attach_mesh" title="compas_blender.artists.RobotModelArtist.attach_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach_mesh</span></code></a>(mesh, name[, link, frame])</p></td>
-<td><p>Rigidly attaches a compas mesh to a given link for visualization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.attach_tool_model.html#compas_blender.artists.RobotModelArtist.attach_tool_model" title="compas_blender.artists.RobotModelArtist.attach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach_tool_model</span></code></a>(tool_model)</p></td>
-<td><p>Attach a tool to the robot artist for visualization.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.build.html#compas_blender.artists.RobotModelArtist.build" title="compas_blender.artists.RobotModelArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p>Build an artist corresponding to the item type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.build_as.html#compas_blender.artists.RobotModelArtist.build_as" title="compas_blender.artists.RobotModelArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a>(item, artist_type, **kwargs)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.clear.html#compas_blender.artists.RobotModelArtist.clear" title="compas_blender.artists.RobotModelArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.create.html#compas_blender.artists.RobotModelArtist.create" title="compas_blender.artists.RobotModelArtist.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>([link, context])</p></td>
-<td><p>Recursive function that triggers the drawing of the robot model's geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.create_geometry.html#compas_blender.artists.RobotModelArtist.create_geometry" title="compas_blender.artists.RobotModelArtist.create_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_geometry</span></code></a>(geometry[, name, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.create_geometry.html#compas_blender.artists.RobotModelArtist.create_geometry" title="compas_blender.artists.RobotModelArtist.create_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_geometry</span></code></a></p></td>
 <td><p>Draw a <strong>COMPAS</strong> geometry in the respective CAD environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.detach_mesh.html#compas_blender.artists.RobotModelArtist.detach_mesh" title="compas_blender.artists.RobotModelArtist.detach_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detach_mesh</span></code></a>(name)</p></td>
-<td><p>Removes attached collision meshes with a given name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.detach_tool_model.html#compas_blender.artists.RobotModelArtist.detach_tool_model" title="compas_blender.artists.RobotModelArtist.detach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detach_tool_model</span></code></a>()</p></td>
-<td><p>Detach the tool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw.html#compas_blender.artists.RobotModelArtist.draw" title="compas_blender.artists.RobotModelArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw.html#compas_blender.artists.RobotModelArtist.draw" title="compas_blender.artists.RobotModelArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_attached_meshes.html#compas_blender.artists.RobotModelArtist.draw_attached_meshes" title="compas_blender.artists.RobotModelArtist.draw_attached_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_attached_meshes</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_attached_meshes.html#compas_blender.artists.RobotModelArtist.draw_attached_meshes" title="compas_blender.artists.RobotModelArtist.draw_attached_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_attached_meshes</span></code></a></p></td>
 <td><p>Draws all meshes attached to the robot model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_collection.html#compas_blender.artists.RobotModelArtist.draw_collection" title="compas_blender.artists.RobotModelArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_collision.html#compas_blender.artists.RobotModelArtist.draw_collision" title="compas_blender.artists.RobotModelArtist.draw_collision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collision</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_collision.html#compas_blender.artists.RobotModelArtist.draw_collision" title="compas_blender.artists.RobotModelArtist.draw_collision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collision</span></code></a></p></td>
 <td><p>Draws all collision geometry of the robot model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_visual.html#compas_blender.artists.RobotModelArtist.draw_visual" title="compas_blender.artists.RobotModelArtist.draw_visual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_visual</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_visual.html#compas_blender.artists.RobotModelArtist.draw_visual" title="compas_blender.artists.RobotModelArtist.draw_visual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_visual</span></code></a></p></td>
 <td><p>Draws all visual geometry of the robot model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.meshes.html#compas_blender.artists.RobotModelArtist.meshes" title="compas_blender.artists.RobotModelArtist.meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshes</span></code></a>([link, visual, collision, ...])</p></td>
-<td><p>Returns all compas meshes of the model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.redraw.html#compas_blender.artists.RobotModelArtist.redraw" title="compas_blender.artists.RobotModelArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([timeout])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.redraw.html#compas_blender.artists.RobotModelArtist.redraw" title="compas_blender.artists.RobotModelArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.register.html#compas_blender.artists.RobotModelArtist.register" title="compas_blender.artists.RobotModelArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type[, context])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale.html#compas_blender.artists.RobotModelArtist.scale" title="compas_blender.artists.RobotModelArtist.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor)</p></td>
-<td><p>Scales the robot model's geometry by factor (absolute).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale_link.html#compas_blender.artists.RobotModelArtist.scale_link" title="compas_blender.artists.RobotModelArtist.scale_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_link</span></code></a>(link, transformation)</p></td>
-<td><p>Recursive function to apply the scale transformation on each link.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.transform.html#compas_blender.artists.RobotModelArtist.transform" title="compas_blender.artists.RobotModelArtist.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(native_mesh, transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.transform.html#compas_blender.artists.RobotModelArtist.transform" title="compas_blender.artists.RobotModelArtist.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transforms a CAD-specific geometry using a <strong>COMPAS</strong> transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update.html#compas_blender.artists.RobotModelArtist.update" title="compas_blender.artists.RobotModelArtist.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(joint_state[, visual, collision])</p></td>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.attach_mesh.html#compas_blender.artists.RobotModelArtist.attach_mesh" title="compas_blender.artists.RobotModelArtist.attach_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach_mesh</span></code></a></p></td>
+<td><p>Rigidly attaches a compas mesh to a given link for visualization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.attach_tool_model.html#compas_blender.artists.RobotModelArtist.attach_tool_model" title="compas_blender.artists.RobotModelArtist.attach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach_tool_model</span></code></a></p></td>
+<td><p>Attach a tool to the robot artist for visualization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.build.html#compas_blender.artists.RobotModelArtist.build" title="compas_blender.artists.RobotModelArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p>Build an artist corresponding to the item type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.build_as.html#compas_blender.artists.RobotModelArtist.build_as" title="compas_blender.artists.RobotModelArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.clear.html#compas_blender.artists.RobotModelArtist.clear" title="compas_blender.artists.RobotModelArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.create.html#compas_blender.artists.RobotModelArtist.create" title="compas_blender.artists.RobotModelArtist.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a></p></td>
+<td><p>Recursive function that triggers the drawing of the robot model's geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.detach_mesh.html#compas_blender.artists.RobotModelArtist.detach_mesh" title="compas_blender.artists.RobotModelArtist.detach_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detach_mesh</span></code></a></p></td>
+<td><p>Removes attached collision meshes with a given name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.detach_tool_model.html#compas_blender.artists.RobotModelArtist.detach_tool_model" title="compas_blender.artists.RobotModelArtist.detach_tool_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detach_tool_model</span></code></a></p></td>
+<td><p>Detach the tool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.draw_collection.html#compas_blender.artists.RobotModelArtist.draw_collection" title="compas_blender.artists.RobotModelArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.meshes.html#compas_blender.artists.RobotModelArtist.meshes" title="compas_blender.artists.RobotModelArtist.meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshes</span></code></a></p></td>
+<td><p>Returns all compas meshes of the model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.register.html#compas_blender.artists.RobotModelArtist.register" title="compas_blender.artists.RobotModelArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale.html#compas_blender.artists.RobotModelArtist.scale" title="compas_blender.artists.RobotModelArtist.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<td><p>Scales the robot model's geometry by factor (absolute).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.scale_link.html#compas_blender.artists.RobotModelArtist.scale_link" title="compas_blender.artists.RobotModelArtist.scale_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_link</span></code></a></p></td>
+<td><p>Recursive function to apply the scale transformation on each link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update.html#compas_blender.artists.RobotModelArtist.update" title="compas_blender.artists.RobotModelArtist.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
 <td><p>Triggers the update of the robot geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update_tool.html#compas_blender.artists.RobotModelArtist.update_tool" title="compas_blender.artists.RobotModelArtist.update_tool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_tool</span></code></a>([joint_state, visual, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.RobotModelArtist.update_tool.html#compas_blender.artists.RobotModelArtist.update_tool" title="compas_blender.artists.RobotModelArtist.update_tool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_tool</span></code></a></p></td>
 <td><p>Triggers the update of the robot geometry of the tool.</p></td>
 </tr>
 </tbody>
@@ -265,10 +295,10 @@
       
 
       
-        <a href="compas_blender.artists.RobotModelArtist.attach_mesh.html" title="RobotModelArtist.attach_mesh" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_blender.artists.RobotModelArtist.create_geometry.html" title="RobotModelArtist.create_geometry" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            RobotModelArtist.attach_mesh
+            RobotModelArtist.create_geometry
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>

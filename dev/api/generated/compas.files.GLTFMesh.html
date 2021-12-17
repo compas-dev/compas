@@ -127,6 +127,24 @@ representing faces of the mesh.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -134,28 +152,28 @@ representing faces of the mesh.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_data.html#compas.files.GLTFMesh.from_data" title="compas.files.GLTFMesh.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(mesh, context, primitive_data_list)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_data.html#compas.files.GLTFMesh.from_data" title="compas.files.GLTFMesh.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Creates a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> from a glTF node dictionary and inserts it in the provided context.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_mesh.html#compas.files.GLTFMesh.from_mesh" title="compas.files.GLTFMesh.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a>(context, mesh)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_mesh.html#compas.files.GLTFMesh.from_mesh" title="compas.files.GLTFMesh.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
 <td><p>Construct a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from a compas mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_vertices_and_faces.html#compas.files.GLTFMesh.from_vertices_and_faces" title="compas.files.GLTFMesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a>(context, vertices, faces)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.from_vertices_and_faces.html#compas.files.GLTFMesh.from_vertices_and_faces" title="compas.files.GLTFMesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a></p></td>
 <td><p>Construct a <a class="reference internal" href="#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from lists of vertices and faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.group_indices.html#compas.files.GLTFMesh.group_indices" title="compas.files.GLTFMesh.group_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_indices</span></code></a>(indices, group_size)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.group_indices.html#compas.files.GLTFMesh.group_indices" title="compas.files.GLTFMesh.group_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_indices</span></code></a></p></td>
 <td><p>Returns a list of the elements of <code class="docutils literal notranslate"><span class="pre">indices</span></code> grouped into tuples of size <code class="docutils literal notranslate"><span class="pre">group_size</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.shift_indices.html#compas.files.GLTFMesh.shift_indices" title="compas.files.GLTFMesh.shift_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shift_indices</span></code></a>(indices, shift)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.shift_indices.html#compas.files.GLTFMesh.shift_indices" title="compas.files.GLTFMesh.shift_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shift_indices</span></code></a></p></td>
 <td><p>Given a list of indices, returns a list of indices, all shifted by <code class="docutils literal notranslate"><span class="pre">shift</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.to_data.html#compas.files.GLTFMesh.to_data" title="compas.files.GLTFMesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>(primitives)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.to_data.html#compas.files.GLTFMesh.to_data" title="compas.files.GLTFMesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Returns a JSONable dictionary object in accordance with glTF specifications.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_faces.html#compas.files.GLTFMesh.validate_faces" title="compas.files.GLTFMesh.validate_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_faces</span></code></a>(faces)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_faces.html#compas.files.GLTFMesh.validate_faces" title="compas.files.GLTFMesh.validate_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_faces</span></code></a></p></td>
 <td><p>Raises an exception if not all faces in <code class="docutils literal notranslate"><span class="pre">faces</span></code> are defining either all triangles, lines or points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_vertices.html#compas.files.GLTFMesh.validate_vertices" title="compas.files.GLTFMesh.validate_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_vertices</span></code></a>(vertices)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFMesh.validate_vertices.html#compas.files.GLTFMesh.validate_vertices" title="compas.files.GLTFMesh.validate_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_vertices</span></code></a></p></td>
 <td><p>Raise an exception if there are either too many vertices, or the vertices do not represent points in 3-space.</p></td>
 </tr>
 </tbody>
