@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_plotters.artists.NetworkArtist.draw_edgelabels`.
 * Added `compas_plotters.Plotter.fontsize`.
 * Added `INSTALLED_VERSION` variable to `compas_rhino.install` to interally inform rhino version context post-installation steps.
+* Added `compas_rhino.geometry.RhinoNurbsSurface`.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_parameters` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_points` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_fill` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_step` plugin.
+* Added `compas_rhino.conversions.RhinoSurface.to_compas`.
 
 ### Changed
 
@@ -21,6 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_plotters.artists.MeshArtist.draw_vertexlabels` to use `compas_plotters.Plotter.fontsize`.
 * Changed `compas_plotters.artists.MeshArtist.draw_edgelabels` to use `compas_plotters.Plotter.fontsize`.
 * Changed `compas_plotters.artists.MeshArtist.draw_facelabels` to use `compas_plotters.Plotter.fontsize`.
+* Fixed bug in `compas_rhino.conversions.plane_to_compas_frame`.
+* Changed implementation of `compas.geometry.NurbsSurface.xyz`.
+* Fixed bug in `compas.geometry.NurbsSurface.to_mesh`.
+* Changed `compas_rhino.geometry.RhinoNurbsSurface.from_points` to use transposed points.
+* Fixed bug in `compas_rhino.conversions.RhinoSurface.to_compas_mesh`.
 
 ### Removed
 

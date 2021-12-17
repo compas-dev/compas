@@ -64,6 +64,7 @@ __all_plugins__ = [
     'compas_rhino.uninstall',
     'compas_rhino.artists',
     'compas_rhino.geometry.curves',
+    'compas_rhino.geometry.surfaces',
 ]
 
 

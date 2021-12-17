@@ -1,11 +1,12 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from itertools import groupby
 from compas.geometry import Point
 from compas.utilities import linspace
 
-try:
-    from compas.geometry import NurbsCurve
-except ImportError:
-    from compas.geometry import Geometry as NurbsCurve
+from compas.geometry import NurbsCurve
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
