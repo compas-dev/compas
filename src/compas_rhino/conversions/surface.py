@@ -12,6 +12,7 @@ from compas.datastructures import meshes_join
 from ._primitives import point_to_compas
 
 from ._geometry import RhinoGeometry
+from ._exceptions import ConversionError
 
 
 class RhinoSurface(RhinoGeometry):
@@ -46,13 +47,18 @@ class RhinoSurface(RhinoGeometry):
         Returns
         -------
         :class:`compas_rhino.geometry.RhinoNurbsSurface`
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the surface BRep contains more than one face.
         """
         from compas.geometry import NurbsSurface
 
         brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
         surface = NurbsSurface()
         if brep.Surfaces.Count > 1:
-            raise Exception('Conversion of a BRep with multiple underlying surface is currently not supported.')
+            raise ConversionError('Conversion of a BRep with multiple underlying surface is currently not supported.')
         for geometry in brep.Surfaces:
             surface.rhino_surface = geometry
             break
