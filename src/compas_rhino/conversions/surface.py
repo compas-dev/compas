@@ -40,7 +40,25 @@ class RhinoSurface(RhinoGeometry):
                 raise TypeError("Geometry cannot be interpreted as a `Rhino.Geometry.Surface`: {}".format(type(geometry)))
         self._geometry = geometry
 
-    def to_compas_mesh(self, cls=None, facefilter=None, cleanup=True):
+    def to_compas(self):
+        """Convert the surface to a COMPAS surface.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
+        """
+        from compas.geometry import NurbsSurface
+
+        brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
+        surface = NurbsSurface()
+        if brep.Surfaces.Count > 1:
+            raise Exception('Conversion of a BRep with multiple underlying surface is currently not supported.')
+        for geometry in brep.Surfaces:
+            surface.rhino_surface = geometry
+            break
+        return surface
+
+    def to_compas_mesh(self, cls=None, facefilter=None, cleanup=False):
         """Convert the surface b-rep loops to a COMPAS mesh.
 
         Parameters
@@ -55,7 +73,7 @@ class RhinoSurface(RhinoGeometry):
         cleanup : bool, optional
             Flag indicating to clean up the result.
             Cleaning up means to remove isolated faces and unused vertices.
-            Default is ``True``.
+            Default is ``False``.
 
         Returns
         -------
@@ -131,9 +149,10 @@ class RhinoSurface(RhinoGeometry):
         mesh.name = self.name
         # remove isolated faces
         if cleanup:
-            for face in list(mesh.faces()):
-                if not mesh.face_neighbors(face):
-                    mesh.delete_face(face)
+            if mesh.number_of_faces() > 1:
+                for face in list(mesh.faces()):
+                    if not mesh.face_neighbors(face):
+                        mesh.delete_face(face)
             mesh.remove_unused_vertices()
         return mesh
 
