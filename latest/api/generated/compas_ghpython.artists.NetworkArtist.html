@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="NetworkArtist.build" href="compas_ghpython.artists.NetworkArtist.build.html" />
+    <link rel="next" title="NetworkArtist.draw" href="compas_ghpython.artists.NetworkArtist.draw.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.13.2
+            1.13.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -116,6 +116,75 @@
 <dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – A COMPAS network.</p>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_edgecolor</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_nodecolor</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AVAILABLE_CONTEXTS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONTEXT</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ITEM_ARTIST</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_edgewidth</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_nodesize</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_text</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_width</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">network</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_size</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_text</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_xyz</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -123,37 +192,46 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.build.html#compas_ghpython.artists.NetworkArtist.build" title="compas_ghpython.artists.NetworkArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p>Build an artist corresponding to the item type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.build_as.html#compas_ghpython.artists.NetworkArtist.build_as" title="compas_ghpython.artists.NetworkArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a>(item, artist_type, **kwargs)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear.html#compas_ghpython.artists.NetworkArtist.clear" title="compas_ghpython.artists.NetworkArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_edges.html#compas_ghpython.artists.NetworkArtist.clear_edges" title="compas_ghpython.artists.NetworkArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_nodes.html#compas_ghpython.artists.NetworkArtist.clear_nodes" title="compas_ghpython.artists.NetworkArtist.clear_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_nodes</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw.html#compas_ghpython.artists.NetworkArtist.draw" title="compas_ghpython.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw.html#compas_ghpython.artists.NetworkArtist.draw" title="compas_ghpython.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the entire network with default color settings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_collection.html#compas_ghpython.artists.NetworkArtist.draw_collection" title="compas_ghpython.artists.NetworkArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_edges.html#compas_ghpython.artists.NetworkArtist.draw_edges" title="compas_ghpython.artists.NetworkArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_edges.html#compas_ghpython.artists.NetworkArtist.draw_edges" title="compas_ghpython.artists.NetworkArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_nodes.html#compas_ghpython.artists.NetworkArtist.draw_nodes" title="compas_ghpython.artists.NetworkArtist.draw_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodes</span></code></a>([nodes, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_nodes.html#compas_ghpython.artists.NetworkArtist.draw_nodes" title="compas_ghpython.artists.NetworkArtist.draw_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodes</span></code></a></p></td>
 <td><p>Draw a selection of nodes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.redraw.html#compas_ghpython.artists.NetworkArtist.redraw" title="compas_ghpython.artists.NetworkArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.build.html#compas_ghpython.artists.NetworkArtist.build" title="compas_ghpython.artists.NetworkArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p>Build an artist corresponding to the item type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.build_as.html#compas_ghpython.artists.NetworkArtist.build_as" title="compas_ghpython.artists.NetworkArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.register.html#compas_ghpython.artists.NetworkArtist.register" title="compas_ghpython.artists.NetworkArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type[, context])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear.html#compas_ghpython.artists.NetworkArtist.clear" title="compas_ghpython.artists.NetworkArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_edges.html#compas_ghpython.artists.NetworkArtist.clear_edges" title="compas_ghpython.artists.NetworkArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_nodes.html#compas_ghpython.artists.NetworkArtist.clear_nodes" title="compas_ghpython.artists.NetworkArtist.clear_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_nodes</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_collection.html#compas_ghpython.artists.NetworkArtist.draw_collection" title="compas_ghpython.artists.NetworkArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.redraw.html#compas_ghpython.artists.NetworkArtist.redraw" title="compas_ghpython.artists.NetworkArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.register.html#compas_ghpython.artists.NetworkArtist.register" title="compas_ghpython.artists.NetworkArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -227,10 +305,10 @@
       
 
       
-        <a href="compas_ghpython.artists.NetworkArtist.build.html" title="NetworkArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_ghpython.artists.NetworkArtist.draw.html" title="NetworkArtist.draw" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            NetworkArtist.build
+            NetworkArtist.draw
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -276,7 +354,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.13.2',
+    VERSION           : '1.13.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

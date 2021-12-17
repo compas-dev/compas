@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshObject.build" href="compas_rhino.objects.MeshObject.build.html" />
+    <link rel="next" title="MeshObject.clear" href="compas_rhino.objects.MeshObject.clear.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.13.2
+            1.13.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -123,6 +123,90 @@
 </ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SETTINGS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchor</span></code></p></td>
+<td><p>The vertex of the mesh that is anchored to the location of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_edge</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh edge identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_edgelabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh edgelabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_face</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh face identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_facelabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh facelabel identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_facenormal</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh facenormal identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_vertex</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh vertex identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_vertexlabel</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh vertexlabel identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid_vertexnormal</span></code></p></td>
+<td><p>Map between Rhino object GUIDs and mesh vertexnormal identifiers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guids</span></code></p></td>
+<td><p>The GUIDs of all Rhino objects created by this artist.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></p></td>
+<td><p><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>: The location of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotation</span></code></p></td>
+<td><p>list of float: The rotation angles around the 3 axis of the coordinate system with the origin placed at the location of the object in the scene.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></p></td>
+<td><p>float: A uniform scaling factor for the object in the scene.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_xyz</span></code></p></td>
+<td><p>The view coordinates of the mesh object.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">artist</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">item</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layer</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scene</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -130,68 +214,77 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.build.html#compas_rhino.objects.MeshObject.build" title="compas_rhino.objects.MeshObject.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.clear.html#compas_rhino.objects.MeshObject.clear" title="compas_rhino.objects.MeshObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.clear.html#compas_rhino.objects.MeshObject.clear" title="compas_rhino.objects.MeshObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear all Rhino objects associated with this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.clear_layer.html#compas_rhino.objects.MeshObject.clear_layer" title="compas_rhino.objects.MeshObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the layer of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.draw.html#compas_rhino.objects.MeshObject.draw" title="compas_rhino.objects.MeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.draw.html#compas_rhino.objects.MeshObject.draw" title="compas_rhino.objects.MeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the object representing the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify.html#compas_rhino.objects.MeshObject.modify" title="compas_rhino.objects.MeshObject.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify.html#compas_rhino.objects.MeshObject.modify" title="compas_rhino.objects.MeshObject.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a></p></td>
 <td><p>Update the attributes of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify_edges.html#compas_rhino.objects.MeshObject.modify_edges" title="compas_rhino.objects.MeshObject.modify_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_edges</span></code></a>(edges[, names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify_edges.html#compas_rhino.objects.MeshObject.modify_edges" title="compas_rhino.objects.MeshObject.modify_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_edges</span></code></a></p></td>
 <td><p>Update the attributes of the edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify_faces.html#compas_rhino.objects.MeshObject.modify_faces" title="compas_rhino.objects.MeshObject.modify_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_faces</span></code></a>(faces[, names])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify_faces.html#compas_rhino.objects.MeshObject.modify_faces" title="compas_rhino.objects.MeshObject.modify_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_faces</span></code></a></p></td>
 <td><p>Update the attributes of selected faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify_vertices.html#compas_rhino.objects.MeshObject.modify_vertices" title="compas_rhino.objects.MeshObject.modify_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_vertices</span></code></a>(vertices[, names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.modify_vertices.html#compas_rhino.objects.MeshObject.modify_vertices" title="compas_rhino.objects.MeshObject.modify_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_vertices</span></code></a></p></td>
 <td><p>Update the attributes of selected vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move.html#compas_rhino.objects.MeshObject.move" title="compas_rhino.objects.MeshObject.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move.html#compas_rhino.objects.MeshObject.move" title="compas_rhino.objects.MeshObject.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a></p></td>
 <td><p>Move the entire mesh object to a different location.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move_face.html#compas_rhino.objects.MeshObject.move_face" title="compas_rhino.objects.MeshObject.move_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_face</span></code></a>(face)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move_face.html#compas_rhino.objects.MeshObject.move_face" title="compas_rhino.objects.MeshObject.move_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_face</span></code></a></p></td>
 <td><p>Move a single face of the mesh object and update the data structure accordingly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move_vertex.html#compas_rhino.objects.MeshObject.move_vertex" title="compas_rhino.objects.MeshObject.move_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertex</span></code></a>(vertex)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move_vertex.html#compas_rhino.objects.MeshObject.move_vertex" title="compas_rhino.objects.MeshObject.move_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertex</span></code></a></p></td>
 <td><p>Move a single vertex of the mesh object and update the data structure accordingly.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move_vertices.html#compas_rhino.objects.MeshObject.move_vertices" title="compas_rhino.objects.MeshObject.move_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertices</span></code></a>(vertices)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.move_vertices.html#compas_rhino.objects.MeshObject.move_vertices" title="compas_rhino.objects.MeshObject.move_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_vertices</span></code></a></p></td>
 <td><p>Move a multiple vertices of the mesh object and update the data structure accordingly.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.redraw.html#compas_rhino.objects.MeshObject.redraw" title="compas_rhino.objects.MeshObject.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
-<td><p>Redraw the Rhino scene/view.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.register.html#compas_rhino.objects.MeshObject.register" title="compas_rhino.objects.MeshObject.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, object_type)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.registered_object_types.html#compas_rhino.objects.MeshObject.registered_object_types" title="compas_rhino.objects.MeshObject.registered_object_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_object_types</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.scale_from_3_points.html#compas_rhino.objects.MeshObject.scale_from_3_points" title="compas_rhino.objects.MeshObject.scale_from_3_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_from_3_points</span></code></a>([message])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.scale_from_3_points.html#compas_rhino.objects.MeshObject.scale_from_3_points" title="compas_rhino.objects.MeshObject.scale_from_3_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_from_3_points</span></code></a></p></td>
 <td><p>Scale the mesh object from 3 reference points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select.html#compas_rhino.objects.MeshObject.select" title="compas_rhino.objects.MeshObject.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select.html#compas_rhino.objects.MeshObject.select" title="compas_rhino.objects.MeshObject.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a></p></td>
 <td><p>Select the object representing the item.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_edges.html#compas_rhino.objects.MeshObject.select_edges" title="compas_rhino.objects.MeshObject.select_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_edges</span></code></a>([message])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_edges.html#compas_rhino.objects.MeshObject.select_edges" title="compas_rhino.objects.MeshObject.select_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_edges</span></code></a></p></td>
 <td><p>Select edges of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_faces.html#compas_rhino.objects.MeshObject.select_faces" title="compas_rhino.objects.MeshObject.select_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_faces</span></code></a>([message])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_faces.html#compas_rhino.objects.MeshObject.select_faces" title="compas_rhino.objects.MeshObject.select_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_faces</span></code></a></p></td>
 <td><p>Select faces of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_vertex.html#compas_rhino.objects.MeshObject.select_vertex" title="compas_rhino.objects.MeshObject.select_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertex</span></code></a>([message])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_vertex.html#compas_rhino.objects.MeshObject.select_vertex" title="compas_rhino.objects.MeshObject.select_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertex</span></code></a></p></td>
 <td><p>Select one vertex of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_vertices.html#compas_rhino.objects.MeshObject.select_vertices" title="compas_rhino.objects.MeshObject.select_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertices</span></code></a>([message])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.select_vertices.html#compas_rhino.objects.MeshObject.select_vertices" title="compas_rhino.objects.MeshObject.select_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_vertices</span></code></a></p></td>
 <td><p>Select vertices of the mesh.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.build.html#compas_rhino.objects.MeshObject.build" title="compas_rhino.objects.MeshObject.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.clear_layer.html#compas_rhino.objects.MeshObject.clear_layer" title="compas_rhino.objects.MeshObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
+<td><p>Clear the layer of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.redraw.html#compas_rhino.objects.MeshObject.redraw" title="compas_rhino.objects.MeshObject.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<td><p>Redraw the Rhino scene/view.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.register.html#compas_rhino.objects.MeshObject.register" title="compas_rhino.objects.MeshObject.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.objects.MeshObject.registered_object_types.html#compas_rhino.objects.MeshObject.registered_object_types" title="compas_rhino.objects.MeshObject.registered_object_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_object_types</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -269,10 +362,10 @@
       
 
       
-        <a href="compas_rhino.objects.MeshObject.build.html" title="MeshObject.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.objects.MeshObject.clear.html" title="MeshObject.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            MeshObject.build
+            MeshObject.clear
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -318,7 +411,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.13.2',
+    VERSION           : '1.13.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

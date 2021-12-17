@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="NurbsSurface.from_json" href="compas.geometry.NurbsSurface.from_json.html" />
+    <link rel="next" title="NurbsSurface.from_meshgrid" href="compas.geometry.NurbsSurface.from_meshgrid.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.13.2
+            1.13.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -112,6 +112,17 @@
 <dt class="sig sig-object py" id="compas.geometry.NurbsSurface.from_fill">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">NurbsSurface.</span></span><span class="sig-name descname"><span class="pre">from_fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve2</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct a NURBS surface from the infill between two NURBS curves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>curve1</strong> (<a class="reference internal" href="compas.geometry.NurbsCurve.html#compas.geometry.NurbsCurve" title="compas.geometry.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve</span></code></a>)</p></li>
+<li><p><strong>curve2</strong> (<a class="reference internal" href="compas.geometry.NurbsCurve.html#compas.geometry.NurbsCurve" title="compas.geometry.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve</span></code></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.NurbsSurface.html#compas.geometry.NurbsSurface" title="compas.geometry.NurbsSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -190,10 +201,10 @@
       
 
       
-        <a href="compas.geometry.NurbsSurface.from_json.html" title="NurbsSurface.from_json" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas.geometry.NurbsSurface.from_meshgrid.html" title="NurbsSurface.from_meshgrid" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            NurbsSurface.from_json
+            NurbsSurface.from_meshgrid
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -239,7 +250,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.13.2',
+    VERSION           : '1.13.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

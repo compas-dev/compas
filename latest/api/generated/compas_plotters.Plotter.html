@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.13.2
+            1.13.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -119,6 +119,39 @@ Default is <code class="docutils literal notranslate"><span class="pre">(8,</spa
 </ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">artists</span></code></p></td>
+<td><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.artists.PlotterArtist</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></p></td>
+<td><p>Returns the axes subplot matplotlib object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bgcolor</span></code></p></td>
+<td><p>Returns the background color.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">canvas</span></code></p></td>
+<td><p>Returns the canvas of the figure instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">figure</span></code></p></td>
+<td><p>Returns the matplotlib figure instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fontsize</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></p></td>
+<td><p>Returns the title of the plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">viewbox</span></code></p></td>
+<td><p>The area of the axes that is zoomed into view.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -126,40 +159,40 @@ Default is <code class="docutils literal notranslate"><span class="pre">(8,</spa
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.add.html#compas_plotters.Plotter.add" title="compas_plotters.Plotter.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(item[, artist])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.add.html#compas_plotters.Plotter.add" title="compas_plotters.Plotter.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a COMPAS geometry object or data structure to the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.add_as.html#compas_plotters.Plotter.add_as" title="compas_plotters.Plotter.add_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_as</span></code></a>(item, artist_type, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.add_as.html#compas_plotters.Plotter.add_as" title="compas_plotters.Plotter.add_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_as</span></code></a></p></td>
 <td><p>Add a COMPAS geometry object or data structure using a specific artist type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.add_from_list.html#compas_plotters.Plotter.add_from_list" title="compas_plotters.Plotter.add_from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_from_list</span></code></a>(items, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.add_from_list.html#compas_plotters.Plotter.add_from_list" title="compas_plotters.Plotter.add_from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_from_list</span></code></a></p></td>
 <td><p>Add multiple COMPAS geometry objects and/or data structures from a list.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.draw.html#compas_plotters.Plotter.draw" title="compas_plotters.Plotter.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([pause])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.draw.html#compas_plotters.Plotter.draw" title="compas_plotters.Plotter.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw all objects included in the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.find.html#compas_plotters.Plotter.find" title="compas_plotters.Plotter.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(item)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.find.html#compas_plotters.Plotter.find" title="compas_plotters.Plotter.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a></p></td>
 <td><p>Find a geometry object or data structure in the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.on.html#compas_plotters.Plotter.on" title="compas_plotters.Plotter.on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on</span></code></a>([interval, frames, record, recording, dpi])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.on.html#compas_plotters.Plotter.on" title="compas_plotters.Plotter.on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on</span></code></a></p></td>
 <td><p>Method for decorating callback functions in dynamic plots.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.pause.html#compas_plotters.Plotter.pause" title="compas_plotters.Plotter.pause"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pause</span></code></a>(pause)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.pause.html#compas_plotters.Plotter.pause" title="compas_plotters.Plotter.pause"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pause</span></code></a></p></td>
 <td><p>Pause plotting during the specified interval.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.redraw.html#compas_plotters.Plotter.redraw" title="compas_plotters.Plotter.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([pause])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.redraw.html#compas_plotters.Plotter.redraw" title="compas_plotters.Plotter.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p>Updates and pauses the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.register_listener.html#compas_plotters.Plotter.register_listener" title="compas_plotters.Plotter.register_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_listener</span></code></a>(listener)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.register_listener.html#compas_plotters.Plotter.register_listener" title="compas_plotters.Plotter.register_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_listener</span></code></a></p></td>
 <td><p>Register a listener for pick events.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.save.html#compas_plotters.Plotter.save" title="compas_plotters.Plotter.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(filepath, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.save.html#compas_plotters.Plotter.save" title="compas_plotters.Plotter.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a></p></td>
 <td><p>Saves the plot to a file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.show.html#compas_plotters.Plotter.show" title="compas_plotters.Plotter.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.Plotter.show.html#compas_plotters.Plotter.show" title="compas_plotters.Plotter.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a></p></td>
 <td><p>Displays the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.zoom_extents.html#compas_plotters.Plotter.zoom_extents" title="compas_plotters.Plotter.zoom_extents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoom_extents</span></code></a>([padding])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.Plotter.zoom_extents.html#compas_plotters.Plotter.zoom_extents" title="compas_plotters.Plotter.zoom_extents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoom_extents</span></code></a></p></td>
 <td><p>Zoom the view to the bounding box of all objects.</p></td>
 </tr>
 </tbody>
@@ -281,7 +314,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">(8,</spa
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.13.2',
+    VERSION           : '1.13.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

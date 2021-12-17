@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.13.2
+            1.13.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -181,6 +181,78 @@ is also unit-length.</p>
 <span class="go">True</span>
 </code></pre></div>
 </div>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASCHEMA</span></code></p></td>
+<td><p>The schema of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMANAME</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>The representation of the object as native Python data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_unit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the quaternion is unit-length or <code class="docutils literal notranslate"><span class="pre">False</span></code> if otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></p></td>
+<td><p>The length (euclidean norm) of the quaternion.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">w</span></code></p></td>
+<td><p>The W component of the quaternion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wxyz</span></code></p></td>
+<td><p>Quaternion as a list of float in the 'wxyz' convention.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>The X component of the quaternion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xyzw</span></code></p></td>
+<td><p>Quaternion as a list of float in the 'xyzw' convention.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p>The Y component of the quaternion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></p></td>
+<td><p>The Z component of the quaternion.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
+<td><p>The schema of the JSON representation of the data of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a '2-level' import and a class name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsondefinitions</span></code></p></td>
+<td><p>Reusable schema definitions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonstring</span></code></p></td>
+<td><p>The representation of the object data in JSON format.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonvalidator</span></code></p></td>
+<td><p>JSON schema validator for draft 7.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the object.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -188,64 +260,73 @@ is also unit-length.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.canonize.html#compas.geometry.Quaternion.canonize" title="compas.geometry.Quaternion.canonize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">canonize</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.canonize.html#compas.geometry.Quaternion.canonize" title="compas.geometry.Quaternion.canonize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">canonize</span></code></a></p></td>
 <td><p>Makes the quaternion canonic.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.canonized.html#compas.geometry.Quaternion.canonized" title="compas.geometry.Quaternion.canonized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">canonized</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.canonized.html#compas.geometry.Quaternion.canonized" title="compas.geometry.Quaternion.canonized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">canonized</span></code></a></p></td>
 <td><p>Returns a quaternion in canonic form.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.conjugate.html#compas.geometry.Quaternion.conjugate" title="compas.geometry.Quaternion.conjugate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugate</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.conjugate.html#compas.geometry.Quaternion.conjugate" title="compas.geometry.Quaternion.conjugate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugate</span></code></a></p></td>
 <td><p>Conjugate the quaternion.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.conjugated.html#compas.geometry.Quaternion.conjugated" title="compas.geometry.Quaternion.conjugated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugated</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.conjugated.html#compas.geometry.Quaternion.conjugated" title="compas.geometry.Quaternion.conjugated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugated</span></code></a></p></td>
 <td><p>Returns a conjugate quaternion.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.copy.html#compas.geometry.Quaternion.copy" title="compas.geometry.Quaternion.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
-<td><p>Make an independent copy of the data object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_data.html#compas.geometry.Quaternion.from_data" title="compas.geometry.Quaternion.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_data.html#compas.geometry.Quaternion.from_data" title="compas.geometry.Quaternion.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct a quaternion from a data dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_frame.html#compas.geometry.Quaternion.from_frame" title="compas.geometry.Quaternion.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_frame.html#compas.geometry.Quaternion.from_frame" title="compas.geometry.Quaternion.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a></p></td>
 <td><p>Creates a quaternion object from a frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_json.html#compas.geometry.Quaternion.from_json" title="compas.geometry.Quaternion.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_jsonstring.html#compas.geometry.Quaternion.from_jsonstring" title="compas.geometry.Quaternion.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix" title="compas.geometry.Quaternion.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(M)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix" title="compas.geometry.Quaternion.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
 <td><p>Create a <a class="reference internal" href="#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a> from a transformation matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_rotation.html#compas.geometry.Quaternion.from_rotation" title="compas.geometry.Quaternion.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a>(R)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_rotation.html#compas.geometry.Quaternion.from_rotation" title="compas.geometry.Quaternion.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
 <td><p>Create a <a class="reference internal" href="#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a> from a <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Rotatation</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_data.html#compas.geometry.Quaternion.to_data" title="compas.geometry.Quaternion.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_json.html#compas.geometry.Quaternion.to_json" title="compas.geometry.Quaternion.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_jsonstring.html#compas.geometry.Quaternion.to_jsonstring" title="compas.geometry.Quaternion.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.transform.html#compas.geometry.Quaternion.transform" title="compas.geometry.Quaternion.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
-<td><p>Transform the geometry.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.transformed.html#compas.geometry.Quaternion.transformed" title="compas.geometry.Quaternion.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
-<td><p>Returns a transformed copy of this geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.unitize.html#compas.geometry.Quaternion.unitize" title="compas.geometry.Quaternion.unitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitize</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.unitize.html#compas.geometry.Quaternion.unitize" title="compas.geometry.Quaternion.unitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitize</span></code></a></p></td>
 <td><p>Scales the quaternion to make it unit-length.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.unitized.html#compas.geometry.Quaternion.unitized" title="compas.geometry.Quaternion.unitized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitized</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.unitized.html#compas.geometry.Quaternion.unitized" title="compas.geometry.Quaternion.unitized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitized</span></code></a></p></td>
 <td><p>Returns a quaternion with a unit-length.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.validate_data.html#compas.geometry.Quaternion.validate_data" title="compas.geometry.Quaternion.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.copy.html#compas.geometry.Quaternion.copy" title="compas.geometry.Quaternion.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_json.html#compas.geometry.Quaternion.from_json" title="compas.geometry.Quaternion.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_jsonstring.html#compas.geometry.Quaternion.from_jsonstring" title="compas.geometry.Quaternion.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_data.html#compas.geometry.Quaternion.to_data" title="compas.geometry.Quaternion.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<td><p>Convert an object to its native data representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_json.html#compas.geometry.Quaternion.to_json" title="compas.geometry.Quaternion.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_jsonstring.html#compas.geometry.Quaternion.to_jsonstring" title="compas.geometry.Quaternion.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Serialize the data representation of an object to a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.transform.html#compas.geometry.Quaternion.transform" title="compas.geometry.Quaternion.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<td><p>Transform the geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.transformed.html#compas.geometry.Quaternion.transformed" title="compas.geometry.Quaternion.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<td><p>Returns a transformed copy of this geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.validate_data.html#compas.geometry.Quaternion.validate_data" title="compas.geometry.Quaternion.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.validate_json.html#compas.geometry.Quaternion.validate_json" title="compas.geometry.Quaternion.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.validate_json.html#compas.geometry.Quaternion.validate_json" title="compas.geometry.Quaternion.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
 </tr>
 </tbody>
@@ -377,7 +458,7 @@ is also unit-length.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.13.2',
+    VERSION           : '1.13.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

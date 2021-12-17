@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="RhinoArtist.build" href="compas_rhino.artists.RhinoArtist.build.html" />
+    <link rel="next" title="RhinoArtist.clear_layer" href="compas_rhino.artists.RhinoArtist.clear_layer.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.13.2
+            1.13.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -111,6 +111,24 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">RhinoArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/artist.py#L9"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.artist.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.artist.Artist</span></code></a></p>
 <p>Base class for all Rhino artists.</p>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AVAILABLE_CONTEXTS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONTEXT</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ITEM_ARTIST</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -118,28 +136,37 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.build.html#compas_rhino.artists.RhinoArtist.build" title="compas_rhino.artists.RhinoArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.clear_layer.html#compas_rhino.artists.RhinoArtist.clear_layer" title="compas_rhino.artists.RhinoArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.build.html#compas_rhino.artists.RhinoArtist.build" title="compas_rhino.artists.RhinoArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.build_as.html#compas_rhino.artists.RhinoArtist.build_as" title="compas_rhino.artists.RhinoArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a>(item, artist_type, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.build_as.html#compas_rhino.artists.RhinoArtist.build_as" title="compas_rhino.artists.RhinoArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.clear.html#compas_rhino.artists.RhinoArtist.clear" title="compas_rhino.artists.RhinoArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.clear.html#compas_rhino.artists.RhinoArtist.clear" title="compas_rhino.artists.RhinoArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.clear_layer.html#compas_rhino.artists.RhinoArtist.clear_layer" title="compas_rhino.artists.RhinoArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.draw.html#compas_rhino.artists.RhinoArtist.draw" title="compas_rhino.artists.RhinoArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.draw.html#compas_rhino.artists.RhinoArtist.draw" title="compas_rhino.artists.RhinoArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.draw_collection.html#compas_rhino.artists.RhinoArtist.draw_collection" title="compas_rhino.artists.RhinoArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.draw_collection.html#compas_rhino.artists.RhinoArtist.draw_collection" title="compas_rhino.artists.RhinoArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.redraw.html#compas_rhino.artists.RhinoArtist.redraw" title="compas_rhino.artists.RhinoArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.redraw.html#compas_rhino.artists.RhinoArtist.redraw" title="compas_rhino.artists.RhinoArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.register.html#compas_rhino.artists.RhinoArtist.register" title="compas_rhino.artists.RhinoArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type[, context])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.RhinoArtist.register.html#compas_rhino.artists.RhinoArtist.register" title="compas_rhino.artists.RhinoArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -218,10 +245,10 @@
       
 
       
-        <a href="compas_rhino.artists.RhinoArtist.build.html" title="RhinoArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.artists.RhinoArtist.clear_layer.html" title="RhinoArtist.clear_layer" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            RhinoArtist.build
+            RhinoArtist.clear_layer
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -267,7 +294,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.13.2',
+    VERSION           : '1.13.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

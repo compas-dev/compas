@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="RhinoPolyline.from_geometry" href="compas_rhino.conversions.RhinoPolyline.from_geometry.html" />
+    <link rel="next" title="RhinoPolyline.to_compas" href="compas_rhino.conversions.RhinoPolyline.to_compas.html" />
   
   
   
@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            1.13.2
+            1.13.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -111,6 +111,39 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.conversions.</span></span><span class="sig-name descname"><span class="pre">RhinoPolyline</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conversions/polyline.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.conversions.RhinoGeometry.html#compas_rhino.conversions.RhinoGeometry" title="compas_rhino.conversions._geometry.RhinoGeometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.conversions._geometry.RhinoGeometry</span></code></a></p>
 <p>Wrapper for Rhino polylines.</p>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -118,19 +151,28 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.from_geometry.html#compas_rhino.conversions.RhinoPolyline.from_geometry" title="compas_rhino.conversions.RhinoPolyline.from_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_geometry</span></code></a>(geometry)</p></td>
-<td><p>Construct a Rhino object wrapper from an existing Rhino object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.from_guid.html#compas_rhino.conversions.RhinoPolyline.from_guid" title="compas_rhino.conversions.RhinoPolyline.from_guid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_guid</span></code></a>(guid)</p></td>
-<td><p>Try to construct a RhinoGeometry wrapper from the GUID of an existing Rhino DocObject.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.from_object.html#compas_rhino.conversions.RhinoPolyline.from_object" title="compas_rhino.conversions.RhinoPolyline.from_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_object</span></code></a>(obj)</p></td>
-<td><p>Construct a Rhino object wrapper from an existing Rhino object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.to_compas.html#compas_rhino.conversions.RhinoPolyline.to_compas" title="compas_rhino.conversions.RhinoPolyline.to_compas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_compas</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.to_compas.html#compas_rhino.conversions.RhinoPolyline.to_compas" title="compas_rhino.conversions.RhinoPolyline.to_compas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_compas</span></code></a></p></td>
 <td><p>Convert the polyline to a COMPAS geometry object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.transform.html#compas_rhino.conversions.RhinoPolyline.transform" title="compas_rhino.conversions.RhinoPolyline.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.from_geometry.html#compas_rhino.conversions.RhinoPolyline.from_geometry" title="compas_rhino.conversions.RhinoPolyline.from_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_geometry</span></code></a></p></td>
+<td><p>Construct a Rhino object wrapper from an existing Rhino object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.from_guid.html#compas_rhino.conversions.RhinoPolyline.from_guid" title="compas_rhino.conversions.RhinoPolyline.from_guid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_guid</span></code></a></p></td>
+<td><p>Try to construct a RhinoGeometry wrapper from the GUID of an existing Rhino DocObject.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.from_object.html#compas_rhino.conversions.RhinoPolyline.from_object" title="compas_rhino.conversions.RhinoPolyline.from_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_object</span></code></a></p></td>
+<td><p>Construct a Rhino object wrapper from an existing Rhino object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.conversions.RhinoPolyline.transform.html#compas_rhino.conversions.RhinoPolyline.transform" title="compas_rhino.conversions.RhinoPolyline.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the Rhino object.</p></td>
 </tr>
 </tbody>
@@ -209,10 +251,10 @@
       
 
       
-        <a href="compas_rhino.conversions.RhinoPolyline.from_geometry.html" title="RhinoPolyline.from_geometry" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_rhino.conversions.RhinoPolyline.to_compas.html" title="RhinoPolyline.to_compas" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            RhinoPolyline.from_geometry
+            RhinoPolyline.to_compas
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -258,7 +300,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '1.13.2',
+    VERSION           : '1.13.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
