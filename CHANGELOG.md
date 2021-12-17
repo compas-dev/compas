@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_points` plugin.
 * Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_fill` plugin.
 * Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_step` plugin.
+* Added `compas_rhino.conversions.RhinoSurface.to_compas`.
 
 ### Changed
 
@@ -31,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed implementation of `compas.geometry.NurbsSurface.xyz`.
 * Fixed bug in `compas.geometry.NurbsSurface.to_mesh`.
 * Changed `compas_rhino.geometry.RhinoNurbsSurface.from_points` to use transposed points.
+* Fixed bug in `compas_rhino.conversions.RhinoSurface.to_compas_mesh`.
 
 ### Removed
 
