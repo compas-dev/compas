@@ -22,35 +22,6 @@ class NetworkArtist(Artist):
         The default color for nodes that do not have a specified color.
     default_edgecolor : tuple
         The default color for edges that do not have a specified color.
-
-    Attributes
-    ----------
-    network : :class:`compas.datastructures.Network`
-        The COMPAS network associated with the artist.
-    nodes : list
-        The list of nodes to draw.
-        Default is a list of all nodes of the network.
-    edges : list
-        The list of edges to draw.
-        Default is a list of all edges of the network.
-    node_xyz : dict[int, tuple(float, float, float)]
-        Mapping between nodes and their view coordinates.
-        The default view coordinates are the actual coordinates of the nodes of the network.
-    node_color : dict[int, tuple(int, int, int)]
-        Mapping between nodes and RGB color values.
-        The colors have to be integer tuples with values in the range ``0-255``.
-        Missing nodes get the default node color (``MeshArtist.default_nodecolor``).
-    node_text : dict[int, str]
-        Mapping between nodes and text labels.
-        Missing nodes are labelled with the corresponding node identifiers.
-    edge_color : dict[tuple(int, int), tuple(int, int, int)]
-        Mapping between edges and RGB color values.
-        The colors have to be integer tuples with values in the range ``0-255``.
-        Missing edges get the default edge color (``MeshArtist.default_edgecolor``).
-    edge_text : dict[tuple(int, int), str]
-        Mapping between edges and text labels.
-        Missing edges are labelled with the corresponding edge identifiers.
-
     """
 
     default_nodecolor = (1, 1, 1)
@@ -80,6 +51,8 @@ class NetworkArtist(Artist):
 
     @property
     def network(self):
+        """:class:`compas.datastructures.Network` -
+        The COMPAS network associated with the artist."""
         return self._network
 
     @network.setter
@@ -89,6 +62,10 @@ class NetworkArtist(Artist):
 
     @property
     def nodes(self):
+        """List[:obj:`int`] -
+        The list of nodes to draw.
+        Default is a list of all nodes of the network.
+        """
         if self._nodes is None:
             self._nodes = list(self.network.nodes())
         return self._nodes
@@ -99,6 +76,10 @@ class NetworkArtist(Artist):
 
     @property
     def edges(self):
+        """List[Tuple[:obj:`int`, :obj:`int`]] -
+        The list of edges to draw.
+        Default is a list of all edges of the network.
+        """
         if self._edges is None:
             self._edges = list(self.network.edges())
         return self._edges
@@ -109,6 +90,10 @@ class NetworkArtist(Artist):
 
     @property
     def node_xyz(self):
+        """Dict[:obj:`int`, List[:obj:`float`]] -
+        Mapping between nodes and their view coordinates.
+        The default view coordinates are the actual coordinates of the nodes of the network.
+        """
         if not self._node_xyz:
             return {node: self.network.node_attributes(node, 'xyz') for node in self.network.nodes()}
         return self._node_xyz
@@ -119,6 +104,10 @@ class NetworkArtist(Artist):
 
     @property
     def node_color(self):
+        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        Mapping between nodes and RGB color values.
+        Missing nodes get the default node color (``NetworkArtist.default_nodecolor``).
+        """
         if not self._node_color:
             self._node_color = {node: self.default_nodecolor for node in self.network.nodes()}
         return self._node_color
@@ -132,6 +121,10 @@ class NetworkArtist(Artist):
 
     @property
     def node_size(self):
+        """Dict[:obj:`int`, :obj:`float`] -
+        Mapping between nodes and sizes.
+        Missing nodes get assigned the default node size.
+        """
         if not self._node_size:
             self._node_size = {node: self.default_nodesize for node in self.network.nodes()}
         return self._node_size
@@ -145,6 +138,10 @@ class NetworkArtist(Artist):
 
     @property
     def edge_color(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        Mapping between edges and colors.
+        Missing edges get the default edge color (``NetworkArtist.default_edgecolor``).
+        """
         if not self._edge_color:
             self._edge_color = {edge: self.default_edgecolor for edge in self.network.edges()}
         return self._edge_color
@@ -158,6 +155,9 @@ class NetworkArtist(Artist):
 
     @property
     def node_text(self):
+        """Dict[:obj:`int`, :obj:`str`] -
+        Mapping between nodes and text labels.
+        """
         if not self._node_text:
             self._node_text = {node: str(node) for node in self.network.nodes()}
         return self._node_text
@@ -173,6 +173,9 @@ class NetworkArtist(Artist):
 
     @property
     def edge_text(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`str`] -
+        Mapping between edges and text labels.
+        """
         if not self._edge_text:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}
         return self._edge_text
@@ -188,6 +191,9 @@ class NetworkArtist(Artist):
 
     @property
     def edge_width(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`float`] -
+        Mapping between edges and line width.
+        """
         if not self._edge_width:
             self._edge_width = {edge: self.default_edgewidth for edge in self.network.edges()}
         return self._edge_width
