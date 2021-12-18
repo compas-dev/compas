@@ -9,13 +9,6 @@ from compas import _iotools
 from compas.geometry import Translation
 from compas.utilities import geometric_key
 
-__all__ = [
-    'STL',
-    'STLReader',
-    'STLParser',
-    'STLWriter',
-]
-
 
 class STL(object):
 

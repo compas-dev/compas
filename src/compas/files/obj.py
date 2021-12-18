@@ -9,19 +9,19 @@ import compas
 from compas import _iotools
 from compas.utilities import geometric_key
 
-__all__ = [
-    'OBJ',
-    'OBJReader',
-    'OBJParser',
-    'OBJWriter',
-]
-
 
 class OBJ(object):
-    """Read and write files in OBJ format.
+    """Class for working with OBJ files.
 
     Currently, reading is only supported for polygonal geometry.
     Writing is only supported for meshes.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
+    precision : :obj:`str`, optional
+        A COMPAS precision specification.
 
     Examples
     --------
@@ -74,7 +74,13 @@ class OBJ(object):
 
     References
     ----------
-    .. [1] http://paulbourke.net/dataformats/obj/
+    * http://paulbourke.net/dataformats/obj/
+
+    See Also
+    --------
+    * :class:`OBJReader`
+    * :class:`OBJParser`
+    * :class:`OBJWriter`
 
     """
 
@@ -87,6 +93,7 @@ class OBJ(object):
         self._writer = None
 
     def read(self):
+        """Read and parse the contents of the file."""
         self._reader = OBJReader(self.filepath)
         self._parser = OBJParser(self._reader, precision=self.precision)
         self._reader.open()
@@ -97,35 +104,58 @@ class OBJ(object):
         self._is_parsed = True
 
     def write(self, mesh, unweld=False, **kwargs):
+        """Write a mesh to the file.
+
+        Parameters
+        ----------
+        mesh : :class:`compas.datastructures.Mesh`
+            The mesh.
+        unweld : :obj:`bool`, optional
+            Flag indicating that the vertices of the faces should be unwelded.
+        author : :obj:`str`, optional
+            The author name to include in the header.
+        email : :obj:`str`, optional
+            The email of the author to include in the header.
+        date : :obj:`str`, optional
+            The date to include in the header.
+        """
         self._writer = OBJWriter(self.filepath, mesh, precision=self.precision, unweld=unweld, **kwargs)
         self._writer.write()
 
     @property
     def reader(self):
+        """:class:`OBJReader` - A OBJ file reader."""
         if not self._is_parsed:
             self.read()
         return self._reader
 
     @property
     def parser(self):
+        """:class:`OBJParser` - A OBJ data parser."""
         if not self._is_parsed:
             self.read()
         return self._parser
 
     @property
     def vertices(self):
+        """List[List[:obj:`float`]] - The vertices found in the parsed data."""
         return self.parser.vertices
 
     @property
     def lines(self):
+        """List[Tuple[:obj:`int`, :obj:`int`]] - The lines found in the parsed data, as vertex pairs."""
         return self.parser.lines
 
     @property
     def faces(self):
+        """List[List[:obj:`int`]] - The faces found in the parsed data, as lists of vertices."""
         return self.parser.faces
 
     @property
     def objects(self):
+        """Dict[:obj:`str`, Tuple[List[List[:obj:`float`, :obj:`float`, :obj:`float`]], List[List[:obj:`int`]]]] -
+        The objects found in the parsed data, as a mapping between object names and tuples of lists of vertices and faces.
+        """
         return self.parser.objects
 
     @property
@@ -134,39 +164,12 @@ class OBJ(object):
 
 
 class OBJReader(object):
-    """Read the contents of an *obj* file.
+    """Class for reading raw geometric data from OBJ files.
 
     Parameters
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
-
-    Attributes
-    ----------
-    vertices : list
-        Vertex coordinates.
-    weights : list
-        Vertex weights.
-    textures : list
-        Vertex textures.
-    normals : list
-        Vertex normals.
-    points : list
-        Point objects, referencing the list of vertices.
-    lines : list
-        Line objects, referencing the list of vertices.
-    faces : list
-        Face objects, referencing the list of vertices.
-    curves : list
-        Curves
-    curves2 : list
-        Curves
-    surfaces : list
-        Surfaces
-    objects : dict
-        The named objects.
-    groups : dict
-        The named polygon groups.
 
     Notes
     -----
@@ -184,35 +187,67 @@ class OBJReader(object):
         self.content = None
         # vertex data
         self.vertices = []
+        """List[List[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        List of lists of vertex coordinates.
+        """
         self.weights = []
+        """List[:obj:`float`] - List of vertex weights."""
         self.textures = []
+        """"""
         self.normals = []
+        """List[List[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        List of lists of normal components.
+        """
         # polygonal geometry
         self.points = []
+        """List[:obj:`int`] -
+        List of references to vertex coordinates.
+        """
         self.lines = []
+        """List[Tuple[:obj:`int`, :obj:`int`]] -
+        List of pairs of references to vertex coordinates.
+        """
         self.faces = []
+        """List[List[:obj:`int`] -
+        List of lists of references to vertex coordinates.
+        """
         # free-form geometry
-        self.curves = []
-        self.curves2 = []
-        self.surfaces = []
+        # self.curves = []
+        # """"""
+        # self.curves2 = []
+        # """"""
+        # self.surfaces = []
+        # """"""
         # free-form attributes
-        self.deg = None
-        self.bmat = None
-        self.step = None
-        self.cstype = None
+        # self.deg = None
+        # """"""
+        # self.bmat = None
+        # """"""
+        # self.step = None
+        # """"""
+        # self.cstype = None
+        # """"""
         # free-form statements
         # parm, trim, hole, scrv, sp, end
         # grouping
         self.groups = defaultdict(list)
+        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        Groups of mesh objects defined by their vertices and faces.
+        """
         self.objects = defaultdict(list)
+        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        Named mesh objects defined by their vertices and faces.
+        """
         self.group = None
         self.object = None
 
     def open(self):
+        """Open the file and read its contents."""
         with _iotools.open_file(self.filepath, 'r') as f:
             self.content = f.readlines()
 
     def pre(self):
+        """Pre-process the contents."""
         lines = []
         is_continuation = False
         needs_decode = None
@@ -237,6 +272,7 @@ class OBJReader(object):
         self.content = iter(lines)
 
     def post(self):
+        """Post-process the contents."""
         pass
 
     def read(self):
@@ -411,26 +447,62 @@ class OBJReader(object):
 
 
 class OBJParser(object):
-    """"""
+    """Class for parsing data from a OBJ file.
+    The parser converts the raw geometric data of the file
+    into corresponding COMPAS geometry objects and data structures.
+
+    Parameters
+    ----------
+    reader : :class:`OBJReader`
+        A OBJ file reader.
+    precision : :obj:`str`
+        COMPAS precision specification for parsing geometric data.
+    """
 
     def __init__(self, reader, precision=None):
         self.precision = precision
         self.reader = reader
+        """:class:`OBJReader` - An OBJ file reader."""
         self.vertices = None
-        self.weights = None
-        self.textures = None
-        self.normals = None
+        """List[List[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        List of lists of parsed vertex coordinates.
+        Parsed vertices are unique up to the specified precision.
+        """
+        # self.weights = None
+        # """List[:obj:`float`] - List of vertex weights."""
+        # self.textures = None
+        # """List[:obj:`float`] - List of vertex textures."""
+        # self.normals = None
         self.points = None
+        """List[:obj:`int`] -
+        List of references to parsed vertex coordinates.
+        """
         self.lines = None
+        """List[Tuple[:obj:`int`, :obj:`int`]] -
+        List of pairs of references to parsed vertex coordinates.
+        """
         self.polylines = None
+        """List[List[:obj:`int`] -
+        List of lists of references to parsed vertex coordinates.
+        """
         self.faces = None
-        self.curves = None
-        self.curves2 = None
-        self.surfaces = None
+        """List[List[:obj:`int`] -
+        List of lists of references to parsed vertex coordinates.
+        """
+        # self.curves = None
+        # self.curves2 = None
+        # self.surfaces = None
         self.groups = None
+        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        Groups of mesh objects defined by their parsed vertices and faces.
+        """
         self.objects = None
+        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        Named mesh objects defined by their parsed vertices and faces.
+        """
 
     def parse(self):
+        """Parse the contents of the file."""
         index_key = OrderedDict()
         vertex = OrderedDict()
 
@@ -462,6 +534,25 @@ class OBJParser(object):
 
 
 class OBJWriter(object):
+    """Class for writing geometric data to a OBJ file.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
+    meshes : List[:class:`compas.datastructures.Mesh`]
+        List of meshes to write to the file.
+    precision : :obj:`str`, optional
+        COMPAS precision specification for parsing geometric data.
+    unweld : :obj:`bool`, optional
+        Flag indicating that the face vertices should be unwelded.
+    author : :obj:`str`, optional
+        The author name to include in the header.
+    email : :obj:`str`, optional
+        The email of the author to include in the header.
+    date : :obj:`str`, optional
+        The date to include in the header.
+    """
 
     def __init__(self, filepath, meshes, precision=None, unweld=False, author=None, email=None, date=None):
         self.filepath = filepath
@@ -479,11 +570,13 @@ class OBJWriter(object):
         self.file = None
 
     def write(self):
+        """Write the meshes to the file."""
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self.write_header()
             self.write_meshes()
 
     def write_header(self):
+        """Write the header info."""
         self.file.write('# OBJ\n')
         self.file.write('# COMPAS\n')
         self.file.write('# version: {}\n'.format(compas.__version__))
@@ -498,6 +591,7 @@ class OBJWriter(object):
         self.file.write('\n')
 
     def write_meshes(self):
+        """Write the mesh data."""
         for index, mesh in enumerate(self.meshes):
             name = mesh.name
             if name == 'Mesh':

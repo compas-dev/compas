@@ -7,20 +7,20 @@ import struct
 import compas
 from compas import _iotools
 
-__all__ = [
-    'PLY',
-    'PLYReader',
-    'PLYParser',
-    'PLYWriter',
-]
-
 
 class PLY(object):
-    """Polygon file format, or Stanford triangle format.
+    """Class for working with files in Polygon format, or Stanford triangle format.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
+    precision : :obj:`str`, optional
+        A COMPAS precision specification.
 
     References
     ----------
-    .. [1] http://paulbourke.net/dataformats/ply/
+    * http://paulbourke.net/dataformats/ply/
 
     """
 
@@ -33,29 +33,53 @@ class PLY(object):
         self._writer = None
 
     def read(self):
+        """Read the contents of the file."""
         self._reader = PLYReader(self.filepath)
         self._parser = PLYParser(self._reader, precision=self.precision)
         self._is_parsed = True
 
     def write(self, mesh, **kwargs):
+        """Write a mesh to the file.
+
+        Parameters
+        ----------
+        mesh : :class:`compas.datastructures.Mesh`
+            The mesh.
+        author : :obj:`str`, optional
+            The author name to include in the header.
+        email : :obj:`str`, optional
+            The email of the author to include in the header.
+        date : :obj:`str`, optional
+            The date to include in the header.
+        precision : :obj:`str`, optional
+            COMPAS precision specification for parsing geometric data.
+        """
         self._writer = PLYWriter(self.filepath, mesh, **kwargs)
         self._writer.write()
 
     @property
     def reader(self):
+        """:class:`PLYReader` - A PLY file reader."""
         if not self._is_parsed:
             self.read()
         return self._reader
 
     @property
     def parser(self):
+        """:class:`PLYParser` - A PLY data parser."""
         if not self._is_parsed:
             self.read()
         return self._parser
 
 
 class PLYReader(object):
-    """"""
+    """Class for reading raw geometric data from PLY files.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
+    """
 
     keywords = ['ply', 'format', 'comment', 'element', 'property', 'end_header']
 
@@ -140,12 +164,24 @@ class PLYReader(object):
         self.read()
 
     def is_valid(self):
-        self.read_header()
+        """Verify that the file is valid by reading the header.
+
+        Returns
+        -------
+        :obj:`bool`
+        """
+        self._read_header()
         if self.start_header and self.end_header:
             return True
         return False
 
     def is_binary(self):
+        """Verify that the file is in binary format.
+
+        Returns
+        -------
+        :obj:`bool`
+        """
         if self.format == 'binary_big_endian':
             return True
         if self.format == 'binary_little_endian':
@@ -153,22 +189,29 @@ class PLYReader(object):
         return False
 
     def is_ascii(self):
+        """Verify that the file is in ASCII format.
+
+        Returns
+        -------
+        :obj:`bool`
+        """
         if self.format == 'ascii':
             return True
         return False
 
     def read(self):
-        self.read_header()
+        """Read the contents of the file."""
+        self._read_header()
         if self.format == 'ascii':
-            self.read_data()
+            self._read_data()
         else:
-            self.read_data_binary()
+            self._read_data_binary()
 
     # ==========================================================================
     # read the header
     # ==========================================================================
 
-    def read_header(self):
+    def _read_header(self):
         # the header is always in ascii format
         # read it as text
         # otherwise file.tell() can't be used reliably
@@ -252,34 +295,34 @@ class PLYReader(object):
     # read the data
     # ==========================================================================
 
-    def read_data(self):
+    def _read_data(self):
         if not self.end_header:
             raise Exception('header has not been read, or the file is not valid')
         with _iotools.open_file(self.filepath) as self.file:
             self.file.seek(self.end_header)
             for section in self.sections:
                 if section == 'vertex':
-                    self.read_vertices()
+                    self._read_vertices()
                 elif section == 'edge':
-                    self.read_edges()
+                    self._read_edges()
                 elif section == 'face':
-                    self.read_faces()
+                    self._read_faces()
                 else:
                     print('user-defined elements are not supported: {0}'.format(section))
                     pass
 
-    def read_data_binary(self):
+    def _read_data_binary(self):
         if not self.end_header:
             raise Exception('header has not been read, or the file is not valid')
         with _iotools.open_file(self.filepath, 'rb') as self.file:
             self.file.seek(self.end_header)
             for section in self.sections:
                 if section == 'vertex':
-                    self.read_vertices_binary_wo_numpy()
+                    self._read_vertices_binary_wo_numpy()
                 elif section == 'edge':
-                    self.read_edges_binary_wo_numpy()
+                    self._read_edges_binary_wo_numpy()
                 elif section == 'face':
-                    self.read_faces_binary_wo_numpy()
+                    self._read_faces_binary_wo_numpy()
                 else:
                     print('user-defined elements are not supported: {0}'.format(section))
                     pass
@@ -288,7 +331,7 @@ class PLYReader(object):
     # read the individual section
     # ==========================================================================
 
-    def read_vertices(self):
+    def _read_vertices(self):
         n = len(self.vertex_properties)
         for _ in range(self.number_of_vertices):
             vertex = {}
@@ -314,10 +357,10 @@ class PLYReader(object):
         #     if count == self.number_of_vertices:
         #         break
 
-    def read_edges(self):
+    def _read_edges(self):
         pass
 
-    def read_faces(self):
+    def _read_faces(self):
         count = 0
         for line in self.file:
             line = line.rstrip()
@@ -340,7 +383,7 @@ class PLYReader(object):
     # see: http://stackoverflow.com/questions/4566498/python-file-iterator-over-a-binary-file-with-newer-idiom
     # see: http://stackoverflow.com/questions/27532738/python-iterate-through-binary-file-without-lines
 
-    def numpy_vertex_ptypes(self):
+    def _numpy_vertex_ptypes(self):
         ext = self.binary_byte_order[self.format]
         dt = []
         for prop in self.vertex_properties:
@@ -348,7 +391,7 @@ class PLYReader(object):
             dt.append((pname, ext + self.binary_property_types[ptype]))
         return dt
 
-    def numpy_face_ptypes(self):
+    def _numpy_face_ptypes(self):
         ext = self.binary_byte_order[self.format]
         dt = []
         for prop in self.face_properties:
@@ -366,7 +409,7 @@ class PLYReader(object):
                 pass
         return dt
 
-    def read_vertices_binary_wo_numpy(self):
+    def _read_vertices_binary_wo_numpy(self):
         ext = self.binary_byte_order[self.format]
         fmt = ext
         chunk = 0
@@ -383,23 +426,23 @@ class PLYReader(object):
                 vertex[pname] = data[i]
             self.vertices.append(vertex)
 
-    def read_vertices_binary(self):
+    def _read_vertices_binary(self):
         # use pandas to read the data frames
         import numpy as np
-        for line in np.fromfile(self.file, dtype=np.dtype(self.numpy_vertex_ptypes()), count=self.number_of_vertices):
+        for line in np.fromfile(self.file, dtype=np.dtype(self._numpy_vertex_ptypes()), count=self.number_of_vertices):
             vertex = {}
             for i, prop in enumerate(self.vertex_properties):
                 pname, ptype = prop
                 vertex[pname] = line[i]
             self.vertices.append(vertex)
 
-    def read_edges_binary_wo_numpy(self):
+    def _read_edges_binary_wo_numpy(self):
         pass
 
-    def read_edges_binary(self):
+    def _read_edges_binary(self):
         pass
 
-    def read_faces_binary_wo_numpy(self):
+    def _read_faces_binary_wo_numpy(self):
         ext = self.binary_byte_order[self.format]
         fmt = ext
         chunk = 0
@@ -429,11 +472,11 @@ class PLYReader(object):
                     face[pname] = list(data[2:])
             self.faces.append(face)
 
-    def read_faces_binary(self):
+    def _read_faces_binary(self):
         # use pandas to read the data frames
         # how to deal with faces of variable length?
         import numpy as np
-        for line in np.fromfile(self.file, dtype=np.dtype(self.numpy_face_ptypes()), count=self.number_of_faces):
+        for line in np.fromfile(self.file, dtype=np.dtype(self._numpy_face_ptypes()), count=self.number_of_faces):
             face = {}
             for i, prop in enumerate(self.face_properties):
                 if len(prop) == 2:
@@ -451,7 +494,17 @@ class PLYReader(object):
 
 
 class PLYParser(object):
-    """"""
+    """Class for parsing data from a OBJ file.
+    The parser converts the raw geometric data of the file
+    into corresponding COMPAS geometry objects and data structures.
+
+    Parameters
+    ----------
+    reader : :class:`PLYReader`
+        A PLY file reader.
+    precision : :obj:`str`
+        COMPAS precision specification for parsing geometric data.
+    """
 
     def __init__(self, reader, precision=None):
         self.precision = precision
@@ -467,7 +520,23 @@ class PLYParser(object):
 
 
 class PLYWriter(object):
-    """"""
+    """Class for writing geometric data to a PLY file.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
+    mesh : :class:`compas.datastructures.Mesh`
+        Mesh to write to the file.
+    author : :obj:`str`, optional
+        The author name to include in the header.
+    email : :obj:`str`, optional
+        The email of the author to include in the header.
+    date : :obj:`str`, optional
+        The date to include in the header.
+    precision : :obj:`str`, optional
+        COMPAS precision specification for parsing geometric data.
+    """
 
     def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
         self.filepath = filepath
@@ -483,12 +552,14 @@ class PLYWriter(object):
         self.file = None
 
     def write(self):
+        """Write the data to a file."""
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self.write_header()
             self.write_vertices()
             self.write_faces()
 
     def write_header(self):
+        """Write the header."""
         self.file.write("PLY\n")
         self.file.write("format ascii 1.0\n")
         if self.author:
@@ -506,11 +577,13 @@ class PLYWriter(object):
         self.file.write("end_header\n")
 
     def write_vertices(self):
+        """Write the vertices."""
         for key in self.mesh.vertices():
             x, y, z = self.mesh.vertex_coordinates(key)
             self.file.write(self.vertex_tpl.format(x, y, z))
 
     def write_faces(self):
+        """Write the faces."""
         key_index = self.mesh.key_index()
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)
