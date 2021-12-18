@@ -28,38 +28,6 @@ class MeshArtist(Artist):
         The default color for faces that do not have a specified color.
     default_vertexsize : int
     default_edgewidth : float
-
-    Attributes
-    ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        The mesh associated with the artist.
-    vertices : list
-        The vertices to include in the drawing.
-        Default is all vertices.
-    edges : list
-        The edges to include in the drawing.
-        Default is all edges.
-    faces : list
-        The faces to include in the drawing.
-        Default is all faces.
-    vertex_xyz : dict
-        The view coordinates of the vertices.
-        Default is to use the actual vertex coordinates.
-    vertex_color : dict
-        Mapping between vertices and colors.
-        Default is to use the default color for vertices.
-    edge_color : dict
-        Mapping between edges and colors.
-        Default is to use the default color for edges.
-    face_color : dict
-        Mapping between faces and colors.
-        Default is to use the default color for faces.
-    vertex_text : dict
-        Mapping between vertices and text labels.
-    edge_text : dict
-        Mapping between edges and text labels.
-    face_text : dict
-        Mapping between faces and text labels.
     """
 
     default_color = (0.0, 0.0, 0.0)
@@ -101,6 +69,7 @@ class MeshArtist(Artist):
 
     @property
     def mesh(self):
+        """:class:`compas.datastructures.Mesh` - The mesh associated with the artist."""
         return self._mesh
 
     @mesh.setter
@@ -110,6 +79,7 @@ class MeshArtist(Artist):
 
     @property
     def vertices(self):
+        """:obj:`list` - The vertices to include in the drawing."""
         if self._vertices is None:
             self._vertices = list(self.mesh.vertices())
         return self._vertices
@@ -120,6 +90,7 @@ class MeshArtist(Artist):
 
     @property
     def edges(self):
+        """:obj:`list` - The edges to include in the drawing."""
         if self._edges is None:
             self._edges = list(self.mesh.edges())
         return self._edges
@@ -130,6 +101,7 @@ class MeshArtist(Artist):
 
     @property
     def faces(self):
+        """:obj:`list` - The faces to include in the drawing."""
         if self._faces is None:
             self._faces = list(self.mesh.faces())
         return self._faces
@@ -140,6 +112,7 @@ class MeshArtist(Artist):
 
     @property
     def color(self):
+        """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The general color of the mesh."""
         if not self._color:
             self._color = self.default_color
         return self._color
@@ -151,6 +124,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_xyz(self):
+        """Dict[:obj:`int`, List[:obj:`float`]] - The view coordinates of the vertices."""
         if self._vertex_xyz is None:
             return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
         return self._vertex_xyz
@@ -161,6 +135,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_color(self):
+        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] - Mapping between vertices and colors."""
         if self._vertex_color is None:
             self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
         return self._vertex_color
@@ -174,6 +149,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_text(self):
+        """Dict[:obj:`int`, :obj:`str`] - Mapping between vertices and text labels."""
         if self._vertex_text is None:
             self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}
         return self._vertex_text
@@ -189,6 +165,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_size(self):
+        """Dict[:obj:`int`, :obj:`int`] - Mapping between vertices and sizes."""
         if not self._vertex_size:
             self._vertex_size = {vertex: self.default_vertexsize for vertex in self.mesh.vertices()}
         return self._vertex_size
@@ -202,6 +179,7 @@ class MeshArtist(Artist):
 
     @property
     def edge_color(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] - Mapping between edges and colors."""
         if self._edge_color is None:
             self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
         return self._edge_color
@@ -215,6 +193,7 @@ class MeshArtist(Artist):
 
     @property
     def edge_text(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`str`] - Mapping between edges and text labels."""
         if self._edge_text is None:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
         return self._edge_text
@@ -230,6 +209,7 @@ class MeshArtist(Artist):
 
     @property
     def edge_width(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`float`] - Mapping between edges and line widths."""
         if not self._edge_width:
             self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}
         return self._edge_width
@@ -243,6 +223,7 @@ class MeshArtist(Artist):
 
     @property
     def face_color(self):
+        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] - Mapping between faces and colors."""
         if self._face_color is None:
             self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
         return self._face_color
@@ -256,6 +237,7 @@ class MeshArtist(Artist):
 
     @property
     def face_text(self):
+        """Dict[:obj:`int`, :obj:`str`] - Mapping between faces and text lables."""
         if self._face_text is None:
             self._face_text = {face: str(face) for face in self.mesh.faces()}
         return self._face_text
