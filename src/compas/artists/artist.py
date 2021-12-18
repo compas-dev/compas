@@ -68,8 +68,15 @@ class Artist(object):
     __ARTISTS_REGISTERED = False
 
     AVAILABLE_CONTEXTS = ['Rhino', 'Grasshopper', 'Blender', 'Plotter']
+    """List[:obj:`str`] - The contexts for which artists are available."""
+
     CONTEXT = None
+    """{'Rhino', 'Grasshopper', 'Blender', 'Plotter'} - The current context."""
+
     ITEM_ARTIST = defaultdict(dict)
+    """Dict[{'Rhino', 'Grasshopper', 'Blender', 'Plotter'}, Dict[:class:`compas.data.Data`, :class:`compas.artists.Artist`]] -
+    Mapping between COMPAS data objects and artists, per visualization context.
+    """
 
     def __new__(cls, *args, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
@@ -81,7 +88,7 @@ class Artist(object):
 
     @staticmethod
     def build(item, **kwargs):
-        """Build an artist corresponding to the item type.
+        """[STATIC] Build an artist corresponding to the item type.
 
         Parameters
         ----------
@@ -101,25 +108,52 @@ class Artist(object):
 
     @staticmethod
     def build_as(item, artist_type, **kwargs):
+        """[STATIC] Build an artist with the given type.
+
+        Parameters
+        ----------
+        artist_type : :class:`compas.artists.Artist`
+        kwargs : :obj:`dict`, optional
+            The keyword arguments (kwargs) collected in a dict.
+            For relevant options, see the parameter lists of the matching artist type.
+
+        Returns
+        -------
+        :class:`compas.artists.Artist`
+            An artist of the given type.
+        """
         artist = artist_type(item, **kwargs)
         return artist
 
     @staticmethod
     def clear():
+        """[STATIC] Clear all objects from the view."""
         return clear()
 
     @staticmethod
     def redraw():
+        """[STATIC] Redraw the view."""
         return redraw()
 
     @staticmethod
     def register(item_type, artist_type, context=None):
+        """[STATIC] Register an artist type to a data type.
+
+        Parameters
+        ----------
+        item_type : :class:`compas.data.Data`
+        artist_type : :class:`compaas.artists.Artist`
+        context : {'Rhino', 'Grasshopper', 'Blender', 'Plotter'}, optional
+            The visualization context in which the pair should be registered.
+        """
         Artist.ITEM_ARTIST[context][item_type] = artist_type
 
     @abstractmethod
     def draw(self):
+        """[ABSTRACT] The main drawing method."""
         raise NotImplementedError
 
     @staticmethod
     def draw_collection(collection):
+        """[ABSTRACT] Drawing method for drawing an entire collection of objects."""
         raise NotImplementedError

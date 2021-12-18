@@ -15,28 +15,21 @@ class MeshArtist(Artist):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
-
-    Class Attributes
-    ----------------
-    default_color : tuple
-        The default color of the mesh.
-    default_vertexcolor : tuple
-        The default color for vertices that do not have a specified color.
-    default_edgecolor : tuple
-        The default color for edges that do not have a specified color.
-    default_facecolor : tuple
-        The default color for faces that do not have a specified color.
-    default_vertexsize : int
-    default_edgewidth : float
     """
 
     default_color = (0.0, 0.0, 0.0)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default base color of the mesh."""
     default_vertexcolor = (1.0, 1.0, 1.0)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default color of the vertices of the mesh."""
     default_edgecolor = (0.0, 0.0, 0.0)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default color of the edges of the mesh."""
     default_facecolor = (0.9, 0.9, 0.9)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default color of the faces of the mesh."""
 
     default_vertexsize = 5
+    """:obj:`float` - The default size of the vertices of the mesh."""
     default_edgewidth = 1.0
+    """:obj:`float` - The default width of the edges of the mesh."""
 
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__()
@@ -253,7 +246,7 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):
-        """Draw the vertices of the mesh.
+        """[ABSTRACT] Draw the vertices of the mesh.
 
         Parameters
         ----------
@@ -272,7 +265,7 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
-        """Draw the edges of the mesh.
+        """[ABSTRACT] Draw the edges of the mesh.
 
         Parameters
         ----------
@@ -291,7 +284,7 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_faces(self, faces=None, color=None, text=None):
-        """Draw the faces of the mesh.
+        """[ABSTRACT] Draw the faces of the mesh.
 
         Parameters
         ----------
@@ -310,21 +303,26 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_mesh(self):
+        """[ABSTRACT] Draw the mesh of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_vertices(self):
+        """[ABSTRACT] Clear the vertices of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
+        """[ABSTRACT] Clear the edges of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_faces(self):
+        """[ABSTRACT] Clear the faces of the mesh."""
         raise NotImplementedError
 
     def clear(self):
+        """[ABSTRACT] Clear all components of the mesh."""
         self.clear_vertices()
         self.clear_edges()
         self.clear_faces()
