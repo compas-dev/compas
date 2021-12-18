@@ -11,7 +11,7 @@ from compas.data.exceptions import DecoderError
 if 'ironpython' in sys.version.lower():
     try:
         from System.Collections.Generic import IDictionary
-    except:                 # noqa: E722
+    except:  # noqa: E722
         IDictionary = None
 else:
     IDictionary = None
@@ -22,7 +22,7 @@ def cls_from_dtype(dtype):
 
     Parameters
     ----------
-    dtype : str
+    dtype : :obj:`str`
         The data type of the COMPAS object in the following format:
         '{}/{}'.format(o.__class__.__module__, o.__class__.__name__).
 
@@ -32,11 +32,11 @@ def cls_from_dtype(dtype):
 
     Raises
     ------
-    ValueError
+    :class:`ValueError`
         If the data type is not in the correct format.
-    ImportError
+    :class:`ImportError`
         If the module can't be imported.
-    AttributeError
+    :class:`AttributeError`
         If the module doesn't contain the specified data type.
 
     """
@@ -55,6 +55,18 @@ class DataEncoder(json.JSONEncoder):
     """
 
     def default(self, o):
+        """Return an object in serialized form.
+
+        Parameters
+        ----------
+        o : :obj:`object`
+            The object to serialize.
+
+        Returns
+        -------
+        :obj:`str`
+            The serialized object.
+        """
         if hasattr(o, 'to_data'):
             value = o.to_data()
             if hasattr(o, 'dtype'):
@@ -97,6 +109,17 @@ class DataDecoder(json.JSONDecoder):
         super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
 
     def object_hook(self, o):
+        """Reconstruct a deserialized object.
+
+        Parameters
+        ----------
+        o : :obj:`object`
+
+        Returns
+        -------
+        obj
+            A (reconstructed), deserialized object.
+        """
         if 'dtype' not in o:
             return o
 

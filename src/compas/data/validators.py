@@ -19,7 +19,7 @@ def is_sequence_of_int(items):
 
     Returns
     -------
-    bool
+    :obj:`bool`
     """
     return all(isinstance(item, int) for item in items)
 
@@ -34,7 +34,7 @@ def is_int3(items):
 
     Returns
     -------
-    bool
+    :obj:`bool`
     """
     return len(items) == 3 and all(isinstance(item, int) for item in items)
 
@@ -49,7 +49,7 @@ def is_sequence_of_float(items):
 
     Returns
     -------
-    bool
+    :obj:`bool`
     """
     return all(isinstance(item, float) for item in items)
 
@@ -64,7 +64,7 @@ def is_sequence_of_uint(items):
 
     Returns
     -------
-    bool
+    :obj:`bool`
     """
     return all(isinstance(item, int) and item >= 0 for item in items)
 
@@ -79,7 +79,7 @@ def is_float3(items):
 
     Returns
     -------
-    bool
+    :obj:`bool`
     """
     return len(items) == 3 and all(isinstance(item, float) for item in items)
 
@@ -94,7 +94,7 @@ def is_float4x4(items):
 
     Returns
     -------
-    bool
+    :obj:`bool`
     """
     return (
         len(items) == 4 and
@@ -117,12 +117,12 @@ def validate_data(data, cls):
 
     Returns
     -------
-    dict
+    :obj:`dict`
         The validated data.
 
     Raises
     ------
-    jsonschema.exceptions.ValidationError
+    :class:`jsonschema.exceptions.ValidationError`
     """
     from jsonschema import RefResolver, Draft7Validator
     from jsonschema.exceptions import ValidationError
