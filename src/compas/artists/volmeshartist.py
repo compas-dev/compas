@@ -16,17 +16,6 @@ class VolMeshArtist(Artist):
     volmesh : :class:`compas.datastructures.VolMesh`
         A COMPAS volmesh.
 
-    Class Attributes
-    ----------------
-    default_vertexcolor : tuple
-        The default color for vertices that do not have a specified color.
-    default_edgecolor : tuple
-        The default color for edges that do not have a specified color.
-    default_facecolor : tuple
-        The default color for faces that do not have a specified color.
-    default_cellcolor : tuple
-        The default color for cells that do not have a specified color.
-
     Attributes
     ----------
     volmesh : :class:`compas.datastructures.VolMesh`
@@ -78,9 +67,17 @@ class VolMeshArtist(Artist):
     """
 
     default_vertexcolor = (1, 1, 1)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    The default color of the vertices of the mesh that don't have a specified color."""
     default_edgecolor = (0, 0, 0)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    The default color of the edges of the mesh that don't have a specified color."""
     default_facecolor = (0.8, 0.8, 0.8)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    The default color of the faces of the mesh that don't have a specified color."""
     default_cellcolor = (1, 0, 0)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    The default color of the cells of the mesh that don't have a specified color."""
 
     def __init__(self, volmesh, **kwargs):
         super(VolMeshArtist, self).__init__()
@@ -102,6 +99,7 @@ class VolMeshArtist(Artist):
 
     @property
     def volmesh(self):
+        """:class:`compas.datastructures.VolMesh` - The COMPAS volmesh associated with the artist."""
         return self._volmesh
 
     @volmesh.setter
@@ -111,6 +109,10 @@ class VolMeshArtist(Artist):
 
     @property
     def vertices(self):
+        """List[:obj:`int`] -
+        The list of vertices to draw.
+        Default is a list of all vertices of the volmesh.
+        """
         if self._vertices is None:
             self._vertices = list(self.volmesh.vertices())
         return self._vertices
@@ -121,6 +123,10 @@ class VolMeshArtist(Artist):
 
     @property
     def edges(self):
+        """List[(:obj:`int`, :obj:`int`)] -
+        The list of edges to draw.
+        Default is a list of all edges of the volmesh.
+        """
         if self._edges is None:
             self._edges = list(self.volmesh.edges())
         return self._edges
@@ -131,6 +137,10 @@ class VolMeshArtist(Artist):
 
     @property
     def faces(self):
+        """List[:obj:`int`] -
+        The list of faces to draw.
+        Default is a list of all faces of the volmesh.
+        """
         if self._faces is None:
             self._faces = list(self.volmesh.faces())
         return self._faces
@@ -141,6 +151,10 @@ class VolMeshArtist(Artist):
 
     @property
     def cells(self):
+        """List[:obj:`int`] -
+        The list of cells to draw.
+        Default is a list of all cells of the volmesh.
+        """
         if self._cells is None:
             self._cells = list(self.volmesh.cells())
         return self._cells
@@ -151,6 +165,9 @@ class VolMeshArtist(Artist):
 
     @property
     def vertex_xyz(self):
+        """Dict[:obj:`int`, List[:obj:`float`]] -
+        The view coordinates of the vertices.
+        By default, the actual vertex coordinates are used."""
         if not self._vertex_xyz:
             self._vertex_xyz = {vertex: self.volmesh.vertex_attributes(vertex, 'xyz') for vertex in self.volmesh.vertices()}
         return self._vertex_xyz
@@ -161,6 +178,8 @@ class VolMeshArtist(Artist):
 
     @property
     def vertex_color(self):
+        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        Mapping between vertices and colors."""
         if not self._vertex_color:
             self._vertex_color = {vertex: self.artist.default_vertexcolor for vertex in self.volmesh.vertices()}
         return self._vertex_color
@@ -174,6 +193,8 @@ class VolMeshArtist(Artist):
 
     @property
     def edge_color(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        Mapping between edges and colors."""
         if not self._edge_color:
             self._edge_color = {edge: self.artist.default_edgecolor for edge in self.volmesh.edges()}
         return self._edge_color
@@ -187,6 +208,8 @@ class VolMeshArtist(Artist):
 
     @property
     def face_color(self):
+        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        Mapping between faces and colors."""
         if not self._face_color:
             self._face_color = {face: self.artist.default_facecolor for face in self.volmesh.faces()}
         return self._face_color
@@ -200,6 +223,8 @@ class VolMeshArtist(Artist):
 
     @property
     def cell_color(self):
+        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        Mapping between cells and colors."""
         if not self._cell_color:
             self._cell_color = {cell: self.artist.default_cellcolor for cell in self.volmesh.cells()}
         return self._cell_color
@@ -213,6 +238,8 @@ class VolMeshArtist(Artist):
 
     @property
     def vertex_text(self):
+        """Dict[:obj:`int`, :obj:`str`] -
+        Mapping between vertices and text labels."""
         if not self._vertex_text:
             self._vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}
         return self._vertex_text
@@ -228,6 +255,8 @@ class VolMeshArtist(Artist):
 
     @property
     def edge_text(self):
+        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`str`] -
+        Mapping between edges and text labels."""
         if not self._edge_text:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}
         return self._edge_text
@@ -243,6 +272,8 @@ class VolMeshArtist(Artist):
 
     @property
     def face_text(self):
+        """Dict[:obj:`int`, :obj:`str`] -
+        Mapping between faces and text lables."""
         if not self._face_text:
             self._face_text = {face: str(face) for face in self.volmesh.faces()}
         return self._face_text
@@ -258,6 +289,8 @@ class VolMeshArtist(Artist):
 
     @property
     def cell_text(self):
+        """Dict[:obj:`int`, :obj:`str`] -
+        Mapping between cells and text lables."""
         if not self._cell_text:
             self._cell_text = {cell: str(cell) for cell in self.volmesh.cells()}
         return self._cell_text
@@ -273,7 +306,7 @@ class VolMeshArtist(Artist):
 
     @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):
-        """Draw the vertices of the mesh.
+        """[ABSTRACT] Draw the vertices of the mesh.
 
         Parameters
         ----------
@@ -292,7 +325,7 @@ class VolMeshArtist(Artist):
 
     @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
-        """Draw the edges of the mesh.
+        """[ABSTRACT] Draw the edges of the mesh.
 
         Parameters
         ----------
@@ -311,7 +344,7 @@ class VolMeshArtist(Artist):
 
     @abstractmethod
     def draw_faces(self, faces=None, color=None, text=None):
-        """Draw the faces of the mesh.
+        """[ABSTRACT] Draw the faces of the mesh.
 
         Parameters
         ----------
@@ -330,7 +363,7 @@ class VolMeshArtist(Artist):
 
     @abstractmethod
     def draw_cells(self, cells=None, color=None, text=None):
-        """Draw the cells of the mesh.
+        """[ABSTRACT] Draw the cells of the mesh.
 
         Parameters
         ----------
@@ -349,16 +382,20 @@ class VolMeshArtist(Artist):
 
     @abstractmethod
     def clear_vertices(self):
+        """[ABSTRACT] Clear the vertices of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
+        """[ABSTRACT] Clear the edges of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_faces(self):
+        """[ABSTRACT] Clear the faces of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_cells(self):
+        """[ABSTRACT] Clear the cells of the mesh."""
         raise NotImplementedError
