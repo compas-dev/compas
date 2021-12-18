@@ -28,15 +28,10 @@ from compas.data.encoders import DataDecoder
 class Data(object):
     """Abstract base class for all COMPAS data objects.
 
-    Attributes
+    Parameters
     ----------
-    DATASCHEMA : :class:`schema.Schema`
-        The schema of the data dict.
-    JSONSCHEMA : dict
-        The schema of the serialized data dict.
-    data : dict
-        The fundamental data describing the object.
-        The structure of the data dict is defined by the implementing classes.
+    name : :obj:`str`, optional
+        The name of the data object.
     """
 
     def __init__(self, name=None):
@@ -59,16 +54,17 @@ class Data(object):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` : The schema of the data of this object."""
+        """:class:`schema.Schema` - The schema of the data of this object."""
         raise NotImplementedError
 
     @property
     def JSONSCHEMANAME(self):
+        """:obj:`str` - The schema of the serialized data dict."""
         raise NotImplementedError
 
     @property
     def JSONSCHEMA(self):
-        """dict : The schema of the JSON representation of the data of this object."""
+        """:obj:`dict` - The schema of the JSON representation of the data of this object."""
         if not self._JSONSCHEMA:
             schema_filename = '{}.json'.format(self.JSONSCHEMANAME.lower())
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_filename)
@@ -78,7 +74,7 @@ class Data(object):
 
     @property
     def jsondefinitions(self):
-        """dict : Reusable schema definitions."""
+        """:obj:`dict` - Reusable schema definitions."""
         if not self._jsondefinitions:
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
             with open(schema_path, 'r') as fp:
@@ -87,7 +83,7 @@ class Data(object):
 
     @property
     def jsonvalidator(self):
-        """:class:`jsonschema.Draft7Validator` : JSON schema validator for draft 7."""
+        """:class:`jsonschema.Draft7Validator` - JSON schema validator for draft 7."""
         if not self._jsonvalidator:
             from jsonschema import RefResolver, Draft7Validator
             resolver = RefResolver.from_schema(self.jsondefinitions)
@@ -96,12 +92,12 @@ class Data(object):
 
     @property
     def dtype(self):
-        """str : The type of the object in the form of a '2-level' import and a class name."""
+        """:obj:`str` - The type of the object in the form of a '2-level' import and a class name."""
         return '{}/{}'.format('.'.join(self.__class__.__module__.split('.')[:2]), self.__class__.__name__)
 
     @property
     def data(self):
-        """dict : The representation of the object as native Python data.
+        """:obj:`dict` - The representation of the object as native Python data.
 
         The structure of the data is described by the data schema.
         """
@@ -113,19 +109,19 @@ class Data(object):
 
     @property
     def jsonstring(self):
-        """str: The representation of the object data in JSON format."""
+        """:obj:`str` - The representation of the object data in JSON format."""
         return compas.json_dumps(self.data)
 
     @property
     def guid(self):
-        """str : The globally unique identifier of the object."""
+        """:obj:`str` - The globally unique identifier of the object."""
         if not self._guid:
             self._guid = uuid4()
         return self._guid
 
     @property
     def name(self):
-        """str : The name of the object.
+        """:obj:`str` - The name of the object.
 
         This name is not necessarily unique and can be set by the user.
         """
@@ -139,11 +135,11 @@ class Data(object):
 
     @classmethod
     def from_data(cls, data):
-        """Construct an object of this type from the provided data.
+        """[CLASSMETHOD] Construct an object of this type from the provided data.
 
         Parameters
         ----------
-        data : dict
+        data : :obj:`dict`
             The data dictionary.
 
         Returns
@@ -161,14 +157,14 @@ class Data(object):
 
         Returns
         -------
-        dict
+        :obj:`dict`
             The data representation of the object as described by the schema.
         """
         return self.data
 
     @classmethod
     def from_json(cls, filepath):
-        """Construct an object from serialized data contained in a JSON file.
+        """[CLASSMETHOD] Construct an object from serialized data contained in a JSON file.
 
         Parameters
         ----------
@@ -190,7 +186,7 @@ class Data(object):
         ----------
         filepath : path string or file-like object
             The path or file-like object to the file containing the data.
-        pretty : bool, optional
+        pretty : :obj:`bool`, optional
             If ``True`` serialize a pretty representation of the data.
             Default is ``False``.
         """
@@ -198,11 +194,11 @@ class Data(object):
 
     @classmethod
     def from_jsonstring(cls, string):
-        """Construct an object from serialized data contained in a JSON string.
+        """[CLASSMETHOD] Construct an object from serialized data contained in a JSON string.
 
         Parameters
         ----------
-        string : str
+        string : :obj:`str`
             The JSON string.
 
         Returns
@@ -218,7 +214,7 @@ class Data(object):
 
         Parameters
         ----------
-        pretty : bool, optional
+        pretty : :obj:`bool`, optional
             If ``True`` serialize a pretty representation of the data.
             Default is ``False``.
 
@@ -252,12 +248,12 @@ class Data(object):
 
         Returns
         -------
-        dict
+        :obj:`dict`
             The validated data.
 
         Raises
         ------
-        schema.SchemaError
+        :class:`schema.SchemaError`
         """
         import schema
         try:
@@ -272,12 +268,12 @@ class Data(object):
 
         Returns
         -------
-        str
+        :obj:`str`
             The validated JSON representation of the data.
 
         Raises
         ------
-        jsonschema.exceptions.ValidationError
+        :class:`jsonschema.exceptions.ValidationError`
         """
         import jsonschema
         jsonstring = json.dumps(self.data, cls=DataEncoder)
