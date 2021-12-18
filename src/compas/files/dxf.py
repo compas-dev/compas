@@ -21,11 +21,6 @@ class DXF(object):
     * http://paulbourke.net/dataformats/dxf/
     * http://paulbourke.net/dataformats/dxf/min3d.html
 
-    See Also
-    --------
-    * :class:`DXFReader`
-    * :class:`DXFParser`
-
     """
 
     def __init__(self, filepath, precision=None):
@@ -78,6 +73,7 @@ class DXFReader(object):
 
 class DXFParser(object):
     """Class for parsing data from DXF files.
+
     The parser converts the raw geometric data of the file
     into corresponding COMPAS geometry objects and data structures.
 
@@ -95,5 +91,5 @@ class DXFParser(object):
         self.parse()
 
     def parse(self):
-        """Parse the contents of the file."""
+        """Parse the the data found by the reader."""
         pass

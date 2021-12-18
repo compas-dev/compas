@@ -7,18 +7,18 @@ from compas import _iotools
 
 
 class OFF(object):
-    """Read and write files in OFF format.
+    """Class for working with OFF files.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
 
     References
     ----------
     * http://shape.cs.princeton.edu/benchmark/documentation/off_format.html
     * http://www.geomview.org/docs/html/OFF.html
     * http://segeval.cs.princeton.edu/public/off_format.html
-
-    See Also
-    --------
-    * :class:`OFFReader`
-    * :class:`OFFWriter`
 
     """
 
@@ -190,8 +190,6 @@ class OFFReader(object):
 
 class OFFWriter(object):
     """Class for writing geometric data to a OBJ file.
-    The parser converts the raw geometric data of the file
-    into corresponding COMPAS geometry objects and data structures.
 
     Parameters
     ----------
@@ -225,12 +223,11 @@ class OFFWriter(object):
     def write(self):
         """Write the meshes to the file."""
         with _iotools.open_file(self.filepath, 'w') as self.file:
-            self.write_header()
-            self.write_vertices()
-            self.write_faces()
+            self._write_header()
+            self._write_vertices()
+            self._write_faces()
 
-    def write_header(self):
-        """Write the header info."""
+    def _write_header(self):
         self.file.write("OFF\n")
         if self.author:
             self.file.write("# author: {}\n".format(self.author))
@@ -240,14 +237,12 @@ class OFFWriter(object):
             self.file.write("# date: {}\n".format(self.date))
         self.file.write("{} {} {}\n".format(self.v, self.f, self.e))
 
-    def write_vertices(self):
-        """Write the vertices."""
+    def _write_vertices(self):
         for key in self.mesh.vertices():
             x, y, z = self.mesh.vertex_coordinates(key)
             self.file.write(self.vertex_tpl.format(x, y, z))
 
-    def write_faces(self):
-        """Write the faces."""
+    def _write_faces(self):
         key_index = self.mesh.key_index()
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)

@@ -495,6 +495,7 @@ class PLYReader(object):
 
 class PLYParser(object):
     """Class for parsing data from a OBJ file.
+
     The parser converts the raw geometric data of the file
     into corresponding COMPAS geometry objects and data structures.
 
@@ -554,12 +555,11 @@ class PLYWriter(object):
     def write(self):
         """Write the data to a file."""
         with _iotools.open_file(self.filepath, 'w') as self.file:
-            self.write_header()
-            self.write_vertices()
-            self.write_faces()
+            self._write_header()
+            self._write_vertices()
+            self._write_faces()
 
-    def write_header(self):
-        """Write the header."""
+    def _write_header(self):
         self.file.write("PLY\n")
         self.file.write("format ascii 1.0\n")
         if self.author:
@@ -576,14 +576,12 @@ class PLYWriter(object):
         self.file.write("property list uchar int vertex_indices\n")
         self.file.write("end_header\n")
 
-    def write_vertices(self):
-        """Write the vertices."""
+    def _write_vertices(self):
         for key in self.mesh.vertices():
             x, y, z = self.mesh.vertex_coordinates(key)
             self.file.write(self.vertex_tpl.format(x, y, z))
 
-    def write_faces(self):
-        """Write the faces."""
+    def _write_faces(self):
         key_index = self.mesh.key_index()
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)
