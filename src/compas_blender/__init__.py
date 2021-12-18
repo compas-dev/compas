@@ -9,6 +9,7 @@ compas_blender
     :maxdepth: 1
 
     compas_blender.artists
+    compas_blender.conversions
     compas_blender.geometry
     compas_blender.ui
     compas_blender.utilities
