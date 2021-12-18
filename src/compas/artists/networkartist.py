@@ -15,20 +15,25 @@ class NetworkArtist(Artist):
     ----------
     network : :class:`compas.datastructures.Network`
         A COMPAS network.
-
-    Class Attributes
-    ----------------
-    default_nodecolor : tuple
-        The default color for nodes that do not have a specified color.
-    default_edgecolor : tuple
-        The default color for edges that do not have a specified color.
     """
 
     default_nodecolor = (1, 1, 1)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    The default color for nodes that do not have a specified color.
+    """
     default_edgecolor = (0, 0, 0)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    The default color for edges that do not have a specified color.
+    """
 
     default_nodesize = 5
+    """:obj:`float` -
+    The default size for nodes that do not have a specified size.
+    """
     default_edgewidth = 1.0
+    """:obj:`float` -
+    The default width for edges that do not have a specified width.
+    """
 
     def __init__(self, network, **kwargs):
         super(NetworkArtist, self).__init__()
@@ -207,7 +212,7 @@ class NetworkArtist(Artist):
 
     @abstractmethod
     def draw_nodes(self, nodes=None, color=None, text=None):
-        """Draw the nodes of the network.
+        """[ABSTRACT] Draw the nodes of the network.
 
         Parameters
         ----------
@@ -226,7 +231,7 @@ class NetworkArtist(Artist):
 
     @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
-        """Draw the edges of the network.
+        """[ABSTRACT] Draw the edges of the network.
 
         Parameters
         ----------
@@ -245,12 +250,15 @@ class NetworkArtist(Artist):
 
     @abstractmethod
     def clear_nodes(self):
+        """[ABSTRACT] Clear the nodes of the network."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
+        """[ABSTRACT] Clear the edges of the network."""
         raise NotImplementedError
 
     def clear(self):
+        """[ABSTRACT] Clear the nodes and the edges of the network."""
         self.clear_nodes()
         self.clear_edges()

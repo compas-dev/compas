@@ -15,14 +15,12 @@ class PrimitiveArtist(Artist):
         The geometry of the primitive.
     color : :obj:`tuple`, optional
         The RGB components of the base color of the primitive.
-
-    Class Attributes
-    ----------------
-    default_color : tuple
-        The default rgb color value of the primitive (``(0, 0, 0)``).
     """
 
     default_color = (0, 0, 0)
+    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    The default rgb color value of the primitive (``(0, 0, 0)``).
+    """
 
     def __init__(self, primitive, color=None, **kwargs):
         super(PrimitiveArtist, self).__init__()
