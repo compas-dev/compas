@@ -17,11 +17,6 @@ class LAS(object):
     ----------
     * http://www.asprs.org/wp-content/uploads/2010/12/LAS_1_4_r13.pdf
 
-    See Also
-    --------
-    * :class:`LASReader`
-    * :class:`LASParser`
-
     """
 
     def __init__(self, filepath, precision=None):
@@ -72,6 +67,7 @@ class LASReader(object):
 
 class LASParser(object):
     """Class for parsing data from LAS files.
+
     The parser converts the raw geometric data of the file
     into corresponding COMPAS geometry objects and data structures.
 
@@ -89,5 +85,5 @@ class LASParser(object):
         self.parse()
 
     def parse(self):
-        """Parse the contents of the file."""
+        """Parse the the data found by the reader."""
         pass

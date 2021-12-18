@@ -76,12 +76,6 @@ class OBJ(object):
     ----------
     * http://paulbourke.net/dataformats/obj/
 
-    See Also
-    --------
-    * :class:`OBJReader`
-    * :class:`OBJParser`
-    * :class:`OBJWriter`
-
     """
 
     def __init__(self, filepath, precision=None):
@@ -170,16 +164,6 @@ class OBJReader(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
-
-    Notes
-    -----
-    For more info, see [1]_.
-
-    References
-    ----------
-    .. [1] Bourke, P. *Object Files*.
-           Available at: http://paulbourke.net/dataformats/obj/.
-
     """
 
     def __init__(self, filepath):
@@ -448,6 +432,7 @@ class OBJReader(object):
 
 class OBJParser(object):
     """Class for parsing data from a OBJ file.
+
     The parser converts the raw geometric data of the file
     into corresponding COMPAS geometry objects and data structures.
 
@@ -502,7 +487,7 @@ class OBJParser(object):
         """
 
     def parse(self):
-        """Parse the contents of the file."""
+        """Parse the the data found by the reader."""
         index_key = OrderedDict()
         vertex = OrderedDict()
 
@@ -572,11 +557,10 @@ class OBJWriter(object):
     def write(self):
         """Write the meshes to the file."""
         with _iotools.open_file(self.filepath, 'w') as self.file:
-            self.write_header()
-            self.write_meshes()
+            self._write_header()
+            self._write_meshes()
 
-    def write_header(self):
-        """Write the header info."""
+    def _write_header(self):
         self.file.write('# OBJ\n')
         self.file.write('# COMPAS\n')
         self.file.write('# version: {}\n'.format(compas.__version__))
@@ -590,8 +574,7 @@ class OBJWriter(object):
             self.file.write('# date: {}\n'.format(self.date))
         self.file.write('\n')
 
-    def write_meshes(self):
-        """Write the mesh data."""
+    def _write_meshes(self):
         for index, mesh in enumerate(self.meshes):
             name = mesh.name
             if name == 'Mesh':

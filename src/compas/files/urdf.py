@@ -11,12 +11,6 @@ from compas.files.xml import XML
 from compas.files.xml import XMLElement
 from compas.utilities import memoize
 
-__all__ = [
-    'URDF',
-    'URDFElement',
-    'URDFParser',
-]
-
 
 def _tag_without_namespace(element, default_namespace):
     if not default_namespace:
@@ -31,17 +25,10 @@ def _tag_without_namespace(element, default_namespace):
 
 
 class URDF(object):
-    """Parse URDF files.
+    """class for working with URDF files.
 
     This class abstracts away the underlying XML of the Unified Robot
     Description Format (`URDF`_) and represents its as an object graph.
-
-    Attributes
-    ----------
-    xml : :class:`XML`
-        Instance of the XML reader/parser class.
-    robot : object
-        Root element of the URDF model, i.e. a robot instance.
 
     References
     ----------
@@ -60,10 +47,15 @@ class URDF(object):
 
     def __init__(self, xml=None):
         self.xml = xml
+        """:class:`XML` -
+        Instance of the XML reader/parser class."""
         self._robot = None
 
     @property
     def robot(self):
+        """:obj:`object` -
+        Root element of the URDF model, i.e. a robot instance.
+        """
         if self._robot is None:
             default_namespace = self.xml.root.attrib.get('xmlns')
             self._robot = URDFParser.parse_element(self.xml.root, _tag_without_namespace(self.xml.root, default_namespace), default_namespace)
@@ -80,18 +72,32 @@ class URDF(object):
 
     @classmethod
     def from_robot(cls, robot):
+        """[CLASSMETHOD] Construct a URDF from a robot.
+
+        Parameters
+        ----------
+        robot : :class:`compas.robots.RobotModel`
+
+        Returns
+        -------
+        :class:`URDF`
+        """
         urdf = cls()
         urdf.robot = robot
         return urdf
 
     @classmethod
     def from_file(cls, source):
-        """Parse a URDF file from a file path or file-like object.
+        """[CLASSMETHOD] Construct a URDF from a file path or file-like object.
 
         Parameters
         ----------
         source : str or file
             File path or file-like object.
+
+        Returns
+        -------
+        :class:`URDF`
 
         Examples
         --------
@@ -99,14 +105,20 @@ class URDF(object):
         """
         return cls(XML.from_file(source))
 
+    read = from_file
+
     @classmethod
     def from_string(cls, text):
-        """Parse URDF from a string.
+        """[CLASSMETHOD] Construct a URDF from a string.
 
         Parameters
         ----------
         text : :obj:`str`
             XML string.
+
+        Returns
+        -------
+        :class:`URDF`
 
         Examples
         --------
@@ -114,31 +126,16 @@ class URDF(object):
         """
         return cls(XML.from_string(text))
 
-    @classmethod
-    def read(cls, source):
-        """Parse a URDF file from a file path or file-like object.
-
-        Parameters
-        ----------
-        source : str or file
-            File path or file-like object.
-
-        Examples
-        --------
-        >>> urdf = URDF.from_file(compas.get("ur5.xacro"))
-        """
-        return cls.from_file(source)
-
     def to_file(self, destination=None, prettify=False):
         """Writes the string representation of this URDF instance,
         including all sub-elements, to the ``destination``.
 
         Parameters
         ----------
-        destination : str, optional
+        destination : :obj:`str`, optional
             Filepath where the URDF should be written.  Defaults to
             the filepath of the associated XML object.
-        prettify : bool, optional
+        prettify : :obj:`bool`, optional
             Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
@@ -157,15 +154,15 @@ class URDF(object):
 
         Parameters
         ----------
-        encoding : str, optional
+        encoding : :obj:`str`, optional
             Output encoding (the default is 'utf-8')
-        prettify : bool, optional
+        prettify : :obj:`bool`, optional
             Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
         Returns
         -------
-        str
+        :obj:`str`
             String representation of the URDF.
 
         """
@@ -177,23 +174,23 @@ class URDF(object):
 
         Parameters
         ----------
-        destination : str, optional
+        destination : :obj:`str`, optional
             Filepath where the URDF should be written.  Defaults to
             the filepath of the associated XML object.
-        prettify : bool, optional
+        prettify : :obj:`bool`, optional
             Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
         Returns
         -------
-        ``None``
+        None
 
         """
         self.to_file(destination=destination, prettify=prettify)
 
 
 class URDFParser(object):
-    """Parse URDF elements into an object graph."""
+    """Class for parsing URDF elements into an object graph."""
     _parsers = dict()
 
     @classmethod
