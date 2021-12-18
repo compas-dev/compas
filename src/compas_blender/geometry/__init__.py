@@ -5,21 +5,21 @@ geometry
 
 .. currentmodule:: compas_blender.geometry
 
-Object-oriented convenience wrappers for native Blender geometry.
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
 
-    BlenderCurve
-    BlenderMesh
+
+Plugins
+=======
+
+.. autosummary::
+    :toctree: generated/
+
+    booleans.boolean_difference_mesh_mesh
+    booleans.boolean_intersection_mesh_mesh
+    booleans.boolean_union_mesh_mesh
 
 """
-from ._geometry import BaseBlenderGeometry
-from .curve import BlenderCurve
-from .mesh import BlenderMesh
-
-__all__ = [
-    'BaseBlenderGeometry',
-    'BlenderCurve',
-    'BlenderMesh'
-]
