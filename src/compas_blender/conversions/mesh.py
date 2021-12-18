@@ -8,6 +8,14 @@ from ._geometry import BlenderGeometry
 
 
 class BlenderMesh(BlenderGeometry):
+    """Wrapper for Blender meshes.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        pass
+    """
 
     @property
     def object(self):

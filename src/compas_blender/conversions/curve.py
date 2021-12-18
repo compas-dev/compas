@@ -5,6 +5,14 @@ from ._geometry import BlenderGeometry
 
 
 class BlenderCurve(BlenderGeometry):
+    """Wrapper for Blender curves.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        pass
+    """
 
     @property
     def geometry(self):
