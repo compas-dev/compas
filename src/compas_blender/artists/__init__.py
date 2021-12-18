@@ -13,6 +13,7 @@ Primitive Artists
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     CircleArtist
     FrameArtist

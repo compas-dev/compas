@@ -10,6 +10,7 @@ Classes
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     BlenderGeometry
     BlenderCurve
