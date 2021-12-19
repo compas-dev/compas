@@ -25,17 +25,6 @@ class Quaternion(Primitive):
     x, y, z : float
         Components of the vector (complex, imaginary) part of a quaternion.
 
-    Attributes
-    ----------
-    wxyz : list of float, read-only
-        Quaternion data listing the real part first.
-    xyzw : list of float, read-only
-        Quaternion data listing the real part last.
-    norm : float, read-only
-        The length of the quaternion.
-    is_unit : bool, read-only
-        True if the quaternion has unit length.
-
     Notes
     -----
     The default convention to represent a quaternion :math:`q` in this module
@@ -103,11 +92,13 @@ class Quaternion(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         return Schema({'w': float, 'x': float, 'y': float, 'z': float})
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'quaternion'
 
     __slots__ = ['_w', '_x', '_y', '_z']
@@ -125,6 +116,7 @@ class Quaternion(Primitive):
 
     @property
     def data(self):
+        """dict - Representation of the quaternion as a dict containing only native Python objects."""
         return {'w': self.w, 'x': self.x, 'y': self.y, 'z': self.z}
 
     @data.setter
@@ -136,7 +128,7 @@ class Quaternion(Primitive):
 
     @property
     def w(self):
-        """float : The W component of the quaternion."""
+        """float - The W component of the quaternion."""
         return self._w
 
     @w.setter
@@ -145,7 +137,7 @@ class Quaternion(Primitive):
 
     @property
     def x(self):
-        """float : The X component of the quaternion."""
+        """float - The X component of the quaternion."""
         return self._x
 
     @x.setter
@@ -154,7 +146,7 @@ class Quaternion(Primitive):
 
     @property
     def y(self):
-        """float : The Y component of the quaternion."""
+        """float - The Y component of the quaternion."""
         return self._y
 
     @y.setter
@@ -163,7 +155,7 @@ class Quaternion(Primitive):
 
     @property
     def z(self):
-        """float : The Z component of the quaternion."""
+        """float - The Z component of the quaternion."""
         return self._z
 
     @z.setter
@@ -172,25 +164,25 @@ class Quaternion(Primitive):
 
     @property
     def wxyz(self):
-        """list of float : Quaternion as a list of float in the 'wxyz' convention.
+        """list of float (read-only) - Quaternion as a list of float in the 'wxyz' convention.
         """
         return [self.w, self.x, self.y, self.z]
 
     @property
     def xyzw(self):
-        """list of float : Quaternion as a list of float in the 'xyzw' convention.
+        """list of float (read-only) - Quaternion as a list of float in the 'xyzw' convention.
         """
         return [self.x, self.y, self.z, self.w]
 
     @property
     def norm(self):
-        """float : The length (euclidean norm) of the quaternion.
+        """float (read-only) - The length (euclidean norm) of the quaternion.
         """
         return quaternion_norm(self)
 
     @property
     def is_unit(self):
-        """bool : ``True`` if the quaternion is unit-length or ``False`` if otherwise.
+        """bool (read-only) - ``True`` if the quaternion is unit-length or ``False`` if otherwise.
         """
         return quaternion_is_unit(self)
 

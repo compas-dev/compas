@@ -16,23 +16,6 @@ class Ellipse(Primitive):
     major : float
         The major of the ellipse.
 
-    Attributes
-    ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane of the ellipse.
-    major : float
-        The major.
-    minor : float
-        The minor.
-    center : :class:`compas.geometry.Point`
-        The base point of the plane and center of the ellipse.
-    normal : :class:`compas.geometry.Vector`
-        The normal vector of the plane.
-    circumference : float, read-only
-        The circumference of the ellipse.
-    area : float, read-only
-        The area of the ellipse.
-
     Examples
     --------
     >>> from compas.geometry import Plane
@@ -43,6 +26,7 @@ class Ellipse(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         return schema.Schema({
             'plane': Plane.DATASCHEMA.fget(None),
@@ -52,6 +36,7 @@ class Ellipse(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the schema of the data representation in JSON format."""
         return 'ellipse'
 
     __slots__ = ['_plane', '_major', '_minor']
@@ -67,7 +52,7 @@ class Ellipse(Primitive):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the ellipse."""
+        """dict - The data dictionary that represents the ellipse."""
         return {'plane': self.plane.data,
                 'major': self.major,
                 'minor': self.minor}
@@ -80,7 +65,7 @@ class Ellipse(Primitive):
 
     @property
     def plane(self):
-        """:class:`compas.geometry.Plane` : The plane of the ellipse."""
+        """:class:`compas.geometry.Plane` - The plane of the ellipse."""
         return self._plane
 
     @plane.setter
@@ -89,7 +74,7 @@ class Ellipse(Primitive):
 
     @property
     def major(self):
-        """float : The major of the ellipse."""
+        """float - The major of the ellipse."""
         return self._major
 
     @major.setter
@@ -98,7 +83,7 @@ class Ellipse(Primitive):
 
     @property
     def minor(self):
-        """float : The minor of the ellipse."""
+        """float - The minor of the ellipse."""
         return self._minor
 
     @minor.setter
@@ -107,12 +92,12 @@ class Ellipse(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` : The normal of the ellipse."""
+        """:class:`compas.geometry.Vector` (read-only) - The normal of the ellipse."""
         return self.plane.normal
 
     @property
     def center(self):
-        """:class:`compas.geometry.Point` : The center of the ellipse."""
+        """:class:`compas.geometry.Point` (read-only) - The center of the ellipse."""
         return self.plane.point
 
     @center.setter
@@ -121,12 +106,12 @@ class Ellipse(Primitive):
 
     @property
     def area(self):
-        """float  : The area of the ellipse."""
+        """float (read-only) - The area of the ellipse."""
         raise NotImplementedError
 
     @property
     def circumference(self):
-        """float : The circumference of the ellipse."""
+        """float (read-only) - The circumference of the ellipse."""
         raise NotImplementedError
 
     # ==========================================================================

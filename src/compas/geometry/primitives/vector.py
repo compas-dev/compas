@@ -28,22 +28,8 @@ class Vector(Primitive):
     z : float
         The Z component of the vector.
 
-    Attributes
-    ----------
-    data : dict
-        The data representation of the vector.
-    x : float
-        The component along the X axis of the vector.
-    y : float
-        The component along the Y axis of the vector.
-    z : float
-        The component along the Z axis of the vector.
-    length : float, read-only
-        The length of the vector.
-
     Examples
     --------
-
     >>> u = Vector(1, 0, 0)
     >>> v = Vector(0, 1, 0)
     >>> u
@@ -71,12 +57,14 @@ class Vector(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         return Schema(is_float3)
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'vector'
 
     __slots__ = ['_x', '_y', '_z']
@@ -92,7 +80,7 @@ class Vector(Primitive):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the vector."""
+        """dict - The data dictionary that represents the vector."""
         return list(self)
 
     @data.setter
@@ -103,7 +91,7 @@ class Vector(Primitive):
 
     @property
     def x(self):
-        """float : The X coordinate of the point."""
+        """float - The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -112,7 +100,7 @@ class Vector(Primitive):
 
     @property
     def y(self):
-        """float : The Y coordinate of the point."""
+        """float - The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -121,7 +109,7 @@ class Vector(Primitive):
 
     @property
     def z(self):
-        """float : The Z coordinate of the point."""
+        """float - The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -130,7 +118,7 @@ class Vector(Primitive):
 
     @property
     def length(self):
-        """float: The length of this vector."""
+        """float (read-only) - The length of this vector."""
         return length_vector(self)
 
     # ==========================================================================
@@ -178,7 +166,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or list of float
             The vector to compare.
 
         Returns
@@ -194,7 +182,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or list of float
             The vector to add.
 
         Returns
@@ -209,7 +197,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or list of float
             The vector to subtract.
 
         Returns

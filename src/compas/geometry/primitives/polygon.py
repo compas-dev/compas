@@ -33,23 +33,6 @@ class Polygon(Primitive):
     points : list of point
         An ordered list of points.
 
-    Attributes
-    ----------
-    data : dict
-        The data representation of the polygon.
-    points : list of :class:`compas.geometry.Point`
-        The polygon points.
-    lines : list of :class:`compas.geometry.Line`, read-only
-        The polygon segments.
-    centroid : :class:`compas.geometry.Point`, read-only
-        The centroid of the polygon surface.
-    normal : :class:`compas.geometry.Vector`, read-only
-        The normal vector of the polygon plane.
-    length : float, read-only
-        The length of the polygon boundary.
-    area : float, read-only
-        The area of the polygon surface.
-
     Notes
     -----
     All ``Polygon`` objects are considered closed. Therefore the first and
@@ -69,6 +52,7 @@ class Polygon(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         return Schema({
@@ -77,6 +61,7 @@ class Polygon(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'polygon'
 
     __slots__ = ['_points', '_lines']
@@ -89,7 +74,7 @@ class Polygon(Primitive):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the polygon."""
+        """dict - The data dictionary that represents the polygon."""
         return {'points': [point.data for point in self.points]}
 
     @data.setter
@@ -98,7 +83,7 @@ class Polygon(Primitive):
 
     @property
     def points(self):
-        """list of :class:`compas.geometry.Point` : The points of the polygon."""
+        """list of :class:`compas.geometry.Point` - The points of the polygon."""
         return self._points
 
     @points.setter
@@ -112,25 +97,25 @@ class Polygon(Primitive):
 
     @property
     def lines(self):
-        """list of :class:`compas.geometry.Line` : The lines of the polygon."""
+        """list of :class:`compas.geometry.Line` (read-only) - The lines of the polygon."""
         if not self._lines:
             self._lines = [Line(a, b) for a, b in pairwise(self.points + self.points[:1])]
         return self._lines
 
     @property
     def length(self):
-        """float : The length of the boundary."""
+        """float (read-only) - The length of the boundary."""
         return sum(line.length for line in self.lines)
 
     @property
     def centroid(self):
-        """int : The centroid of the polygon."""
+        """:class:`compas.geometry.Point` (read-only) - The centroid of the polygon."""
         point = centroid_polygon(self.points)
         return Point(*point)
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` : The (average) normal of the polygon."""
+        """:class:`compas.geometry.Vector` (read-only) - The (average) normal of the polygon."""
         o = self.centroid
         points = self.points
         a2 = 0
@@ -149,7 +134,7 @@ class Polygon(Primitive):
 
     @property
     def area(self):
-        """float: The area of the polygon."""
+        """float (read-only) - The area of the polygon."""
         return area_polygon(self.points)
 
     # ==========================================================================

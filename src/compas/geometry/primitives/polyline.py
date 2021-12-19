@@ -27,17 +27,6 @@ class Polyline(Primitive):
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
-    Attributes
-    ----------
-    data : dict
-        The data representation of the polyline.
-    points : list of :class:`compas.geometry.Point`
-        The polyline points.
-    lines : list of :class:`compas.geometry.Line`, read-only
-        The polyline segments.
-    length : float, read-only
-        The length of the polyline.
-
     Examples
     --------
     >>> polyline = Polyline([[0,0,0], [1,0,0], [2,0,0], [3,0,0]])
@@ -57,6 +46,7 @@ class Polyline(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         return Schema({
@@ -65,6 +55,7 @@ class Polyline(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'polyline'
 
     __slots__ = ['_points', '_lines']
@@ -77,12 +68,7 @@ class Polyline(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the polyline.
-
-        Returns
-        -------
-        dict
-            The polyline's data.
+        """dict - Returns the data dictionary that represents the polyline.
         """
         return {'points': [point.data for point in self.points]}
 
@@ -92,7 +78,7 @@ class Polyline(Primitive):
 
     @property
     def points(self):
-        """list of Point: The points of the polyline."""
+        """list of :class:`compas.geometry.Point` - The points of the polyline."""
         return self._points
 
     @points.setter
@@ -104,14 +90,14 @@ class Polyline(Primitive):
 
     @property
     def lines(self):
-        """list of :class:`compas.geometry.Line` : The lines of the polyline."""
+        """list of :class:`compas.geometry.Line` (read-only) - The lines of the polyline."""
         if not self._lines:
             self._lines = [Line(a, b) for a, b in pairwise(self.points)]
         return self._lines
 
     @property
     def length(self):
-        """float : The length of the polyline."""
+        """float (read-only) - The length of the polyline."""
         return sum([line.length for line in self.lines])
 
     # ==========================================================================

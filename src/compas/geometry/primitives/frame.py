@@ -35,25 +35,6 @@ class Frame(Primitive):
     yaxis : vector
         The y-axis of the frame.
 
-    Attributes
-    ----------
-    data : dict
-        The data representation of the frame.
-    point : :class:`compas.geometry.Point`
-        The base point of the frame.
-    xaxis : :class:`compas.geometry.Vector`
-        The local X axis of the frame.
-    yaxis : :class:`compas.geometry.Vector`
-        The local Y axis of the frame.
-    zaxis : :class:`compas.geometry.Vector`
-        The local Z axis of the frame.
-    normal : :class:`compas.geometry.Vector`
-        The normal vector of the base plane of the frame.
-    quaternion : :class:`compas.geometry.Quaternion`
-        The quaternion representing the rotation of the frame.
-    axis_angle_vector : :class:`compas.geometry.Vector`
-        The rotation vector of the frame.
-
     Notes
     -----
     All input vectors are orthonormalized when creating a frame, with the first
@@ -69,6 +50,7 @@ class Frame(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         return Schema({
             'point': Point.DATASCHEMA.fget(None),
@@ -78,6 +60,7 @@ class Frame(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the schema of the data representation in JSON format."""
         return 'frame'
 
     def __init__(self, point, xaxis, yaxis, **kwargs):
@@ -91,7 +74,7 @@ class Frame(Primitive):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the frame."""
+        """dict - The data dictionary that represents the frame."""
         return {'point': self.point.data,
                 'xaxis': self.xaxis.data,
                 'yaxis': self.yaxis.data}
@@ -104,7 +87,7 @@ class Frame(Primitive):
 
     @property
     def point(self):
-        """:class:`compas.geometry.Point` : The base point of the frame."""
+        """:class:`compas.geometry.Point` - The base point of the frame."""
         return self._point
 
     @point.setter
@@ -113,7 +96,7 @@ class Frame(Primitive):
 
     @property
     def xaxis(self):
-        """:class:`compas.geometry.Vector` : The local X axis of the frame."""
+        """:class:`compas.geometry.Vector` - The local X axis of the frame."""
         return self._xaxis
 
     @xaxis.setter
@@ -124,7 +107,7 @@ class Frame(Primitive):
 
     @property
     def yaxis(self):
-        """:class:`compas.geometry.Vector` : The local Y axis of the frame."""
+        """:class:`compas.geometry.Vector` - The local Y axis of the frame."""
         return self._yaxis
 
     @yaxis.setter
@@ -137,24 +120,24 @@ class Frame(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` : The normal of the base plane of the frame."""
+        """:class:`compas.geometry.Vector` (read-only) - The normal of the base plane of the frame."""
         return Vector(*cross_vectors(self.xaxis, self.yaxis))
 
     @property
     def zaxis(self):
-        """:class:`compas.geometry.Vector` : The Z axis of the frame."""
+        """:class:`compas.geometry.Vector` (read-only) - The Z axis of the frame."""
         return self.normal
 
     @property
     def quaternion(self):
-        """:class:`compas.geometry.Quaternion` : The quaternion from the rotation given by the frame.
+        """:class:`compas.geometry.Quaternion` (read-only) - The quaternion from the rotation given by the frame.
         """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return Quaternion(*quaternion_from_matrix(R))
 
     @property
     def axis_angle_vector(self):
-        """:class:`compas.geometry.Vector` : The axis-angle vector representing the rotation of the frame."""
+        """:class:`compas.geometry.Vector` (read-only) - The axis-angle vector representing the rotation of the frame."""
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return Vector(*axis_angle_vector_from_matrix(R))
 

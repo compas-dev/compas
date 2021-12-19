@@ -16,23 +16,6 @@ class Line(Primitive):
     p2 : point
         The second point.
 
-    Attributes
-    ----------
-    data : dict
-        The data representation of the line.
-    start : :class:`compas.geometry.Point`
-        The first point of the line.
-    end : :class:`compas.geometry.Point`
-        The second point of the line.
-    vector : :class:`compas.geometry.Vector`
-        A vector pointing from ``start`` to ``end``.
-    direction : :class:`compas.geometry.Vector`
-        A unit vector pointing from ``start`` to ``end``.
-    midpoint : :class:`compas.geometry.Point`
-        A point half way between ``start`` and ``end``.
-    length : float, read-only
-        The length of the line segment between ``start`` and ``end``.
-
     Examples
     --------
     >>> line = Line([0, 0, 0], [1, 1, 1])
@@ -51,6 +34,7 @@ class Line(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         return Schema({
             'start': Point.DATASCHEMA.fget(None),
@@ -59,6 +43,7 @@ class Line(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the schema of the data representation in JSON format."""
         return 'line'
 
     __slots__ = ['_start', '_end']
@@ -72,7 +57,7 @@ class Line(Primitive):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the line."""
+        """dict - The data dictionary that represents the line."""
         return {'start': self.start.data, 'end': self.end.data}
 
     @data.setter
@@ -82,7 +67,7 @@ class Line(Primitive):
 
     @property
     def start(self):
-        """:class:`compas.geometry.Point` : The start point of the line."""
+        """:class:`compas.geometry.Point` - The start point of the line."""
         return self._start
 
     @start.setter
@@ -91,7 +76,7 @@ class Line(Primitive):
 
     @property
     def end(self):
-        """:class:`compas.geometry.Point` : The end point of the line."""
+        """:class:`compas.geometry.Point` - The end point of the line."""
         return self._end
 
     @end.setter
@@ -100,22 +85,22 @@ class Line(Primitive):
 
     @property
     def vector(self):
-        """:class:`compas.geometry.Vector` : A vector pointing from start to end."""
+        """:class:`compas.geometry.Vector` (read-only) - A vector pointing from start to end."""
         return self.end - self.start
 
     @property
     def length(self):
-        """float : The length of the vector from start to end."""
+        """float (read-only) - The length of the vector from start to end."""
         return self.vector.length
 
     @property
     def direction(self):
-        """:class:`compas.geometry.Vector` : A unit vector pointing from start and end."""
+        """:class:`compas.geometry.Vector` (read-only) - A unit vector pointing from start and end."""
         return self.vector * (1 / self.length)
 
     @property
     def midpoint(self):
-        """:class:`compas.geometry.Point` : The midpoint between start and end."""
+        """:class:`compas.geometry.Point` (read-only) - The midpoint between start and end."""
         v = self.direction * (0.5 * self.length)
         return self.start + v
 

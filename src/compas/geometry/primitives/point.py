@@ -39,17 +39,6 @@ class Point(Primitive):
         The Z coordinate of the point.
         Default is ``0.0``.
 
-    Attributes
-    ----------
-    data : dict
-        The data representation of the point.
-    x : float
-        The X coordinate of the point.
-    y : float
-        The Y coordinate of the point.
-    z : float
-        The Z coordinate of the point.
-
     Notes
     -----
     A ``Point`` object supports direct access to its xyz coordinates through
@@ -109,12 +98,14 @@ class Point(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         return Schema(is_float3)
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'point'
 
     __slots__ = ['_x', '_y', '_z']
@@ -130,7 +121,7 @@ class Point(Primitive):
 
     @property
     def data(self):
-        """dict : The data representing the point."""
+        """dict - The data representing the point."""
         return list(self)
 
     @data.setter
@@ -141,7 +132,7 @@ class Point(Primitive):
 
     @property
     def x(self):
-        """float : The X coordinate of the point."""
+        """float - The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -150,7 +141,7 @@ class Point(Primitive):
 
     @property
     def y(self):
-        """float : The Y coordinate of the point."""
+        """float - The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -159,7 +150,7 @@ class Point(Primitive):
 
     @property
     def z(self):
-        """float : The Z coordinate of the point."""
+        """float - The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -227,7 +218,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Point` or list
+        other : :class:`compas.geometry.Point` or list of float
             The point to add.
 
         Returns
@@ -243,7 +234,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Point` or list
+        other : :class:`compas.geometry.Point` or list of float
             The point to subtract.
 
         Returns

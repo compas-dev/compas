@@ -18,17 +18,6 @@ class Plane(Primitive):
     normal : vector
         The normal vector of the plane.
 
-    Attributes
-    ----------
-    data : dict
-        The data representation of the plane.
-    point : :class:`compas.geometry.Point`
-        The base point of the plane.
-    normal : :class:`compas.geometry.Vector`
-        The normal of the plane.
-    d : float, read-only
-        The *d* parameter of the equation describing the plane.
-
     Examples
     --------
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
@@ -40,6 +29,7 @@ class Plane(Primitive):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         from schema import Schema
         return Schema({
             'point': Point.DATASCHEMA.fget(None),
@@ -48,6 +38,7 @@ class Plane(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'plane'
 
     __slots__ = ['_point', '_normal']
@@ -61,7 +52,7 @@ class Plane(Primitive):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the plane."""
+        """dict - The data dictionary that represents the plane."""
         return {'point': self.point.data,
                 'normal': self.normal.data}
 
@@ -72,7 +63,7 @@ class Plane(Primitive):
 
     @property
     def point(self):
-        """:class:`compas.geometry.Plane` : The base point of the plane."""
+        """:class:`compas.geometry.Plane` - The base point of the plane."""
         return self._point
 
     @point.setter
@@ -81,7 +72,7 @@ class Plane(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` : The normal vector of the plane."""
+        """:class:`compas.geometry.Vector` - The normal vector of the plane."""
         return self._normal
 
     @normal.setter
@@ -91,14 +82,14 @@ class Plane(Primitive):
 
     @property
     def d(self):
-        """float: The *d* parameter of the linear equation describing the plane."""
+        """float (read-only) - The *d* parameter of the linear equation describing the plane."""
         a, b, c = self.normal
         x, y, z = self.point
         return - a * x - b * y - c * z
 
     @property
     def abcd(self):
-        """list: The coefficients of the plane equation."""
+        """list of float (read-only) - The coefficients of the plane equation."""
         a, b, c = self.normal
         d = self.d
         return a, b, c, d
