@@ -40,37 +40,15 @@ def new_nurbssurface_from_step(*args, **kwargs):
 class NurbsSurface(Surface):
     """Class representing a NURBS surface.
 
-    Attributes
+    Parameters
     ----------
-    points: List[List[Point]]
-        The control points of the surface.
-    weights: List[List[float]]
-        The weights of the control points.
-    u_knots: List[float]
-        The knot vector, in the U direction, without duplicates.
-    v_knots: List[float]
-        The knot vector, in the V direction, without duplicates.
-    u_mults: List[int]
-        The multiplicities of the knots in the knot vector of the U direction.
-    v_mults: List[int]
-        The multiplicities of the knots in the knot vector of the V direction.
-    u_degree: int
-        The degree of the polynomials in the U direction.
-    v_degree: int
-        The degree of the polynomials in the V direction.
-    u_domain: Tuple[float, float]
-        The parameter domain in the U direction.
-    v_domain: Tuple[float, float]
-        The parameter domain in the V direction.
-    is_u_periodic: bool
-        True if the curve is periodic in the U direction.
-    is_v_periodic: bool
-        True if the curve is periodic in the V direction.
-
+    name : str, optional
+        The name of the surface.
     """
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - The schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         from compas.data import is_sequence_of_int
@@ -90,6 +68,7 @@ class NurbsSurface(Surface):
 
     @property
     def JSONSCHEMANAME(self):
+        """dict - The schema of the data representation in JSON format."""
         raise NotImplementedError
 
     def __new__(cls, *args, **kwargs):
@@ -126,11 +105,12 @@ class NurbsSurface(Surface):
 
     @property
     def dtype(self):
-        """str : The type of the object in the form of a '2-level' import and a class name."""
+        """str - The type of the object in the form of a '2-level' import and a class name."""
         return 'compas.geometry/NurbsSurface'
 
     @property
     def data(self):
+        """dict - Representation of the curve as a dict containing only native Python objects."""
         return {
             'points': [[point.data for point in row] for row in self.points],
             'weights': self.weights,
@@ -159,9 +139,8 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`NurbsSurface`
             The constructed surface.
-
         """
         points = [[Point.from_data(point) for point in row] for row in data['points']]
         weights = data['weights']
@@ -211,7 +190,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`NurbsSurface`
         """
         return new_nurbssurface_from_parameters(
             points,
@@ -241,7 +220,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`NurbsSurface`
         """
         return new_nurbssurface_from_points(points, u_degree=u_degree, v_degree=v_degree)
 
@@ -258,7 +237,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`NurbsSurface`
         """
         UU, VV = meshgrid(linspace(0, nu, nu + 1), linspace(0, nv, nv + 1))
         points = []
@@ -279,7 +258,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`NurbsSurface`
         """
         return new_nurbssurface_from_step(filepath)
 
@@ -294,7 +273,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`NurbsSurface`
         """
         return new_nurbssurface_from_fill(curve1, curve2)
 
@@ -357,7 +336,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        List[List[Point]]
+        List[List[:class:`compas.geometry.Point`]]
         """
         import numpy as np
         from functools import lru_cache
@@ -388,50 +367,64 @@ class NurbsSurface(Surface):
 
     @property
     def points(self):
+        """List[List[:class:`compas.geometry.Point`]] -
+        The control points as rows along the U direction.
+        """
         raise NotImplementedError
 
     @property
     def weights(self):
+        """List[float] - The weights of the control points."""
         raise NotImplementedError
 
     @property
     def u_knots(self):
+        """List[float] - The knots in the U direction, without multiplicity."""
         raise NotImplementedError
 
     @property
     def v_knots(self):
+        """List[float] - The knots in the V direction, without multiplicity."""
         raise NotImplementedError
 
     @property
     def u_mults(self):
+        """List[int] - Multiplicity of the knots in the U direction."""
         raise NotImplementedError
 
     @property
     def v_mults(self):
+        """List[int] - Multiplicity of the knots in the V direction."""
         raise NotImplementedError
 
     @property
     def u_degree(self):
+        """int - The degree of the curve in the U direction."""
         raise NotImplementedError
 
     @property
     def v_degree(self):
+        """int - The degree of the curve in the V direction."""
         raise NotImplementedError
 
     @property
     def u_domain(self):
+        """Tuple[float, float] - Min/Max values of the parameters in the U direction."""
         raise NotImplementedError
 
     @property
     def v_domain(self):
+        """Tuple[float, float] - Min/Max values of the parameters in the V direction."""
         raise NotImplementedError
 
     @property
     def is_u_periodic(self):
+        """bool - Flag indicating that the surface is periodic in the U direction."""
         raise NotImplementedError
 
     @property
     def is_v_periodic(self):
+        """bool - Flag indicating that the surface is periodic in the V direction."""
         raise NotImplementedError
 
     # ==============================================================================
@@ -439,7 +432,12 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     def copy(self):
-        """Make an independent copy of the surface."""
+        """Make an independent copy of the surface.
+
+        Returns
+        -------
+        :class:`NurbsSurface`
+        """
         return NurbsSurface.from_parameters(
             self.points,
             self.weights,
@@ -475,7 +473,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`NurbsSurface`
         """
         copy = self.copy()
         copy.transform(T)
