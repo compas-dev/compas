@@ -489,7 +489,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        list of float
+        List[float]
         """
         umin, umax = self.u_domain
         return linspace(umin, umax, n)
@@ -504,7 +504,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        list of float
+        List[float]
         """
         vmin, vmax = self.v_domain
         return linspace(vmin, vmax, n)

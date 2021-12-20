@@ -151,13 +151,13 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list of :class:`compas.geometry.Point`
+        points : List[:class:`compas.geometry.Point`]
             The control points.
-        weights : list of float
+        weights : List[float]
             The weights of the control points.
-        knots : list of float
+        knots : List[float]
             The curve knots, without multiplicity.
-        multiplicities : list of int
+        multiplicities : List[int]
             Multiplicity of the knots.
         degree : int
             Degree of the curve.
@@ -176,7 +176,7 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list of :class:`compas.geometry.Point`
+        points : List[:class:`compas.geometry.Point`]
             The control points.
         degree : int, optional
             The degree of the curve.
@@ -198,7 +198,7 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list of :class:`compas.geometry.Point`
+        points : List[:class:`compas.geometry.Point`]
             A list of interpolation points.
         precision : int, optional
             The desired precision of the interpolation.
@@ -357,27 +357,27 @@ class NurbsCurve(Curve):
 
     @property
     def points(self):
-        """list of :class:`compas.geometry.Point` - The control points."""
+        """List[:class:`compas.geometry.Point`] - The control points."""
         raise NotImplementedError
 
     @property
     def weights(self):
-        """list of float - The weights of the control points."""
+        """List[float] - The weights of the control points."""
         raise NotImplementedError
 
     @property
     def knots(self):
-        """list of float - The knots, without multiplicity."""
+        """List[float] - The knots, without multiplicity."""
         raise NotImplementedError
 
     @property
     def knotsequence(self):
-        """list of float - The complete knot vector."""
+        """List[float] - The complete knot vector."""
         raise NotImplementedError
 
     @property
     def multiplicities(self):
-        """list of int - The multiplicities of the knots."""
+        """List[int] - The multiplicities of the knots."""
         raise NotImplementedError
 
     @property
@@ -392,7 +392,7 @@ class NurbsCurve(Curve):
 
     @property
     def domain(self):
-        """(float, float) - The domain of the parameter space of the curve."""
+        """Tuple[float, float] - The domain of the parameter space of the curve."""
         raise NotImplementedError
 
     @property
@@ -496,7 +496,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        list of float
+        List[float]
         """
         start, end = self.domain
         return linspace(start, end, n)
@@ -511,7 +511,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        list of :class:`compas.geometry.Point`
+        List[:class:`compas.geometry.Point`]
         """
         return [self.point_at(t) for t in self.space(n)]
 
@@ -526,7 +526,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        list of :class:`compas.geometry.Point`
+        List[:class:`compas.geometry.Point`]
             Points along the curve.
         """
         return self.xyz(resolution)
@@ -621,7 +621,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        list of :class:`NurbsCurve`
+        List[:class:`NurbsCurve`]
         """
         raise NotImplementedError
 
@@ -635,7 +635,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        list of :class:`NurbsCurve`
+        List[:class:`NurbsCurve`]
         """
         raise NotImplementedError
 
