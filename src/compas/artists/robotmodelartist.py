@@ -22,7 +22,7 @@ class AbstractRobotModelArtist(object):
         ----------
         geometry : object
             A CAD-specific (i.e. native) geometry object as returned by :meth:`create_geometry`.
-        transformation : `Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             **COMPAS** transformation to update the geometry object.
         """
         raise NotImplementedError
@@ -36,7 +36,7 @@ class AbstractRobotModelArtist(object):
 
         Parameters
         ----------
-        geometry : :class:`Mesh`
+        geometry : :class:`compas.datastructures.Mesh`
             Instance of a **COMPAS** mesh
         name : str, optional
             The name of the mesh to draw.
@@ -121,7 +121,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         mesh : :class:`compas.datastructures.Mesh`
             The mesh to attach to the robot model.
-        name : :obj:`str`
+        name : str
             The identifier of the mesh.
         link : :class:`compas.robots.Link`
             The link within the robot model or tool model to attach the mesh to. Optional.
@@ -131,7 +131,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Returns
         -------
-        ``None``
+        None
         """
         if not link:
             link = self.model.get_end_effector_link()
@@ -159,12 +159,12 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        name : :obj:`str`
+        name : str
             The identifier of the mesh.
 
         Returns
         -------
-        ``None``
+        None
         """
         for _, items in self.attached_items:
             items.pop(name, None)
@@ -180,7 +180,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         link : :class:`compas.robots.Link`, optional
             Link instance to create. Defaults to the robot model's root.
-        context : :obj:`str`, optional
+        context : str, optional
             Subdomain identifier to insert in the mesh names.
 
         Returns
@@ -224,19 +224,19 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         link : :class:`compas.robots.Link`, optional
             Base link instance. Defaults to the robot model's root.
-        visual : :obj:`bool`, optional
+        visual : bool, optional
             Whether to include the robot's visual meshes. Defaults
             to ``True``.
-        collision : :obj:`bool`, optional
+        collision : bool, optional
             Whether to include the robot's collision meshes.  Defaults
             to ``False``.
-        attached_meshes : :obj:`bool`, optional
+        attached_meshes : bool, optional
             Whether to include the robot's attached meshes.  Defaults
             to ``True``.
 
         Returns
         -------
-        :obj:`list` of :class:`compas.datastructures.Mesh`
+        list of :class:`compas.datastructures.Mesh`
         """
         if link is None:
             link = self.model.root
@@ -306,7 +306,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         item: :class:`compas.robots.Visual` or :class:`compas.robots.Collision`
             The visual or collidable object of a link.
-        transformation: :class:`Transformation`
+        transformation: :class:`compas.geometry.Transformation`
             The (absolute) transformation to apply onto the link's geometry.
 
         Returns
@@ -326,7 +326,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict` or :class:`compas.robots.Configuration`
+        joint_state : dict or :class:`compas.robots.Configuration`
             A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
             ``True`` if the visual geometry should be also updated, otherwise ``False``.
@@ -362,13 +362,13 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict`or :class:`compas.robots.Configuration`, optional
+        joint_state : dictor :class:`compas.robots.Configuration`, optional
             A dictionary with joint names as keys and joint positions as values.
             Defaults to an empty dictionary.
         transformation : :class:`compas.geometry.Transformation`, optional
             The (absolute) transformation to apply to the entire tool's geometry.
-            If ``None`` is given, no additional transformation will be applied.
-            Defaults to ``None``.
+            If None is given, no additional transformation will be applied.
+            Defaults to None.
         visual : bool, optional
             ``True`` if the visual geometry should be also updated, otherwise ``False``.
             Defaults to ``True``.

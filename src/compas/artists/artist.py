@@ -68,13 +68,13 @@ class Artist(object):
     __ARTISTS_REGISTERED = False
 
     AVAILABLE_CONTEXTS = ['Rhino', 'Grasshopper', 'Blender', 'Plotter']
-    """List[:obj:`str`] - The contexts for which artists are available."""
+    """List[str] - The contexts for which artists are available."""
 
     CONTEXT = None
     """{'Rhino', 'Grasshopper', 'Blender', 'Plotter'} - The current context."""
 
     ITEM_ARTIST = defaultdict(dict)
-    """Dict[{'Rhino', 'Grasshopper', 'Blender', 'Plotter'}, Dict[:class:`compas.data.Data`, :class:`compas.artists.Artist`]] -
+    """Dict[str, Dict[:class:`compas.data.Data`, :class:`compas.artists.Artist`]] -
     Mapping between COMPAS data objects and artists, per visualization context.
     """
 
@@ -88,7 +88,7 @@ class Artist(object):
 
     @staticmethod
     def build(item, **kwargs):
-        """[STATIC] Build an artist corresponding to the item type.
+        """Build an artist corresponding to the item type.
 
         Parameters
         ----------
@@ -108,12 +108,12 @@ class Artist(object):
 
     @staticmethod
     def build_as(item, artist_type, **kwargs):
-        """[STATIC] Build an artist with the given type.
+        """Build an artist with the given type.
 
         Parameters
         ----------
         artist_type : :class:`compas.artists.Artist`
-        kwargs : :obj:`dict`, optional
+        kwargs : dict, optional
             The keyword arguments (kwargs) collected in a dict.
             For relevant options, see the parameter lists of the matching artist type.
 
@@ -127,17 +127,17 @@ class Artist(object):
 
     @staticmethod
     def clear():
-        """[STATIC] Clear all objects from the view."""
+        """Clear all objects from the view."""
         return clear()
 
     @staticmethod
     def redraw():
-        """[STATIC] Redraw the view."""
+        """Redraw the view."""
         return redraw()
 
     @staticmethod
     def register(item_type, artist_type, context=None):
-        """[STATIC] Register an artist type to a data type.
+        """Register an artist type to a data type.
 
         Parameters
         ----------
@@ -150,10 +150,10 @@ class Artist(object):
 
     @abstractmethod
     def draw(self):
-        """[ABSTRACT] The main drawing method."""
+        """The main drawing method."""
         raise NotImplementedError
 
     @staticmethod
     def draw_collection(collection):
-        """[ABSTRACT] Drawing method for drawing an entire collection of objects."""
+        """Drawing method for drawing an entire collection of objects."""
         raise NotImplementedError

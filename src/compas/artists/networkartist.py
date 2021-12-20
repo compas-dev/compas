@@ -18,20 +18,20 @@ class NetworkArtist(Artist):
     """
 
     default_nodecolor = (1, 1, 1)
-    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    """Tuple[float, float, float] -
     The default color for nodes that do not have a specified color.
     """
     default_edgecolor = (0, 0, 0)
-    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] -
+    """Tuple[float, float, float] -
     The default color for edges that do not have a specified color.
     """
 
     default_nodesize = 5
-    """:obj:`float` -
+    """float -
     The default size for nodes that do not have a specified size.
     """
     default_edgewidth = 1.0
-    """:obj:`float` -
+    """float -
     The default width for edges that do not have a specified width.
     """
 
@@ -67,7 +67,7 @@ class NetworkArtist(Artist):
 
     @property
     def nodes(self):
-        """List[:obj:`int`] -
+        """List[int] -
         The list of nodes to draw.
         Default is a list of all nodes of the network.
         """
@@ -81,7 +81,7 @@ class NetworkArtist(Artist):
 
     @property
     def edges(self):
-        """List[Tuple[:obj:`int`, :obj:`int`]] -
+        """List[Tuple[int, int]] -
         The list of edges to draw.
         Default is a list of all edges of the network.
         """
@@ -95,7 +95,7 @@ class NetworkArtist(Artist):
 
     @property
     def node_xyz(self):
-        """Dict[:obj:`int`, List[:obj:`float`]] -
+        """Dict[int, List[float]] -
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.
         """
@@ -109,7 +109,7 @@ class NetworkArtist(Artist):
 
     @property
     def node_color(self):
-        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        """Dict[int, Tuple[float, float, float]] -
         Mapping between nodes and RGB color values.
         Missing nodes get the default node color (``NetworkArtist.default_nodecolor``).
         """
@@ -126,7 +126,7 @@ class NetworkArtist(Artist):
 
     @property
     def node_size(self):
-        """Dict[:obj:`int`, :obj:`float`] -
+        """Dict[int, float] -
         Mapping between nodes and sizes.
         Missing nodes get assigned the default node size.
         """
@@ -143,7 +143,7 @@ class NetworkArtist(Artist):
 
     @property
     def edge_color(self):
-        """Dict[Tuple[:obj:`int`, :obj:`int`], Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        """Dict[Tuple[int, int], Tuple[float, float, float]] -
         Mapping between edges and colors.
         Missing edges get the default edge color (``NetworkArtist.default_edgecolor``).
         """
@@ -160,7 +160,7 @@ class NetworkArtist(Artist):
 
     @property
     def node_text(self):
-        """Dict[:obj:`int`, :obj:`str`] -
+        """Dict[int, str] -
         Mapping between nodes and text labels.
         """
         if not self._node_text:
@@ -178,7 +178,7 @@ class NetworkArtist(Artist):
 
     @property
     def edge_text(self):
-        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`str`] -
+        """Dict[Tuple[int, int], str] -
         Mapping between edges and text labels.
         """
         if not self._edge_text:
@@ -196,7 +196,7 @@ class NetworkArtist(Artist):
 
     @property
     def edge_width(self):
-        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`float`] -
+        """Dict[Tuple[int, int], float] -
         Mapping between edges and line width.
         """
         if not self._edge_width:
@@ -212,18 +212,18 @@ class NetworkArtist(Artist):
 
     @abstractmethod
     def draw_nodes(self, nodes=None, color=None, text=None):
-        """[ABSTRACT] Draw the nodes of the network.
+        """Draw the nodes of the network.
 
         Parameters
         ----------
-        nodes : list, optional
+        nodes : List[int], optional
             The nodes to include in the drawing.
             Default is all nodes.
-        color : tuple or dict, optional
+        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
             The color of the nodes,
             as either a single color to be applied to all nodes,
             or a color dict, mapping specific nodes to specific colors.
-        text : dict, optional
+        text : Dict[int, str], optional
             The text labels for the nodes
             as a text dict, mapping specific nodes to specific text labels.
         """
@@ -231,18 +231,18 @@ class NetworkArtist(Artist):
 
     @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
-        """[ABSTRACT] Draw the edges of the network.
+        """Draw the edges of the network.
 
         Parameters
         ----------
-        edges : list, optional
+        edges : List[Tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple or dict, optional
+        color : Tuple[float, float, float] or Dict[Tuple[int, int], Tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : dict, optional
+        text : Dict[Tuple[int, int]], optional
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
         """
@@ -250,15 +250,15 @@ class NetworkArtist(Artist):
 
     @abstractmethod
     def clear_nodes(self):
-        """[ABSTRACT] Clear the nodes of the network."""
+        """Clear the nodes of the network."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
-        """[ABSTRACT] Clear the edges of the network."""
+        """Clear the edges of the network."""
         raise NotImplementedError
 
     def clear(self):
-        """[ABSTRACT] Clear the nodes and the edges of the network."""
+        """Clear the nodes and the edges of the network."""
         self.clear_nodes()
         self.clear_edges()

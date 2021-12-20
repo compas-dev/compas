@@ -18,18 +18,18 @@ class MeshArtist(Artist):
     """
 
     default_color = (0.0, 0.0, 0.0)
-    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default base color of the mesh."""
+    """Tuple[float, float, float] - The default base color of the mesh."""
     default_vertexcolor = (1.0, 1.0, 1.0)
-    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default color of the vertices of the mesh."""
+    """Tuple[float, float, float] - The default color of the vertices of the mesh."""
     default_edgecolor = (0.0, 0.0, 0.0)
-    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default color of the edges of the mesh."""
+    """Tuple[float, float, float] - The default color of the edges of the mesh."""
     default_facecolor = (0.9, 0.9, 0.9)
-    """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The default color of the faces of the mesh."""
+    """Tuple[float, float, float] - The default color of the faces of the mesh."""
 
     default_vertexsize = 5
-    """:obj:`float` - The default size of the vertices of the mesh."""
+    """float - The default size of the vertices of the mesh."""
     default_edgewidth = 1.0
-    """:obj:`float` - The default width of the edges of the mesh."""
+    """float - The default width of the edges of the mesh."""
 
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__()
@@ -72,7 +72,7 @@ class MeshArtist(Artist):
 
     @property
     def vertices(self):
-        """:obj:`list` - The vertices to include in the drawing."""
+        """List[int] - The vertices to include in the drawing."""
         if self._vertices is None:
             self._vertices = list(self.mesh.vertices())
         return self._vertices
@@ -83,7 +83,7 @@ class MeshArtist(Artist):
 
     @property
     def edges(self):
-        """:obj:`list` - The edges to include in the drawing."""
+        """List[Tuple[int, int]] - The edges to include in the drawing."""
         if self._edges is None:
             self._edges = list(self.mesh.edges())
         return self._edges
@@ -94,7 +94,7 @@ class MeshArtist(Artist):
 
     @property
     def faces(self):
-        """:obj:`list` - The faces to include in the drawing."""
+        """List[int] - The faces to include in the drawing."""
         if self._faces is None:
             self._faces = list(self.mesh.faces())
         return self._faces
@@ -105,7 +105,7 @@ class MeshArtist(Artist):
 
     @property
     def color(self):
-        """Tuple[:obj:`float`, :obj:`float`, :obj:`float`] - The general color of the mesh."""
+        """Tuple[float, float, float] - The general color of the mesh."""
         if not self._color:
             self._color = self.default_color
         return self._color
@@ -117,7 +117,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_xyz(self):
-        """Dict[:obj:`int`, List[:obj:`float`]] - The view coordinates of the vertices."""
+        """Dict[int, List[float]] - The view coordinates of the vertices."""
         if self._vertex_xyz is None:
             return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
         return self._vertex_xyz
@@ -128,7 +128,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_color(self):
-        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] - Mapping between vertices and colors."""
+        """Dict[int, Tuple[float, float, float]] - Mapping between vertices and colors."""
         if self._vertex_color is None:
             self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
         return self._vertex_color
@@ -142,7 +142,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_text(self):
-        """Dict[:obj:`int`, :obj:`str`] - Mapping between vertices and text labels."""
+        """Dict[int, str] - Mapping between vertices and text labels."""
         if self._vertex_text is None:
             self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}
         return self._vertex_text
@@ -158,7 +158,7 @@ class MeshArtist(Artist):
 
     @property
     def vertex_size(self):
-        """Dict[:obj:`int`, :obj:`int`] - Mapping between vertices and sizes."""
+        """Dict[int, int] - Mapping between vertices and sizes."""
         if not self._vertex_size:
             self._vertex_size = {vertex: self.default_vertexsize for vertex in self.mesh.vertices()}
         return self._vertex_size
@@ -172,7 +172,7 @@ class MeshArtist(Artist):
 
     @property
     def edge_color(self):
-        """Dict[Tuple[:obj:`int`, :obj:`int`], Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] - Mapping between edges and colors."""
+        """Dict[Tuple[int, int], Tuple[float, float, float]] - Mapping between edges and colors."""
         if self._edge_color is None:
             self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
         return self._edge_color
@@ -186,7 +186,7 @@ class MeshArtist(Artist):
 
     @property
     def edge_text(self):
-        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`str`] - Mapping between edges and text labels."""
+        """Dict[Tuple[int, int], str] - Mapping between edges and text labels."""
         if self._edge_text is None:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
         return self._edge_text
@@ -202,7 +202,7 @@ class MeshArtist(Artist):
 
     @property
     def edge_width(self):
-        """Dict[Tuple[:obj:`int`, :obj:`int`], :obj:`float`] - Mapping between edges and line widths."""
+        """Dict[Tuple[int, int], float] - Mapping between edges and line widths."""
         if not self._edge_width:
             self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}
         return self._edge_width
@@ -216,7 +216,7 @@ class MeshArtist(Artist):
 
     @property
     def face_color(self):
-        """Dict[:obj:`int`, Tuple[:obj:`float`, :obj:`float`, :obj:`float`]] - Mapping between faces and colors."""
+        """Dict[int, Tuple[float, float, float]] - Mapping between faces and colors."""
         if self._face_color is None:
             self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
         return self._face_color
@@ -230,7 +230,7 @@ class MeshArtist(Artist):
 
     @property
     def face_text(self):
-        """Dict[:obj:`int`, :obj:`str`] - Mapping between faces and text lables."""
+        """Dict[int, str] - Mapping between faces and text lables."""
         if self._face_text is None:
             self._face_text = {face: str(face) for face in self.mesh.faces()}
         return self._face_text
@@ -246,18 +246,18 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):
-        """[ABSTRACT] Draw the vertices of the mesh.
+        """Draw the vertices of the mesh.
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : List[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : tuple or dict, optional
+        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
-        text : dict, optional
+        text : Dict[int, str], optional
             The text labels for the vertices
             as a text dict, mapping specific vertices to specific text labels.
         """
@@ -265,18 +265,18 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
-        """[ABSTRACT] Draw the edges of the mesh.
+        """Draw the edges of the mesh.
 
         Parameters
         ----------
-        edges : list, optional
+        edges : List[Tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple or dict, optional
+        color : Tuple[float, float, float] or Dict[Tuple[int, int], Tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : dict, optional
+        text : Dict[Tuple[int, int], str], optional
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
         """
@@ -284,18 +284,18 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_faces(self, faces=None, color=None, text=None):
-        """[ABSTRACT] Draw the faces of the mesh.
+        """Draw the faces of the mesh.
 
         Parameters
         ----------
-        faces : list, optional
+        faces : List[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : tuple or dict, optional
+        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.
-        text : dict, optional
+        text : Dict[int, str], optional
             The text labels for the faces
             as a text dict, mapping specific faces to specific text labels.
         """
@@ -303,26 +303,26 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def draw_mesh(self):
-        """[ABSTRACT] Draw the mesh of the mesh."""
+        """Draw the mesh of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_vertices(self):
-        """[ABSTRACT] Clear the vertices of the mesh."""
+        """Clear the vertices of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
-        """[ABSTRACT] Clear the edges of the mesh."""
+        """Clear the edges of the mesh."""
         raise NotImplementedError
 
     @abstractmethod
     def clear_faces(self):
-        """[ABSTRACT] Clear the faces of the mesh."""
+        """Clear the faces of the mesh."""
         raise NotImplementedError
 
     def clear(self):
-        """[ABSTRACT] Clear all components of the mesh."""
+        """Clear all components of the mesh."""
         self.clear_vertices()
         self.clear_edges()
         self.clear_faces()
