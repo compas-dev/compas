@@ -22,7 +22,7 @@ def cls_from_dtype(dtype):
 
     Parameters
     ----------
-    dtype : :obj:`str`
+    dtype : str
         The data type of the COMPAS object in the following format:
         '{}/{}'.format(o.__class__.__module__, o.__class__.__name__).
 
@@ -59,12 +59,12 @@ class DataEncoder(json.JSONEncoder):
 
         Parameters
         ----------
-        o : :obj:`object`
+        o : object
             The object to serialize.
 
         Returns
         -------
-        :obj:`str`
+        str
             The serialized object.
         """
         if hasattr(o, 'to_data'):
@@ -113,7 +113,7 @@ class DataDecoder(json.JSONDecoder):
 
         Parameters
         ----------
-        o : :obj:`object`
+        o : object
 
         Returns
         -------

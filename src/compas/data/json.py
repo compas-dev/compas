@@ -13,12 +13,12 @@ def json_dump(data, fp, pretty=False):
 
     Parameters
     ----------
-    data : :obj:`object`
+    data : object
         Any JSON serializable object.
         This includes any (combination of) COMPAS object(s).
     fp : path string or file-like object
         A writeable file-like object or the path to a file.
-    pretty : :obj:`bool`, optional
+    pretty : bool, optional
         ``True`` to format the output with indentation, otherwise ``False``.
 
     Returns
@@ -45,10 +45,10 @@ def json_dumps(data, pretty=False):
 
     Parameters
     ----------
-    data : :obj:`object`
+    data : object
         Any JSON serializable object.
         This includes any (combination of) COMPAS object(s).
-    pretty : :obj:`bool`, optional
+    pretty : bool, optional
         ``True`` to format the output with indentation, otherwise ``False``.
 
     Returns
@@ -101,7 +101,7 @@ def json_loads(s):
 
     Parameters
     ----------
-    s : :obj:`str`
+    s : str
         A JSON data string.
 
     Returns

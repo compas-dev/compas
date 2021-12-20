@@ -30,7 +30,7 @@ class Data(object):
 
     Parameters
     ----------
-    name : :obj:`str`, optional
+    name : str, optional
         The name of the data object.
     """
 
@@ -59,12 +59,12 @@ class Data(object):
 
     @property
     def JSONSCHEMANAME(self):
-        """:obj:`str` - The schema of the serialized data dict."""
+        """str - The schema of the serialized data dict."""
         raise NotImplementedError
 
     @property
     def JSONSCHEMA(self):
-        """:obj:`dict` - The schema of the JSON representation of the data of this object."""
+        """dict - The schema of the JSON representation of the data of this object."""
         if not self._JSONSCHEMA:
             schema_filename = '{}.json'.format(self.JSONSCHEMANAME.lower())
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_filename)
@@ -74,7 +74,7 @@ class Data(object):
 
     @property
     def jsondefinitions(self):
-        """:obj:`dict` - Reusable schema definitions."""
+        """dict - Reusable schema definitions."""
         if not self._jsondefinitions:
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
             with open(schema_path, 'r') as fp:
@@ -92,12 +92,12 @@ class Data(object):
 
     @property
     def dtype(self):
-        """:obj:`str` - The type of the object in the form of a '2-level' import and a class name."""
+        """str - The type of the object in the form of a '2-level' import and a class name."""
         return '{}/{}'.format('.'.join(self.__class__.__module__.split('.')[:2]), self.__class__.__name__)
 
     @property
     def data(self):
-        """:obj:`dict` - The representation of the object as native Python data.
+        """dict - The representation of the object as native Python data.
 
         The structure of the data is described by the data schema.
         """
@@ -109,19 +109,19 @@ class Data(object):
 
     @property
     def jsonstring(self):
-        """:obj:`str` - The representation of the object data in JSON format."""
+        """str - The representation of the object data in JSON format."""
         return compas.json_dumps(self.data)
 
     @property
     def guid(self):
-        """:obj:`str` - The globally unique identifier of the object."""
+        """str - The globally unique identifier of the object."""
         if not self._guid:
             self._guid = uuid4()
         return self._guid
 
     @property
     def name(self):
-        """:obj:`str` - The name of the object.
+        """str - The name of the object.
 
         This name is not necessarily unique and can be set by the user.
         """
@@ -135,11 +135,11 @@ class Data(object):
 
     @classmethod
     def from_data(cls, data):
-        """[CLASSMETHOD] Construct an object of this type from the provided data.
+        """Construct an object of this type from the provided data.
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
@@ -157,14 +157,14 @@ class Data(object):
 
         Returns
         -------
-        :obj:`dict`
+        dict
             The data representation of the object as described by the schema.
         """
         return self.data
 
     @classmethod
     def from_json(cls, filepath):
-        """[CLASSMETHOD] Construct an object from serialized data contained in a JSON file.
+        """Construct an object from serialized data contained in a JSON file.
 
         Parameters
         ----------
@@ -186,7 +186,7 @@ class Data(object):
         ----------
         filepath : path string or file-like object
             The path or file-like object to the file containing the data.
-        pretty : :obj:`bool`, optional
+        pretty : bool, optional
             If ``True`` serialize a pretty representation of the data.
             Default is ``False``.
         """
@@ -194,11 +194,11 @@ class Data(object):
 
     @classmethod
     def from_jsonstring(cls, string):
-        """[CLASSMETHOD] Construct an object from serialized data contained in a JSON string.
+        """Construct an object from serialized data contained in a JSON string.
 
         Parameters
         ----------
-        string : :obj:`str`
+        string : str
             The JSON string.
 
         Returns
@@ -214,7 +214,7 @@ class Data(object):
 
         Parameters
         ----------
-        pretty : :obj:`bool`, optional
+        pretty : bool, optional
             If ``True`` serialize a pretty representation of the data.
             Default is ``False``.
 
@@ -248,7 +248,7 @@ class Data(object):
 
         Returns
         -------
-        :obj:`dict`
+        dict
             The validated data.
 
         Raises
@@ -268,7 +268,7 @@ class Data(object):
 
         Returns
         -------
-        :obj:`str`
+        str
             The validated JSON representation of the data.
 
         Raises
