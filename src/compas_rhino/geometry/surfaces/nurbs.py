@@ -456,21 +456,21 @@ class RhinoNurbsSurface(NurbsSurface):
         point : :class:`compas.geometry.Point`
             The test point.
         return_parameters : bool, optional
-            Return the UV parameters of the closest point in addition to the point location.
+            Return the UV parameters of the closest point as tuple in addition to the point location.
 
         Returns
         -------
         :class:`compas.geometry.Point`
             If ``return_parameters`` is False.
-        :class:`compas.geometry.Point`, float, float
+        :class:`compas.geometry.Point`, (float, float)
             If ``return_parameters`` is True.
         """
-        result, u, v = self.rhino_curve.ClosestPoint(point_to_rhino(point))
+        result, u, v = self.rhino_surface.ClosestPoint(point_to_rhino(point))
         if not result:
             return
         point = self.point_at(u, v)
         if return_parameters:
-            return point, u, v
+            return point, (u, v)
         return point
 
     def aabb(self, precision=0.0, optimal=False):
