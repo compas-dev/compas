@@ -15,15 +15,6 @@ if not compas.IPY:
 else:
     from compas.files._xml import xml_cli as xml_impl
 
-
-__all__ = [
-    'prettify_string',
-    'XML',
-    'XMLReader',
-    'XMLWriter',
-    'XMLElement',
-]
-
 prettify_string = xml_impl.prettify_string
 
 
@@ -59,12 +50,14 @@ class XML(object):
 
     @property
     def reader(self):
+        """:class:`XMLReader` (read-only) - A XML file reader."""
         if not self._reader:
             self.read()
         return self._reader
 
     @property
     def writer(self):
+        """:class:`XMLWriter` (read-only) - A XML file writer."""
         if not self._writer:
             self._writer = XMLWriter(self)
         return self._writer
@@ -72,7 +65,6 @@ class XML(object):
     def read(self):
         """Read XML from a file path or file-like object,
         stored in the attribute ``filepath``.
-
         """
         self._reader = XMLReader.from_file(self.filepath)
 
@@ -89,8 +81,7 @@ class XML(object):
 
         Returns
         -------
-        ``None``
-
+        None
         """
         self.writer.write(prettify)
 
@@ -107,14 +98,13 @@ class XML(object):
 
         Returns
         -------
-        ``None``
-
+        None
         """
         self.write(prettify)
 
     @property
     def root(self):
-        """Root element of the XML tree."""
+        """:class:`xml.etree.ElementTree.Element` - Root element of the XML tree."""
         if self._root is None:
             self._root = self.reader.root
         return self._root
@@ -131,7 +121,6 @@ class XML(object):
         ----------
         source : str or file
             File path or file-like object.
-
         """
         xml = cls(source)
         xml._reader = XMLReader.from_file(source)
@@ -143,9 +132,8 @@ class XML(object):
 
         Parameters
         ----------
-        text : :obj:`str`
+        text : str
             XML string.
-
         """
         xml = cls()
         xml._reader = XMLReader.from_string(text)
@@ -167,7 +155,6 @@ class XML(object):
         -------
         str
             String representation of the XML.
-
         """
         return self.writer.to_string(encoding=encoding, prettify=prettify)
 
@@ -179,7 +166,6 @@ class XMLReader(object):
     ----------
     root : :class:`xml.etree.ElementTree.Element`
         Root XML element
-
     """
 
     def __init__(self, root):
@@ -187,10 +173,36 @@ class XMLReader(object):
 
     @classmethod
     def from_file(cls, source, tree_parser=None):
+        """Construct a reader from a source file.
+
+        Parameters
+        ----------
+        source : path string, file-like object or URL string
+            A path, a file-like object or a URL pointing to a file.
+        tree_parser : :class:`ET.XMLParser`, optional
+            A custom tree parser.
+
+        Returns
+        -------
+        :class:`XMLReader`
+        """
         return cls(xml_impl.xml_from_file(source, tree_parser))
 
     @classmethod
     def from_string(cls, text, tree_parser=None):
+        """Construct a reader from a source text.
+
+        Parameters
+        ----------
+        text : str
+            A string of text containing the XML source code.
+        tree_parser : :class:`ET.XMLParser`, optional
+            A custom tree parser.
+
+        Returns
+        -------
+        :class:`XMLReader`
+        """
         return cls(xml_impl.xml_from_string(text, tree_parser))
 
 
@@ -200,18 +212,37 @@ class XMLWriter(object):
     Parameters
     ----------
     xml : :class:`compas.files.XML`
-
     """
 
     def __init__(self, xml):
         self.xml = xml
 
     def write(self, prettify=False):
+        """Write the meshes to the file.
+
+        Parameters
+        ----------
+        prettify : bool, optional
+            Prettify the xml text format.
+        """
         string = self.to_string(prettify=prettify)
         with open(self.xml.filepath, 'wb') as f:
             f.write(string)
 
     def to_string(self, encoding='utf-8', prettify=False):
+        """Convert the XML element tree to a string.
+
+        Parameters
+        ----------
+        encoding : str, optional
+            The encoding to use for the conversion.
+        prettify : bool, optional
+            Prettify the string representation.
+
+        Returns
+        -------
+        str
+        """
         rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
         if not prettify:
             return rough_string
@@ -219,6 +250,20 @@ class XMLWriter(object):
 
 
 class XMLElement(object):
+    """Class representing an XML element in the tree.
+
+    Parameters
+    ----------
+    tag : str
+        The type of XML tag.
+    attributes : dict, optional
+        The attributes of the tag as name-value pairs.
+    elements : list, optional
+        A list of elements contained by the current element.
+    text : str, optional
+        The text contained by the element.
+    """
+
     def __init__(self, tag, attributes=None, elements=None, text=None):
         self.tag = tag
         self.attributes = attributes or {}
@@ -226,11 +271,24 @@ class XMLElement(object):
         self.text = text
 
     def get_root(self):
+        """Get the root element.
+
+        Returns
+        -------
+        :class:`ET.Element`
+        """
         root = ET.Element(self.tag, self.attributes)
         root.text = self.text
         return root
 
     def add_children(self, element):
+        """Add children to an element.
+
+        Parameters
+        ----------
+        element : :class:`ET.Element`
+            The parent element.
+        """
         for child in self.elements:
             subelement = ET.SubElement(element, child.tag, child.attributes)
             subelement.text = child.text

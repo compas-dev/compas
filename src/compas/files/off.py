@@ -44,13 +44,13 @@ class OFF(object):
         ----------
         mesh : :class:`compas.datastructures.Mesh`
             The mesh.
-        author : :obj:`str`, optional
+        author : str, optional
             The author name to include in the header.
-        email : :obj:`str`, optional
+        email : str, optional
             The email of the author to include in the header.
-        date : :obj:`str`, optional
+        date : str, optional
             The date to include in the header.
-        precision : :obj:`str`, optional
+        precision : str, optional
             COMPAS precision specification for parsing geometric data.
         """
         self._writer = OFFWriter(self.filepath, mesh, **kwargs)
@@ -81,11 +81,11 @@ class OFFReader(object):
         self.filepath = filepath
         self.content = None
         self.vertices = []
-        """List[List[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        """List[List[float, float, float]] -
         List of lists of vertex coordinates.
         """
         self.faces = []
-        """List[List[:obj:`int`] -
+        """List[List[int] -
         List of lists of references to vertex coordinates.
         """
         self.v = 0
@@ -197,13 +197,13 @@ class OFFWriter(object):
         A path, a file-like object or a URL pointing to a file.
     mesh : :class:`compas.datastructures.Mesh`
         Mesh to write to the file.
-    author : :obj:`str`, optional
+    author : str, optional
         The author name to include in the header.
-    email : :obj:`str`, optional
+    email : str, optional
         The email of the author to include in the header.
-    date : :obj:`str`, optional
+    date : str, optional
         The date to include in the header.
-    precision : :obj:`str`, optional
+    precision : str, optional
         COMPAS precision specification for parsing geometric data.
     """
 

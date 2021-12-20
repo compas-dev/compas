@@ -17,7 +17,7 @@ class STL(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
-    precision : :obj:`str`, optional
+    precision : str, optional
         A COMPAS precision specification.
 
     """
@@ -43,12 +43,12 @@ class STL(object):
         ----------
         mesh : :class:`compas.datastructures.Mesh`
             The mesh.
-        binary : :obj:`bool`, optional
+        binary : bool, optional
             Flag indicating that the file should be written in binary format.
-        solid_name : :obj:`str`, optional
+        solid_name : str, optional
             The name of the solid.
             Defaults to the name of the mesh.
-        precision : :obj:`str`, optional
+        precision : str, optional
             COMPAS precision specification for parsing geometric data.
         """
         self._writer = STLWriter(self.filepath, mesh, **kwargs)
@@ -255,7 +255,7 @@ class STLParser(object):
     ----------
     reader : :class:`STLReader`
         A STL file reader.
-    precision : :obj:`str`
+    precision : str
         COMPAS precision specification for parsing geometric data.
     """
 
@@ -298,12 +298,12 @@ class STLWriter(object):
         A path, a file-like object or a URL pointing to a file.
     mesh : :class:`compas.datastructures.Mesh`
         The mesh.
-    binary : :obj:`bool`, optional
+    binary : bool, optional
         Flag indicating that the file should be written in binary format.
-    solid_name : :obj:`str`, optional
+    solid_name : str, optional
         The name of the solid.
         Defaults to the name of the mesh.
-    precision : :obj:`str`, optional
+    precision : str, optional
         COMPAS precision specification for parsing geometric data.
     """
 

@@ -20,7 +20,7 @@ class OBJ(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
-    precision : :obj:`str`, optional
+    precision : str, optional
         A COMPAS precision specification.
 
     Examples
@@ -104,13 +104,13 @@ class OBJ(object):
         ----------
         mesh : :class:`compas.datastructures.Mesh`
             The mesh.
-        unweld : :obj:`bool`, optional
+        unweld : bool, optional
             Flag indicating that the vertices of the faces should be unwelded.
-        author : :obj:`str`, optional
+        author : str, optional
             The author name to include in the header.
-        email : :obj:`str`, optional
+        email : str, optional
             The email of the author to include in the header.
-        date : :obj:`str`, optional
+        date : str, optional
             The date to include in the header.
         """
         self._writer = OBJWriter(self.filepath, mesh, precision=self.precision, unweld=unweld, **kwargs)
@@ -132,22 +132,22 @@ class OBJ(object):
 
     @property
     def vertices(self):
-        """List[List[:obj:`float`]] - The vertices found in the parsed data."""
+        """List[List[float]] - The vertices found in the parsed data."""
         return self.parser.vertices
 
     @property
     def lines(self):
-        """List[Tuple[:obj:`int`, :obj:`int`]] - The lines found in the parsed data, as vertex pairs."""
+        """List[Tuple[int, int]] - The lines found in the parsed data, as vertex pairs."""
         return self.parser.lines
 
     @property
     def faces(self):
-        """List[List[:obj:`int`]] - The faces found in the parsed data, as lists of vertices."""
+        """List[List[int]] - The faces found in the parsed data, as lists of vertices."""
         return self.parser.faces
 
     @property
     def objects(self):
-        """Dict[:obj:`str`, Tuple[List[List[:obj:`float`, :obj:`float`, :obj:`float`]], List[List[:obj:`int`]]]] -
+        """Dict[str, Tuple[List[List[float, float, float]], List[List[int]]]] -
         The objects found in the parsed data, as a mapping between object names and tuples of lists of vertices and faces.
         """
         return self.parser.objects
@@ -171,28 +171,28 @@ class OBJReader(object):
         self.content = None
         # vertex data
         self.vertices = []
-        """List[List[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        """List[List[float, float, float]] -
         List of lists of vertex coordinates.
         """
         self.weights = []
-        """List[:obj:`float`] - List of vertex weights."""
+        """List[float] - List of vertex weights."""
         self.textures = []
         """"""
         self.normals = []
-        """List[List[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        """List[List[float, float, float]] -
         List of lists of normal components.
         """
         # polygonal geometry
         self.points = []
-        """List[:obj:`int`] -
+        """List[int] -
         List of references to vertex coordinates.
         """
         self.lines = []
-        """List[Tuple[:obj:`int`, :obj:`int`]] -
+        """List[Tuple[int, int]] -
         List of pairs of references to vertex coordinates.
         """
         self.faces = []
-        """List[List[:obj:`int`] -
+        """List[List[int] -
         List of lists of references to vertex coordinates.
         """
         # free-form geometry
@@ -215,11 +215,11 @@ class OBJReader(object):
         # parm, trim, hole, scrv, sp, end
         # grouping
         self.groups = defaultdict(list)
-        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        """Dict[str, Tuple[List[int], List[List[int]]]] -
         Groups of mesh objects defined by their vertices and faces.
         """
         self.objects = defaultdict(list)
-        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        """Dict[str, Tuple[List[int], List[List[int]]]] -
         Named mesh objects defined by their vertices and faces.
         """
         self.group = None
@@ -440,7 +440,7 @@ class OBJParser(object):
     ----------
     reader : :class:`OBJReader`
         A OBJ file reader.
-    precision : :obj:`str`
+    precision : str
         COMPAS precision specification for parsing geometric data.
     """
 
@@ -449,40 +449,40 @@ class OBJParser(object):
         self.reader = reader
         """:class:`OBJReader` - An OBJ file reader."""
         self.vertices = None
-        """List[List[:obj:`float`, :obj:`float`, :obj:`float`]] -
+        """List[List[float, float, float]] -
         List of lists of parsed vertex coordinates.
         Parsed vertices are unique up to the specified precision.
         """
         # self.weights = None
-        # """List[:obj:`float`] - List of vertex weights."""
+        # """List[float] - List of vertex weights."""
         # self.textures = None
-        # """List[:obj:`float`] - List of vertex textures."""
+        # """List[float] - List of vertex textures."""
         # self.normals = None
         self.points = None
-        """List[:obj:`int`] -
+        """List[int] -
         List of references to parsed vertex coordinates.
         """
         self.lines = None
-        """List[Tuple[:obj:`int`, :obj:`int`]] -
+        """List[Tuple[int, int]] -
         List of pairs of references to parsed vertex coordinates.
         """
         self.polylines = None
-        """List[List[:obj:`int`] -
+        """List[List[int] -
         List of lists of references to parsed vertex coordinates.
         """
         self.faces = None
-        """List[List[:obj:`int`] -
+        """List[List[int] -
         List of lists of references to parsed vertex coordinates.
         """
         # self.curves = None
         # self.curves2 = None
         # self.surfaces = None
         self.groups = None
-        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        """Dict[str, Tuple[List[int], List[List[int]]]] -
         Groups of mesh objects defined by their parsed vertices and faces.
         """
         self.objects = None
-        """Dict[:obj:`str`, Tuple[List[:obj:`int`], List[List[:obj:`int`]]]] -
+        """Dict[str, Tuple[List[int], List[List[int]]]] -
         Named mesh objects defined by their parsed vertices and faces.
         """
 
@@ -527,15 +527,15 @@ class OBJWriter(object):
         A path, a file-like object or a URL pointing to a file.
     meshes : List[:class:`compas.datastructures.Mesh`]
         List of meshes to write to the file.
-    precision : :obj:`str`, optional
+    precision : str, optional
         COMPAS precision specification for parsing geometric data.
-    unweld : :obj:`bool`, optional
+    unweld : bool, optional
         Flag indicating that the face vertices should be unwelded.
-    author : :obj:`str`, optional
+    author : str, optional
         The author name to include in the header.
-    email : :obj:`str`, optional
+    email : str, optional
         The email of the author to include in the header.
-    date : :obj:`str`, optional
+    date : str, optional
         The date to include in the header.
     """
 

@@ -53,7 +53,7 @@ class URDF(object):
 
     @property
     def robot(self):
-        """:obj:`object` -
+        """object -
         Root element of the URDF model, i.e. a robot instance.
         """
         if self._robot is None:
@@ -72,7 +72,7 @@ class URDF(object):
 
     @classmethod
     def from_robot(cls, robot):
-        """[CLASSMETHOD] Construct a URDF from a robot.
+        """Construct a URDF from a robot.
 
         Parameters
         ----------
@@ -88,7 +88,7 @@ class URDF(object):
 
     @classmethod
     def from_file(cls, source):
-        """[CLASSMETHOD] Construct a URDF from a file path or file-like object.
+        """Construct a URDF from a file path or file-like object.
 
         Parameters
         ----------
@@ -109,11 +109,11 @@ class URDF(object):
 
     @classmethod
     def from_string(cls, text):
-        """[CLASSMETHOD] Construct a URDF from a string.
+        """Construct a URDF from a string.
 
         Parameters
         ----------
-        text : :obj:`str`
+        text : str
             XML string.
 
         Returns
@@ -132,10 +132,10 @@ class URDF(object):
 
         Parameters
         ----------
-        destination : :obj:`str`, optional
+        destination : str, optional
             Filepath where the URDF should be written.  Defaults to
             the filepath of the associated XML object.
-        prettify : :obj:`bool`, optional
+        prettify : bool, optional
             Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
@@ -154,15 +154,15 @@ class URDF(object):
 
         Parameters
         ----------
-        encoding : :obj:`str`, optional
+        encoding : str, optional
             Output encoding (the default is 'utf-8')
-        prettify : :obj:`bool`, optional
+        prettify : bool, optional
             Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
         Returns
         -------
-        :obj:`str`
+        str
             String representation of the URDF.
 
         """
@@ -174,10 +174,10 @@ class URDF(object):
 
         Parameters
         ----------
-        destination : :obj:`str`, optional
+        destination : str, optional
             Filepath where the URDF should be written.  Defaults to
             the filepath of the associated XML object.
-        prettify : :obj:`bool`, optional
+        prettify : bool, optional
             Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 

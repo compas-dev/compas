@@ -15,7 +15,7 @@ class PLY(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
-    precision : :obj:`str`, optional
+    precision : str, optional
         A COMPAS precision specification.
 
     References
@@ -45,13 +45,13 @@ class PLY(object):
         ----------
         mesh : :class:`compas.datastructures.Mesh`
             The mesh.
-        author : :obj:`str`, optional
+        author : str, optional
             The author name to include in the header.
-        email : :obj:`str`, optional
+        email : str, optional
             The email of the author to include in the header.
-        date : :obj:`str`, optional
+        date : str, optional
             The date to include in the header.
-        precision : :obj:`str`, optional
+        precision : str, optional
             COMPAS precision specification for parsing geometric data.
         """
         self._writer = PLYWriter(self.filepath, mesh, **kwargs)
@@ -82,6 +82,7 @@ class PLYReader(object):
     """
 
     keywords = ['ply', 'format', 'comment', 'element', 'property', 'end_header']
+    """List[str] - Reserved keywords in PLY format language."""
 
     property_types = {
         'char': int,
@@ -97,8 +98,8 @@ class PLYReader(object):
         'float': float,
         'float32': float,
         'float64': float,
-        'double': float,
-    }
+        'double': float, }
+    """Dict[str, object] - Mapping between PLY property types and Python types."""
 
     binary_property_types = {
         'int8': 'i1',
@@ -116,8 +117,8 @@ class PLYReader(object):
         'float32': 'f4',
         'float': 'f4',
         'float64': 'f8',
-        'double': 'f8'
-    }
+        'double': 'f8'}
+    """Dict[str, str] - Mapping between PLY property types and binary type strings."""
 
     number_of_bytes_per_type = {
         'char': 1,
@@ -127,8 +128,8 @@ class PLYReader(object):
         'int': 4,
         'uint': 4,
         'float': 4,
-        'double': 8
-    }
+        'double': 8}
+    """Dict[str, int] - Mapping between PLY property types and number of bytes."""
 
     struct_format_per_type = {
         'char': 'c',
@@ -138,10 +139,11 @@ class PLYReader(object):
         'int': 'i',
         'uint': 'I',
         'float': 'f',
-        'double': 'd'
-    }
+        'double': 'd'}
+    """Dict[str, str] - Mapping between PLY property types and struct formats."""
 
     binary_byte_order = {'binary_big_endian': '>', 'binary_little_endian': '<'}
+    """Dict[str, str] - Mapping between endian type and endian symbol."""
 
     def __init__(self, filepath):
         self.filepath = filepath
@@ -168,7 +170,7 @@ class PLYReader(object):
 
         Returns
         -------
-        :obj:`bool`
+        bool
         """
         self._read_header()
         if self.start_header and self.end_header:
@@ -180,7 +182,7 @@ class PLYReader(object):
 
         Returns
         -------
-        :obj:`bool`
+        bool
         """
         if self.format == 'binary_big_endian':
             return True
@@ -193,7 +195,7 @@ class PLYReader(object):
 
         Returns
         -------
-        :obj:`bool`
+        bool
         """
         if self.format == 'ascii':
             return True
@@ -503,7 +505,7 @@ class PLYParser(object):
     ----------
     reader : :class:`PLYReader`
         A PLY file reader.
-    precision : :obj:`str`
+    precision : str
         COMPAS precision specification for parsing geometric data.
     """
 
@@ -529,13 +531,13 @@ class PLYWriter(object):
         A path, a file-like object or a URL pointing to a file.
     mesh : :class:`compas.datastructures.Mesh`
         Mesh to write to the file.
-    author : :obj:`str`, optional
+    author : str, optional
         The author name to include in the header.
-    email : :obj:`str`, optional
+    email : str, optional
         The email of the author to include in the header.
-    date : :obj:`str`, optional
+    date : str, optional
         The date to include in the header.
-    precision : :obj:`str`, optional
+    precision : str, optional
         COMPAS precision specification for parsing geometric data.
     """
 

@@ -10,7 +10,7 @@ class LAS(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
-    precision : :obj:`str`, optional
+    precision : str, optional
         A COMPAS precision specification.
 
     References
@@ -75,7 +75,7 @@ class LASParser(object):
     ----------
     reader : :class:`LASReader`
         A LAS file reader.
-    precision : :obj:`str`
+    precision : str
         COMPAS precision specification for parsing geometric data.
     """
 
