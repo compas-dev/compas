@@ -14,6 +14,8 @@ We recommend installing the following VS Code extensions:
 
 * `Python <https://marketplace.visualstudio.com/items?itemName=ms-python.python>`_
 * `EditorConfig <https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig>`_
+* `File Utils <https://marketplace.visualstudio.com/items?itemName=sleistner.vscode-fileutils>`_
+* `reStructuredText Syntax Highlighting <https://marketplace.visualstudio.com/items?itemName=trond-snekvik.simple-rst>`_
 
 To install the above extensions, open the *Extensions* view  by clicking on the
 *Extensions* icon in the *Activity Bar* on the left side of the editor and search
