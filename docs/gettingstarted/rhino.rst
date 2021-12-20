@@ -36,12 +36,12 @@ Just type the following on the command line
 
     python -m compas_rhino.install
 
-Optionally, you could provide a Rhino version number (6.0, 7.0).
-The default is 6.0.
+Optionally, you could provide a Rhino version number (5.0, 6.0, 7.0, 8.0).
+The default is 7.0.
 
 .. code-block:: bash
 
-    python -m compas_rhino.install -v 6.0
+    python -m compas_rhino.install -v 7.0
 
 
 Install COMPAS packages in Rhino
