@@ -7,6 +7,7 @@ from compas.geometry import transform_points
 from compas.geometry import Transformation
 from compas.geometry import Frame
 from compas.geometry import Vector
+from compas.geometry import Line
 
 from ._shape import Shape
 
@@ -32,39 +33,6 @@ class Box(Shape):
     zsize : float
         The size of the box in the box frame's z direction.
 
-    Attributes
-    ----------
-    frame : compas.geometry.Frame
-        The local coordinate system of the box.
-    xsize : float
-        The size of the box in the local X direction.
-    ysize : float
-        The size of the box in the local Y direction.
-    zsize : float
-        The size of the box in the local Z direction.
-    width (read-only) : float
-        Alias for ``xsize``.
-    depth (read-only) : float
-        Alias for ``ysize``.
-    height (read-only) : float
-        Alias for ``zsize``.
-    diagonal (read-only) : tuple of compas.geometry.Point
-        The start and end point of the main diagonal of the box.
-    dimensions (read-only) : list of float
-        List of sizes in local coordinate directions.
-    area (read-only) : float
-        The surface area of the box.
-    volume (read-only) : float
-        The volume of the box.
-    vertices (read-only) : list of list
-        The XYZ coordinates of the corners of the box.
-        With respect to the local Z axis, the vertices of the bottom
-        face are listed first in clockwise direction, starting at the bottom left corner.
-        The vertices of the top face are listed in counterclockwise direction.
-    faces (read-only) : list of list
-        The vertices of the faces of the box.
-        The cycle directions of the faces are such that face normals point outwards.
-
     Examples
     --------
     >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
@@ -73,6 +41,7 @@ class Box(Shape):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         return schema.Schema({
             'frame': Frame.DATASCHEMA.fget(None),
@@ -83,6 +52,7 @@ class Box(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'box'
 
     def __init__(self, frame, xsize, ysize, zsize, **kwargs):
@@ -98,21 +68,7 @@ class Box(Shape):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the box.
-
-        Returns
-        -------
-        dict
-            The box data.
-
-        Examples
-        --------
-        >>> frame = Frame.worldXY()
-        >>> box = Box(frame, 1.0, 2.0, 3.0)
-        >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
-        >>> bdict == box.to_data()
-        True
-
+        """dict - Returns the data dictionary that represents the box.
         """
         return {'frame': self.frame.data,
                 'xsize': self.xsize,
@@ -128,7 +84,7 @@ class Box(Shape):
 
     @property
     def frame(self):
-        """Frame: The box's frame."""
+        """:class:`compas.geometry.Frame` - The box's frame."""
         return self._frame
 
     @frame.setter
@@ -137,7 +93,7 @@ class Box(Shape):
 
     @property
     def xsize(self):
-        """float: The size of the box in the box frame's x direction."""
+        """float - The size of the box in the box frame's x direction."""
         return self._xsize
 
     @xsize.setter
@@ -146,7 +102,7 @@ class Box(Shape):
 
     @property
     def ysize(self):
-        """float: The size of the box in the box frame's y direction."""
+        """float - The size of the box in the box frame's y direction."""
         return self._ysize
 
     @ysize.setter
@@ -155,7 +111,7 @@ class Box(Shape):
 
     @property
     def zsize(self):
-        """float: The size of the box in the box frame's z direction."""
+        """float - The size of the box in the box frame's z direction."""
         return self._zsize
 
     @zsize.setter
@@ -164,69 +120,78 @@ class Box(Shape):
 
     @property
     def xmin(self):
+        """float (read-only) - Minimum value along local X axis."""
         return self.frame.point.x - 0.5 * self.xsize
 
     @property
     def xmax(self):
+        """float (read-only) - Maximum value along local X axis."""
         return self.frame.point.x + 0.5 * self.xsize
 
     @property
     def ymin(self):
+        """float (read-only) - Minimum value along local Y axis."""
         return self.frame.point.y - 0.5 * self.ysize
 
     @property
     def ymax(self):
+        """float (read-only) - Maximum value along local Y axis."""
         return self.frame.point.y + 0.5 * self.ysize
 
     @property
     def zmin(self):
+        """float (read-only) - Minimum value along local Z axis."""
         return self.frame.point.z - 0.5 * self.zsize
 
     @property
     def zmax(self):
+        """float (read-only) - Maximum value along local Z axis."""
         return self.frame.point.z + 0.5 * self.zsize
 
     @property
     def width(self):
-        """float: The width of the box in x direction."""
+        """float (read-only) - The width of the box in X direction."""
         return self.xsize
 
     @property
     def depth(self):
-        """float: The depth of the box in y direction."""
+        """float (read-only) - The depth of the box in Y direction."""
         return self.ysize
 
     @property
     def height(self):
-        """float: The height of the box in z direction."""
+        """float (read-only) - The height of the box in Z direction."""
         return self.zsize
 
     @property
     def diagonal(self):
+        """:class:`compas.geometry.Line` (read-only) - Diagonal of the box."""
         vertices = self.vertices
-        return vertices[0], vertices[-2]
+        return Line(vertices[0], vertices[-2])
 
     @property
     def dimensions(self):
+        """list of float (read-only) - The dimensions of the box in the local frame."""
         return [self.xsize, self.ysize, self.zsize]
 
     @property
     def area(self):
-        """float: The surface area of the box."""
+        """float (read-only) - The surface area of the box."""
         return 2 * self.xsize * self.ysize + 2 * self.ysize * self.zsize + 2 * self.zsize * self.xsize
 
     @property
     def volume(self):
-        """float: The volume of the box."""
+        """float (read-only) - The volume of the box."""
         return self.xsize * self.ysize * self.zsize
 
     @property
     def points(self):
+        """list of :class:`compas.geometry.Point` (read-only) - The XYZ coordinates of the corners of the box."""
         return self.vertices
 
     @property
     def vertices(self):
-        """list of point: The XYZ coordinates of the vertices of the box."""
+        """list of :class:`compas.geometry.Point` (read-only) - The XYZ coordinates of the vertices of the box."""
         point = self.frame.point
         xaxis = self.frame.xaxis
         yaxis = self.frame.yaxis
@@ -247,7 +212,7 @@ class Box(Shape):
 
     @property
     def faces(self):
-        """list of list: The faces of the box defined as lists of vertex indices."""
+        """list of list of int (read-only) - The faces of the box defined as lists of vertex indices."""
         return [self.bottom,
                 self.front,
                 self.right,
@@ -257,30 +222,37 @@ class Box(Shape):
 
     @property
     def bottom(self):
+        """list of int (read-only) - The vertex indices of the bottom face."""
         return [0, 1, 2, 3]
 
     @property
     def front(self):
+        """list of int (read-only) - The vertex indices of the front face."""
         return [0, 3, 5, 4]
 
     @property
     def right(self):
+        """list of int (read-only) - The vertex indices of the right face."""
         return [3, 2, 6, 5]
 
     @property
     def back(self):
+        """list of int (read-only) - The vertex indices of the back face."""
         return [2, 1, 7, 6]
 
     @property
     def left(self):
+        """list of int (read-only) - The vertex indices of the left face."""
         return [1, 0, 4, 7]
 
     @property
     def top(self):
+        """list of int (read-only) - The vertex indices of the top face."""
         return [4, 5, 6, 7]
 
     @property
     def edges(self):
+        """list of (int, int) (read-only) - The edges of the box as vertex index pairs."""
         edges = [(0, 1), (1, 2), (2, 3), (3, 0)]
         edges += [(4, 5), (5, 6), (6, 7), (7, 4)]
         edges += [(0, 4), (1, 7), (2, 6), (3, 5)]
@@ -338,7 +310,7 @@ class Box(Shape):
 
         Returns
         -------
-        Box
+        :class:`Box`
             The constructed box.
 
         Examples
@@ -365,7 +337,7 @@ class Box(Shape):
 
         Returns
         -------
-        Box
+        :class:`Box`
             The resulting box.
 
         Notes
@@ -405,7 +377,7 @@ class Box(Shape):
 
         Returns
         -------
-        Box
+        :class:`Box`
             The box shape.
 
         Examples
@@ -448,7 +420,7 @@ class Box(Shape):
 
         Returns
         -------
-        Box
+        :class:`Box`
             The resulting box.
 
         Examples
@@ -485,7 +457,7 @@ class Box(Shape):
 
         Returns
         -------
-        Box
+        :class:`Box`
             The resulting box.
 
         Examples

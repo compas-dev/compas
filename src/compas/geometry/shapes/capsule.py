@@ -25,25 +25,6 @@ class Capsule(Shape):
     radius : float
         The radius of the capsule.
 
-    Attributes
-    ----------
-    line : :class:`compas.geometry.Line`
-        The axis line of the capsule.
-    start : :class:`compas.geometry.Point`
-        The start point of the axis line.
-        This is the base point of the capsule.
-    end : :class:`compas.geometry.Point`
-        The end point of the axis line.
-        This is the top of the capsule.
-    radius : float
-        The radius of the capsule.
-    length (read-only) : float
-        The length of the capsule axis line.
-    area (read-only) : float
-        The surface area of the capsule.
-    volume (read-only) : float
-        The volume of the capsule.
-
     Examples
     --------
     >>> line = Line((1, 2, 3), (5, 3, 1))
@@ -53,6 +34,7 @@ class Capsule(Shape):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         return schema.Schema({
             'line': Line.DATASCHEMA.fget(None),
@@ -61,6 +43,7 @@ class Capsule(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'capsule'
 
     __slots__ = ['_line', '_radius']
@@ -74,13 +57,7 @@ class Capsule(Shape):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the capsule.
-
-        Returns
-        -------
-        dict
-            The capsule data.
-
+        """dict - Returns the data dictionary that represents the capsule.
         """
         return {'line': self.line.data, 'radius': self.radius}
 
@@ -91,6 +68,7 @@ class Capsule(Shape):
 
     @property
     def line(self):
+        """:class:`compas.geometry.Line` - The centre line of the capsule."""
         return self._line
 
     @line.setter
@@ -99,15 +77,17 @@ class Capsule(Shape):
 
     @property
     def start(self):
+        """:class:`compas.geometry.Point` (read-only) - The start point of the centre line."""
         return self.line.start
 
     @property
     def end(self):
+        """:class:`compas.geometry.Point` (read-only) - The end point of the centre line."""
         return self.line.end
 
     @property
     def radius(self):
-        """float: The radius of the capsule."""
+        """float - The radius of the capsule."""
         return self._radius
 
     @radius.setter
@@ -116,10 +96,12 @@ class Capsule(Shape):
 
     @property
     def length(self):
+        """float (read-only) - The length of the centre line of the capsule."""
         return self.line.length
 
     @property
     def volume(self):
+        """float (read-only) - The volume of the capsule."""
         # cylinder plus 2 half spheres
         cylinder = self.radius**2 * pi * self.length
         caps = 4./3. * pi * self.radius**3
@@ -127,6 +109,7 @@ class Capsule(Shape):
 
     @property
     def area(self):
+        """float (read-only) - The area of the capsule surface."""
         # cylinder minus caps plus 2 half spheres
         cylinder = self.radius*2 * pi * self.length
         caps = 4 * pi * self.radius**2
@@ -176,7 +159,7 @@ class Capsule(Shape):
 
         Returns
         -------
-        :class: `Capsule`
+        :class:`Capsule`
             The constructed capsule.
         """
         capsule = Capsule(Line.from_data(data['line']), data['radius'])

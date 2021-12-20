@@ -25,21 +25,6 @@ class Cylinder(Shape):
     height: float
         The height of the cylinder.
 
-    Attributes
-    ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane containing the circle.
-    circle : :class:`compas.geometry.Circle`
-        The base circle of the cylinder.
-    radius : float
-        The radius of the base circle.
-    height : float
-        The height of the cylinder.
-    normal (read-only) : :class:`compas.geometry.Vector`
-        The normal of the base plane.
-    diameter : float
-        The diameter of the cylinder.
-
     Examples
     --------
     >>> from compas.geometry import Plane
@@ -52,6 +37,7 @@ class Cylinder(Shape):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         return schema.Schema({
             'circle': {
@@ -63,6 +49,7 @@ class Cylinder(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'cylinder'
 
     __slots__ = ['_circle', '_height']
@@ -76,13 +63,7 @@ class Cylinder(Shape):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the cylinder.
-
-        Returns
-        -------
-        dict
-            The cylinder data.
-
+        """dict - Returns the data dictionary that represents the cylinder.
         """
         return {'circle': self.circle.data, 'height': self.height}
 
@@ -93,7 +74,7 @@ class Cylinder(Shape):
 
     @property
     def plane(self):
-        """Plane: The plane of the cylinder."""
+        """:class:`Plane` - The plane of the cylinder."""
         return self.circle.plane
 
     @plane.setter
@@ -102,7 +83,7 @@ class Cylinder(Shape):
 
     @property
     def circle(self):
-        """float: The circle of the cylinder."""
+        """float - The circle of the cylinder."""
         return self._circle
 
     @circle.setter
@@ -111,7 +92,7 @@ class Cylinder(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the cylinder."""
+        """float - The radius of the cylinder."""
         return self.circle.radius
 
     @radius.setter
@@ -120,7 +101,7 @@ class Cylinder(Shape):
 
     @property
     def height(self):
-        """float: The height of the cylinder."""
+        """float - The height of the cylinder."""
         return self._height
 
     @height.setter
@@ -129,17 +110,17 @@ class Cylinder(Shape):
 
     @property
     def normal(self):
-        """Vector: The normal of the cylinder."""
+        """:class:`Vector` (read-only) - The normal of the cylinder."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float: The diameter of the cylinder."""
+        """float (read-only) - The diameter of the cylinder."""
         return self.circle.diameter
 
     @property
     def center(self):
-        """Point: The center of the cylinder."""
+        """:class:`Point` - The center of the cylinder."""
         return self.circle.center
 
     @center.setter
@@ -148,12 +129,12 @@ class Cylinder(Shape):
 
     @property
     def area(self):
-        """Float: The surface area of the cylinder."""
+        """float (read-only) - The surface area of the cylinder."""
         return (self.circle.area * 2) + (self.circle.circumference * self.height)
 
     @property
     def volume(self):
-        """Float: The volume of the cylinder."""
+        """float (read-only) - The volume of the cylinder."""
         return self.circle.area * self.height
 
     # ==========================================================================
@@ -200,7 +181,7 @@ class Cylinder(Shape):
 
         Returns
         -------
-        Cylinder
+        :class:`Cylinder`
             The constructed cylinder.
 
         Examples

@@ -26,31 +26,23 @@ class Torus(Shape):
     radius_pipe: float
         The radius of the pipe.
 
-    Attributes
-    ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane of the torus.
-    radius_axis: float
-        The radius of the axis.
-    radius_pipe: float
-        The radius of the pipe.
-    center (read-only): :class:`compas.geometry.Point`
-        The center of the torus.
-    area (read-only): float
-        The surface area of the torus.
-    volume (read-only): float
-        The volume of the torus.
-
     Examples
     --------
     >>> from compas.geometry import Plane
     >>> from compas.geometry import Torus
     >>> torus = Torus(Plane.worldXY(), 5., 2.)
 
+    >>> from compas.geometry import Plane
+    >>> from compas.geometry import Torus
+    >>> torus = Torus(Plane.worldXY(), 5, 2)
+    >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
+    >>> sdict == torus.data
+    True
     """
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         return schema.Schema({
             'plane': Plane.DATASCHEMA.fget(None),
@@ -60,6 +52,7 @@ class Torus(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'torus'
 
     __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
@@ -75,22 +68,7 @@ class Torus(Shape):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the torus.
-
-        Returns
-        -------
-        dict
-            The torus data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Torus
-        >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
-        >>> sdict == torus.data
-        True
-
+        """dict - Returns the data dictionary that represents the torus.
         """
         return {'plane': self.plane.data,
                 'radius_axis': self.radius_axis,
@@ -104,7 +82,7 @@ class Torus(Shape):
 
     @property
     def plane(self):
-        """Plane: The torus' plane."""
+        """:class:`Plane` - The torus' plane."""
         return self._plane
 
     @plane.setter
@@ -113,7 +91,7 @@ class Torus(Shape):
 
     @property
     def radius_axis(self):
-        """float: The radius of the axis."""
+        """float - The radius of the axis."""
         return self._radius_axis
 
     @radius_axis.setter
@@ -122,7 +100,7 @@ class Torus(Shape):
 
     @property
     def radius_pipe(self):
-        """float: The radius of the pipe."""
+        """float - The radius of the pipe."""
         return self._radius_pipe
 
     @radius_pipe.setter
@@ -131,16 +109,17 @@ class Torus(Shape):
 
     @property
     def center(self):
+        """:class:`compas.geometry.Point` (read-only) - The centre of the torus."""
         return self.plane.point
 
     @property
     def area(self):
-        """Float: The surface area of the torus."""
+        """float (read-only) - The surface area of the torus."""
         return (2 * pi * self.radius_pipe) * (2 * pi * self.radius_axis)
 
     @property
     def volume(self):
-        """Float: The volume of the torus."""
+        """float (read-only) - The volume of the torus."""
         return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
 
     # ==========================================================================
@@ -191,7 +170,7 @@ class Torus(Shape):
 
         Returns
         -------
-        Torus
+        :class:`Torus`
             The constructed torus.
 
         Examples

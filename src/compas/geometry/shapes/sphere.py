@@ -21,19 +21,6 @@ class Sphere(Shape):
     radius: float
         The radius of the sphere.
 
-    Attributes
-    ----------
-    point: :class:`compas.geometry.Point`
-        The center of the sphere.
-    radius: float
-        The radius of the sphere.
-    center (read-only): :class:`compas.geometry.Point`
-        The center of the sphere.
-    area (read-only): float
-        The surface area of the sphere.
-    volume (read-only): float
-        The volume of the sphere.
-
     Examples
     --------
     >>> from compas.geometry import Point
@@ -41,10 +28,18 @@ class Sphere(Shape):
     >>> sphere1 = Sphere(Point(1, 1, 1), 5)
     >>> sphere2 = Sphere((2, 4, 1), 2)
     >>> sphere3 = Sphere([2, 4, 1], 2)
+
+    >>> from compas.geometry import Point
+    >>> from compas.geometry import Sphere
+    >>> sphere = Sphere(Point(1, 1, 1), 5)
+    >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
+    >>> sdict == sphere.data
+    True
     """
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         from compas.data import is_float3
         return schema.Schema({
@@ -54,6 +49,7 @@ class Sphere(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'sphere'
 
     __slots__ = ['_point', '_radius']
@@ -67,22 +63,7 @@ class Sphere(Shape):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the sphere.
-
-        Returns
-        -------
-        dict
-            The sphere data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Point
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
-        >>> sdict == sphere.data
-        True
-
+        """dict - Returns the data dictionary that represents the sphere.
         """
         return {'point': self.point.data, 'radius': self.radius}
 
@@ -93,7 +74,7 @@ class Sphere(Shape):
 
     @property
     def point(self):
-        """Point: The center of the sphere."""
+        """:class:`compas.geometry.Point` - The center of the sphere."""
         return self._point
 
     @point.setter
@@ -102,7 +83,7 @@ class Sphere(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the sphere."""
+        """float - The radius of the sphere."""
         return self._radius
 
     @radius.setter
@@ -111,16 +92,17 @@ class Sphere(Shape):
 
     @property
     def center(self):
+        """:class:`compas.geometry.Point` (read-only) - The center of the sphere."""
         return self.point
 
     @property
     def area(self):
-        """float: The surface area of the sphere."""
+        """float (read-only) - The surface area of the sphere."""
         return 4 * pi * self.radius**2
 
     @property
     def volume(self):
-        """float: The volume of the sphere."""
+        """float (read-only) - The volume of the sphere."""
         return 4./3. * pi * self.radius**3
 
     # ==========================================================================
@@ -167,7 +149,7 @@ class Sphere(Shape):
 
         Returns
         -------
-        Sphere
+        :class:`Sphere`
             The constructed sphere.
 
         Examples

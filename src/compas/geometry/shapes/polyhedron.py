@@ -24,6 +24,7 @@ class Polyhedron(Shape):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         from compas.data import is_float3, is_sequence_of_int
         return schema.Schema({
@@ -33,6 +34,7 @@ class Polyhedron(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'polyhedron'
 
     __slots__ = ['_vertices', '_faces']
@@ -44,12 +46,24 @@ class Polyhedron(Shape):
         self.vertices = vertices
         self.faces = faces
 
+    @property
+    def data(self):
+        """dict - Returns the data dictionary that represents the polyhedron.
+        """
+        return {'vertices': self.vertices, 'faces': self.faces}
+
+    @data.setter
+    def data(self, data):
+        self.vertices = data['vertices']
+        self.faces = data['faces']
+
     # ==========================================================================
     # descriptors
     # ==========================================================================
 
     @property
     def vertices(self):
+        """list of list of float - The XYZ coordinates of the vertices of the polyhedron."""
         return self._vertices
 
     @vertices.setter
@@ -58,6 +72,7 @@ class Polyhedron(Shape):
 
     @property
     def faces(self):
+        """list of list of int - The faces of the polyhedron defined as lists of vertex indices."""
         return self._faces
 
     @faces.setter
@@ -66,6 +81,7 @@ class Polyhedron(Shape):
 
     @property
     def edges(self):
+        """list of (int, int) (read-only) - The edges of the polyhedron as vertex index pairs."""
         seen = set()
         for face in self.faces:
             for u, v in pairwise(face + face[:1]):
@@ -73,23 +89,6 @@ class Polyhedron(Shape):
                     seen.add((u, v))
                     seen.add((v, u))
                     yield u, v
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the polyhedron.
-
-        Returns
-        -------
-        dict
-            The polyhedron data.
-
-        """
-        return {'vertices': self.vertices, 'faces': self.faces}
-
-    @data.setter
-    def data(self, data):
-        self.vertices = data['vertices']
-        self.faces = data['faces']
 
     # ==========================================================================
     # customisation
@@ -135,7 +134,7 @@ class Polyhedron(Shape):
 
         Returns
         -------
-        Polyhedron
+        :class:`Polyhedron`
             The constructed polyhedron.
 
         Examples
@@ -317,7 +316,6 @@ class Polyhedron(Shape):
         Parameters
         ----------
         transformation : :class:`Transformation`
-
         """
         self.vertices = transform_points(self.vertices, transformation)
 

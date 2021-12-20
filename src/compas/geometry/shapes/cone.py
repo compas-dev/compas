@@ -28,21 +28,6 @@ class Cone(Shape):
     height : float
         The height of the cone.
 
-    Attributes
-    ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane containing the circle.
-    circle : :class:`compas.geometry.Circle`
-        The base circle of the cone.
-    radius : float
-        The radius of the base circle.
-    height : float
-        The height of the cone.
-    normal (read-only) : :class:`compas.geometry.Vector`
-        The normal of the base plane.
-    diameter : float
-        The diameter of the cone.
-
     Examples
     --------
     >>> from compas.geometry import Plane
@@ -55,6 +40,7 @@ class Cone(Shape):
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         return schema.Schema({
             'circle': {
@@ -66,6 +52,7 @@ class Cone(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
         return 'cone'
 
     __slots__ = ['_circle', '_height']
@@ -79,13 +66,7 @@ class Cone(Shape):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the cone.
-
-        Returns
-        -------
-        dict
-            The cone data.
-
+        """dict - Returns the data dictionary that represents the cone.
         """
         return {'circle': self.circle.data, 'height': self.height}
 
@@ -96,7 +77,7 @@ class Cone(Shape):
 
     @property
     def plane(self):
-        """Plane: The plane of the cone."""
+        """:class:`Plane` - The plane of the cone."""
         return self.circle.plane
 
     @plane.setter
@@ -105,7 +86,7 @@ class Cone(Shape):
 
     @property
     def circle(self):
-        """float: The circle of the cone."""
+        """float - The circle of the cone."""
         return self._circle
 
     @circle.setter
@@ -114,7 +95,7 @@ class Cone(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the cone."""
+        """float - The radius of the cone."""
         return self.circle.radius
 
     @radius.setter
@@ -123,7 +104,7 @@ class Cone(Shape):
 
     @property
     def height(self):
-        """float: The height of the cone."""
+        """float - The height of the cone."""
         return self._height
 
     @height.setter
@@ -132,17 +113,17 @@ class Cone(Shape):
 
     @property
     def normal(self):
-        """Vector: The normal of the cone."""
+        """:class:`Vector` (read-only) - The normal of the cone."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float: The diameter of the cone."""
+        """float (read-only) - The diameter of the cone."""
         return self.circle.diameter
 
     @property
     def center(self):
-        """Point: The center of the cone."""
+        """:class:`Point` - The center of the cone."""
         return self.circle.center
 
     @center.setter
@@ -151,13 +132,13 @@ class Cone(Shape):
 
     @property
     def area(self):
-        """Float: The surface area of the cone."""
+        """float (read-only) - The surface area of the cone."""
         r = self.circle.radius
         return pi * r * (r + sqrt(self.height**2 + r**2))
 
     @property
     def volume(self):
-        """Float: The volume of the cone."""
+        """float (read-only) - The volume of the cone."""
         return pi * self.circle.radius**2 * (self.height / 3)
 
     # ==========================================================================
@@ -204,7 +185,7 @@ class Cone(Shape):
 
         Returns
         -------
-        Cone
+        :class:`Cone`
             The constructed cone.
 
         Examples
