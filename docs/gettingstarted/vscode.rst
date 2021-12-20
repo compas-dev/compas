@@ -4,6 +4,10 @@
 Visual Studio Code
 ******************
 
+.. figure:: /_images/VSCode.png
+     :figclass: figure
+     :class: figure-img img-fluid
+
 `Visual Studio Code <https://code.visualstudio.com/>`_
 is a free and open source text editor with very good support for Python programming.
 We recommend installing the following VS Code extensions:
