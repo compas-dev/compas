@@ -104,7 +104,7 @@ To switch to a specific version
 
 .. code-block:: bash
 
-    conda install -n research COMPAS=0.19.1
+    conda install -n research COMPAS=1.0
 
 
 Update with pip
@@ -120,7 +120,7 @@ Or to switch to a specific version
 
 .. code-block:: bash
 
-    pip install COMPAS==0.19.1
+    pip install COMPAS==1.0
 
 
 Known Issues
