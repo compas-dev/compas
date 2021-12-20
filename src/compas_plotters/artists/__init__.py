@@ -69,7 +69,7 @@ from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 
 
-@plugin(category='factories', requires=['matplotlib'])
+@plugin(category='artists', requires=['matplotlib'])
 def register_artists():
     Artist.register(Point, PointArtist, context='Plotter')
     Artist.register(Vector, VectorArtist, context='Plotter')

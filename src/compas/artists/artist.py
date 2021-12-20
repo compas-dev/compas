@@ -12,17 +12,17 @@ from compas.plugins import pluggable
 from compas.plugins import PluginValidator
 
 
-@pluggable(category='drawing-utils')
+@pluggable(category='artists')
 def clear():
     raise NotImplementedError
 
 
-@pluggable(category='drawing-utils')
+@pluggable(category='artists')
 def redraw():
     raise NotImplementedError
 
 
-@pluggable(category='factories', selector='collect_all')
+@pluggable(category='artists', selector='collect_all')
 def register_artists():
     raise NotImplementedError
 

@@ -112,18 +112,18 @@ from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
 
 
-@plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
+@plugin(category='artists', pluggable_name='clear', requires=['bpy'])
 def clear_blender():
     print('doing it')
     compas_blender.clear()
 
 
-@plugin(category='drawing-utils', pluggable_name='redraw', requires=['bpy'])
+@plugin(category='artists', pluggable_name='redraw', requires=['bpy'])
 def redraw_blender():
     compas_blender.redraw()
 
 
-@plugin(category='factories', requires=['bpy'])
+@plugin(category='artists', requires=['bpy'])
 def register_artists():
     Artist.register(Box, BoxArtist, context='Blender')
     Artist.register(Capsule, CapsuleArtist, context='Blender')

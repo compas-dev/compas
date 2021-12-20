@@ -126,7 +126,7 @@ VolMeshArtist.default_facecolor = (255, 255, 255)
 VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
-@plugin(category='factories', requires=['Rhino'])
+@plugin(category='artists', requires=['Rhino'])
 def register_artists():
     Artist.register(Box, BoxArtist, context='Grasshopper')
     Artist.register(Capsule, CapsuleArtist, context='Grasshopper')
