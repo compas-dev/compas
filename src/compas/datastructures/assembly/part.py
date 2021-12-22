@@ -33,23 +33,6 @@ class Part(Datastructure):
         The base shape of the part geometry.
     features : list of tuple(:class:`compas.geometry.Shape`, str), optional
         The features to be added to the base shape of the part geometry.
-
-    Attributes
-    ----------
-    attributes : dict
-        General object attributes that will be included in the data dict.
-    key : int or str
-        The identifier of the part in the connectivity graph of the parent assembly.
-    frame : :class:`compas.geometry.Frame`
-        The local coordinate system of the part.
-    shape : :class:`compas.geometry.Shape`
-        The base shape of the part geometry.
-    features : list of tuple(:class:`compas.geometry.Shape`, str)
-        The features added to the base shape of the part geometry.
-    transformations : deque of :class:`compas.geometry.Transformation`
-        The stack of transformations applied to the part geometry.
-        The most recent transformation is on the left of the stack.
-        All transformations are with respect to the local coordinate system.
     """
 
     operations = {
@@ -57,9 +40,11 @@ class Part(Datastructure):
         'difference': boolean_difference_mesh_mesh,
         'intersection': boolean_intersection_mesh_mesh
     }
+    """dict - Available operations for combining features with a base shape."""
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
         import schema
         return schema.Schema({
             "attributes": dict,
@@ -72,18 +57,28 @@ class Part(Datastructure):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the schema of the data representation in JSON format."""
         return 'part'
 
     def __init__(self, name=None, frame=None, shape=None, features=None, **kwargs):
         super(Part, self).__init__()
         self._frame = None
         self.attributes = {'name': name or 'Part'}
+        """dict - General object attributes that will be included in the data dict."""
         self.attributes.update(kwargs)
         self.key = None
+        """int or str - The identifier of the part in the connectivity graph of the parent assembly."""
         self.frame = frame
         self.shape = shape or Shape([], [])
+        """:class:`compas.geometry.Shape` - The base shape of the part geometry."""
         self.features = features or []
+        """List[Tuple[:class:`compas.geometry.Shape`, str]] - The features added to the base shape of the part geometry."""
         self.transformations = deque()
+        """deque of :class:`compas.geometry.Transformation` - The stack of transformations applied to the part geometry.
+
+        The most recent transformation is on the left of the stack.
+        All transformations are with respect to the local coordinate system.
+        """
 
     def __str__(self):
         tpl = "<Part with shape {} and features {}>"
@@ -91,7 +86,7 @@ class Part(Datastructure):
 
     @property
     def name(self):
-        """str : The name of the part."""
+        """str - The name of the part."""
         return self.attributes.get('name') or self.__class__.__name__
 
     @name.setter
@@ -100,7 +95,7 @@ class Part(Datastructure):
 
     @property
     def data(self):
-        """dict : A data dict representing the part attributes, the assembly graph identifier, the local coordinate system,
+        """dict - A data dict representing the part attributes, the assembly graph identifier, the local coordinate system,
         the base shape, the shape features, and the transformation tack wrt to the local coordinate system.
         """
         data = {
@@ -124,6 +119,7 @@ class Part(Datastructure):
 
     @property
     def frame(self):
+        """:class:`compas.geometry.Frame` - The local coordinate system of the part."""
         if not self._frame:
             self._frame = Frame.worldXY()
         return self._frame
@@ -134,6 +130,7 @@ class Part(Datastructure):
 
     @property
     def geometry(self):
+        """:class:`compas.geometry.Polyhedron` (read-only) - The geometry of the part after combining the base shape and features through the specified operations."""
         # TODO: this is a temp solution
         # TODO: add memoization or some other kind of caching
         A = Mesh.from_shape(self.shape)

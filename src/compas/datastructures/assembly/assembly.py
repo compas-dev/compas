@@ -10,16 +10,15 @@ from .exceptions import AssemblyError
 class Assembly(Datastructure):
     """A data structure for managing the connections between different parts of an assembly.
 
-    Attributes
+    Parameters
     ----------
-    attributes: dict
-        General attributes of the assembly that will be included in the data dict.
-    graph: :class:`compas.datastructures.Graph`
-        The graph that is used under the hood to store the parts and their connections.
+    name : str, optional
+        The name of the assembly.
     """
 
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation of the assembly."""
         import schema
         return schema.Schema({
             "attributes": dict,
@@ -28,13 +27,16 @@ class Assembly(Datastructure):
 
     @property
     def JSONSCHEMANAME(self):
+        """str - Name of the schema of the data representation in JSON format."""
         return 'assembly'
 
     def __init__(self, name=None, **kwargs):
         super(Assembly, self).__init__()
         self.attributes = {'name': name or 'Assembly'}
+        """dict - General attributes of the assembly that will be included in the data dict."""
         self.attributes.update(kwargs)
         self.graph = Graph()
+        """:class:`compas.datastructures.Graph` - The graph that is used under the hood to store the parts and their connections."""
         self._parts = {}
 
     def __str__(self):
@@ -43,7 +45,7 @@ class Assembly(Datastructure):
 
     @property
     def name(self):
-        """str : The name of the assembly."""
+        """str - The name of the assembly."""
         return self.attributes.get('name') or self.__class__.__name__
 
     @name.setter
@@ -52,7 +54,7 @@ class Assembly(Datastructure):
 
     @property
     def data(self):
-        """dict : A data dict representing the assembly data structure for serialization.
+        """dict - A data dict containing only native Python objects representing the assembly data structure for serialization.
         """
         data = {
             'attributes': self.attributes,
@@ -84,7 +86,6 @@ class Assembly(Datastructure):
         -------
         int or str
             The identifier of the part in the current assembly graph.
-
         """
         if part.guid in self._parts:
             raise AssemblyError('Part already added to the assembly')
@@ -161,6 +162,5 @@ class Assembly(Datastructure):
         -------
         :class:`compas.datastructures.Part` or None
             The identified part, if any.
-
         """
         return self._parts.get(guid)
