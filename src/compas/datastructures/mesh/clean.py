@@ -15,7 +15,7 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
     precision : str (None)
         A formatting option that specifies the precision of the
@@ -48,7 +48,6 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
     >>> mesh_delete_duplicate_vertices(mesh)
     >>> mesh.number_of_vertices()
     36
-
     """
     key_gkey = {key: geometric_key(mesh.vertex_attributes(key, 'xyz'), precision=precision) for key in mesh.vertices()}
     gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}

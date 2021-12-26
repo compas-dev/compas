@@ -25,12 +25,12 @@ def mesh_conway_dual(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    Mesh
+    :class:`compas.datastructures.Mesh`
         The dual mesh.
 
     Examples
@@ -68,12 +68,12 @@ def mesh_conway_join(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    Mesh
+    :class:`compas.datastructures.Mesh`
         The join mesh.
 
     Examples
@@ -117,12 +117,12 @@ def mesh_conway_ambo(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The ambo mesh.
 
     Examples
@@ -154,12 +154,12 @@ def mesh_conway_kis(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The kis mesh.
 
     Examples
@@ -200,12 +200,12 @@ def mesh_conway_needle(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The needle mesh.
 
     Examples
@@ -237,12 +237,12 @@ def mesh_conway_zip(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The zip mesh.
 
     Examples
@@ -265,7 +265,6 @@ def mesh_conway_zip(mesh):
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
-
     """
     return mesh_conway_dual(mesh_conway_kis(mesh))
 
@@ -275,12 +274,12 @@ def mesh_conway_truncate(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The truncate mesh.
 
     Examples
@@ -313,12 +312,12 @@ def mesh_conway_ortho(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The ortho mesh.
 
     Examples
@@ -350,12 +349,12 @@ def mesh_conway_expand(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The expand mesh.
 
     Examples
@@ -387,12 +386,12 @@ def mesh_conway_gyro(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The gyro mesh.
 
     Examples
@@ -442,12 +441,12 @@ def mesh_conway_snub(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The gyro mesh.
 
     Examples
@@ -479,12 +478,12 @@ def mesh_conway_meta(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The meta mesh.
 
     Examples
@@ -516,12 +515,12 @@ def mesh_conway_bevel(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The bevel mesh.
 
     Examples

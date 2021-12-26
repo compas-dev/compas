@@ -16,7 +16,7 @@ def mesh_transform_numpy(mesh, transformation):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh.
     transformation : compas.geometry.Transformation
         The transformation.
@@ -47,7 +47,7 @@ def mesh_transformed_numpy(mesh, transformation):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh.
     transformation : compas.geometry.Transformation
         The transformation.

@@ -12,7 +12,7 @@ def mesh_slice_plane(mesh, plane):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The original mesh.
     plane : compas.geometry.Plane
         The cutting plane.

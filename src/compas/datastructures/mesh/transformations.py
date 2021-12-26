@@ -16,7 +16,7 @@ def mesh_transform(mesh, transformation):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh.
     transformation : compas.geometry.Transformation
         The transformation.
@@ -47,7 +47,7 @@ def mesh_transformed(mesh, transformation):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh.
     transformation : compas.geometry.Transformation
         The transformation.

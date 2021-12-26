@@ -18,7 +18,7 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     u : str
         The key of the first vertex of the edge.
@@ -89,7 +89,7 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     u : hashable
         Identifier of the first vertex.

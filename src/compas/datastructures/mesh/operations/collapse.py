@@ -14,7 +14,7 @@ def is_collapse_legal(mesh, u, v, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh.
     u : str
         The vertex to collapse towards.
@@ -80,7 +80,7 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     u : str
         The first vertex of the (half-) edge.
@@ -239,7 +239,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     u : str
         The first vertex of the (half-) edge.

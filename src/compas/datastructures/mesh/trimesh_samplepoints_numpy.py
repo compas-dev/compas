@@ -19,7 +19,7 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Mesh is limited to triangle mesh
     num_points : (int)
         How many points sampled

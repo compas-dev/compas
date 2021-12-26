@@ -17,7 +17,7 @@ def mesh_is_connected(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh data structure.
 
     Returns
