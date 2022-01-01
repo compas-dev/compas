@@ -31,7 +31,26 @@ class Data(object):
     Parameters
     ----------
     name : str, optional
-        The name of the data object.
+        The name of the object.
+
+    Attributes
+    ----------
+    dtype : str, read-only
+        The type of the object in the form of a fully qualified module name and a class name, separated by a forward slash ("/").
+        For example: ``"compas.datastructures/Mesh"``.
+    data : dict
+        The representation of the object as a dictionary containing only native Python data.
+        The structure of the dict is described by the data schema.
+    jsonstring : str, read-only
+        The object's data dict in JSON string format.
+    guid : str, read-only
+        The globally unique identifier of the object.
+        The guid is generated with ``uuid.uuid4()``.
+    name : str
+        The name of the object.
+        This name is not necessarily unique and can be set by the user.
+        The default value is the object's class name: ``self.__class__.__name__``.
+
     """
 
     def __init__(self, name=None):
@@ -59,7 +78,7 @@ class Data(object):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - The schema of the serialized data dict."""
+        """str - The schema of the data of this object in JSON format."""
         raise NotImplementedError
 
     @property
@@ -92,15 +111,10 @@ class Data(object):
 
     @property
     def dtype(self):
-        """str - The type of the object in the form of a '2-level' import and a class name."""
         return '{}/{}'.format('.'.join(self.__class__.__module__.split('.')[:2]), self.__class__.__name__)
 
     @property
     def data(self):
-        """dict - The representation of the object as native Python data.
-
-        The structure of the data is described by the data schema.
-        """
         raise NotImplementedError
 
     @data.setter
@@ -109,22 +123,16 @@ class Data(object):
 
     @property
     def jsonstring(self):
-        """str - The representation of the object data in JSON format."""
         return compas.json_dumps(self.data)
 
     @property
     def guid(self):
-        """str - The globally unique identifier of the object."""
         if not self._guid:
             self._guid = uuid4()
         return self._guid
 
     @property
     def name(self):
-        """str - The name of the object.
-
-        This name is not necessarily unique and can be set by the user.
-        """
         if not self._name:
             self._name = self.__class__.__name__
         return self._name
@@ -145,8 +153,7 @@ class Data(object):
         Returns
         -------
         :class:`compas.data.Data`
-            An object of the type of ``cls``.
-
+            An instance of this object type if the data contained in the dict has the correct schema.
         """
         obj = cls()
         obj.data = data
@@ -174,7 +181,7 @@ class Data(object):
         Returns
         -------
         :class:`compas.data.Data`
-            An object of the type of ``cls``.
+            An instance of this object type if the data contained in the JSON file has the correct schema.
         """
         data = compas.json_load(filepath)
         return cls.from_data(data)
@@ -189,6 +196,10 @@ class Data(object):
         pretty : bool, optional
             If ``True`` serialize a pretty representation of the data.
             Default is ``False``.
+
+        Returns
+        -------
+        None
         """
         compas.json_dump(self.data, filepath, pretty)
 
@@ -199,12 +210,12 @@ class Data(object):
         Parameters
         ----------
         string : str
-            The JSON string.
+            The object JSON string.
 
         Returns
         -------
         :class:`compas.data.Data`
-            An object of the type of ``cls``.
+            An instance of this object type if the data contained in the JSON file has the correct schema.
         """
         data = compas.json_loads(string)
         return cls.from_data(data)
@@ -216,12 +227,11 @@ class Data(object):
         ----------
         pretty : bool, optional
             If ``True`` serialize a pretty representation of the data.
-            Default is ``False``.
 
         Returns
         -------
         str
-            A JSON string representation of the data.
+            The object's data dict in JSON string format.
         """
         return compas.json_dumps(self.data, pretty)
 
@@ -230,21 +240,21 @@ class Data(object):
 
         Parameters
         ----------
-        cls : :class:`compas.data.Data`, optional
+        cls : Type[:class:`compas.data.Data`], optional
             The type of data object to return.
             Defaults to the type of the current data object.
 
         Returns
         -------
         :class:`compas.data.Data`
-            A separate, but identical data object.
+            An independent copy of this object.
         """
         if not cls:
             cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
     def validate_data(self):
-        """Validate the object's data against its data schema (`self.DATASCHEMA`).
+        """Validate the object's data against its data schema (``self.DATASCHEMA``).
 
         Returns
         -------
@@ -264,7 +274,7 @@ class Data(object):
         return data
 
     def validate_json(self):
-        """Validate the object's data against its json schema (`self.JSONSCHEMA`).
+        """Validate the object's data against its json schema (``self.JSONSCHEMA``).
 
         Returns
         -------
