@@ -13,14 +13,23 @@ class PrimitiveArtist(Artist):
     ----------
     primitive: :class:`compas.geometry.Primitive`
         The geometry of the primitive.
-    color : Tuple[float, float, float], optional
+    color : tuple[float, float, float], optional
         The RGB components of the base color of the primitive.
+
+    Attributes
+    ----------
+    primitive : :class:`compas.geometry.Primitive`
+        The geometric primitive associated with the artist.
+    color : tuple[float, float, float]
+        The color of the object.
+
+    Class Attributes
+    ----------------
+    default_color : tuple[float, float, float]
+        The default rgb color value of the primitive.
     """
 
     default_color = (0, 0, 0)
-    """Tuple[float, float, float] -
-    The default rgb color value of the primitive (``(0, 0, 0)``).
-    """
 
     def __init__(self, primitive, color=None, **kwargs):
         super(PrimitiveArtist, self).__init__()
@@ -31,7 +40,6 @@ class PrimitiveArtist(Artist):
 
     @property
     def primitive(self):
-        """:class:`compas.geometry.Primitive` - The geometric primitive associated with the artist."""
         return self._primitive
 
     @primitive.setter
@@ -40,7 +48,6 @@ class PrimitiveArtist(Artist):
 
     @property
     def color(self):
-        """Tuple[float, float, float] - The color of the object."""
         if not self._color:
             self._color = self.default_color
         return self._color

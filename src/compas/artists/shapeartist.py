@@ -13,14 +13,27 @@ class ShapeArtist(Artist):
     ----------
     shape: :class:`compas.geometry.Shape`
         The geometry of the shape.
-    color : Tuple[float, float, float], optional
+    color : tuple[float, float, float], optional
         The RGB color.
+
+    Attributes
+    ----------
+    shape : :class:`compas.geometry.Shape`
+        The geometry of the shape.
+    color : tuple[float, float, float]
+        The color of the shape.
+    u : int
+        The resolution in the U direction of the discrete shape representation.
+    v : int
+        The resolution in the V direction of the discrete shape representation.
+
+    Class Attributes
+    ----------------
+    default_color : tuple[float, float, float]
+        The default color of the shape.
     """
 
     default_color = (1, 1, 1)
-    """Tuple[float, float, float] -
-    The default color of the shape.
-    """
 
     def __init__(self, shape, color=None, **kwargs):
         super(ShapeArtist, self).__init__()
@@ -35,7 +48,6 @@ class ShapeArtist(Artist):
 
     @property
     def shape(self):
-        """:class:`compas.geometry.Shape` - The geometry of the shape."""
         return self._shape
 
     @shape.setter
@@ -44,7 +56,6 @@ class ShapeArtist(Artist):
 
     @property
     def color(self):
-        """Tuple[float, float, float] - The color of the shape."""
         if not self._color:
             self._color = self.default_color
         return self._color
@@ -56,7 +67,6 @@ class ShapeArtist(Artist):
 
     @property
     def u(self):
-        """int - The resolution in the U direction of the discrete shape representation."""
         if not self._u:
             self._u = 16
         return self._u
@@ -68,7 +78,6 @@ class ShapeArtist(Artist):
 
     @property
     def v(self):
-        """int - The resolution in the V direction of the discrete shape representation."""
         if not self._v:
             self._v = 16
         return self._v

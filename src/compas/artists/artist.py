@@ -63,20 +63,22 @@ def _get_artist_cls(data, **kwargs):
 
 class Artist(object):
     """Base class for all artists.
+
+    Class Attributes
+    ----------------
+    AVAILABLE_CONTEXTS : list[str]
+        The available visualization contexts.
+    CONTEXT : str or None
+        The current visualization context is one of :attr:`AVAILABLE_CONTEXTS`.
+    ITEM_ARTIST : dict[str, dict[Type[:class:`compas.data.Data`], Type[:class:`compas.artists.Artist`]]]
+        Dictionary mapping data types to the corresponding artists types per visualization context.
     """
 
     __ARTISTS_REGISTERED = False
 
     AVAILABLE_CONTEXTS = ['Rhino', 'Grasshopper', 'Blender', 'Plotter']
-    """List[str] - The contexts for which artists are available."""
-
     CONTEXT = None
-    """{'Rhino', 'Grasshopper', 'Blender', 'Plotter'} - The current context."""
-
     ITEM_ARTIST = defaultdict(dict)
-    """Dict[str, Dict[:class:`compas.data.Data`, :class:`compas.artists.Artist`]] -
-    Mapping between COMPAS data objects and artists, per visualization context.
-    """
 
     def __new__(cls, *args, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
@@ -113,7 +115,7 @@ class Artist(object):
         Parameters
         ----------
         artist_type : :class:`compas.artists.Artist`
-        kwargs : dict, optional
+        **kwargs : dict[str, Any], optional
             The keyword arguments (kwargs) collected in a dict.
             For relevant options, see the parameter lists of the matching artist type.
 
@@ -127,12 +129,22 @@ class Artist(object):
 
     @staticmethod
     def clear():
-        """Clear all objects from the view."""
+        """Clear all objects from the view.
+
+        Returns
+        -------
+        None
+        """
         return clear()
 
     @staticmethod
     def redraw():
-        """Redraw the view."""
+        """Redraw the view.
+
+        Returns
+        -------
+        None
+        """
         return redraw()
 
     @staticmethod
@@ -142,9 +154,15 @@ class Artist(object):
         Parameters
         ----------
         item_type : :class:`compas.data.Data`
-        artist_type : :class:`compaas.artists.Artist`
+            The type of data item.
+        artist_type : :class:`compas.artists.Artist`
+            The type of the corresponding/compatible artist.
         context : {'Rhino', 'Grasshopper', 'Blender', 'Plotter'}, optional
             The visualization context in which the pair should be registered.
+
+        Returns
+        -------
+        None
         """
         Artist.ITEM_ARTIST[context][item_type] = artist_type
 

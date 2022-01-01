@@ -15,25 +15,53 @@ class NetworkArtist(Artist):
     ----------
     network : :class:`compas.datastructures.Network`
         A COMPAS network.
+
+    Attributes
+    ----------
+    network : :class:`compas.datastructures.Network`
+        The COMPAS network associated with the artist.
+    nodes : list[hashable]
+        The list of nodes to draw.
+        Defaults to all nodes.
+    edges : list[tuple[hashable, hashable]]
+        The list of edges to draw.
+        Default is a list of all edges of the network.
+    node_xyz : dict[hashable, list[float]]
+        Mapping between nodes and their view coordinates.
+        The default view coordinates are the actual coordinates of the nodes of the network.
+    node_color : dict[hashable, tuple[float, float, float]]
+        Mapping between nodes and RGB color values.
+        Missing nodes get the default node color :attr:`default_nodecolor`.
+    edge_color : dict[tuple[hashable, hashable], tuple[float, float, float]]
+        Mapping between edges and colors.
+        Missing edges get the default edge color :attr:`default_edgecolor`.
+    node_text : dict[hashable, str]
+        Mapping between nodes and text labels.
+    edge_text : dict[tuple[hashable, hashable], str]
+        Mapping between edges and text labels.
+    node_size : dict[hashable, float]
+        Mapping between nodes and sizes.
+        Missing nodes get assigned the default node size :attr:`default_nodesize`.
+    edge_width : dict[tuple[hashable, hashable], float]
+        Mapping between edges and line widths.
+        Missing edges get assigned the default edge width :attr:`default_edgewidth`.
+
+    Class Attributes
+    ----------------
+    default_nodecolor : tuple[float, float, float]
+        The default color for nodes that do not have a specified color.
+    default_edgecolor : tuple[float, float, float]
+        The default color for edges that do not have a specified color.
+    default_nodesize : float
+        The default size for nodes that do not have a specified size.
+    default_edgewidth : float
+        The default width for edges that do not have a specified width.
     """
 
     default_nodecolor = (1, 1, 1)
-    """Tuple[float, float, float] -
-    The default color for nodes that do not have a specified color.
-    """
     default_edgecolor = (0, 0, 0)
-    """Tuple[float, float, float] -
-    The default color for edges that do not have a specified color.
-    """
-
     default_nodesize = 5
-    """float -
-    The default size for nodes that do not have a specified size.
-    """
     default_edgewidth = 1.0
-    """float -
-    The default width for edges that do not have a specified width.
-    """
 
     def __init__(self, network, **kwargs):
         super(NetworkArtist, self).__init__()
@@ -56,8 +84,6 @@ class NetworkArtist(Artist):
 
     @property
     def network(self):
-        """:class:`compas.datastructures.Network` -
-        The COMPAS network associated with the artist."""
         return self._network
 
     @network.setter
@@ -67,10 +93,6 @@ class NetworkArtist(Artist):
 
     @property
     def nodes(self):
-        """List[int] -
-        The list of nodes to draw.
-        Default is a list of all nodes of the network.
-        """
         if self._nodes is None:
             self._nodes = list(self.network.nodes())
         return self._nodes
@@ -81,10 +103,6 @@ class NetworkArtist(Artist):
 
     @property
     def edges(self):
-        """List[Tuple[int, int]] -
-        The list of edges to draw.
-        Default is a list of all edges of the network.
-        """
         if self._edges is None:
             self._edges = list(self.network.edges())
         return self._edges
@@ -95,10 +113,6 @@ class NetworkArtist(Artist):
 
     @property
     def node_xyz(self):
-        """Dict[int, List[float]] -
-        Mapping between nodes and their view coordinates.
-        The default view coordinates are the actual coordinates of the nodes of the network.
-        """
         if not self._node_xyz:
             return {node: self.network.node_attributes(node, 'xyz') for node in self.network.nodes()}
         return self._node_xyz
@@ -109,10 +123,6 @@ class NetworkArtist(Artist):
 
     @property
     def node_color(self):
-        """Dict[int, Tuple[float, float, float]] -
-        Mapping between nodes and RGB color values.
-        Missing nodes get the default node color (``NetworkArtist.default_nodecolor``).
-        """
         if not self._node_color:
             self._node_color = {node: self.default_nodecolor for node in self.network.nodes()}
         return self._node_color
@@ -126,10 +136,6 @@ class NetworkArtist(Artist):
 
     @property
     def node_size(self):
-        """Dict[int, float] -
-        Mapping between nodes and sizes.
-        Missing nodes get assigned the default node size.
-        """
         if not self._node_size:
             self._node_size = {node: self.default_nodesize for node in self.network.nodes()}
         return self._node_size
@@ -143,10 +149,6 @@ class NetworkArtist(Artist):
 
     @property
     def edge_color(self):
-        """Dict[Tuple[int, int], Tuple[float, float, float]] -
-        Mapping between edges and colors.
-        Missing edges get the default edge color (``NetworkArtist.default_edgecolor``).
-        """
         if not self._edge_color:
             self._edge_color = {edge: self.default_edgecolor for edge in self.network.edges()}
         return self._edge_color
@@ -160,9 +162,6 @@ class NetworkArtist(Artist):
 
     @property
     def node_text(self):
-        """Dict[int, str] -
-        Mapping between nodes and text labels.
-        """
         if not self._node_text:
             self._node_text = {node: str(node) for node in self.network.nodes()}
         return self._node_text
@@ -178,9 +177,6 @@ class NetworkArtist(Artist):
 
     @property
     def edge_text(self):
-        """Dict[Tuple[int, int], str] -
-        Mapping between edges and text labels.
-        """
         if not self._edge_text:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}
         return self._edge_text
@@ -196,9 +192,6 @@ class NetworkArtist(Artist):
 
     @property
     def edge_width(self):
-        """Dict[Tuple[int, int], float] -
-        Mapping between edges and line width.
-        """
         if not self._edge_width:
             self._edge_width = {edge: self.default_edgewidth for edge in self.network.edges()}
         return self._edge_width
@@ -216,16 +209,21 @@ class NetworkArtist(Artist):
 
         Parameters
         ----------
-        nodes : List[int], optional
+        nodes : list[int], optional
             The nodes to include in the drawing.
             Default is all nodes.
-        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the nodes,
             as either a single color to be applied to all nodes,
             or a color dict, mapping specific nodes to specific colors.
-        text : Dict[int, str], optional
+        text : dict[int, str], optional
             The text labels for the nodes
             as a text dict, mapping specific nodes to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the nodes in the visualization context.
         """
         raise NotImplementedError
 
@@ -235,30 +233,50 @@ class NetworkArtist(Artist):
 
         Parameters
         ----------
-        edges : List[Tuple[int, int]], optional
+        edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : Tuple[float, float, float] or Dict[Tuple[int, int], Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : Dict[Tuple[int, int]], optional
+        text : dict[tuple[int, int]], optional
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the edges in the visualization context.
         """
         raise NotImplementedError
 
     @abstractmethod
     def clear_nodes(self):
-        """Clear the nodes of the network."""
+        """Clear the nodes of the network.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
-        """Clear the edges of the network."""
+        """Clear the edges of the network.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     def clear(self):
-        """Clear the nodes and the edges of the network."""
+        """Clear the nodes and the edges of the network.
+
+        Returns
+        -------
+        None
+        """
         self.clear_nodes()
         self.clear_edges()

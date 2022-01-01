@@ -15,21 +15,75 @@ class MeshArtist(Artist):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
+
+    Attributes
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        The mesh data structure.
+    vertices : list[int]
+        The selection of vertices that should be included in the drawing.
+        Defaults to all vertices.
+    edges : list[tuple[int, int]]
+        The selection of edges that should be included in the drawing.
+        Defaults to all edges.
+    faces : list[int]
+        The selection of faces that should be included in the drawing.
+        Defaults to all faces.
+    color : tuple[float, float, float]
+        The base RGB color of the mesh.
+        Defaults to :attr:`default_color`.
+    vertex_xyz : dict[int, list[float]]
+        View coordinates of the vertices.
+        Defaults to the real coordinates.
+    vertex_color : dict[int, tuple[float, float, float]]
+        Vertex colors.
+        Missing vertices get the default vertex color :attr:`default_vertexcolor`.
+    edge_color : dict[tuple[int, int], tuple[float, float, float]]
+        Edge colors.
+        Missing edges get the default edge color :attr:`default_edgecolor`.
+    face_color : dict[int, tuple[float, float, float]]
+        Face colors.
+        Missing faces get the default face color :attr:`default_facecolor`.
+    vertex_text : dict[int, str]
+        Vertex labels.
+        Defaults to the vertex identifiers.
+    edge_text : dict[tuple[int, int], str]
+        Edge labels.
+        Defaults to the edge identifiers.
+    face_text : dict[int, tuple[float, float, float]]
+        Face labels.
+        Defaults to the face identifiers.
+    vertex_size : dict[int, float]
+        Vertex sizes.
+        Defaults to 1.
+        Visuzlization of vertices with variable size is not available for all visualization contexts.
+    edge_width : dict[tuple[int, int], float]
+        Edge widths.
+        Defaults to 1.
+        Visuzlization of edges with variable width is not available for all visualization contexts.
+
+    Class Attributes
+    ----------------
+    default_color : tuple[float, float, float]
+        The default base color of the mesh.
+    default_vertexcolor : tuple[float, float, float]
+        The default color of the vertices of the mesh.
+    default_edgecolor : tuple[float, float, float]
+        The default color of the edges of the mesh.
+    default_facecolor : tuple[float, float, float]
+        The default color of the faces of the mesh.
+    default_vertexsize : float
+        The default size of the vertices of the mesh.
+    default_edgewidth : float
+        The default width of the edges of the mesh.
     """
 
     default_color = (0.0, 0.0, 0.0)
-    """Tuple[float, float, float] - The default base color of the mesh."""
     default_vertexcolor = (1.0, 1.0, 1.0)
-    """Tuple[float, float, float] - The default color of the vertices of the mesh."""
     default_edgecolor = (0.0, 0.0, 0.0)
-    """Tuple[float, float, float] - The default color of the edges of the mesh."""
     default_facecolor = (0.9, 0.9, 0.9)
-    """Tuple[float, float, float] - The default color of the faces of the mesh."""
-
     default_vertexsize = 5
-    """float - The default size of the vertices of the mesh."""
     default_edgewidth = 1.0
-    """float - The default width of the edges of the mesh."""
 
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__()
@@ -62,7 +116,6 @@ class MeshArtist(Artist):
 
     @property
     def mesh(self):
-        """:class:`compas.datastructures.Mesh` - The mesh associated with the artist."""
         return self._mesh
 
     @mesh.setter
@@ -72,7 +125,6 @@ class MeshArtist(Artist):
 
     @property
     def vertices(self):
-        """List[int] - The vertices to include in the drawing."""
         if self._vertices is None:
             self._vertices = list(self.mesh.vertices())
         return self._vertices
@@ -83,7 +135,6 @@ class MeshArtist(Artist):
 
     @property
     def edges(self):
-        """List[Tuple[int, int]] - The edges to include in the drawing."""
         if self._edges is None:
             self._edges = list(self.mesh.edges())
         return self._edges
@@ -94,7 +145,6 @@ class MeshArtist(Artist):
 
     @property
     def faces(self):
-        """List[int] - The faces to include in the drawing."""
         if self._faces is None:
             self._faces = list(self.mesh.faces())
         return self._faces
@@ -105,7 +155,6 @@ class MeshArtist(Artist):
 
     @property
     def color(self):
-        """Tuple[float, float, float] - The general color of the mesh."""
         if not self._color:
             self._color = self.default_color
         return self._color
@@ -117,7 +166,6 @@ class MeshArtist(Artist):
 
     @property
     def vertex_xyz(self):
-        """Dict[int, List[float]] - The view coordinates of the vertices."""
         if self._vertex_xyz is None:
             return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
         return self._vertex_xyz
@@ -128,7 +176,6 @@ class MeshArtist(Artist):
 
     @property
     def vertex_color(self):
-        """Dict[int, Tuple[float, float, float]] - Mapping between vertices and colors."""
         if self._vertex_color is None:
             self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
         return self._vertex_color
@@ -142,7 +189,6 @@ class MeshArtist(Artist):
 
     @property
     def vertex_text(self):
-        """Dict[int, str] - Mapping between vertices and text labels."""
         if self._vertex_text is None:
             self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}
         return self._vertex_text
@@ -158,7 +204,6 @@ class MeshArtist(Artist):
 
     @property
     def vertex_size(self):
-        """Dict[int, int] - Mapping between vertices and sizes."""
         if not self._vertex_size:
             self._vertex_size = {vertex: self.default_vertexsize for vertex in self.mesh.vertices()}
         return self._vertex_size
@@ -172,7 +217,6 @@ class MeshArtist(Artist):
 
     @property
     def edge_color(self):
-        """Dict[Tuple[int, int], Tuple[float, float, float]] - Mapping between edges and colors."""
         if self._edge_color is None:
             self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
         return self._edge_color
@@ -186,7 +230,6 @@ class MeshArtist(Artist):
 
     @property
     def edge_text(self):
-        """Dict[Tuple[int, int], str] - Mapping between edges and text labels."""
         if self._edge_text is None:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
         return self._edge_text
@@ -202,7 +245,6 @@ class MeshArtist(Artist):
 
     @property
     def edge_width(self):
-        """Dict[Tuple[int, int], float] - Mapping between edges and line widths."""
         if not self._edge_width:
             self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}
         return self._edge_width
@@ -216,7 +258,6 @@ class MeshArtist(Artist):
 
     @property
     def face_color(self):
-        """Dict[int, Tuple[float, float, float]] - Mapping between faces and colors."""
         if self._face_color is None:
             self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
         return self._face_color
@@ -230,7 +271,6 @@ class MeshArtist(Artist):
 
     @property
     def face_text(self):
-        """Dict[int, str] - Mapping between faces and text lables."""
         if self._face_text is None:
             self._face_text = {face: str(face) for face in self.mesh.faces()}
         return self._face_text
@@ -250,16 +290,21 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        vertices : List[int], optional
+        vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
-        text : Dict[int, str], optional
+        text : dict[int, str], optional
             The text labels for the vertices
             as a text dict, mapping specific vertices to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the vertices in the visualization context.
         """
         raise NotImplementedError
 
@@ -269,16 +314,21 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        edges : List[Tuple[int, int]], optional
+        edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : Tuple[float, float, float] or Dict[Tuple[int, int], Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : Dict[Tuple[int, int], str], optional
+        text : dict[tuple[int, int], str], optional
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the edges in the visualization context.
         """
         raise NotImplementedError
 
@@ -288,41 +338,72 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        faces : List[int], optional
+        faces : list[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.
-        text : Dict[int, str], optional
+        text : dict[int, str], optional
             The text labels for the faces
             as a text dict, mapping specific faces to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the faces in the visualization context.
         """
         raise NotImplementedError
 
     @abstractmethod
     def draw_mesh(self):
-        """Draw the mesh of the mesh."""
+        """Draw the mesh of the mesh.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the mesh in the visualization context.
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_vertices(self):
-        """Clear the vertices of the mesh."""
+        """Clear the vertices of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
-        """Clear the edges of the mesh."""
+        """Clear the edges of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_faces(self):
-        """Clear the faces of the mesh."""
+        """Clear the faces of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     def clear(self):
-        """Clear all components of the mesh."""
+        """Clear all components of the mesh.
+
+        Returns
+        -------
+        None
+        """
         self.clear_vertices()
         self.clear_edges()
         self.clear_faces()

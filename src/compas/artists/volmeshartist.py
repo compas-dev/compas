@@ -15,20 +15,63 @@ class VolMeshArtist(Artist):
     ----------
     volmesh : :class:`compas.datastructures.VolMesh`
         A COMPAS volmesh.
+
+    Attributes
+    ----------
+    volmesh : :class:`compas.datastructures.VolMesh`
+        The COMPAS volmesh associated with the artist.
+    vertices : list[int]
+        The list of vertices to draw.
+        Default is a list of all vertices of the volmesh.
+    edges : list[tuple[int, int]]
+        The list of edges to draw.
+        Default is a list of all edges of the volmesh.
+    faces : list[int]
+        The list of faces to draw.
+        Default is a list of all faces of the volmesh.
+    cells : list[int]
+        The list of cells to draw.
+        Default is a list of all cells of the volmesh.
+    vertex_xyz : dict[int, list[float]]
+        The view coordinates of the vertices.
+        By default, the actual vertex coordinates are used.
+    vertex_color : dict[int, tuple[float, float, float]]
+        Mapping between vertices and colors.
+        Missing vertices get the default vertex color: :attr:`default_vertexcolor`.
+    edge_color : dict[tuple[int, int], tuple[float, float, float]]
+        Mapping between edges and colors.
+        Missing edges get the default edge color: :attr:`default_edgecolor`.
+    face_color : dict[int, tuple[float, float, float]]
+        Mapping between faces and colors.
+        Missing faces get the default face color: :attr:`default_facecolor`.
+    cell_color : dict[int, tuple[float, float, float]]
+        Mapping between cells and colors.
+        Missing cells get the default cell color: :attr:`default_facecolor`.
+    vertex_text : dict[int, str]
+        Mapping between vertices and text labels.
+    edge_text : dict[tuple[int, int], str]
+        Mapping between edges and text labels.
+    face_text : dict[int, str]
+        Mapping between faces and text lables.
+    cell_text : dict[int, str]
+        Mapping between cells and text lables.
+
+    Class Attributes
+    ----------------
+    default_vertexcolor : tuple[float, float, float]
+        The default color of the vertices of the mesh that don't have a specified color.
+    default_edgecolor : tuple[float, float, float]
+        The default color of the edges of the mesh that don't have a specified color.
+    default_facecolor : tuple[float, float, float]
+        The default color of the faces of the mesh that don't have a specified color.
+    default_cellcolor : tuple[float, float, float]
+        The default color of the cells of the mesh that don't have a specified color.
     """
 
     default_vertexcolor = (1, 1, 1)
-    """Tuple[float, float, float] -
-    The default color of the vertices of the mesh that don't have a specified color."""
     default_edgecolor = (0, 0, 0)
-    """Tuple[float, float, float] -
-    The default color of the edges of the mesh that don't have a specified color."""
     default_facecolor = (0.8, 0.8, 0.8)
-    """Tuple[float, float, float] -
-    The default color of the faces of the mesh that don't have a specified color."""
     default_cellcolor = (1, 0, 0)
-    """Tuple[float, float, float] -
-    The default color of the cells of the mesh that don't have a specified color."""
 
     def __init__(self, volmesh, **kwargs):
         super(VolMeshArtist, self).__init__()
@@ -50,7 +93,6 @@ class VolMeshArtist(Artist):
 
     @property
     def volmesh(self):
-        """:class:`compas.datastructures.VolMesh` - The COMPAS volmesh associated with the artist."""
         return self._volmesh
 
     @volmesh.setter
@@ -60,10 +102,6 @@ class VolMeshArtist(Artist):
 
     @property
     def vertices(self):
-        """List[int] -
-        The list of vertices to draw.
-        Default is a list of all vertices of the volmesh.
-        """
         if self._vertices is None:
             self._vertices = list(self.volmesh.vertices())
         return self._vertices
@@ -74,10 +112,6 @@ class VolMeshArtist(Artist):
 
     @property
     def edges(self):
-        """List[Tuple[int, int]] -
-        The list of edges to draw.
-        Default is a list of all edges of the volmesh.
-        """
         if self._edges is None:
             self._edges = list(self.volmesh.edges())
         return self._edges
@@ -88,10 +122,6 @@ class VolMeshArtist(Artist):
 
     @property
     def faces(self):
-        """List[int] -
-        The list of faces to draw.
-        Default is a list of all faces of the volmesh.
-        """
         if self._faces is None:
             self._faces = list(self.volmesh.faces())
         return self._faces
@@ -102,10 +132,6 @@ class VolMeshArtist(Artist):
 
     @property
     def cells(self):
-        """List[int] -
-        The list of cells to draw.
-        Default is a list of all cells of the volmesh.
-        """
         if self._cells is None:
             self._cells = list(self.volmesh.cells())
         return self._cells
@@ -116,9 +142,6 @@ class VolMeshArtist(Artist):
 
     @property
     def vertex_xyz(self):
-        """Dict[int, List[float]] -
-        The view coordinates of the vertices.
-        By default, the actual vertex coordinates are used."""
         if not self._vertex_xyz:
             self._vertex_xyz = {vertex: self.volmesh.vertex_attributes(vertex, 'xyz') for vertex in self.volmesh.vertices()}
         return self._vertex_xyz
@@ -129,8 +152,6 @@ class VolMeshArtist(Artist):
 
     @property
     def vertex_color(self):
-        """Dict[int, Tuple[float, float, float]] -
-        Mapping between vertices and colors."""
         if not self._vertex_color:
             self._vertex_color = {vertex: self.artist.default_vertexcolor for vertex in self.volmesh.vertices()}
         return self._vertex_color
@@ -144,8 +165,6 @@ class VolMeshArtist(Artist):
 
     @property
     def edge_color(self):
-        """Dict[Tuple[int, int], Tuple[float, float, float]] -
-        Mapping between edges and colors."""
         if not self._edge_color:
             self._edge_color = {edge: self.artist.default_edgecolor for edge in self.volmesh.edges()}
         return self._edge_color
@@ -159,8 +178,6 @@ class VolMeshArtist(Artist):
 
     @property
     def face_color(self):
-        """Dict[int, Tuple[float, float, float]] -
-        Mapping between faces and colors."""
         if not self._face_color:
             self._face_color = {face: self.artist.default_facecolor for face in self.volmesh.faces()}
         return self._face_color
@@ -174,8 +191,6 @@ class VolMeshArtist(Artist):
 
     @property
     def cell_color(self):
-        """Dict[int, Tuple[float, float, float]] -
-        Mapping between cells and colors."""
         if not self._cell_color:
             self._cell_color = {cell: self.artist.default_cellcolor for cell in self.volmesh.cells()}
         return self._cell_color
@@ -189,8 +204,6 @@ class VolMeshArtist(Artist):
 
     @property
     def vertex_text(self):
-        """Dict[int, str] -
-        Mapping between vertices and text labels."""
         if not self._vertex_text:
             self._vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}
         return self._vertex_text
@@ -206,8 +219,6 @@ class VolMeshArtist(Artist):
 
     @property
     def edge_text(self):
-        """Dict[Tuple[int, int], str] -
-        Mapping between edges and text labels."""
         if not self._edge_text:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}
         return self._edge_text
@@ -223,8 +234,6 @@ class VolMeshArtist(Artist):
 
     @property
     def face_text(self):
-        """Dict[int, str] -
-        Mapping between faces and text lables."""
         if not self._face_text:
             self._face_text = {face: str(face) for face in self.volmesh.faces()}
         return self._face_text
@@ -240,8 +249,6 @@ class VolMeshArtist(Artist):
 
     @property
     def cell_text(self):
-        """Dict[int, str] -
-        Mapping between cells and text lables."""
         if not self._cell_text:
             self._cell_text = {cell: str(cell) for cell in self.volmesh.cells()}
         return self._cell_text
@@ -261,16 +268,21 @@ class VolMeshArtist(Artist):
 
         Parameters
         ----------
-        vertices : List[int], optional
+        vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
-        text : Dict[int, str], optional
-            The text labels for the vertices
-            as a text dict, mapping specific vertices to specific text labels.
+        text : dict[int, str], optional
+            The text labels for the vertices as a text dict,
+            mapping specific vertices to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the vertices in the visualization context.
         """
         raise NotImplementedError
 
@@ -280,16 +292,21 @@ class VolMeshArtist(Artist):
 
         Parameters
         ----------
-        edges : List[Tuple[int, int]], optional
+        edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : Tuple[float, float, float] or Dict[Tuple[int, int], Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : Dict[Tuple[int, int], str], optional
-            The text labels for the edges
-            as a text dict, mapping specific edges to specific text labels.
+        text : dict[tuple[int, int], str], optional
+            The text labels for the edges as a text dict,
+            mapping specific edges to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the edges in the visualization context.
         """
         raise NotImplementedError
 
@@ -299,16 +316,21 @@ class VolMeshArtist(Artist):
 
         Parameters
         ----------
-        faces : List[int], optional
+        faces : list[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.
-        text : Dict[int, str], optional
-            The text labels for the faces
-            as a text dict, mapping specific faces to specific text labels.
+        text : dict[int, str], optional
+            The text labels for the faces as a text dict,
+            mapping specific faces to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the faces in the visualization context.
         """
         raise NotImplementedError
 
@@ -318,35 +340,60 @@ class VolMeshArtist(Artist):
 
         Parameters
         ----------
-        cells : List[int], optional
+        cells : list[int], optional
             The cells to include in the drawing.
             Default is all cells.
-        color : Tuple[float, float, float] or Dict[int, Tuple[float, float, float]], optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the cells,
             as either a single color to be applied to all cells,
             or a color dict, mapping specific cells to specific colors.
-        text : Dict[int, str], optional
-            The text labels for the cells
-            as a text dict, mapping specific cells to specific text labels.
+        text : dict[int, str], optional
+            The text labels for the cells as a text dict,
+            mapping specific cells to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the cells in the visualization context.
         """
         raise NotImplementedError
 
     @abstractmethod
     def clear_vertices(self):
-        """Clear the vertices of the mesh."""
+        """Clear the vertices of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
-        """Clear the edges of the mesh."""
+        """Clear the edges of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_faces(self):
-        """Clear the faces of the mesh."""
+        """Clear the faces of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_cells(self):
-        """Clear the cells of the mesh."""
+        """Clear the cells of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError

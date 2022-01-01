@@ -52,7 +52,7 @@ class AbstractRobotModelArtist(object):
 class RobotModelArtist(AbstractRobotModelArtist, Artist):
     """Provides common functionality to most robot model artist implementations.
 
-    In **COMPAS**, the `artists` are classes that assist with the visualization of
+    In **COMPAS**, "artists" are classes that assist with the visualization of
     datastructures and models, in a way that maintains the data separated from the
     specific CAD interfaces, while providing a way to leverage native performance
     of the CAD environment.
@@ -223,20 +223,18 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Parameters
         ----------
         link : :class:`compas.robots.Link`, optional
-            Base link instance. Defaults to the robot model's root.
+            Base link instance.
+            Defaults to the robot model's root.
         visual : bool, optional
-            Whether to include the robot's visual meshes. Defaults
-            to ``True``.
+            Whether to include the robot's visual meshes.
         collision : bool, optional
-            Whether to include the robot's collision meshes.  Defaults
-            to ``False``.
+            Whether to include the robot's collision meshes.
         attached_meshes : bool, optional
-            Whether to include the robot's attached meshes.  Defaults
-            to ``True``.
+            Whether to include the robot's attached meshes.
 
         Returns
         -------
-        list of :class:`compas.datastructures.Mesh`
+        list[:class:`compas.datastructures.Mesh`]
         """
         if link is None:
             link = self.model.root
@@ -279,6 +277,17 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
     def scale_link(self, link, transformation):
         """Recursive function to apply the scale transformation on each link.
+
+        Parameters
+        ----------
+        link : :class:`compas.robots.Link`
+            A link.
+        transformation : :class:`compas.geometry.Transformation`
+            A transformation to apply to th link's geometry.
+
+        Returns
+        -------
+        None
         """
         self._scale_link_helper(link, transformation)
 
@@ -329,11 +338,13 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         joint_state : dict or :class:`compas.robots.Configuration`
             A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
-            ``True`` if the visual geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the visual geometry will also be updated.
         collision : bool, optional
-            ``True`` if the collision geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the collision geometry will also be updated.
+
+        Returns
+        -------
+        None
         """
         _ = self._update(self.model, joint_state, visual, collision)
         if self.attached_tool_model:
@@ -370,11 +381,13 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
             If None is given, no additional transformation will be applied.
             Defaults to None.
         visual : bool, optional
-            ``True`` if the visual geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the visual geometry will also be updated.
         collision : bool, optional
-            ``True`` if the collision geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the collision geometry will also be updated.
+
+        Returns
+        -------
+        None
         """
         joint_state = joint_state or {}
         if self.attached_tool_model:
@@ -385,7 +398,12 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
             self.attached_tool_model.current_transformation = transformation
 
     def draw_visual(self):
-        """Draws all visual geometry of the robot model."""
+        """Draws all visual geometry of the robot model.
+
+        Returns
+        -------
+        None
+        """
         for native_geometry in self._iter_geometry(self.model, 'visual'):
             yield native_geometry
         if self.attached_tool_model:
@@ -393,7 +411,12 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
                 yield native_geometry
 
     def draw_collision(self):
-        """Draws all collision geometry of the robot model."""
+        """Draws all collision geometry of the robot model.
+
+        Returns
+        -------
+        None
+        """
         for native_geometry in self._iter_geometry(self.model, 'collision'):
             yield native_geometry
         if self.attached_tool_model:
@@ -401,7 +424,12 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
                 yield native_geometry
 
     def draw_attached_meshes(self):
-        """Draws all meshes attached to the robot model."""
+        """Draws all meshes attached to the robot model.
+
+        Returns
+        -------
+        None
+        """
         for items in self.attached_items.values():
             for item in items.values():
                 for native_mesh in item.native_geometry:
