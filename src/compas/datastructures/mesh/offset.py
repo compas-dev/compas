@@ -23,7 +23,6 @@ def mesh_offset(mesh, distance=1.0):
         A Mesh to offset.
     distance : float, optional
         The offset distance.
-        Default is ``1.0``.
 
     Returns
     -------
@@ -68,14 +67,13 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
     thickness : float, optional
         The mesh thickness.
         This should be a positive value.
-        Default is ``1.0``.
     both : bool, optional
         If true, the mesh is thickened on both sides of the original.
         Otherwise, the mesh is thickened on the side of the positive normal.
 
     Returns
     -------
-    thickened_mesh : :class:`compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The thickened mesh.
 
     Raises

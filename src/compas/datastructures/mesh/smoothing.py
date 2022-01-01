@@ -18,9 +18,9 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional
+    fixed : List[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -28,8 +28,12 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional
+    callback_args : List[Any], optional
         A list of arguments to be passed to the callback.
+
+    Returns
+    -------
+    None
 
     Raises
     ------
@@ -72,9 +76,9 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional
+    fixed : List[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -82,8 +86,12 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional
+    callback_args : List[Any], optional
         A list of arguments to be passed to the callback.
+
+    Returns
+    -------
+    None
 
     Raises
     ------
@@ -126,9 +134,9 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional
+    fixed : List[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -136,8 +144,12 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional
+    callback_args : List[Any], optional
         A list of arguments to be passed to the callback.
+
+    Returns
+    -------
+    None
 
     Raises
     ------

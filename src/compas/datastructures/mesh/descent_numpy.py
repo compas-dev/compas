@@ -10,7 +10,18 @@ __all__ = ['trimesh_descent']
 
 
 def trimesh_descent(trimesh):
-    """"""
+    """Compute the gradient per face of the heightfield of the vertices of the mesh.
+
+    Parameters
+    ----------
+    trimesh : :class:`compas.datastructures.Mesh`
+        The triangle mesh.
+
+    Returns
+    -------
+    List[List[float]]
+        A list of vectors with one vector per face.
+    """
     vertices, faces = trimesh.to_vertices_and_faces()
     V = array(vertices)
     F = array(faces)

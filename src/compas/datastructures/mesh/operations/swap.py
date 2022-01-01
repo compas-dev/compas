@@ -14,9 +14,9 @@ def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    u : str
+    u : int
         The key of one of the vertices of the edge.
-    v : str
+    v : int
         The key of the other vertex of the edge.
 
     Returns

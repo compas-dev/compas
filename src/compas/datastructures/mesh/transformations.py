@@ -18,12 +18,13 @@ def mesh_transform(mesh, transformation):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The mesh.
-    transformation : compas.geometry.Transformation
+    transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
-    Notes
-    -----
-    The mesh is modified in-place.
+    Returns
+    -------
+    None
+        The mesh is modified in-place.
 
     Examples
     --------
@@ -49,18 +50,13 @@ def mesh_transformed(mesh, transformation):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The mesh.
-    transformation : compas.geometry.Transformation
+    transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
     Returns
     -------
-    Mesh
+    :class:`compas.datastructures.Mesh`
         A transformed independent copy of ``mesh``.
-
-    Notes
-    -----
-    The original mesh is not modified.
-    Instead a transformed independent copy is returned.
 
     Examples
     --------

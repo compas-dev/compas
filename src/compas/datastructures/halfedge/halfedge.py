@@ -20,8 +20,7 @@ class HalfEdge(Datastructure):
     Parameters
     ----------
     name: str, optional
-        The name of the graph.
-        Defaults to "Graph".
+        The name of the datastructure.
     default_vertex_attributes: dict, optional
         Default values for vertex attributes.
     default_edge_attributes: dict, optional
@@ -29,11 +28,67 @@ class HalfEdge(Datastructure):
     default_face_attributes: dict, optional
         Default values for face attributes.
 
+    Attributes
+    ----------
+    attributes : dict[str, Any]
+        General attributes of the data structure that are included in the data representation and serialization.
+    default_vertex_attributes : dict[str, Any]
+        Dictionary containing default values for the attributes of vertices.
+        It is recommended to add a default to this dictionary using :meth:`update_default_vertex_attributes`
+        for every vertex attribute used in the data structure.
+    default_edge_attributes : dict[str, Any]
+        Dictionary containing default values for the attributes of edges.
+        It is recommended to add a default to this dictionary using :meth:`update_default_edge_attributes`
+        for every edge attribute used in the data structure.
+    default_face_attributes : dict[str, Any]
+        Dictionary contnaining default values for the attributes of faces.
+        It is recommended to add a default to this dictionary using :meth:`update_default_face_attributes`
+        for every face attribute used in the data structure.
+
     """
+
+    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
+        super(HalfEdge, self).__init__()
+        self._max_vertex = -1
+        self._max_face = -1
+        self.vertex = {}
+        self.halfedge = {}
+        self.face = {}
+        self.facedata = {}
+        self.edgedata = {}
+        self.attributes = {'name': name or 'HalfEdge'}
+        self.default_vertex_attributes = {}
+        self.default_edge_attributes = {}
+        self.default_face_attributes = {}
+        if default_vertex_attributes:
+            self.default_vertex_attributes.update(default_vertex_attributes)
+        if default_edge_attributes:
+            self.default_edge_attributes.update(default_edge_attributes)
+        if default_face_attributes:
+            self.default_face_attributes.update(default_face_attributes)
+
+    def __str__(self):
+        tpl = "<HalfEdge with {} vertices, {} faces, {} edges>"
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
+
+    # --------------------------------------------------------------------------
+    # descriptors
+    # --------------------------------------------------------------------------
+
+    @property
+    def name(self):
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
+    @property
+    def adjacency(self):
+        return self.halfedge
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema for the data representation."""
         import schema
         from compas.data import is_sequence_of_uint
         return schema.Schema({
@@ -69,75 +124,11 @@ class HalfEdge(Datastructure):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the schema for the data representation in JSON format."""
         return 'halfedge'
-
-    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
-        super(HalfEdge, self).__init__()
-        self._max_vertex = -1
-        self._max_face = -1
-        self.vertex = {}
-        """Dict[int, Dict[str, Any]] - The vertex dictionary.
-        Each key in the dictionary identifies a vertex of the halfedge data structure and points to a dictionary of vertex attributes.
-        """
-        self.halfedge = {}
-        """Dict[int, Dict[int, int]] - The halfedge dictionary.
-        Each pair of keys in the nested dictionary represents a halfedge of the data structure and points to the corresponding face.
-        """
-        self.face = {}
-        """Dict[int, List[int]] - The face dictionary.
-        Each key in the dictionary identifies a face of the data structure and points to a list of vertex indices forming the face.
-        """
-        self.facedata = {}
-        """Dict[int, Dict[str, Any]] - Storage for the data attributes of faces."""
-        self.edgedata = {}
-        """Dict[str, Dict[str, Any]] - Storage for the data attributes of edges."""
-        self.attributes = {'name': name or 'HalfEdge'}
-        """Dict[str, Any] - General attributes of the data structure that will be added to the data representation."""
-        self.default_vertex_attributes = {}
-        """Dict[str, Any] - Default attributes for the vertices."""
-        self.default_edge_attributes = {}
-        """Dict[str, Any] - Default attributes for the edges."""
-        self.default_face_attributes = {}
-        """Dict[str, Any] - Default attributes for the faces."""
-        if default_vertex_attributes:
-            self.default_vertex_attributes.update(default_vertex_attributes)
-        if default_edge_attributes:
-            self.default_edge_attributes.update(default_edge_attributes)
-        if default_face_attributes:
-            self.default_face_attributes.update(default_face_attributes)
-
-    def __str__(self):
-        tpl = "<HalfEdge with {} vertices, {} faces, {} edges>"
-        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # descriptors
-    # --------------------------------------------------------------------------
-
-    @property
-    def name(self):
-        """str - The name of the data structure.
-
-        Any value assigned to this property will be stored in the attribute dict
-        of the data structure instance.
-        """
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
-
-    @property
-    def adjacency(self):
-        """Dict[int, Dict[int, int]] - The vertex adjacency dictionary."""
-        return self.halfedge
 
     @property
     def data(self):
-        """dict - A data dict representing the mesh data structure for serialization.
-        """
-        data = {
+        return {
             'attributes': self.attributes,
             'dva': self.default_vertex_attributes,
             'dea': self.default_edge_attributes,
@@ -149,7 +140,6 @@ class HalfEdge(Datastructure):
             'max_vertex': self._max_vertex,
             'max_face': self._max_face
         }
-        return data
 
     @data.setter
     def data(self, data):
@@ -183,7 +173,12 @@ class HalfEdge(Datastructure):
     # --------------------------------------------------------------------------
 
     def clear(self):
-        """Clear all the mesh data."""
+        """Clear all the mesh data.
+
+        Returns
+        -------
+        None
+        """
         del self.vertex
         del self.edgedata
         del self.halfedge
@@ -200,6 +195,9 @@ class HalfEdge(Datastructure):
     def get_any_vertex(self):
         """Get the identifier of a random vertex.
 
+        .. deprecated:: 1.13.3
+            Use ``~HalfEdge.vertex_sample(size=1)[0]`` instead.
+
         Returns
         -------
         int
@@ -210,17 +208,19 @@ class HalfEdge(Datastructure):
     def get_any_vertices(self, n, exclude_leaves=False):
         """Get a list of identifiers of a random set of n vertices.
 
+        .. deprecated:: 1.13.3
+            Use ``~HalfEdge.vertex_sample(size=n)`` instead.
+
         Parameters
         ----------
         n : int
             The number of random vertices.
         exclude_leaves : bool, optional
-            Exclude the leaves (vertices with only one connected edge) from the set.
-            Default is to include the leaves.
+            If True, exclude the leaves (vertices with only one connected edge) from the set.
 
         Returns
         -------
-        List[int]
+        list[int]
             The identifiers of the vertices.
         """
         if exclude_leaves:
@@ -232,6 +232,9 @@ class HalfEdge(Datastructure):
     def get_any_face(self):
         """Get the identifier of a random face.
 
+        .. deprecated:: 1.13.3
+            Use ``~HalfEdge.face_sample(size=1)[0]`` instead.
+
         Returns
         -------
         int
@@ -239,20 +242,20 @@ class HalfEdge(Datastructure):
         """
         return choice(list(self.faces()))
 
-    def get_any_face_vertex(self, fkey):
-        """Get the identifier of a random vertex of a specific face.
+    # def get_any_face_vertex(self, fkey):
+    #     """Get the identifier of a random vertex of a specific face.
 
-        Parameters
-        ----------
-        fkey : int
-            The identifier of the face.
+    #     Parameters
+    #     ----------
+    #     fkey : int
+    #         The identifier of the face.
 
-        Returns
-        -------
-        int
-            The identifier of the vertex.
-        """
-        return self.face_vertices(fkey)[0]
+    #     Returns
+    #     -------
+    #     int
+    #         The identifier of the vertex.
+    #     """
+    #     return self.face_vertices(fkey)[0]
 
     def vertex_sample(self, size=1):
         """A random sample of the vertices.
@@ -264,7 +267,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[int]
+        list[int]
             The identifiers of the vertices.
         """
         return sample(list(self.vertices()), size)
@@ -279,7 +282,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
             The identifiers of the edges.
         """
         return sample(list(self.edges()), size)
@@ -294,7 +297,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[int]
+        list[int]
             The identifiers of the faces.
         """
         return sample(list(self.faces()), size)
@@ -305,7 +308,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        Dict[int, int]
+        dict[int, int]
             A dictionary of key-index pairs.
         """
         return {key: index for index, key in enumerate(self.vertices())}
@@ -318,7 +321,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        Dict[int, int]
+        dict[int, int]
             A dictionary of index-key pairs.
         """
         return dict(enumerate(self.vertices()))
@@ -336,12 +339,10 @@ class HalfEdge(Datastructure):
         ----------
         key : int, optional
             The vertex identifier.
-        attr_dict : Dict[str, Any], optional
-            Vertex attributes.
-        kwattr : Dict[str, Any], optional
-            Additional named vertex attributes.
-            Named vertex attributes overwrite corresponding attributes in the
-            attribute dict (``attr_dict``).
+        attr_dict : dict[str, Any], optional
+            A dictionary of vertex attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
         -------
@@ -388,14 +389,12 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        vertices : List[int]
+        vertices : list[int]
             A list of vertex keys.
-        attr_dict : Dict[str, Any], optional
-            Face attributes.
-        kwattr : Dict[str, Any], optional
-            Additional named face attributes.
-            Named face attributes overwrite corresponding attributes in the
-            attribute dict (``attr_dict``).
+        attr_dict : dict[str, Any], optional
+            A dictionary of face attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
         -------
@@ -452,6 +451,10 @@ class HalfEdge(Datastructure):
         key : int
             The identifier of the vertex.
 
+        Returns
+        -------
+        None
+
         Notes
         -----
         In some cases, disconnected vertices can remain after application of this
@@ -496,6 +499,10 @@ class HalfEdge(Datastructure):
         fkey : int
             The identifier of the face.
 
+        Returns
+        -------
+        None
+
         Notes
         -----
         In some cases, disconnected vertices can remain after application of this
@@ -520,6 +527,10 @@ class HalfEdge(Datastructure):
 
     def remove_unused_vertices(self):
         """Remove all unused vertices from the mesh object.
+
+        Returns
+        -------
+        None
         """
         for u in list(self.vertices()):
             if u not in self.halfedge:
@@ -541,13 +552,13 @@ class HalfEdge(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return the vertex data as well as the vertex keys.
+            If True, yield the vertex attributes in addition to the vertex identifiers.
 
         Yields
         ------
-        int or Tuple[int, Dict[str, Any]]
-            The next vertex identifier, if ``data`` is false.
-            The next vertex as a (key, attr) tuple, if ``data`` is true.
+        int or tuple[int, dict[str, Any]]
+            If `data` is False, the next vertex identifier.
+            If `data` is True, the next vertex as a (key, attr) tuple.
         """
         for key in self.vertex:
             if not data:
@@ -561,13 +572,13 @@ class HalfEdge(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return the face data as well as the face keys.
+            If True, yield the face attributes in addition to the face identifiers.
 
         Yields
         ------
-        int or Tuple[int, Dict[str, Any]]
-            The next face identifier, if ``data`` is ``False``.
-            The next face as a (fkey, attr) tuple, if ``data`` is ``True``.
+        int or tuple[int, dict[str, Any]]
+            If `data` is False, the next face identifier.
+            If `data` is True, the next face as a (fkey, attr) tuple.
         """
         for key in self.face:
             if not data:
@@ -581,14 +592,13 @@ class HalfEdge(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return the edge data as well as the edge vertex keys.
+            If True, yield the edge attributes in addition to the edge identifiers.
 
         Yields
         ------
-        Tuple[int, int]
-            The next edge as a (u, v) tuple, if ``data`` is false.
-        Tuple[Tuple[int, int], Dict[str, Any]]
-            The next edge as a ((u, v), data) tuple, if ``data`` is true.
+        tuple[int, int] or tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a ((u, v), data) tuple.
 
         Notes
         ----
@@ -630,15 +640,13 @@ class HalfEdge(Datastructure):
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the vertices and their data attributes.
-            Default is ``False``.
+            If True, yield the vertex attributes in addition to the vertex identifiers.
 
         Yields
         ------
-        int
-            The next vertex that matches the condition.
-        Tuple[int, Dict[str, Any]]
-            The next vertex and its attributes, if ``data=True``.
+        int or tuple[int, dict[str, Any]]
+            The next vertex that matches the condition,
+            or, if `data` is True, the next vertex and its attributes.
         """
         for key, attr in self.vertices(True):
             is_match = True
@@ -698,17 +706,17 @@ class HalfEdge(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the vertex identifier and the vertex attributs,
+            and should return True or False.
         data : bool, optional
-            Yield the vertices and their data attributes.
-            Default is ``False``.
+            If True, yield the vertex attributes in addition to the vertex identifiers.
 
         Yields
         ------
-        int
-            The next vertex that matches the condition.
-        Tuple[int, Dict[str, Any]]
-            The next vertex and its attributes, if ``data=True``.
+        int or tuple[int, dict[str, Any]]
+            The next vertex that matches the condition,
+            or, if `data` is True, the next vertex and its attributes.
 
         Examples
         --------
@@ -731,15 +739,13 @@ class HalfEdge(Datastructure):
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the edges and their data attributes.
-            Default is ``False``.
+            If True, yield the edge attributes in addition to the edge identifiers.
 
         Yields
         ------
-        Tuple[int, int]
-            The next edge as a (u, v) tuple, if ``data=False``.
-        Tuple[Tuple[int, int], Dict[str, Any]]
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple[int, int] or tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a (u, v, data) tuple.
         """
         for key in self.edges():
             is_match = True
@@ -783,17 +789,18 @@ class HalfEdge(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 3 parameters: ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate.
+            The callable takes 3 parameters:
+            the identifier of the first vertex, the identifier of the second vertex, and the edge attributes,
+            and should return True or False.
         data : bool, optional
-            Yield the vertices and their data attributes.
-            Default is ``False``.
+            If True, yield the vertex attributes in addition ot the vertex identifiers.
 
         Yields
         ------
-        Tuple[int, int]
-            The next edge as a (u, v) tuple, if ``data=False``.
-        Tuple[Tuple[int, int], Dict[str, Any]]
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple[int, int] or tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a (u, v, data) tuple.
 
         Examples
         --------
@@ -816,15 +823,13 @@ class HalfEdge(Datastructure):
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the faces and their data attributes.
-            Default is ``False``.
+            If True, yield the face attributes in addition to face identifiers.
 
         Yields
         ------
-        int
-            The next face that matches the condition.
-        Tuple[int, Dict[str, Any]]
-            The next face and its attributes, if ``data=True``.
+        int or tuple[int, dict[str, Any]]
+            The next face that matches the condition,
+            or, if `data` is True, the next face and its attributes.
         """
         for fkey in self.faces():
             is_match = True
@@ -868,17 +873,17 @@ class HalfEdge(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the face identifier and the face attributes,
+            and should return True or False.
         data : bool, optional
-            Yield the faces and their data attributes.
-            Default is ``False``.
+            If True, yield the face attributes in addition to the face identifiers.
 
         Yields
         ------
-        int
-            The next face that matches the condition.
-        Tuple[int, Dict[str, Any]]
-            The next face and its attributes, if ``data=True``.
+        int or tuple[int, dict[str, Any]]
+            The next face that matches the condition,
+            or, if `data` is True, the next face and its attributes.
 
         Examples
         --------
@@ -900,17 +905,18 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        attr_dict : Dict[str, Any], optional
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-            Defaults to an empty ``dict``.
-        kwattr : Dict[str, Any]
+        **kwattr : dict[str, Any], optional
             A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+
+        Returns
+        -------
+        None
 
         Notes
         -----
-        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
-        if they exist.
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
         """
         if not attr_dict:
             attr_dict = {}
@@ -931,10 +937,9 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        object or None
+        obj or None
             The value of the attribute,
-            or ``None`` if the vertex does not exist
-            or when the function is used as a "setter".
+            or None when the function is used as a "setter".
 
         Raises
         ------
@@ -962,6 +967,10 @@ class HalfEdge(Datastructure):
         name : str
             The name of the attribute.
 
+        Returns
+        -------
+        None
+
         Raises
         ------
         KeyError
@@ -982,21 +991,19 @@ class HalfEdge(Datastructure):
         ----------
         key : int
             The identifier of the vertex.
-        names : List[str], optional
+        names : list[str], optional
             A list of attribute names.
-        values : List[Any], optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        Dict[str, Any]
-            If the parameter ``names`` is empty,
+        dict[str, Any] or list[Any] or None
+            If the parameter `names` is empty,
             the function returns a dictionary of all attribute name-value pairs of the vertex.
-        List[Any]
-            If the parameter ``names`` is not empty,
+            If the parameter `names` is not empty,
             the function returns a list of the values corresponding to the requested attribute names.
-        None
-            The function returns ``None`` if it is used as a "setter".
+            The function returns None if it is used as a "setter".
 
         Raises
         ------
@@ -1033,15 +1040,15 @@ class HalfEdge(Datastructure):
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-            Default is ``None``.
-        keys : List[int], optional
+            Default is None.
+        keys : list[int], optional
             A list of vertex identifiers.
 
         Returns
         -------
-        List[Any] or None
+        list[Any] or None
             The value of the attribute for each vertex,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
@@ -1061,25 +1068,21 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        names : List[str], optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : List[Any], optional
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        keys : List[int], optional
+        keys : list[int], optional
             A list of vertex identifiers.
 
         Returns
         -------
-        List[Dict[str, Any]]
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] or list[list[Any]] or None
+            If the parameter `names` is empty,
             the function returns a list containing an attribute dict per vertex.
-        List[List[Any]]
-            If the parameter ``names`` is not ``None``,
+            If the parameter `names` is not empty,
             the function returns a list containing a list of attribute values per vertex corresponding to the provided attribute names.
-        None
-            The function returns ``None`` if it is used as a "setter".
+            The function returns None if it is used as a "setter".
 
         Raises
         ------
@@ -1099,16 +1102,18 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        attr_dict : Dict[str, Any], optional
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-        kwattr : Dict[str, Any]
+        **kwattr : dict[str, Any], optional
             A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+
+        Returns
+        -------
+        None
 
         Notes
         ----
-        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
-        if they exist.
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
         """
         if not attr_dict:
             attr_dict = {}
@@ -1129,8 +1134,8 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        object or None
-            The value of the attribute, or ``None`` when the function is used as a "setter".
+        obj or None
+            The value of the attribute, or None when the function is used as a "setter".
 
         Raises
         ------
@@ -1159,6 +1164,10 @@ class HalfEdge(Datastructure):
         name : str
             The name of the attribute.
 
+        Returns
+        -------
+        None
+
         Raises
         ------
         KeyError
@@ -1182,21 +1191,19 @@ class HalfEdge(Datastructure):
         ----------
         key : int
             The identifier of the face.
-        names : List[str], optional
+        names : list[str], optional
             A list of attribute names.
-        values : List[Any], optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        Dict[str, Any]
-            If the parameter ``names`` is empty,
+        dict[str, Any] or list[Any] or None
+            If the parameter `names` is empty,
             a dictionary of all attribute name-value pairs of the face.
-        List[Any]
-            If the parameter ``names`` is not empty,
+            If the parameter `names` is not empty,
             a list of the values corresponding to the provided names.
-        None
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
@@ -1230,15 +1237,15 @@ class HalfEdge(Datastructure):
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-            Default is ``None``.
-        keys : List[int], optional
+            Default is None.
+        keys : list[int], optional
             A list of face identifiers.
 
         Returns
         -------
-        List[Any] or None
+        list[Any] or None
             A list containing the value per face of the requested attribute,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
@@ -1258,25 +1265,23 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        names : List[str], optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : List[Any], optional
+            Default is None.
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        keys : List[int], optional
+            Default is None.
+        keys : list[int], optional
             A list of face identifiers.
 
         Returns
         -------
-        List[Dict[str, Any]]
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] or list[list[Any]] or None
+            If the parameter `names` is empty,
             a list containing per face an attribute dict with all attributes (default + custom) of the face.
-        List[List[Any]]
-            If the parameter ``names`` is ``None``,
+            If the parameter `names` is not empty,
             a list containing per face a list of attribute values corresponding to the requested names.
-        None
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
@@ -1296,17 +1301,14 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        attr_dict : Dict[str, Any], optional
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-            Defaults to an empty ``dict``.
-        kwattr : Dict[str, Any]
+        **kwattr : dict[str, Any], optional
             A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
 
         Notes
         ----
-        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
-        if they exist.
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
         """
         if not attr_dict:
             attr_dict = {}
@@ -1318,18 +1320,18 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The identifier of the edge as a pair of vertex identifiers.
         name : str
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-            Default is ``None``.
+            Default is None.
 
         Returns
         -------
-        object or None
-            The value of the attribute, or ``None`` when the function is used as a "setter".
+        obj or None
+            The value of the attribute, or None when the function is used as a "setter".
 
         Raises
         ------
@@ -1355,7 +1357,7 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The edge identifier.
         name : str
             The name of the attribute.
@@ -1382,23 +1384,21 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The identifier of the edge.
-        names : List[str], optional
+        names : list[str], optional
             A list of attribute names.
-        values : List[Any], optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        Dict[str, Any]
-            If the parameter ``names`` is empty,
+        dict[str, Any] or list[Any] or None
+            If the parameter `names` is empty,
             a dictionary of all attribute name-value pairs of the edge.
-        List[Any]
-            If the parameter ``names`` is not empty,
+            If the parameter `names` is not empty,
             a list of the values corresponding to the provided names.
-        None
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
@@ -1434,15 +1434,15 @@ class HalfEdge(Datastructure):
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-            Default is ``None``.
-        keys : List[Tuple[int, int]], optional
+            Default is None.
+        keys : list[tuple[int, int]], optional
             A list of edge identifiers.
 
         Returns
         -------
-        List[Any] or None
+        list[Any] or None
             A list containing the value per edge of the requested attribute,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
@@ -1461,25 +1461,23 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        names : List[str], optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : List[Any], optional
+            Default is None.
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        keys : List[Tuple[int, int]], optional
+            Default is None.
+        keys : list[tuple[int, int]], optional
             A list of edge identifiers.
 
         Returns
         -------
-        List[Dict[str, Any]]
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] or list[list[Any]] or None
+            If the parameter `names` is empty,
             a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
-        List[List[Any]]
-            If the parameter ``names`` is ``None``,
+            If the parameter `names` is not empty,
             a list containing per edge a list of attribute values corresponding to the requested names.
-        None
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
@@ -1503,6 +1501,7 @@ class HalfEdge(Datastructure):
         Returns
         -------
         str
+            The formatted summary text.
         """
         tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- vertices: {}", "- edges: {}", "- faces: {}"])
         return tpl.format(self.name, self.number_of_vertices(), self.number_of_edges(), self.number_of_faces())
@@ -1740,7 +1739,7 @@ class HalfEdge(Datastructure):
         return V - E + F
 
     def genus(self):
-        """Calculate the genus [1]_.
+        """Calculate the genus.
 
         Returns
         -------
@@ -1823,12 +1822,11 @@ class HalfEdge(Datastructure):
         key : int
             The identifier of the vertex.
         ordered : bool, optional
-            Return the neighbors in the cycling order of the faces.
-            Default is false.
+            If True, return the neighbors in the cycling order of the faces.
 
         Returns
         -------
-        List[int]
+        list[int]
             The list of neighboring vertices.
             If the vertex lies on the boundary of the mesh,
             an ordered list always starts and ends with with boundary vertices.
@@ -1888,7 +1886,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[int]
+        list[int]
             The vertices in the neighborhood.
 
         Notes
@@ -1959,15 +1957,13 @@ class HalfEdge(Datastructure):
         key : int
             The identifier of the vertex.
         ordered : bool, optional
-            Return the faces in cycling order.
-            Default is ``False``.
+            If True, return the faces in cycling order.
         include_none : bool, optional
-            Include *outside* faces in the list.
-            Default is ``False``.
+            If True, include *outside* faces in the list.
 
         Returns
         -------
-        List[int]
+        list[int]
             The faces connected to a vertex.
 
         Examples
@@ -1996,7 +1992,7 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        key : Tuple[int, int]
+        key : tuple[int, int]
             The identifier of the edge.
 
         Returns
@@ -2012,7 +2008,7 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        key : Tuple[int, int]
+        key : tuple[int, int]
             The identifier of the halfedge.
 
         Returns
@@ -2036,9 +2032,9 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        Tuple[int, int]
+        tuple[int, int]
             The identifiers of the adjacent faces.
-            If the edge is on the boundary, one of the identifiers is ``None``.
+            If the edge is on the boundary, one of the identifiers is None.
         """
         return self.halfedge[u][v], self.halfedge[v][u]
 
@@ -2096,12 +2092,12 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The identifier of the starting edge.
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
             The edges on the same loop as the given edge.
         """
         u, v = edge
@@ -2117,12 +2113,12 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The identifier of the starting edge.
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
             The edges on the same loop as the given edge.
         """
         u, v = edge
@@ -2146,12 +2142,12 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The identifier of the starting edge.
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
             The edges on the same loop as the given edge.
         """
         u, v = edge
@@ -2180,12 +2176,12 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The identifier of the starting edge.
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
             The edges on the same strip as the given edge.
         """
         u, v = edge
@@ -2206,12 +2202,12 @@ class HalfEdge(Datastructure):
 
         Parameters
         ----------
-        edge : Tuple[int, int]
+        edge : tuple[int, int]
             The identifier of the starting edge.
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
             The edges on the same strip as the given halfedge.
         """
         u, v = edge
@@ -2265,7 +2261,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[int]
+        list[int]
             Ordered vertex identifiers.
         """
         return self.face[fkey]
@@ -2280,7 +2276,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
             The halfedges of a face.
         """
         vertices = self.face_vertices(fkey)
@@ -2296,7 +2292,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[int]
+        list[int]
             The corners of the face in the form of a list of vertex triplets.
         """
         vertices = self.face_vertices(fkey)
@@ -2312,7 +2308,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[int]
+        list[int]
             The identifiers of the neighboring faces.
         """
         nbrs = []
@@ -2331,11 +2327,10 @@ class HalfEdge(Datastructure):
             The identifier of the face.
         ring : int, optional
             The size of the neighborhood.
-            Default is ``1``.
 
         Returns
         -------
-        List[int]
+        list[int]
             A list of face identifiers.
         """
         nbrs = set(self.face_neighbors(key))
@@ -2399,7 +2394,8 @@ class HalfEdge(Datastructure):
         key : int
             The identifier of the vertex.
         n : int, optional
-            The index of the vertex ancestor. Default is 1, meaning the previous vertex.
+            The index of the vertex ancestor.
+            Default is 1, meaning the previous vertex.
 
         Returns
         -------
@@ -2424,7 +2420,8 @@ class HalfEdge(Datastructure):
         key : int
             The identifier of the vertex.
         n : int, optional
-            The index of the vertex descendant. Default is 1, meaning the next vertex.
+            The index of the vertex descendant.
+            Default is 1, meaning the next vertex.
 
         Returns
         -------
@@ -2451,10 +2448,9 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        Tuple[int, int]
-            The half-edge separating face 1 from face 2.
-        None
-            If the faces are not adjacent.
+        tuple[int, int] or None
+            The half-edge separating face 1 from face 2,
+            or None, if the faces are not adjacent.
 
         Notes
         -----
@@ -2477,10 +2473,9 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[int]
-            The vertices separating face 1 from face 2.
-        None
-            If the faces are not adjacent.
+        list[int] or None
+            The vertices separating face 1 from face 2,
+            or None, if the faces are not adjacent.
         """
         return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
@@ -2519,7 +2514,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        Tuple[int, int]
+        tuple[int, int]
             The next halfedge.
         """
         face = self.halfedge_face(u, v)
@@ -2542,7 +2537,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        Tuple[int, int]
+        tuple[int, int]
             The previous halfedge.
         """
         face = self.halfedge_face(u, v)
@@ -2562,7 +2557,7 @@ class HalfEdge(Datastructure):
 
         Returns
         -------
-        List[Tuple[int, int]]
+        list[tuple[int, int]]
         """
         edges = []
         for nbr in self.vertex_neighbors(vertex):

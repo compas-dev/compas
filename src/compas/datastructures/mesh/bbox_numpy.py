@@ -48,7 +48,7 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
 
     Returns
     -------
-    box_xy
+    List[List[float]]
         The bounding box.
 
     Examples

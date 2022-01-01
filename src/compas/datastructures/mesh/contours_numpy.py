@@ -30,14 +30,15 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
         A mesh object.
     attr_name : str
         The name of the vertex attribute.
-    N : int (50)
+    N : int, optional
         The density of the isolines.
-        Default is ``50``.
 
     Returns
     -------
-    Tuple[List[float], List[List[float]]]
-        A tuple of a list of levels and a list of isolines.
+    List[float]
+        A list of levels.
+    List[List[float]]
+        A list of isolines.
         The list of levels contains the z-values at each of the isolines.
         Each isoline is a list of paths, and each path is a list polygons.
     """
@@ -46,21 +47,24 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
     return scalarfield_contours_numpy(xy, s, N)
 
 
-def mesh_contours_numpy(mesh, levels=None, density=100):
+def mesh_contours_numpy(mesh, levels=50, density=100):
     """Compute the contours of the mesh.
 
     Parameters
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The mesh object.
-    N : int, optional
-        The density of the contours.
-        Default is ``50``.
+    levels : int, optional
+        The number of contours.
+    density : int, optional
+        The density of the interpolation grid.
 
     Returns
     -------
-    Tuple[List[float], List[List[float]]]
-        A tuple of a list of levels and a list of contours.
+    List[float]
+        A list of levels.
+    List[List[float]]
+        A list of contours.
         The list of levels contains the z-values at each of the contours.
         Each contour is a list of paths, and each path is a list polygons.
 
@@ -75,9 +79,6 @@ def mesh_contours_numpy(mesh, levels=None, density=100):
     z = asarray(z)
     x = xy[:, 0]
     y = xy[:, 1]
-
-    if not levels:
-        levels = 50
 
     X, Y = meshgrid(linspace(amin(x), amax(x), 2 * density),
                     linspace(amin(y), amax(y), 2 * density))

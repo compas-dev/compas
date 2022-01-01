@@ -13,11 +13,15 @@ def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
     ----------
     trimesh : :class:`compas.datastructures.Mesh`
         A triangle mesh.
-    fixed : list
+    fixed : List[int]
         A list of fixed vertices.
-    kmax : int (optional, default is 10)
+    kmax : int, optional
         The maximum number of smoothing rounds.
 
+    Returns
+    -------
+    None
+        The mesh is modified in place.
     """
     for k in range(kmax):
         V = array(trimesh.vertices_attributes('xyz'))

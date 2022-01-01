@@ -22,12 +22,12 @@ def trimesh_gaussian_curvature(mesh):
 
     Parameters
     ----------
-    mesh : compas.oatastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The triangle mesh data structure.
 
     Returns
     -------
-    list of float
+    List[float]
         Per vertex curvature values.
 
     Warnings
@@ -46,7 +46,6 @@ def trimesh_gaussian_curvature(mesh):
 
     where :math:`N(i)` are the triangles incident on vertex :math:`i` and :math:`\theta_{ij}`
     is the angle at vertex :math:`i` in triangle :math:`j`.
-
     """
     pi2 = 2 * pi
     key_xyz = {key: mesh.vertex_attributes(key, 'xyz') for key in mesh.vertices()}

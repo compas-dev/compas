@@ -22,7 +22,7 @@ def mesh_flatness(mesh, maxdev=1.0):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
     maxdev : float, optional
         A maximum value for the allowed deviation from flatness.
@@ -30,7 +30,7 @@ def mesh_flatness(mesh, maxdev=1.0):
 
     Returns
     -------
-    dict
+    Dict[int, float]
         For each face, a deviation from *flatness*.
 
     Notes
@@ -67,17 +67,17 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional [None]
+    fixed : List[int], optional
         A list of fixed vertices.
-    kmax : int, optional [100]
+    kmax : int, optional
         The number of iterations.
-    d : float, optional [1.0]
+    d : float, optional
         A damping factor.
-    callback : callable, optional [None]
+    callback : callable, optional
         A user-defined callback that is called after every iteration.
-    callback_args : list, optional [None]
+    callback_args : List[Any], optional
         A list of arguments to be passed to the callback function.
 
     Returns

@@ -52,4 +52,16 @@ def mesh_is_connected(mesh):
 
 
 def mesh_connected_components(mesh):
+    """Find the connected components of the mesh.
+
+    Parameters
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        A mesh data structure.
+
+    Returns
+    -------
+    List[List[int]]
+        Groups of connected vertices.
+    """
     return connected_components(mesh.adjacency)

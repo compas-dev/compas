@@ -17,19 +17,18 @@ def mesh_weld(mesh, precision=None, cls=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh.
-    precision: str (None)
+    precision: str, optional
         Tolerance distance for welding.
-    cls : type (None)
+    cls : Type[:class:`compas.datastructures.Mesh`], optional
         Type of the welded mesh.
         This defaults to the type of the first mesh in the list.
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The welded mesh.
-
     """
     if cls is None:
         cls = type(mesh)
@@ -55,15 +54,15 @@ def meshes_join(meshes, cls=None):
 
     Parameters
     ----------
-    meshes : list
+    meshes : List[:class:`compas.datastructures.Mesh`]
         A list of meshes.
-    cls : type (None)
+    cls : Type[:class:`compas.datastructures.Mesh`], optional
         The type of the joined mesh.
         This defaults to the type of the first mesh in the list.
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The joined mesh.
 
     Examples
@@ -100,14 +99,16 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
 
     Parameters
     ----------
-    meshes : list
+    meshes : List[:class:`compas.datastructures.Mesh`]
         A list of meshes.
-    precision: str
+    precision: str, optional
         Tolerance distance for welding.
+    cls : Type[:class:`compas.datastructures.Mesh`], optional
+        The type of return mesh.
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The joined and welded mesh.
 
     """

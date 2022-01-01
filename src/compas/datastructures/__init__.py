@@ -15,7 +15,6 @@ Classes
     Datastructure
     Graph
     HalfEdge
-    HalfFace
     Mesh
     Network
     VolMesh

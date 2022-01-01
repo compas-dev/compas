@@ -39,12 +39,12 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed adjacency matrix.
 
     Examples
@@ -72,12 +72,12 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed connectivity matrix.
 
     Examples
@@ -109,12 +109,12 @@ def mesh_degree_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed vertex degree matrix.
 
     Examples
@@ -146,12 +146,12 @@ def mesh_face_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed mesh face matrix.
 
     Notes
@@ -211,7 +211,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     Returns
     -------
-    array-like
+    array_like
         The Laplacian matrix.
 
     Notes
@@ -234,6 +234,11 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     Therefore, the uniform Laplacian of a vertex :math:`\mathbf{v}_{i}` points to
     the centroid of its neighboring vertices.
 
+    References
+    ----------
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
+        `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+
     Examples
     --------
     >>> from compas.datastructures import Mesh
@@ -249,11 +254,6 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     >>> xyz = asarray(mesh.vertices_attributes('xyz'))
     >>> L = mesh_laplacian_matrix(mesh)
     >>> d = L.dot(xyz)
-
-    References
-    ----------
-    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
-        `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     data, rows, cols = [], [], []
@@ -334,7 +334,7 @@ def trimesh_edge_cotangents(mesh, u, v):
 
     Returns
     -------
-    tuple
+    Tuple[float, float]
         The two edge cotangents.
 
     Examples
@@ -357,7 +357,7 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
     Returns
     -------
-    array
+    array_like
         The Laplacian matrix with cotangent weights.
 
     Notes
@@ -386,14 +386,14 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
          w_{ij} = \frac{\omega_{ij}}{\sum_{(i, k) \in \mathbf{E}_{i}} \omega_{ik}}
 
-    Examples
-    --------
-    >>>
-
     References
     ----------
     .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
         `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+
+    Examples
+    --------
+    >>>
 
     """
     key_index = mesh.key_index()

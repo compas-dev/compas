@@ -30,16 +30,15 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh instance.
-    sources : list
+    sources : List[int]
         A list of vertex identifiers from which the distances should be calculated.
-    m : float (1.0)
+    m : float, optional
         ?
 
     Returns
     -------
     array
         Distance values.
-
     """
     Lc = trimesh_cotangent_laplacian_matrix(mesh)
 

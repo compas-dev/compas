@@ -41,8 +41,7 @@ class Network(Graph):
     Parameters
     ----------
     name: str, optional
-        The name of the graph.
-        Defaults to "Graph".
+        The name of the datastructure.
     default_node_attributes: dict, optional
         Default values for node attributes.
     default_edge_attributes: dict, optional
@@ -83,14 +82,13 @@ class Network(Graph):
         is_planar_embedding = network_is_planar_embedding
 
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
-        name = name or 'Network'
         _default_node_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         _default_edge_attributes = {}
         if default_node_attributes:
             _default_node_attributes.update(default_node_attributes)
         if default_edge_attributes:
             _default_edge_attributes.update(default_edge_attributes)
-        super(Network, self).__init__(name=name,
+        super(Network, self).__init__(name=name or 'Network',
                                       default_node_attributes=_default_node_attributes,
                                       default_edge_attributes=_default_edge_attributes)
 
@@ -123,7 +121,7 @@ class Network(Graph):
 
         Returns
         -------
-        Network
+        :class:`compas.datastructures.Network`
             A network object.
 
         Examples
@@ -147,14 +145,14 @@ class Network(Graph):
 
         Parameters
         ----------
-        lines : list
+        lines : List[Tuple[List[float, List[float]]]]
             A list of pairs of point coordinates.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
-        Network
+        :class:`compas.datastructures.Network`
             A network object.
 
         Examples
@@ -188,13 +186,13 @@ class Network(Graph):
 
         Parameters
         ----------
-        nodes : list , dict
+        nodes : List[List[float]] or Dict[hashable, List[float]]
             A list of node coordinates or a dictionary of keys pointing to node coordinates to specify keys.
-        edges : list of tuple of int
+        edges : List[Tuple[hashable, hshable]]
 
         Returns
         -------
-        Network
+        :class:`compas.datastructures.Network`
             A network object.
 
         Examples
@@ -232,6 +230,10 @@ class Network(Graph):
         filepath : path string or file-like object
             A path or a file-like object pointing to a file.
 
+        Returns
+        -------
+        None
+
         Examples
         --------
         >>>
@@ -241,6 +243,10 @@ class Network(Graph):
     def to_points(self):
         """Return the coordinates of the network.
 
+        Returns
+        -------
+        List[List[float]]
+
         Examples
         --------
         >>>
@@ -249,6 +255,10 @@ class Network(Graph):
 
     def to_lines(self):
         """Return the lines of the network as pairs of start and end point coordinates.
+
+        Returns
+        -------
+        List[Tuple[List[float], List[float]]]
 
         Examples
         --------
@@ -261,13 +271,10 @@ class Network(Graph):
 
         Returns
         -------
-        tuple
-            A 2-tuple containing
-
-            * a list of nodes, represented by their XYZ coordinates, and
-            * a list of edges.
-
-            Each face is a list of indices referencing the list of node coordinates.
+        List[List[float]]
+            A list of nodes, represented by their XYZ coordinates.
+        List[Tuple[hashable, hashable]]
+            A list of edges, with each edge represented by a pair of indices in the node list.
 
         Examples
         --------
@@ -293,7 +300,7 @@ class Network(Graph):
 
         Returns
         -------
-        dict
+        Dict[hashable, str]
             A dictionary of key-geometric key pairs.
 
         """
@@ -312,7 +319,7 @@ class Network(Graph):
 
         Returns
         -------
-        dict
+        Dict[str, hashable]
             A dictionary of geometric key-key pairs.
 
         """
@@ -368,12 +375,11 @@ class Network(Graph):
             The identifier of the node.
         axes : str, optional
             The components of the node coordinates to return.
-            Default is ``'xyz'``.
 
         Returns
         -------
-        list
-            The coordniates of the node.
+        List[float]
+            The coordinates of the node.
         """
         return [self.node[key][axis] for axis in axes]
 
@@ -387,7 +393,7 @@ class Network(Graph):
 
         Returns
         -------
-        list
+        List[float]
             The laplacian vector.
         """
         c = centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
@@ -404,7 +410,7 @@ class Network(Graph):
 
         Returns
         -------
-        list
+        List[float]
             The coordinates of the centroid.
         """
         return centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
@@ -422,13 +428,15 @@ class Network(Graph):
             The key of the start node.
         v : hashable
             The key of the end node.
-        axes : str (xyz)
+        axes : str, optional
             The axes along which the coordinates should be included.
 
         Returns
         -------
-        tuple
-            The coordinates of the start point and the coordinates of the end point.
+        List[float]
+            The coordinates of the start point.
+        List[float]
+            The coordinates of the end point.
         """
         return self.node_coordinates(u, axes=axes), self.node_coordinates(v, axes=axes)
 
@@ -462,7 +470,7 @@ class Network(Graph):
 
         Returns
         -------
-        list
+        List[float]
             The vector from u to v.
         """
         a, b = self.edge_coordinates(u, v)
@@ -478,14 +486,14 @@ class Network(Graph):
             The key of the start node.
         v : hashable
             The key of the end node.
-        t : float (0.5)
+        t : float, optional
             The location of the point on the edge.
             If the value of ``t`` is outside the range ``0-1``, the point will
             lie in the direction of the edge, but not on the edge vector.
 
         Returns
         -------
-        list
+        List[float]
             The XYZ coordinates of the point.
         """
         a, b = self.edge_coordinates(u, v)
@@ -504,7 +512,7 @@ class Network(Graph):
 
         Returns
         -------
-        list
+        List[float]
             The XYZ coordinates of the midpoint.
         """
         a, b = self.edge_coordinates(u, v)
@@ -522,7 +530,7 @@ class Network(Graph):
 
         Returns
         -------
-        list
+        List[float]
             The direction vector of the edge.
         """
         return normalize_vector(self.edge_vector(u, v))
