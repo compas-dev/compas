@@ -36,7 +36,7 @@ class AbstractRobotModelArtist(object):
 
         Parameters
         ----------
-        geometry : :class:`Mesh`
+        geometry : :class:`compas.datastructures.Mesh`
             Instance of a **COMPAS** mesh
         name : str, optional
             The name of the mesh to draw.
