@@ -59,7 +59,7 @@ class DataEncoder(json.JSONEncoder):
 
         Parameters
         ----------
-        o : object
+        o : obj
             The object to serialize.
 
         Returns
@@ -113,7 +113,7 @@ class DataDecoder(json.JSONDecoder):
 
         Parameters
         ----------
-        o : object
+        o : obj
 
         Returns
         -------

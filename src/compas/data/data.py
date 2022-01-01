@@ -51,6 +51,54 @@ class Data(object):
         This name is not necessarily unique and can be set by the user.
         The default value is the object's class name: ``self.__class__.__name__``.
 
+    Notes
+    -----
+    Objects created from classes that implement this data class
+    can be serialized to JSON and unserialized without loss of information using:
+
+    * :func:`compas.data.json_dump`
+    * :func:`compas.data.json_dumps`
+    * :func:`compas.data.json_load`
+    * :func:`compas.data.json_loads`
+
+    To implement this data class,
+    it is sufficient for the deriving class to define the "getter" and "setter"
+    of the data property: :attr:`compas.data.Data.data`.
+
+    Examples
+    --------
+    >>> from compas.data import Data
+    >>> class Point(Data):
+    ...     def __init__(self, x, y, z):
+    ...         super().__init__()
+    ...         self.x = x
+    ...         self.y = y
+    ...         self.z = z
+    ...     @property
+    ...     def data(self):
+    ...         return {'x': self.x, 'y': self.y, 'z': self.z}
+    ...     @data.setter
+    ...     def data(self, data):
+    ...         self.x = data['x']
+    ...         self.y = data['y']
+    ...         self.z = data['z']
+    ...
+    >>> a = Point(1, 0, 0)
+    >>> a.guid
+    UUID('1ddad2fe-6716-4e30-a5ae-8ed7cad892c4')
+    >>> a.name
+    'Point'
+    >>> a.data
+    {'x': 1.0, 'y': 0.0, 'z': 0.0}
+
+    >>> from compas.data import json_dumps, json_loads
+    >>> s = json_dumps(a)
+    >>> b = json_loads(s)
+    >>> a is b
+    False
+    >>> a == b
+    True
+
     """
 
     def __init__(self, name=None):
@@ -194,8 +242,7 @@ class Data(object):
         filepath : path string or file-like object
             The path or file-like object to the file containing the data.
         pretty : bool, optional
-            If ``True`` serialize a pretty representation of the data.
-            Default is ``False``.
+            If True, serialize to a "pretty", human-readable representation.
 
         Returns
         -------
@@ -226,7 +273,7 @@ class Data(object):
         Parameters
         ----------
         pretty : bool, optional
-            If ``True`` serialize a pretty representation of the data.
+            If True serialize a pretty representation of the data.
 
         Returns
         -------
@@ -254,7 +301,7 @@ class Data(object):
         return cls.from_data(deepcopy(self.data))
 
     def validate_data(self):
-        """Validate the object's data against its data schema (``self.DATASCHEMA``).
+        """Validate the object's data against its data schema.
 
         Returns
         -------
@@ -274,7 +321,7 @@ class Data(object):
         return data
 
     def validate_json(self):
-        """Validate the object's data against its json schema (``self.JSONSCHEMA``).
+        """Validate the object's data against its json schema.
 
         Returns
         -------

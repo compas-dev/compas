@@ -112,13 +112,13 @@ def validate_data(data, cls):
     ----------
     data : dict
         The data representation of an object.
-    cls : :class:`compas.data.Data`
-        The class of a data object.
+    cls : Type[:class:`compas.data.Data`]
+        The data object class.
 
     Returns
     -------
     dict
-        The validated data.
+        The validated data dict.
 
     Raises
     ------
