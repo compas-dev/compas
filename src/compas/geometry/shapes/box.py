@@ -39,6 +39,17 @@ class Box(Shape):
 
     """
 
+    def __init__(self, frame, xsize, ysize, zsize, **kwargs):
+        super(Box, self).__init__(**kwargs)
+        self._frame = None
+        self._xsize = None
+        self._ysize = None
+        self._zsize = None
+        self.frame = frame
+        self.xsize = xsize
+        self.ysize = ysize
+        self.zsize = zsize
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` - Schema of the data representation."""
@@ -54,17 +65,6 @@ class Box(Shape):
     def JSONSCHEMANAME(self):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'box'
-
-    def __init__(self, frame, xsize, ysize, zsize, **kwargs):
-        super(Box, self).__init__(**kwargs)
-        self._frame = None
-        self._xsize = None
-        self._ysize = None
-        self._zsize = None
-        self.frame = frame
-        self.xsize = xsize
-        self.ysize = ysize
-        self.zsize = zsize
 
     @property
     def data(self):

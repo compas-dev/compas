@@ -18,12 +18,12 @@ class Shape(Geometry):
 
         Parameters
         ----------
-        other : :class:`Solid`
+        other : :class:`compas.geometry.Shape`
             The solid to add.
 
         Returns
         -------
-        :class:`Solid`
+        :class:`compas.geometry.Polyhedron`
             The resulting solid.
 
         Examples
@@ -45,12 +45,12 @@ class Shape(Geometry):
 
         Parameters
         ----------
-        other : :class:`Solid`
+        other : :class:`compas.geometry.Shape`
             The solid to subtract.
 
         Returns
         -------
-        :class:`Solid`
+        :class:`compas.geometry.Polyhedron`
             The resulting solid.
 
         Examples
@@ -72,12 +72,12 @@ class Shape(Geometry):
 
         Parameters
         ----------
-        other : :class:`Solid`
+        other : :class:`compas.geometry.Shape`
             The solid to intersect with.
 
         Returns
         -------
-        :class:`Solid`
+        :class:`compas.geometry.Polyhedron`
             The resulting solid.
 
         Examples
@@ -99,12 +99,12 @@ class Shape(Geometry):
 
         Parameters
         ----------
-        other : :class:`Solid`
+        other : :class:`compas.geometry.Shape`
             The solid to add.
 
         Returns
         -------
-        :class:`Solid`
+        :class:`compas.geometry.Polyhedron`
             The resulting solid.
 
         Examples
