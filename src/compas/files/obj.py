@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from collections import Ordereddict
+from collections import OrderedDict
 from collections import defaultdict
 
 import compas
@@ -509,8 +509,8 @@ class OBJParser(object):
         -------
         None
         """
-        index_key = Ordereddict()
-        vertex = Ordereddict()
+        index_key = OrderedDict()
+        vertex = OrderedDict()
 
         for i, xyz in enumerate(iter(self.reader.vertices)):
             key = geometric_key(xyz, self.precision)
