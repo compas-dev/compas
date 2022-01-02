@@ -30,6 +30,13 @@ class URDF(object):
     This class abstracts away the underlying XML of the Unified Robot
     Description Format (`URDF`_) and represents its as an object graph.
 
+    Attributes
+    ----------
+    xml : :class:`XML`
+        Instance of the XML reader/parser class.
+    robot : obj
+        Root element of the URDF model, i.e. a robot instance.
+
     References
     ----------
     A detailed description of the model is available on the `URDF Model wiki`_.
@@ -47,15 +54,10 @@ class URDF(object):
 
     def __init__(self, xml=None):
         self.xml = xml
-        """:class:`XML` -
-        Instance of the XML reader/parser class."""
         self._robot = None
 
     @property
     def robot(self):
-        """object -
-        Root element of the URDF model, i.e. a robot instance.
-        """
         if self._robot is None:
             default_namespace = self.xml.root.attrib.get('xmlns')
             self._robot = URDFParser.parse_element(self.xml.root, _tag_without_namespace(self.xml.root, default_namespace), default_namespace)
@@ -80,7 +82,7 @@ class URDF(object):
 
         Returns
         -------
-        :class:`URDF`
+        :class:`compas.files.URDF`
         """
         urdf = cls()
         urdf.robot = robot
@@ -97,7 +99,7 @@ class URDF(object):
 
         Returns
         -------
-        :class:`URDF`
+        :class:`compas.files.URDF`
 
         Examples
         --------
@@ -118,7 +120,7 @@ class URDF(object):
 
         Returns
         -------
-        :class:`URDF`
+        :class:`compas.files.URDF`
 
         Examples
         --------
@@ -137,11 +139,10 @@ class URDF(object):
             the filepath of the associated XML object.
         prettify : bool, optional
             Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
 
         Returns
         -------
-        ``None``
+        None
 
         """
         if destination:
@@ -155,10 +156,9 @@ class URDF(object):
         Parameters
         ----------
         encoding : str, optional
-            Output encoding (the default is 'utf-8')
+            Output encoding.
         prettify : bool, optional
             Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
 
         Returns
         -------
@@ -175,11 +175,10 @@ class URDF(object):
         Parameters
         ----------
         destination : str, optional
-            Filepath where the URDF should be written.  Defaults to
-            the filepath of the associated XML object.
+            Filepath where the URDF should be written.
+            Defaults to the filepath of the associated XML object.
         prettify : bool, optional
             Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
 
         Returns
         -------
@@ -201,8 +200,17 @@ class URDFParser(object):
         ----------
         parser_type : type
             Python class handling URDF parsing of the tag.
-        tags : str
+        *tags : list[str]
             One or more URDF string tag that the parser can parse.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If `tags` is empty.
         """
         if len(tags) == 0:
             raise ValueError('Must define at least one tag')
@@ -221,17 +229,22 @@ class URDFParser(object):
 
         Parameters
         ----------
-        element :
+        element : :class:`compas.files.XMLElement`
             XML Element node.
-        path : str
+        path : str, optional
             Full path to the element.
-        element_default_namespace : str
+        element_default_namespace : str, optional
             Default namespace at the current level current document.
 
         Returns
         -------
-        object
+        obj
             An instance of the model object represented by the given element.
+
+        Raises
+        ------
+        TypeError
+            If the element instance cannot be created.
 
         """
         default_ns = element.attrib.get('xmlns') or element_default_namespace

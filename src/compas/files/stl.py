@@ -20,6 +20,13 @@ class STL(object):
     precision : str, optional
         A COMPAS precision specification.
 
+    Attributes
+    ----------
+    reader : :class:`STLReader`
+        A STL file reader.
+    parser : :class:`STLParser`
+        A STL file parser.
+
     """
 
     def __init__(self, filepath, precision=None):
@@ -30,8 +37,25 @@ class STL(object):
         self._parser = None
         self._writer = None
 
+    @property
+    def reader(self):
+        if not self._is_parsed:
+            self.read()
+        return self._reader
+
+    @property
+    def parser(self):
+        if not self._is_parsed:
+            self.read()
+        return self._parser
+
     def read(self):
-        """Read and parse the contents of the file."""
+        """Read and parse the contents of the file.
+
+        Returns
+        -------
+        None
+        """
         self._reader = STLReader(self.filepath)
         self._parser = STLParser(self._reader, precision=self.precision)
         self._is_parsed = True
@@ -50,23 +74,14 @@ class STL(object):
             Defaults to the name of the mesh.
         precision : str, optional
             COMPAS precision specification for parsing geometric data.
+
+        Returns
+        -------
+        None
+
         """
         self._writer = STLWriter(self.filepath, mesh, **kwargs)
         self._writer.write()
-
-    @property
-    def reader(self):
-        """:class:`STLReader` - A STL file reader."""
-        if not self._is_parsed:
-            self.read()
-        return self._reader
-
-    @property
-    def parser(self):
-        """:class:`STLParser` - A STL file parser."""
-        if not self._is_parsed:
-            self.read()
-        return self._parser
 
 
 class STLReader(object):
@@ -91,7 +106,12 @@ class STLReader(object):
         self.read()
 
     def read(self):
-        """Read the data."""
+        """Read the data.
+
+        Returns
+        -------
+        None
+        """
         is_binary = False
         with _iotools.open_file(self.filepath, 'rb') as file:
             line = file.readline().strip()
@@ -257,6 +277,13 @@ class STLParser(object):
         A STL file reader.
     precision : str
         COMPAS precision specification for parsing geometric data.
+
+    Attributes
+    ----------
+    vertices : list[list[float]]
+        The vertex coordinates.
+    faces : list[list[int]]
+        The faces as lists of vertex indices.
     """
 
     def __init__(self, reader, precision=None):
@@ -267,7 +294,12 @@ class STLParser(object):
         self.parse()
 
     def parse(self):
-        """Parse the the data found by the reader."""
+        """Parse the the data found by the reader.
+
+        Returns
+        -------
+        None
+        """
         gkey_index = {}
         vertices = []
         faces = []
@@ -327,7 +359,12 @@ class STLWriter(object):
         return {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
 
     def write(self):
-        """Write the data to a file."""
+        """Write the data to a file.
+
+        Returns
+        -------
+        None
+        """
         if not self.mesh.is_trimesh():
             raise ValueError('Mesh must be triangular to be encoded in STL.')
         if not self.binary:

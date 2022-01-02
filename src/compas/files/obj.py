@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from collections import OrderedDict
+from collections import Ordereddict
 from collections import defaultdict
 
 import compas
@@ -23,58 +23,71 @@ class OBJ(object):
     precision : str, optional
         A COMPAS precision specification.
 
-    Examples
-    --------
-    Reading and writing of a single mesh.
-
-    .. code-block:: python
-
-        from compas.datastructures import Mesh
-        from compas.files import OBJ
-
-        mesh = Mesh.from_polyhedron(12)
-
-        # write to file
-        obj = OBJ('mesh.obj')
-        obj.write(mesh)
-
-        # read from file
-        obj = OBJ('mesh.obj')
-        obj.read()
-
-        mesh = Mesh.from_vertices_and_faces(obj.vertices, obj.faces)
-
-    Reading and writing of multiple meshes as separate objects in a single OBJ file.
-
-    .. code-block:: python
-
-        from compas.geometry import Pointcloud, Translation
-        from compas.datastructures import Mesh
-        from compas.files import OBJ
-
-        meshes = []
-        for point in Pointcloud.from_bounds(10, 10, 10, 100):
-            mesh = Mesh.from_polyhedron(12)
-            mesh.transform(Translation.from_vector(point))
-            meshes.append(mesh)
-
-        # write to file
-        obj = OBJ('meshes.obj')
-        obj.write(meshes)
-
-        # read from file
-        obj = OBJ('meshes.obj')
-        obj.read()
-
-        meshes = []
-        for name in obj.objects:
-            mesh = Mesh.from_vertices_and_faces(* obj.objects[name])
-            mesh.name = name
-            meshes.append(mesh)
+    Attributes
+    ----------
+    reader : :class:`OBJReader`, read-only
+        A OBJ file reader.
+    parser : :class:`OBJParser`, read-only
+        A OBJ data parser.
+    vertices : list[list[float]], read-only
+        The vertices found in the parsed data.
+    lines : list[tuple[int, int]], read-only
+        The lines found in the parsed data, as vertex pairs.
+    faces : list[list[int]], read-only
+        The faces found in the parsed data, as lists of vertices.
+    objects : dict[str, tuple[list[list[float, float, float]], list[list[int]]]], read-only
+        The objects found in the parsed data, as a mapping between object names and tuples of lists of vertices and faces.
 
     References
     ----------
     * http://paulbourke.net/dataformats/obj/
+
+    Examples
+    --------
+    Reading and writing of a single mesh.
+
+    >>> from compas.datastructures import Mesh
+    >>> from compas.files import OBJ
+
+    Write mesh data to a file.
+
+    >>> mesh = Mesh.from_polyhedron(12)
+    >>> obj = OBJ('mesh.obj')
+    >>> obj.write(mesh)
+
+    Read mesh data from a file.
+
+    >>> obj = OBJ('mesh.obj')
+    >>> obj.read()
+    >>> mesh = Mesh.from_vertices_and_faces(obj.vertices, obj.faces)
+
+    Reading and writing of multiple meshes as separate objects in a single OBJ file.
+
+    >>> from compas.geometry import Pointcloud, Translation
+    >>> from compas.datastructures import Mesh
+    >>> from compas.files import OBJ
+
+    Write mesh data to a file.
+
+    >>> meshes = []
+    >>> for point in Pointcloud.from_bounds(10, 10, 10, 100):
+    ...     mesh = Mesh.from_polyhedron(12)
+    ...     mesh.transform(Translation.from_vector(point))
+    ...     meshes.append(mesh)
+    ...
+    >>> obj = OBJ('meshes.obj')
+    >>> obj.write(meshes)
+
+    Read mesh data from a file.
+
+    >>> obj = OBJ('meshes.obj')
+    >>> obj.read()
+    >>> meshes = []
+    >>> for name in obj.objects:
+    ...     mesh = Mesh.from_vertices_and_faces(* obj.objects[name])
+    ...     mesh.name = name
+    ...     meshes.append(mesh)
+    ...
 
     """
 
@@ -87,7 +100,12 @@ class OBJ(object):
         self._writer = None
 
     def read(self):
-        """Read and parse the contents of the file."""
+        """Read and parse the contents of the file.
+
+        Returns
+        -------
+        None
+        """
         self._reader = OBJReader(self.filepath)
         self._parser = OBJParser(self._reader, precision=self.precision)
         self._reader.open()
@@ -112,44 +130,40 @@ class OBJ(object):
             The email of the author to include in the header.
         date : str, optional
             The date to include in the header.
+
+        Returns
+        -------
+        None
         """
         self._writer = OBJWriter(self.filepath, mesh, precision=self.precision, unweld=unweld, **kwargs)
         self._writer.write()
 
     @property
     def reader(self):
-        """:class:`OBJReader` - A OBJ file reader."""
         if not self._is_parsed:
             self.read()
         return self._reader
 
     @property
     def parser(self):
-        """:class:`OBJParser` - A OBJ data parser."""
         if not self._is_parsed:
             self.read()
         return self._parser
 
     @property
     def vertices(self):
-        """List[List[float]] - The vertices found in the parsed data."""
         return self.parser.vertices
 
     @property
     def lines(self):
-        """List[Tuple[int, int]] - The lines found in the parsed data, as vertex pairs."""
         return self.parser.lines
 
     @property
     def faces(self):
-        """List[List[int]] - The faces found in the parsed data, as lists of vertices."""
         return self.parser.faces
 
     @property
     def objects(self):
-        """Dict[str, Tuple[List[List[float, float, float]], List[List[int]]]] -
-        The objects found in the parsed data, as a mapping between object names and tuples of lists of vertices and faces.
-        """
         return self.parser.objects
 
     @property
@@ -164,6 +178,25 @@ class OBJReader(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
+
+    Attributes
+    ----------
+    vertices : list[list[float, float, float]]
+        List of lists of vertex coordinates.
+    weights : list[float]
+        List of vertex weights.
+    normals : list[list[float, float, float]]
+        List of lists of normal components.
+    points : list[int]
+        List of references to vertex coordinates.
+    lines : list[tuple[int, int]]
+        List of pairs of references to vertex coordinates.
+    faces : list[list[int]
+        List of lists of references to vertex coordinates.
+    groups : dict[str, tuple[list[int], list[list[int]]]]
+        Groups of mesh objects defined by their vertices and faces.
+    objects : dict[str, tuple[list[int], list[list[int]]]]
+        Named mesh objects defined by their vertices and faces.
     """
 
     def __init__(self, filepath):
@@ -171,67 +204,47 @@ class OBJReader(object):
         self.content = None
         # vertex data
         self.vertices = []
-        """List[List[float, float, float]] -
-        List of lists of vertex coordinates.
-        """
         self.weights = []
-        """List[float] - List of vertex weights."""
         self.textures = []
-        """"""
         self.normals = []
-        """List[List[float, float, float]] -
-        List of lists of normal components.
-        """
         # polygonal geometry
         self.points = []
-        """List[int] -
-        List of references to vertex coordinates.
-        """
         self.lines = []
-        """List[Tuple[int, int]] -
-        List of pairs of references to vertex coordinates.
-        """
         self.faces = []
-        """List[List[int] -
-        List of lists of references to vertex coordinates.
-        """
         # free-form geometry
         # self.curves = []
-        # """"""
         # self.curves2 = []
-        # """"""
         # self.surfaces = []
-        # """"""
         # free-form attributes
         # self.deg = None
-        # """"""
         # self.bmat = None
-        # """"""
         # self.step = None
-        # """"""
         # self.cstype = None
-        # """"""
         # free-form statements
         # parm, trim, hole, scrv, sp, end
         # grouping
         self.groups = defaultdict(list)
-        """Dict[str, Tuple[List[int], List[List[int]]]] -
-        Groups of mesh objects defined by their vertices and faces.
-        """
         self.objects = defaultdict(list)
-        """Dict[str, Tuple[List[int], List[List[int]]]] -
-        Named mesh objects defined by their vertices and faces.
-        """
         self.group = None
         self.object = None
 
     def open(self):
-        """Open the file and read its contents."""
+        """Open the file and read its contents.
+
+        Returns
+        -------
+        None
+        """
         with _iotools.open_file(self.filepath, 'r') as f:
             self.content = f.readlines()
 
     def pre(self):
-        """Pre-process the contents."""
+        """Pre-process the contents.
+
+        Returns
+        -------
+        None
+        """
         lines = []
         is_continuation = False
         needs_decode = None
@@ -256,7 +269,12 @@ class OBJReader(object):
         self.content = iter(lines)
 
     def post(self):
-        """Post-process the contents."""
+        """Post-process the contents.
+
+        Returns
+        -------
+        None
+        """
         pass
 
     def read(self):
@@ -280,6 +298,9 @@ class OBJReader(object):
         * ``o``: start of named object
         * ``g``: start of a named group
 
+        Returns
+        -------
+        None
         """
         if not self.content:
             return
@@ -442,54 +463,54 @@ class OBJParser(object):
         A OBJ file reader.
     precision : str
         COMPAS precision specification for parsing geometric data.
+
+    Attributes
+    ----------
+    reader : :class:`OBJReader`
+        An OBJ file reader.
+    vertices : list[list[float, float, float]]
+        List of lists of parsed vertex coordinates.
+        Parsed vertices are unique up to the specified precision.
+    points : list[int]
+        List of references to parsed vertex coordinates.
+    lines : list[tuple[int, int]]
+        List of pairs of references to parsed vertex coordinates.
+    polylines : list[list[int]
+        List of lists of references to parsed vertex coordinates.
+    faces : list[list[int]
+        List of lists of references to parsed vertex coordinates.
+    groups : dict[str, tuple[list[int], list[list[int]]]]
+        Groups of mesh objects defined by their parsed vertices and faces.
+    objects : dict[str, tuple[list[int], list[list[int]]]]
+        Named mesh objects defined by their parsed vertices and faces.
     """
 
     def __init__(self, reader, precision=None):
         self.precision = precision
         self.reader = reader
-        """:class:`OBJReader` - An OBJ file reader."""
         self.vertices = None
-        """List[List[float, float, float]] -
-        List of lists of parsed vertex coordinates.
-        Parsed vertices are unique up to the specified precision.
-        """
         # self.weights = None
-        # """List[float] - List of vertex weights."""
         # self.textures = None
-        # """List[float] - List of vertex textures."""
         # self.normals = None
         self.points = None
-        """List[int] -
-        List of references to parsed vertex coordinates.
-        """
         self.lines = None
-        """List[Tuple[int, int]] -
-        List of pairs of references to parsed vertex coordinates.
-        """
         self.polylines = None
-        """List[List[int] -
-        List of lists of references to parsed vertex coordinates.
-        """
         self.faces = None
-        """List[List[int] -
-        List of lists of references to parsed vertex coordinates.
-        """
         # self.curves = None
         # self.curves2 = None
         # self.surfaces = None
         self.groups = None
-        """Dict[str, Tuple[List[int], List[List[int]]]] -
-        Groups of mesh objects defined by their parsed vertices and faces.
-        """
         self.objects = None
-        """Dict[str, Tuple[List[int], List[List[int]]]] -
-        Named mesh objects defined by their parsed vertices and faces.
-        """
 
     def parse(self):
-        """Parse the the data found by the reader."""
-        index_key = OrderedDict()
-        vertex = OrderedDict()
+        """Parse the the data found by the reader.
+
+        Returns
+        -------
+        None
+        """
+        index_key = Ordereddict()
+        vertex = Ordereddict()
 
         for i, xyz in enumerate(iter(self.reader.vertices)):
             key = geometric_key(xyz, self.precision)
@@ -525,8 +546,8 @@ class OBJWriter(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
-    meshes : List[:class:`compas.datastructures.Mesh`]
-        List of meshes to write to the file.
+    meshes : list[:class:`compas.datastructures.Mesh`]
+        list of meshes to write to the file.
     precision : str, optional
         COMPAS precision specification for parsing geometric data.
     unweld : bool, optional
@@ -555,7 +576,12 @@ class OBJWriter(object):
         self.file = None
 
     def write(self):
-        """Write the meshes to the file."""
+        """Write the meshes to the file.
+
+        Returns
+        -------
+        None
+        """
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self._write_header()
             self._write_meshes()

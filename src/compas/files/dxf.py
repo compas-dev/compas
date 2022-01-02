@@ -15,6 +15,13 @@ class DXF(object):
     precision : str, optional
         A COMPAS precision specification.
 
+    Attributes
+    ----------
+    reader : :class:`DXFReader`, read-only
+        A DXF file reader.
+    parser : :class:`DXFParser`, read-only
+        A DXF data parser.
+
     References
     ----------
     * https://en.wikipedia.org/wiki/AutoCAD_DXF
@@ -38,14 +45,12 @@ class DXF(object):
 
     @property
     def reader(self):
-        """:class:`DXFReader` - A DXF file reader."""
         if not self._is_parsed:
             self.read()
         return self._reader
 
     @property
     def parser(self):
-        """:class:`DXFParser` - A DXF data parser."""
         if not self._is_parsed:
             self.read()
         return self._parser

@@ -13,6 +13,13 @@ class LAS(object):
     precision : str, optional
         A COMPAS precision specification.
 
+    Attributes
+    ----------
+    reader : :class:`LASReader`, read-only
+        A LAS file reader.
+    parser : :class:`LASParser`, read-only
+        A LAS data parser.
+
     References
     ----------
     * http://www.asprs.org/wp-content/uploads/2010/12/LAS_1_4_r13.pdf
@@ -26,25 +33,23 @@ class LAS(object):
         self._reader = None
         self._parser = None
 
-    def read(self):
-        """Read and parse the contents of the file."""
-        self._reader = LASReader(self.filepath)
-        self._parser = LASParser(self._reader, precision=self.precision)
-        self._is_parsed = True
-
     @property
     def reader(self):
-        """:class:`LASReader` - A LAS file reader."""
         if not self._is_parsed:
             self.read()
         return self._reader
 
     @property
     def parser(self):
-        """:class:`LASParser` - A LAS data parser."""
         if not self._is_parsed:
             self.read()
         return self._parser
+
+    def read(self):
+        """Read and parse the contents of the file."""
+        self._reader = LASReader(self.filepath)
+        self._parser = LASParser(self._reader, precision=self.precision)
+        self._is_parsed = True
 
 
 class LASReader(object):

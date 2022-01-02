@@ -18,6 +18,13 @@ class PLY(object):
     precision : str, optional
         A COMPAS precision specification.
 
+    Attributes
+    ----------
+    reader : :class:`PLYReader`
+        A PLY file reader.
+    parser : :class:`PLYParser`
+        A PLY data parser.
+
     References
     ----------
     * http://paulbourke.net/dataformats/ply/
@@ -32,8 +39,25 @@ class PLY(object):
         self._parser = None
         self._writer = None
 
+    @property
+    def reader(self):
+        if not self._is_parsed:
+            self.read()
+        return self._reader
+
+    @property
+    def parser(self):
+        if not self._is_parsed:
+            self.read()
+        return self._parser
+
     def read(self):
-        """Read the contents of the file."""
+        """Read the contents of the file.
+
+        Returns
+        -------
+        None
+        """
         self._reader = PLYReader(self.filepath)
         self._parser = PLYParser(self._reader, precision=self.precision)
         self._is_parsed = True
@@ -53,23 +77,13 @@ class PLY(object):
             The date to include in the header.
         precision : str, optional
             COMPAS precision specification for parsing geometric data.
+
+        Returns
+        -------
+        None
         """
         self._writer = PLYWriter(self.filepath, mesh, **kwargs)
         self._writer.write()
-
-    @property
-    def reader(self):
-        """:class:`PLYReader` - A PLY file reader."""
-        if not self._is_parsed:
-            self.read()
-        return self._reader
-
-    @property
-    def parser(self):
-        """:class:`PLYParser` - A PLY data parser."""
-        if not self._is_parsed:
-            self.read()
-        return self._parser
 
 
 class PLYReader(object):
@@ -79,10 +93,25 @@ class PLYReader(object):
     ----------
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
+
+    Class Attributes
+    ----------------
+    keywords : List[str]
+        Reserved keywords in PLY format language.
+    property_types : Dict[str, object]
+        Mapping between PLY property types and Python types.
+    binary_property_types : Dict[str, str]
+        Mapping between PLY property types and binary type strings.
+    number_of_bytes_per_type : Dict[str, int]
+        Mapping between PLY property types and number of bytes.
+    struct_format_per_type : Dict[str, str]
+        Mapping between PLY property types and struct formats.
+    binary_byte_order : Dict[str, str]
+        Mapping between endian type and endian symbol.
+
     """
 
     keywords = ['ply', 'format', 'comment', 'element', 'property', 'end_header']
-    """List[str] - Reserved keywords in PLY format language."""
 
     property_types = {
         'char': int,
@@ -98,8 +127,8 @@ class PLYReader(object):
         'float': float,
         'float32': float,
         'float64': float,
-        'double': float, }
-    """Dict[str, object] - Mapping between PLY property types and Python types."""
+        'double': float,
+    }
 
     binary_property_types = {
         'int8': 'i1',
@@ -117,8 +146,8 @@ class PLYReader(object):
         'float32': 'f4',
         'float': 'f4',
         'float64': 'f8',
-        'double': 'f8'}
-    """Dict[str, str] - Mapping between PLY property types and binary type strings."""
+        'double': 'f8'
+    }
 
     number_of_bytes_per_type = {
         'char': 1,
@@ -128,8 +157,8 @@ class PLYReader(object):
         'int': 4,
         'uint': 4,
         'float': 4,
-        'double': 8}
-    """Dict[str, int] - Mapping between PLY property types and number of bytes."""
+        'double': 8
+    }
 
     struct_format_per_type = {
         'char': 'c',
@@ -139,11 +168,10 @@ class PLYReader(object):
         'int': 'i',
         'uint': 'I',
         'float': 'f',
-        'double': 'd'}
-    """Dict[str, str] - Mapping between PLY property types and struct formats."""
+        'double': 'd'
+    }
 
     binary_byte_order = {'binary_big_endian': '>', 'binary_little_endian': '<'}
-    """Dict[str, str] - Mapping between endian type and endian symbol."""
 
     def __init__(self, filepath):
         self.filepath = filepath
@@ -202,7 +230,12 @@ class PLYReader(object):
         return False
 
     def read(self):
-        """Read the contents of the file."""
+        """Read the contents of the file.
+
+        Returns
+        -------
+        None
+        """
         self._read_header()
         if self.format == 'ascii':
             self._read_data()
@@ -507,6 +540,15 @@ class PLYParser(object):
         A PLY file reader.
     precision : str
         COMPAS precision specification for parsing geometric data.
+
+    Attributes
+    ----------
+    vertices : list[tuple[float, float, float]]
+        The vertex coordinates.
+    edges : list[tuple[int, int]]
+        Pairs of vertex indices defining the start and end points of edges.
+    faces : list[list[int]]
+        Lists of vertex indices defining faces.
     """
 
     def __init__(self, reader, precision=None):
@@ -518,6 +560,12 @@ class PLYParser(object):
         self.parse()
 
     def parse(self):
+        """Parse the contents found by a PLY file reader.
+
+        Returns
+        -------
+        None
+        """
         self.vertices = [(vertex['x'], vertex['y'], vertex['z']) for vertex in self.reader.vertices]
         self.faces = [face['vertex_indices'] for face in self.reader.faces]
 
@@ -555,7 +603,12 @@ class PLYWriter(object):
         self.file = None
 
     def write(self):
-        """Write the data to a file."""
+        """Write the data to a file.
+
+        Returns
+        -------
+        None
+        """
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self._write_header()
             self._write_vertices()

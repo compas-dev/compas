@@ -26,11 +26,14 @@ class XML(object):
 
     Attributes
     ----------
-    reader : :class:`XMLReader`
+    reader : :class:`compas.files.XMLReader`, read-only
         Reader used to process the XML file or string.
-    writer : :class:`XMLWriter`
+    writer : :class:`XMLWriter`, read-only
         Writer used to process the XML object to a file or string.
     filepath : str
+        The path to the XML file.
+    root : :class:`xml.etree.ElementTree.Element`
+        Root element of the XML tree.
 
     Examples
     --------
@@ -50,21 +53,33 @@ class XML(object):
 
     @property
     def reader(self):
-        """:class:`XMLReader` (read-only) - A XML file reader."""
         if not self._reader:
             self.read()
         return self._reader
 
     @property
     def writer(self):
-        """:class:`XMLWriter` (read-only) - A XML file writer."""
         if not self._writer:
             self._writer = XMLWriter(self)
         return self._writer
 
+    @property
+    def root(self):
+        if self._root is None:
+            self._root = self.reader.root
+        return self._root
+
+    @root.setter
+    def root(self, value):
+        self._root = value
+
     def read(self):
         """Read XML from a file path or file-like object,
         stored in the attribute ``filepath``.
+
+        Returns
+        -------
+        None
         """
         self._reader = XMLReader.from_file(self.filepath)
 
@@ -76,8 +91,7 @@ class XML(object):
         Parameters
         ----------
         prettify : bool, optional
-            Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
+            If True, prettify the string representation by adding whitespace and indentation.
 
         Returns
         -------
@@ -93,25 +107,13 @@ class XML(object):
         Parameters
         ----------
         prettify : bool, optional
-            Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
+            If True, prettify the string representation by adding whitespace and indentation.
 
         Returns
         -------
         None
         """
         self.write(prettify)
-
-    @property
-    def root(self):
-        """:class:`xml.etree.ElementTree.Element` - Root element of the XML tree."""
-        if self._root is None:
-            self._root = self.reader.root
-        return self._root
-
-    @root.setter
-    def root(self, value):
-        self._root = value
 
     @classmethod
     def from_file(cls, source):
@@ -121,6 +123,10 @@ class XML(object):
         ----------
         source : str or file
             File path or file-like object.
+
+        Returns
+        -------
+        :class:`compas.files.XML`
         """
         xml = cls(source)
         xml._reader = XMLReader.from_file(source)
@@ -134,6 +140,10 @@ class XML(object):
         ----------
         text : str
             XML string.
+
+        Returns
+        -------
+        :class:`compas.files.XML`
         """
         xml = cls()
         xml._reader = XMLReader.from_string(text)
@@ -146,10 +156,9 @@ class XML(object):
         Parameters
         ----------
         encoding : str, optional
-            Output encoding (the default is 'utf-8')
+            Output encoding.
         prettify : bool, optional
-            Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
+            If True, prettify the string representation by adding whitespace and indentation.
 
         Returns
         -------
@@ -184,7 +193,7 @@ class XMLReader(object):
 
         Returns
         -------
-        :class:`XMLReader`
+        :class:`compas.files.XMLReader`
         """
         return cls(xml_impl.xml_from_file(source, tree_parser))
 
@@ -201,7 +210,7 @@ class XMLReader(object):
 
         Returns
         -------
-        :class:`XMLReader`
+        :class:`compas.files.XMLReader`
         """
         return cls(xml_impl.xml_from_string(text, tree_parser))
 
@@ -212,6 +221,7 @@ class XMLWriter(object):
     Parameters
     ----------
     xml : :class:`compas.files.XML`
+        The XML tree to write.
     """
 
     def __init__(self, xml):
@@ -224,6 +234,10 @@ class XMLWriter(object):
         ----------
         prettify : bool, optional
             Prettify the xml text format.
+
+        Returns
+        -------
+        None
         """
         string = self.to_string(prettify=prettify)
         with open(self.xml.filepath, 'wb') as f:
@@ -237,7 +251,7 @@ class XMLWriter(object):
         encoding : str, optional
             The encoding to use for the conversion.
         prettify : bool, optional
-            Prettify the string representation.
+            If True, prettify the string representation by adding whitespace and indentation.
 
         Returns
         -------
@@ -256,9 +270,9 @@ class XMLElement(object):
     ----------
     tag : str
         The type of XML tag.
-    attributes : dict, optional
+    attributes : dict[str, Any], optional
         The attributes of the tag as name-value pairs.
-    elements : list, optional
+    elements : list[:class:`compas.files.XMLElement`], optional
         A list of elements contained by the current element.
     text : str, optional
         The text contained by the element.
@@ -288,6 +302,10 @@ class XMLElement(object):
         ----------
         element : :class:`ET.Element`
             The parent element.
+
+        Returns
+        -------
+        None
         """
         for child in self.elements:
             subelement = ET.SubElement(element, child.tag, child.attributes)

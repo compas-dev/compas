@@ -14,6 +14,11 @@ class OFF(object):
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
 
+    Attributes
+    ----------
+    reader : :class:`OFFReader`, read-only
+        A OFF file reader.
+
     References
     ----------
     * http://shape.cs.princeton.edu/benchmark/documentation/off_format.html
@@ -28,8 +33,19 @@ class OFF(object):
         self._is_read = False
         self._writer = None
 
+    @property
+    def reader(self):
+        if not self._is_read:
+            self.read()
+        return self._reader
+
     def read(self):
-        """Read and parse the contents of the file."""
+        """Read and parse the contents of the file.
+
+        Returns
+        -------
+        None
+        """
         self._reader = OFFReader(self.filepath)
         self._reader.open()
         self._reader.pre()
@@ -52,16 +68,14 @@ class OFF(object):
             The date to include in the header.
         precision : str, optional
             COMPAS precision specification for parsing geometric data.
+
+        Returns
+        -------
+        None
+
         """
         self._writer = OFFWriter(self.filepath, mesh, **kwargs)
         self._writer.write()
-
-    @property
-    def reader(self):
-        """:class:`OFFReader` - A OFF file reader."""
-        if not self._is_read:
-            self.read()
-        return self._reader
 
 
 class OFFReader(object):
@@ -72,6 +86,13 @@ class OFFReader(object):
     filepath : path string, file-like object or URL string
         A path, a file-like object or a URL pointing to a file.
 
+    Attributes
+    ----------
+    vertices : list[list[float, float, float]]
+        List of lists of vertex coordinates.
+    faces : list[list[int]
+        List of lists of references to vertex coordinates.
+
     Notes
     -----
     The OFF reader currently only supports reading of vertices and faces of polygon meshes.
@@ -81,24 +102,28 @@ class OFFReader(object):
         self.filepath = filepath
         self.content = None
         self.vertices = []
-        """List[List[float, float, float]] -
-        List of lists of vertex coordinates.
-        """
         self.faces = []
-        """List[List[int] -
-        List of lists of references to vertex coordinates.
-        """
         self.v = 0
         self.f = 0
         self.e = 0
 
     def open(self):
-        """Open the file and read its contents."""
+        """Open the file and read its contents.
+
+        Returns
+        -------
+        None
+        """
         with _iotools.open_file(self.filepath, 'r') as f:
             self.content = f.readlines()
 
     def pre(self):
-        """Pre-process the contents."""
+        """Pre-process the contents.
+
+        Returns
+        -------
+        None
+        """
         lines = []
         is_continuation = False
         needs_decode = None
@@ -123,7 +148,12 @@ class OFFReader(object):
         self.content = iter(lines)
 
     def post(self):
-        """Post-process the contents."""
+        """Post-process the contents.
+
+        Returns
+        -------
+        None
+        """
         pass
 
     def read(self):
@@ -138,6 +168,9 @@ class OFFReader(object):
         x y z
         degree list of vertices
 
+        Returns
+        -------
+        None
         """
         if not self.content:
             return
@@ -205,6 +238,7 @@ class OFFWriter(object):
         The date to include in the header.
     precision : str, optional
         COMPAS precision specification for parsing geometric data.
+
     """
 
     def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
@@ -221,7 +255,12 @@ class OFFWriter(object):
         self.file = None
 
     def write(self):
-        """Write the meshes to the file."""
+        """Write the meshes to the file.
+
+        Returns
+        -------
+        None
+        """
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self._write_header()
             self._write_vertices()
