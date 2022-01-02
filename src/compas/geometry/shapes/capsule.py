@@ -20,10 +20,27 @@ class Capsule(Shape):
 
     Parameters
     ----------
-    line : tuple or :class:`compas.geometry.Line`
+    line : :class:`compas.geometry.Line` or [point, point]
         The axis line of the capsule.
     radius : float
         The radius of the capsule.
+
+    Attributes
+    ----------
+    line : :class:`compas.geometry.Line`
+        The centre line of the capsule.
+    radius : float
+        The radius of the capsule.
+    start : :class:`compas.geometry.Point`, read-only
+        The start point of the centre line.
+    end : :class:`compas.geometry.Point`, read-only
+        The end point of the centre line.
+    length : float, read-only
+        The length of the centre line of the capsule.
+    volume : float, read-only
+        The volume of the capsule.
+    area : float, read-only
+        The area of the capsule surface.
 
     Examples
     --------
@@ -31,6 +48,15 @@ class Capsule(Shape):
     >>> capsule = Capsule(line, 2.3)
 
     """
+
+    __slots__ = ['_line', '_radius']
+
+    def __init__(self, line, radius, **kwargs):
+        super(Capsule, self).__init__(**kwargs)
+        self._line = None
+        self._radius = None
+        self.line = line
+        self.radius = radius
 
     @property
     def DATASCHEMA(self):
@@ -46,15 +72,6 @@ class Capsule(Shape):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'capsule'
 
-    __slots__ = ['_line', '_radius']
-
-    def __init__(self, line, radius, **kwargs):
-        super(Capsule, self).__init__(**kwargs)
-        self._line = None
-        self._radius = None
-        self.line = line
-        self.radius = radius
-
     @property
     def data(self):
         """dict - Returns the data dictionary that represents the capsule.
@@ -68,7 +85,6 @@ class Capsule(Shape):
 
     @property
     def line(self):
-        """:class:`compas.geometry.Line` - The centre line of the capsule."""
         return self._line
 
     @line.setter
@@ -77,17 +93,14 @@ class Capsule(Shape):
 
     @property
     def start(self):
-        """:class:`compas.geometry.Point` (read-only) - The start point of the centre line."""
         return self.line.start
 
     @property
     def end(self):
-        """:class:`compas.geometry.Point` (read-only) - The end point of the centre line."""
         return self.line.end
 
     @property
     def radius(self):
-        """float - The radius of the capsule."""
         return self._radius
 
     @radius.setter
@@ -96,12 +109,10 @@ class Capsule(Shape):
 
     @property
     def length(self):
-        """float (read-only) - The length of the centre line of the capsule."""
         return self.line.length
 
     @property
     def volume(self):
-        """float (read-only) - The volume of the capsule."""
         # cylinder plus 2 half spheres
         cylinder = self.radius**2 * pi * self.length
         caps = 4./3. * pi * self.radius**3
@@ -109,7 +120,6 @@ class Capsule(Shape):
 
     @property
     def area(self):
-        """float (read-only) - The area of the capsule surface."""
         # cylinder minus caps plus 2 half spheres
         cylinder = self.radius*2 * pi * self.length
         caps = 4 * pi * self.radius**2
@@ -154,12 +164,12 @@ class Capsule(Shape):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        :class:`Capsule`
+        :class:`compas.geometry.Capsule`
             The constructed capsule.
         """
         capsule = Capsule(Line.from_data(data['line']), data['radius'])
@@ -179,12 +189,14 @@ class Capsule(Shape):
         v : int, optional
             Number of faces in the 'v' direction.
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
         """
         if u < 3:
@@ -259,11 +271,15 @@ class Capsule(Shape):
         return vertices, faces
 
     def transform(self, transformation):
-        """Transform this ``Capsule`` using a given transformation.
+        """Transform this `Capsule` using a given transformation.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the capsule.
+
+        Returns
+        -------
+        None
         """
         self.line.transform(transformation)

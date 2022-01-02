@@ -20,10 +20,31 @@ class Cylinder(Shape):
 
     Parameters
     ----------
-    circle: :class:`compas.geometry.Circle`
+    circle: :class:`compas.geometry.Circle` or [plane, radius]
         The circle of the cylinder.
     height: float
         The height of the cylinder.
+
+    Attributes
+    ----------
+    plane : :class:`compas.geometry.Plane`
+        The plane of the cylinder.
+    circle : :class:`compas.geometry.Circle`
+        The circle of the cylinder.
+    center : :class:`compas.geometry.Point`
+        The center of the cylinder.
+    radius : float
+        The radius of the cylinder.
+    height : float
+        The height of the cylinder.
+    normal : :class:`compas.geometry.Vector`, read-only
+        The normal of the cylinder.
+    diameter : float, read-only
+        The diameter of the cylinder.
+    area : float, read-only
+        The surface area of the cylinder.
+    volume : float, read-only
+        The volume of the cylinder.
 
     Examples
     --------
@@ -34,6 +55,15 @@ class Cylinder(Shape):
     >>> cylinder = Cylinder(circle, 7)
 
     """
+
+    __slots__ = ['_circle', '_height']
+
+    def __init__(self, circle, height, **kwargs):
+        super(Cylinder, self).__init__(**kwargs)
+        self._circle = None
+        self._height = None
+        self.circle = circle
+        self.height = height
 
     @property
     def DATASCHEMA(self):
@@ -52,15 +82,6 @@ class Cylinder(Shape):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'cylinder'
 
-    __slots__ = ['_circle', '_height']
-
-    def __init__(self, circle, height, **kwargs):
-        super(Cylinder, self).__init__(**kwargs)
-        self._circle = None
-        self._height = None
-        self.circle = circle
-        self.height = height
-
     @property
     def data(self):
         """dict - Returns the data dictionary that represents the cylinder.
@@ -74,7 +95,6 @@ class Cylinder(Shape):
 
     @property
     def plane(self):
-        """:class:`Plane` - The plane of the cylinder."""
         return self.circle.plane
 
     @plane.setter
@@ -83,7 +103,6 @@ class Cylinder(Shape):
 
     @property
     def circle(self):
-        """float - The circle of the cylinder."""
         return self._circle
 
     @circle.setter
@@ -92,7 +111,6 @@ class Cylinder(Shape):
 
     @property
     def radius(self):
-        """float - The radius of the cylinder."""
         return self.circle.radius
 
     @radius.setter
@@ -101,7 +119,6 @@ class Cylinder(Shape):
 
     @property
     def height(self):
-        """float - The height of the cylinder."""
         return self._height
 
     @height.setter
@@ -110,17 +127,14 @@ class Cylinder(Shape):
 
     @property
     def normal(self):
-        """:class:`Vector` (read-only) - The normal of the cylinder."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float (read-only) - The diameter of the cylinder."""
         return self.circle.diameter
 
     @property
     def center(self):
-        """:class:`Point` - The center of the cylinder."""
         return self.circle.center
 
     @center.setter
@@ -129,12 +143,10 @@ class Cylinder(Shape):
 
     @property
     def area(self):
-        """float (read-only) - The surface area of the cylinder."""
         return (self.circle.area * 2) + (self.circle.circumference * self.height)
 
     @property
     def volume(self):
-        """float (read-only) - The volume of the cylinder."""
         return self.circle.area * self.height
 
     # ==========================================================================
@@ -176,12 +188,12 @@ class Cylinder(Shape):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        :class:`Cylinder`
+        :class:`compas.geometry.Cylinder`
             The constructed cylinder.
 
         Examples
@@ -208,12 +220,14 @@ class Cylinder(Shape):
         u : int, optional
             Number of faces in the "u" direction.
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
         """
         if u < 3:
@@ -264,8 +278,12 @@ class Cylinder(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the cylinder.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

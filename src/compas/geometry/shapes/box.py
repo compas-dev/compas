@@ -33,6 +33,63 @@ class Box(Shape):
     zsize : float
         The size of the box in the box frame's z direction.
 
+    Attributes
+    ----------
+    frame : :class:`compas.geometry.Frame`
+        The box's frame.
+    xsize : float
+        The size of the box in the box frame's x direction.
+    ysize : float
+        The size of the box in the box frame's y direction.
+    ysize : float
+        The size of the box in the box frame's z direction.
+    xmin : float, read-only
+        Minimum value along local X axis.
+    xmax : float, read-only
+        Maximum value along local X axis.
+    ymin : float, read-only
+        Minimum value along local Y axis.
+    ymax : float, read-only
+        Maximum value along local Y axis.
+    zmin : float, read-only
+        Minimum value along local Z axis.
+    zmax : float, read-only
+        Maximum value along local Z axis.
+    width : float, read-only
+        The width of the box in X direction.
+    depth : float, read-only
+        The depth of the box in Y direction.
+    height : float, read-only
+        The height of the box in Z direction.
+    diagonal : :class:`compas.geometry.Line`, read-only
+        Diagonal of the box.
+    dimensions : list[float], read-only
+        The dimensions of the box in the local frame.
+    area : float, read-only
+        The surface area of the box.
+    volume : float, read-only
+        The volume of the box.
+    points : list[:class:`compas.geometry.Point`], read-only
+        The XYZ coordinates of the corners of the box.
+    vertices : list[:class:`compas.geometry.Point`], read-only
+        The XYZ coordinates of the vertices of the box.
+    faces : list[list[int]], read-only
+        The faces of the box defined as lists of vertex indices.
+    bottom : list[int], read-only
+        The vertex indices of the bottom face.
+    front : list[int], read-only
+        The vertex indices of the front face.
+    right : list[int], read-only
+        The vertex indices of the right face.
+    back : list[int], read-only
+        The vertex indices of the back face.
+    left : list[int], read-only
+        The vertex indices of the left face.
+    top : list[int], read-only
+        The vertex indices of the top face.
+    edges : list[tuple[int, int]], read-only
+        The edges of the box as vertex index pairs.
+
     Examples
     --------
     >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
@@ -84,7 +141,6 @@ class Box(Shape):
 
     @property
     def frame(self):
-        """:class:`compas.geometry.Frame` - The box's frame."""
         return self._frame
 
     @frame.setter
@@ -93,7 +149,6 @@ class Box(Shape):
 
     @property
     def xsize(self):
-        """float - The size of the box in the box frame's x direction."""
         return self._xsize
 
     @xsize.setter
@@ -102,7 +157,6 @@ class Box(Shape):
 
     @property
     def ysize(self):
-        """float - The size of the box in the box frame's y direction."""
         return self._ysize
 
     @ysize.setter
@@ -111,7 +165,6 @@ class Box(Shape):
 
     @property
     def zsize(self):
-        """float - The size of the box in the box frame's z direction."""
         return self._zsize
 
     @zsize.setter
@@ -120,78 +173,63 @@ class Box(Shape):
 
     @property
     def xmin(self):
-        """float (read-only) - Minimum value along local X axis."""
         return self.frame.point.x - 0.5 * self.xsize
 
     @property
     def xmax(self):
-        """float (read-only) - Maximum value along local X axis."""
         return self.frame.point.x + 0.5 * self.xsize
 
     @property
     def ymin(self):
-        """float (read-only) - Minimum value along local Y axis."""
         return self.frame.point.y - 0.5 * self.ysize
 
     @property
     def ymax(self):
-        """float (read-only) - Maximum value along local Y axis."""
         return self.frame.point.y + 0.5 * self.ysize
 
     @property
     def zmin(self):
-        """float (read-only) - Minimum value along local Z axis."""
         return self.frame.point.z - 0.5 * self.zsize
 
     @property
     def zmax(self):
-        """float (read-only) - Maximum value along local Z axis."""
         return self.frame.point.z + 0.5 * self.zsize
 
     @property
     def width(self):
-        """float (read-only) - The width of the box in X direction."""
         return self.xsize
 
     @property
     def depth(self):
-        """float (read-only) - The depth of the box in Y direction."""
         return self.ysize
 
     @property
     def height(self):
-        """float (read-only) - The height of the box in Z direction."""
         return self.zsize
 
     @property
     def diagonal(self):
-        """:class:`compas.geometry.Line` (read-only) - Diagonal of the box."""
         vertices = self.vertices
         return Line(vertices[0], vertices[-2])
 
     @property
     def dimensions(self):
-        """list of float (read-only) - The dimensions of the box in the local frame."""
         return [self.xsize, self.ysize, self.zsize]
 
     @property
     def area(self):
-        """float (read-only) - The surface area of the box."""
         return 2 * self.xsize * self.ysize + 2 * self.ysize * self.zsize + 2 * self.zsize * self.xsize
 
     @property
     def volume(self):
-        """float (read-only) - The volume of the box."""
         return self.xsize * self.ysize * self.zsize
 
     @property
     def points(self):
-        """list of :class:`compas.geometry.Point` (read-only) - The XYZ coordinates of the corners of the box."""
         return self.vertices
 
     @property
     def vertices(self):
-        """list of :class:`compas.geometry.Point` (read-only) - The XYZ coordinates of the vertices of the box."""
         point = self.frame.point
         xaxis = self.frame.xaxis
         yaxis = self.frame.yaxis
@@ -212,7 +250,6 @@ class Box(Shape):
 
     @property
     def faces(self):
-        """list of list of int (read-only) - The faces of the box defined as lists of vertex indices."""
         return [self.bottom,
                 self.front,
                 self.right,
@@ -222,37 +259,30 @@ class Box(Shape):
 
     @property
     def bottom(self):
-        """list of int (read-only) - The vertex indices of the bottom face."""
         return [0, 1, 2, 3]
 
     @property
     def front(self):
-        """list of int (read-only) - The vertex indices of the front face."""
         return [0, 3, 5, 4]
 
     @property
     def right(self):
-        """list of int (read-only) - The vertex indices of the right face."""
         return [3, 2, 6, 5]
 
     @property
     def back(self):
-        """list of int (read-only) - The vertex indices of the back face."""
         return [2, 1, 7, 6]
 
     @property
     def left(self):
-        """list of int (read-only) - The vertex indices of the left face."""
         return [1, 0, 4, 7]
 
     @property
     def top(self):
-        """list of int (read-only) - The vertex indices of the top face."""
         return [4, 5, 6, 7]
 
     @property
     def edges(self):
-        """list of (int, int) (read-only) - The edges of the box as vertex index pairs."""
         edges = [(0, 1), (1, 2), (2, 3), (3, 0)]
         edges += [(4, 5), (5, 6), (6, 7), (7, 4)]
         edges += [(0, 4), (1, 7), (2, 6), (3, 5)]
@@ -305,12 +335,12 @@ class Box(Shape):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        :class:`Box`
+        :class:`compas.geometry.Box`
             The constructed box.
 
         Examples
@@ -337,7 +367,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`Box`
+        :class:`compas.geometry.Box`
             The resulting box.
 
         Notes
@@ -369,7 +399,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        bbox : list
+        bbox : list[:class:`compas.geometry.Point` or [float, float, float]]
             A list of 8 point locations, representing the corners of the bounding box.
             Positions 0, 1, 2, 3 are the bottom corners.
             Positions 4, 5, 6, 7 are the top corners.
@@ -377,7 +407,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`Box`
+        :class:`compas.geometry.Box`
             The box shape.
 
         Examples
@@ -411,16 +441,16 @@ class Box(Shape):
 
         Parameters
         ----------
-        corner1 : point
+        corner1 : :class:`compas.geometry.Point` or [float, float, float]
             The XYZ coordinates of the bottom left corner of the base of the box.
-        corner2 : point
+        corner2 : :class:`compas.geometry.Point` or [float, float, float]
             The XYZ coordinates of the top right corner of the base of the box.
         height : float
             The height of the box.
 
         Returns
         -------
-        :class:`Box`
+        :class:`compas.geometry.Box`
             The resulting box.
 
         Examples
@@ -457,7 +487,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`Box`
+        :class:`compas.geometry.Box`
             The resulting box.
 
         Examples
@@ -497,12 +527,14 @@ class Box(Shape):
         Parameters
         ----------
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
         """
         if triangulated:
@@ -519,7 +551,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point` or (float, float, float)
+        point : :class:`compas.geometry.Point` or [float, float, float]
 
         Returns
         -------
@@ -540,6 +572,10 @@ class Box(Shape):
         ----------
         transformation : :class:`Transformation`
             The transformation used to transform the Box.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

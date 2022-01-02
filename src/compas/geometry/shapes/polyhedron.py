@@ -15,12 +15,29 @@ class Polyhedron(Shape):
 
     Parameters
     ----------
-    vertices : list of :class:`compas.geometry.Point` or list of [x, y, z]
+    vertices : list[:class:`compas.geometry.Point` or [float, float, float]]
         The point locations of the vertices of the polyhedron.
-    faces : list of list of int
+    faces : list[list[int]]
         The faces as a list of index lists.
 
+    Attributes
+    ----------
+    vertices : list[list[float]]
+        The XYZ coordinates of the vertices of the polyhedron.
+    faces : list[list[int]]
+        The faces of the polyhedron defined as lists of vertex indices.
+    edges : list[tuple[int, int]], read-only
+        The edges of the polyhedron as vertex index pairs.
     """
+
+    __slots__ = ['_vertices', '_faces']
+
+    def __init__(self, vertices, faces, **kwargs):
+        super(Polyhedron, self).__init__(**kwargs)
+        self._vertices = None
+        self._faces = None
+        self.vertices = vertices
+        self.faces = faces
 
     @property
     def DATASCHEMA(self):
@@ -36,15 +53,6 @@ class Polyhedron(Shape):
     def JSONSCHEMANAME(self):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'polyhedron'
-
-    __slots__ = ['_vertices', '_faces']
-
-    def __init__(self, vertices, faces, **kwargs):
-        super(Polyhedron, self).__init__(**kwargs)
-        self._vertices = None
-        self._faces = None
-        self.vertices = vertices
-        self.faces = faces
 
     @property
     def data(self):
@@ -63,7 +71,6 @@ class Polyhedron(Shape):
 
     @property
     def vertices(self):
-        """list of list of float - The XYZ coordinates of the vertices of the polyhedron."""
         return self._vertices
 
     @vertices.setter
@@ -72,7 +79,6 @@ class Polyhedron(Shape):
 
     @property
     def faces(self):
-        """list of list of int - The faces of the polyhedron defined as lists of vertex indices."""
         return self._faces
 
     @faces.setter
@@ -81,7 +87,6 @@ class Polyhedron(Shape):
 
     @property
     def edges(self):
-        """list of (int, int) (read-only) - The edges of the polyhedron as vertex index pairs."""
         seen = set()
         for face in self.faces:
             for u, v in pairwise(face + face[:1]):
@@ -129,12 +134,12 @@ class Polyhedron(Shape):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        :class:`Polyhedron`
+        :class:`compas.geometry.Polyhedron`
             The constructed polyhedron.
 
         Examples
@@ -156,6 +161,11 @@ class Polyhedron(Shape):
         Parameters
         ----------
         f : {4, 6, 8, 12, 20}
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyhedron`
+            The constructed polyhedron.
 
         References
         ----------
@@ -238,7 +248,7 @@ class Polyhedron(Shape):
 
         Parameters
         ----------
-        planes : list of :class:`compas.geometry.Plane` or list of (point, normal)
+        planes : list[:class:`compas.geometry.Plane` or [point, normal]]
 
         Returns
         -------
@@ -272,12 +282,14 @@ class Polyhedron(Shape):
         Parameters
         ----------
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
         """
         if triangulated:
@@ -315,7 +327,11 @@ class Polyhedron(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
+
+        Returns
+        -------
+        None
         """
         self.vertices = transform_points(self.vertices, transformation)
 

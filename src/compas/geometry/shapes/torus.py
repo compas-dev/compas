@@ -19,12 +19,27 @@ class Torus(Shape):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or tuple of point and normal
+    plane : :class:`compas.geometry.Plane` or [point, normal]
         The plane of the torus.
     radius_axis: float
         The radius of the axis.
     radius_pipe: float
         The radius of the pipe.
+
+    Attributes
+    ----------
+    plane : :class:`compas.geometry.Plane`
+        The torus' plane.
+    radius_axis : float
+        The radius of the axis.
+    radius_pipe : float
+        The radius of the pipe.
+    center : :class:`compas.geometry.Point`, read-only
+        The centre of the torus.
+    area : float, read-only
+        The surface area of the torus.
+    volume : float, read-only
+        The volume of the torus.
 
     Examples
     --------
@@ -40,6 +55,17 @@ class Torus(Shape):
     True
     """
 
+    __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
+
+    def __init__(self, plane, radius_axis, radius_pipe, **kwargs):
+        super(Torus, self).__init__(**kwargs)
+        self._plane = None
+        self._radius_axis = None
+        self._radius_pipe = None
+        self.plane = plane
+        self.radius_axis = radius_axis
+        self.radius_pipe = radius_pipe
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` - Schema of the data representation."""
@@ -54,17 +80,6 @@ class Torus(Shape):
     def JSONSCHEMANAME(self):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'torus'
-
-    __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
-
-    def __init__(self, plane, radius_axis, radius_pipe, **kwargs):
-        super(Torus, self).__init__(**kwargs)
-        self._plane = None
-        self._radius_axis = None
-        self._radius_pipe = None
-        self.plane = plane
-        self.radius_axis = radius_axis
-        self.radius_pipe = radius_pipe
 
     @property
     def data(self):
@@ -82,7 +97,6 @@ class Torus(Shape):
 
     @property
     def plane(self):
-        """:class:`Plane` - The torus' plane."""
         return self._plane
 
     @plane.setter
@@ -91,7 +105,6 @@ class Torus(Shape):
 
     @property
     def radius_axis(self):
-        """float - The radius of the axis."""
         return self._radius_axis
 
     @radius_axis.setter
@@ -100,7 +113,6 @@ class Torus(Shape):
 
     @property
     def radius_pipe(self):
-        """float - The radius of the pipe."""
         return self._radius_pipe
 
     @radius_pipe.setter
@@ -109,17 +121,14 @@ class Torus(Shape):
 
     @property
     def center(self):
-        """:class:`compas.geometry.Point` (read-only) - The centre of the torus."""
         return self.plane.point
 
     @property
     def area(self):
-        """float (read-only) - The surface area of the torus."""
         return (2 * pi * self.radius_pipe) * (2 * pi * self.radius_axis)
 
     @property
     def volume(self):
-        """float (read-only) - The volume of the torus."""
         return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
 
     # ==========================================================================
@@ -165,12 +174,12 @@ class Torus(Shape):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        :class:`Torus`
+        :class:`compas.geometry.Torus`
             The constructed torus.
 
         Examples
@@ -197,12 +206,14 @@ class Torus(Shape):
         v : int, optional
             Number of faces in the "v" direction.
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
         """
         if u < 3:
@@ -253,8 +264,12 @@ class Torus(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the Torus.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

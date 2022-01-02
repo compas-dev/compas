@@ -16,10 +16,23 @@ class Sphere(Shape):
 
     Parameters
     ----------
-    point: :class:`compas.geometry.Point` list of float
+    point: :class:`compas.geometry.Point` or [float, float, float]
         The center of the sphere.
     radius: float
         The radius of the sphere.
+
+    Attributes
+    ----------
+    point : :class:`compas.geometry.Point`
+        The center of the sphere.
+    radius : float
+        The radius of the sphere.
+    center : :class:`compas.geometry.Point`, read-only
+        The center of the sphere.
+    area : float, read-only
+        The surface area of the sphere.
+    volume : float, read-only
+        The volume of the sphere.
 
     Examples
     --------
@@ -37,6 +50,15 @@ class Sphere(Shape):
     True
     """
 
+    __slots__ = ['_point', '_radius']
+
+    def __init__(self, point, radius, **kwargs):
+        super(Sphere, self).__init__(**kwargs)
+        self._point = None
+        self._radius = None
+        self.point = point
+        self.radius = radius
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` - Schema of the data representation."""
@@ -52,15 +74,6 @@ class Sphere(Shape):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'sphere'
 
-    __slots__ = ['_point', '_radius']
-
-    def __init__(self, point, radius, **kwargs):
-        super(Sphere, self).__init__(**kwargs)
-        self._point = None
-        self._radius = None
-        self.point = point
-        self.radius = radius
-
     @property
     def data(self):
         """dict - Returns the data dictionary that represents the sphere.
@@ -74,7 +87,6 @@ class Sphere(Shape):
 
     @property
     def point(self):
-        """:class:`compas.geometry.Point` - The center of the sphere."""
         return self._point
 
     @point.setter
@@ -83,7 +95,6 @@ class Sphere(Shape):
 
     @property
     def radius(self):
-        """float - The radius of the sphere."""
         return self._radius
 
     @radius.setter
@@ -92,17 +103,14 @@ class Sphere(Shape):
 
     @property
     def center(self):
-        """:class:`compas.geometry.Point` (read-only) - The center of the sphere."""
         return self.point
 
     @property
     def area(self):
-        """float (read-only) - The surface area of the sphere."""
         return 4 * pi * self.radius**2
 
     @property
     def volume(self):
-        """float (read-only) - The volume of the sphere."""
         return 4./3. * pi * self.radius**3
 
     # ==========================================================================
@@ -144,12 +152,12 @@ class Sphere(Shape):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        :class:`Sphere`
+        :class:`compas.geometry.Sphere`
             The constructed sphere.
 
         Examples
@@ -176,12 +184,14 @@ class Sphere(Shape):
         v : int, optional
             Number of faces in the "v" direction.
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
         """
         if u < 3:
@@ -244,11 +254,15 @@ class Sphere(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the Sphere.
             Note that non-similarity preserving transformations will not change
             the sphere into an ellipsoid. In such case, the radius of the sphere
             will be scaled by the largest scale factor of the threee axis.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
