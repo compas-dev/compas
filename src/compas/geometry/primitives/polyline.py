@@ -23,9 +23,18 @@ class Polyline(Primitive):
 
     Parameters
     ----------
-    points : list of point
+    points : list[:class:`compas.geometry.Point` or [float, float, float]]
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
+
+    Attributes
+    ----------
+    points : list of :class:`compas.geometry.Point`
+        The points of the polyline.
+    lines : list of :class:`compas.geometry.Line`, read-only
+        The lines of the polyline.
+    length : float, read-only
+        The length of the polyline.
 
     Examples
     --------
@@ -44,6 +53,14 @@ class Polyline(Primitive):
     1.0
     """
 
+    __slots__ = ['_points', '_lines']
+
+    def __init__(self, points, **kwargs):
+        super(Polyline, self).__init__(**kwargs)
+        self._points = []
+        self._lines = []
+        self.points = points
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` - Schema of the data representation."""
@@ -58,14 +75,6 @@ class Polyline(Primitive):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'polyline'
 
-    __slots__ = ['_points', '_lines']
-
-    def __init__(self, points, **kwargs):
-        super(Polyline, self).__init__(**kwargs)
-        self._points = []
-        self._lines = []
-        self.points = points
-
     @property
     def data(self):
         """dict - Returns the data dictionary that represents the polyline.
@@ -78,7 +87,6 @@ class Polyline(Primitive):
 
     @property
     def points(self):
-        """list of :class:`compas.geometry.Point` - The points of the polyline."""
         return self._points
 
     @points.setter
@@ -90,14 +98,12 @@ class Polyline(Primitive):
 
     @property
     def lines(self):
-        """list of :class:`compas.geometry.Line` (read-only) - The lines of the polyline."""
         if not self._lines:
             self._lines = [Line(a, b) for a, b in pairwise(self.points)]
         return self._lines
 
     @property
     def length(self):
-        """float (read-only) - The length of the polyline."""
         return sum([line.length for line in self.lines])
 
     # ==========================================================================
@@ -241,7 +247,7 @@ class Polyline(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation.
 
         Examples
@@ -267,7 +273,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        list of :class:`compas.geometry.Polyline`
+        list[:class:`compas.geometry.Polyline`]
 
         """
 
@@ -307,7 +313,7 @@ class Polyline(Primitive):
 
         Parameters
         ----------
-        point: :class:`compas.geometry.Point`
+        point: :class:`compas.geometry.Point` or [float, float, float]
 
         Returns
         -------
@@ -317,6 +323,8 @@ class Polyline(Primitive):
             if is_point_on_line(point, line):
                 return line.direction
         raise Exception('{} not found!'.format(point))
+
+    tangent_at = tangent_at_point_on_polyline
 
     def divide_polyline(self, num_segments):
         """Divide a polyline in equal segments.
@@ -328,11 +336,13 @@ class Polyline(Primitive):
         Returns
         -------
         list
-            list of :class:`compas.geometry.Point`
+            list[:class:`compas.geometry.Point`]
         """
         segment_length = self.length/num_segments
 
         return self.divide_polyline_by_length(segment_length, False)
+
+    divide = divide_polyline
 
     def divide_polyline_by_length(self, length, strict=True, tol=1e-06):
         """Splits a polyline in segments of a given length.
@@ -340,22 +350,27 @@ class Polyline(Primitive):
         Parameters
         ----------
         length : float
-
+            Length of the segments.
         strict : bool
-            If set to ``False``, the remainder segment will be added even if it is smaller than the desired length
-
+            If False, the remainder segment will be added even if it is smaller than the desired length
         tol : float
             floating point error tolerance
 
         Returns
         -------
-        list
-            list of :class:`compas.geometry.Point`
+        list[:class:`compas.geometry.Point`]
+
+        Notes
+        -----
+        The points of the new polyline are constrained to the segments of the old polyline.
+        However, since the old points are not part of the new set of points, the geometry of the polyline will change.
+
         """
         num_pts = int(self.length/length)
         total_length = [0, 0]
         division_pts = [self.points[0]]
         new_polyline = self
+
         for i in range(num_pts):
             for i_ln, line in enumerate(new_polyline.lines):
                 total_length.append(total_length[-1] + line.length)
@@ -364,19 +379,21 @@ class Polyline(Primitive):
                     new_pt = line.start + line.vector.scaled(amp)
                     division_pts.append(new_pt)
                     total_length = [0, 0]
-                    remaining_pts = new_polyline.points[i_ln+2:]
+                    remaining_pts = new_polyline.points[i_ln + 2:]
                     new_polyline = Polyline([new_pt, line.end] + remaining_pts)
                     break
                 elif total_length[-1] == length:
                     total_length = [0, 0]
                     division_pts.append(line.end)
 
-            if len(division_pts) == num_pts+1:
+            if len(division_pts) == num_pts + 1:
                 break
 
-        if strict is False and not self.is_closed() and len(division_pts) < num_pts+1:
+        if strict is False and not self.is_closed() and len(division_pts) < num_pts + 1:
             division_pts.append(new_polyline.points[-1])
         elif strict is False and division_pts[-1].distance_to_point(self.points[-1]) > tol:
             division_pts.append(self.points[-1])
 
         return division_pts
+
+    divide_by_length = divide_polyline_by_length

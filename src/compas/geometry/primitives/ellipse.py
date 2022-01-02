@@ -11,10 +11,27 @@ class Ellipse(Primitive):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or tuple of point and normal
+    plane : :class:`compas.geometry.Plane` or [point, normal]
         The plane of the ellipse.
     major : float
         The major of the ellipse.
+
+    Attributes
+    ----------
+    plane : :class:`compas.geometry.Plane`
+        The plane of the ellipse.
+    major : float
+        The major of the ellipse.
+    minor : float
+        The minor of the ellipse.
+    normal : :class:`compas.geometry.Vector`, read-only
+        The normal of the ellipse.
+    center : :class:`compas.geometry.Point`, read-only
+        The center of the ellipse.
+    area : float, read-only
+        The area of the ellipse.
+    circumference : float, read-only
+        The circumference of the ellipse.
 
     Examples
     --------
@@ -23,6 +40,17 @@ class Ellipse(Primitive):
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
     >>> ellipse = Ellipse(plane, 2, 1)
     """
+
+    __slots__ = ['_plane', '_major', '_minor']
+
+    def __init__(self, plane, major, minor, **kwargs):
+        super(Ellipse, self).__init__(**kwargs)
+        self._plane = None
+        self._major = None
+        self._minor = None
+        self.plane = plane
+        self.major = major
+        self.minor = minor
 
     @property
     def DATASCHEMA(self):
@@ -39,17 +67,6 @@ class Ellipse(Primitive):
         """str - Name of the schema of the data representation in JSON format."""
         return 'ellipse'
 
-    __slots__ = ['_plane', '_major', '_minor']
-
-    def __init__(self, plane, major, minor, **kwargs):
-        super(Ellipse, self).__init__(**kwargs)
-        self._plane = None
-        self._major = None
-        self._minor = None
-        self.plane = plane
-        self.major = major
-        self.minor = minor
-
     @property
     def data(self):
         """dict - The data dictionary that represents the ellipse."""
@@ -65,7 +82,6 @@ class Ellipse(Primitive):
 
     @property
     def plane(self):
-        """:class:`compas.geometry.Plane` - The plane of the ellipse."""
         return self._plane
 
     @plane.setter
@@ -74,7 +90,6 @@ class Ellipse(Primitive):
 
     @property
     def major(self):
-        """float - The major of the ellipse."""
         return self._major
 
     @major.setter
@@ -83,7 +98,6 @@ class Ellipse(Primitive):
 
     @property
     def minor(self):
-        """float - The minor of the ellipse."""
         return self._minor
 
     @minor.setter
@@ -92,12 +106,10 @@ class Ellipse(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` (read-only) - The normal of the ellipse."""
         return self.plane.normal
 
     @property
     def center(self):
-        """:class:`compas.geometry.Point` (read-only) - The center of the ellipse."""
         return self.plane.point
 
     @center.setter
@@ -106,12 +118,10 @@ class Ellipse(Primitive):
 
     @property
     def area(self):
-        """float (read-only) - The area of the ellipse."""
         raise NotImplementedError
 
     @property
     def circumference(self):
-        """float (read-only) - The circumference of the ellipse."""
         raise NotImplementedError
 
     # ==========================================================================
@@ -182,8 +192,12 @@ class Ellipse(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

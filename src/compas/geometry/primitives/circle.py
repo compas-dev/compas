@@ -13,10 +13,27 @@ class Circle(Primitive):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or tuple of point and normal
+    plane : :class:`compas.geometry.Plane` or [point, vector]
         The plane of the circle.
     radius : float
         The radius of the circle.
+
+    Attributes
+    ----------
+    plane : :class:`compas.geometry.Plane`
+        The plane of the circle.
+    radius : float
+        The radius of the circle.
+    center : :class:`compas.geometry.Point`
+        The center of the circle.
+    normal : :class:`compas.geometry.Vector`, read-only
+        The normal of the circle.
+    diameter : float, read-only
+        The diameter of the circle.
+    area : float, read-only
+        The area of the circle.
+    circumference : float, read-only
+        The circumference of the circle.
 
     Examples
     --------
@@ -27,6 +44,13 @@ class Circle(Primitive):
     """
 
     __slots__ = ['_plane', '_radius']
+
+    def __init__(self, plane, radius, **kwargs):
+        super(Circle, self).__init__(**kwargs)
+        self._plane = None
+        self._radius = None
+        self.plane = plane
+        self.radius = radius
 
     @property
     def DATASCHEMA(self):
@@ -42,13 +66,6 @@ class Circle(Primitive):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'circle'
 
-    def __init__(self, plane, radius, **kwargs):
-        super(Circle, self).__init__(**kwargs)
-        self._plane = None
-        self._radius = None
-        self.plane = plane
-        self.radius = radius
-
     @property
     def data(self):
         """dict - The data dictionary that represents the circle."""
@@ -61,7 +78,6 @@ class Circle(Primitive):
 
     @property
     def plane(self):
-        """:class:`compas.geometry.Plane` - The plane of the circle."""
         return self._plane
 
     @plane.setter
@@ -70,7 +86,6 @@ class Circle(Primitive):
 
     @property
     def radius(self):
-        """float - The radius of the circle."""
         return self._radius
 
     @radius.setter
@@ -79,17 +94,14 @@ class Circle(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` (read-only) - The normal of the circle."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float (read-only) - The diameter of the circle."""
         return self.radius * 2
 
     @property
     def center(self):
-        """:class:`compas.geometry.Point` - The center of the circle."""
         return self.plane.point
 
     @center.setter
@@ -98,12 +110,10 @@ class Circle(Primitive):
 
     @property
     def area(self):
-        """float (read-only) - The area of the circle."""
         return pi * (self.radius**2)
 
     @property
     def circumference(self):
-        """float (read-only) - The circumference of the circle."""
         return 2 * pi * self.radius
 
     # ==========================================================================
@@ -178,8 +188,12 @@ class Circle(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

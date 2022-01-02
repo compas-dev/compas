@@ -28,12 +28,29 @@ class Frame(Primitive):
 
     Parameters
     ----------
-    point : point
+    point : :class:`compas.geometry.Point` or [float, float, float]
         The origin of the frame.
-    xaxis : vector
+    xaxis : :class:`compas.geometry.Vector` or [float, float, float]
         The x-axis of the frame.
-    yaxis : vector
+    yaxis : :class:`compas.geometry.Vector` or [float, float, float]
         The y-axis of the frame.
+
+    Attributes
+    ----------
+    point : :class:`compas.geometry.Point`
+        The base point of the frame.
+    xaxis : :class:`compas.geometry.Vector`
+        The local X axis of the frame.
+    yaxis : :class:`compas.geometry.Vector`
+        The local Y axis of the frame.
+    zaxis : :class:`compas.geometry.Vector`, read-only
+        The Z axis of the frame.
+    normal : :class:`compas.geometry.Vector`, read-only
+        The normal of the base plane of the frame.
+    quaternion : :class:`compas.geometry.Quaternion`, read-only
+        The quaternion from the rotation given by the frame.
+    axis_angle_vector : :class:`compas.geometry.Vector`, read-only
+        The axis-angle vector representing the rotation of the frame.
 
     Notes
     -----
@@ -47,6 +64,15 @@ class Frame(Primitive):
     >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
     """
+
+    def __init__(self, point, xaxis, yaxis, **kwargs):
+        super(Frame, self).__init__(**kwargs)
+        self._point = None
+        self._xaxis = None
+        self._yaxis = None
+        self.point = point
+        self.xaxis = xaxis
+        self.yaxis = yaxis
 
     @property
     def DATASCHEMA(self):
@@ -63,15 +89,6 @@ class Frame(Primitive):
         """str - Name of the schema of the data representation in JSON format."""
         return 'frame'
 
-    def __init__(self, point, xaxis, yaxis, **kwargs):
-        super(Frame, self).__init__(**kwargs)
-        self._point = None
-        self._xaxis = None
-        self._yaxis = None
-        self.point = point
-        self.xaxis = xaxis
-        self.yaxis = yaxis
-
     @property
     def data(self):
         """dict - The data dictionary that represents the frame."""
@@ -87,7 +104,6 @@ class Frame(Primitive):
 
     @property
     def point(self):
-        """:class:`compas.geometry.Point` - The base point of the frame."""
         return self._point
 
     @point.setter
@@ -96,7 +112,6 @@ class Frame(Primitive):
 
     @property
     def xaxis(self):
-        """:class:`compas.geometry.Vector` - The local X axis of the frame."""
         return self._xaxis
 
     @xaxis.setter
@@ -107,7 +122,6 @@ class Frame(Primitive):
 
     @property
     def yaxis(self):
-        """:class:`compas.geometry.Vector` - The local Y axis of the frame."""
         return self._yaxis
 
     @yaxis.setter
@@ -120,24 +134,19 @@ class Frame(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` (read-only) - The normal of the base plane of the frame."""
         return Vector(*cross_vectors(self.xaxis, self.yaxis))
 
     @property
     def zaxis(self):
-        """:class:`compas.geometry.Vector` (read-only) - The Z axis of the frame."""
         return self.normal
 
     @property
     def quaternion(self):
-        """:class:`compas.geometry.Quaternion` (read-only) - The quaternion from the rotation given by the frame.
-        """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return Quaternion(*quaternion_from_matrix(R))
 
     @property
     def axis_angle_vector(self):
-        """:class:`compas.geometry.Vector` (read-only) - The axis-angle vector representing the rotation of the frame."""
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return Vector(*axis_angle_vector_from_matrix(R))
 
@@ -189,7 +198,7 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
@@ -280,11 +289,11 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        point : point
+        point : :class:`compas.geometry.Point` or [float, float, float]
             The origin of the frame.
-        point_xaxis : point
+        point_xaxis : :class:`compas.geometry.Point` or [float, float, float]
             A point on the x-axis of the frame.
-        point_xyplane : point
+        point_xyplane : :class:`compas.geometry.Point` or [float, float, float]
             A point within the xy-plane of the frame.
 
         Returns
@@ -313,11 +322,10 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        rotation : :class:`Rotation`
+        rotation : :class:`compas.geometry.Rotation`
             The rotation defines the orientation of the frame.
-        point : list of float, optional
+        point : :class:`compas.geometry.Point` or [float, float, float], optional
             The origin of the frame.
-            Defaults to ``[0, 0, 0]``.
 
         Returns
         -------
@@ -338,7 +346,7 @@ class Frame(Primitive):
 
     @classmethod
     def from_transformation(cls, transformation):
-        """Constructs a frame from a ``Transformation``.
+        """Constructs a frame from a `Transformation`.
 
         Parameters
         ----------
@@ -370,7 +378,7 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        matrix : list of list of float
+        matrix : list[list[float]]
             The 4x4 transformation matrix in row-major order.
 
         Returns
@@ -399,7 +407,7 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        values : list of float
+        values : list[float]
             The list of 12 or 16 values representing a 4x4 matrix.
 
         Returns
@@ -442,11 +450,10 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        quaternion : list of float
+        quaternion : list[float]
             Four numbers that represent the four coefficient values of a quaternion.
-        point : list of float, optional
+        point : :class:`compas.geometry.Point` or [float, float, float], optional
             The point of the frame.
-            Defaults to [0, 0, 0].
 
         Returns
         -------
@@ -471,12 +478,11 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        axis_angle_vector : list of float
+        axis_angle_vector : list[float]
             Three numbers that represent the axis of rotation and angle of
             rotation by its magnitude.
-        point : list of float, optional
+        point : :class:`compas.geometry.Point` or [float, float, float], optional
             The point of the frame.
-            Defaults to [0, 0, 0].
 
         Returns
         -------
@@ -502,18 +508,15 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        euler_angles : list of float
+        euler_angles : list[float]
             Three numbers that represent the angles of rotations about the defined axes.
         static : bool, optional
-            If true the rotations are applied to a static frame.
-            If not, to a rotational.
-            Defaults to true.
+            If True, the rotations are applied to a static frame.
+            If False, to a rotational.
         axes : str, optional
             A 3 character string specifying the order of the axes.
-            Defaults to 'xyz'.
-        point : list of float, optional
+        point : :class:`compas.geometry.Point` or [float, float, float], optional
             The point of the frame.
-            Defaults to ``[0, 0, 0]``.
 
         Returns
         -------
@@ -540,7 +543,7 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane` or [point, vector]
             A plane.
 
         Returns
@@ -580,16 +583,14 @@ class Frame(Primitive):
         Parameters
         ----------
         static : bool, optional
-            If true the rotations are applied to a static frame.
-            If not, to a rotational.
-            Defaults to True.
+            If True the rotations are applied to a static frame.
+            If False, to a rotational.
         axes : str, optional
             A 3 character string specifying the order of the axes.
-            Defaults to 'xyz'.
 
         Returns
         -------
-        list of float
+        list[float]
             Three numbers that represent the angles of rotations about the defined axes.
 
         Examples
@@ -608,7 +609,7 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        object_in_wcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
+        object_in_wcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or [float, float, float]
             An object in the world coordinate frame.
 
         Returns
@@ -618,7 +619,7 @@ class Frame(Primitive):
 
         Notes
         -----
-        If you pass a list of float, it is assumed to represent a point.
+        If you pass a list of floats, it is assumed to represent a point.
 
         Examples
         --------
@@ -640,7 +641,7 @@ class Frame(Primitive):
 
         Parameters
         ----------
-        object_in_lcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
+        object_in_lcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or [float, float, float]
             An object in local coordinate system of the frame.
 
         Returns
@@ -650,7 +651,7 @@ class Frame(Primitive):
 
         Notes
         -----
-        If you pass a list of float, it is assumed to represent a point.
+        If you pass a list of floats, it is assumed to represent a point.
 
         Examples
         --------
@@ -678,8 +679,8 @@ class Frame(Primitive):
             A frame representing one local coordinate system.
         frame2 : :class:`compas.geometry.Frame`
             A frame representing another local coordinate system.
-        object_in_frame1 : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
-            An object in the coordinate frame1. If you pass a list of float, it is assumed to represent a point.
+        object_in_frame1 : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or [float, float, float]
+            An object in the coordinate frame1. If you pass a list[float], it is assumed to represent a point.
 
         Returns
         -------

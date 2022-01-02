@@ -25,6 +25,26 @@ class Quaternion(Primitive):
     x, y, z : float
         Components of the vector (complex, imaginary) part of a quaternion.
 
+    Attributes
+    ----------
+    w : float
+        The W component of the quaternion.
+    x : float
+        The X component of the quaternion.
+    y : float
+        The Y component of the quaternion.
+    z : float
+        The Z component of the quaternion.
+    wxyz : list of float, read-only
+        Quaternion as a list of float in the 'wxyz' convention.
+    xyzw : list of float, read-only
+        Quaternion as a list of float in the 'xyzw' convention.
+    norm : float, read-only
+        The length (euclidean norm) of the quaternion.
+    is_unit : bool, read-only
+        True if the quaternion is unit-length.
+        False otherwise.
+
     Notes
     -----
     The default convention to represent a quaternion :math:`q` in this module
@@ -90,17 +110,6 @@ class Quaternion(Primitive):
     True
     """
 
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
-        from schema import Schema
-        return Schema({'w': float, 'x': float, 'y': float, 'z': float})
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
-        return 'quaternion'
-
     __slots__ = ['_w', '_x', '_y', '_z']
 
     def __init__(self, w, x, y, z, **kwargs):
@@ -113,6 +122,17 @@ class Quaternion(Primitive):
         self.x = x
         self.y = y
         self.z = z
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data representation."""
+        from schema import Schema
+        return Schema({'w': float, 'x': float, 'y': float, 'z': float})
+
+    @property
+    def JSONSCHEMANAME(self):
+        """str - Name of the  schema of the data representation in JSON format."""
+        return 'quaternion'
 
     @property
     def data(self):
@@ -128,7 +148,6 @@ class Quaternion(Primitive):
 
     @property
     def w(self):
-        """float - The W component of the quaternion."""
         return self._w
 
     @w.setter
@@ -137,7 +156,6 @@ class Quaternion(Primitive):
 
     @property
     def x(self):
-        """float - The X component of the quaternion."""
         return self._x
 
     @x.setter
@@ -146,7 +164,6 @@ class Quaternion(Primitive):
 
     @property
     def y(self):
-        """float - The Y component of the quaternion."""
         return self._y
 
     @y.setter
@@ -155,7 +172,6 @@ class Quaternion(Primitive):
 
     @property
     def z(self):
-        """float - The Z component of the quaternion."""
         return self._z
 
     @z.setter
@@ -164,26 +180,18 @@ class Quaternion(Primitive):
 
     @property
     def wxyz(self):
-        """list of float (read-only) - Quaternion as a list of float in the 'wxyz' convention.
-        """
         return [self.w, self.x, self.y, self.z]
 
     @property
     def xyzw(self):
-        """list of float (read-only) - Quaternion as a list of float in the 'xyzw' convention.
-        """
         return [self.x, self.y, self.z, self.w]
 
     @property
     def norm(self):
-        """float (read-only) - The length (euclidean norm) of the quaternion.
-        """
         return quaternion_norm(self)
 
     @property
     def is_unit(self):
-        """bool (read-only) - ``True`` if the quaternion is unit-length or ``False`` if otherwise.
-        """
         return quaternion_is_unit(self)
 
     # ==========================================================================
@@ -236,17 +244,17 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Quaternion` or list
+        other : :class:`compas.geometry.Quaternion` or [float, float, float, float]
             A Quaternion.
 
         Returns
         -------
         :class:`compas.geometry.Quaternion`
-            The product P = R * Q of this quaternion (R) multiplied by other quaternion (Q).
+            The product :math:`P = R * Q` of this quaternion (R) multiplied by other quaternion (Q).
 
         Notes
         -----
-        Multiplication of two quaternions R*Q can be interpreted as applying rotation R to an orientation Q,
+        Multiplication of two quaternions :math:`R * Q` can be interpreted as applying rotation R to an orientation Q,
         provided that both R and Q are unit-length.
         The result is also unit-length.
         Multiplication of quaternions is not commutative!
@@ -318,7 +326,7 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        M : :obj:`list` of :obj:`list` of :obj:`float`
+        M : list[list[float]]
 
         Returns
         -------
@@ -365,6 +373,10 @@ class Quaternion(Primitive):
     def unitize(self):
         """Scales the quaternion to make it unit-length.
 
+        Returns
+        -------
+        None
+
         Examples
         --------
         >>> q = Quaternion(1.0, 1.0, 1.0, 1.0)
@@ -380,6 +392,10 @@ class Quaternion(Primitive):
     def unitized(self):
         """Returns a quaternion with a unit-length.
 
+        Returns
+        -------
+        :class:`compas.geometry.Quaternion`
+
         Examples
         --------
         >>> q = Quaternion(1.0, 1.0, 1.0, 1.0)
@@ -394,6 +410,10 @@ class Quaternion(Primitive):
 
     def canonize(self):
         """Makes the quaternion canonic.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -431,6 +451,10 @@ class Quaternion(Primitive):
 
     def conjugate(self):
         """Conjugate the quaternion.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

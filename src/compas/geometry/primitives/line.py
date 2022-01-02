@@ -11,10 +11,25 @@ class Line(Primitive):
 
     Parameters
     ----------
-    p1 : point
+    p1 : :class:`compas.geometry.Point` or [float, float, float]
         The first point.
-    p2 : point
+    p2 : :class:`compas.geometry.Point` or [float, float, float]
         The second point.
+
+    Attributes
+    ----------
+    start : :class:`compas.geometry.Point`
+        The start point of the line.
+    end : :class:`compas.geometry.Point`
+        The end point of the line.
+    vector : :class:`compas.geometry.Vector`, read-only
+        A vector pointing from start to end.
+    length : float, read-only
+        The length of the vector from start to end.
+    direction : :class:`compas.geometry.Vector`, read-only
+        A unit vector pointing from start and end.
+    midpoint : :class:`compas.geometry.Point`, read-only
+        The midpoint between start and end.
 
     Examples
     --------
@@ -32,6 +47,15 @@ class Line(Primitive):
 
     """
 
+    __slots__ = ['_start', '_end']
+
+    def __init__(self, p1, p2, **kwargs):
+        super(Line, self).__init__(**kwargs)
+        self._start = None
+        self._end = None
+        self.start = p1
+        self.end = p2
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` - Schema of the data representation."""
@@ -46,15 +70,6 @@ class Line(Primitive):
         """str - Name of the schema of the data representation in JSON format."""
         return 'line'
 
-    __slots__ = ['_start', '_end']
-
-    def __init__(self, p1, p2, **kwargs):
-        super(Line, self).__init__(**kwargs)
-        self._start = None
-        self._end = None
-        self.start = p1
-        self.end = p2
-
     @property
     def data(self):
         """dict - The data dictionary that represents the line."""
@@ -67,7 +82,6 @@ class Line(Primitive):
 
     @property
     def start(self):
-        """:class:`compas.geometry.Point` - The start point of the line."""
         return self._start
 
     @start.setter
@@ -76,7 +90,6 @@ class Line(Primitive):
 
     @property
     def end(self):
-        """:class:`compas.geometry.Point` - The end point of the line."""
         return self._end
 
     @end.setter
@@ -85,22 +98,18 @@ class Line(Primitive):
 
     @property
     def vector(self):
-        """:class:`compas.geometry.Vector` (read-only) - A vector pointing from start to end."""
         return self.end - self.start
 
     @property
     def length(self):
-        """float (read-only) - The length of the vector from start to end."""
         return self.vector.length
 
     @property
     def direction(self):
-        """:class:`compas.geometry.Vector` (read-only) - A unit vector pointing from start and end."""
         return self.vector * (1 / self.length)
 
     @property
     def midpoint(self):
-        """:class:`compas.geometry.Point` (read-only) - The midpoint between start and end."""
         v = self.direction * (0.5 * self.length)
         return self.start + v
 
@@ -168,11 +177,11 @@ class Line(Primitive):
 
     @staticmethod
     def transform_collection(collection, X):
-        """Transform a collection of ``Line`` objects.
+        """Transform a collection of `Line` objects.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Line
+        collection : list[:class:`compas.geometry.Line` or [point, point]]
             The collection of lines.
 
         Returns
@@ -205,12 +214,12 @@ class Line(Primitive):
 
         Parameters
         ----------
-        collection : list of compas.geometry.Line
+        collection : list[:class:`compas.geometry.Line` or [point, point]]
             The collection of lines.
 
         Returns
         -------
-        list of compas.geometry.Line
+        list[:class:`compas.geometry.Line`]
             The transformed lines.
 
         Examples
@@ -247,7 +256,7 @@ class Line(Primitive):
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             A point on the line.
 
         Examples
@@ -268,8 +277,12 @@ class Line(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

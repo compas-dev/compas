@@ -28,6 +28,17 @@ class Vector(Primitive):
     z : float
         The Z component of the vector.
 
+    Attributes
+    ----------
+    x : float
+        The X coordinate of the point.
+    y : float
+        The Y coordinate of the point.
+    z : float
+        The Z coordinate of the point.
+    length : float, read-only
+        The length of this vector.
+
     Examples
     --------
     >>> u = Vector(1, 0, 0)
@@ -55,6 +66,17 @@ class Vector(Primitive):
 
     """
 
+    __slots__ = ['_x', '_y', '_z']
+
+    def __init__(self, x, y, z=0.0, **kwargs):
+        super(Vector, self).__init__(**kwargs)
+        self._x = 0.0
+        self._y = 0.0
+        self._z = 0.0
+        self.x = x
+        self.y = y
+        self.z = z
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` - Schema of the data representation."""
@@ -66,17 +88,6 @@ class Vector(Primitive):
     def JSONSCHEMANAME(self):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'vector'
-
-    __slots__ = ['_x', '_y', '_z']
-
-    def __init__(self, x, y, z=0.0, **kwargs):
-        super(Vector, self).__init__(**kwargs)
-        self._x = 0.0
-        self._y = 0.0
-        self._z = 0.0
-        self.x = x
-        self.y = y
-        self.z = z
 
     @property
     def data(self):
@@ -91,7 +102,6 @@ class Vector(Primitive):
 
     @property
     def x(self):
-        """float - The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -100,7 +110,6 @@ class Vector(Primitive):
 
     @property
     def y(self):
-        """float - The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -109,7 +118,6 @@ class Vector(Primitive):
 
     @property
     def z(self):
-        """float - The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -118,7 +126,6 @@ class Vector(Primitive):
 
     @property
     def length(self):
-        """float (read-only) - The length of this vector."""
         return length_vector(self)
 
     # ==========================================================================
@@ -166,7 +173,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list of float
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The vector to compare.
 
         Returns
@@ -182,7 +189,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list of float
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The vector to add.
 
         Returns
@@ -197,7 +204,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list of float
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The vector to subtract.
 
         Returns
@@ -261,8 +268,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The vector to add.
+
+        Returns
+        -------
+        None
         """
         self.x += other[0]
         self.y += other[1]
@@ -274,8 +285,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The vector to subtract.
+
+        Returns
+        -------
+        None
         """
         self.x -= other[0]
         self.y -= other[1]
@@ -289,6 +304,10 @@ class Vector(Primitive):
         ----------
         n : float
             The multiplication factor.
+
+        Returns
+        -------
+        None
         """
         self.x *= n
         self.y *= n
@@ -302,6 +321,10 @@ class Vector(Primitive):
         ----------
         n : float
             The multiplication factor.
+
+        Returns
+        -------
+        None
         """
         self.x /= n
         self.y /= n
@@ -315,6 +338,10 @@ class Vector(Primitive):
         ----------
         n : float
             The power.
+
+        Returns
+        -------
+        None
         """
         self.x **= n
         self.y **= n
@@ -379,9 +406,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        start : :class:`compas.geometry.Point` or list
+        start : :class:`compas.geometry.Point` or [float, float, float]
             The start point.
-        end : :class:`compas.geometry.Point` or list
+        end : :class:`compas.geometry.Point` or [float, float, float]
             The end point.
 
         Returns
@@ -428,8 +455,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        collection : list of :class:`compas.geometry.Vector`
+        collection : list[:class:`compas.geometry.Vector`]
             The collection of vectors.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -456,12 +487,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        collection : list of :class:`compas.geometry.Vector`
+        collection : list[:class:`compas.geometry.Vector`]
             The collection of vectors.
 
         Returns
         -------
-        list of :class:`compas.geometry.Vector`
+        list[:class:`compas.geometry.Vector`]
             The transformed vectors.
 
         Examples
@@ -487,12 +518,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        vectors : list
+        vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of lengths.
 
         Examples
@@ -508,7 +539,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        vectors : list
+        vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
 
         Returns
@@ -529,14 +560,14 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
-        right : list
+        right : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of dot products.
 
         Examples
@@ -552,14 +583,14 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
-        right : list
+        right : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[:class:`compas.geometry.Vector`]
             A list of cross products.
 
         Examples
@@ -575,14 +606,14 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
-        right : list
+        right : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of angle pairs.
 
         Examples
@@ -598,14 +629,14 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
-        right : list
+        right : list[:class:`compas.geometry.Vector` or [float, float, float]]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of angles.
 
         Examples
@@ -646,6 +677,10 @@ class Vector(Primitive):
     def unitize(self):
         """Scale this vector to unit length.
 
+        Returns
+        -------
+        None
+
         Examples
         --------
         >>> u = Vector(1.0, 2.0, 3.0)
@@ -682,8 +717,12 @@ class Vector(Primitive):
     def invert(self):
         """Invert the direction of this vector
 
-        Note
-        ____
+        Returns
+        -------
+        None
+
+        Notes
+        -----
         a negation of a vector is similar to inverting a vector
 
         Examples
@@ -704,6 +743,10 @@ class Vector(Primitive):
     def inverted(self):
         """Returns a inverted copy of this vector
 
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
         Examples
         --------
         >>> u = Vector(1.0, 0.0, 0.0)
@@ -721,6 +764,10 @@ class Vector(Primitive):
         ----------
         n : float
             The scaling factor.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -764,7 +811,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The other vector.
 
         Returns
@@ -786,7 +833,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The other vector.
 
         Returns
@@ -808,7 +855,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The other vector.
 
         Returns
@@ -830,9 +877,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The other vector.
-        normal : :class:`compas.geometry.Vector` or list
+        normal : :class:`compas.geometry.Vector` or [float, float, float]
             The plane's normal spanned by this and the other vector.
 
         Returns
@@ -856,7 +903,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : :class:`compas.geometry.Vector` or [float, float, float]
             The other vector.
 
         Returns
@@ -878,8 +925,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -900,7 +951,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation.
 
         Returns

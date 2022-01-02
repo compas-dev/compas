@@ -73,13 +73,20 @@ def bernstein(n, k, t):
 class Bezier(Primitive):
     """A Bezier curve.
 
-    A Bezier curve of degree ``n`` is a linear combination of ``n + 1`` Bernstein
-    basis polynomials of degree ``n``.
+    A Bezier curve of degree `n` is a linear combination of ``n + 1`` Bernstein
+    basis polynomials of degree `n`.
 
     Parameters
     ----------
-    points : sequence
+    points : sequence[:class:`compas.geometry.Point` or [float, float, float]]
         A sequence of control points, represented by their location in 3D space.
+
+    Attributes
+    ----------
+    points : list[:class:`compas.geometry.Point`]
+        The control points.
+    degree : int, read-only
+        The degree of the curve.
 
     Examples
     --------
@@ -106,7 +113,6 @@ class Bezier(Primitive):
 
     @property
     def points(self):
-        """list of :class:`compas.geometry.Point` - The control points."""
         return self._points
 
     @points.setter
@@ -116,7 +122,6 @@ class Bezier(Primitive):
 
     @property
     def degree(self):
-        """int (read-only) - The degree of the curve."""
         return len(self.points) - 1
 
     # ==========================================================================
@@ -159,7 +164,7 @@ class Bezier(Primitive):
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             the corresponding point on the curve.
 
         Examples
@@ -187,7 +192,7 @@ class Bezier(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The corresponding tangent vector.
 
         Examples
@@ -212,12 +217,11 @@ class Bezier(Primitive):
         Parameters
         ----------
         resolution : int
-            The number of intervals at which a point on the
-            curve should be computed. Defaults to 100.
+            The number of intervals at which a point on the curve should be computed.
 
         Returns
         -------
-        list
+        list[:class:`compas.geometry.Point`]
             Points along the curve.
 
         Examples

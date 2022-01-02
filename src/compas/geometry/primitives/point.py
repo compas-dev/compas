@@ -37,13 +37,21 @@ class Point(Primitive):
         The Y coordinate of the point.
     z : float, optional
         The Z coordinate of the point.
-        Default is ``0.0``.
+
+    Attributes
+    ----------
+    x : float
+        The X coordinate of the point.
+    y : float
+        The Y coordinate of the point.
+    z : float
+        The Z coordinate of the point.
 
     Notes
     -----
-    A ``Point`` object supports direct access to its xyz coordinates through
+    A `Point` object supports direct access to its xyz coordinates through
     the dot notation, as well list-style access using indices. Indexed
-    access is implemented such that the ``Point`` behaves like a circular
+    access is implemented such that the `Point` behaves like a circular
     list [1]_.
 
     References
@@ -96,6 +104,17 @@ class Point(Primitive):
     Point(100.000, 196.000, 324.000)
     """
 
+    __slots__ = ['_x', '_y', '_z']
+
+    def __init__(self, x, y, z=0.0, **kwargs):
+        super(Point, self).__init__(**kwargs)
+        self._x = 0.0
+        self._y = 0.0
+        self._z = 0.0
+        self.x = x
+        self.y = y
+        self.z = z
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` - Schema of the data representation."""
@@ -107,17 +126,6 @@ class Point(Primitive):
     def JSONSCHEMANAME(self):
         """str - Name of the  schema of the data representation in JSON format."""
         return 'point'
-
-    __slots__ = ['_x', '_y', '_z']
-
-    def __init__(self, x, y, z=0.0, **kwargs):
-        super(Point, self).__init__(**kwargs)
-        self._x = 0.0
-        self._y = 0.0
-        self._z = 0.0
-        self.x = x
-        self.y = y
-        self.z = z
 
     @property
     def data(self):
@@ -132,7 +140,6 @@ class Point(Primitive):
 
     @property
     def x(self):
-        """float - The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -141,7 +148,6 @@ class Point(Primitive):
 
     @property
     def y(self):
-        """float - The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -150,7 +156,6 @@ class Point(Primitive):
 
     @property
     def z(self):
-        """float - The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -202,7 +207,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Point` or list
+        other : :class:`compas.geometry.Point` or [float, float, float]
             The point to compare.
 
         Returns
@@ -218,7 +223,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Point` or list of float
+        other : :class:`compas.geometry.Point` or [float, float, float]
             The point to add.
 
         Returns
@@ -234,7 +239,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Point` or list of float
+        other : :class:`compas.geometry.Point` or [float, float, float]
             The point to subtract.
 
         Returns
@@ -300,8 +305,12 @@ class Point(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Point` or list
+        other : :class:`compas.geometry.Point` or [float, float, float]
             The point to add.
+
+        Returns
+        -------
+        None
         """
         self.x += other[0]
         self.y += other[1]
@@ -313,8 +322,12 @@ class Point(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Point` or list
+        other : :class:`compas.geometry.Point` or [float, float, float]
             The point to subtract.
+
+        Returns
+        -------
+        None
         """
         self.x -= other[0]
         self.y -= other[1]
@@ -328,6 +341,10 @@ class Point(Primitive):
         ----------
         n : float
             The multiplication factor.
+
+        Returns
+        -------
+        None
         """
         self.x *= n
         self.y *= n
@@ -341,6 +358,10 @@ class Point(Primitive):
         ----------
         n : float
             The multiplication factor.
+
+        Returns
+        -------
+        None
         """
         self.x /= n
         self.y /= n
@@ -354,6 +375,10 @@ class Point(Primitive):
         ----------
         n : float
             The power.
+
+        Returns
+        -------
+        None
         """
         self.x **= n
         self.y **= n
@@ -396,7 +421,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        collection : list of :class:`compas.geometry.Point`
+        collection : list[:class:`compas.geometry.Point` or [float, float, float]]
             The collection of points.
 
         Returns
@@ -429,12 +454,12 @@ class Point(Primitive):
 
         Parameters
         ----------
-        collection : list of :class:`compas.geometry.Point`
+        collection : list[:class:`compas.geometry.Point` or [float, float, float]]
             The collection of points.
 
         Returns
         -------
-        list of :class:`compas.geometry.Point`
+        list[:class:`compas.geometry.Point`]
             The transformed points.
 
         Examples
@@ -463,7 +488,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        point : [x, y, z] or :class:`compas.geometry.Point`
+        point : :class:`compas.geometry.Point` or [float, float, float]
             The other point.
 
         Returns
@@ -485,7 +510,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        line : [point, point] or :class:`compas.geometry.Line`.
+        line : :class:`compas.geometry.Line` or [point, point]
             The line.
 
         Returns
@@ -508,7 +533,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        plane : [point, vector] or :class:`compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane` or [point, vector]
             The plane.
 
         Returns
@@ -536,13 +561,12 @@ class Point(Primitive):
 
         Parameters
         ----------
-        polygon : :class:`compas.geometry.Polygon` or list of points.
+        polygon : :class:`compas.geometry.Polygon` or list[point].
             The polygon.
         convex : {None, True, False}, optional
-            Is the polygon convex.
-            If ``None``, determine if the polygon is convex.
-            If ``False``, use the non-convex algorithm.
-            If ``True``, use the convex algorithm.
+            If None, determine if the polygon is convex.
+            If False, use the non-convex algorithm.
+            If True, use the convex algorithm.
 
         Returns
         -------
@@ -573,7 +597,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        line : [point, point] or :class:`compas.geometry.Line`.
+        line : :class:`compas.geometry.Line` or [point, point]
             The line.
 
         Returns
@@ -597,7 +621,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        segment : :class:`compas.geometry.Line` or tuple of points.
+        segment : :class:`compas.geometry.Line` or [point, point]
             The segment.
 
         Returns
@@ -621,7 +645,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        polyline : :class:`compas.geometry.Polyline` or list of points.
+        polyline : :class:`compas.geometry.Polyline` or list[point]
             The polyline.
 
         Returns
@@ -645,7 +669,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        circle : [plane, radius] or :class:`compas.geometry.Circle`.
+        circle : :class:`compas.geometry.Circle` or [plane, radius]
             The circle.
 
         Returns
@@ -661,7 +685,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        triangle : [point, point, point] or :class:`compas.geometry.Polygon`.
+        triangle : :class:`compas.geometry.Polygon` or [point, point, point]
             The triangle.
 
         Returns
@@ -685,7 +709,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        circle : [plane, radius] or :class:`compas.geometry.Circle`.
+        circle : :class:`compas.geometry.Circle` or [plane, radius]
             The circle.
 
         Returns
@@ -711,7 +735,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        polyhedron : [vertices, faces] or :class:`compas.geometry.Polyhedron`.
+        polyhedron : :class:`compas.geometry.Polyhedron` or [vertices, faces]
             The polyhedron.
 
         Returns
@@ -734,7 +758,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation matrix.
 
         Examples
