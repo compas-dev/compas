@@ -44,28 +44,43 @@ class NurbsCurve(Curve):
     ----------
     name : str, optional
         The name of the curve.
+
+    Attributes
+    ----------
+    points : list[:class:`compas.geometry.Point`], read-only
+        The control points.
+    weights : list[float], read-only
+        The weights of the control points.
+    knots : list[float], read-only
+        The knots, without multiplicity.
+    knotsequence : list[float], read-only
+        The complete knot vector.
+    multiplicity : list[int], read-only
+        The multiplicities of the knots.
+    degree : int, read-only
+        The degree of the curve.
+    dimension : int, read-only
+        The spatial dimension of the curve.
+    domain : tuple[float, float]
+        The domain of the parameter space of the curve.
+    order : int, read-only
+        The order of the curve (degree + 1).
+    start : :class:`compas.geometry.Point`, read-only
+        The start point of the curve.
+    end : :class:`compas.geometry.Point`, read-only
+        The end point of the curve.
+    is_closed : bool, read-only
+        Flag indicating that the curve is closed.
+    is_periodic : bool, read-only
+        Flag indicating that the curve is periodic.
+    is_rational : bool, read-only
+        Flag indicating that the curve is rational.
+        If the curve is rational, the weights of the control points are rational numbers.
+    bounding_box : :class:`compas.geometry.Box`, read-only
+        The axis aligned bounding box of the curve.
+    length : float
+        The length of the curve.
     """
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data."""
-        from schema import Schema
-        from compas.data import is_float3
-        from compas.data import is_sequence_of_int
-        from compas.data import is_sequence_of_float
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points),
-            'weights': is_sequence_of_float,
-            'knots': is_sequence_of_float,
-            'multiplicities': is_sequence_of_int,
-            'degree': int,
-            'is_periodic': bool
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        """dict - Schema of the curve data in JSON format."""
-        raise NotImplementedError
 
     def __new__(cls, *args, **kwargs):
         return new_nurbscurve(*args, **kwargs)
@@ -96,6 +111,27 @@ class NurbsCurve(Curve):
     # ==============================================================================
     # Data
     # ==============================================================================
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` - Schema of the data."""
+        from schema import Schema
+        from compas.data import is_float3
+        from compas.data import is_sequence_of_int
+        from compas.data import is_sequence_of_float
+        return Schema({
+            'points': lambda points: all(is_float3(point) for point in points),
+            'weights': is_sequence_of_float,
+            'knots': is_sequence_of_float,
+            'multiplicities': is_sequence_of_int,
+            'degree': int,
+            'is_periodic': bool
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        """dict - Schema of the curve data in JSON format."""
+        raise NotImplementedError
 
     @property
     def dtype(self):
@@ -151,13 +187,13 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : List[:class:`compas.geometry.Point`]
+        points : list[:class:`compas.geometry.Point`]
             The control points.
-        weights : List[float]
+        weights : list[float]
             The weights of the control points.
-        knots : List[float]
+        knots : list[float]
             The curve knots, without multiplicity.
-        multiplicities : List[int]
+        multiplicities : list[int]
             Multiplicity of the knots.
         degree : int
             Degree of the curve.
@@ -166,7 +202,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
         """
         return new_nurbscurve_from_parameters(points, weights, knots, multiplicities, degree, is_periodic=False)
 
@@ -176,14 +212,14 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : List[:class:`compas.geometry.Point`]
+        points : list[:class:`compas.geometry.Point`]
             The control points.
         degree : int, optional
             The degree of the curve.
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
 
         References
         ----------
@@ -198,14 +234,14 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : List[:class:`compas.geometry.Point`]
+        points : list[:class:`compas.geometry.Point`]
             A list of interpolation points.
         precision : int, optional
             The desired precision of the interpolation.
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
 
         References
         ----------
@@ -225,7 +261,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
         """
         return new_nurbscurve_from_step(filepath)
 
@@ -243,7 +279,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
 
         References
         ----------
@@ -282,7 +318,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
 
         References
         ----------
@@ -322,7 +358,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
 
         References
         ----------
@@ -348,6 +384,10 @@ class NurbsCurve(Curve):
         ----------
         filepath : str
             The path of the output file.
+
+        Returns
+        -------
+        None
         """
         raise NotImplementedError
 
@@ -357,83 +397,66 @@ class NurbsCurve(Curve):
 
     @property
     def points(self):
-        """List[:class:`compas.geometry.Point`] - The control points."""
         raise NotImplementedError
 
     @property
     def weights(self):
-        """List[float] - The weights of the control points."""
         raise NotImplementedError
 
     @property
     def knots(self):
-        """List[float] - The knots, without multiplicity."""
         raise NotImplementedError
 
     @property
     def knotsequence(self):
-        """List[float] - The complete knot vector."""
         raise NotImplementedError
 
     @property
     def multiplicities(self):
-        """List[int] - The multiplicities of the knots."""
         raise NotImplementedError
 
     @property
     def degree(self):
-        """int - The degree of the curve."""
         raise NotImplementedError
 
     @property
     def dimension(self):
-        """int - The spatial dimension of the curve."""
         raise NotImplementedError
 
     @property
     def domain(self):
-        """Tuple[float, float] - The domain of the parameter space of the curve."""
         raise NotImplementedError
 
     @property
     def order(self):
-        """int - The order of the curve (degree + 1)."""
         return self.degree + 1
 
     @property
     def start(self):
-        """:class:`compas.geometry.Point` - The start point of the curve."""
         raise NotImplementedError
 
     @property
     def end(self):
-        """:class:`compas.geometry.Point` - The end point of the curve."""
         raise NotImplementedError
 
     @property
     def is_closed(self):
-        """bool - Flag indicating that the curve is closed."""
         raise NotImplementedError
 
     @property
     def is_periodic(self):
-        """bool - Flag indicating that the curve is periodic."""
         raise NotImplementedError
 
     @property
     def is_rational(self):
-        """bool - Flag indicating that the curve is rational.
-        If the curve is rational, the weights of the control points are rational numbers."""
         raise NotImplementedError
 
     @property
     def bounding_box(self):
-        """:class:`compas.geometry.Box` - The axis aligned bounding box of the curve."""
         raise NotImplementedError
 
     @property
     def length(self):
-        """float - The length of the curve."""
         raise NotImplementedError
 
     # ==============================================================================
@@ -445,7 +468,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
         """
         return NurbsCurve.from_parameters(
             self.points,
@@ -480,7 +503,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`NurbsCurve`
+        :class:`compas.geometry.NurbsCurve`
         """
         copy = self.copy()
         copy.transform(T)
@@ -496,7 +519,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        List[float]
+        list[float]
         """
         start, end = self.domain
         return linspace(start, end, n)
@@ -511,7 +534,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        List[:class:`compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
         """
         return [self.point_at(t) for t in self.space(n)]
 
@@ -526,7 +549,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        List[:class:`compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
             Points along the curve.
         """
         return self.xyz(resolution)
@@ -599,15 +622,13 @@ class NurbsCurve(Curve):
         point : :class:`compas.geometry.Point`
             The test point.
         return_parameter : bool, optional
-            Flag to indicate that the parameter corresponding to the closest point
-            should be returned as well.
+            If True, the parameter corresponding to the closest point should be returned in addition to the point.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
-            If ``return_parameter`` is false.
-        (:class:`compas.geometry.Point`, float)
-            If ``return_parameter`` is true.
+        :class:`compas.geometry.Point` or tuple[:class:`compas.geometry.Point`, float]
+            If `return_parameter` is false, only the closest point is returned.
+            If `return_parameter` is true, the closest point and the corresponding parameter are returned.
         """
         raise NotImplementedError
 
@@ -621,7 +642,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        List[:class:`NurbsCurve`]
+        list[:class:`compas.geometry.NurbsCurve`]
         """
         raise NotImplementedError
 
@@ -635,7 +656,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        List[:class:`NurbsCurve`]
+        list[:class:`compas.geometry.NurbsCurve`]
         """
         raise NotImplementedError
 
