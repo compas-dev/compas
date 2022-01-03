@@ -88,8 +88,12 @@ def circle_from_points_xy(a, b, c):
 
     Returns
     -------
-    [float, float, float]
-        XYZ coordinates of center in the XY-plane (Z = 0.0) and radius of the circle.
+    [float, float, 0.0]
+        Center of the circle in the XY plane.
+    float
+        Radius of the circle.
+    [0.0, 0.0, 1.0]
+        Normal of the plane containing the circle.
 
     Notes
     -----
@@ -120,4 +124,4 @@ def circle_from_points_xy(a, b, c):
     centerx = (d * e - b * f) / g
     centery = (a * f - c * e) / g
     radius = sqrt((ax - centerx) ** 2 + (ay - centery) ** 2)
-    return [centerx, centery, 0.0], radius, [0, 0, 1]
+    return [centerx, centery, 0.0], radius, [0.0, 0.0, 1.0]

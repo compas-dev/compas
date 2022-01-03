@@ -23,7 +23,7 @@ class KDTree(object):
     objects : list, optional
         A list of objects to populate the tree with.
         If objects are provided, the tree is built automatically.
-        Defaults to ``None``.
+        Otherwise, use :meth:`build`.
 
     Attributes
     ----------
@@ -49,7 +49,6 @@ class KDTree(object):
     """
 
     def __init__(self, objects=None):
-        """Initialise a KDTree object."""
         self.root = None
         if objects:
             self.root = self.build(list([(objects[i], i) for i in range(len(objects))]))

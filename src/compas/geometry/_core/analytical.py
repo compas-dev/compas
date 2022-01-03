@@ -29,8 +29,8 @@ def circle_evaluate(t, r, z=0):
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     """
     return [r * cos(t), r * sin(t), z]
@@ -56,8 +56,8 @@ def ellipse_evaluate(t, a, b, z=0):
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     """
     return [a * cos(t), b * sin(t), z]
@@ -81,8 +81,8 @@ def archimedean_spiral_evaluate(t, a, b, z=0):
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     References
     ----------
@@ -110,8 +110,8 @@ def logarithmic_spiral_evaluate(t, a, b, z=0):
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     References
     ----------
@@ -135,8 +135,8 @@ def helix_evaluate(t, a, b):
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     Notes
     -----

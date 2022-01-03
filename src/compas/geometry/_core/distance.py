@@ -525,10 +525,10 @@ def sort_points_xy(point, cloud):
 
     Returns
     -------
-    list[[float, [float, float, float], int]]
+    list[[float, [float, float, 0.0], int]]
         A list containing the points of the cloud sorted by their squared distance to the base points.
         Each item in the list contains the squared distance to the base point, the XYZ coordinates
-        of the point in the cloud, and the index of the point in the original cloud.
+        of the point in the cloud in the XY plane, and the index of the point in the original cloud.
 
     Notes
     -----
@@ -647,7 +647,7 @@ def closest_point_in_cloud_xy(point, cloud):
     float
         The distance to the closest point.
     [float, float, 0.0]
-        The XYZ coordinates of the closest point (with Z = 0).
+        The XYZ coordinates of the closest point in the XY plane.
     int
         The index of the closest point in the cloud.
 
@@ -705,8 +705,7 @@ def closest_point_on_line_xy(point, line):
     Returns
     -------
     [float, float, 0.0]
-        XYZ coordinates of the closest point.
-        The Z coordinate is zero.
+        XYZ coordinates of the closest point in the XY plane.
 
     """
     a, b = line
@@ -761,8 +760,7 @@ def closest_point_on_segment_xy(point, segment):
     Returns
     -------
     [float, float, 0.0]
-        XYZ coordinates of closest point.
-        The Z coordinate is zero.
+        XYZ coordinates of closest point in the XY plane.
 
     """
     a, b = segment
@@ -818,8 +816,7 @@ def closest_point_on_polyline_xy(point, polyline):
     Returns
     -------
     [float, float, 0.0]
-        XYZ coordinates of closest point.
-        The Z coordinate is zero.
+        XYZ coordinates of closest point in the XY plane.
 
     """
     cloud = []
@@ -845,9 +842,8 @@ def closest_point_on_polygon_xy(point, polygon):
 
     Returns
     -------
-    list
-        XYZ coordinates of closest point.
-        The Z coordinate is zero.
+    [float, float, 0.0]
+        XYZ coordinates of closest point in the XY plane.
 
     """
     points = []

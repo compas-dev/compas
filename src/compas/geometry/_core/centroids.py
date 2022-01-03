@@ -71,8 +71,7 @@ def midpoint_point_point_xy(a, b):
     Returns
     -------
     [float, float, 0.0]
-        XYZ coordinates of the midpoint.
-        The Z coordinate is zero.
+        XYZ coordinates of the midpoint in the XY plane.
     """
     return [0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.0]
 
@@ -109,8 +108,7 @@ def midpoint_line_xy(line):
     Returns
     -------
     [float, float, 0.0]
-        XYZ coordinates of the midpoint.
-        The Z coordinate is zero.
+        XYZ coordinates of the midpoint in the XY plane.
 
     Examples
     --------
@@ -180,8 +178,7 @@ def centroid_points_xy(points):
     Returns
     -------
     [float, float, 0.0]
-        XYZ coordinates of the centroid.
-        The Z coordinate is zero.
+        XYZ coordinates of the centroid in the XY plane.
 
     Warnings
     --------
@@ -304,8 +301,7 @@ def centroid_polygon_xy(polygon):
     Returns
     -------
     [float, float, 0.0]
-        The XYZ coordinates of the centroid.
-        The Z coordinate is zero.
+        The XYZ coordinates of the centroid in the XY plane.
 
     Notes
     -----
@@ -407,8 +403,7 @@ def centroid_polygon_vertices_xy(polygon):
     Returns
     -------
     [float, float, 0.0]
-        The XYZ coordinates of the centroid.
-        The Z coordinate is zero.
+        The XYZ coordinates of the centroid in the XY plane.
 
     """
     return centroid_points_xy(polygon)
@@ -461,8 +456,7 @@ def centroid_polygon_edges_xy(polygon):
     Returns
     -------
     [float, float, 0.0]
-        The XYZ coordinates of the centroid.
-        The Z coordinate is zero.
+        The XYZ coordinates of the centroid in the XY plane.
 
     Notes
     -----

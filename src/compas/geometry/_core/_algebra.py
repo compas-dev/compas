@@ -468,7 +468,6 @@ def scale_vector_xy(vector, factor):
     -------
     [float, float, 0.0]
         The scaled vector in the XY-plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -515,8 +514,7 @@ def scale_vectors_xy(vectors, factor):
     Returns
     -------
     list[[float, float, 0.0]]
-        The scaled vectors.
-        The Z coordinate is zero.
+        The scaled vectors in the XY plane.
 
     Examples
     --------
@@ -562,7 +560,6 @@ def normalize_vector_xy(vector):
     -------
     [float, float, 0.0]
         The normalized vector in the XY-plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -608,7 +605,6 @@ def normalize_vectors_xy(vectors):
     -------
     list[[float, float, 0.0]]
         The normalized vectors in the XY plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -653,7 +649,7 @@ def power_vectors(vectors, power):
 
     Returns
     -------
-    [float, float, float]]
+    list[[float, float, float]]
         The raised vectors.
 
     Examples
@@ -746,7 +742,6 @@ def add_vectors_xy(u, v):
     -------
     [float, float, 0.0]
         Resulting vector in the XY-plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -793,7 +788,6 @@ def subtract_vectors_xy(u, v):
     -------
     [float, float, 0.0]
         Resulting vector in the XY-plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -840,7 +834,6 @@ def multiply_vectors_xy(u, v):
     -------
     [float, float, 0.0]
         Resulting vector in the XY plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -887,7 +880,6 @@ def divide_vectors_xy(u, v):
     -------
     [float, float, 0.0]
         Resulting vector in the XY plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -936,14 +928,15 @@ def cross_vectors(u, v):
     .. math::
        :nowrap:
 
-        \mathbf{u} \times \mathbf{v}
-        =
-        \begin{bmatrix}
-        u_{y} * v_{z} - u_{z} * v_{y} \\
-        u_{z} * v_{x} - u_{x} * v_{z} \\
-        u_{x} * v_{y} - u_{y} * v_{x}
-        \end{bmatrix}
-
+        \begin{eqnarray}
+            \mathbf{u} \times \mathbf{v}
+            & =
+            \begin{bmatrix}
+            u_{y} * v_{z} - u_{z} * v_{y} \\
+            u_{z} * v_{x} - u_{x} * v_{z} \\
+            u_{x} * v_{y} - u_{y} * v_{x}
+            \end{bmatrix}
+        \end{eqnarray}
 
     Examples
     --------
@@ -968,10 +961,9 @@ def cross_vectors_xy(u, v):
 
     Returns
     -------
-    [float, float, 0.0]
+    [float, float, float]
         The cross product of the two vectors.
         This vector will be perpendicular to the XY plane.
-        The Z coordinate is zero.
 
     Examples
     --------
@@ -1094,8 +1086,7 @@ def vector_component_xy(u, v):
     Returns
     -------
     [float, float, 0.0]
-        The component of u in the direction of v.
-        The Z coordinate is zero.
+        The component of u in the XY plane, in the direction of v.
 
     Notes
     -----
@@ -1173,8 +1164,7 @@ def multiply_matrices(A, B):
 
         \mathbf{A} \cdot \mathbf{B} = \mathbf{C}
 
-    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{B}` a *n* by *o*
-    matrix, and :math:`\mathbf{C}` a *m* by *o* matrix.
+    with :math:`\mathbf{A}` [m x n], :math:`\mathbf{B}` [n x o], and :math:`\mathbf{C}` [m x o].
 
     Examples
     --------
