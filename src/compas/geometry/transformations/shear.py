@@ -19,7 +19,7 @@ from compas.geometry.transformations import Transformation
 
 
 class Shear(Transformation):
-    """Create a shear transformation.
+    """Class representing a shear transformation.
 
     A point P is transformed by the shear matrix into P" such that
     the vector P-P" is parallel to the direction vector and its extent is
@@ -58,23 +58,23 @@ class Shear(Transformation):
         """
         Parameters
         ----------
-        angle : :obj:`float`
+        angle : float
             The angle in radians.
-        direction : compas.geometry.Vector or :obj:`list` of :obj:`float`
+        direction : :class:`compas.geometry.Vector` or [float, float, float]
             The direction vector as list of 3 numbers.
             It must be orthogonal to the normal vector (i.e. it must lie in the shear plane).
-        plane : compas.geometry.Plane or (point, normal)
+        plane : :class:`compas.geometry.Plane` or [point, vector]
             The shear plane defined by a point and normal.
+
+        Returns
+        -------
+        :class:`compas.geometry.Shear`
+            The shear transformation object.
 
         Raises
         ------
         ValueError
             If the shear direction does not lie in the shear plane.
-
-        Returns
-        -------
-        Shear
-            The shear transformation object.
 
         Examples
         --------
@@ -94,8 +94,13 @@ class Shear(Transformation):
 
         Parameters
         ----------
-        shear_factors : :obj:`list` of :obj:`float`
+        shear_factors : [float, float, float]
             The 3 shear factors for x-y, x-z, and y-z axes.
+
+        Returns
+        -------
+        :class:`compas.geometry.Shear`
+            The shear transformation object.
 
         Examples
         --------

@@ -21,7 +21,7 @@ from compas.geometry.transformations import Transformation
 
 
 class Scale(Transformation):
-    """Creates a scale transformation.
+    """Class representing a scale transformation.
 
     Parameters
     ----------
@@ -70,15 +70,14 @@ class Scale(Transformation):
 
         Parameters
         ----------
-        factors : list of float
+        factors : list[float]
             The scale factors along X, Y, Z.
         frame : :class:`compas.geometry.Frame`, optional
             The anchor frame for the scaling transformation.
-            Defaults to ``None``.
 
         Returns
         -------
-        Scale
+        :class:`compas.geometry.Scale`
             A scale transformation.
 
         Examples

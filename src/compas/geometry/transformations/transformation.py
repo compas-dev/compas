@@ -29,7 +29,7 @@ from compas.geometry.transformations import translation_from_matrix
 
 
 class Transformation(Data):
-    """The Transformation represents a 4x4 transformation matrix.
+    """Class representing a general 4x4 transformation matrix.
 
     It is the base class for transformations like :class:`Rotation`,
     :class:`Translation`, :class:`Scale`, :class:`Reflection`,

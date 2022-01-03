@@ -21,7 +21,7 @@ from compas.geometry.transformations import Transformation
 
 
 class Projection(Transformation):
-    """Create a projection transformation.
+    """Class representing a projection transformation.
 
     Parameters
     ----------
@@ -52,16 +52,16 @@ class Projection(Transformation):
 
     @classmethod
     def from_plane(cls, plane):
-        """Returns an orthogonal ``Projection`` to project onto a plane.
+        """Creates an orthogonal projection to project onto a plane.
 
         Parameters
         ----------
-        plane : compas.geometry.Plane or (point, normal)
+        plane : :class:`compas.geometry.Plane` or [point, normal]
             The plane to project onto.
 
         Returns
         -------
-        Projection
+        :class:`compas.geometry.Projection`
             An orthogonal projection transformation.
 
         Examples
@@ -78,19 +78,18 @@ class Projection(Transformation):
 
     @classmethod
     def from_plane_and_direction(cls, plane, direction):
-        """Returns a parallel ``Projection`` to project onto a plane along a
-        specific direction.
+        """Creates a parallel projection to project onto a plane along a specific direction.
 
         Parameters
         ----------
-        plane : compas.geometry.Plane or (point, normal)
+        plane : :class:`compas.geometry.Plane` or [point, normal]
             The plane to project onto.
-        direction : compas.geometry.Vector or list of float
+        direction : :class:`compas.geometry.Vector` or [float, float, float]
             The direction of projection direction.
 
         Returns
         -------
-        Projection
+        :class:`compas.geometry.Projection`
             A parallel projection transformation.
 
         Examples
@@ -112,14 +111,14 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        plane : compas.geometry.Plane or (point, normal)
+        plane : :class:`compas.geometry.Plane` or [point, normal]
             The plane to project onto.
-        center_of_projection : compas.geometry.Point or list of float
+        center_of_projection : :class:`compas.geometry.Point` or [float, float, float]
             The camera view point.
 
         Returns
         -------
-        Projection
+        :class:`compas.geometry.Projection`
             A perspective projection transformation.
 
         Examples
@@ -142,12 +141,12 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        perspective_entries : list of float
+        perspective_entries : [float, float, float, float]
             The 4 perspective entries of a matrix.
 
         Returns
         -------
-        Projection
+        :class:`compas.geometry.Projection`
             A projection transformation.
         """
         P = cls()

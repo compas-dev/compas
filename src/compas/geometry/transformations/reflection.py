@@ -20,7 +20,14 @@ from compas.geometry.transformations import Transformation
 
 
 class Reflection(Transformation):
-    """Creates a ``Reflection`` that mirrors points at a plane.
+    """Class representing a reflection transformation.
+
+    A reflection transformation mirrors points at a plane.
+
+    Parameters
+    ----------
+    matrix : 4x4 matrix-like, optional
+        A 4x4 matrix (or similar) representing a reflection.
 
     Examples
     --------
@@ -46,12 +53,12 @@ class Reflection(Transformation):
 
         Parameters
         ----------
-        plane : compas.geometry.Plane or (point, normal)
+        plane : :class:`compas.geometry.Plane` or [point, normal]
             The reflection plane.
 
         Returns
         -------
-        Reflection
+        :class:`compas.geometry.Reflection`
             The reflection transformation.
         """
         point, normal = plane
@@ -72,11 +79,11 @@ class Reflection(Transformation):
 
         Parameters
         ----------
-        frame : compas.geometry.Frame or (point, xaxis, yaxis)
+        frame : :class:`compas.geometry.Frame` or [point, xaxis, yaxis]
 
         Returns
         -------
-        Reflection
+        :class:`compas.geometry.Reflection`
             The reflection transformation.
         """
         if isinstance(frame, (tuple, list)):
