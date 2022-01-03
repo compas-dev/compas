@@ -60,7 +60,7 @@ def vector_average(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         List of values.
 
     Returns
@@ -76,7 +76,7 @@ def vector_variance(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         List of values.
 
     Returns
@@ -93,7 +93,7 @@ def vector_standard_deviation(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         List of values.
 
     Returns
@@ -113,7 +113,12 @@ def close(value1, value2, tol=1e-05):
     value2 : float or int
     tol : float, optional
         The tolerance for comparing values.
-        Default is ``1e-05``.
+
+    Returns
+    -------
+    bool
+        True if the values are closer than the tolerance.
+        False otherwise.
 
     Examples
     --------
@@ -130,17 +135,26 @@ def allclose(l1, l2, tol=1e-05):
 
     Parameters
     ----------
-    l1 : list of float
+    l1 : list[float]
         The first list of values.
-    l2 : list of float
+    l2 : list[float]
         The second list of values.
     tol : float, optional
         The tolerance for comparing values.
-        Default is ``1e-05``.
+
+    Returns
+    -------
+    bool
+        True if all corresponding values of the two lists are closer than the tolerance.
+        False otherwise.
 
     Notes
     -----
     The function is similar to NumPy's *allclose* function [1]_.
+
+    References
+    ----------
+    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
 
     Examples
     --------
@@ -149,10 +163,6 @@ def allclose(l1, l2, tol=1e-05):
 
     >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
     False
-
-    References
-    ----------
-    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
 
     """
 
@@ -166,26 +176,27 @@ def argmax(values):
 
     Parameters
     ----------
-    values : list of float
+    values : list[float]
         A list of values.
-
-    Notes
-    -----
-    NumPy's *argmax* function [1]_ is different, it returns an array of indices.
-
-    Examples
-    --------
-    >>> argmax([2, 4, 4, 3])
-    1
 
     Returns
     -------
     int
         The index of the first maximum value within an array.
 
+    Notes
+    -----
+    NumPy's *argmax* function [1]_ is different, it returns an array of indices.
+
     References
     ----------
     .. [1] https://numpy.org/doc/stable/reference/generated/numpy.argmax.html
+
+    Examples
+    --------
+    >>> argmax([2, 4, 4, 3])
+    1
+
     """
     return max(range(len(values)), key=lambda i: values[i])
 
@@ -195,26 +206,27 @@ def argmin(values):
 
     Parameters
     ----------
-    values : list of float
+    values : list[float]
         A list of values.
-
-    Notes
-    -----
-    NumPy's *argmin* function [1]_ is different, it returns an array of indices.
-
-    Examples
-    --------
-    >>> argmin([4, 2, 2, 3])
-    1
 
     Returns
     -------
     int
         The index of the first minimum value within an array.
 
+    Notes
+    -----
+    NumPy's *argmin* function [1]_ is different, it returns an array of indices.
+
     References
     ----------
     .. [1] https://numpy.org/doc/stable/reference/generated/numpy.argmin.html
+
+    Examples
+    --------
+    >>> argmin([4, 2, 2, 3])
+    1
+
     """
     return min(range(len(values)), key=lambda i: values[i])
 
@@ -229,7 +241,7 @@ def sum_vectors(vectors, axis=0):
 
     Parameters
     ----------
-    vectors : list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
     axis : int, optional
         If ``axis == 0``, the sum is taken per column.
@@ -237,7 +249,7 @@ def sum_vectors(vectors, axis=0):
 
     Returns
     -------
-    list
+    list[float]
         The length of the list is ``len(vectors[0])``, if ``axis == 0``.
         The length is ``len(vectors)``, otherwise.
 
@@ -260,7 +272,7 @@ def norm_vector(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
 
     Returns
@@ -286,12 +298,12 @@ def norm_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors
 
     Returns
     -------
-    list
+    list[float]
         A list with the lengths of all vectors.
 
     Examples
@@ -308,7 +320,7 @@ def length_vector(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
 
     Returns
@@ -333,7 +345,7 @@ def length_vector_xy(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) components of the vector.
 
     Returns
@@ -361,7 +373,7 @@ def length_vector_sqrd(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
 
     Returns
@@ -383,7 +395,7 @@ def length_vector_sqrd_xy(vector):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) components of the vector.
 
     Returns
@@ -419,14 +431,14 @@ def scale_vector(vector, factor):
 
     Parameters
     ----------
-    vector : list, tuple
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
     factor : float
         The scaling factor.
 
     Returns
     -------
-    list
+    [float, float, float]
         The scaled vector.
 
     Examples
@@ -447,14 +459,14 @@ def scale_vector_xy(vector, factor):
 
     Parameters
     ----------
-    vector : list
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) components of the vector.
     scale : float
         Scale factor.
 
     Returns
     -------
-    list
+    [float, float, float]
         The scaled vector in the XY-plane (Z = 0.0).
 
     Examples
@@ -471,14 +483,14 @@ def scale_vectors(vectors, factor):
 
     Parameters
     ----------
-    vectors : list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
     factor : float
         The scaling factor.
 
     Returns
     -------
-    vectors : list of list
+    list[[float, float, float]]
         The scaled vectors.
 
     Examples
@@ -494,14 +506,14 @@ def scale_vectors_xy(vectors, factor):
 
     Parameters
     ----------
-    vectors : list of list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
     factor : float
         The scaling factor.
 
     Returns
     -------
-    vectors : list of list
+    list[[float, float, float]]
         The scaled vectors.
 
     Examples
@@ -517,12 +529,12 @@ def normalize_vector(vector):
 
     Parameters
     ----------
-    vector : list, tuple
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normalized vector.
 
     Examples
@@ -541,12 +553,12 @@ def normalize_vector_xy(vector):
 
     Parameters
     ----------
-    vector : sequence of float
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) components of the vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normalized vector in the XY-plane (Z = 0.0)
 
     Examples
@@ -565,12 +577,12 @@ def normalize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list of list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
 
     Returns
     -------
-    list
+    list[[float, float, float]]
         The normalized vectors.
 
     Examples
@@ -586,12 +598,12 @@ def normalize_vectors_xy(vectors):
 
     Parameters
     ----------
-    vectors : list of list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
 
     Returns
     -------
-    list
+    list[[float, float, float]]
         The normalized vectors in the XY plane.
 
     Examples
@@ -607,14 +619,14 @@ def power_vector(vector, power):
 
     Parameters
     ----------
-    vector : list, tuple
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
     power : int, float
         The power to which to raise the vector.
 
     Returns
     -------
-    vector : list
+    [float, float, float]
         The raised vector.
 
     Examples
@@ -630,14 +642,14 @@ def power_vectors(vectors, power):
 
     Parameters
     ----------
-    vectors : list of list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
     power : int, float
         The power to which to raise the vectors.
 
     Returns
     -------
-    vector : list
+    [float, float, float]]
         The raised vectors.
 
     Examples
@@ -653,12 +665,12 @@ def square_vector(vector):
 
     Parameters
     ----------
-    vector : list, tuple
+    vector : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
 
     Returns
     -------
-    vector : list
+    [float, float, float]
         The squared vector.
 
     Examples
@@ -674,12 +686,12 @@ def square_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
 
     Returns
     -------
-    vector : list
+    [float, float, float]]
         The squared vectors.
 
     Examples
@@ -702,14 +714,14 @@ def add_vectors(u, v):
 
     Parameters
     ----------
-    u : sequence of float
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the first vector.
-    v : sequence of float
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The resulting vector.
 
     """
@@ -721,14 +733,14 @@ def add_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : sequence of float
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) components of the first vector.
-    v : sequence of float
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         Resulting vector in the XY-plane (Z = 0.0)
 
     Examples
@@ -744,14 +756,14 @@ def subtract_vectors(u, v):
 
     Parameters
     ----------
-    u : list
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the first vector.
-    v : list
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The resulting vector.
 
     Examples
@@ -767,14 +779,14 @@ def subtract_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : list
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         The XY(Z) components of the first vector.
-    v : list
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         The XY(Z) components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         Resulting vector in the XY-plane (Z = 0.0)
 
     Examples
@@ -790,14 +802,14 @@ def multiply_vectors(u, v):
 
     Parameters
     ----------
-    u : list
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         The XYZ components of the first vector.
-    v : list
+    v : l:class:`compas.geometry.Vector` or [float, float, float]
         The XYZ components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         Resulting vector.
 
     Examples
@@ -813,14 +825,14 @@ def multiply_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : list
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         The XY(Z) components of the first vector.
-    v : list
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         The XY(Z) components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         Resulting vector in the XY plane.
 
     Examples
@@ -836,14 +848,14 @@ def divide_vectors(u, v):
 
     Parameters
     ----------
-    u : list
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         The XYZ components of the first vector.
-    v : list
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         The XYZ components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         Resulting vector.
 
     Examples
@@ -859,14 +871,14 @@ def divide_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : list
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         The XY(Z) components of the first vector.
-    v : list
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         The XY(Z) components of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         Resulting vector in the XY plane.
 
     Examples
@@ -887,14 +899,14 @@ def cross_vectors(u, v):
 
     Parameters
     ----------
-    u : tuple, list, Vector
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the first vector.
-    v : tuple, list, Vector
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the second vector.
 
     Returns
     -------
-    cross : list
+    [float, float, float]
         The cross product of the two vectors.
 
     Notes
@@ -941,14 +953,14 @@ def cross_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : sequence of float
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) coordinates of the first vector.
-    v : sequence of float
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) coordinates of the second vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The cross product of the two vectors.
         This vector will be perpendicular to the XY plane.
 
@@ -972,14 +984,14 @@ def dot_vectors(u, v):
 
     Parameters
     ----------
-    u : tuple, list, Vector
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the first vector.
-    v : tuple, list, Vector
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the second vector.
 
     Returns
     -------
-    dot : float
+    float
         The dot product of the two vectors.
 
     Examples
@@ -996,9 +1008,9 @@ def dot_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : sequence of float
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) coordinates of the first vector.
-    v : sequence of float
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XY(Z) coordinates of the second vector.
 
     Returns
@@ -1026,14 +1038,14 @@ def vector_component(u, v):
 
     Parameters
     ----------
-    u : sequence of float
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
-    v : sequence of float
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the direction.
 
     Returns
     -------
-    proj_v(u) : list
+    [float, float, float]
         The component of u in the direction of v.
 
     Notes
@@ -1065,14 +1077,14 @@ def vector_component_xy(u, v):
 
     Parameters
     ----------
-    u : sequence of float
+    u : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the vector.
-    v : sequence of float
+    v : :class:`compas.geometry.Vector` or [float, float, float]
         XYZ components of the direction.
 
     Returns
     -------
-    proj_v(u) : list
+    [float, float, float]
         The component of u in the direction of v.
 
     Notes
@@ -1110,12 +1122,12 @@ def transpose_matrix(M):
 
     Parameters
     ----------
-    M : sequence of sequence of float
+    M : :class:`compas.geometry.Transformation` or list[list[float]]
         The matrix to be transposed.
 
     Returns
     -------
-    list of list of float
+    list[list[float]]
         The result matrix.
 
     """
@@ -1127,14 +1139,14 @@ def multiply_matrices(A, B):
 
     Parameters
     ----------
-    A : sequence of sequence of float
+    A : :class:`compas.geometry.Transformation` or list[list[float]]
         The first matrix.
-    B : sequence of sequence of float
+    B : :class:`compas.geometry.Transformation` or list[list[float]]
         The second matrix.
 
     Returns
     -------
-    C : list of list of float
+    list[list[float]]
         The result matrix.
 
     Raises
@@ -1179,14 +1191,14 @@ def multiply_matrix_vector(A, b):
 
     Parameters
     ----------
-    A : list of list
+    A : :class:`compas.geometry.Transformation` or list[list[float]]
         The matrix.
-    b : list
+    b : :class:`compas.geometry.Vector` or [float, float, float]
         The vector.
 
     Returns
     -------
-    c : list
+    [float, float, float]
         The resulting vector.
 
     Raises
@@ -1229,28 +1241,27 @@ def homogenize_vectors(vectors, w=1.0):
 
     Parameters
     ----------
-    vectors : list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
     w : float, optional
         Homogenisation parameter.
-        Defaults to ``1.0``.
 
     Returns
     -------
-    list
+    list[[float, float, float]]
         Homogenised vectors.
-
-    Examples
-    --------
-    >>> vectors = [[1.0, 0.0, 0.0]]
-    >>> homogenize_vectors(vectors)
-    [[1.0, 0.0, 0.0, 1.0]]
 
     Notes
     -----
     Vectors described by XYZ components are homogenised by appending a homogenisation
     parameter to the components, and by dividing each component by that parameter.
     Homogenisatioon of vectors is often used in relation to transformations.
+
+    Examples
+    --------
+    >>> vectors = [[1.0, 0.0, 0.0]]
+    >>> homogenize_vectors(vectors)
+    [[1.0, 0.0, 0.0, 1.0]]
 
     """
     return [[x / w, y / w, z / w, w] for x, y, z in vectors]
@@ -1261,12 +1272,12 @@ def dehomogenize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         A list of vectors.
 
     Returns
     -------
-    list
+    list[float, float, float]
         Dehomogenised vectors.
 
     Examples
@@ -1282,12 +1293,12 @@ def orthonormalize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list of list
+    vectors : list[:class:`compas.geometry.Vector` or [float, float, float]]
         The set of vectors to othonormalize.
 
     Returns
     -------
-    basis : list of list
+    list[[float, float, float]]
         An othonormal basis for the input vectors.
 
     Notes
