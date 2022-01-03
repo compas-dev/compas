@@ -24,12 +24,12 @@ def normal_polygon(polygon, unitized=True):
 
     Parameters
     ----------
-    polygon : list of list
+    polygon : :class:`compas.geometry.Polygon` or list[point]
         A list of polygon point coordinates.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector.
 
     Raises
@@ -76,12 +76,12 @@ def normal_triangle(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : :class:`compas.geometry.Polygon` or [point, point, point]
         A list of triangle point coordinates.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector.
 
     Raises
@@ -106,13 +106,13 @@ def normal_triangle_xy(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : :class:`compas.geometry.Polygon` or [point or [float, float], point or [float, float], point or [float, float]]
         A list of triangle point coordinates.
         Z-coordinates are ignored.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector, which is a vector perpendicular to the XY plane.
 
     Raises
