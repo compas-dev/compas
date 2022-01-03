@@ -5,8 +5,11 @@ geometry
 
 .. currentmodule:: compas.geometry
 
-Base Class
-==========
+Classes
+=======
+
+Base Classes
+------------
 
 .. autosummary::
     :toctree: generated/
@@ -14,8 +17,6 @@ Base Class
 
     Geometry
 
-Classes
-=======
 
 Primitives
 ----------
