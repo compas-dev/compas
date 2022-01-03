@@ -13,15 +13,15 @@ def tangent_points_to_circle_xy(circle, point):
 
     Parameters
     ----------
-    circle : tuple
+    circle : :class:`compas.geometry.Circle` or [plane, float]
         center, radius of the circle in the xy plane.
-    point : tuple
+    point : :class:`compas.geometry.Point` or [float, float, float] or [float, float]
         XY(Z) coordinates of a point in the xy plane.
 
     Returns
     -------
-    points : list of tuples
-        the tangent points on the circle
+    tuple[[float, float, 0.0], [float, float, 0.0]]
+        the tangent points on the circle.
 
     Examples
     --------
