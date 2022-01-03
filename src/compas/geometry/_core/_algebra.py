@@ -466,8 +466,9 @@ def scale_vector_xy(vector, factor):
 
     Returns
     -------
-    [float, float, float]
-        The scaled vector in the XY-plane (Z = 0.0).
+    [float, float, 0.0]
+        The scaled vector in the XY-plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -513,8 +514,9 @@ def scale_vectors_xy(vectors, factor):
 
     Returns
     -------
-    list[[float, float, float]]
+    list[[float, float, 0.0]]
         The scaled vectors.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -558,8 +560,9 @@ def normalize_vector_xy(vector):
 
     Returns
     -------
-    [float, float, float]
-        The normalized vector in the XY-plane (Z = 0.0)
+    [float, float, 0.0]
+        The normalized vector in the XY-plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -603,8 +606,9 @@ def normalize_vectors_xy(vectors):
 
     Returns
     -------
-    list[[float, float, float]]
+    list[[float, float, 0.0]]
         The normalized vectors in the XY plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -740,8 +744,9 @@ def add_vectors_xy(u, v):
 
     Returns
     -------
-    [float, float, float]
-        Resulting vector in the XY-plane (Z = 0.0)
+    [float, float, 0.0]
+        Resulting vector in the XY-plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -786,8 +791,9 @@ def subtract_vectors_xy(u, v):
 
     Returns
     -------
-    [float, float, float]
-        Resulting vector in the XY-plane (Z = 0.0)
+    [float, float, 0.0]
+        Resulting vector in the XY-plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -832,8 +838,9 @@ def multiply_vectors_xy(u, v):
 
     Returns
     -------
-    [float, float, float]
+    [float, float, 0.0]
         Resulting vector in the XY plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -878,8 +885,9 @@ def divide_vectors_xy(u, v):
 
     Returns
     -------
-    [float, float, float]
+    [float, float, 0.0]
         Resulting vector in the XY plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -960,9 +968,10 @@ def cross_vectors_xy(u, v):
 
     Returns
     -------
-    [float, float, float]
+    [float, float, 0.0]
         The cross product of the two vectors.
         This vector will be perpendicular to the XY plane.
+        The Z coordinate is zero.
 
     Examples
     --------
@@ -1084,8 +1093,9 @@ def vector_component_xy(u, v):
 
     Returns
     -------
-    [float, float, float]
+    [float, float, 0.0]
         The component of u in the direction of v.
+        The Z coordinate is zero.
 
     Notes
     -----
