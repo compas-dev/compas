@@ -16,12 +16,12 @@ def bounding_box(points):
 
     Parameters
     ----------
-    points : list
+    points : list[:class:`compas.geometry.Point` or [float, float, float]]
         XYZ coordinates of the points.
 
     Returns
     -------
-    list
+    list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
     Examples
@@ -55,12 +55,12 @@ def bounding_box_xy(points):
 
     Parameters
     ----------
-    points : list
+    points : list[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
         XY(Z) coordinates of the points.
 
     Returns
     -------
-    list
+    list[[float, float, 0.0]]
         XYZ coordinates of four points defining a rectangle in the XY plane.
 
     Examples

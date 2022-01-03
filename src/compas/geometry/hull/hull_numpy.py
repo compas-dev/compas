@@ -17,7 +17,7 @@ def convex_hull_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like
         XYZ coordinates of the points.
 
     Returns
@@ -77,9 +77,7 @@ def convex_hull_xy_numpy(points):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>>
 
     """
     points = asarray(points)

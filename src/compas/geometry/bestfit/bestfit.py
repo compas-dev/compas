@@ -15,13 +15,15 @@ def bestfit_plane(points):
 
     Parameters
     ----------
-    points : list of list
+    points : list[:class:`compas.geometry.Point` or [float, float, float]]
         A list of points represented by their XYZ coordinates.
 
     Returns
     -------
-    plane : tuple
-        Base point and normal vector (normalized).
+    [float, float, float]
+        Base point.
+    [float, float, float]
+        Normal vector (normalized).
 
     Notes
     -----

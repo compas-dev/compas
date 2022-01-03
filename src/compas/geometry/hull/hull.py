@@ -19,12 +19,12 @@ def convex_hull(points):
 
     Parameters
     ----------
-    points : list
+    points : list[:class:`compas.geometry.Point` or [float, float, float]]
         A sequence of XYZ coordinates.
 
     Returns
     -------
-    list
+    list[[int, int, int]]
         The triangular faces of the convex hull as lists of vertex indices
         referring to the original point coordinates.
 
@@ -86,18 +86,19 @@ def convex_hull_xy(points, strict=False):
 
     Parameters
     ----------
-    points : list
+    points : list[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
         XY(Z) coordinates of the points.
 
     Returns
     -------
-    list
+    list[[float, float, 0.0]]
         XY(Z) coordinates of vertices of the convex hull in counter-clockwise order,
         starting from the vertex with the lexicographically smallest coordinates.
 
     Notes
     -----
-    Implements Andrew's monotone chain algorithm [1]_. O(n log n) complexity.
+    Implements Andrew's monotone chain algorithm [1]_.
+    O(n log n) complexity.
 
     References
     ----------
