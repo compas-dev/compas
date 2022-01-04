@@ -49,18 +49,18 @@ def icp_numpy(source, target, tol=1e-3):
 
     Parameters
     ----------
-    source : array_like[:class:`compas.geometry.Point` or [float, float, float]]
+    source : array_like[point]
         The source data.
-    target : array_like[:class:`compas.geometry.Point` or [float, float, float]]
+    target : array_like[point]
         The target data.
     tol : float, optional
         Tolerance for finding matches.
 
     Returns
     -------
-    (N, 3) ndarray
+    ndarray[float](N, 3)
         The transformed points.
-    (4, 4) ndarray
+    ndarray[float](4, 4)
         The bestfit transformation matrix.
 
     Notes

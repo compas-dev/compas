@@ -15,7 +15,7 @@ def bestfit_plane(points):
 
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points : list[point]
         A list of points represented by their XYZ coordinates.
 
     Returns

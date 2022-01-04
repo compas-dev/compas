@@ -19,9 +19,9 @@ def tween_points(points1, points2, num):
 
     Parameters
     ----------
-    points1 : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points1 : list[point]
         The first set of points.
-    points2 : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points2 : list[point]
         The second set of points.
     num : int
         The number of interpolated sets to return.
@@ -62,9 +62,9 @@ def tween_points_distance(points1, points2, dist, index=None):
 
     Parameters
     ----------
-    points1 : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points1 : list[point]
         The first set of points.
-    points2 : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points2 : list[point]
         The second set of points.
     dist : float
         The distance from the first set to the second at which to compute the interpolated set.

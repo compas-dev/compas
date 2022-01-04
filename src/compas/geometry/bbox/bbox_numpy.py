@@ -40,7 +40,7 @@ def oriented_bounding_box_numpy(points):
 
     Parameters
     ----------
-    points : array_like[:class:`compas.geometry.Point` or [float, float, float]]
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
@@ -158,7 +158,7 @@ def oriented_bounding_box_xy_numpy(points):
 
     Parameters
     ----------
-    points : array_like[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
+    points : array_like[point or [float, float]]
         XY(Z) coordinates of the points.
 
     Returns
@@ -253,7 +253,7 @@ def oabb_numpy(points):
 
     Parameters
     ----------
-    points : array_like[:class:`compas.geometry.Point` or [float, float, float]]
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns

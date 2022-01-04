@@ -16,7 +16,7 @@ def bounding_box(points):
 
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points : list[point]
         XYZ coordinates of the points.
 
     Returns
@@ -55,7 +55,7 @@ def bounding_box_xy(points):
 
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
+    points : list[point or [float, float]]
         XY(Z) coordinates of the points.
 
     Returns

@@ -16,14 +16,14 @@ def barycentric_coordinates(point, triangle):
 
     Parameters
     ----------
-    point: :class:`compas.geometry.Point` or [float, float, float]
+    point: point
         Point location.
     triangle: [point, point, point]
         A triangle defined by 3 points.
 
     Returns
     -------
-    tuple[float, float, float]
+    [float, float, float]
         The barycentric coordinates of the point.
 
     """
@@ -40,4 +40,4 @@ def barycentric_coordinates(point, triangle):
     v = (d11 * d20 - d01 * d21) / D
     w = (d00 * d21 - d01 * d20) / D
     u = 1.0 - v - w
-    return u, v, w
+    return [u, v, w]

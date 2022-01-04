@@ -26,7 +26,7 @@ def bestfit_plane_numpy(points):
 
     Parameters
     ----------
-    points : array_like[:class:`compas.geometry.Point` or [float, float, float]]
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
@@ -50,7 +50,7 @@ def bestfit_frame_numpy(points):
 
     Parameters
     ----------
-    points : array_like[:class:`compas.geometry.Point` or [float, float, float]]
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
@@ -76,7 +76,7 @@ def bestfit_circle_numpy(points):
 
     Parameters
     ----------
-    points : array_like[:class:`compas.geometry.Point` or [float, float, float]]
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
@@ -158,7 +158,7 @@ def bestfit_sphere_numpy(points):
 
     Parameters
     ----------
-    points: array_like
+    points: array_like[point]
         XYZ coordinates of the points.
 
     Returns
