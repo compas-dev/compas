@@ -330,8 +330,8 @@ def linkcode_resolve(domain, info):
 
     return f"https://github.com/compas-dev/compas/blob/main/src/{filename}.py#L{lineno}"
 
-# extlinks
 
+# extlinks
 
 extlinks = {
     "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s")
