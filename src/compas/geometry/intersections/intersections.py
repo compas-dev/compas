@@ -449,10 +449,6 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, tol=1e-6):
 def intersection_sphere_sphere(sphere1, sphere2):
     """Computes the intersection of 2 spheres.
 
-    There are 4 cases of sphere-sphere intersection : 1) the spheres intersect
-    in a circle, 2) they intersect in a point, 3) they overlap, 4) they do not
-    intersect.
-
     Parameters
     ----------
     sphere1 : :class:`compas.geometry.Sphere` or [point, float]
@@ -468,6 +464,15 @@ def intersection_sphere_sphere(sphere1, sphere2):
         If the type is 'point', the coordinates of the point.
         If the type is 'circle', the center point and radius of the circle, and the normal of the plane containing the circle.
         If the type is 'sphere', the center point and radius of the sphere.
+
+    Notes
+    -----
+    There are 4 cases of sphere-sphere intersection:
+
+    1. the spheres intersect in a circle,
+    2. they intersect in a point,
+    3. they overlap,
+    4. they do not intersect.
 
     Examples
     --------
@@ -701,10 +706,10 @@ def intersection_line_line_xy(l1, l2, tol=1e-6):
 
     Parameters
     ----------
-    ab : line
-        XY(Z) coordinates of two points defining a line.
-    cd : line
-        XY(Z) coordinates of two points defining another line.
+    l1 : line
+        A line defined by two points, with at least XY coordinates.
+    l2 : line
+        A line defined by two points, with at least XY coordinates.
     tol : float, optional
         A tolerance for membership verification.
 
@@ -742,9 +747,9 @@ def intersection_line_segment_xy(line, segment, tol=1e-6):
     Parameters
     ----------
     line : line
-        A line defined by two points.
+        A line defined by two points, with at least XY coordinates.
     segment : segment
-        A segment defined by two points.
+        A segment defined by two points, with at least XY coordinates.
     tol : float, optional
         A tolerance for membership verification.
 
@@ -765,11 +770,12 @@ def intersection_line_box_xy(line, box, tol=1e-6):
 
     Parameters
     ----------
-    line : list of 2 points or :class:`compas.geometry.Line`
-    box : list of 4 points
+    line : line
+        A line defined by two points, with at least XY coordinates.
+    box : [point, point, point, point]
+        A box defined by 4 points, with at least XY coordinates.
     tol : float, optional
         A tolerance value for point comparison.
-        Default is ``1e-6``.
 
     Returns
     -------
@@ -951,10 +957,10 @@ def intersection_ellipse_line_xy(ellipse, line):
 
     Returns
     -------
-    None
-        If there is no intersection.
-    tuple
-        Either 1 or 2 intersection points.
+    tuple[[float, float, float], [float, float, float]] or [float, float, float] or None
+        Two points, if the line goes through the ellipse.
+        One point, if the line is tangent to the ellipse.
+        None, otherwise.
 
     Examples
     --------
