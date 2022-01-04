@@ -59,6 +59,17 @@ Module-level variables are written in ALLCAPS.
 * :data:`compas.APPDATA`,
 * ...
 
+Some functions or methods (especially in :mod:`compas.geometry`) have 2D variants,
+marked with a ``_xy`` suffix,
+meaning that they ignore the Z-coordinate of 3D inputs, and also accept inputs without Z-coordinates.
+It is important to note that regardless of the dimensionality of the input,
+these 2D function variants always return 3D output with Z-coordinate equal to 0 (zero).
+
+* :func:`compas.geometry.bounding_box_xy`
+* :func:`compas.geometry.intersection_line_line_xy`
+* :func:`compas.geometry.is_polygon_convex_xy`
+* ...
+
 
 Type Information
 ================
