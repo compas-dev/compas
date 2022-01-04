@@ -17,14 +17,20 @@ def convex_hull_numpy(points):
 
     Parameters
     ----------
-    points : array_like
+    points : array_like[:class:`compas.geometry.Point` or [float, float, float]]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple
+    ndarray of ints
         Indices of the points on the hull.
+    ndarray of ints
         Faces of the hull.
+
+    Raises
+    ------
+    AssertionError
+        If the input data is not 3D.
 
     Notes
     -----
@@ -58,15 +64,20 @@ def convex_hull_xy_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[:class:`compas.geometry.Point` or [float, float, float]]
         XY(Z) coordinates of the points.
 
     Returns
     -------
-    list
+    ndarray of ints
         Indices of the points on the hull.
-    list
+    ndarray of ints
         Faces of the hull.
+
+    Raises
+    ------
+    AssertionError
+        If the input data is not at least 2D.
 
     Notes
     -----

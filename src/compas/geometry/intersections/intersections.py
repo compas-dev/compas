@@ -55,23 +55,20 @@ def intersection_line_line(l1, l2, tol=1e-6):
 
     Parameters
     ----------
-    l1 : tuple, list
+    l1 : :class:`compas.geometry.Line` or [point, point]
         XYZ coordinates of two points defining the first line.
-    l2 : tuple, list
+    l2 : :class:`compas.geometry.Line` or [point, point]
         XYZ coordinates of two points defining the second line.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    tuple
+    tuple[point, point] or tuple[None, None]
         Two intersection points.
-
         If the lines intersect, these two points are identical.
         If the lines are skewed and thus only have an apparent intersection, the two points are different.
-
-        In all other cases the return is `(None, None)`.
+        In all other cases there are no intersection points.
 
     Examples
     --------
@@ -131,23 +128,20 @@ def intersection_segment_segment(ab, cd, tol=1e-6):
 
     Parameters
     ----------
-    ab : tuple
+    ab : :class:`compas.geometry.Line` or [point, point]
         XYZ coordinates of two points defining a line segment.
-    cd : tuple
+    cd : :class:`compas.geometry.Line` or [point, point]
         XYZ coordinates of two points defining another line segment.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    tuple
+    tuple[point, point] or tuple[None, None]
         Two intersection points.
-
         If the segments intersect and the intersection points lie on the respective segments, the two points are identical.
         If the segments are skew and the apparent intersection points lie on the respective segments, the two points are different.
-
-        In all other cases the return is `(None, None)`.
+        In all other cases there are no intersection points.
 
     Examples
     --------
@@ -199,23 +193,20 @@ def intersection_line_segment(line, segment, tol=1e-6):
 
     Parameters
     ----------
-    line : tuple
+    line : :class:`compas.geometry.Line` or [point, point]
         Two points defining a line.
-    segment : tuple
+    segment : :class:`compas.geometry.Line` or [point, point]
         Two points defining a line segment.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    tuple
+    tuple[point, point] or tuple[None, None]
         Two intersection points.
-
         If the line and segment intersect and the second intersection point lies on the segment, the two points are identical.
         If the line and segment are skew and the second apparent intersection point lies on the segment, the two points are different.
-
-        In all other cases the return is `(None, None)`.
+        In all other cases there are no intersection points.
 
     """
     x1, x2 = intersection_line_line(line, segment, tol=tol)
@@ -234,17 +225,18 @@ def intersection_line_plane(line, plane, tol=1e-6):
 
     Parameters
     ----------
-    line : tuple
+    line : :class:`compas.geometry.Line` or [point, point]
         Two points defining the line.
-    plane : tuple
+    plane : :class:`compas.geometry.Plane` or [point, vector]
         The base point and normal defining the plane.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    point or None
+    [float, float, float] or None
+        The intersection point between the line and the plane,
+        or None if the line and the plane are parallel.
 
     """
     a, b = line
@@ -275,17 +267,18 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
 
     Parameters
     ----------
-    segment : tuple
+    segment : :class:`compas.geometry.Line` or [point, point]
         Two points defining the line segment.
-    plane : tuple
+    plane : :class:`compas.geometry.Plane` or [point, vector]
         The base point and normal defining the plane.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    point or None
+    [float, float, float] or None
+        The intersection point between the line and the plane,
+        or None if the line and the plane are parallel.
 
     """
     a, b = segment
@@ -320,20 +313,20 @@ def intersection_polyline_plane(polyline, plane, expected_number_of_intersection
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline` or sequence of points
+    polyline : :class:`compas.geometry.Polyline` or sequence[point]
         Polyline to test intersection.
-    plane : :class:`compas.geometry.Plane` or point and vector
+    plane : :class:`compas.geometry.Plane` or [point, vector]
         Plane to compute intersection.
     expected_number_of_intersections : integer, optional
         Number of useful or expected intersections.
-        Default is the number of lines conforming the polyline.
+        Default is the number of line segments of the polyline.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    list of points
+    list[point]
+        The intersection points between the polyline segments and the plane.
 
     """
     if not expected_number_of_intersections:
@@ -354,17 +347,18 @@ def intersection_line_triangle(line, triangle, tol=1e-6):
 
     Parameters
     ----------
-    line : tuple
+    line : :class:`compas.geometry.Line` or [point, point]
         Two points defining the line.
-    triangle : list of list of float
+    triangle : [point, point, point]
         XYZ coordinates of the triangle corners.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    point or None
+    [float, float, float] or None
+        The intersection point between the line and the triangle,
+        or None if the line and the plane are parallel.
 
     """
     a, b, c = triangle
@@ -385,18 +379,18 @@ def intersection_plane_plane(plane1, plane2, tol=1e-6):
 
     Parameters
     ----------
-    plane1 : tuple
+    plane1 : :class:`compas.geometry.Plane` or [point, vector]
         The base point and normal (normalized) defining the 1st plane.
-    plane2 : tuple
+    plane2 : :class:`compas.geometry.Plane` or [point, vector]
         The base point and normal (normalized) defining the 2nd plane.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    line : tuple
-        Two points defining the intersection line. None if planes are parallel.
+    tuple[point, point] or None
+        Two points defining the intersection line.
+        None if the planes are parallel.
 
     """
     o1, n1 = plane1
@@ -422,24 +416,25 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, tol=1e-6):
 
     Parameters
     ----------
-    plane1 : tuple
+    plane1 : :class:`compas.geometry.Plane` or [point, vector]
         The base point and normal (normalized) defining the 1st plane.
-    plane2 : tuple
+    plane2 : :class:`compas.geometry.Plane` or [point, vector]
         The base point and normal (normalized) defining the 2nd plane.
-    plane3 : tuple
+    plane3 : :class:`compas.geometry.Plane` or [point, vector]
         The base point and normal (normalized) defining the 3rd plane.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    point or None
+    [float, float, float] or None
+        The intersection point
+        or None if at least one pair of planes is parallel.
 
     Notes
     -----
-    Currently this only computes the intersection point. E.g.: If two planes
-    are parallel the intersection lines are not computed [1]_.
+    Currently this only computes the intersection point.
+    For example, if two planes are parallel the intersection lines are not computed [1]_.
 
     References
     ----------
@@ -460,19 +455,19 @@ def intersection_sphere_sphere(sphere1, sphere2):
 
     Parameters
     ----------
-    sphere1 : tuple
-        center, radius of the sphere.
-    sphere2 : tuple
-        center, radius of the sphere.
+    sphere1 : :class:`compas.geometry.Sphere` or [point, float]
+        A sphere defined by a point and radius.
+    sphere2 : :class:`compas.geometry.Sphere` or [point, float]
+        A sphere defined by a point and radius.
 
     Returns
     -------
-    case : str
-        `point`, `circle`, or `sphere`
-    result : tuple
-        - point: xyz coordinates
-        - circle: center, radius, normal
-        - sphere: center, radius
+    {'point', 'circle', or 'sphere'}
+        The type of intersection.
+    [float, float, float] or tuple[point, float, vector] or tuple[point, float]
+        If the type is 'point', the coordinates of the point.
+        If the type is 'circle', the center point and radius of the circle, and the normal of the plane containing the circle.
+        If the type is 'sphere', the center point and radius of the sphere.
 
     Examples
     --------
@@ -545,17 +540,18 @@ def intersection_segment_polyline(segment, polyline, tol=1e-6):
 
     Parameters
     ----------
-    segment : sequence of sequence of float
+    segment : :class:`compas.geometry.Line` or [point, point]
         XYZ coordinates of two points defining a line segment.
-    polyline : sequence of sequence of float
+    polyline : sequence[point]
         XYZ coordinates of the points of the polyline.
     tol : float, optional
         The tolerance for intersection verification.
-        Default is ``1e-6``.
 
     Returns
     -------
-    point or None
+    [float, float, float] or None
+        The intersection point
+        or None if the segment does not intersect with any of the polyline segments.
 
     Examples
     --------
@@ -592,14 +588,15 @@ def intersection_sphere_line(sphere, line):
 
     Parameters
     ----------
-    sphere : tuple
-        center, radius of the sphere.
-    line : tuple
-        xyz coordinates of two points defining the line.
+    sphere : :class:`compas.geometry.Sphere` or [point, radius]
+        A sphere defined by a point and a radius.
+    line : :class:`compas.geometry.Line` or [point, point]
+        A line defined by two points.
 
     Returns
     -------
-    None or point or list of points
+    intersection : tuple[point, point] or point or None
+        Two points (if the line goes through the sphere), one point (if the line is tangent to the sphere), or None (otherwise).
 
     Examples
     --------
