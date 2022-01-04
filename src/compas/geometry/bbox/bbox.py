@@ -16,7 +16,7 @@ def bounding_box(points):
 
     Parameters
     ----------
-    points : list[point]
+    points : sequence[point]
         XYZ coordinates of the points.
 
     Returns
@@ -49,19 +49,19 @@ def bounding_box(points):
 def bounding_box_xy(points):
     """Compute the axis-aligned minimum bounding box of a list of points in the XY-plane.
 
-    Notes
-    -----
-    This function simply ignores the Z components of the points, if it is provided.
-
     Parameters
     ----------
-    points : list[point or [float, float]]
+    points : sequence[point]
         XY(Z) coordinates of the points.
 
     Returns
     -------
     list[[float, float, 0.0]]
         XYZ coordinates of four points defining a rectangle in the XY plane.
+
+    Notes
+    -----
+    This function simply ignores the Z components of the points, if it is provided.
 
     Examples
     --------

@@ -17,9 +17,9 @@ def boolean_union_mesh_mesh(A, B):
 
     Parameters
     ----------
-    A : tuple[list[point], list[[int, int, int]]]
+    A : tuple[sequence[point], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple[list[point], list[[int, int, int]]]
+    B : tuple[sequence[point], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
 
     Returns
@@ -48,6 +48,7 @@ def boolean_union_mesh_mesh(A, B):
 
     >>> V, F = boolean_union_mesh_mesh(A, B)
     >>> union = Mesh.from_vertices_and_faces(V, F)
+
     """
     raise NotImplementedError
 
@@ -58,15 +59,16 @@ def boolean_difference_mesh_mesh(A, B):
 
     Parameters
     ----------
-    A : tuple[list[point], list[[int, int, int]]]
+    A : tuple[sequence[point], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple[list[point], list[[int, int, int]]]
+    B : tuple[sequence[point], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
 
     Returns
     -------
     tuple[list[point], list[[int, int, int]]]
         The vertices and the faces of the boolean difference.
+
     """
     raise NotImplementedError
 
@@ -77,9 +79,9 @@ def boolean_intersection_mesh_mesh(A, B):
 
     Parameters
     ----------
-    A : tuple[list[point], list[[int, int, int]]]
+    A : tuple[sequence[point], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple[list[point], list[[int, int, int]]]
+    B : tuple[sequence[point], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
 
     Returns

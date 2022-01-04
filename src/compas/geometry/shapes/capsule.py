@@ -58,9 +58,13 @@ class Capsule(Shape):
         self.line = line
         self.radius = radius
 
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         return schema.Schema({
             'line': Line.DATASCHEMA.fget(None),
@@ -69,12 +73,12 @@ class Capsule(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the  schema of the data representation in JSON format."""
         return 'capsule'
 
     @property
     def data(self):
-        """dict - Returns the data dictionary that represents the capsule.
+        """dict : Returns the data dictionary that represents the capsule.
         """
         return {'line': self.line.data, 'radius': self.radius}
 
@@ -82,6 +86,10 @@ class Capsule(Shape):
     def data(self, data):
         self.line = Line.from_data(data['line'])
         self.radius = data['radius']
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def line(self):

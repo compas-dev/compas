@@ -61,7 +61,7 @@ class Sphere(Shape):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         from compas.data import is_float3
         return schema.Schema({
@@ -71,12 +71,12 @@ class Sphere(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the  schema of the data representation in JSON format."""
         return 'sphere'
 
     @property
     def data(self):
-        """dict - Returns the data dictionary that represents the sphere.
+        """dict : Returns the data dictionary that represents the sphere.
         """
         return {'point': self.point.data, 'radius': self.radius}
 

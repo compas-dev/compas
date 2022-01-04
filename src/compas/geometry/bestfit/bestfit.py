@@ -15,7 +15,7 @@ def bestfit_plane(points):
 
     Parameters
     ----------
-    points : list[point]
+    points : sequence[point]
         A list of points represented by their XYZ coordinates.
 
     Returns

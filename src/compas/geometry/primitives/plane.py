@@ -13,9 +13,9 @@ class Plane(Primitive):
 
     Parameters
     ----------
-    point : :class:`compas.geometry.Point` or [float, float, float]
+    point : [float, float, float] or :class:`compas.geometry.Point`
         The base point of the plane.
-    normal : :class:`compas.geometry.Vector` or [float, float, float]
+    normal : [float, float, float] or :class:`compas.geometry.Vector`
         The normal vector of the plane.
 
     Attributes
@@ -36,6 +36,7 @@ class Plane(Primitive):
     Point(0.000, 0.000, 0.000)
     >>> plane.normal
     Vector(0.000, 0.000, 1.000)
+
     """
 
     __slots__ = ['_point', '_normal']
@@ -47,9 +48,13 @@ class Plane(Primitive):
         self.point = point
         self.normal = normal
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         return Schema({
             'point': Point.DATASCHEMA.fget(None),
@@ -58,12 +63,12 @@ class Plane(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'plane'
 
     @property
     def data(self):
-        """dict - The data dictionary that represents the plane."""
+        """dict : The data dictionary that represents the plane."""
         return {'point': self.point.data,
                 'normal': self.normal.data}
 
@@ -71,6 +76,35 @@ class Plane(Primitive):
     def data(self, data):
         self.point = Point.from_data(data['point'])
         self.normal = Vector.from_data(data['normal'])
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a plane from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Plane`
+            The constructed plane.
+
+        Examples
+        --------
+        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
+        >>> plane.point
+        Point(0.000, 0.000, 0.000)
+        >>> plane.normal
+        Vector(0.000, 0.000, 1.000)
+
+        """
+        return cls(Point.from_data(data['point']), Vector.from_data(data['normal']))
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def point(self):
@@ -138,40 +172,16 @@ class Plane(Primitive):
     # ==========================================================================
 
     @classmethod
-    def from_data(cls, data):
-        """Construct a plane from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Plane`
-            The constructed plane.
-
-        Examples
-        --------
-        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
-        >>> plane.point
-        Point(0.000, 0.000, 0.000)
-        >>> plane.normal
-        Vector(0.000, 0.000, 1.000)
-        """
-        return cls(Point.from_data(data['point']), Vector.from_data(data['normal']))
-
-    @classmethod
     def from_three_points(cls, a, b, c):
         """Construct a plane from three points in three-dimensional space.
 
         Parameters
         ----------
-        a : :class:`compas.geometry.Point` or [float, float, float]
+        a : [float, float, float] or :class:`compas.geometry.Point`
             The first point.
-        b : :class:`compas.geometry.Point` or [float, float, float]
+        b : [float, float, float] or :class:`compas.geometry.Point`
             The second point.
-        c : :class:`compas.geometry.Point` or [float, float, float]
+        c : [float, float, float] or :class:`compas.geometry.Point`
             The second point.
 
         Returns
@@ -187,6 +197,7 @@ class Plane(Primitive):
         Point(0.000, 0.000, 0.000)
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
+
         """
         a = Point(*a)
         b = Point(*b)
@@ -200,11 +211,11 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point` or [float, float, float]
+        point : [float, float, float] or :class:`compas.geometry.Point`
             The base point.
-        u : :class:`compas.geometry.Vector` or [float, float, float]
+        u : [float, float, float] or :class:`compas.geometry.Vector`
             The first vector.
-        v : :class:`compas.geometry.Vector` or [float, float, float]
+        v : [float, float, float] or :class:`compas.geometry.Vector`
             The second vector.
 
         Returns
@@ -220,6 +231,7 @@ class Plane(Primitive):
         Point(0.000, 0.000, 0.000)
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
+
         """
         normal = Vector.cross(u, v)
         return cls(point, normal)
@@ -229,12 +241,13 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        abcd : sequence[float]
+        abcd : [float, float, float, float]
             The equation coefficients.
 
         Returns
         -------
         :class:`compas.geometry.Plane`
+
         """
         a, b, c, d = abcd
         x = 1 / sqrt(a**2 + b**2 + c**2)
@@ -269,6 +282,7 @@ class Plane(Primitive):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> Plane.from_frame(frame)
         Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))
+
         """
         return cls(frame.point, frame.normal)
 
@@ -297,6 +311,7 @@ class Plane(Primitive):
         >>> T = Transformation.from_frame(f)
         >>> plane = Plane.worldXY()
         >>> plane.transform(T)
+
         """
         self.point.transform(T)
         self.normal.transform(T)
@@ -314,6 +329,6 @@ class Plane(Primitive):
         -------
         :class:`compas.geometry.Plane`
             The offset plane.
-        """
 
+        """
         return Plane(self.point + self.normal.scaled(distance), self.normal)

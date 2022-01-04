@@ -13,12 +13,6 @@ def binomial_coefficient(n, k):
     """Returns the binomial coefficient of the :math:`x^k` term in the
     polynomial expansion of the binomial power :math:`(1 + x)^n`.
 
-    Notes
-    -----
-    Arranging binomial coefficients into rows for successive values of `n`,
-    and in which `k` ranges from 0 to `n`, gives a triangular array known as
-    Pascal's triangle.
-
     Parameters
     ----------
     n : int
@@ -30,6 +24,13 @@ def binomial_coefficient(n, k):
     -------
     int
         The coefficient.
+
+    Notes
+    -----
+    Arranging binomial coefficients into rows for successive values of `n`,
+    and in which `k` ranges from 0 to `n`, gives a triangular array known as
+    Pascal's triangle.
+
     """
     return int(factorial(n) / float(factorial(k) * factorial(n - k)))
 
@@ -37,12 +38,7 @@ def binomial_coefficient(n, k):
 def bernstein(n, k, t):
     """k:sup:`th` of `n` + 1 Bernstein basis polynomials of degree `n`. A
     weighted linear combination of these basis polynomials is called a Bernstein
-    polynomial [wikipedia2017k]_.
-
-    Notes
-    -----
-    When constructing Bezier curves, the weights are simply the coordinates
-    of the control points of the curve.
+    polynomial.
 
     Parameters
     ----------
@@ -58,10 +54,22 @@ def bernstein(n, k, t):
     float
         The value of the Bernstein basis polynomial at `t`.
 
+    Notes
+    -----
+    When constructing Bezier curves, the weights are simply the coordinates
+    of the control points of the curve.
+
+    References
+    ----------
+    More info at [1]_.
+
+    .. [1] https://en.wikipedia.org/wiki/Bernstein_polynomial
+
     Examples
     --------
     >>> bernstein(3, 2, 0.5)
     0.375
+
     """
     if k < 0:
         return 0
@@ -78,7 +86,7 @@ class Bezier(Primitive):
 
     Parameters
     ----------
-    points : sequence[:class:`compas.geometry.Point` or [float, float, float]]
+    points : sequence[point]
         A sequence of control points, represented by their location in 3D space.
 
     Attributes
@@ -93,6 +101,7 @@ class Bezier(Primitive):
     >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
     >>> curve.degree
     2
+
     """
 
     __slots__ = ['_points']
@@ -102,31 +111,18 @@ class Bezier(Primitive):
         self._points = []
         self.points = points
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def data(self):
-        """dict - The data dictionary that represents the curve."""
+        """dict : The data dictionary that represents the curve."""
         return {'points': [list(point) for point in self.points]}
 
     @data.setter
     def data(self, data):
         self.points = data['points']
-
-    @property
-    def points(self):
-        return self._points
-
-    @points.setter
-    def points(self, points):
-        if points:
-            self._points = [Point(*point) for point in points]
-
-    @property
-    def degree(self):
-        return len(self.points) - 1
-
-    # ==========================================================================
-    # constructors
-    # ==========================================================================
 
     @classmethod
     def from_data(cls, data):
@@ -147,8 +143,30 @@ class Bezier(Primitive):
         >>> from compas.geometry import Bezier
         >>> data = {'points': [[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]]}
         >>> curve = Bezier.from_data(data)
+
         """
         return cls(data['points'])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
+    @property
+    def points(self):
+        return self._points
+
+    @points.setter
+    def points(self, points):
+        if points:
+            self._points = [Point(*point) for point in points]
+
+    @property
+    def degree(self):
+        return len(self.points) - 1
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
 
     # ==========================================================================
     # methods
@@ -174,6 +192,7 @@ class Bezier(Primitive):
         Point(0.000, 0.000, 0.000)
         >>> curve.point(1.0)
         Point(1.000, 0.000, 0.000)
+
         """
         n = self.degree
         point = Point(0, 0, 0)
@@ -200,6 +219,7 @@ class Bezier(Primitive):
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
         >>> curve.tangent(0.5)
         Vector(1.000, 0.000, 0.000)
+
         """
         n = self.degree
         v = Vector(0, 0, 0)
@@ -234,6 +254,7 @@ class Bezier(Primitive):
         Point(0.000, 0.000, 0.000)
         >>> points[-1]
         Point(1.000, 0.000, 0.000)
+
         """
         locus = []
         divisor = float(resolution - 1)

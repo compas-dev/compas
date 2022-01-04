@@ -41,7 +41,7 @@ class Polyhedron(Shape):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         from compas.data import is_float3, is_sequence_of_int
         return schema.Schema({
@@ -51,12 +51,12 @@ class Polyhedron(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the  schema of the data representation in JSON format."""
         return 'polyhedron'
 
     @property
     def data(self):
-        """dict - Returns the data dictionary that represents the polyhedron.
+        """dict : Returns the data dictionary that represents the polyhedron.
         """
         return {'vertices': self.vertices, 'faces': self.faces}
 

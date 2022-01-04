@@ -32,6 +32,7 @@ class Shape(Geometry):
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
         >>> C = A + B
+
         """
         from compas.geometry import boolean_union_mesh_mesh
         from compas.geometry import Polyhedron
@@ -59,6 +60,7 @@ class Shape(Geometry):
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
         >>> C = A - B
+
         """
         from compas.geometry import boolean_difference_mesh_mesh
         from compas.geometry import Polyhedron
@@ -86,6 +88,7 @@ class Shape(Geometry):
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
         >>> C = A & B
+
         """
         from compas.geometry import boolean_intersection_mesh_mesh
         from compas.geometry import Polyhedron
@@ -113,5 +116,6 @@ class Shape(Geometry):
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
         >>> C = A | B
+
         """
         return self.__add__(other)

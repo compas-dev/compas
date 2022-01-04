@@ -16,14 +16,9 @@ from compas.utilities import pairwise
 class Polyline(Primitive):
     """A polyline is a sequence of points connected by line segments.
 
-    A polyline is a piecewise linear element.
-    It does not have an interior.
-    It can be open or closed.
-    It can be self-intersecting.
-
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points : list[[float, float, float] or :class:`compas.geometry.Point`]
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
@@ -35,6 +30,13 @@ class Polyline(Primitive):
         The lines of the polyline.
     length : float, read-only
         The length of the polyline.
+
+    Notes
+    -----
+    A polyline is a piecewise linear element.
+    It does not have an interior.
+    It can be open or closed.
+    It can be self-intersecting.
 
     Examples
     --------
@@ -51,6 +53,7 @@ class Polyline(Primitive):
     True
     >>> polyline.lines[0].length
     1.0
+
     """
 
     __slots__ = ['_points', '_lines']
@@ -61,9 +64,13 @@ class Polyline(Primitive):
         self._lines = []
         self.points = points
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         return Schema({
@@ -72,18 +79,44 @@ class Polyline(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'polyline'
 
     @property
     def data(self):
-        """dict - Returns the data dictionary that represents the polyline.
+        """dict : Returns the data dictionary that represents the polyline.
         """
         return {'points': [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
         self.points = [Point.from_data(point) for point in data['points']]
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polyline from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyline`
+            The constructed polyline.
+
+        Examples
+        --------
+        >>> Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
+        Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
+
+        """
+        return cls([Point.from_data(point) for point in data['points']])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def points(self):
@@ -135,27 +168,6 @@ class Polyline(Primitive):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a polyline from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polyline`
-            The constructed polyline.
-
-        Examples
-        --------
-        >>> Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
-        Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
-        """
-        return cls([Point.from_data(point) for point in data['points']])
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -180,6 +192,7 @@ class Polyline(Primitive):
         >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
         >>> polyline.point(0.75)
         Point(1.000, 0.500, 0.000)
+
         """
         if t < 0 or t > 1:
             return None
@@ -220,6 +233,7 @@ class Polyline(Primitive):
         Examples
         --------
         >>>
+
         """
         raise NotImplementedError
 
@@ -239,6 +253,7 @@ class Polyline(Primitive):
         >>> polyline.points.append(polyline.points[0])
         >>> polyline.is_closed()
         True
+
         """
         return self.points[0] == self.points[-1]
 
@@ -257,6 +272,7 @@ class Polyline(Primitive):
         >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
         >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
         >>> polyline.transform(R)
+
         """
         for index, point in enumerate(transform_points(self.points, T)):
             self.points[index].x = point[0]
@@ -276,7 +292,6 @@ class Polyline(Primitive):
         list[:class:`compas.geometry.Polyline`]
 
         """
-
         corner_ids = []
         split_polylines = []
         points = self.points
@@ -313,11 +328,12 @@ class Polyline(Primitive):
 
         Parameters
         ----------
-        point: :class:`compas.geometry.Point` or [float, float, float]
+        point: [float, float, float] or :class:`compas.geometry.Point`
 
         Returns
         -------
         :class:`compas.geometry.Vector`
+
         """
         for line in self.lines:
             if is_point_on_line(point, line):
@@ -337,9 +353,9 @@ class Polyline(Primitive):
         -------
         list
             list[:class:`compas.geometry.Point`]
+
         """
         segment_length = self.length/num_segments
-
         return self.divide_polyline_by_length(segment_length, False)
 
     divide = divide_polyline
@@ -351,10 +367,10 @@ class Polyline(Primitive):
         ----------
         length : float
             Length of the segments.
-        strict : bool
+        strict : bool, optional
             If False, the remainder segment will be added even if it is smaller than the desired length
-        tol : float
-            floating point error tolerance
+        tol : float, optional
+            Floating point error tolerance.
 
         Returns
         -------

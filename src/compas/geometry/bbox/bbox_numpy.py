@@ -158,7 +158,7 @@ def oriented_bounding_box_xy_numpy(points):
 
     Parameters
     ----------
-    points : array_like[point or [float, float]]
+    points : array_like[point]
         XY(Z) coordinates of the points.
 
     Returns

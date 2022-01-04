@@ -68,7 +68,7 @@ class Torus(Shape):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         return schema.Schema({
             'plane': Plane.DATASCHEMA.fget(None),
@@ -78,12 +78,12 @@ class Torus(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the  schema of the data representation in JSON format."""
         return 'torus'
 
     @property
     def data(self):
-        """dict - Returns the data dictionary that represents the torus.
+        """dict : Returns the data dictionary that represents the torus.
         """
         return {'plane': self.plane.data,
                 'radius_axis': self.radius_axis,

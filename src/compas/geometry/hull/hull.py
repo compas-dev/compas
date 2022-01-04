@@ -19,7 +19,7 @@ def convex_hull(points):
 
     Parameters
     ----------
-    points : list[point]
+    points : sequence[point]
         A sequence of XYZ coordinates.
 
     Returns
@@ -86,7 +86,7 @@ def convex_hull_xy(points, strict=False):
 
     Parameters
     ----------
-    points : list[point or [float, float]]
+    points : sequence[point]
         XY(Z) coordinates of the points.
 
     Returns

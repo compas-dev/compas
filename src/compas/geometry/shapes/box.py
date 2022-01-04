@@ -107,9 +107,13 @@ class Box(Shape):
         self.ysize = ysize
         self.zsize = zsize
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         return schema.Schema({
             'frame': Frame.DATASCHEMA.fget(None),
@@ -120,12 +124,12 @@ class Box(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the  schema of the data representation in JSON format."""
         return 'box'
 
     @property
     def data(self):
-        """dict - Returns the data dictionary that represents the box.
+        """dict : Returns the data dictionary that represents the box.
         """
         return {'frame': self.frame.data,
                 'xsize': self.xsize,
@@ -138,6 +142,31 @@ class Box(Shape):
         self.xsize = data['xsize']
         self.ysize = data['ysize']
         self.zsize = data['zsize']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a box from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+            The constructed box.
+
+        Examples
+        --------
+        >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
+        >>> box = Box.from_data(data)
+        """
+        return cls(Frame.from_data(data['frame']), data['xsize'], data['ysize'], data['zsize'])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def frame(self):
@@ -328,27 +357,6 @@ class Box(Shape):
     # ==========================================================================
     # constructors
     # ==========================================================================
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a box from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Box`
-            The constructed box.
-
-        Examples
-        --------
-        >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
-        >>> box = Box.from_data(data)
-        """
-        return cls(Frame.from_data(data['frame']), data['xsize'], data['ysize'], data['zsize'])
 
     @classmethod
     def from_width_height_depth(cls, width, height, depth):

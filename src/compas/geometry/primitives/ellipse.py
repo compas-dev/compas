@@ -11,10 +11,12 @@ class Ellipse(Primitive):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or [point, normal]
+    plane : [point, vector] or :class:`compas.geometry.Plane`
         The plane of the ellipse.
     major : float
         The major of the ellipse.
+    minor : float
+        The minor of the ellipse.
 
     Attributes
     ----------
@@ -39,6 +41,7 @@ class Ellipse(Primitive):
     >>> from compas.geometry import Ellipse
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
     >>> ellipse = Ellipse(plane, 2, 1)
+
     """
 
     __slots__ = ['_plane', '_major', '_minor']
@@ -52,9 +55,13 @@ class Ellipse(Primitive):
         self.major = major
         self.minor = minor
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         return schema.Schema({
             'plane': Plane.DATASCHEMA.fget(None),
@@ -64,12 +71,12 @@ class Ellipse(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'ellipse'
 
     @property
     def data(self):
-        """dict - The data dictionary that represents the ellipse."""
+        """dict : The data dictionary that represents the ellipse."""
         return {'plane': self.plane.data,
                 'major': self.major,
                 'minor': self.minor}
@@ -79,6 +86,33 @@ class Ellipse(Primitive):
         self.plane = Plane.from_data(data['plane'])
         self.major = data['major']
         self.minor = data['minor']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a ellipse from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Ellipse`
+            The constructed ellipse.
+
+        Examples
+        --------
+        >>> from compas.geometry import Ellipse
+        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'major': 2.0, 'minor': 1.0}
+        >>> ellipse = Ellipse.from_data(data)
+
+        """
+        return cls(Plane.from_data(data['plane']), data['minor'], data['minor'])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def plane(self):
@@ -161,28 +195,6 @@ class Ellipse(Primitive):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a ellipse from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Ellipse`
-            The constructed ellipse.
-
-        Examples
-        --------
-        >>> from compas.geometry import Ellipse
-        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'major': 2.0, 'minor': 1.0}
-        >>> ellipse = Ellipse.from_data(data)
-        """
-        return cls(Plane.from_data(data['plane']), data['minor'], data['minor'])
-
     # ==========================================================================
     # transformations
     # ==========================================================================
@@ -209,5 +221,6 @@ class Ellipse(Primitive):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> ellipse.transform(T)
+
         """
         self.plane.transform(T)

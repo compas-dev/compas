@@ -108,6 +108,7 @@ class Quaternion(Primitive):
     >>> P = R*Q
     >>> P.is_unit
     True
+
     """
 
     __slots__ = ['_w', '_x', '_y', '_z']
@@ -123,20 +124,24 @@ class Quaternion(Primitive):
         self.y = y
         self.z = z
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         return Schema({'w': float, 'x': float, 'y': float, 'z': float})
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'quaternion'
 
     @property
     def data(self):
-        """dict - Representation of the quaternion as a dict containing only native Python objects."""
+        """dict : Representation of the quaternion as a dict containing only native Python objects."""
         return {'w': self.w, 'x': self.x, 'y': self.y, 'z': self.z}
 
     @data.setter
@@ -145,6 +150,31 @@ class Quaternion(Primitive):
         self.x = data['x']
         self.y = data['y']
         self.z = data['z']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a quaternion from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Quaternion`
+            The constructed quaternion.
+
+        Examples
+        --------
+        >>>
+
+        """
+        return cls(data['w'], data['x'], data['y'], data['z'])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def w(self):
@@ -244,7 +274,7 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Quaternion` or [float, float, float, float]
+        other : [float, float, float, float] or :class:`compas.geometry.Quaternion`
             A Quaternion.
 
         Returns
@@ -266,6 +296,7 @@ class Quaternion(Primitive):
         >>> P = R*Q
         >>> P.is_unit
         True
+
         """
         p = quaternion_multiply(list(self), list(other))
         return Quaternion(*p)
@@ -273,26 +304,6 @@ class Quaternion(Primitive):
     # ==========================================================================
     # constructors
     # ==========================================================================
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a quaternion from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Quaternion`
-            The constructed quaternion.
-
-        Examples
-        --------
-        >>>
-        """
-        return cls(data['w'], data['x'], data['y'], data['z'])
 
     @classmethod
     def from_frame(cls, frame):
@@ -316,13 +327,14 @@ class Quaternion(Primitive):
         >>> Q = Quaternion.from_frame(F)
         >>> allclose(Q.canonized(), quaternion_canonize(quaternion_unitize(q)))
         True
+
         """
         w, x, y, z = frame.quaternion
         return cls(w, x, y, z)
 
     @classmethod
     def from_matrix(cls, M):
-        """Create a :class:`Quaternion` from a transformation matrix.
+        """Create a Quaternion from a transformation matrix.
 
         Parameters
         ----------
@@ -340,12 +352,13 @@ class Quaternion(Primitive):
         >>> M = matrix_from_euler_angles(ea)
         >>> Quaternion.from_matrix(M)
         Quaternion(0.949, 0.066, 0.302, 0.066)
+
         """
         return cls(*quaternion_from_matrix(M))
 
     @classmethod
     def from_rotation(cls, R):
-        """Create a :class:`Quaternion` from a :class:`compas.geometry.Rotatation`.
+        """Create a Quaternion from a Rotatation.
 
         Parameters
         ----------
@@ -385,6 +398,7 @@ class Quaternion(Primitive):
         >>> q.unitize()
         >>> q.is_unit
         True
+
         """
         qu = quaternion_unitize(self)
         self.w, self.x, self.y, self.z = qu
@@ -404,6 +418,7 @@ class Quaternion(Primitive):
         >>> p = q.unitized()
         >>> p.is_unit
         True
+
         """
         qu = quaternion_unitize(self)
         return Quaternion(*qu)
@@ -424,6 +439,7 @@ class Quaternion(Primitive):
         >>> q.canonize()
         >>> q
         Quaternion(0.500, -0.500, -0.500, -0.500)
+
         """
         qc = quaternion_canonize(self)
         self.w, self.x, self.y, self.z = qc
@@ -445,6 +461,7 @@ class Quaternion(Primitive):
         >>> p = q.canonized()
         >>> p
         Quaternion(0.500, -0.500, -0.500, -0.500)
+
         """
         qc = quaternion_canonize(self)
         return Quaternion(*qc)
@@ -462,6 +479,7 @@ class Quaternion(Primitive):
         >>> q.conjugate()
         >>> q
         Quaternion(1.000, -1.000, -1.000, -1.000)
+
         """
         qc = quaternion_conjugate(self)
         self.w, self.x, self.y, self.z = qc
@@ -482,6 +500,7 @@ class Quaternion(Primitive):
         Quaternion(1.000, 1.000, 1.000, 1.000)
         >>> p
         Quaternion(1.000, -1.000, -1.000, -1.000)
+
         """
         qc = quaternion_conjugate(self)
         return Quaternion(*qc)

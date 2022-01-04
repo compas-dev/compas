@@ -11,9 +11,9 @@ class Line(Primitive):
 
     Parameters
     ----------
-    p1 : :class:`compas.geometry.Point` or [float, float, float]
+    p1 : [float, float, float] or :class:`compas.geometry.Point`
         The first point.
-    p2 : :class:`compas.geometry.Point` or [float, float, float]
+    p2 : [float, float, float] or :class:`compas.geometry.Point`
         The second point.
 
     Attributes
@@ -56,9 +56,13 @@ class Line(Primitive):
         self.start = p1
         self.end = p2
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         return Schema({
             'start': Point.DATASCHEMA.fget(None),
@@ -67,18 +71,40 @@ class Line(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'line'
 
     @property
     def data(self):
-        """dict - The data dictionary that represents the line."""
+        """dict : The data dictionary that represents the line."""
         return {'start': self.start.data, 'end': self.end.data}
 
     @data.setter
     def data(self, data):
         self.start = Point.from_data(data['start'])
         self.end = Point.from_data(data['end'])
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a frame from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Examples
+        --------
+        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
+        >>> line.end
+        Point(1.000, 0.000, 0.000)
+
+        """
+        return cls(Point.from_data(data['start']), Point.from_data(data['end']))
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def start(self):
@@ -154,34 +180,17 @@ class Line(Primitive):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a frame from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Examples
-        --------
-        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
-        >>> line.end
-        Point(1.000, 0.000, 0.000)
-        """
-        return cls(Point.from_data(data['start']), Point.from_data(data['end']))
-
     # ==========================================================================
     # static
     # ==========================================================================
 
     @staticmethod
     def transform_collection(collection, X):
-        """Transform a collection of `Line` objects.
+        """Transform a collection of Line objects.
 
         Parameters
         ----------
-        collection : list[:class:`compas.geometry.Line` or [point, point]]
+        collection : list[[point, point] or :class:`compas.geometry.Line`]
             The collection of lines.
 
         Returns
@@ -204,17 +213,18 @@ class Line(Primitive):
         Point(0.000, 1.000, 0.000)
         >>> a is b
         True
+
         """
         points = [line.start for line in collection] + [line.end for line in collection]
         Point.transform_collection(points, X)
 
     @staticmethod
     def transformed_collection(collection, X):
-        """Create a collection of transformed ``Line`` objects.
+        """Create a collection of transformed Line objects.
 
         Parameters
         ----------
-        collection : list[:class:`compas.geometry.Line` or [point, point]]
+        collection : list[[point, point] or :class:`compas.geometry.Line`]
             The collection of lines.
 
         Returns
@@ -237,6 +247,7 @@ class Line(Primitive):
         Point(0.000, 1.000, 0.000)
         >>> a is b
         False
+
         """
         lines = [line.copy() for line in collection]
         Line.transform_collection(lines, X)
@@ -264,6 +275,7 @@ class Line(Primitive):
         >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
         >>> line.point(0.5)
         Point(0.500, 0.000, 0.000)
+
         """
         if t == 0:
             return self.start
@@ -293,6 +305,7 @@ class Line(Primitive):
         >>> line.transform(R)
         >>> line.end
         Point(0.000, 1.000, 0.000)
+
         """
         self.start.transform(T)
         self.end.transform(T)

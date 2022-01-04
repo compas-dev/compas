@@ -30,7 +30,7 @@ class Polygon(Primitive):
 
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points : list[[float, float, float] or :class:`compas.geometry.Point`]
         An ordered list of points.
 
     Attributes
@@ -63,6 +63,7 @@ class Polygon(Primitive):
     Point(0.500, 0.500, 0.000)
     >>> polygon.area
     1.0
+
     """
 
     __slots__ = ['_points', '_lines']
@@ -73,9 +74,13 @@ class Polygon(Primitive):
         self._lines = []
         self.points = points
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         return Schema({
@@ -84,17 +89,44 @@ class Polygon(Primitive):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'polygon'
 
     @property
     def data(self):
-        """dict - The data dictionary that represents the polygon."""
+        """dict : The data dictionary that represents the polygon."""
         return {'points': [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
         self.points = [Point.from_data(point) for point in data['points']]
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polygon from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polygon`
+            The constructed polygon.
+
+        Examples
+        --------
+        >>> polygon = Polygon.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]})
+        >>> polygon.points[0]
+        Point(0.000, 0.000, 0.000)
+
+        """
+        return cls([Point.from_data(point) for point in data['points']])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def points(self):
@@ -176,28 +208,6 @@ class Polygon(Primitive):
     # ==========================================================================
 
     @classmethod
-    def from_data(cls, data):
-        """Construct a polygon from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polygon`
-            The constructed polygon.
-
-        Examples
-        --------
-        >>> polygon = Polygon.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]})
-        >>> polygon.points[0]
-        Point(0.000, 0.000, 0.000)
-        """
-        return cls([Point.from_data(point) for point in data['points']])
-
-    @classmethod
     def from_sides_and_radius_xy(cls, n, radius):
         """Construct a polygon from a number of sides and a radius.
         The resulting polygon is planar, equilateral and equiangular.
@@ -233,6 +243,7 @@ class Polygon(Primitive):
         >>> centertofirst = subtract_vectors(pentagon.points[0], pentagon.centroid)
         >>> dot_vectors(centertofirst, [0.0, 1.0, 0.0]) == 1
         True
+
         """
         assert n >= 3, 'Supplied number of sides must be at least 3!'
         points = []
@@ -262,6 +273,7 @@ class Polygon(Primitive):
         >>> polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.4, 0.4, 0.0], [0.0, 1.0, 0.0]])
         >>> polygon.is_convex()
         False
+
         """
         return is_polygon_convex(self.points)
 
@@ -279,6 +291,7 @@ class Polygon(Primitive):
         >>> polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.1]])
         >>> polygon.is_planar()
         False
+
         """
         return is_coplanar(self.points)
 
@@ -287,7 +300,7 @@ class Polygon(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` or list[list[float]]
             The transformation.
 
         Returns
@@ -303,6 +316,7 @@ class Polygon(Primitive):
         >>> polygon.transform(R)
         >>> polygon.points[0]
         Point(-0.707, 0.707, 0.000)
+
         """
         for index, point in enumerate(transform_points(self.points, T)):
             self.points[index].x = point[0]

@@ -67,7 +67,7 @@ class Cylinder(Shape):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - Schema of the data representation."""
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         return schema.Schema({
             'circle': {
@@ -79,12 +79,12 @@ class Cylinder(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str - Name of the  schema of the data representation in JSON format."""
+        """str : Name of the  schema of the data representation in JSON format."""
         return 'cylinder'
 
     @property
     def data(self):
-        """dict - Returns the data dictionary that represents the cylinder.
+        """dict : Returns the data dictionary that represents the cylinder.
         """
         return {'circle': self.circle.data, 'height': self.height}
 
