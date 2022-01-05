@@ -60,7 +60,7 @@ class MeshArtist(Artist):
     edge_width : dict[tuple[int, int], float]
         Edge widths.
         Defaults to 1.
-        Visuzlization of edges with variable width is not available for all visualization contexts.
+        Visualization of edges with variable width is not available for all visualization contexts.
 
     Class Attributes
     ----------------
