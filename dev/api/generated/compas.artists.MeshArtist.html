@@ -115,36 +115,47 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p>
 </dd>
-<dt class="field-even">Class Attributes</dt>
+<dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>default_color</strong> (<em>tuple</em>) – The default color of the mesh.</p></li>
-<li><p><strong>default_vertexcolor</strong> (<em>tuple</em>) – The default color for vertices that do not have a specified color.</p></li>
-<li><p><strong>default_edgecolor</strong> (<em>tuple</em>) – The default color for edges that do not have a specified color.</p></li>
-<li><p><strong>default_facecolor</strong> (<em>tuple</em>) – The default color for faces that do not have a specified color.</p></li>
-<li><p><strong>default_vertexsize</strong> (<em>int</em>)</p></li>
-<li><p><strong>default_edgewidth</strong> (<em>float</em>)</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The mesh data structure.</p></li>
+<li><p><strong>vertices</strong> (<em>list[int]</em>) – The selection of vertices that should be included in the drawing.
+Defaults to all vertices.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]]</em>) – The selection of edges that should be included in the drawing.
+Defaults to all edges.</p></li>
+<li><p><strong>faces</strong> (<em>list[int]</em>) – The selection of faces that should be included in the drawing.
+Defaults to all faces.</p></li>
+<li><p><strong>color</strong> (<em>tuple[float, float, float]</em>) – The base RGB color of the mesh.
+Defaults to <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_color</span></code>.</p></li>
+<li><p><strong>vertex_xyz</strong> (<em>dict[int, list[float]]</em>) – View coordinates of the vertices.
+Defaults to the real coordinates.</p></li>
+<li><p><strong>vertex_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Vertex colors.
+Missing vertices get the default vertex color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_vertexcolor</span></code>.</p></li>
+<li><p><strong>edge_color</strong> (<em>dict[tuple[int, int], tuple[float, float, float]]</em>) – Edge colors.
+Missing edges get the default edge color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p></li>
+<li><p><strong>face_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Face colors.
+Missing faces get the default face color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p></li>
+<li><p><strong>vertex_text</strong> (<em>dict[int, str]</em>) – Vertex labels.
+Defaults to the vertex identifiers.</p></li>
+<li><p><strong>edge_text</strong> (<em>dict[tuple[int, int], str]</em>) – Edge labels.
+Defaults to the edge identifiers.</p></li>
+<li><p><strong>face_text</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Face labels.
+Defaults to the face identifiers.</p></li>
+<li><p><strong>vertex_size</strong> (<em>dict[int, float]</em>) – Vertex sizes.
+Defaults to 1.
+Visualization of vertices with variable size is not available for all visualization contexts.</p></li>
+<li><p><strong>edge_width</strong> (<em>dict[tuple[int, int], float]</em>) – Edge widths.
+Defaults to 1.
+Visualization of edges with variable width is not available for all visualization contexts.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Class Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The mesh associated with the artist.</p></li>
-<li><p><strong>vertices</strong> (<em>list</em>) – The vertices to include in the drawing.
-Default is all vertices.</p></li>
-<li><p><strong>edges</strong> (<em>list</em>) – The edges to include in the drawing.
-Default is all edges.</p></li>
-<li><p><strong>faces</strong> (<em>list</em>) – The faces to include in the drawing.
-Default is all faces.</p></li>
-<li><p><strong>vertex_xyz</strong> (<em>dict</em>) – The view coordinates of the vertices.
-Default is to use the actual vertex coordinates.</p></li>
-<li><p><strong>vertex_color</strong> (<em>dict</em>) – Mapping between vertices and colors.
-Default is to use the default color for vertices.</p></li>
-<li><p><strong>edge_color</strong> (<em>dict</em>) – Mapping between edges and colors.
-Default is to use the default color for edges.</p></li>
-<li><p><strong>face_color</strong> (<em>dict</em>) – Mapping between faces and colors.
-Default is to use the default color for faces.</p></li>
-<li><p><strong>vertex_text</strong> (<em>dict</em>) – Mapping between vertices and text labels.</p></li>
-<li><p><strong>edge_text</strong> (<em>dict</em>) – Mapping between edges and text labels.</p></li>
-<li><p><strong>face_text</strong> (<em>dict</em>) – Mapping between faces and text labels.</p></li>
+<li><p><strong>default_color</strong> (<em>tuple[float, float, float]</em>) – The default base color of the mesh.</p></li>
+<li><p><strong>default_vertexcolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the vertices of the mesh.</p></li>
+<li><p><strong>default_edgecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the edges of the mesh.</p></li>
+<li><p><strong>default_facecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the faces of the mesh.</p></li>
+<li><p><strong>default_vertexsize</strong> (<em>float</em>) – The default size of the vertices of the mesh.</p></li>
+<li><p><strong>default_edgewidth</strong> (<em>float</em>) – The default width of the edges of the mesh.</p></li>
 </ul>
 </dd>
 </dl>
@@ -156,16 +167,16 @@ Default is to use the default color for faces.</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.MeshArtist.clear.html#compas.artists.MeshArtist.clear" title="compas.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear all components of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.MeshArtist.clear_edges.html#compas.artists.MeshArtist.clear_edges" title="compas.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the edges of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.MeshArtist.clear_faces.html#compas.artists.MeshArtist.clear_faces" title="compas.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the faces of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.MeshArtist.clear_vertices.html#compas.artists.MeshArtist.clear_vertices" title="compas.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the vertices of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.MeshArtist.draw_edges.html#compas.artists.MeshArtist.draw_edges" title="compas.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw the edges of the mesh.</p></td>
@@ -174,7 +185,7 @@ Default is to use the default color for faces.</p></li>
 <td><p>Draw the faces of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.MeshArtist.draw_mesh.html#compas.artists.MeshArtist.draw_mesh" title="compas.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Draw the mesh of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.MeshArtist.draw_vertices.html#compas.artists.MeshArtist.draw_vertices" title="compas.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
 <td><p>Draw the vertices of the mesh.</p></td>
@@ -192,19 +203,19 @@ Default is to use the default color for faces.</p></li>
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.MeshArtist.build_as.html#compas.artists.MeshArtist.build_as" title="compas.artists.MeshArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Build an artist with the given type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.MeshArtist.draw.html#compas.artists.MeshArtist.draw" title="compas.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>The main drawing method.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.MeshArtist.draw_collection.html#compas.artists.MeshArtist.draw_collection" title="compas.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Drawing method for drawing an entire collection of objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.MeshArtist.redraw.html#compas.artists.MeshArtist.redraw" title="compas.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Redraw the view.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.MeshArtist.register.html#compas.artists.MeshArtist.register" title="compas.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Register an artist type to a data type.</p></td>
 </tr>
 </tbody>
 </table>

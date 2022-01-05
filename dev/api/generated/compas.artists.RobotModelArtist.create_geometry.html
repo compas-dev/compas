@@ -110,8 +110,8 @@
 <h1>RobotModelArtist.create_geometry</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.artists.RobotModelArtist.create_geometry">
-<span class="sig-prename descclassname"><span class="pre">RobotModelArtist.</span></span><span class="sig-name descname"><span class="pre">create_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/robotmodelartist.py#L30"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Draw a <strong>COMPAS</strong> geometry in the respective CAD environment.</p>
+<span class="sig-prename descclassname"><span class="pre">RobotModelArtist.</span></span><span class="sig-name descname"><span class="pre">create_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/robotmodelartist.py#L31"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Draw geometry in the respective CAD environment.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is an abstract method that needs to be implemented by derived classes.</p>
@@ -119,7 +119,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code>) – Instance of a <strong>COMPAS</strong> mesh</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – Instance of a mesh data structure</p></li>
 <li><p><strong>name</strong> (<em>str, optional</em>) – The name of the mesh to draw.</p></li>
 </ul>
 </dd>

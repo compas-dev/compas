@@ -115,47 +115,39 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – A COMPAS volmesh.</p>
 </dd>
-<dt class="field-even">Class Attributes</dt>
+<dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>default_vertexcolor</strong> (<em>tuple</em>) – The default color for vertices that do not have a specified color.</p></li>
-<li><p><strong>default_edgecolor</strong> (<em>tuple</em>) – The default color for edges that do not have a specified color.</p></li>
-<li><p><strong>default_facecolor</strong> (<em>tuple</em>) – The default color for faces that do not have a specified color.</p></li>
-<li><p><strong>default_cellcolor</strong> (<em>tuple</em>) – The default color for cells that do not have a specified color.</p></li>
+<li><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – The COMPAS volmesh associated with the artist.</p></li>
+<li><p><strong>vertices</strong> (<em>list[int]</em>) – The list of vertices to draw.
+Default is a list of all vertices of the volmesh.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]]</em>) – The list of edges to draw.
+Default is a list of all edges of the volmesh.</p></li>
+<li><p><strong>faces</strong> (<em>list[int]</em>) – The list of faces to draw.
+Default is a list of all faces of the volmesh.</p></li>
+<li><p><strong>cells</strong> (<em>list[int]</em>) – The list of cells to draw.
+Default is a list of all cells of the volmesh.</p></li>
+<li><p><strong>vertex_xyz</strong> (<em>dict[int, list[float]]</em>) – The view coordinates of the vertices.
+By default, the actual vertex coordinates are used.</p></li>
+<li><p><strong>vertex_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Mapping between vertices and colors.
+Missing vertices get the default vertex color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_vertexcolor</span></code>.</p></li>
+<li><p><strong>edge_color</strong> (<em>dict[tuple[int, int], tuple[float, float, float]]</em>) – Mapping between edges and colors.
+Missing edges get the default edge color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p></li>
+<li><p><strong>face_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Mapping between faces and colors.
+Missing faces get the default face color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p></li>
+<li><p><strong>cell_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Mapping between cells and colors.
+Missing cells get the default cell color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p></li>
+<li><p><strong>vertex_text</strong> (<em>dict[int, str]</em>) – Mapping between vertices and text labels.</p></li>
+<li><p><strong>edge_text</strong> (<em>dict[tuple[int, int], str]</em>) – Mapping between edges and text labels.</p></li>
+<li><p><strong>face_text</strong> (<em>dict[int, str]</em>) – Mapping between faces and text lables.</p></li>
+<li><p><strong>cell_text</strong> (<em>dict[int, str]</em>) – Mapping between cells and text lables.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Class Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – The COMPAS volmesh associated with the artist.</p></li>
-<li><p><strong>vertices</strong> (<em>list</em>) – The list of vertices to draw.
-Default is a list of all vertices of the volmesh.</p></li>
-<li><p><strong>edges</strong> (<em>list</em>) – The list of edges to draw.
-Default is a list of all edges of the volmesh.</p></li>
-<li><p><strong>faces</strong> (<em>list</em>) – The list of faces to draw.
-Default is a list of all faces of the volmesh.</p></li>
-<li><p><strong>cells</strong> (<em>list</em>) – The list of cells to draw.
-Default is a list of all cells of the volmesh.</p></li>
-<li><p><strong>vertex_xyz</strong> (<em>dict[int, tuple(float, float, float)]</em>) – Mapping between vertices and their view coordinates.
-The default view coordinates are the actual coordinates of the vertices of the volmesh.</p></li>
-<li><p><strong>vertex_color</strong> (<em>dict[int, tuple(int, int, int)]</em>) – Mapping between vertices and RGB color values.
-The colors have to be integer tuples with values in the range <code class="docutils literal notranslate"><span class="pre">0-255</span></code>.
-Missing vertices get the default vertex color (<code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_vertexcolor</span></code>).</p></li>
-<li><p><strong>vertex_text</strong> (<em>dict[int, str]</em>) – Mapping between vertices and text labels.
-Missing vertices are labelled with the corresponding vertex identifiers.</p></li>
-<li><p><strong>edge_color</strong> (<em>dict[tuple(int, int), tuple(int, int, int)]</em>) – Mapping between edges and RGB color values.
-The colors have to be integer tuples with values in the range <code class="docutils literal notranslate"><span class="pre">0-255</span></code>.
-Missing edges get the default edge color (<code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_edgecolor</span></code>).</p></li>
-<li><p><strong>edge_text</strong> (<em>dict[tuple(int, int), str]</em>) – Mapping between edges and text labels.
-Missing edges are labelled with the corresponding edge identifiers.</p></li>
-<li><p><strong>face_color</strong> (<em>dict[tuple, tuple(int, int, int)]</em>) – Mapping between faces and RGB color values.
-The colors have to be integer tuples with values in the range <code class="docutils literal notranslate"><span class="pre">0-255</span></code>.
-Missing faces get the default face color (<code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_facecolor</span></code>).</p></li>
-<li><p><strong>face_text</strong> (<em>dict[tuple, str]</em>) – Mapping between faces and text labels.
-Missing faces are labelled with the corresponding face identifiers.</p></li>
-<li><p><strong>cell_color</strong> (<em>dict[int, tuple(int, int, int)]</em>) – Mapping between cells and RGB color values.
-The colors have to be integer tuples with values in the range <code class="docutils literal notranslate"><span class="pre">0-255</span></code>.
-Missing cells get the default cell color (<code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_cellcolor</span></code>).</p></li>
-<li><p><strong>cell_text</strong> (<em>dict[int, str]</em>) – Mapping between cells and text labels.
-Missing cells are labelled with the corresponding cell identifiers.</p></li>
+<li><p><strong>default_vertexcolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the vertices of the mesh that don’t have a specified color.</p></li>
+<li><p><strong>default_edgecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the edges of the mesh that don’t have a specified color.</p></li>
+<li><p><strong>default_facecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the faces of the mesh that don’t have a specified color.</p></li>
+<li><p><strong>default_cellcolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the cells of the mesh that don’t have a specified color.</p></li>
 </ul>
 </dd>
 </dl>
@@ -167,16 +159,16 @@ Missing cells are labelled with the corresponding cell identifiers.</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.clear_cells.html#compas.artists.VolMeshArtist.clear_cells" title="compas.artists.VolMeshArtist.clear_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_cells</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the cells of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.clear_edges.html#compas.artists.VolMeshArtist.clear_edges" title="compas.artists.VolMeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the edges of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.clear_faces.html#compas.artists.VolMeshArtist.clear_faces" title="compas.artists.VolMeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the faces of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.clear_vertices.html#compas.artists.VolMeshArtist.clear_vertices" title="compas.artists.VolMeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the vertices of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.draw_cells.html#compas.artists.VolMeshArtist.draw_cells" title="compas.artists.VolMeshArtist.draw_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cells</span></code></a></p></td>
 <td><p>Draw the cells of the mesh.</p></td>
@@ -203,22 +195,22 @@ Missing cells are labelled with the corresponding cell identifiers.</p></li>
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.build_as.html#compas.artists.VolMeshArtist.build_as" title="compas.artists.VolMeshArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Build an artist with the given type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.clear.html#compas.artists.VolMeshArtist.clear" title="compas.artists.VolMeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear all objects from the view.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.draw.html#compas.artists.VolMeshArtist.draw" title="compas.artists.VolMeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>The main drawing method.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.draw_collection.html#compas.artists.VolMeshArtist.draw_collection" title="compas.artists.VolMeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Drawing method for drawing an entire collection of objects.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.redraw.html#compas.artists.VolMeshArtist.redraw" title="compas.artists.VolMeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Redraw the view.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.VolMeshArtist.register.html#compas.artists.VolMeshArtist.register" title="compas.artists.VolMeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Register an artist type to a data type.</p></td>
 </tr>
 </tbody>
 </table>

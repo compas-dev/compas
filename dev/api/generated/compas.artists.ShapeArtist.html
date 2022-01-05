@@ -115,21 +115,19 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>) – The geometry of the shape.</p></li>
-<li><p><strong>color</strong> (<em>tuple, optional</em>) – The RGB color.</p></li>
+<li><p><strong>color</strong> (<em>tuple[float, float, float], optional</em>) – The RGB color.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Class Attributes</dt>
-<dd class="field-even"><p><strong>default_color</strong> (<em>tuple</em>) – The default rgb color value of the shape (<code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></code>).</p>
-</dd>
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>) – The geometry of the shape.</p></li>
-<li><p><strong>color</strong> (<em>tuple</em>) – The RGB color.</p></li>
-<li><p><strong>u</strong> (<em>int</em>) – The resolution in the u direction.
-The default is <code class="docutils literal notranslate"><span class="pre">16</span></code> and the minimum <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
-<li><p><strong>v</strong> (<em>int</em>) – The resolution in the v direction.
-The default is <code class="docutils literal notranslate"><span class="pre">16</span></code> and the minimum <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p><strong>color</strong> (<em>tuple[float, float, float]</em>) – The color of the shape.</p></li>
+<li><p><strong>u</strong> (<em>int</em>) – The resolution in the U direction of the discrete shape representation.</p></li>
+<li><p><strong>v</strong> (<em>int</em>) – The resolution in the V direction of the discrete shape representation.</p></li>
 </ul>
+</dd>
+<dt class="field-odd">Class Attributes</dt>
+<dd class="field-odd"><p><strong>default_color</strong> (<em>tuple[float, float, float]</em>) – The default color of the shape.</p>
 </dd>
 </dl>
 <p class="rubric">Inherited Methods</p>
@@ -143,22 +141,22 @@ The default is <code class="docutils literal notranslate"><span class="pre">16</
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.ShapeArtist.build_as.html#compas.artists.ShapeArtist.build_as" title="compas.artists.ShapeArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Build an artist with the given type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.ShapeArtist.clear.html#compas.artists.ShapeArtist.clear" title="compas.artists.ShapeArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear all objects from the view.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.ShapeArtist.draw.html#compas.artists.ShapeArtist.draw" title="compas.artists.ShapeArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>The main drawing method.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.ShapeArtist.draw_collection.html#compas.artists.ShapeArtist.draw_collection" title="compas.artists.ShapeArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Drawing method for drawing an entire collection of objects.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.ShapeArtist.redraw.html#compas.artists.ShapeArtist.redraw" title="compas.artists.ShapeArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Redraw the view.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.ShapeArtist.register.html#compas.artists.ShapeArtist.register" title="compas.artists.ShapeArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Register an artist type to a data type.</p></td>
 </tr>
 </tbody>
 </table>

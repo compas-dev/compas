@@ -108,10 +108,10 @@
 <h1>RobotModelArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.artists.RobotModelArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">RobotModelArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/robotmodelartist.py#L52"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">RobotModelArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/robotmodelartist.py#L54"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.robotmodelartist.AbstractRobotModelArtist</span></code>, <a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.artist.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.artist.Artist</span></code></a></p>
 <p>Provides common functionality to most robot model artist implementations.</p>
-<p>In <strong>COMPAS</strong>, the <cite>artists</cite> are classes that assist with the visualization of
+<p>In COMPAS, “artists” are classes that assist with the visualization of
 datastructures and models, in a way that maintains the data separated from the
 specific CAD interfaces, while providing a way to leverage native performance
 of the CAD environment.</p>
@@ -183,28 +183,28 @@ to geometry (<a class="reference internal" href="compas.artists.RobotModelArtist
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.build_as.html#compas.artists.RobotModelArtist.build_as" title="compas.artists.RobotModelArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Build an artist with the given type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.clear.html#compas.artists.RobotModelArtist.clear" title="compas.artists.RobotModelArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear all objects from the view.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.create_geometry.html#compas.artists.RobotModelArtist.create_geometry" title="compas.artists.RobotModelArtist.create_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_geometry</span></code></a></p></td>
-<td><p>Draw a <strong>COMPAS</strong> geometry in the respective CAD environment.</p></td>
+<td><p>Draw geometry in the respective CAD environment.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.draw.html#compas.artists.RobotModelArtist.draw" title="compas.artists.RobotModelArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>The main drawing method.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.draw_collection.html#compas.artists.RobotModelArtist.draw_collection" title="compas.artists.RobotModelArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Drawing method for drawing an entire collection of objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.redraw.html#compas.artists.RobotModelArtist.redraw" title="compas.artists.RobotModelArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Redraw the view.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.register.html#compas.artists.RobotModelArtist.register" title="compas.artists.RobotModelArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Register an artist type to a data type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.RobotModelArtist.transform.html#compas.artists.RobotModelArtist.transform" title="compas.artists.RobotModelArtist.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
-<td><p>Transforms a CAD-specific geometry using a <strong>COMPAS</strong> transformation.</p></td>
+<td><p>Transforms a CAD-specific geometry using a Transformation.</p></td>
 </tr>
 </tbody>
 </table>
