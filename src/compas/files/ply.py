@@ -9,7 +9,7 @@ from compas import _iotools
 
 
 class PLY(object):
-    """Class for working with files in Polygon format, or Stanford triangle format.
+    """Class for working with files in Polygon format, also known as Stanford triangle format.
 
     Parameters
     ----------
