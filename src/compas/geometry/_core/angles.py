@@ -118,9 +118,9 @@ def angle_vectors_xy(u, v, deg=False, tol=1e-4):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The first 2D or 3D vector (Z will be ignored).
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The second 2D or 3D vector (Z will be ignored).
     deg : bool, optional
         If True, returns the angle in degrees.
@@ -190,11 +190,11 @@ def angle_points_xy(a, b, c, deg=False):
 
     Parameters
     ----------
-    a : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
+    a : [float, float] or [float, float, float] or :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    b : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
+    b : [float, float] or [float, float, float] or :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    c : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
+    c : [float, float] or [float, float, float] or :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
     deg : bool, optional
         If True, returns the angle in degrees.
@@ -258,9 +258,9 @@ def angles_vectors_xy(u, v, deg=False):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) coordinates of the first vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) coordinates of the second vector.
     deg : bool, optional
         If True, returns the angle in degrees.
@@ -333,11 +333,11 @@ def angles_points_xy(a, b, c, deg=False):
 
     Parameters
     ----------
-    a : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
+    a : [float, float] or [float, float, float] or :class:`compas.geometry.Point`
         XY(Z) coordinates.
-    b : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
+    b : [float, float] or [float, float, float] or :class:`compas.geometry.Point`
         XY(Z) coordinates.
-    c : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
+    c : [float, float] or [float, float, float] or :class:`compas.geometry.Point`
         XY(Z) coordinates.
     deg : bool, optional
         If True, returns the angle in degrees.
@@ -375,9 +375,9 @@ def angle_planes(a, b, deg=False):
 
     Parameters
     ----------
-    a : :class:`compas.geometry.Plane` or [point, vector]
+    a : [point, vector] or :class:`compas.geometry.Plane`
         The first plane.
-    b : :class:`compas.geometry.Plane` or [point, vector]
+    b : [point, vector] or :class:`compas.geometry.Plane`
         The second plane.
     deg : bool, optional
         If True, returns the angle in degrees.

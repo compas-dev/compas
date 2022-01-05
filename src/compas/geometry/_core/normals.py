@@ -24,7 +24,7 @@ def normal_polygon(polygon, unitized=True):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon` or list[point]
+    polygon : sequence[point] or :class:`compas.geometry.Polygon`
         A list of polygon point coordinates.
     unitized : bool, optional
         If True, unitize the normal vector.
@@ -78,7 +78,7 @@ def normal_triangle(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : :class:`compas.geometry.Polygon` or [point, point, point]
+    triangle : [point, point, point] or :class:`compas.geometry.Polygon`
         A list of triangle point coordinates.
     unitized : bool, optional
         If True, unitize the normal vector.
@@ -110,7 +110,7 @@ def normal_triangle_xy(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : :class:`compas.geometry.Polygon` or [point or [float, float], point or [float, float], point or [float, float]]
+    triangle : [point, point, point] or :class:`compas.geometry.Polygon`
         A list of triangle point coordinates.
         Z-coordinates are ignored.
     unitized : bool, optional

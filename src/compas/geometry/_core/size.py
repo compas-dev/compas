@@ -34,7 +34,7 @@ def area_polygon(polygon):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon` or list[point]
+    polygon : sequence[point] or :class:`compas.geometry.Polygon`
         The XYZ coordinates of the vertices/corners of the polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed:
@@ -73,7 +73,7 @@ def area_polygon_xy(polygon):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon` or list[point or [float, float]]
+    polygon : sequence[point] or :class:`compas.geometry.Polygon`
         A sequence of XY(Z) coordinates of 2D or 3D points
         representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
@@ -101,7 +101,7 @@ def area_triangle(triangle):
 
     Parameters
     ----------
-    triangle : :class:`compas.geometry.Polygon` or [point, point, point]
+    triangle : [point, point, point] or :class:`compas.geometry.Polygon`
         XYZ coordinates of the corners of the triangle.
 
     Returns
@@ -118,7 +118,7 @@ def area_triangle_xy(triangle):
 
     Parameters
     ----------
-    triangle : :class:`compas.geometry.Polygon` or [point or [float, float], point or [float, float], point or [float, float]]
+    triangle : [point, point, point] or :class:`compas.geometry.Polygon`
         XY(Z) coordinates of the corners of the triangle.
 
     Returns
@@ -135,7 +135,7 @@ def volume_polyhedron(polyhedron):
 
     Parameters
     ----------
-    polyhedron : tuple[list[[float, float, float] or :class:`compas.geometry.Point`], list[list[int]]]
+    polyhedron : tuple[sequence[[float, float, float] or :class:`compas.geometry.Point`], sequence[sequence[int]]]
         The vertices and faces of the polyhedron.
 
     Returns

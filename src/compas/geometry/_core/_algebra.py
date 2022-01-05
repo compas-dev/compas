@@ -135,9 +135,9 @@ def allclose(l1, l2, tol=1e-05):
 
     Parameters
     ----------
-    l1 : list[float]
+    l1 : sequence[float]
         The first list of values.
-    l2 : list[float]
+    l2 : sequence[float]
         The second list of values.
     tol : float, optional
         The tolerance for comparing values.
@@ -176,7 +176,7 @@ def argmax(values):
 
     Parameters
     ----------
-    values : list[float]
+    values : sequence[float]
         A list of values.
 
     Returns
@@ -206,7 +206,7 @@ def argmin(values):
 
     Parameters
     ----------
-    values : list[float]
+    values : sequence[float]
         A list of values.
 
     Returns
@@ -241,7 +241,7 @@ def sum_vectors(vectors, axis=0):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
     axis : int, optional
         If ``axis == 0``, the sum is taken per column.
@@ -298,7 +298,7 @@ def norm_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors
 
     Returns
@@ -345,7 +345,7 @@ def length_vector_xy(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    vector : [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
 
     Returns
@@ -395,7 +395,7 @@ def length_vector_sqrd_xy(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    vector : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
 
     Returns
@@ -459,7 +459,7 @@ def scale_vector_xy(vector, factor):
 
     Parameters
     ----------
-    vector : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    vector : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
     scale : float
         Scale factor.
@@ -483,7 +483,7 @@ def scale_vectors(vectors, factor):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
     factor : float
         The scaling factor.
@@ -506,7 +506,7 @@ def scale_vectors_xy(vectors, factor):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector` or [float, float]]
+    vectors : sequence[[float, float] or [float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
     factor : float
         The scaling factor.
@@ -553,7 +553,7 @@ def normalize_vector_xy(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    vector : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
 
     Returns
@@ -577,7 +577,7 @@ def normalize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -598,7 +598,7 @@ def normalize_vectors_xy(vectors):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector` or [float, float]]
+    vectors : sequence[[float, float] or [float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -642,7 +642,7 @@ def power_vectors(vectors, power):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
     power : int, float
         The power to which to raise the vectors.
@@ -686,7 +686,7 @@ def square_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -733,9 +733,9 @@ def add_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) components of the first vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) components of the second vector.
 
     Returns
@@ -779,9 +779,9 @@ def subtract_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The XY(Z) components of the first vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The XY(Z) components of the second vector.
 
     Returns
@@ -825,9 +825,9 @@ def multiply_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The XY(Z) components of the first vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The XY(Z) components of the second vector.
 
     Returns
@@ -871,9 +871,9 @@ def divide_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The XY(Z) components of the first vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         The XY(Z) components of the second vector.
 
     Returns
@@ -954,9 +954,9 @@ def cross_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) coordinates of the first vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) coordinates of the second vector.
 
     Returns
@@ -1009,9 +1009,9 @@ def dot_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) coordinates of the first vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XY(Z) coordinates of the second vector.
 
     Returns
@@ -1078,9 +1078,9 @@ def vector_component_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    u : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XYZ components of the vector.
-    v : [float, float, float] or :class:`compas.geometry.Vector` or [float, float]
+    v : [float, float] or [float, float, float] or :class:`compas.geometry.Vector`
         XYZ components of the direction.
 
     Returns
@@ -1123,7 +1123,7 @@ def transpose_matrix(M):
 
     Parameters
     ----------
-    M : :class:`compas.geometry.Transformation` or list[list[float]]
+    M : list[list[float]] or :class:`compas.geometry.Transformation`
         The matrix to be transposed.
 
     Returns
@@ -1140,9 +1140,9 @@ def multiply_matrices(A, B):
 
     Parameters
     ----------
-    A : :class:`compas.geometry.Transformation` or list[list[float]]
+    A : list[list[float]] or :class:`compas.geometry.Transformation`
         The first matrix.
-    B : :class:`compas.geometry.Transformation` or list[list[float]]
+    B : list[list[float]] or :class:`compas.geometry.Transformation`
         The second matrix.
 
     Returns
@@ -1191,7 +1191,7 @@ def multiply_matrix_vector(A, b):
 
     Parameters
     ----------
-    A : :class:`compas.geometry.Transformation` or list[list[float]]
+    A : list[list[float]] or :class:`compas.geometry.Transformation`
         The matrix.
     b : [float, float, float] or :class:`compas.geometry.Vector`
         The vector.
@@ -1241,7 +1241,7 @@ def homogenize_vectors(vectors, w=1.0):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
     w : float, optional
         Homogenisation parameter.
@@ -1272,7 +1272,7 @@ def dehomogenize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -1293,7 +1293,7 @@ def orthonormalize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         The set of vectors to othonormalize.
 
     Returns

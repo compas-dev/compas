@@ -14,7 +14,7 @@ from compas.utilities import pairwise
 
 
 class Polyline(Primitive):
-    """A polyline is a sequence of points connected by line segments.
+    """A polyline is defined by a sequence of points connected by line segments.
 
     Parameters
     ----------
