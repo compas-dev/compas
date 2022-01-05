@@ -101,8 +101,8 @@ class Artist(object):
         Returns
         -------
         :class:`compas.artists.Artist`
-            An artist of the type matching the provided item according to the item-artist map ``~Artist.ITEM_ARTIST``.
-            The map is created by registering item-artist type pairs using ``~Artist.register``.
+            An artist of the type matching the provided item according to the item-artist map :attr:`~Artist.ITEM_ARTIST`.
+            The map is created by registering item-artist type pairs using :meth:`~Artist.register`.
         """
         artist_type = _get_artist_cls(item, **kwargs)
         artist = artist_type(item, **kwargs)
