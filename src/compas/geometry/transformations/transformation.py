@@ -207,11 +207,11 @@ class Transformation(Data):
 
     @classmethod
     def from_matrix(cls, matrix):
-        """Creates a transformation from a 4x4 matrix-like object.
+        """Creates a transformation from a list[list[float]] object.
 
         Parameters
         ----------
-        matrix : 4x4 matrix-like
+        matrix : list[list[float]]
             The 4x4 transformation matrix.
 
         Returns

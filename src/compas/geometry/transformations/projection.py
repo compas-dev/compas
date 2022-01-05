@@ -25,7 +25,7 @@ class Projection(Transformation):
 
     Parameters
     ----------
-    matrix : 4x4 matrix-like, optional
+    matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a projection transformation.
 
     Raises

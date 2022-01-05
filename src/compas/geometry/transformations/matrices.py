@@ -1059,8 +1059,7 @@ def basis_vectors_from_matrix(R):
     Parameters
     ----------
     R : list[list[float]]
-        A 4-by-4 transformation matrix,
-        or a 3-by-3 rotation matrix.
+        A 4-by-4 transformation matrix, or a 3-by-3 rotation matrix.
 
     Returns
     -------
