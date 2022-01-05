@@ -18,7 +18,7 @@ Package Structure
 
 All core packages have their public API defined and documented at the first subpackage level.
 
-For example, although the mesh data structure is defined in `compas.datastructures.mesh.mesh.py`,
+For example, although the mesh data structure is internally defined in `compas.datastructures.mesh.mesh.py`,
 the mesh class should be imported from :mod:`compas.datastructures`.
 
 .. code-block:: python
