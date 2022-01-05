@@ -257,7 +257,7 @@ class Data(object):
         Parameters
         ----------
         string : str
-            The object JSON string.
+            The object as a JSON string.
 
         Returns
         -------
