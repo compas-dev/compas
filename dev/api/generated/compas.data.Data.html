@@ -112,15 +112,71 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Abstract base class for all COMPAS data objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>DATASCHEMA</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">schema.Schema</span></code>) – The schema of the data dict.</p></li>
-<li><p><strong>JSONSCHEMA</strong> (<em>dict</em>) – The schema of the serialized data dict.</p></li>
-<li><p><strong>data</strong> (<em>dict</em>) – The fundamental data describing the object.
-The structure of the data dict is defined by the implementing classes.</p></li>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the object.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>dtype</strong> (<em>str, read-only</em>) – The type of the object in the form of a fully qualified module name and a class name, separated by a forward slash (“/”).
+For example: <code class="docutils literal notranslate"><span class="pre">&quot;compas.datastructures/Mesh&quot;</span></code>.</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – The representation of the object as a dictionary containing only built-in Python data types.
+The structure of the dict is described by the data schema.</p></li>
+<li><p><strong>jsonstring</strong> (<em>str, read-only</em>) – The object’s data dict in JSON string format.</p></li>
+<li><p><strong>guid</strong> (<em>str, read-only</em>) – The globally unique identifier of the object.
+The guid is generated with <code class="docutils literal notranslate"><span class="pre">uuid.uuid4()</span></code>.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the object.
+This name is not necessarily unique and can be set by the user.
+The default value is the object’s class name: <code class="docutils literal notranslate"><span class="pre">self.__class__.__name__</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Objects created from classes that implement this data class
+can be serialized to JSON and unserialized without loss of information using:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="compas.data.json_dump.html#compas.data.json_dump" title="compas.data.json_dump"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.data.json_dump()</span></code></a></p></li>
+<li><p><a class="reference internal" href="compas.data.json_dumps.html#compas.data.json_dumps" title="compas.data.json_dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.data.json_dumps()</span></code></a></p></li>
+<li><p><a class="reference internal" href="compas.data.json_load.html#compas.data.json_load" title="compas.data.json_load"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.data.json_load()</span></code></a></p></li>
+<li><p><a class="reference internal" href="compas.data.json_loads.html#compas.data.json_loads" title="compas.data.json_loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.data.json_loads()</span></code></a></p></li>
+</ul>
+<p>To implement this data class,
+it is sufficient for the deriving class to define the “getter” and “setter”
+of the data property: <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.data.Data.data</span></code>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
+<span class="gp">... </span>    <span class="nd">@property</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">}</span>
+<span class="gp">... </span>    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">guid</span>
+<span class="go">UUID(&#39;1ddad2fe-6716-4e30-a5ae-8ed7cad892c4&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;Point&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span>
+<span class="go">{&#39;x&#39;: 1.0, &#39;y&#39;: 0.0, &#39;z&#39;: 0.0}</span>
+</code></pre></div>
+</div>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">json_dumps</span><span class="p">,</span> <span class="n">json_loads</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">json_dumps</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">json_loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+<span class="go">True</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -150,10 +206,10 @@ The structure of the data dict is defined by the implementing classes.</p></li>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.validate_data.html#compas.data.Data.validate_data" title="compas.data.Data.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
-<td><p>Validate the object's data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its data schema.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.validate_json.html#compas.data.Data.validate_json" title="compas.data.Data.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the object's data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>
 </table>

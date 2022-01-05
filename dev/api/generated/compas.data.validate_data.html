@@ -108,17 +108,17 @@
 <h1>validate_data</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.data.validate_data">
-<span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">validate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/validators.py#L108"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">validate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/validators.py#L114"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Validate data against the data and json schemas of an object class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<em>dict</em>) – The data representation of an object.</p></li>
-<li><p><strong>cls</strong> (<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>) – The class of a data object.</p></li>
+<li><p><strong>cls</strong> (Type[<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>]) – The data object class.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dict</em> – The validated data.</p>
+<dd class="field-even"><p><em>dict</em> – The validated data dict.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><strong>jsonschema.exceptions.ValidationError</strong> – </p>
