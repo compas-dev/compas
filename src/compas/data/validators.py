@@ -10,7 +10,7 @@ from compas.data.encoders import DataDecoder
 
 
 def is_sequence_of_int(items):
-    """Verify that the sequence contains only :obj:`int`.
+    """Verify that the sequence contains only integers.
 
     Parameters
     ----------
@@ -20,12 +20,13 @@ def is_sequence_of_int(items):
     Returns
     -------
     bool
+
     """
     return all(isinstance(item, int) for item in items)
 
 
 def is_int3(items):
-    """Verify that the sequence contains 3 :obj:`int`.
+    """Verify that the sequence contains 3 integers.
 
     Parameters
     ----------
@@ -35,12 +36,13 @@ def is_int3(items):
     Returns
     -------
     bool
+
     """
     return len(items) == 3 and all(isinstance(item, int) for item in items)
 
 
 def is_sequence_of_float(items):
-    """Verify that the sequence contains only :obj:`float`.
+    """Verify that the sequence contains only floats.
 
     Parameters
     ----------
@@ -50,12 +52,13 @@ def is_sequence_of_float(items):
     Returns
     -------
     bool
+
     """
     return all(isinstance(item, float) for item in items)
 
 
 def is_sequence_of_uint(items):
-    """Verify that the sequence contains only unsigned :obj:`int`.
+    """Verify that the sequence contains only unsigned integers.
 
     Parameters
     ----------
@@ -65,12 +68,13 @@ def is_sequence_of_uint(items):
     Returns
     -------
     bool
+
     """
     return all(isinstance(item, int) and item >= 0 for item in items)
 
 
 def is_float3(items):
-    """Verify that the sequence contains 3 :obj:`float`.
+    """Verify that the sequence contains 3 floats.
 
     Parameters
     ----------
@@ -80,12 +84,13 @@ def is_float3(items):
     Returns
     -------
     bool
+
     """
     return len(items) == 3 and all(isinstance(item, float) for item in items)
 
 
 def is_float4x4(items):
-    """Verify that the sequence contains 4 sequences of each 4 :obj:`float`.
+    """Verify that the sequence contains 4 sequences of each 4 floats.
 
     Parameters
     ----------
@@ -95,6 +100,7 @@ def is_float4x4(items):
     Returns
     -------
     bool
+
     """
     return (
         len(items) == 4 and
@@ -122,7 +128,8 @@ def validate_data(data, cls):
 
     Raises
     ------
-    :class:`jsonschema.exceptions.ValidationError`
+    jsonschema.exceptions.ValidationError
+
     """
     from jsonschema import RefResolver, Draft7Validator
     from jsonschema.exceptions import ValidationError

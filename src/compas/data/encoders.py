@@ -32,11 +32,11 @@ def cls_from_dtype(dtype):
 
     Raises
     ------
-    :class:`ValueError`
+    ValueError
         If the data type is not in the correct format.
-    :class:`ImportError`
+    ImportError
         If the module can't be imported.
-    :class:`AttributeError`
+    AttributeError
         If the module doesn't contain the specified data type.
 
     """
@@ -48,9 +48,39 @@ def cls_from_dtype(dtype):
 class DataEncoder(json.JSONEncoder):
     """Data encoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.
 
-    Notes
-    -----
-    In the context of Remote Procedure Calls,
+    The encoder adds the following conversions to the JSON serialisation process:
+
+    * Numpy objects to their Python equivalents;
+    * iterables to lists; and
+    * :class:`compas.data.Data` objects,
+      such as geometric primitives and shapes, data structures, robots, ...,
+      to a dict with the following structure: ``{'dtype': o.dtype, 'value': o.data}``
+
+    See Also
+    --------
+    compas.data.Data
+    compas.data.DataDecoder
+    compas.data.json_dump, compas.data.json_dumps
+    compas.data.json_load, compas.data.json_loads
+
+    Examples
+    --------
+    Explicit use case.
+
+    >>> import json
+    >>> from compas.data import DataEncoder
+    >>> from compas.geometry import Point
+    >>> point = Point(0, 0, 0)
+    >>> with open('point.json') as f:
+    ...     json.dump(point, f, cls=DataEncoder)
+    ...
+
+    Implicit use case.
+
+    >>> from compas.data import json_dump
+    >>> from compas.geometry import Point
+    >>> point = Point(0, 0, 0)
+    >>> json_dump(point, 'point.json')
 
     """
 
@@ -59,13 +89,14 @@ class DataEncoder(json.JSONEncoder):
 
         Parameters
         ----------
-        o : obj
+        o : object
             The object to serialize.
 
         Returns
         -------
         str
             The serialized object.
+
         """
         if hasattr(o, 'to_data'):
             value = o.to_data()
@@ -103,7 +134,42 @@ class DataEncoder(json.JSONEncoder):
 
 
 class DataDecoder(json.JSONDecoder):
-    """Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives."""
+    """Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.
+
+    The decoder hooks into the JSON deserialisation process
+    to reconstruct :class:`compas.data.Data` objects,
+    such as geometric primitives and shapes, data structures, robots, ...,
+    from the serialized data when possible.
+
+    The reconstruction is possible if
+
+    * the serialized data has the following structure: ``{"dtype": "...", 'value': {...}}``;
+    * a class can be imported into the current scope from the info in ``o["dtype"]``; and
+    * the imported class has a method ``from_data``.
+
+    See Also
+    --------
+    compas.data.Data
+    compas.data.DataEncoder
+    compas.data.json_dump, compas.data.json_dumps
+    compas.data.json_load, compas.data.json_loads
+
+    Examples
+    --------
+    Explicit use case.
+
+    >>> import json
+    >>> from compas.data import DataDecoder
+    >>> with open('point.json') as f:
+    ...     point = json.load(f, cls=DataDecoder)
+    ...
+
+    Implicit use case.
+
+    >>> from compas.data import json_load
+    >>> point = json_load('point.json')
+
+    """
 
     def __init__(self, *args, **kwargs):
         super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
@@ -113,12 +179,13 @@ class DataDecoder(json.JSONDecoder):
 
         Parameters
         ----------
-        o : obj
+        o : object
 
         Returns
         -------
-        obj
+        object
             A (reconstructed), deserialized object.
+
         """
         if 'dtype' not in o:
             return o

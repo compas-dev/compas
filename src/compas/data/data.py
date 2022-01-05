@@ -121,17 +121,17 @@ class Data(object):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - The schema of the data of this object."""
+        """schema.Schema : The schema of the data of this object."""
         raise NotImplementedError
 
     @property
     def JSONSCHEMANAME(self):
-        """str - The schema of the data of this object in JSON format."""
+        """str : The schema of the data of this object in JSON format."""
         raise NotImplementedError
 
     @property
     def JSONSCHEMA(self):
-        """dict - The schema of the JSON representation of the data of this object."""
+        """dict : The schema of the JSON representation of the data of this object."""
         if not self._JSONSCHEMA:
             schema_filename = '{}.json'.format(self.JSONSCHEMANAME.lower())
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_filename)
@@ -141,7 +141,7 @@ class Data(object):
 
     @property
     def jsondefinitions(self):
-        """dict - Reusable schema definitions."""
+        """dict : Reusable schema definitions."""
         if not self._jsondefinitions:
             schema_path = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
             with open(schema_path, 'r') as fp:
@@ -150,7 +150,7 @@ class Data(object):
 
     @property
     def jsonvalidator(self):
-        """:class:`jsonschema.Draft7Validator` - JSON schema validator for draft 7."""
+        """jsonschema.Draft7Validator : JSON schema validator for draft 7."""
         if not self._jsonvalidator:
             from jsonschema import RefResolver, Draft7Validator
             resolver = RefResolver.from_schema(self.jsondefinitions)
@@ -202,6 +202,7 @@ class Data(object):
         -------
         :class:`compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
+
         """
         obj = cls()
         obj.data = data
@@ -214,6 +215,7 @@ class Data(object):
         -------
         dict
             The data representation of the object as described by the schema.
+
         """
         return self.data
 
@@ -230,6 +232,7 @@ class Data(object):
         -------
         :class:`compas.data.Data`
             An instance of this object type if the data contained in the JSON file has the correct schema.
+
         """
         data = compas.json_load(filepath)
         return cls.from_data(data)
@@ -247,6 +250,7 @@ class Data(object):
         Returns
         -------
         None
+
         """
         compas.json_dump(self.data, filepath, pretty)
 
@@ -263,6 +267,7 @@ class Data(object):
         -------
         :class:`compas.data.Data`
             An instance of this object type if the data contained in the JSON file has the correct schema.
+
         """
         data = compas.json_loads(string)
         return cls.from_data(data)
@@ -279,6 +284,7 @@ class Data(object):
         -------
         str
             The object's data dict in JSON string format.
+
         """
         return compas.json_dumps(self.data, pretty)
 
@@ -295,6 +301,7 @@ class Data(object):
         -------
         :class:`compas.data.Data`
             An independent copy of this object.
+
         """
         if not cls:
             cls = type(self)
@@ -310,7 +317,8 @@ class Data(object):
 
         Raises
         ------
-        :class:`schema.SchemaError`
+        schema.SchemaError
+
         """
         import schema
         try:
@@ -330,7 +338,8 @@ class Data(object):
 
         Raises
         ------
-        :class:`jsonschema.exceptions.ValidationError`
+        jsonschema.exceptions.ValidationError
+
         """
         import jsonschema
         jsonstring = json.dumps(self.data, cls=DataEncoder)
