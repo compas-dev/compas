@@ -39,7 +39,7 @@ class Data(object):
         The type of the object in the form of a fully qualified module name and a class name, separated by a forward slash ("/").
         For example: ``"compas.datastructures/Mesh"``.
     data : dict
-        The representation of the object as a dictionary containing only native Python data.
+        The representation of the object as a dictionary containing only built-in Python data types.
         The structure of the dict is described by the data schema.
     jsonstring : str, read-only
         The object's data dict in JSON string format.
