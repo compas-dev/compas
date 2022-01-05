@@ -89,7 +89,7 @@ we use a notation that is based on what the corresponding type hint would be:
 In cases where both tuples and lists, or other types of "positionally ordered collections of items", are acceptable as input parameters
 we use ``sequence[float]``. A sequence containing a known set of multiple types is denoted with ``sequence[float or int]``.
 
-If a function requires as input a tuple or a list with a sepcific structure,
+If a function requires as input a tuple or a list with a specific structure,
 we simply write ``[float, float, float]``, for example for XYZ coordinates,
 without "tuple" or "list" in front of the brackets.
 To specify a nested lists of such objects, we use ``list[[float, float, float]]``,
@@ -132,5 +132,27 @@ Therefore, in addition to the above conventions, we define the following type al
 
 
 These type aliases can also be nested to further improve legibility of complex types.
-For example, instead of ``list[:class:`compas.geometry.Point` or [float, float, float]]``,
-a list of points can be written as ``list[point]``.
+For example, for "plane-like" input, instead of writing
+
+.. code-block:: python
+
+    [[float, float, float] or :class:`compas.geometry.Point`, [float, float, float] or :class:`compas.geometry.Vector`] or :class:`compas.geometry.Plane`
+
+we can simply write the following instead.
+
+.. code-block:: python
+
+    [[point, vector] or :class:`compas.geometry.Plane`]
+
+Similarly, for a circle.
+
+.. code-block:: python
+
+    [[plane, float] or :class:`compas.geometry.Circle`]
+
+Other often used type patterns, are
+
+* ``list[[int, int, int]]`` - for a list of triangle faces, with each face defined by 3 indices referring to a list of point or vertex locations.
+* ``list[[int, int, int, int]]`` - for a list of quad faces, with each face defined by 4 indices referring to a list of point or vertex locations.
+* ``list[list[int]]`` - for a list of ngon faces, with each face defined as a variable-length list of indices referring to a list of point or vertex locations.
+* ``matrix4x4[float]`` - for a list of 4 lists of floats, with each of those lists containing 4 floats.
