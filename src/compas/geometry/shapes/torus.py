@@ -19,7 +19,7 @@ class Torus(Shape):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or [point, normal]
+    plane : [point, normal] or :class:`compas.geometry.Plane`
         The plane of the torus.
     radius_axis: float
         The radius of the axis.
@@ -53,6 +53,7 @@ class Torus(Shape):
     >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
     >>> sdict == torus.data
     True
+
     """
 
     __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
@@ -66,6 +67,10 @@ class Torus(Shape):
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
@@ -78,7 +83,7 @@ class Torus(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str : Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'torus'
 
     @property
@@ -94,6 +99,34 @@ class Torus(Shape):
         self.plane = Plane.from_data(data['plane'])
         self.radius_axis = data['radius_axis']
         self.radius_pipe = data['radius_pipe']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a torus from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Torus`
+            The constructed torus.
+
+        Examples
+        --------
+        >>> from compas.geometry import Torus
+        >>> data = {'plane': Plane.worldXY().data, 'radius_axis': 4., 'radius_pipe': 1.}
+        >>> torus = Torus.from_data(data)
+
+        """
+        torus = cls(Plane.from_data(data['plane']), data['radius_axis'], data['radius_pipe'])
+        return torus
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def plane(self):
@@ -168,30 +201,6 @@ class Torus(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a torus from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Torus`
-            The constructed torus.
-
-        Examples
-        --------
-        >>> from compas.geometry import Torus
-        >>> data = {'plane': Plane.worldXY().data, 'radius_axis': 4., 'radius_pipe': 1.}
-        >>> torus = Torus.from_data(data)
-
-        """
-        torus = cls(Plane.from_data(data['plane']), data['radius_axis'], data['radius_pipe'])
-        return torus
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -215,6 +224,7 @@ class Torus(Shape):
         list[list[int]]
             And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
             raise ValueError('The value for u should be u > 3.')

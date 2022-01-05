@@ -20,7 +20,7 @@ class Cylinder(Shape):
 
     Parameters
     ----------
-    circle: :class:`compas.geometry.Circle` or [plane, radius]
+    circle: [plane, radius] or :class:`compas.geometry.Circle`
         The circle of the cylinder.
     height: float
         The height of the cylinder.
@@ -65,6 +65,10 @@ class Cylinder(Shape):
         self.circle = circle
         self.height = height
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
@@ -79,7 +83,7 @@ class Cylinder(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str : Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'cylinder'
 
     @property
@@ -92,6 +96,36 @@ class Cylinder(Shape):
     def data(self, data):
         self.circle = Circle.from_data(data['circle'])
         self.height = data['height']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a cylinder from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Cylinder`
+            The constructed cylinder.
+
+        Examples
+        --------
+        >>> from compas.geometry import Cylinder
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Plane
+        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
+        >>> cylinder = Cylinder.from_data(data)
+
+        """
+        cylinder = cls(Circle.from_data(data['circle']), data['height'])
+        return cylinder
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def plane(self):
@@ -182,32 +216,6 @@ class Cylinder(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a cylinder from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Cylinder`
-            The constructed cylinder.
-
-        Examples
-        --------
-        >>> from compas.geometry import Cylinder
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-        >>> cylinder = Cylinder.from_data(data)
-
-        """
-        cylinder = cls(Circle.from_data(data['circle']), data['height'])
-        return cylinder
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -229,6 +237,7 @@ class Cylinder(Shape):
         list[list[int]]
             And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
             raise ValueError('The value for u should be u > 3.')

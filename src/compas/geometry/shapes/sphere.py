@@ -16,7 +16,7 @@ class Sphere(Shape):
 
     Parameters
     ----------
-    point: :class:`compas.geometry.Point` or [float, float, float]
+    point: [float, float, float] or :class:`compas.geometry.Point`
         The center of the sphere.
     radius: float
         The radius of the sphere.
@@ -48,6 +48,7 @@ class Sphere(Shape):
     >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
     >>> sdict == sphere.data
     True
+
     """
 
     __slots__ = ['_point', '_radius']
@@ -58,6 +59,10 @@ class Sphere(Shape):
         self._radius = None
         self.point = point
         self.radius = radius
+
+    # ==========================================================================
+    # data
+    # ==========================================================================
 
     @property
     def DATASCHEMA(self):
@@ -71,7 +76,7 @@ class Sphere(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str : Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'sphere'
 
     @property
@@ -84,6 +89,34 @@ class Sphere(Shape):
     def data(self, data):
         self.point = Point.from_data(data['point'])
         self.radius = data['radius']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a sphere from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Sphere`
+            The constructed sphere.
+
+        Examples
+        --------
+        >>> from compas.geometry import Sphere
+        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
+        >>> sphere = Sphere.from_data(data)
+
+        """
+        sphere = cls(Point.from_data(data['point']), data['radius'])
+        return sphere
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def point(self):
@@ -146,30 +179,6 @@ class Sphere(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a sphere from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Sphere`
-            The constructed sphere.
-
-        Examples
-        --------
-        >>> from compas.geometry import Sphere
-        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
-        >>> sphere = Sphere.from_data(data)
-
-        """
-        sphere = cls(Point.from_data(data['point']), data['radius'])
-        return sphere
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -193,6 +202,7 @@ class Sphere(Shape):
         list[list[int]]
             And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
             raise ValueError('The value for u should be u > 3.')

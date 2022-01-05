@@ -20,7 +20,7 @@ class Capsule(Shape):
 
     Parameters
     ----------
-    line : :class:`compas.geometry.Line` or [point, point]
+    line : [point, point] or :class:`compas.geometry.Line`
         The axis line of the capsule.
     radius : float
         The radius of the capsule.
@@ -59,7 +59,7 @@ class Capsule(Shape):
         self.radius = radius
 
     # ==========================================================================
-    # properties
+    # data
     # ==========================================================================
 
     @property
@@ -73,7 +73,7 @@ class Capsule(Shape):
 
     @property
     def JSONSCHEMANAME(self):
-        """str : Name of the  schema of the data representation in JSON format."""
+        """str : Name of the schema of the data representation in JSON format."""
         return 'capsule'
 
     @property
@@ -86,6 +86,24 @@ class Capsule(Shape):
     def data(self, data):
         self.line = Line.from_data(data['line'])
         self.radius = data['radius']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a capsule from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Capsule`
+            The constructed capsule.
+
+        """
+        capsule = Capsule(Line.from_data(data['line']), data['radius'])
+        return capsule
 
     # ==========================================================================
     # properties
@@ -166,23 +184,6 @@ class Capsule(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a capsule from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Capsule`
-            The constructed capsule.
-        """
-        capsule = Capsule(Line.from_data(data['line']), data['radius'])
-        return capsule
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -206,6 +207,7 @@ class Capsule(Shape):
         list[list[int]]
             And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
             raise ValueError('The value for u should be u > 3.')
@@ -289,5 +291,6 @@ class Capsule(Shape):
         Returns
         -------
         None
+
         """
         self.line.transform(transformation)
