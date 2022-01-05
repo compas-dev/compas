@@ -85,7 +85,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-9 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
         
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-3 bg-white px-0">
@@ -109,6 +109,142 @@
 <li class="toctree-l1"><a class="reference internal" href="api/compas_plotters.html">compas_plotters</a></li>
 </ul>
 </div>
+<section id="package-structure">
+<h2>Package Structure</h2>
+<p>All core packages have their public API defined and documented at the first subpackage level.</p>
+<p>For example, although the mesh data structure is internally defined in <cite>compas.datastructures.mesh.mesh.py</cite>,
+the mesh class should be imported from <a class="reference internal" href="api/compas.datastructures.html#module-compas.datastructures" title="compas.datastructures"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.datastructures</span></code></a>.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<p>This type of import is often referred to as “2nd-level import”,
+and was introduced to allow packages to be restructured without unnecessarily affecting the publicly available API.</p>
+</section>
+<section id="naming-conventions">
+<h2>Naming Conventions</h2>
+<p>Class names are written in “CamelCase”.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>,</p></li>
+<li><p><a class="reference internal" href="api/generated/compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>,</p></li>
+<li><p><a class="reference internal" href="api/generated/compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>,</p></li>
+<li><p><a class="reference internal" href="api/generated/compas_rhino.artists.BoxArtist.html#compas_rhino.artists.BoxArtist" title="compas_rhino.artists.BoxArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.BoxArtist</span></code></a>,</p></li>
+<li><p><a class="reference internal" href="api/generated/compas_blender.artists.LineArtist.html#compas_blender.artists.LineArtist" title="compas_blender.artists.LineArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.LineArtist</span></code></a>,</p></li>
+<li><p>…</p></li>
+</ul>
+<p>All other names use the “snake_case” naming convention.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/generated/compas.geometry.cross_vectors.html#compas.geometry.cross_vectors" title="compas.geometry.cross_vectors"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.cross_vectors()</span></code></a>,</p></li>
+<li><p><a class="reference internal" href="api/generated/compas.geometry.intersection_line_line.html#compas.geometry.intersection_line_line" title="compas.geometry.intersection_line_line"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.intersection_line_line()</span></code></a>,</p></li>
+<li><p><a class="reference internal" href="api/generated/compas.datastructures.Mesh.vertex_attributes.html#compas.datastructures.Mesh.vertex_attributes" title="compas.datastructures.Mesh.vertex_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.vertex_attributes()</span></code></a>,</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.geometry.Line.start</span></code></p></li>
+<li><p>…</p></li>
+</ul>
+<p>Module-level variables and constants are written in ALLCAPS.</p>
+<ul class="simple">
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">compas.PRECISION</span></code>,</p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">compas.IPY</span></code>,</p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">compas.BLENDER</span></code>,</p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">compas.APPDATA</span></code>,</p></li>
+<li><p>…</p></li>
+</ul>
+<p>Some functions or methods (especially in <a class="reference internal" href="api/compas.geometry.html#module-compas.geometry" title="compas.geometry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code></a>) have 2D variants,
+marked with a <code class="docutils literal notranslate"><span class="pre">_xy</span></code> suffix,
+meaning that they ignore the Z-coordinate of 3D inputs, and also accept inputs without Z-coordinates.
+It is important to note that regardless of the dimensionality of the input,
+these 2D function variants always return 3D output with Z-coordinate equal to 0 (zero).</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/generated/compas.geometry.bounding_box_xy.html#compas.geometry.bounding_box_xy" title="compas.geometry.bounding_box_xy"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.bounding_box_xy()</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/generated/compas.geometry.intersection_line_line_xy.html#compas.geometry.intersection_line_line_xy" title="compas.geometry.intersection_line_line_xy"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.intersection_line_line_xy()</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/generated/compas.geometry.is_polygon_convex_xy.html#compas.geometry.is_polygon_convex_xy" title="compas.geometry.is_polygon_convex_xy"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.is_polygon_convex_xy()</span></code></a></p></li>
+<li><p>…</p></li>
+</ul>
+</section>
+<section id="type-information">
+<h2>Type Information</h2>
+<p>To maintain compatibility with IronPython 2.7 used in Rhino and Grasshopper,
+we currently don’t use type hints in object definitions directly (in the future these type hints will be included in separate stub files).
+Instead, we try to be as precise as possible with type information in the object docstrings.</p>
+<p>For docstring formatting we follow the guidelines of <cite>numpydoc</cite>, as described here
+<a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard</a>,
+with some small exceptions, additions, and modifications, for the sake of improved precision and legibility.</p>
+<p>Instead of <code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">int</span></code> etc.,
+we use a notation that is based on what the corresponding type hint would be:
+<code class="docutils literal notranslate"><span class="pre">list[float]</span></code> or <code class="docutils literal notranslate"><span class="pre">list[list[int]]</span></code>.</p>
+<p>In cases where both tuples and lists, or other types of “positionally ordered collections of items”, are acceptable as input parameters
+we use <code class="docutils literal notranslate"><span class="pre">sequence[float]</span></code>. A sequence containing a known set of multiple types is denoted with <code class="docutils literal notranslate"><span class="pre">sequence[float</span> <span class="pre">or</span> <span class="pre">int]</span></code>.</p>
+<p>If a function requires as input a tuple or a list with a specific structure,
+we simply write <code class="docutils literal notranslate"><span class="pre">[float,</span> <span class="pre">float,</span> <span class="pre">float]</span></code>, for example for XYZ coordinates,
+without “tuple” or “list” in front of the brackets.
+To specify a nested lists of such objects, we use <code class="docutils literal notranslate"><span class="pre">list[[float,</span> <span class="pre">float,</span> <span class="pre">float]]</span></code>,
+which would indicate that the required input is a list of, for example, multiple XYZ coordinates,
+without requiring any of the individual items to be specifically a tuple or a list.</p>
+<p>For geometric inputs, the type information can quickly become quite long ad verbose.
+Therefore, in addition to the above conventions, we define the following type aliases.</p>
+<table class="colwidths-auto table table-bordered docutils align-default" id="id1">
+<caption><span class="caption-text">Geometric Primitives</span></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Alias</p></th>
+<th class="head"><p>Full Type Information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">point</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[float,</span> <span class="pre">float,</span> <span class="pre">float]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vector</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[float,</span> <span class="pre">float,</span> <span class="pre">float]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quaternion</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Quaternion.html#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Quaternion</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[float,</span> <span class="pre">float,</span> <span class="pre">float,</span> <span class="pre">float]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">line</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[point,</span> <span class="pre">point]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">segment</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[point,</span> <span class="pre">point]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plane</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[point,</span> <span class="pre">vector]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">frame</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[point,</span> <span class="pre">vector,</span> <span class="pre">vector]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">circle</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[plane,</span> <span class="pre">float]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ellipse</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Ellipse.html#compas.geometry.Ellipse" title="compas.geometry.Ellipse"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Ellipse</span></code></a> or <code class="docutils literal notranslate"><span class="pre">[plane,</span> <span class="pre">float,</span> <span class="pre">float]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polyline</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a> or <code class="docutils literal notranslate"><span class="pre">sequence[point]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon</span></code></p></td>
+<td><p><a class="reference internal" href="api/generated/compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a> or <code class="docutils literal notranslate"><span class="pre">sequence[point]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>These type aliases can also be nested to further improve legibility of complex types.
+For example, for “plane-like” input, instead of writing</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>[[float, float, float] or :class:`compas.geometry.Point`, [float, float, float] or :class:`compas.geometry.Vector`] or :class:`compas.geometry.Plane`
+</code></pre></div>
+</div>
+<p>we can simply write the following instead.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>[[point, vector] or :class:`compas.geometry.Plane`]
+</code></pre></div>
+</div>
+<p>Similarly, for a circle.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>[[plane, float] or :class:`compas.geometry.Circle`]
+</code></pre></div>
+</div>
+<p>Other often used type patterns, are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">list[[int,</span> <span class="pre">int,</span> <span class="pre">int]]</span></code> - for a list of triangle faces, with each face defined by 3 indices referring to a list of point or vertex locations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list[[int,</span> <span class="pre">int,</span> <span class="pre">int,</span> <span class="pre">int]]</span></code> - for a list of quad faces, with each face defined by 4 indices referring to a list of point or vertex locations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list[list[int]]</span></code> - for a list of ngon faces, with each face defined as a variable-length list of indices referring to a list of point or vertex locations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matrix4x4[float]</span></code> - for a list of 4 lists of floats, with each of those lists containing 4 floats.</p></li>
+</ul>
+</section>
 </section>
 
         
@@ -153,6 +289,19 @@
       </div>
       <!-- sidebar -->
       <!-- toc -->
+      
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">API Reference</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#package-structure">Package Structure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#naming-conventions">Naming Conventions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#type-information">Type Information</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
       
       <!-- toc -->
     </div>
