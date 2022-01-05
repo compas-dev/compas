@@ -23,7 +23,7 @@
   
   
   
-    <link rel="prev" title="OBJWriter.write_meshes" href="compas.files.OBJWriter.write_meshes.html" />
+    <link rel="prev" title="OBJWriter.write" href="compas.files.OBJWriter.write.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,9 +108,17 @@
 <h1>OFF</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.OFF">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OFF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/off.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OFF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/off.py#L9"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Read and write files in OFF format.</p>
+<p>Class for working with OFF files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>path string, file-like object or URL string</em>) – A path, a file-like object or a URL pointing to a file.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><p><strong>reader</strong> (<a class="reference internal" href="compas.files.OFFReader.html#compas.files.OFFReader" title="compas.files.OFFReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">OFFReader</span></code></a>, read-only) – A OFF file reader.</p>
+</dd>
+</dl>
 <p class="rubric">References</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://shape.cs.princeton.edu/benchmark/documentation/off_format.html">http://shape.cs.princeton.edu/benchmark/documentation/off_format.html</a></p></li>
@@ -125,10 +133,10 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFF.read.html#compas.files.OFF.read" title="compas.files.OFF.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Read and parse the contents of the file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.OFF.write.html#compas.files.OFF.write" title="compas.files.OFF.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Write a mesh to the file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -200,11 +208,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.OBJWriter.write_meshes.html" title="OBJWriter.write_meshes" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.OBJWriter.write.html" title="OBJWriter.write" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            OBJWriter.write_meshes
+            OBJWriter.write
           </div>
         </a>
       

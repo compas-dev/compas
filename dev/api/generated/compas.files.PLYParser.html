@@ -23,7 +23,7 @@
   
   
   
-    <link rel="prev" title="PLYReader.read_vertices_binary_wo_numpy" href="compas.files.PLYReader.read_vertices_binary_wo_numpy.html" />
+    <link rel="prev" title="PLYReader.read" href="compas.files.PLYReader.read.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,8 +108,26 @@
 <h1>PLYParser</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.PLYParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">PLYParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/ply.py#L453"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">PLYParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/ply.py#L531"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for parsing data from a OBJ file.</p>
+<p>The parser converts the raw geometric data of the file
+into corresponding COMPAS geometry objects and data structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.PLYReader.html#compas.files.PLYReader" title="compas.files.PLYReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">PLYReader</span></code></a>) – A PLY file reader.</p></li>
+<li><p><strong>precision</strong> (<em>str</em>) – COMPAS precision specification for parsing geometric data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>list[tuple[float, float, float]]</em>) – The vertex coordinates.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]]</em>) – Pairs of vertex indices defining the start and end points of edges.</p></li>
+<li><p><strong>faces</strong> (<em>list[list[int]]</em>) – Lists of vertex indices defining faces.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -118,7 +136,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.PLYParser.parse.html#compas.files.PLYParser.parse" title="compas.files.PLYParser.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Parse the contents found by a PLY file reader.</p></td>
 </tr>
 </tbody>
 </table>
@@ -190,11 +208,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.PLYReader.read_vertices_binary_wo_numpy.html" title="PLYReader.read_vertices_binary_wo_numpy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.PLYReader.read.html" title="PLYReader.read" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            PLYReader.read_vertices_binary_wo_numpy
+            PLYReader.read
           </div>
         </a>
       

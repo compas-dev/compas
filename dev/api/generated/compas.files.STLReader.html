@@ -108,15 +108,18 @@
 <h1>STLReader</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.STLReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">STLReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/stl.py#L52"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">STLReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/stl.py#L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Standard triangle library format.</p>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p><a class="reference external" href="http://paulbourke.net/dataformats/stl/">http://paulbourke.net/dataformats/stl/</a></p>
+<p>Class for reading raw geometric data from STL files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>path string, file-like object or URL string</em>) – A path, a file-like object or a URL pointing to a file.</p>
 </dd>
 </dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://paulbourke.net/dataformats/stl/">http://paulbourke.net/dataformats/stl/</a></p></li>
+</ul>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -125,28 +128,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.STLReader.read.html#compas.files.STLReader.read" title="compas.files.STLReader.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.STLReader.read_ascii.html#compas.files.STLReader.read_ascii" title="compas.files.STLReader.read_ascii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_ascii</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.STLReader.read_binary.html#compas.files.STLReader.read_binary" title="compas.files.STLReader.read_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_binary</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.STLReader.read_facet_binary.html#compas.files.STLReader.read_facet_binary" title="compas.files.STLReader.read_facet_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_facet_binary</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.STLReader.read_facets_binary.html#compas.files.STLReader.read_facets_binary" title="compas.files.STLReader.read_facets_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_facets_binary</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.STLReader.read_header_binary.html#compas.files.STLReader.read_header_binary" title="compas.files.STLReader.read_header_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_header_binary</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.STLReader.read_number_of_facets_binary.html#compas.files.STLReader.read_number_of_facets_binary" title="compas.files.STLReader.read_number_of_facets_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_number_of_facets_binary</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.files.STLReader.read_solids_ascii.html#compas.files.STLReader.read_solids_ascii" title="compas.files.STLReader.read_solids_ascii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_solids_ascii</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Read the data.</p></td>
 </tr>
 </tbody>
 </table>

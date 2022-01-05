@@ -108,7 +108,7 @@
 <h1>XML</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.XML">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">XML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/xml.py#L30"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">XML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/xml.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Read XML files.</p>
 <p>This class simplifies reading XML files and strings
@@ -116,9 +116,10 @@ across different Python implementations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.XMLReader.html#compas.files.XMLReader" title="compas.files.XMLReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">XMLReader</span></code></a>) – Reader used to process the XML file or string.</p></li>
-<li><p><strong>writer</strong> (<a class="reference internal" href="compas.files.XMLWriter.html#compas.files.XMLWriter" title="compas.files.XMLWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">XMLWriter</span></code></a>) – Writer used to process the XML object to a file or string.</p></li>
-<li><p><strong>filepath</strong> (<em>str</em>)</p></li>
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.XMLReader.html#compas.files.XMLReader" title="compas.files.XMLReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.XMLReader</span></code></a>, read-only) – Reader used to process the XML file or string.</p></li>
+<li><p><strong>writer</strong> (<a class="reference internal" href="compas.files.XMLWriter.html#compas.files.XMLWriter" title="compas.files.XMLWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">XMLWriter</span></code></a>, read-only) – Writer used to process the XML object to a file or string.</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – The path to the XML file.</p></li>
+<li><p><strong>root</strong> (<a class="reference external" href="https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xml.etree.ElementTree.Element</span></code></a>) – Root element of the XML tree.</p></li>
 </ul>
 </dd>
 </dl>

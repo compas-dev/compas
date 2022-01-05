@@ -108,23 +108,22 @@
 <h1>OFFReader</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.OFFReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OFFReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/off.py#L52"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OFFReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/off.py#L81"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Read the contents of an <em>obj</em> file.</p>
+<p>Class for reading raw geometric data from OFF files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filepath</strong> (<em>path string, file-like object or URL string</em>) – A path, a file-like object or a URL pointing to a file.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list</em>) – Vertex coordinates.</p></li>
-<li><p><strong>faces</strong> (<em>list</em>) – Face objects, referencing the list of vertices.</p></li>
+<li><p><strong>vertices</strong> (<em>list[list[float, float, float]]</em>) – List of lists of vertex coordinates.</p></li>
+<li><p><strong>faces</strong> (<em>list[list[int]</em>) – List of lists of references to vertex coordinates.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>The OFF reader currently only supports reading of vertices and faces of polygon meshes.</p>
-<p class="rubric">References</p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -133,13 +132,13 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFFReader.open.html#compas.files.OFFReader.open" title="compas.files.OFFReader.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Open the file and read its contents.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.OFFReader.post.html#compas.files.OFFReader.post" title="compas.files.OFFReader.post"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Post-process the contents.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OFFReader.pre.html#compas.files.OFFReader.pre" title="compas.files.OFFReader.pre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pre</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Pre-process the contents.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.OFFReader.read.html#compas.files.OFFReader.read" title="compas.files.OFFReader.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a></p></td>
 <td><p>Read the contents of the file, line by line.</p></td>

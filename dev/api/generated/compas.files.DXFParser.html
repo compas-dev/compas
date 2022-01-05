@@ -108,8 +108,19 @@
 <h1>DXFParser</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.DXFParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">DXFParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/dxf.py#L60"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">DXFParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/dxf.py#L79"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for parsing data from DXF files.</p>
+<p>The parser converts the raw geometric data of the file
+into corresponding COMPAS geometry objects and data structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.DXFReader.html#compas.files.DXFReader" title="compas.files.DXFReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DXFReader</span></code></a>) – A DXF file reader.</p></li>
+<li><p><strong>precision</strong> (<em>str</em>) – COMPAS precision specification for parsing geometric data.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -118,7 +129,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.DXFParser.parse.html#compas.files.DXFParser.parse" title="compas.files.DXFParser.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Parse the the data found by the reader.</p></td>
 </tr>
 </tbody>
 </table>

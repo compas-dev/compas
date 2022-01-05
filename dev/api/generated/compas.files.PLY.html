@@ -23,7 +23,7 @@
   
   
   
-    <link rel="prev" title="OFFWriter.write_vertices" href="compas.files.OFFWriter.write_vertices.html" />
+    <link rel="prev" title="OFFWriter.write" href="compas.files.OFFWriter.write.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,15 +108,27 @@
 <h1>PLY</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.PLY">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">PLY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/ply.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">PLY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/ply.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Polygon file format, or Stanford triangle format.</p>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p><a class="reference external" href="http://paulbourke.net/dataformats/ply/">http://paulbourke.net/dataformats/ply/</a></p>
+<p>Class for working with files in Polygon format, also known as Stanford triangle format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>path string, file-like object or URL string</em>) – A path, a file-like object or a URL pointing to a file.</p></li>
+<li><p><strong>precision</strong> (<em>str, optional</em>) – A COMPAS precision specification.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.PLYReader.html#compas.files.PLYReader" title="compas.files.PLYReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">PLYReader</span></code></a>) – A PLY file reader.</p></li>
+<li><p><strong>parser</strong> (<a class="reference internal" href="compas.files.PLYParser.html#compas.files.PLYParser" title="compas.files.PLYParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">PLYParser</span></code></a>) – A PLY data parser.</p></li>
+</ul>
 </dd>
 </dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://paulbourke.net/dataformats/ply/">http://paulbourke.net/dataformats/ply/</a></p></li>
+</ul>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -125,10 +137,10 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.PLY.read.html#compas.files.PLY.read" title="compas.files.PLY.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Read the contents of the file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.PLY.write.html#compas.files.PLY.write" title="compas.files.PLY.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Write a mesh to the file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -200,11 +212,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.OFFWriter.write_vertices.html" title="OFFWriter.write_vertices" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.OFFWriter.write.html" title="OFFWriter.write" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            OFFWriter.write_vertices
+            OFFWriter.write
           </div>
         </a>
       

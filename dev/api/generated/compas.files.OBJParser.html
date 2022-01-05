@@ -108,8 +108,32 @@
 <h1>OBJParser</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.OBJParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OBJParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/obj.py#L413"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OBJParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/obj.py#L454"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for parsing data from a OBJ file.</p>
+<p>The parser converts the raw geometric data of the file
+into corresponding COMPAS geometry objects and data structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.OBJReader.html#compas.files.OBJReader" title="compas.files.OBJReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">OBJReader</span></code></a>) – A OBJ file reader.</p></li>
+<li><p><strong>precision</strong> (<em>str</em>) – COMPAS precision specification for parsing geometric data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.OBJReader.html#compas.files.OBJReader" title="compas.files.OBJReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">OBJReader</span></code></a>) – An OBJ file reader.</p></li>
+<li><p><strong>vertices</strong> (<em>list[list[float, float, float]]</em>) – List of lists of parsed vertex coordinates.
+Parsed vertices are unique up to the specified precision.</p></li>
+<li><p><strong>points</strong> (<em>list[int]</em>) – List of references to parsed vertex coordinates.</p></li>
+<li><p><strong>lines</strong> (<em>list[tuple[int, int]]</em>) – List of pairs of references to parsed vertex coordinates.</p></li>
+<li><p><strong>polylines</strong> (<em>list[list[int]</em>) – List of lists of references to parsed vertex coordinates.</p></li>
+<li><p><strong>faces</strong> (<em>list[list[int]</em>) – List of lists of references to parsed vertex coordinates.</p></li>
+<li><p><strong>groups</strong> (<em>dict[str, tuple[list[int], list[list[int]]]]</em>) – Groups of mesh objects defined by their parsed vertices and faces.</p></li>
+<li><p><strong>objects</strong> (<em>dict[str, tuple[list[int], list[list[int]]]]</em>) – Named mesh objects defined by their parsed vertices and faces.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -118,7 +142,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.OBJParser.parse.html#compas.files.OBJParser.parse" title="compas.files.OBJParser.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Parse the the data found by the reader.</p></td>
 </tr>
 </tbody>
 </table>

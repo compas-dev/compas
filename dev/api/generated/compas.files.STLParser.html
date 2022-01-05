@@ -23,7 +23,7 @@
   
   
   
-    <link rel="prev" title="STLReader.read_solids_ascii" href="compas.files.STLReader.read_solids_ascii.html" />
+    <link rel="prev" title="STLReader.read" href="compas.files.STLReader.read.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,8 +108,25 @@
 <h1>STLParser</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.STLParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">STLParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/stl.py#L222"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">STLParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/stl.py#L268"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for parsing data from a STL file.</p>
+<p>The parser converts the raw geometric data of the file
+into corresponding COMPAS geometry objects and data structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.STLReader.html#compas.files.STLReader" title="compas.files.STLReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">STLReader</span></code></a>) – A STL file reader.</p></li>
+<li><p><strong>precision</strong> (<em>str</em>) – COMPAS precision specification for parsing geometric data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>list[list[float]]</em>) – The vertex coordinates.</p></li>
+<li><p><strong>faces</strong> (<em>list[list[int]]</em>) – The faces as lists of vertex indices.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -118,7 +135,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.STLParser.parse.html#compas.files.STLParser.parse" title="compas.files.STLParser.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Parse the the data found by the reader.</p></td>
 </tr>
 </tbody>
 </table>
@@ -190,11 +207,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.STLReader.read_solids_ascii.html" title="STLReader.read_solids_ascii" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.STLReader.read.html" title="STLReader.read" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            STLReader.read_solids_ascii
+            STLReader.read
           </div>
         </a>
       

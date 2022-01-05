@@ -23,7 +23,7 @@
   
   
   
-    <link rel="prev" title="STLWriter.write_header" href="compas.files.STLWriter.write_header.html" />
+    <link rel="prev" title="STLWriter.write" href="compas.files.STLWriter.write.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,16 +108,16 @@
 <h1>URDF</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.URDF">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">URDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/urdf.py#L33"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">URDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/urdf.py#L27"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Parse URDF files.</p>
+<p>class for working with URDF files.</p>
 <p>This class abstracts away the underlying XML of the Unified Robot
 Description Format (<a class="reference external" href="http://wiki.ros.org/urdf">URDF</a>) and represents its as an object graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xml</strong> (<a class="reference internal" href="compas.files.XML.html#compas.files.XML" title="compas.files.XML"><code class="xref py py-class docutils literal notranslate"><span class="pre">XML</span></code></a>) – Instance of the XML reader/parser class.</p></li>
-<li><p><strong>robot</strong> (<em>object</em>) – Root element of the URDF model, i.e. a robot instance.</p></li>
+<li><p><strong>robot</strong> (<em>obj</em>) – Root element of the URDF model, i.e. a robot instance.</p></li>
 </ul>
 </dd>
 </dl>
@@ -137,16 +137,16 @@ This package parses URDF v1.0 according to the <a class="reference external" hre
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.from_file.html#compas.files.URDF.from_file" title="compas.files.URDF.from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_file</span></code></a></p></td>
-<td><p>Parse a URDF file from a file path or file-like object.</p></td>
+<td><p>Construct a URDF from a file path or file-like object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDF.from_robot.html#compas.files.URDF.from_robot" title="compas.files.URDF.from_robot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_robot</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Construct a URDF from a robot.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.from_string.html#compas.files.URDF.from_string" title="compas.files.URDF.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a></p></td>
-<td><p>Parse URDF from a string.</p></td>
+<td><p>Construct a URDF from a string.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDF.read.html#compas.files.URDF.read" title="compas.files.URDF.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a></p></td>
-<td><p>Parse a URDF file from a file path or file-like object.</p></td>
+<td><p>Construct a URDF from a file path or file-like object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.to_file.html#compas.files.URDF.to_file" title="compas.files.URDF.to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_file</span></code></a></p></td>
 <td><p>Writes the string representation of this URDF instance, including all sub-elements, to the <code class="docutils literal notranslate"><span class="pre">destination</span></code>.</p></td>
@@ -227,11 +227,11 @@ This package parses URDF v1.0 according to the <a class="reference external" hre
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas.files.STLWriter.write_header.html" title="STLWriter.write_header" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas.files.STLWriter.write.html" title="STLWriter.write" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            STLWriter.write_header
+            STLWriter.write
           </div>
         </a>
       

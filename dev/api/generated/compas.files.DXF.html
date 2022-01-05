@@ -108,17 +108,29 @@
 <h1>DXF</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.DXF">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">DXF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/dxf.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">DXF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/dxf.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Drawing Exchange Format.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
+<p>Class for working with DXF files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>path string, file-like object or URL string</em>) – A path, a file-like object or a URL pointing to a file.</p></li>
+<li><p><strong>precision</strong> (<em>str, optional</em>) – A COMPAS precision specification.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="compas.files.DXFReader.html#compas.files.DXFReader" title="compas.files.DXFReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DXFReader</span></code></a>, read-only) – A DXF file reader.</p></li>
+<li><p><strong>parser</strong> (<a class="reference internal" href="compas.files.DXFParser.html#compas.files.DXFParser" title="compas.files.DXFParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">DXFParser</span></code></a>, read-only) – A DXF data parser.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/AutoCAD_DXF">https://en.wikipedia.org/wiki/AutoCAD_DXF</a></p></li>
 <li><p><a class="reference external" href="http://paulbourke.net/dataformats/dxf/">http://paulbourke.net/dataformats/dxf/</a></p></li>
 <li><p><a class="reference external" href="http://paulbourke.net/dataformats/dxf/min3d.html">http://paulbourke.net/dataformats/dxf/min3d.html</a></p></li>
 </ul>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -127,7 +139,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.DXF.read.html#compas.files.DXF.read" title="compas.files.DXF.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Read and parse the contents of the file.</p></td>
 </tr>
 </tbody>
 </table>
