@@ -66,6 +66,7 @@ class VolMeshArtist(Artist):
         The default color of the faces of the mesh that don't have a specified color.
     default_cellcolor : tuple[float, float, float]
         The default color of the cells of the mesh that don't have a specified color.
+
     """
 
     default_vertexcolor = (1, 1, 1)
@@ -283,6 +284,7 @@ class VolMeshArtist(Artist):
         -------
         list
             The identifiers of the objects representing the vertices in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -307,6 +309,7 @@ class VolMeshArtist(Artist):
         -------
         list
             The identifiers of the objects representing the edges in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -331,6 +334,7 @@ class VolMeshArtist(Artist):
         -------
         list
             The identifiers of the objects representing the faces in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -355,6 +359,7 @@ class VolMeshArtist(Artist):
         -------
         list
             The identifiers of the objects representing the cells in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -365,6 +370,7 @@ class VolMeshArtist(Artist):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
 
@@ -375,6 +381,7 @@ class VolMeshArtist(Artist):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
 
@@ -385,6 +392,7 @@ class VolMeshArtist(Artist):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
 
@@ -395,5 +403,6 @@ class VolMeshArtist(Artist):
         Returns
         -------
         None
+
         """
         raise NotImplementedError

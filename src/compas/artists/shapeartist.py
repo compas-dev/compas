@@ -31,6 +31,7 @@ class ShapeArtist(Artist):
     ----------------
     default_color : tuple[float, float, float]
         The default color of the shape.
+
     """
 
     default_color = (1, 1, 1)

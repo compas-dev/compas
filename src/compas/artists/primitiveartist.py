@@ -27,6 +27,7 @@ class PrimitiveArtist(Artist):
     ----------------
     default_color : tuple[float, float, float]
         The default rgb color value of the primitive.
+
     """
 
     default_color = (0, 0, 0)

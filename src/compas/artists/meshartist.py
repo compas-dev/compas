@@ -76,6 +76,7 @@ class MeshArtist(Artist):
         The default size of the vertices of the mesh.
     default_edgewidth : float
         The default width of the edges of the mesh.
+
     """
 
     default_color = (0.0, 0.0, 0.0)
@@ -305,6 +306,7 @@ class MeshArtist(Artist):
         -------
         list
             The identifiers of the objects representing the vertices in the visualization context.
+
         """
         raise NotImplementedError
 

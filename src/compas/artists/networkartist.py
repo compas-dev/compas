@@ -56,6 +56,7 @@ class NetworkArtist(Artist):
         The default size for nodes that do not have a specified size.
     default_edgewidth : float
         The default width for edges that do not have a specified width.
+
     """
 
     default_nodecolor = (1, 1, 1)
@@ -224,6 +225,7 @@ class NetworkArtist(Artist):
         -------
         list
             The identifiers of the objects representing the nodes in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -248,6 +250,7 @@ class NetworkArtist(Artist):
         -------
         list
             The identifiers of the objects representing the edges in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -258,6 +261,7 @@ class NetworkArtist(Artist):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
 
@@ -268,6 +272,7 @@ class NetworkArtist(Artist):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
 
@@ -277,6 +282,7 @@ class NetworkArtist(Artist):
         Returns
         -------
         None
+
         """
         self.clear_nodes()
         self.clear_edges()

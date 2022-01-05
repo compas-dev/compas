@@ -16,19 +16,20 @@ from .artist import Artist
 class AbstractRobotModelArtist(object):
 
     def transform(self, geometry, transformation):
-        """Transforms a CAD-specific geometry using a **COMPAS** transformation.
+        """Transforms a CAD-specific geometry using a Transformation.
 
         Parameters
         ----------
         geometry : object
             A CAD-specific (i.e. native) geometry object as returned by :meth:`create_geometry`.
         transformation : :class:`compas.geometry.Transformation`
-            **COMPAS** transformation to update the geometry object.
+            Transformation to update the geometry object.
+
         """
         raise NotImplementedError
 
     def create_geometry(self, geometry, name=None, color=None):
-        """Draw a **COMPAS** geometry in the respective CAD environment.
+        """Draw geometry in the respective CAD environment.
 
         Note
         ----
@@ -37,7 +38,7 @@ class AbstractRobotModelArtist(object):
         Parameters
         ----------
         geometry : :class:`compas.datastructures.Mesh`
-            Instance of a **COMPAS** mesh
+            Instance of a mesh data structure
         name : str, optional
             The name of the mesh to draw.
 
@@ -45,6 +46,7 @@ class AbstractRobotModelArtist(object):
         -------
         object
             CAD-specific geometry
+
         """
         raise NotImplementedError
 
@@ -66,6 +68,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
     ----------
     model : :class:`compas.robots.RobotModel`
         Instance of a robot model.
+
     """
 
     def __init__(self, model):
@@ -83,6 +86,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         tool_model : :class:`compas.robots.ToolModel`
             The tool that should be attached to the robot's flange.
+
         """
         self.attached_tool_model = tool_model
         self.create(tool_model.root, 'attached_tool')
@@ -132,6 +136,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         if not link:
             link = self.model.get_end_effector_link()
@@ -165,6 +170,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         for _, items in self.attached_items:
             items.pop(name, None)
@@ -186,6 +192,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         if link is None:
             link = self.model.root
@@ -235,6 +242,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         list[:class:`compas.datastructures.Mesh`]
+
         """
         if link is None:
             link = self.model.root
@@ -267,6 +275,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         self.model.scale(factor)
 
@@ -288,6 +297,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         self._scale_link_helper(link, transformation)
 
@@ -321,6 +331,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         if getattr(item, 'current_transformation'):
             relative_transformation = transformation * item.current_transformation.inverse()
@@ -345,6 +356,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         _ = self._update(self.model, joint_state, visual, collision)
         if self.attached_tool_model:
@@ -388,6 +400,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         joint_state = joint_state or {}
         if self.attached_tool_model:
@@ -403,6 +416,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         for native_geometry in self._iter_geometry(self.model, 'visual'):
             yield native_geometry
@@ -416,6 +430,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         for native_geometry in self._iter_geometry(self.model, 'collision'):
             yield native_geometry
@@ -429,6 +444,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         for items in self.attached_items.values():
             for item in items.values():
