@@ -42,9 +42,9 @@ def midpoint_point_point(a, b):
 
     Parameters
     ----------
-    a : :class:`compas.geometry.Point` or [float, float, float]
+    a : [float, float, float] or :class:`compas.geometry.Point`
         XYZ coordinates of the first point.
-    b : :class:`compas.geometry.Point` or [float, float, float]
+    b : [float, float, float] or :class:`compas.geometry.Point`
         XYZ coordinates of the second point.
 
     Returns
@@ -63,9 +63,9 @@ def midpoint_point_point_xy(a, b):
 
     Parameters
     ----------
-    a : :class:`compas.geometry.Point` or [float, float, float] or [float, float]
+    a : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
         XY(Z) coordinates of the first 2D or 3D point (Z will be ignored).
-    b : :class:`compas.geometry.Point` or [float, float, float] or [float, float]
+    b : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
         XY(Z) coordinates of the second 2D or 3D point (Z will be ignored).
 
     Returns
@@ -123,7 +123,7 @@ def centroid_points(points):
 
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points : list[[float, float, float] or :class:`compas.geometry.Point`]
         A sequence of XYZ coordinates.
 
     Returns
@@ -152,7 +152,7 @@ def centroid_points_weighted(points, weights):
 
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float]]
+    points : list[[float, float, float] or :class:`compas.geometry.Point`]
         A list of point coordinates.
     weights : list[float]
         A list of weight floats.
@@ -172,7 +172,7 @@ def centroid_points_xy(points):
 
     Parameters
     ----------
-    points : list[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
+    points : list[[float, float, float] or :class:`compas.geometry.Point` or [float, float]]
         A sequence of points represented by their XY(Z) coordinates.
 
     Returns
@@ -201,7 +201,7 @@ def centroid_polygon(polygon):
 
     Parameters
     ----------
-    polygon : list[:class:`compas.geometry.Point` or [float, float, float]]
+    polygon : list[[float, float, float] or :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
@@ -294,7 +294,7 @@ def centroid_polygon_xy(polygon):
 
     Parameters
     ----------
-    polygon : list[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
+    polygon : list[[float, float, float] or :class:`compas.geometry.Point` or [float, float]]
         A sequence of polygon point XY(Z) coordinates.
         The Z coordinates are ignored.
 
@@ -380,7 +380,7 @@ def centroid_polygon_vertices(polygon):
 
     Parameters
     ----------
-    polygon : list[:class:`compas.geometry.Point` or [float, float, float]]
+    polygon : list[[float, float, float] or :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
@@ -396,7 +396,7 @@ def centroid_polygon_vertices_xy(polygon):
 
     Parameters
     ----------
-    polygon : list[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
+    polygon : list[[float, float, float] or :class:`compas.geometry.Point` or [float, float]]
         A sequence of polygon point coordinates.
         The Z coordinates will be ignored.
 
@@ -414,7 +414,7 @@ def centroid_polygon_edges(polygon):
 
     Parameters
     ----------
-    polygon : list[:class:`compas.geometry.Point` or [float, float, float]]
+    polygon : list[[float, float, float] or :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
@@ -449,7 +449,7 @@ def centroid_polygon_edges_xy(polygon):
 
     Parameters
     ----------
-    polygon : list[:class:`compas.geometry.Point` or [float, float, float] or [float, float]]
+    polygon : list[[float, float, float] or :class:`compas.geometry.Point` or [float, float]]
         A sequence of polygon point coordinates.
         The Z coordinates will be ignored.
 
@@ -483,7 +483,7 @@ def centroid_polyhedron(polyhedron):
 
     Parameters
     ----------
-    polyhedron : tuple[list[:class:`compas.geometry.Point` or [float, float, float]], list[list[int]]]
+    polyhedron : tuple[list[[float, float, float] or :class:`compas.geometry.Point`], list[list[int]]]
         The coordinates of the vertices,
         and the indices of the vertices forming the faces.
 

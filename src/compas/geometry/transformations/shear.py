@@ -40,6 +40,7 @@ class Shear(Transformation):
     Examples
     --------
     >>>
+
     """
 
     def __init__(self, matrix=None, check=True):
@@ -55,15 +56,16 @@ class Shear(Transformation):
 
     @classmethod
     def from_angle_direction_plane(cls, angle, direction, plane):
-        """
+        """Construct a shear transformation from an angle, direction and plane.
+
         Parameters
         ----------
         angle : float
             The angle in radians.
-        direction : :class:`compas.geometry.Vector` or [float, float, float]
+        direction : [float, float, float] or :class:`compas.geometry.Vector`
             The direction vector as list of 3 numbers.
             It must be orthogonal to the normal vector (i.e. it must lie in the shear plane).
-        plane : :class:`compas.geometry.Plane` or [point, vector]
+        plane : [point, vector] or :class:`compas.geometry.Plane`
             The shear plane defined by a point and normal.
 
         Returns
@@ -84,13 +86,14 @@ class Shear(Transformation):
         >>> point = [4, 3, 1]
         >>> normal = cross_vectors(direction, [1, 0.3, -0.1])
         >>> S = Shear.from_angle_direction_plane(angle, direction, (point, normal))
+
         """
         point, normal = plane
         return cls(matrix_from_shear(angle, direction, point, normal))
 
     @classmethod
     def from_entries(cls, shear_entries):
-        """Creates a ``Shear`` from the 3 factors for x-y, x-z, and y-z axes.
+        """Construct a shear transformation from the 3 factors for x-y, x-z, and y-z axes.
 
         Parameters
         ----------
@@ -105,5 +108,6 @@ class Shear(Transformation):
         Examples
         --------
         >>> S = Shear.from_entries([1, 2, 3])
+
         """
         return cls(matrix_from_shear_entries(shear_entries))

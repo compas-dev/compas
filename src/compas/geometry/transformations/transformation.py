@@ -75,6 +75,7 @@ class Transformation(Data):
     >>> T = Transformation.from_frame(f1)
     >>> Sc, Sh, R, Tl, P = T.decomposed()
     >>> Tinv = T.inverse()
+
     """
 
     def __init__(self, matrix=None):
@@ -206,7 +207,7 @@ class Transformation(Data):
 
     @classmethod
     def from_matrix(cls, matrix):
-        """Creates a `Transformation` from a 4x4 matrix-like object.
+        """Creates a transformation from a 4x4 matrix-like object.
 
         Parameters
         ----------
@@ -217,12 +218,13 @@ class Transformation(Data):
         -------
         :class:`compas.geometry.Transformation`
             The transformation.
+
         """
         return cls(matrix)
 
     @classmethod
     def from_list(cls, numbers):
-        """Creates a `Transformation` from a list of 16 numbers.
+        """Creates a transformation from a list of 16 numbers.
 
         Parameters
         ----------
@@ -243,6 +245,7 @@ class Transformation(Data):
         --------
         >>> numbers = [1, 0, 0, 3, 0, 1, 0, 4, 0, 0, 1, 5, 0, 0, 0, 1]
         >>> T = Transformation.from_list(numbers)
+
         """
         matrix = identity_matrix(4)
         for i in range(4):
@@ -256,7 +259,7 @@ class Transformation(Data):
 
         Parameters
         ----------
-        euler_angles : list[float]
+        euler_angles : [float, float, float]
             Three numbers that represent the angles of rotations about the defined axes.
         static : bool, optional
             If True the rotations are applied to a static frame.
@@ -270,6 +273,7 @@ class Transformation(Data):
         -------
         :class:`compas.geometry.Transformation`
             The transformation.
+
         """
         R = matrix_from_euler_angles(euler_angles, static, axes)
         T = matrix_from_translation(point)
@@ -279,7 +283,7 @@ class Transformation(Data):
     # should not one of the two just have a "to" function
     @classmethod
     def from_frame(cls, frame):
-        """Computes a transformation from world XY to frame.
+        """Construct a transformation from world XY to frame.
 
         Parameters
         ----------
@@ -309,11 +313,11 @@ class Transformation(Data):
 
     @classmethod
     def from_frame_to_frame(cls, frame_from, frame_to):
-        """Computes a transformation between two frames.
+        """Construct a transformation between two frames.
 
         This transformation allows to transform geometry from one Cartesian
-        coordinate system defined by "frame_from" to another Cartesian
-        coordinate system defined by "frame_to".
+        coordinate system defined by `frame_from` to another Cartesian
+        coordinate system defined by `frame_to`.
 
         Parameters
         ----------
@@ -336,6 +340,7 @@ class Transformation(Data):
         >>> f1.transform(T)
         >>> f1 == f2
         True
+
         """
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
@@ -343,7 +348,7 @@ class Transformation(Data):
 
     @classmethod
     def from_change_of_basis(cls, frame_from, frame_to):
-        """Computes a change of basis transformation between two frames.
+        """Construct a change of basis transformation between two frames.
 
         A basis change is essentially a remapping of geometry from one
         coordinate system to another.
@@ -371,6 +376,7 @@ class Transformation(Data):
         Point(1.395, 0.955, 1.934)
         >>> Frame.local_to_local_coordinates(f1, f2, p_f1)
         Point(1.395, 0.955, 1.934)
+
         """
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
@@ -387,6 +393,7 @@ class Transformation(Data):
         -------
         :class:`compas.geometry.Transformation`
             An independent copy of the transformation.
+
         """
         cls = type(self)
         matrix = [
@@ -403,6 +410,7 @@ class Transformation(Data):
         -------
         None
             The transformation is transposed in-place.
+
         """
         self.matrix = transpose_matrix(self.matrix)
 
@@ -413,6 +421,7 @@ class Transformation(Data):
         -------
         :class:`compas.geometry.Transformation`
             The transposed transformation object.
+
         """
         T = self.copy()
         T.transpose()
@@ -425,6 +434,7 @@ class Transformation(Data):
         -------
         None
             The transformation is transposed in-place.
+
         """
         self.matrix = matrix_inverse(self.matrix)
 
@@ -444,6 +454,7 @@ class Transformation(Data):
         >>> I = Transformation(identity_matrix(4))
         >>> I == T * T.inverse()
         True
+
         """
         T = self.copy()
         T.invert()
@@ -484,6 +495,7 @@ class Transformation(Data):
         True
         >>> T1 == T
         True
+
         """
         from compas.geometry import Scale  # noqa: F811
         from compas.geometry import Shear
@@ -514,6 +526,7 @@ class Transformation(Data):
         Notes
         -----
         Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
+
         """
         self.matrix = multiply_matrices(self.matrix, other.matrix)
 
@@ -533,6 +546,7 @@ class Transformation(Data):
         Notes
         -----
         Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
+
         """
         cls = type(self)
         if isinstance(other, cls):

@@ -407,7 +407,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        bbox : list[:class:`compas.geometry.Point` or [float, float, float]]
+        bbox : list[[float, float, float] or :class:`compas.geometry.Point`]
             A list of 8 point locations, representing the corners of the bounding box.
             Positions 0, 1, 2, 3 are the bottom corners.
             Positions 4, 5, 6, 7 are the top corners.
@@ -449,9 +449,9 @@ class Box(Shape):
 
         Parameters
         ----------
-        corner1 : :class:`compas.geometry.Point` or [float, float, float]
+        corner1 : [float, float, float] or :class:`compas.geometry.Point`
             The XYZ coordinates of the bottom left corner of the base of the box.
-        corner2 : :class:`compas.geometry.Point` or [float, float, float]
+        corner2 : [float, float, float] or :class:`compas.geometry.Point`
             The XYZ coordinates of the top right corner of the base of the box.
         height : float
             The height of the box.
@@ -559,7 +559,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point` or [float, float, float]
+        point : [float, float, float] or :class:`compas.geometry.Point`
 
         Returns
         -------

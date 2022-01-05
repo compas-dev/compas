@@ -37,6 +37,7 @@ class Reflection(Transformation):
     >>> R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
     >>> R1 == R2
     True
+
     """
 
     def __init__(self, matrix=None):
@@ -49,17 +50,18 @@ class Reflection(Transformation):
 
     @classmethod
     def from_plane(cls, plane):
-        """Creates a reflection object that mirrors wrt the given plane.
+        """Construct a reflection transformation that mirrors wrt the given plane.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane` or [point, normal]
+        plane : [point, vector] or :class:`compas.geometry.Plane`
             The reflection plane.
 
         Returns
         -------
         :class:`compas.geometry.Reflection`
             The reflection transformation.
+
         """
         point, normal = plane
         normal = normalize_vector((list(normal)))
@@ -75,16 +77,17 @@ class Reflection(Transformation):
 
     @classmethod
     def from_frame(cls, frame):
-        """Creates a reflection object that mirrors wrt the given frame.
+        """Construct a reflection transformation that mirrors wrt the given frame.
 
         Parameters
         ----------
-        frame : :class:`compas.geometry.Frame` or [point, xaxis, yaxis]
+        frame : [point, vector, vector] or :class:`compas.geometry.Frame`
 
         Returns
         -------
         :class:`compas.geometry.Reflection`
             The reflection transformation.
+
         """
         if isinstance(frame, (tuple, list)):
             point = frame[0]

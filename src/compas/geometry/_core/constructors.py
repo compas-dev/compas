@@ -25,11 +25,11 @@ def circle_from_points(a, b, c):
 
     Parameters
     ----------
-    a : :class:`compas.geometry.Point` or [float, float, float]
+    a : [float, float, float] or :class:`compas.geometry.Point`
         XYZ coordinates.
-    b : :class:`compas.geometry.Point` or [float, float, float]
+    b : [float, float, float] or :class:`compas.geometry.Point`
         XYZ coordinates.
-    c : :class:`compas.geometry.Point` or [float, float, float]
+    c : [float, float, float] or :class:`compas.geometry.Point`
         XYZ coordinates.
 
     Returns
@@ -79,11 +79,11 @@ def circle_from_points_xy(a, b, c):
 
     Parameters
     ----------
-    a : :class:`compas.geometry.Point` or [float, float, float] or [float, float]
+    a : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    b : :class:`compas.geometry.Point` or [float, float, float] or [float, float]
+    b : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    c : :class:`compas.geometry.Point` or [float, float, float] or [float, float]
+    c : [float, float, float] or :class:`compas.geometry.Point` or [float, float]
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
 
     Returns

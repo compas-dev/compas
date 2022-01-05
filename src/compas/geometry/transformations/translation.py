@@ -62,6 +62,7 @@ class Translation(Transformation):
     True
     >>> T[2, 3] == 3
     True
+
     """
 
     def __init__(self, matrix=None, check=True):
@@ -89,12 +90,13 @@ class Translation(Transformation):
 
         Parameters
         ----------
-        vector : :class:`compas.geometry.Vector` or [float, float, float]
+        vector : [float, float, float] or :class:`compas.geometry.Vector`
             The translation vector.
 
         Returns
         -------
         :class:`compas.geometry.Translation`
             The translation transformation.
+
         """
         return cls(matrix_from_translation(vector))

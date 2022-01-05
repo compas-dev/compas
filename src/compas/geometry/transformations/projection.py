@@ -37,6 +37,7 @@ class Projection(Transformation):
     Examples
     --------
     >>>
+
     """
 
     def __init__(self, matrix=None):
@@ -52,11 +53,11 @@ class Projection(Transformation):
 
     @classmethod
     def from_plane(cls, plane):
-        """Creates an orthogonal projection to project onto a plane.
+        """Construct an orthogonal projection transformation to project onto a plane.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane` or [point, normal]
+        plane : [point, normal] or :class:`compas.geometry.Plane`
             The plane to project onto.
 
         Returns
@@ -71,6 +72,7 @@ class Projection(Transformation):
         >>> normal = [0, 0, 1]
         >>> plane = Plane(point, normal)
         >>> P = Projection.from_plane(plane)
+
         """
         P = cls()
         P.matrix = matrix_from_orthogonal_projection(plane)
@@ -78,13 +80,13 @@ class Projection(Transformation):
 
     @classmethod
     def from_plane_and_direction(cls, plane, direction):
-        """Creates a parallel projection to project onto a plane along a specific direction.
+        """Construct a parallel projection transformation to project onto a plane along a specific direction.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane` or [point, normal]
+        plane : [point, normal] or :class:`compas.geometry.Plane`
             The plane to project onto.
-        direction : :class:`compas.geometry.Vector` or [float, float, float]
+        direction : [float, float, float] or :class:`compas.geometry.Vector`
             The direction of projection direction.
 
         Returns
@@ -100,6 +102,7 @@ class Projection(Transformation):
         >>> plane = Plane(point, normal)
         >>> direction = [1, 1, 1]
         >>> P = Projection.from_plane_and_direction(plane, direction)
+
         """
         P = cls()
         P.matrix = matrix_from_parallel_projection(plane, direction)
@@ -107,13 +110,13 @@ class Projection(Transformation):
 
     @classmethod
     def from_plane_and_point(cls, plane, center_of_projection):
-        """Returns a perspective ``Projection`` to project onto a plane along lines that emanate from a single point, called the center of projection.
+        """Construct a perspective projection transformation to project onto a plane along lines that emanate from a single point, called the center of projection.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane` or [point, normal]
+        plane : [point, normal] or :class:`compas.geometry.Plane`
             The plane to project onto.
-        center_of_projection : :class:`compas.geometry.Point` or [float, float, float]
+        center_of_projection : [float, float, float] or :class:`compas.geometry.Point`
             The camera view point.
 
         Returns
@@ -129,6 +132,7 @@ class Projection(Transformation):
         >>> plane = Plane(point, normal)
         >>> center_of_projection = [1, 1, 0]
         >>> P = Projection.from_plane_and_point(plane, center_of_projection)
+
         """
         P = cls()
         P.matrix = matrix_from_perspective_projection(plane, center_of_projection)
@@ -148,6 +152,7 @@ class Projection(Transformation):
         -------
         :class:`compas.geometry.Projection`
             A projection transformation.
+
         """
         P = cls()
         P.matrix = matrix_from_perspective_entries(perspective_entries)

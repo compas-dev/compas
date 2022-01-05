@@ -135,7 +135,7 @@ def volume_polyhedron(polyhedron):
 
     Parameters
     ----------
-    polyhedron : tuple[list[:class:`compas.geometry.Point` or [float, float, float]], list[list[int]]]
+    polyhedron : tuple[list[[float, float, float] or :class:`compas.geometry.Point`], list[list[int]]]
         The vertices and faces of the polyhedron.
 
     Returns

@@ -51,6 +51,7 @@ class Scale(Transformation):
     >>> S = Scale.from_factors([2.] * 3, frame)
     >>> [p.transformed(S) for p in points]
     [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
+
     """
 
     def __init__(self, matrix=None):
@@ -70,9 +71,9 @@ class Scale(Transformation):
 
         Parameters
         ----------
-        factors : list[float]
+        factors : [float, float, float]
             The scale factors along X, Y, Z.
-        frame : :class:`compas.geometry.Frame`, optional
+        frame : [point, vector, vector] or :class:`compas.geometry.Frame`, optional
             The anchor frame for the scaling transformation.
 
         Returns
@@ -89,6 +90,7 @@ class Scale(Transformation):
         >>> S = Scale.from_factors([2.] * 3, frame)
         >>> [p.transformed(S) for p in points]
         [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
+
         """
         S = cls()
         if frame:
