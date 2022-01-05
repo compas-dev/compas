@@ -60,8 +60,6 @@ class DataEncoder(json.JSONEncoder):
     --------
     compas.data.Data
     compas.data.DataDecoder
-    compas.data.json_dump, compas.data.json_dumps
-    compas.data.json_load, compas.data.json_loads
 
     Examples
     --------
@@ -151,8 +149,6 @@ class DataDecoder(json.JSONDecoder):
     --------
     compas.data.Data
     compas.data.DataEncoder
-    compas.data.json_dump, compas.data.json_dumps
-    compas.data.json_load, compas.data.json_loads
 
     Examples
     --------
