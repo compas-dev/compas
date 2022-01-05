@@ -51,7 +51,7 @@ All other names use the "snake_case" naming convention.
 * :attr:`compas.geometry.Line.start`
 * ...
 
-Module-level variables are written in ALLCAPS.
+Module-level variables and constants are written in ALLCAPS.
 
 * :data:`compas.PRECISION`,
 * :data:`compas.IPY`,
