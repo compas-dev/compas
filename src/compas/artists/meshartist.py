@@ -56,11 +56,11 @@ class MeshArtist(Artist):
     vertex_size : dict[int, float]
         Vertex sizes.
         Defaults to 1.
-        Visuzlization of vertices with variable size is not available for all visualization contexts.
+        Visualization of vertices with variable size is not available for all visualization contexts.
     edge_width : dict[tuple[int, int], float]
         Edge widths.
         Defaults to 1.
-        Visuzlization of edges with variable width is not available for all visualization contexts.
+        Visualization of edges with variable width is not available for all visualization contexts.
 
     Class Attributes
     ----------------
