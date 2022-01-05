@@ -108,7 +108,7 @@ class NurbsSurface(Surface):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` - The schema of the data representation."""
+        """:class:`schema.Schema` : The schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
         from compas.data import is_sequence_of_int
@@ -128,17 +128,17 @@ class NurbsSurface(Surface):
 
     @property
     def JSONSCHEMANAME(self):
-        """dict - The schema of the data representation in JSON format."""
+        """dict : The schema of the data representation in JSON format."""
         raise NotImplementedError
 
     @property
     def dtype(self):
-        """str - The type of the object in the form of a '2-level' import and a class name."""
+        """str : The type of the object in the form of a '2-level' import and a class name."""
         return 'compas.geometry/NurbsSurface'
 
     @property
     def data(self):
-        """dict - Representation of the curve as a dict containing only native Python objects."""
+        """dict : Representation of the curve as a dict containing only native Python objects."""
         return {
             'points': [[point.data for point in row] for row in self.points],
             'weights': self.weights,
@@ -169,6 +169,7 @@ class NurbsSurface(Surface):
         -------
         :class:`compas.geometry.NurbsSurface`
             The constructed surface.
+
         """
         points = [[Point.from_data(point) for point in row] for row in data['points']]
         weights = data['weights']
@@ -199,7 +200,7 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : list[list[:class:`compas.geometry.Point`]]
+        points : list[list[[float, float, float], :class:`compas.geometry.Point`]]
             The control points.
         weights : list[list[float]]
             The weights of the control points.
@@ -219,6 +220,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         return new_nurbssurface_from_parameters(
             points,
@@ -239,7 +241,7 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : list[list[:class:`compas.geometry.Point`]]
+        points : list[list[[float, float, float] or :class:`compas.geometry.Point`]]
             The control points.
         u_degree : int
             Degree in the U direction.
@@ -249,6 +251,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         return new_nurbssurface_from_points(points, u_degree=u_degree, v_degree=v_degree)
 
@@ -266,6 +269,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         UU, VV = meshgrid(linspace(0, nu, nu + 1), linspace(0, nv, nv + 1))
         points = []
@@ -287,6 +291,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         return new_nurbssurface_from_step(filepath)
 
@@ -302,6 +307,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         return new_nurbssurface_from_fill(curve1, curve2)
 
@@ -320,6 +326,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
 
@@ -336,6 +343,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.datastructures.Mesh`
+
         """
         from compas.datastructures import Mesh
 
@@ -365,6 +373,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         list[list[:class:`compas.geometry.Point`]]
+
         """
         import numpy as np
         from functools import lru_cache
@@ -451,6 +460,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         return NurbsSurface.from_parameters(
             self.points,
@@ -475,6 +485,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
 
@@ -488,6 +499,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         copy = self.copy()
         copy.transform(T)
@@ -504,6 +516,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         list[float]
+
         """
         umin, umax = self.u_domain
         return linspace(umin, umax, n)
@@ -519,6 +532,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         list[float]
+
         """
         vmin, vmax = self.v_domain
         return linspace(vmin, vmax, n)
@@ -533,6 +547,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
+
         """
         raise NotImplementedError
 
@@ -546,6 +561,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
+
         """
         raise NotImplementedError
 
@@ -555,6 +571,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         list[:class:`compas.geometry.NurbsCurve`]
+
         """
         raise NotImplementedError
 
@@ -567,6 +584,7 @@ class NurbsSurface(Surface):
             The size of the grid in the U direction.
         nv : int, optional
             The size of the grid in the V direction.
+
         """
         return [self.point_at(i, j) for i, j in product(self.u_space(nu), self.v_space(nv))]
 
@@ -581,6 +599,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.Point`
+
         """
         raise NotImplementedError
 
@@ -595,6 +614,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.Vector`
+
         """
         raise NotImplementedError
 
@@ -609,6 +629,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.Frame`
+
         """
         raise NotImplementedError
 
@@ -627,6 +648,7 @@ class NurbsSurface(Surface):
         :class:`compas.geometry.Point` or tuple[:class:`compas.geometry.Point`, float, float]
             If `return_parameters` is False, only the point location is returned.
             If `return_parameters` is True, the point location and the corresponding parameter are returned.
+
         """
         raise NotImplementedError
 
@@ -636,6 +658,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.Box`
+
         """
         raise NotImplementedError
 
@@ -645,6 +668,7 @@ class NurbsSurface(Surface):
         Returns
         -------
         :class:`compas.geometry.Box`
+
         """
         raise NotImplementedError
 
@@ -660,5 +684,6 @@ class NurbsSurface(Surface):
         -------
         :class:`compas.geometry.Point`
             The intersection point.
+
         """
         raise NotImplementedError
