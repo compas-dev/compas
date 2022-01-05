@@ -40,57 +40,39 @@ def new_nurbssurface_from_step(*args, **kwargs):
 class NurbsSurface(Surface):
     """Class representing a NURBS surface.
 
+    Parameters
+    ----------
+    name : str, optional
+        The name of the surface.
+
     Attributes
     ----------
-    points: List[List[Point]]
-        The control points of the surface.
-    weights: List[List[float]]
+    points : list[list[:class:`compas.geometry.Point`]], read-only
+        The control points as rows along the U direction.
+    weights : list[float], read-only
         The weights of the control points.
-    u_knots: List[float]
-        The knot vector, in the U direction, without duplicates.
-    v_knots: List[float]
-        The knot vector, in the V direction, without duplicates.
-    u_mults: List[int]
-        The multiplicities of the knots in the knot vector of the U direction.
-    v_mults: List[int]
-        The multiplicities of the knots in the knot vector of the V direction.
-    u_degree: int
-        The degree of the polynomials in the U direction.
-    v_degree: int
-        The degree of the polynomials in the V direction.
-    u_domain: Tuple[float, float]
-        The parameter domain in the U direction.
-    v_domain: Tuple[float, float]
-        The parameter domain in the V direction.
-    is_u_periodic: bool
-        True if the curve is periodic in the U direction.
-    is_v_periodic: bool
-        True if the curve is periodic in the V direction.
+    u_knots : list[float], read-only
+        The knots in the U direction, without multiplicity.
+    v_knots : list[float], read-only
+        The knots in the V direction, without multiplicity.
+    u_mults : list[int], read-only
+        Multiplicity of the knots in the U direction.
+    v_mults : list[int], read-only
+        Multiplicity of the knots in the V direction.
+    u_degree : int, read-only
+        The degree of the curve in the U direction.
+    v_degree : int, read-only
+        The degree of the curve in the V direction.
+    u_domain : tuple[float, float], read-only
+        Min/Max values of the parameters in the U direction.
+    v_domain : tuple[float, float], read-only
+        Min/Max values of the parameters in the V direction.
+    is_u_periodic : bool, read-only
+        Flag indicating that the surface is periodic in the U direction.
+    is_v_periodic : bool, read-only
+        Flag indicating that the surface is periodic in the V direction.
 
     """
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        from compas.data import is_sequence_of_int
-        from compas.data import is_sequence_of_float
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points),
-            'weights': is_sequence_of_float,
-            'u_knots': is_sequence_of_float,
-            'v_knots': is_sequence_of_float,
-            'u_mults': is_sequence_of_int,
-            'v_mults': is_sequence_of_int,
-            'u_degree': int,
-            'v_degree': int,
-            'is_u_periodic': bool,
-            'is_v_periodic': bool
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        raise NotImplementedError
 
     def __new__(cls, *args, **kwargs):
         return new_nurbssurface(*args, **kwargs)
@@ -125,12 +107,38 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` - The schema of the data representation."""
+        from schema import Schema
+        from compas.data import is_float3
+        from compas.data import is_sequence_of_int
+        from compas.data import is_sequence_of_float
+        return Schema({
+            'points': lambda points: all(is_float3(point) for point in points),
+            'weights': is_sequence_of_float,
+            'u_knots': is_sequence_of_float,
+            'v_knots': is_sequence_of_float,
+            'u_mults': is_sequence_of_int,
+            'v_mults': is_sequence_of_int,
+            'u_degree': int,
+            'v_degree': int,
+            'is_u_periodic': bool,
+            'is_v_periodic': bool
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        """dict - The schema of the data representation in JSON format."""
+        raise NotImplementedError
+
+    @property
     def dtype(self):
-        """str : The type of the object in the form of a '2-level' import and a class name."""
+        """str - The type of the object in the form of a '2-level' import and a class name."""
         return 'compas.geometry/NurbsSurface'
 
     @property
     def data(self):
+        """dict - Representation of the curve as a dict containing only native Python objects."""
         return {
             'points': [[point.data for point in row] for row in self.points],
             'weights': self.weights,
@@ -161,7 +169,6 @@ class NurbsSurface(Surface):
         -------
         :class:`compas.geometry.NurbsSurface`
             The constructed surface.
-
         """
         points = [[Point.from_data(point) for point in row] for row in data['points']]
         weights = data['weights']
@@ -192,17 +199,17 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : List[List[:class:`compas.geometry.Point`]]
+        points : list[list[:class:`compas.geometry.Point`]]
             The control points.
-        weights : List[List[float]]
+        weights : list[list[float]]
             The weights of the control points.
-        u_knots : List[float]
+        u_knots : list[float]
             The knots in the U direction, without multiplicity.
-        v_knots : List[float]
+        v_knots : list[float]
             The knots in the V direction, without multiplicity.
-        u_mults : List[int]
+        u_mults : list[int]
             Multiplicity of the knots in the U direction.
-        v_mults : List[int]
+        v_mults : list[int]
             Multiplicity of the knots in the V direction.
         u_degree : int
             Degree in the U direction.
@@ -232,7 +239,7 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : List[List[:class:`compas.geometry.Point`]]
+        points : list[list[:class:`compas.geometry.Point`]]
             The control points.
         u_degree : int
             Degree in the U direction.
@@ -357,7 +364,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        List[List[Point]]
+        list[list[:class:`compas.geometry.Point`]]
         """
         import numpy as np
         from functools import lru_cache
@@ -439,7 +446,12 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     def copy(self):
-        """Make an independent copy of the surface."""
+        """Make an independent copy of the surface.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsSurface`
+        """
         return NurbsSurface.from_parameters(
             self.points,
             self.weights,
@@ -491,7 +503,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        list of float
+        list[float]
         """
         umin, umax = self.u_domain
         return linspace(umin, umax, n)
@@ -506,7 +518,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        list of float
+        list[float]
         """
         vmin, vmax = self.v_domain
         return linspace(vmin, vmax, n)
@@ -542,7 +554,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        List[:class:`compas.geometry.NurbsCurve`]
+        list[:class:`compas.geometry.NurbsCurve`]
         """
         raise NotImplementedError
 
@@ -608,25 +620,45 @@ class NurbsSurface(Surface):
         point : :class:`compas.geometry.Point`
             The test point.
         return_parameters : bool, optional
-            Return the UV parameters of the closest point in addition to the point location.
+            If True, return the UV parameters of the closest point in addition to the point location.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point` or tuple[:class:`compas.geometry.Point`, float, float]
+            If `return_parameters` is False, only the point location is returned.
+            If `return_parameters` is True, the point location and the corresponding parameter are returned.
+        """
+        raise NotImplementedError
+
+    def aabb(self):
+        """Compute the axis aligned bounding box of the surface.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+        """
+        raise NotImplementedError
+
+    def obb(self):
+        """Compute the oriented bounding box of the surface.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+        """
+        raise NotImplementedError
+
+    def intersections_with_line(self, line):
+        """Compute the intersections with a line.
+
+        Parameters
+        ----------
+        line : :class:`compas.geometry.Line`
+            The intersection line.
 
         Returns
         -------
         :class:`compas.geometry.Point`
-            If ``return_parameters`` is False.
-        :class:`compas.geometry.Point`, float, float
-            If ``return_parameters`` is True.
+            The intersection point.
         """
-        raise NotImplementedError
-
-    def aabb(self, precision=0.0, optimal=False):
-        """Compute the axis aligned bounding box of the surface."""
-        raise NotImplementedError
-
-    def obb(self, precision=0.0):
-        """Compute the oriented bounding box of the surface."""
-        raise NotImplementedError
-
-    def intersections_with_line(self, line):
-        """Compute the intersections with a line."""
         raise NotImplementedError
