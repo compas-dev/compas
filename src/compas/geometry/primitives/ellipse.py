@@ -7,7 +7,7 @@ from compas.geometry.primitives import Plane
 
 
 class Ellipse(Primitive):
-    """A ellipse is defined by a plane and a major.
+    """A ellipse is defined by a plane and a major and minor axis.
 
     Parameters
     ----------

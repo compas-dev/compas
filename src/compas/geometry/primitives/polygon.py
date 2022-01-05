@@ -21,12 +21,7 @@ from compas.utilities import pairwise
 
 
 class Polygon(Primitive):
-    """An object representing an ordered collection of points in space connected
-    by straight line segments forming a closed boundary around the interior space.
-
-    A polygon has a closed boundary that separates its interior from the
-    exterior. The boundary does not intersect itself, and is described by an
-    ordered set of of points.
+    """A polygon is defined by a sequence of points forming a closed loop.
 
     Parameters
     ----------
@@ -50,9 +45,12 @@ class Polygon(Primitive):
 
     Notes
     -----
-    All `Polygon` objects are considered closed. Therefore the first and
-    last element in the list of points are not the same. The existence of the
-    closing edge is implied.
+    A polygon is defined by a sequence of points connected by line segments
+    forming a closed boundary that separates its interior from the exterior.
+
+    In the sequence of points, the first and last element are not the same.
+    The existence of the closing edge is implied.
+    The boundary should not intersect itself.
 
     Polygons are not necessarily planar by construction; they can be warped.
 

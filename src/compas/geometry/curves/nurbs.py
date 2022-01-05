@@ -38,7 +38,7 @@ def new_nurbscurve_from_step(*args, **kwargs):
 
 
 class NurbsCurve(Curve):
-    """Class representing a NURBS curve.
+    """A NURBS curve is defined by control points, weights, knots, and a degree.
 
     Parameters
     ----------

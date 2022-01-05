@@ -16,7 +16,7 @@ from compas.geometry.primitives import Primitive
 
 
 class Quaternion(Primitive):
-    r"""Creates a ``Quaternion`` object.
+    r"""A quaternion is defined by 4 components, X, Y, Z, and W.
 
     Parameters
     ----------

@@ -79,7 +79,7 @@ def bernstein(n, k, t):
 
 
 class Bezier(Primitive):
-    """A Bezier curve.
+    """A Bezier curve is defined by control points and a degree.
 
     A Bezier curve of degree `n` is a linear combination of ``n + 1`` Bernstein
     basis polynomials of degree `n`.

@@ -38,7 +38,7 @@ def new_nurbssurface_from_step(*args, **kwargs):
 
 
 class NurbsSurface(Surface):
-    """Class representing a NURBS surface.
+    """A NURBS surface is defined by control points, weights, knots, and a degree, in two directions U and V.
 
     Parameters
     ----------
