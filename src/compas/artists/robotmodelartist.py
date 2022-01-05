@@ -54,7 +54,7 @@ class AbstractRobotModelArtist(object):
 class RobotModelArtist(AbstractRobotModelArtist, Artist):
     """Provides common functionality to most robot model artist implementations.
 
-    In **COMPAS**, "artists" are classes that assist with the visualization of
+    In COMPAS, "artists" are classes that assist with the visualization of
     datastructures and models, in a way that maintains the data separated from the
     specific CAD interfaces, while providing a way to leverage native performance
     of the CAD environment.
@@ -385,7 +385,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : dictor :class:`compas.robots.Configuration`, optional
+        joint_state : dict or :class:`compas.robots.Configuration`, optional
             A dictionary with joint names as keys and joint positions as values.
             Defaults to an empty dictionary.
         transformation : :class:`compas.geometry.Transformation`, optional
