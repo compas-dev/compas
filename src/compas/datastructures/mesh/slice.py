@@ -140,6 +140,7 @@ class IntersectionMeshPlane(object):
 
     def intersect(self):
         intersections = []
+        vertex_intersections = []
         for u, v in list(self.mesh.edges()):
             a = self.mesh.vertex_attributes(u, 'xyz')
             b = self.mesh.vertex_attributes(v, 'xyz')
