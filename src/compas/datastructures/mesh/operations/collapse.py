@@ -263,10 +263,11 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
     * `u` and `v` are not on the boundary
     * ...
 
-    See [] for a detailed explanation of these requirements.
+    See [1]_ for a detailed explanation of these requirements.
 
     References
     ----------
+    .. [1] ...
 
     """
     if t < 0.0:

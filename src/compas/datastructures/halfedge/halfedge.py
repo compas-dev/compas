@@ -246,22 +246,6 @@ class HalfEdge(Datastructure):
         """
         return choice(list(self.faces()))
 
-    # def get_any_face_vertex(self, fkey):
-    #     """Get the identifier of a random vertex of a specific face.
-
-    #     Parameters
-    #     ----------
-    #     fkey : int
-    #         The identifier of the face.
-
-    #     Returns
-    #     -------
-    #     int
-    #         The identifier of the vertex.
-
-    #     """
-    #     return self.face_vertices(fkey)[0]
-
     def vertex_sample(self, size=1):
         """A random sample of the vertices.
 

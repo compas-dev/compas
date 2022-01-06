@@ -312,7 +312,7 @@ class Graph(Datastructure):
         """Get the identifiers of a set of random edges.
 
         .. deprecated:: 1.13.3
-            Use ``~Graph.node_sample(size=n)`` instead.
+            Use :meth:`edge_sample` instead.
 
         Parameters
         ----------

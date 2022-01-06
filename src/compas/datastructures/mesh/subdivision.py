@@ -313,11 +313,11 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     The algorithm supports "integer creasing" as described in
     Subdivision Surfaces in Character Animation [1]_.
-    Creases are supported through the optional edge attribute ``'crease'``,
+    Creases are supported through the optional edge attribute "crease",
     which can be set to an integer value that defines how sharp the crease is wrt
     the number of subdivision steps.
 
-    To add an infinitely sharp crease to an edge, set the ``'crease'`` attribute of the edge
+    To add an infinitely sharp crease to an edge, set the "crease" attribute of the edge
     to a number higher than the number of subdivision steps.
 
     >>> from compas.geometry import Box, dot_vectors

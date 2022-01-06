@@ -473,7 +473,7 @@ class Network(Graph):
             The key of the end node.
         t : float, optional
             The location of the point on the edge.
-            If the value of ``t`` is outside the range ``0-1``, the point will
+            If the value of `t` is outside the range 0-1, the point will
             lie in the direction of the edge, but not on the edge vector.
 
         Returns
