@@ -146,12 +146,18 @@ class IntersectionMeshPlane(object):
             x = intersection_segment_plane((a, b), self.plane)
             if not x:
                 continue
-            if not len(x) == sum([1 for i, j in zip(x, a) if i == j]) and not len(x) == sum([1 for i, j in zip(x, b) if i == j]):
+            if any([i != j for i, j in zip(x, a)]) and any([i != j for i, j in zip(x, b)]):
                 L_ax = length_vector(subtract_vectors(x, a))
                 L_ab = length_vector(subtract_vectors(b, a))
                 t = L_ax / L_ab
                 key = self.mesh.split_edge(u, v, t=t, allow_boundary=True)
                 intersections.append(key)
+            else:
+                if u in vertex_intersections:
+                    intersections.append(u)
+                vertex_intersections.clear()
+                vertex_intersections.append(u)
+                vertex_intersections.append(v)
         self._intersections = intersections
 
     def split(self):
@@ -159,5 +165,8 @@ class IntersectionMeshPlane(object):
             split = [key for key in self.mesh.face_vertices(fkey) if key in self.intersections]
             if len(split) == 2:
                 u, v = split
-                self.mesh.split_face(fkey, u, v)
+                try:
+                    self.mesh.split_face(fkey, u, v)
+                except:
+                    continue
         return self.positive, self.negative
