@@ -5,22 +5,25 @@ from __future__ import print_function
 import compas
 from compas import _iotools
 
-__all__ = [
-    'OFF',
-    'OFFReader',
-    'OFFWriter',
-]
-
 
 class OFF(object):
-    """Read and write files in OFF format.
+    """Class for working with OFF files.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
+
+    Attributes
+    ----------
+    reader : :class:`OFFReader`, read-only
+        A OFF file reader.
 
     References
     ----------
     * http://shape.cs.princeton.edu/benchmark/documentation/off_format.html
     * http://www.geomview.org/docs/html/OFF.html
     * http://segeval.cs.princeton.edu/public/off_format.html
-
 
     """
 
@@ -30,7 +33,19 @@ class OFF(object):
         self._is_read = False
         self._writer = None
 
+    @property
+    def reader(self):
+        if not self._is_read:
+            self.read()
+        return self._reader
+
     def read(self):
+        """Read and parse the contents of the file.
+
+        Returns
+        -------
+        None
+        """
         self._reader = OFFReader(self.filepath)
         self._reader.open()
         self._reader.pre()
@@ -39,18 +54,32 @@ class OFF(object):
         self._is_read = True
 
     def write(self, mesh, **kwargs):
+        """Write a mesh to the file.
+
+        Parameters
+        ----------
+        mesh : :class:`compas.datastructures.Mesh`
+            The mesh.
+        author : str, optional
+            The author name to include in the header.
+        email : str, optional
+            The email of the author to include in the header.
+        date : str, optional
+            The date to include in the header.
+        precision : str, optional
+            COMPAS precision specification for parsing geometric data.
+
+        Returns
+        -------
+        None
+
+        """
         self._writer = OFFWriter(self.filepath, mesh, **kwargs)
         self._writer.write()
 
-    @property
-    def reader(self):
-        if not self._is_read:
-            self.read()
-        return self._reader
-
 
 class OFFReader(object):
-    """Read the contents of an *obj* file.
+    """Class for reading raw geometric data from OFF files.
 
     Parameters
     ----------
@@ -59,18 +88,14 @@ class OFFReader(object):
 
     Attributes
     ----------
-    vertices : list
-        Vertex coordinates.
-    faces : list
-        Face objects, referencing the list of vertices.
+    vertices : list[list[float, float, float]]
+        List of lists of vertex coordinates.
+    faces : list[list[int]
+        List of lists of references to vertex coordinates.
 
     Notes
     -----
     The OFF reader currently only supports reading of vertices and faces of polygon meshes.
-
-    References
-    ----------
-
     """
 
     def __init__(self, filepath):
@@ -83,10 +108,22 @@ class OFFReader(object):
         self.e = 0
 
     def open(self):
+        """Open the file and read its contents.
+
+        Returns
+        -------
+        None
+        """
         with _iotools.open_file(self.filepath, 'r') as f:
             self.content = f.readlines()
 
     def pre(self):
+        """Pre-process the contents.
+
+        Returns
+        -------
+        None
+        """
         lines = []
         is_continuation = False
         needs_decode = None
@@ -111,6 +148,12 @@ class OFFReader(object):
         self.content = iter(lines)
 
     def post(self):
+        """Post-process the contents.
+
+        Returns
+        -------
+        None
+        """
         pass
 
     def read(self):
@@ -125,6 +168,9 @@ class OFFReader(object):
         x y z
         degree list of vertices
 
+        Returns
+        -------
+        None
         """
         if not self.content:
             return
@@ -176,6 +222,24 @@ class OFFReader(object):
 
 
 class OFFWriter(object):
+    """Class for writing geometric data to a OBJ file.
+
+    Parameters
+    ----------
+    filepath : path string, file-like object or URL string
+        A path, a file-like object or a URL pointing to a file.
+    mesh : :class:`compas.datastructures.Mesh`
+        Mesh to write to the file.
+    author : str, optional
+        The author name to include in the header.
+    email : str, optional
+        The email of the author to include in the header.
+    date : str, optional
+        The date to include in the header.
+    precision : str, optional
+        COMPAS precision specification for parsing geometric data.
+
+    """
 
     def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
         self.filepath = filepath
@@ -191,12 +255,18 @@ class OFFWriter(object):
         self.file = None
 
     def write(self):
-        with _iotools.open_file(self.filepath, 'w') as self.file:
-            self.write_header()
-            self.write_vertices()
-            self.write_faces()
+        """Write the meshes to the file.
 
-    def write_header(self):
+        Returns
+        -------
+        None
+        """
+        with _iotools.open_file(self.filepath, 'w') as self.file:
+            self._write_header()
+            self._write_vertices()
+            self._write_faces()
+
+    def _write_header(self):
         self.file.write("OFF\n")
         if self.author:
             self.file.write("# author: {}\n".format(self.author))
@@ -206,12 +276,12 @@ class OFFWriter(object):
             self.file.write("# date: {}\n".format(self.date))
         self.file.write("{} {} {}\n".format(self.v, self.f, self.e))
 
-    def write_vertices(self):
+    def _write_vertices(self):
         for key in self.mesh.vertices():
             x, y, z = self.mesh.vertex_coordinates(key)
             self.file.write(self.vertex_tpl.format(x, y, z))
 
-    def write_faces(self):
+    def _write_faces(self):
         key_index = self.mesh.key_index()
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)
