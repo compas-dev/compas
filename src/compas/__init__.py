@@ -21,57 +21,6 @@ compas
     compas.topology
     compas.utilities
 
-Utility functions
-=================
-
-JSON handling
--------------
-
-.. autofunction:: json_dump
-
-.. autofunction:: json_dumps
-
-.. autofunction:: json_load
-
-.. autofunction:: json_loads
-
-Precision
----------
-
-.. autofunction:: set_precision
-
-.. autodata:: PRECISION
-
-Execution context
------------------
-
-.. autofunction:: is_windows
-
-.. autofunction:: is_linux
-
-.. autofunction:: is_osx
-
-.. autofunction:: is_mono
-
-.. autofunction:: is_ironpython
-
-.. autofunction:: is_rhino
-
-.. autofunction:: is_blender
-
-.. autodata:: WINDOWS
-
-.. autodata:: LINUX
-
-.. autodata:: OSX
-
-.. autodata:: MONO
-
-.. autodata:: IPY
-
-.. autodata:: RHINO
-
-.. autodata:: BLENDER
 
 """
 from __future__ import print_function
@@ -82,7 +31,7 @@ import decimal
 from distutils.version import LooseVersion
 
 import compas._os
-from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
+from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender, is_grasshopper  # noqa: F401
 from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
@@ -91,7 +40,7 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '1.12.2'
+__version__ = '1.13.3'
 
 version = LooseVersion(compas.__version__)
 versionstring = version.vstring.split('-')[0]

@@ -4,14 +4,11 @@ from __future__ import print_function
 
 from System import Array
 
-from Grasshopper import DataTree as Tree
-from Grasshopper.Kernel.Data import GH_Path as Path
-
-
-__all__ = [
-    'list_to_ghtree',
-    'ghtree_to_list',
-]
+try:
+    from Grasshopper import DataTree as Tree
+    from Grasshopper.Kernel.Data import GH_Path as Path
+except ImportError:
+    pass
 
 
 def list_to_ghtree(items, none_and_holes=False, base_path=[0]):

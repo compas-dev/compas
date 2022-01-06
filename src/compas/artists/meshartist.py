@@ -16,57 +16,73 @@ class MeshArtist(Artist):
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
 
-    Class Attributes
-    ----------------
-    default_color : tuple
-        The default color of the mesh.
-    default_vertexcolor : tuple
-        The default color for vertices that do not have a specified color.
-    default_edgecolor : tuple
-        The default color for edges that do not have a specified color.
-    default_facecolor : tuple
-        The default color for faces that do not have a specified color.
-    default_vertexsize : int
-    default_edgewidth : float
-
     Attributes
     ----------
     mesh : :class:`compas.datastructures.Mesh`
-        The mesh associated with the artist.
-    vertices : list
-        The vertices to include in the drawing.
-        Default is all vertices.
-    edges : list
-        The edges to include in the drawing.
-        Default is all edges.
-    faces : list
-        The faces to include in the drawing.
-        Default is all faces.
-    vertex_xyz : dict
-        The view coordinates of the vertices.
-        Default is to use the actual vertex coordinates.
-    vertex_color : dict
-        Mapping between vertices and colors.
-        Default is to use the default color for vertices.
-    edge_color : dict
-        Mapping between edges and colors.
-        Default is to use the default color for edges.
-    face_color : dict
-        Mapping between faces and colors.
-        Default is to use the default color for faces.
-    vertex_text : dict
-        Mapping between vertices and text labels.
-    edge_text : dict
-        Mapping between edges and text labels.
-    face_text : dict
-        Mapping between faces and text labels.
+        The mesh data structure.
+    vertices : list[int]
+        The selection of vertices that should be included in the drawing.
+        Defaults to all vertices.
+    edges : list[tuple[int, int]]
+        The selection of edges that should be included in the drawing.
+        Defaults to all edges.
+    faces : list[int]
+        The selection of faces that should be included in the drawing.
+        Defaults to all faces.
+    color : tuple[float, float, float]
+        The base RGB color of the mesh.
+        Defaults to :attr:`default_color`.
+    vertex_xyz : dict[int, list[float]]
+        View coordinates of the vertices.
+        Defaults to the real coordinates.
+    vertex_color : dict[int, tuple[float, float, float]]
+        Vertex colors.
+        Missing vertices get the default vertex color :attr:`default_vertexcolor`.
+    edge_color : dict[tuple[int, int], tuple[float, float, float]]
+        Edge colors.
+        Missing edges get the default edge color :attr:`default_edgecolor`.
+    face_color : dict[int, tuple[float, float, float]]
+        Face colors.
+        Missing faces get the default face color :attr:`default_facecolor`.
+    vertex_text : dict[int, str]
+        Vertex labels.
+        Defaults to the vertex identifiers.
+    edge_text : dict[tuple[int, int], str]
+        Edge labels.
+        Defaults to the edge identifiers.
+    face_text : dict[int, tuple[float, float, float]]
+        Face labels.
+        Defaults to the face identifiers.
+    vertex_size : dict[int, float]
+        Vertex sizes.
+        Defaults to 1.
+        Visualization of vertices with variable size is not available for all visualization contexts.
+    edge_width : dict[tuple[int, int], float]
+        Edge widths.
+        Defaults to 1.
+        Visualization of edges with variable width is not available for all visualization contexts.
+
+    Class Attributes
+    ----------------
+    default_color : tuple[float, float, float]
+        The default base color of the mesh.
+    default_vertexcolor : tuple[float, float, float]
+        The default color of the vertices of the mesh.
+    default_edgecolor : tuple[float, float, float]
+        The default color of the edges of the mesh.
+    default_facecolor : tuple[float, float, float]
+        The default color of the faces of the mesh.
+    default_vertexsize : float
+        The default size of the vertices of the mesh.
+    default_edgewidth : float
+        The default width of the edges of the mesh.
+
     """
 
     default_color = (0.0, 0.0, 0.0)
     default_vertexcolor = (1.0, 1.0, 1.0)
     default_edgecolor = (0.0, 0.0, 0.0)
     default_facecolor = (0.9, 0.9, 0.9)
-
     default_vertexsize = 5
     default_edgewidth = 1.0
 
@@ -275,16 +291,22 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
-        text : dict, optional
+        text : dict[int, str], optional
             The text labels for the vertices
             as a text dict, mapping specific vertices to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the vertices in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -294,16 +316,21 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : dict, optional
+        text : dict[tuple[int, int], str], optional
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the edges in the visualization context.
         """
         raise NotImplementedError
 
@@ -313,36 +340,72 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.
-        text : dict, optional
+        text : dict[int, str], optional
             The text labels for the faces
             as a text dict, mapping specific faces to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the faces in the visualization context.
         """
         raise NotImplementedError
 
     @abstractmethod
     def draw_mesh(self):
+        """Draw the mesh of the mesh.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the mesh in the visualization context.
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_vertices(self):
+        """Clear the vertices of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
+        """Clear the edges of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_faces(self):
+        """Clear the faces of the mesh.
+
+        Returns
+        -------
+        None
+        """
         raise NotImplementedError
 
     def clear(self):
+        """Clear all components of the mesh.
+
+        Returns
+        -------
+        None
+        """
         self.clear_vertices()
         self.clear_edges()
         self.clear_faces()

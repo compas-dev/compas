@@ -15,8 +15,10 @@ import compas.plugins
 __all__ = [
     'install',
     'installable_rhino_packages',
-    'after_rhino_install',
+    'after_rhino_install'
 ]
+
+INSTALLED_VERSION = None
 
 
 def install(version=None, packages=None, clean=False):
@@ -26,7 +28,7 @@ def install(version=None, packages=None, clean=False):
     ----------
     version : {'5.0', '6.0', '7.0', '8.0'}, optional
         The version number of Rhino.
-        Default is ``'6.0'``.
+        Default is ``'7.0'``.
     packages : list of str, optional
         List of packages to install or None to use default package list.
         Default is the result of ``installable_rhino_packages``,
@@ -40,24 +42,25 @@ def install(version=None, packages=None, clean=False):
     .. code-block:: python
 
         import compas_rhino.install
-        compas_rhino.install.install('6.0')
+        compas_rhino.install.install()
 
     .. code-block:: bash
 
-        python -m compas_rhino.install -v 6.0
+        python -m compas_rhino.install
 
     """
-
-    if version not in ('5.0', '6.0', '7.0', '8.0'):
-        version = '6.0'
+    version = compas_rhino._check_rhino_version(version)
 
     # We install COMPAS packages in the scripts folder
     # instead of directly as IPy module.
-    scripts_path = compas_rhino._get_scripts_path(version)
+    scripts_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
-    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+    ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
 
+    # Filter the provided list of packages
+    # If no packages are provided
+    # this first collects all installable packages from the environment.
     packages = _filter_installable_packages(version, packages)
 
     results = []
@@ -87,8 +90,22 @@ def install(version=None, packages=None, clean=False):
         if os.path.islink(path):
             if not os.path.exists(path):
                 symlinks_to_uninstall.append(dict(name=name, link=path))
-            else:
-                if clean:
+                try:
+                    importlib.import_module(name)
+                except ImportError:
+                    pass
+                else:
+                    if name not in packages:
+                        packages.append(name)
+
+    # If the scripts folder is supposed to be cleaned
+    # also remove all existing symlinks that cannot be imported
+    # and reinstall symlinks that can be imported
+    if clean:
+        for name in os.listdir(scripts_path):
+            path = os.path.join(scripts_path, name)
+            if os.path.islink(path):
+                if os.path.exists(path):
                     try:
                         importlib.import_module(name)
                     except ImportError:
@@ -110,16 +127,20 @@ def install(version=None, packages=None, clean=False):
 
         # Handle legacy install location
         # This does not always work,
-        # and especially not in cases where it is in any case not necessary :)
+        # and especially not in cases where it is not necessary :)
         if ipylib_path:
             legacy_path = os.path.join(ipylib_path, package)
             if os.path.exists(legacy_path):
                 symlinks_to_uninstall.append(dict(name=package, link=legacy_path))
 
-    # First uninstall existing copies of packages requested for installation
+    # -------------------------
+    # Uninstall first
+    # -------------------------
+
     symlinks = [link['link'] for link in symlinks_to_uninstall]
     uninstall_results = compas._os.remove_symlinks(symlinks)
 
+    # Let the user know if some symlinks could not be removed.
     for uninstall_data, success in zip(symlinks_to_uninstall, uninstall_results):
         if not success:
             results.append((uninstall_data['name'], 'ERROR: Cannot remove symlink, try to run as administrator.'))
@@ -182,6 +203,9 @@ def install(version=None, packages=None, clean=False):
     print('\nInstall completed.')
     if exit_code != 0:
         sys.exit(exit_code)
+
+    global INSTALLED_VERSION
+    INSTALLED_VERSION = version
 
 
 def _run_post_execution_steps(steps_generator):
@@ -322,7 +346,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0', '8.0'], default='6.0', help="The version of Rhino to install the packages in.")
+    parser.add_argument(
+        '-v',
+        '--version',
+        choices=compas_rhino.SUPPORTED_VERSIONS,
+        default=compas_rhino.DEFAULT_VERSION,
+        help="The version of Rhino to install the packages in."
+    )
     parser.add_argument('-p', '--packages', nargs='+', help="The packages to install.")
     parser.add_argument('--clean', dest='clean', default=False, action='store_true')
 

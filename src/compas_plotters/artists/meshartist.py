@@ -316,9 +316,10 @@ class MeshArtist(PlotterArtist, MeshArtist):
         colors = []
         widths = []
         for edge in self.edges:
+            u, v = edge
             lines.append([self.vertex_xyz[edge[0]][:2], self.vertex_xyz[edge[1]][:2]])
-            colors.append(self.edge_color.get(edge, self.default_edgecolor))
-            widths.append(self.edge_width.get(edge, self.default_edgewidth))
+            colors.append(self.edge_color.get(edge, self.edge_color.get((v, u), self.default_edgecolor)))
+            widths.append(self.edge_width.get(edge, self.edge_width.get((v, u), self.default_edgewidth)))
 
         collection = LineCollection(
             lines,
@@ -468,7 +469,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
             artist = self.plotter.axes.text(
                 x, y,
                 f'{text}',
-                fontsize=12,
+                fontsize=self.plotter.fontsize,
                 family='monospace',
                 ha='center', va='center',
                 zorder=10000,
@@ -499,7 +500,8 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         labels = []
         for edge in self.edges:
-            text = self.edge_text.get(edge, None)
+            u, v = edge
+            text = self.edge_text.get(edge, self.edge_text.get((v, u), None))
             if text is None:
                 continue
 
@@ -510,7 +512,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
             artist = self.plotter.axes.text(
                 x, y, f'{text}',
-                fontsize=12,
+                fontsize=self.plotter.fontsize,
                 family='monospace',
                 ha='center', va='center',
                 zorder=10000,
@@ -550,7 +552,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
             artist = self.plotter.axes.text(
                 x, y, f'{text}',
-                fontsize=12,
+                fontsize=self.plotter.fontsize,
                 family='monospace',
                 ha='center', va='center',
                 zorder=10000,

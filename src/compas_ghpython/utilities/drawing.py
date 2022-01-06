@@ -37,22 +37,6 @@ except ImportError:
 TOL = sc.doc.ModelAbsoluteTolerance
 
 
-__all__ = [
-    'draw_frame',
-    'draw_points',
-    'draw_lines',
-    'draw_geodesics',
-    'draw_polylines',
-    'draw_faces',
-    'draw_cylinders',
-    'draw_pipes',
-    'draw_spheres',
-    'draw_mesh',
-    'draw_network',
-    'draw_circles',
-]
-
-
 def draw_frame(frame):
     """Draw a frame.
     """

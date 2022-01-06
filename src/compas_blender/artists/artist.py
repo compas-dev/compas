@@ -38,7 +38,3 @@ class BlenderArtist(Artist):
             self._collection = compas_blender.create_collection(value)
         else:
             raise Exception('Collection must be of type `str` or `bpy.types.Collection`.')
-
-    def clear(self) -> None:
-        """Delete all objects created by the artist."""
-        compas_blender.delete_objects(self.collection.objects)
