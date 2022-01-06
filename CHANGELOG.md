@@ -12,8 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Changed `compas_rhino.geometry.RhinoNurbsSurface.closest_point` to fix bug of rhino_curve to rhino_surface, plus return tuple instead.
+* Changed `compas.geometry.Collection` to work with all types of geometry objects.
+* Changed base of `compas.geometry.Collection` to `compas.data.Data`.
 
 ### Removed
+
+* Removed `compas.geometry.CollectionNumpy`
+* Removed `compas.geometry.PointCollection`
+* Removed `compas.geometry.PointCollectionNumpy`
 
 
 ## [1.13.3] 2021-12-17

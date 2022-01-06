@@ -3,14 +3,57 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.data import Data
+from compas.data.encoders import cls_from_dtype
 
 
 class Collection(Data):
+    """A collection of data is a mutable sequence of COMPAS data objects of the same type.
+
+    Parameters
+    ----------
+    itype : Type[:class:`compas.geometry.Geometry`]
+        The type of very item in the collection.
+    items : sequence[:class:`compas.geometry.Geometry`], optional
+        The items of the collection.
+        These items can be instances of COMPAS geometry objects,
+        or their Python built-in equivalent.
+
+    Attributes
+    ----------
+    items : list[:class:`compas.geometry.Geometry`]
+        The type of each item is the same as :attr:`itype`.
+
+    Examples
+    --------
+    >>> from compas.geometry import Pointcloud, Line, Collection
+    >>> from compas.utilities import pairwise
+
+    Construct from list of items.
+
+    >>> lines = []
+    >>> for a, b in pairwise(Pointcloud.from_bounds(8, 5, 3, 31)):
+    ...     lines.append([a, b])
+    ...
+    >>> collection = Collection(Line, lines)
+    >>> collection
+    '<Collection of 30 Line>'
+
+    Construct with loop.
+
+    >>> collection = Collection(Line)
+    >>> for a, b in pairwise(Pointcloud.from_bounds(8, 5, 3, 31)):
+    ...     collection.append([a, b])
+    ...
+    >>> collection
+    '<Collection of 30 Line>'
+
+    """
 
     __slots__ = ['_items']
 
-    def __init__(self, items=None, **kwargs):
+    def __init__(self, itype, items=None, **kwargs):
         super(Collection, self).__init__(**kwargs)
+        self._itype = itype
         self._items = []
         self.items = items
 
@@ -20,7 +63,7 @@ class Collection(Data):
 
     @property
     def itype(self):
-        raise NotImplementedError
+        return self._itype
 
     @property
     def items(self):
@@ -28,7 +71,13 @@ class Collection(Data):
 
     @items.setter
     def items(self, items):
-        raise NotImplementedError
+        if not items:
+            return
+        if not self._itype:
+            raise Exception("Item type not set.")
+        self._items = []
+        for item in items:
+            self.add(item)
 
     # ==========================================================================
     # data
@@ -36,10 +85,11 @@ class Collection(Data):
 
     @property
     def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-        return schema.Schema({
-            'items': None
+        """schema.Schema : Schema of the data representation."""
+        from schema import Schema
+        return Schema({
+            'itype': '.../...',
+            'items': lambda item: 'validate schema?'
         })
 
     @property
@@ -50,11 +100,12 @@ class Collection(Data):
     @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
-        return {'items': [item.data for item in self._items]}
+        itype = '{}/{}'.format('.'.join(self.itype.__module__.split('.')[:2]), self.itype.__name__)
+        return {'itype': itype, 'items': [item.data for item in self._items]}
 
     @data.setter
     def data(self, data):
-        self._items = [self.itype.from_data(d) for d in data]
+        self._items = [self.itype.from_data(item) for item in data['items']]
 
     @classmethod
     def from_data(cls, data):
@@ -67,7 +118,7 @@ class Collection(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Collection`
+        :class:`compas.geometry.Collection[data['itype']]`
             The data collection.
 
         Examples
@@ -77,7 +128,8 @@ class Collection(Data):
         >>> circle = Circle.from_data(data)
 
         """
-        coll = cls()
+        itype = cls_from_dtype(data['itype'])
+        coll = cls(itype)
         coll.data = data
         return coll
 
@@ -95,13 +147,30 @@ class Collection(Data):
         return self._items[key]
 
     def __setitem__(self, key, value):
+        if not isinstance(value, self._itype):
+            value = self._itype(*value)
         self._items[key] = value
+
+    def __delitem__(self, key):
+        if isinstance(key, slice):
+            n = len(self._items)
+            start, stop, step = key.indices(n)
+            indices = list(range(start, stop, step))
+            if step > 0:
+                indices[:] = indices[::-1]
+            for i in indices:
+                del self._items[i]
+        else:
+            del self._items[key]
 
     def __iter__(self):
         return iter(self._items)
 
     def __len__(self):
         return len(self._items)
+
+    def __repr__(self):
+        return "<Collection of {} {}>".format(len(self), self.itype.__name__)
 
     # ==========================================================================
     # constructors
@@ -111,15 +180,62 @@ class Collection(Data):
     # methods
     # ==========================================================================
 
-    def copy(self, cls=None):
-        cls = cls or type(self)
-        return cls(self.items)
+    def append(self, item):
+        """Add an item at the end of the sequence of items contained by the list.
+
+        Parameters
+        ----------
+        item : self.itype
+            An item of the COMPAS geometry type of this Collection,
+            or its Python built-in equivalent.
+
+        Returns
+        -------
+        self.itype
+
+        """
+        if not isinstance(item, self._itype):
+            item = self._itype(*item)
+        self._items.append(item)
+        return item
+
+    def copy(self):
+        """Make an independent copy of the collection and all the objects in it.
+
+        Returns
+        -------
+        :class:`compas.geometry.Collection[self.itype]`
+
+        """
+        return Collection(self.itype, [item.copy() for item in self.items])
 
     def transform(self, X):
-        for item in self.items:
+        """Transform all items in the collection.
+
+        Parameters
+        ----------
+        X : list[list[float]] or :class:`compas.geometry.Transformation`
+
+        Returns
+        -------
+        None
+
+        """
+        for item in self._items:
             item.transform(X)
 
     def transformed(self, X):
+        """Return a transformed copy of this collection.
+
+        Parameters
+        ----------
+        X : list[list[float]] or :class:`compas.geometry.Transformation`
+
+        Returns
+        -------
+        :class:`compas.geometry.Collection[self.itype]`
+
+        """
         collection = self.copy()
         collection.transform(X)
         return collection
