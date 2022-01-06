@@ -93,7 +93,7 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         If ``0.0 < t < 1.0``, collapse to a point between `u` and `v`.
     allow_boundary : bool, optional
         Allow collapses involving boundary vertices.
-    fixed : List[int], optional
+    fixed : list[int], optional
         A list of identifiers of vertices that should stay fixed.
 
     Returns

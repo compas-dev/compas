@@ -61,7 +61,7 @@ def mesh_connected_components(mesh):
 
     Returns
     -------
-    List[List[int]]
+    list[list[int]]
         Groups of connected vertices.
     """
     return connected_components(mesh.adjacency)

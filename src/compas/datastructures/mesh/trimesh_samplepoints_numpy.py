@@ -28,7 +28,7 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
 
     Returns
     -------
-    Union[ndarray, Tuple[ndarray, ndarray]]
+    Union[ndarray, tuple[ndarray, ndarray]]
         If `return_normals` is False, a numpy ndarray representing sampled points with dim = [num_points, 3].
         If `return_normals` is True, the sample points and the normals.
 

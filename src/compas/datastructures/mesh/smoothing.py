@@ -20,7 +20,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    fixed : List[int], optional
+    fixed : list[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -28,7 +28,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : List[Any], optional
+    callback_args : list[Any], optional
         A list of arguments to be passed to the callback.
 
     Returns
@@ -78,7 +78,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    fixed : List[int], optional
+    fixed : list[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -86,7 +86,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : List[Any], optional
+    callback_args : list[Any], optional
         A list of arguments to be passed to the callback.
 
     Returns
@@ -136,7 +136,7 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    fixed : List[int], optional
+    fixed : list[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -144,7 +144,7 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : List[Any], optional
+    callback_args : list[Any], optional
         A list of arguments to be passed to the callback.
 
     Returns

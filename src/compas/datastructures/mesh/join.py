@@ -54,7 +54,7 @@ def meshes_join(meshes, cls=None):
 
     Parameters
     ----------
-    meshes : List[:class:`compas.datastructures.Mesh`]
+    meshes : list[:class:`compas.datastructures.Mesh`]
         A list of meshes.
     cls : Type[:class:`compas.datastructures.Mesh`], optional
         The type of the joined mesh.
@@ -99,7 +99,7 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
 
     Parameters
     ----------
-    meshes : List[:class:`compas.datastructures.Mesh`]
+    meshes : list[:class:`compas.datastructures.Mesh`]
         A list of meshes.
     precision: str, optional
         Tolerance distance for welding.

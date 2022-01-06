@@ -27,7 +27,7 @@ def trimesh_gaussian_curvature(mesh):
 
     Returns
     -------
-    List[float]
+    list[float]
         Per vertex curvature values.
 
     Warnings

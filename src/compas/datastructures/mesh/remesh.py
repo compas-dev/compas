@@ -50,11 +50,11 @@ def trimesh_remesh(mesh,
         Allow boundary edges or edges connected to the boundary to be collapsed.
     smooth : bool, optional
         Apply smoothing at every iteration.
-    fixed : List[int], optional
+    fixed : list[int], optional
         A list of vertices that have to stay fixed.
     callback : callable, optional
         A user-defined function that is called after every iteration.
-    callback_args : List[Any], optional
+    callback_args : list[Any], optional
         A list of additional parameters to be passed to the callback function.
 
     Returns

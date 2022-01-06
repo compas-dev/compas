@@ -30,12 +30,12 @@ def trimesh_pull_points_numpy(mesh, points):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh data structure.
-    points : List[List[float]]
+    points : list[list[float]]
         The input points.
 
     Returns
     -------
-    List[List[float]]
+    list[list[float]]
         The points on the mesh.
 
     Notes

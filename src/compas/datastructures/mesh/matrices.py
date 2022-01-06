@@ -334,7 +334,7 @@ def trimesh_edge_cotangents(mesh, u, v):
 
     Returns
     -------
-    Tuple[float, float]
+    tuple[float, float]
         The two edge cotangents.
 
     Examples

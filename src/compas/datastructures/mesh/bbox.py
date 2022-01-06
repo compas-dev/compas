@@ -23,7 +23,7 @@ def mesh_bounding_box(mesh):
 
     Returns
     -------
-    List[List[float]]
+    list[list[float]]
         The 8 corners of the bounding box of the mesh.
 
     Examples
@@ -47,7 +47,7 @@ def mesh_bounding_box_xy(mesh):
 
     Returns
     -------
-    List[List[float]]
+    list[list[float]]
         The 4 corners of the bounding polygon in the XY plane.
 
     Examples

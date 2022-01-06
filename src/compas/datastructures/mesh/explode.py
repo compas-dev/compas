@@ -21,7 +21,7 @@ def mesh_disconnected_vertices(mesh):
 
     Returns
     -------
-    List[List[int]]
+    list[list[int]]
         The disconnected parts of the mesh as a list of lists of vertex identifiers.
     """
     return connected_components(mesh.adjacency)
@@ -37,7 +37,7 @@ def mesh_disconnected_faces(mesh):
 
     Returns
     -------
-    List[List[int]]
+    list[list[int]]
         The disconnected parts of the mesh as a list of lists of face identifiers.
     """
     parts = mesh_disconnected_vertices(mesh)
@@ -56,7 +56,7 @@ def mesh_explode(mesh, cls=None):
 
     Returns
     -------
-    List[:class:`compas.datastructures.Mesh`]
+    list[:class:`compas.datastructures.Mesh`]
         The list of the meshes from the exploded mesh parts.
     """
     if cls is None:

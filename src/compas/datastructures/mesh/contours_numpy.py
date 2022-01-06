@@ -35,9 +35,9 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
 
     Returns
     -------
-    List[float]
+    list[float]
         A list of levels.
-    List[List[float]]
+    list[list[float]]
         A list of isolines.
         The list of levels contains the z-values at each of the isolines.
         Each isoline is a list of paths, and each path is a list polygons.
@@ -61,9 +61,9 @@ def mesh_contours_numpy(mesh, levels=50, density=100):
 
     Returns
     -------
-    List[float]
+    list[float]
         A list of levels.
-    List[List[float]]
+    list[list[float]]
         A list of contours.
         The list of levels contains the z-values at each of the contours.
         Each contour is a list of paths, and each path is a list polygons.

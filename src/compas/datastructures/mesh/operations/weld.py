@@ -25,13 +25,13 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
         A mesh object.
     fkey : int
         The identifier of a face.
-    where : List[int], optional
+    where : list[int], optional
         A list of vertices to unweld.
         Default is to unweld all vertices of the face.
 
     Returns
     -------
-    List[int]
+    list[int]
         The vertices of the unwelded face.
 
     Examples
@@ -65,7 +65,7 @@ def mesh_unweld_edges(mesh, edges):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh.
-    edges: List[Tuple[int, int]]
+    edges: list[tuple[int, int]]
         List of edges as tuples of vertex keys.
 
     Returns

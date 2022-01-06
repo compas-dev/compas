@@ -95,7 +95,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
         A mesh object.
     scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'}, optional
         The scheme according to which the mesh should be subdivided.
-    **options : Dict[str, Any], optional
+    **options : dict[str, Any], optional
         Optional additional keyword arguments.
 
     Returns
@@ -276,7 +276,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
-    fixed : List[int], optional
+    fixed : list[int], optional
         A list of fixed vertices.
 
     Returns
@@ -460,7 +460,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
-    fixed : List[int], optional
+    fixed : list[int], optional
         A list of fixed vertices.
 
     Returns
@@ -573,7 +573,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The mesh object to be subdivided.
-    offset : float or Dict[int, float]
+    offset : float or dict[int, float]
         The offset distance to create the frames.
         A single value will result in a constant offset everywhere.
         A dictionary mapping faces to offset values will be processed accordingly.
@@ -646,7 +646,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
-    fixed : List[int], optional
+    fixed : list[int], optional
         A list of fixed vertices.
 
     Returns

@@ -17,13 +17,13 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
         The old vertex key.
     new_vkey : int
         The new vertex key.
-    fkeys : List[int], optional
+    fkeys : list[int], optional
         List of face keys where to subsitute the old vertex by the new one.
         Default is to subsitute in all faces.
 
     Returns
     -------
-    List[int]
+    list[int]
         The list of modified faces.
 
     Examples

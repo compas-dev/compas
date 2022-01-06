@@ -23,7 +23,7 @@ def mesh_oriented_bounding_box_numpy(mesh):
 
     Returns
     -------
-    List[List[float]]
+    list[list[float]]
         The bounding box of the mesh as a list of corner vertex coordinates.
 
     Examples
@@ -48,7 +48,7 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
 
     Returns
     -------
-    List[List[float]]
+    list[list[float]]
         The bounding box.
 
     Examples

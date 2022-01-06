@@ -176,7 +176,7 @@ def mesh_split_face(mesh, fkey, u, v):
 
     Returns
     -------
-    Tuple[int, int]
+    tuple[int, int]
         Keys of the created faces.
 
     Raises
@@ -234,12 +234,12 @@ def mesh_split_strip(mesh, edge):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The input mesh.
-    edge : Tuple[int, int]
+    edge : tuple[int, int]
         The edge identifying the strip.
 
     Returns
     -------
-    List[int]
+    list[int]
         The split vertices in the same order as the edges of the strip.
     """
     strip = mesh.edge_strip(edge)

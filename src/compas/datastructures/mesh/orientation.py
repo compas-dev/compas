@@ -99,7 +99,7 @@ def mesh_face_adjacency(mesh):
 
     Returns
     -------
-    Dict[int, List[int]]
+    dict[int, list[int]]
         A dictionary mapping face identifiers (keys) to lists of neighboring faces.
 
     Notes
