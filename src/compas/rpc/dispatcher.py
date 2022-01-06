@@ -25,15 +25,8 @@ except ImportError:
     from profile import Profile
 
 
-__all__ = ['Dispatcher']
-
-
 class Dispatcher(object):
     """Base class for remote services.
-
-    Examples
-    --------
-    >>>
 
     Notes
     -----
@@ -43,11 +36,24 @@ class Dispatcher(object):
     such that the errors can be rethrown on the client side.
 
     """
+
     def on_module_imported(self, module, newly_loaded_modules):
         """Event triggered when a module is successfully imported.
 
         Override this method when subclassing in order to handle the what happens
         after a module has been imported.
+
+        Parameters
+        ----------
+        module : module
+            A module object.
+        newly_loaded_modules : sequence[str]
+            ???
+
+        Returns
+        -------
+        None
+
         """
         pass
 
