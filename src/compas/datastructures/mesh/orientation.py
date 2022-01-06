@@ -225,6 +225,7 @@ def mesh_flip_cycles(mesh):
     -----
     This function does not care about the directions being unified or not. It
     just reverses whatever direction it finds.
+
     """
     mesh.halfedge = {key: {} for key in mesh.vertices()}
     for fkey in mesh.faces():

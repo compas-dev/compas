@@ -87,7 +87,7 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
         The second edge vertex.
     vkey: int, optional
         The vertex key to insert.
-        Default is add a new vertex at mid-edge.
+        Default is to auto-generate a new vertex identifier.
 
     Returns
     -------
@@ -104,10 +104,6 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
     yields the two new faces
     face_1 = [a, e, b, c] and
     face_2 = [b, e, a, d].
-
-    Examples
-    --------
-    >>>
 
     """
 

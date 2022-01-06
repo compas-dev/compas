@@ -22,6 +22,7 @@ def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
     -------
     None
         The mesh is modified in place.
+
     """
     for k in range(kmax):
         V = array(trimesh.vertices_attributes('xyz'))

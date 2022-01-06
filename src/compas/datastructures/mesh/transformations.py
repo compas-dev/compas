@@ -44,7 +44,7 @@ def mesh_transform(mesh, transformation):
 
 
 def mesh_transformed(mesh, transformation):
-    """Transform a copy of ``mesh``.
+    """Return a transformed copy of the mesh.
 
     Parameters
     ----------
@@ -56,7 +56,7 @@ def mesh_transformed(mesh, transformation):
     Returns
     -------
     :class:`compas.datastructures.Mesh`
-        A transformed independent copy of ``mesh``.
+        A transformed independent copy of `mesh`.
 
     Examples
     --------

@@ -197,7 +197,7 @@ class HalfEdge(Datastructure):
         """Get the identifier of a random vertex.
 
         .. deprecated:: 1.13.3
-            Use ``~HalfEdge.vertex_sample(size=1)[0]`` instead.
+            Use :meth:`vertex_sample` instead.
 
         Returns
         -------
@@ -211,7 +211,7 @@ class HalfEdge(Datastructure):
         """Get a list of identifiers of a random set of n vertices.
 
         .. deprecated:: 1.13.3
-            Use ``~HalfEdge.vertex_sample(size=n)`` instead.
+            Use :meth:`vertex_sample` instead.
 
         Parameters
         ----------
@@ -236,7 +236,7 @@ class HalfEdge(Datastructure):
         """Get the identifier of a random face.
 
         .. deprecated:: 1.13.3
-            Use ``~HalfEdge.face_sample(size=1)[0]`` instead.
+            Use :meth:`face_sample` instead.
 
         Returns
         -------

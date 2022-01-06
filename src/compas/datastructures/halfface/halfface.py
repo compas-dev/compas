@@ -228,7 +228,7 @@ class HalfFace(Datastructure):
         """Get the identifier of a random vertex.
 
         .. deprecated:: 1.13.3
-            Use ``~HalfFace.vertex_sample(size=1)[0]`` instead.
+            Use :meth:`vertex_sample` instead.
 
         Returns
         -------
@@ -242,7 +242,7 @@ class HalfFace(Datastructure):
         """Get the identifier of a random face.
 
         .. deprecated:: 1.13.3
-            Use ``~HalfFace.face_sample(size=1)[0]`` instead.
+            Use :meth:`face_sample` instead.
 
         Returns
         -------
@@ -251,22 +251,6 @@ class HalfFace(Datastructure):
 
         """
         return choice(list(self.faces()))
-
-    # def get_any_face_vertex(self, face):
-    #     """Get the identifier of a random vertex of a specific face.
-
-    #     Parameters
-    #     ----------
-    #     face : int
-    #         The identifier of the face.
-
-    #     Returns
-    #     -------
-    #     int
-    #         The identifier of the vertex of the face.
-
-    #     """
-    #     return choice(self.halfface_vertices(face))
 
     def vertex_sample(self, size=1):
         """Get the identifiers of a set of random vertices.

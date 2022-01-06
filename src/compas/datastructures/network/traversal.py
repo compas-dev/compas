@@ -16,16 +16,16 @@ def network_shortest_path(network, start, end):
     Parameters
     ----------
     network : :class:`compas.datastructures.Network`
-    start : int
-    end : int
+        A network data structure.
+    start : hashable
+        The identifier of the start node.
+    end : hashable
+        The identifier of the end node.
 
     Returns
     -------
-    list of int
+    list[hashable]
         The nodes of the network leading from start to end.
 
-    Examples
-    --------
-    >>>
     """
     return shortest_path(network.adjacency, start, end)

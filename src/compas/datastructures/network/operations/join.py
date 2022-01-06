@@ -12,6 +12,27 @@ __all__ = [
 
 
 def network_join_edges(network, key):
+    """Join the edges incidental on the given node, if there are exactly two incident edges.
+
+    Parameters
+    ----------
+    network : :class:`compas.geometry.Network`
+        A network data structure.
+    key : hashable
+        The node identifier.
+
+    Returns
+    -------
+    None
+        The network is modified in place.
+
+    Notes
+    -----
+    A new edge is created to replace the two joined edges.
+    The attributes of the joined edges are not transferred to the new edge.
+    Therefore, the new edge has only default edge attributes.
+
+    """
     nbrs = network.vertex_neighbors(key)
     if len(nbrs) != 2:
         return
@@ -37,6 +58,7 @@ def network_join_edges(network, key):
 
 def network_polylines(network, splits=None):
     """Join network edges into polylines.
+
     The polylines stop at points with a valency different from 2 in the network of line.
     Optional splits can be included.
 
@@ -44,14 +66,14 @@ def network_polylines(network, splits=None):
     ----------
     network : Network
         A network.
-    splits : list, optional
-        List of point coordinates for optional splits.
-        Default is ''None''.
+    splits : sequence[[float, float, float] or :class:`compas.geometry.Point`], optional
+        List of point coordinates for polyline splits.
 
     Returns
     -------
-    polylines: list
-        The joined polylines. If the polyline is closed, the two extremities are the same.
+    list[list[[float, float, float]]]
+        The joined polylines.
+        If a polyline is closed, the two extremities are the same.
 
     Examples
     --------
@@ -70,6 +92,7 @@ def network_polylines(network, splits=None):
     >>> network = Network.from_lines(lines)
     >>> len(network_polylines(network)) == 3
     True
+
     """
     # geometric keys of split points
     if splits is None:

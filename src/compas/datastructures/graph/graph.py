@@ -29,11 +29,11 @@ class Graph(Datastructure):
         General attributes of the data structure that are included in the data representation and serialization.
     default_node_attributes : dict[str, Any]
         dictionary containing default values for the attributes of nodes.
-        It is recommended to add a default to this dictionary using ``update_default_node_attributes``
+        It is recommended to add a default to this dictionary using :meth:`update_default_node_attributes`
         for every node attribute used in the data structure.
     default_edge_attributes : dict[str, Any]
         dictionary containing default values for the attributes of edges.
-        It is recommended to add a default to this dictionary using ``update_default_edge_attributes``
+        It is recommended to add a default to this dictionary using :meth:`update_default_edge_attributes`
         for every edge attribute used in the data structure.
 
     Examples
@@ -259,7 +259,7 @@ class Graph(Datastructure):
         """Get the identifier of a random node.
 
         .. deprecated:: 1.13.3
-            Use ``~Graph.node_sample(size=1)[0]`` instead.
+            Use :meth:`node_sample` instead.
 
         Returns
         -------
@@ -273,7 +273,7 @@ class Graph(Datastructure):
         """Get a list of identifiers of a random set of n nodes.
 
         .. deprecated:: 1.13.3
-            Use ``~Graph.node_sample(size=n)`` instead.
+            Use :meth:`node_sample` instead.
 
         Parameters
         ----------
@@ -298,7 +298,7 @@ class Graph(Datastructure):
         """Get the identifier of a random edge.
 
         .. deprecated:: 1.13.3
-            Use ``~Graph.edge_sample(size=1)[0]`` instead.
+            Use :meth:`edge_sample` instead.
 
         Returns
         -------

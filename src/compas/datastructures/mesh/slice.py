@@ -19,11 +19,11 @@ def mesh_slice_plane(mesh, plane):
 
     Returns
     -------
-    Union[tuple[:class:`compas.datastructures.Mesh`], None]
+    tuple[:class:`compas.datastructures.Mesh`] or None
         The "positive" and "negative" submeshes.
         If the mesh and plane do not intersect,
         or if the intersection is degenerate (point or line),
-        the function returns ``None``.
+        the function returns None.
 
     Examples
     --------
@@ -36,6 +36,7 @@ def mesh_slice_plane(mesh, plane):
     >>> result = mesh_slice_plane(mesh, plane)
     >>> len(result) == 2
     True
+
     """
     intersection = IntersectionMeshPlane(mesh, plane)
     if not intersection.is_polygon:

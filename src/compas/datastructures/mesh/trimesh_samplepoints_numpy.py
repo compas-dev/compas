@@ -24,11 +24,11 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
     num_points : int, optional
         The number of sample points.
     return_normals : bool, optional
-        Flag indicating that the normals at the sample points should be returned as well.
+        If True, return the normals in addition to the sample points.
 
     Returns
     -------
-    Union[ndarray, tuple[ndarray, ndarray]]
+    ndarray or tuple[ndarray, ndarray]
         If `return_normals` is False, a numpy ndarray representing sampled points with dim = [num_points, 3].
         If `return_normals` is True, the sample points and the normals.
 

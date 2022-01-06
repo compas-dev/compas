@@ -33,6 +33,7 @@ def mesh_merge_faces(mesh, faces):
     7
     >>> mesh.face_vertices(7)
     [3, 5, 0, 4, 1, 6, 2, 7]
+
     """
     u, v = None, None
     for i, j in mesh.face_halfedges(faces[0]):

@@ -21,6 +21,7 @@ def trimesh_descent(trimesh):
     -------
     list[list[float]]
         A list of vectors with one vector per face.
+
     """
     vertices, faces = trimesh.to_vertices_and_faces()
     V = array(vertices)

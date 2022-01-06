@@ -32,6 +32,7 @@ def mesh_bounding_box(mesh):
     >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
     >>> mesh_bounding_box(mesh)
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
+
     """
     xyz = mesh.vertices_attributes('xyz', keys=list(mesh.vertices()))
     return bounding_box(xyz)
@@ -56,6 +57,7 @@ def mesh_bounding_box_xy(mesh):
     >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
     >>> mesh_bounding_box_xy(mesh)
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
+
     """
     xyz = mesh.vertices_attributes('xyz')
     return bounding_box_xy(xyz)

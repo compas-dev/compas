@@ -44,6 +44,7 @@ def mesh_is_connected(mesh):
     >>> abc = mesh.add_face([a, b, c])
     >>> mesh_is_connected(mesh)
     True
+
     """
     if not mesh.vertex:
         return False
@@ -63,5 +64,6 @@ def mesh_connected_components(mesh):
     -------
     list[list[int]]
         Groups of connected vertices.
+
     """
     return connected_components(mesh.adjacency)

@@ -34,10 +34,6 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
     list[int]
         The vertices of the unwelded face.
 
-    Examples
-    --------
-    >>>
-
     """
     face = []
     vertices = mesh.face_vertices(fkey)

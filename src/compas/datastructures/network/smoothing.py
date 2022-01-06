@@ -33,10 +33,6 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback
     Exception
         If a callback is provided, but it is not callable.
 
-    Examples
-    --------
-    >>>
-
     """
     if callback:
         if not callable(callback):

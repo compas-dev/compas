@@ -84,10 +84,6 @@ def trimesh_remesh(mesh,
            Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
            Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457.
 
-    Examples
-    --------
-    >>>
-
     """
     if verbose:
         print(target)

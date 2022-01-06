@@ -26,6 +26,7 @@ def mesh_dual(mesh, cls=None):
     -------
     :class:`compas.datastructures.Mesh`
         The dual mesh object.
+
     """
     if not cls:
         cls = type(mesh)

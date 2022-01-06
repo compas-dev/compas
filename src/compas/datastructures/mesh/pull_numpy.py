@@ -30,18 +30,19 @@ def trimesh_pull_points_numpy(mesh, points):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh data structure.
-    points : list[list[float]]
+    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
         The input points.
 
     Returns
     -------
-    list[list[float]]
+    list[[float, float, float]]
         The points on the mesh.
 
     Notes
     -----
     It will not be verified that the input mesh is a triangle mesh.
     It will just be treated as if it is...
+
     """
     # preprocess
     i_k = mesh.index_key()

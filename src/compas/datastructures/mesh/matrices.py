@@ -207,7 +207,6 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
         Instance of mesh.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
-        Default is ``"csr"``.
 
     Returns
     -------
@@ -303,10 +302,6 @@ def trimesh_edge_cotangent(mesh, u, v):
     float
         The edge cotangent.
 
-    Examples
-    --------
-    >>>
-
     """
     fkey = mesh.halfedge[u][v]
     cotangent = 0.0
@@ -336,10 +331,6 @@ def trimesh_edge_cotangents(mesh, u, v):
     -------
     tuple[float, float]
         The two edge cotangents.
-
-    Examples
-    --------
-    >>>
 
     """
     a = trimesh_edge_cotangent(mesh, u, v)
@@ -391,10 +382,6 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
     .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
         `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
-    Examples
-    --------
-    >>>
-
     """
     key_index = mesh.key_index()
     n = mesh.number_of_vertices()
@@ -437,7 +424,6 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
 
 def trimesh_positive_cotangent_laplacian_matrix(mesh):
-    """"""
     raise NotImplementedError
 
 

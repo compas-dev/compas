@@ -26,7 +26,6 @@ def mesh_flatness(mesh, maxdev=1.0):
         A mesh object.
     maxdev : float, optional
         A maximum value for the allowed deviation from flatness.
-        Default is ``1.0``.
 
     Returns
     -------
@@ -37,7 +36,7 @@ def mesh_flatness(mesh, maxdev=1.0):
     -----
     The "flatness" of a face is expressed as the ratio of the distance between
     the diagonals to the average edge length. For the fabrication of glass panels,
-    for example, ``0.02`` could be a reasonable maximum value.
+    for example, 0.02 could be a reasonable maximum value.
 
     Warnings
     --------

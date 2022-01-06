@@ -79,7 +79,7 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
     Raises
     ------
     ValueError
-        If ``thickness`` is not a positive number.
+        If `thickness` is not a positive number.
 
     Examples
     --------

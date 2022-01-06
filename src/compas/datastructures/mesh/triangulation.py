@@ -25,6 +25,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
     -------
     None
         The mesh is modified in place.
+
     """
     for fkey in list(mesh.faces()):
         attr = mesh.face_attributes(fkey)

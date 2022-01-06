@@ -240,8 +240,7 @@ def mesh_subdivide_corner(mesh, k=1):
 
     Notes
     -----
-    This is essentially the same as Loop subdivision, but applied to general
-    meshes.
+    This is essentially the same as Loop subdivision, but applied to general meshes.
 
     """
     cls = type(mesh)
@@ -577,17 +576,13 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
         The offset distance to create the frames.
         A single value will result in a constant offset everywhere.
         A dictionary mapping faces to offset values will be processed accordingly.
-    add_windows : boolean, optional
-        Flag to add window face.
+    add_windows : bool, optional
+        If True, add a window face in the frame opening.
 
     Returns
     -------
     :class:`compas.datastructures.Mesh`
         A new subdivided mesh.
-
-    Examples
-    --------
-    >>>
 
     """
     cls = type(mesh)

@@ -311,7 +311,7 @@ class VolMesh(HalfFace):
             The identifier of the vertex.
         axes : str, optional
             The axes alon which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------
@@ -482,7 +482,7 @@ class VolMesh(HalfFace):
             The identifier of the face.
         axes : str, optional
             The axes alon which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------

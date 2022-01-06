@@ -26,10 +26,6 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
     list[int]
         The list of modified faces.
 
-    Examples
-    --------
-    >>>
-
     """
 
     # apply to all faces if there is none chosen

@@ -41,6 +41,7 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
         A list of isolines.
         The list of levels contains the z-values at each of the isolines.
         Each isoline is a list of paths, and each path is a list polygons.
+
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
     s = [mesh.vertex[key][attr_name] for key in mesh.vertices()]
@@ -71,6 +72,7 @@ def mesh_contours_numpy(mesh, levels=50, density=100):
     Notes
     -----
     The contours are defined as the isolines of the z-coordinates of the vertices of the mesh.
+
     """
     xy = [mesh.vertex_attributes(key, 'xy') for key in mesh.vertices()]
     z = [mesh.vertex_attribute(key, 'z') for key in mesh.vertices()]

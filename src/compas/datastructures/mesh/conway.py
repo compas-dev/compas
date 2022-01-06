@@ -308,6 +308,7 @@ def mesh_conway_truncate(mesh):
     True
     >>> trun.number_of_faces() == mesh.number_of_vertices() + mesh.number_of_faces()
     True
+
     """
     # same as conway_dual(conway_needle())?
     return mesh_conway_dual(mesh_conway_kis(mesh_conway_dual(mesh)))

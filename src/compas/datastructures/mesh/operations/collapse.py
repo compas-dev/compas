@@ -20,6 +20,8 @@ def is_collapse_legal(mesh, u, v, allow_boundary=False):
         The vertex to collapse towards.
     v : str
         The vertex to collapse.
+    allow_boundary : bool, optional
+        If True, collapse is allowed even if `u` and/or `v` is on the boundary.
 
     Returns
     -------
@@ -92,7 +94,7 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         If ``t == 1.0`` collapse to `v`.
         If ``0.0 < t < 1.0``, collapse to a point between `u` and `v`.
     allow_boundary : bool, optional
-        Allow collapses involving boundary vertices.
+        If True, allow collapses involving boundary vertices.
     fixed : list[int], optional
         A list of identifiers of vertices that should stay fixed.
 
@@ -104,6 +106,7 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
     ------
     ValueError
         If `u` and `v` are not neighbors.
+
     """
     if t < 0.0:
         raise ValueError('Parameter t should be greater than or equal to 0.')
@@ -238,7 +241,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         If ``t == 1.0`` collapse to `v`.
         If ``0.0 < t < 1.0``, collapse to a point between `u` and `v`.
     allow_boundary : bool, optional
-        Allow collapses involving vertices on the boundary.
+        If True, allow collapses involving vertices on the boundary.
     fixed : list, optional
         Identifiers of the vertices that should stay fixed.
 
@@ -264,10 +267,6 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     References
     ----------
-
-    Examples
-    --------
-    >>>
 
     """
     if t < 0.0:

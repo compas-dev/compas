@@ -497,9 +497,8 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        f : int
+        f : {4, 6, 8, 12, 20}
             The number of faces.
-            Should be one of ``4, 6, 8, 12, 20``.
 
         Returns
         -------
@@ -519,7 +518,7 @@ class Mesh(HalfEdge):
         shape : :class:`compas.geometry.Shape`
             The input shape to generate a mesh from.
         **kwargs : dict[str, Any], optional
-            Optional keyword arguments to be passed on to ``shape.to_vertices_and_faces``.
+            Optional keyword arguments to be passed on to :meth:`compas.geometry.Shape.to_vertices_and_faces`.
 
         Returns
         -------
@@ -881,8 +880,7 @@ class Mesh(HalfEdge):
             The identifier of the vertex.
         axes : str, optional
             The axes along which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------
@@ -1144,8 +1142,7 @@ class Mesh(HalfEdge):
             The identifier of the face.
         axes : str, optional
             The axes along which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------

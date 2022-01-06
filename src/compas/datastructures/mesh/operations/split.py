@@ -28,7 +28,7 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
         The position of the inserted vertex.
         The value should be between 0.0 and 1.0
     allow_boundary : bool, optional
-        Split edges on the boundary.
+        If True, also split edges on the boundary.
 
     Returns
     -------
@@ -99,15 +99,11 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
         The location of the split point along the original edge.
         The value should be between 0.0 and 1.0
     allow_boundary : bool, optional
-        Allow splits on boundary edges.
+        If True, allow splits on boundary edges.
 
     Notes
     -----
     This operation only works as expected for triangle meshes.
-
-    Examples
-    --------
-    >>>
 
     """
     if t <= 0.0:
@@ -200,6 +196,7 @@ def mesh_split_face(mesh, fkey, u, v):
     (25, 26)
     >>> mesh.number_of_faces()  # faces after split
     26
+
     """
     if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
         raise ValueError('The split vertices do not belong to the split face.')
@@ -241,6 +238,7 @@ def mesh_split_strip(mesh, edge):
     -------
     list[int]
         The split vertices in the same order as the edges of the strip.
+
     """
     strip = mesh.edge_strip(edge)
     is_closed = strip[0] == strip[-1]

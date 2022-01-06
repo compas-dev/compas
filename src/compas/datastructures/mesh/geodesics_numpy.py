@@ -39,6 +39,7 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     -------
     array
         Distance values.
+
     """
     Lc = trimesh_cotangent_laplacian_matrix(mesh)
 

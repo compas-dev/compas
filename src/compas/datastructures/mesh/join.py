@@ -29,6 +29,7 @@ def mesh_weld(mesh, precision=None, cls=None):
     -------
     :class:`compas.datastructures.Mesh`
         The welded mesh.
+
     """
     if cls is None:
         cls = type(mesh)
@@ -79,6 +80,7 @@ def meshes_join(meshes, cls=None):
     8
     >>> mesh.number_of_faces()
     2
+
     """
     if cls is None:
         cls = type(meshes[0])
@@ -102,7 +104,9 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
     meshes : list[:class:`compas.datastructures.Mesh`]
         A list of meshes.
     precision: str, optional
-        Tolerance distance for welding.
+        Precision for point comparison in the form of a string formatting specifier.
+        For example, floating point precision (``'3f'``), or decimal integer (``'d'``).
+        Default is :attr:`compas.PRECISION`.
     cls : Type[:class:`compas.datastructures.Mesh`], optional
         The type of return mesh.
 
