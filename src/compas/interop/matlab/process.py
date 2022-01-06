@@ -3,15 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 
 import time
+import compas
 
 from subprocess import Popen
 from subprocess import PIPE
 
-from scipy.io import savemat
-from scipy.io import loadmat
-
-
-__all__ = ['MatlabProcess']
+if not compas.IPY:
+    from scipy.io import savemat
+    from scipy.io import loadmat
 
 
 class MatlabProcessError(Exception):
@@ -34,10 +33,8 @@ class MatlabProcess(object):
         Filename for workspace storage. Defaults to ``'./workspace.mat'``.
     timeout : int, optional
         Number of seconds to wait for Matlab to respond before a timeout is triggered.
-        Default is ``20``.
     verbose : bool, optional
-        Run all communication in `verbose` mode.
-        Default is ``True``.
+        If True, run all communication in "verbose" mode.
 
     Examples
     --------
@@ -60,12 +57,12 @@ class MatlabProcess(object):
 
     """
 
-    def __init__(self, matlab_exec=None, ws_data=None, ws_filename=None, timeout=None, verbose=True):
+    def __init__(self, matlab_exec=None, ws_data=None, ws_filename=None, timeout=20, verbose=True):
         self.matlab_exec = matlab_exec or 'matlab'
         self.matlab_options = ['-nosplash']
         self.ws_data = ws_data or {}
         self.ws_filename = ws_filename or './workspace.mat'
-        self.timeout = timeout or 20
+        self.timeout = timeout
         self.process = None
         self.verbose = verbose
 
@@ -84,6 +81,10 @@ class MatlabProcess(object):
             * -nosplash
             * -wait (Windows)
             * ...
+
+        Returns
+        -------
+        None
 
         """
         options = options or self.matlab_options
@@ -111,7 +112,13 @@ class MatlabProcess(object):
                 return
 
     def stop(self):
-        """Stop the subprocess."""
+        """Stop the subprocess.
+
+        Returns
+        -------
+        None
+
+        """
         if self.verbose:
             print('=' * 79)
             print('stopping Matlab process...')
@@ -137,7 +144,7 @@ class MatlabProcess(object):
 
         Returns
         -------
-        ovars : dict
+        dict
             The named output variables as provided as input to this function.
 
         """
@@ -164,6 +171,10 @@ class MatlabProcess(object):
         value : object
             The value of the variable.
 
+        Returns
+        -------
+        None
+
         """
         if self.verbose:
             print('write Matlab value: {0} => {1}'.format(name, value))
@@ -181,7 +192,7 @@ class MatlabProcess(object):
 
         Returns
         -------
-        value : object
+        object
             The value of the variable.
 
         """
@@ -196,7 +207,13 @@ class MatlabProcess(object):
         return default
 
     def write_workspace(self):
-        """Write all local workspace data to Matlab through a workspace file."""
+        """Write all local workspace data to Matlab through a workspace file.
+
+        Returns
+        -------
+        None
+
+        """
         if not self.ws_data:
             return
         if self.verbose:
@@ -206,7 +223,13 @@ class MatlabProcess(object):
         self._wait_until('__LOADED__')
 
     def read_workspace(self):
-        """Read all workspace data from Matlab into a workspace file."""
+        """Read all workspace data from Matlab into a workspace file.
+
+        Returns
+        -------
+        None
+
+        """
         if self.verbose:
             print('read Matlab workspace.')
         self.process.stdin.write("save('{0}');\n".format(self.ws_filename))

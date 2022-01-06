@@ -2,10 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import System
-
-
-__all__ = ['MatlabClient']
+import compas
+if compas.IPY:
+    import System
 
 
 class MatlabClient(object):
@@ -13,15 +12,12 @@ class MatlabClient(object):
 
     Parameters
     ----------
-    verbose : bool
-        If ``True``, all commands and results will be printed in the Python console.
-        Default is ``False``.
-    interactive : bool
-        If ``True``, a Matlab console window will be visible.
-        Default is ``False``.
-    workspace : str
+    verbose : bool, optional
+        If True, all commands and results will be printed in the Python console.
+    interactive : bool, optional
+        If True, a Matlab console window will be visible.
+    workspace : str, optional
         The name of the Matlab workspace.
-        Default is ``'base'``.
 
     Notes
     -----
@@ -98,11 +94,10 @@ class MatlabClient(object):
 
         Parameters
         ----------
-        a : list
+        a : sequence[int or float]
             The input list.
-        dtype : object
-            The data type constructor function.
-            Default is ``float``.
+        dtype : {int, float}, optional
+            The constructor function of the data type.
 
         Returns
         -------
@@ -134,10 +129,6 @@ class MatlabClient(object):
         System.Array
             The vector.
 
-        Examples
-        --------
-        >>>
-
         """
         raise NotImplementedError
 
@@ -147,20 +138,15 @@ class MatlabClient(object):
 
         Parameters
         ----------
-        A : list of list
+        A : sequence[sequence[int or float]]
             The input list.
-        dtype : object
+        dtype : {int or float}, optional
             The data type constructor function.
-            Default is ``float``.
 
         Returns
         -------
         System.Array
             The matrix.
-
-        Examples
-        --------
-        >>>
 
         """
         m = len(A)
@@ -187,21 +173,45 @@ class MatlabClient(object):
         System.Array
             The matrix.
 
-        Examples
-        --------
-        >>>
-
         """
         raise NotImplementedError
 
     @staticmethod
     def list_from_vector(a):
-        """Convert a Matlab vector to a Python list."""
+        """Convert a Matlab vector to a Python list.
+
+        Parameters
+        ----------
+        a : System.Array
+            The Matlab vector.
+
+        Returns
+        -------
+        list
+            The vector converted to a list.
+
+        """
         return list(a)
 
     @staticmethod
     def list_from_matrix(A, m, n):
-        """Convert a Matlab matrix to a Python list."""
+        """Convert a Matlab matrix to a Python list.
+
+        Parameters
+        ----------
+        A : System.Array
+            The matlab vector.
+        m : int
+            The number of rows of the matrix.
+        n : int
+            The number of columns of the matrix.
+
+        Returns
+        -------
+        list[list[int or float]]
+            The matrix converted to a nested list.
+
+        """
         nlist = []
         for row in range(m):
             nlist.append([None] * n)
@@ -211,6 +221,19 @@ class MatlabClient(object):
 
     @staticmethod
     def double(a):
+        """Convert a Matlab vector or matrix to a Python list or nested list of floats.
+
+        Parameters
+        ----------
+        a : System.Array
+            The Matlab vector or matrix.
+
+        Returns
+        -------
+        list[float] or list[list[float]]
+            A list of float or a nested list of float, depending on the input.
+
+        """
         try:
             len(a[0])
         except TypeError:
@@ -229,6 +252,10 @@ class MatlabClient(object):
         ----------
         cmd : str
             The command string.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -249,15 +276,17 @@ class MatlabClient(object):
         ----------
         name : str
             The name of the variable.
-        value : ...
+        value : str or int or float or list[int or float] or list[list[int or float]]
             The value of the variable.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
         >>> m = MatlabClient(verbose=True, interactive=True)
         >>> m.put('A', m.matrix([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]))
-        >>> m.put()
-        >>> m.put()
 
         """
         try:
@@ -278,7 +307,7 @@ class MatlabClient(object):
 
         Returns
         -------
-        str, int, float, list
+        str or int or float or list[int or float] or list[list[int or float]]
             The value of the variable.
 
         Examples

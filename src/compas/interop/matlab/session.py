@@ -63,7 +63,18 @@ class MatlabSession(object):
         self.connect(session_name)
 
     def init(self):
-        """Initialise the Matlab engine."""
+        """Initialise the Matlab engine.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ImportError
+            If `matlab.engine` is not available.
+
+        """
         import matlab.engine
         self.matlab = matlab.engine
         self.engine = None
@@ -82,7 +93,7 @@ class MatlabSession(object):
 
         Returns
         -------
-        list of str
+        list[str]
             A list of available Matlab session names.
 
         """
@@ -97,10 +108,14 @@ class MatlabSession(object):
             The name of the session to connect to.
             Default is to start a new session.
 
+        Returns
+        -------
+        None
+
         Notes
         -----
         If successful, the name of the session to which a connection was made is
-        stored in the attribute ``session_name``.
+        stored in the attribute `session_name`.
 
         """
         sessions = self.find_sessions()

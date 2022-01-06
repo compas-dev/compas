@@ -14,6 +14,7 @@ compas
     compas.datastructures
     compas.files
     compas.geometry
+    compas.interop
     compas.numerical
     compas.plugins
     compas.robots
