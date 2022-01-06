@@ -25,6 +25,7 @@ class Assembly(Datastructure):
     Examples
     --------
     >>>
+
     """
 
     def __init__(self, name=None, **kwargs):
@@ -34,17 +35,9 @@ class Assembly(Datastructure):
         self.graph = Graph()
         self._parts = {}
 
-    def __str__(self):
-        tpl = "<Assembly with {} parts and {} connections>"
-        return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
-
-    @property
-    def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
+    # ==========================================================================
+    # data
+    # ==========================================================================
 
     @property
     def DATASCHEMA(self):
@@ -71,6 +64,34 @@ class Assembly(Datastructure):
         self.attributes.update(data['attributes'] or {})
         self.graph.data = data['graph']
 
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
+    @property
+    def name(self):
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
+    # ==========================================================================
+    # customization
+    # ==========================================================================
+
+    def __str__(self):
+        tpl = "<Assembly with {} parts and {} connections>"
+        return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
     def add_part(self, part, key=None, **kwargs):
         """Add a part to the assembly.
 
@@ -90,6 +111,7 @@ class Assembly(Datastructure):
         -------
         int or str
             The identifier of the part in the current assembly graph.
+
         """
         if part.guid in self._parts:
             raise AssemblyError('Part already added to the assembly')
@@ -119,6 +141,7 @@ class Assembly(Datastructure):
         ------
         :class:`AssemblyError`
             If `a` and/or `b` are not in the assembly.
+
         """
         if a.key is None or b.key is None:
             raise AssemblyError('Both parts have to be added to the assembly before a connection can be created.')
@@ -133,6 +156,7 @@ class Assembly(Datastructure):
         ------
         :class:`compas.datastructures.Part`
             The individual parts of the assembly.
+
         """
         for node in self.graph.nodes():
             yield self.graph.node_attribute(node, 'part')
@@ -150,6 +174,7 @@ class Assembly(Datastructure):
         tuple[int or str, int or str] or tuple[tuple[int or str, int or str], dict[str, Any]]
             If `data` is False, the next connection identifier (u, v).
             If `data` is True, the next connector identifier and its attributes as a ((u, v), attr) tuple.
+
         """
         return self.graph.edges(data)
 
@@ -167,5 +192,6 @@ class Assembly(Datastructure):
         :class:`compas.datastructures.Part` or None
             The identified part,
             or None if the part can't be found.
+
         """
         return self._parts.get(guid)

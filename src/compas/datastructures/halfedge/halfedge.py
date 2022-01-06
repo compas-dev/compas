@@ -178,6 +178,7 @@ class HalfEdge(Datastructure):
         Returns
         -------
         None
+
         """
         del self.vertex
         del self.edgedata
@@ -202,6 +203,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The identifier of the vertex.
+
         """
         return self.get_any_vertices(1)[0]
 
@@ -222,6 +224,7 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             The identifiers of the vertices.
+
         """
         if exclude_leaves:
             vertices = set(self.vertices()) - set(self.leaves())
@@ -239,6 +242,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The identifier of the face.
+
         """
         return choice(list(self.faces()))
 
@@ -254,6 +258,7 @@ class HalfEdge(Datastructure):
     #     -------
     #     int
     #         The identifier of the vertex.
+
     #     """
     #     return self.face_vertices(fkey)[0]
 
@@ -269,6 +274,7 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             The identifiers of the vertices.
+
         """
         return sample(list(self.vertices()), size)
 
@@ -284,6 +290,7 @@ class HalfEdge(Datastructure):
         -------
         list[tuple[int, int]]
             The identifiers of the edges.
+
         """
         return sample(list(self.edges()), size)
 
@@ -299,6 +306,7 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             The identifiers of the faces.
+
         """
         return sample(list(self.faces()), size)
 
@@ -310,6 +318,7 @@ class HalfEdge(Datastructure):
         -------
         dict[int, int]
             A dictionary of key-index pairs.
+
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
@@ -323,6 +332,7 @@ class HalfEdge(Datastructure):
         -------
         dict[int, int]
             A dictionary of index-key pairs.
+
         """
         return dict(enumerate(self.vertices()))
 
@@ -370,6 +380,7 @@ class HalfEdge(Datastructure):
         2
         >>> mesh.add_vertex(key=0, x=1)
         0
+
         """
         if key is None:
             key = self._max_vertex = self._max_vertex + 1
@@ -415,9 +426,6 @@ class HalfEdge(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
-        Examples
-        --------
-        >>>
         """
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
@@ -461,9 +469,6 @@ class HalfEdge(Datastructure):
         method. To remove these vertices as well, combine this method with vertex
         culling (:meth:`cull_vertices`).
 
-        Examples
-        --------
-        >>>
         """
         nbrs = self.vertex_neighbors(key)
         for nbr in nbrs:
@@ -509,9 +514,6 @@ class HalfEdge(Datastructure):
         method. To remove these vertices as well, combine this method with vertex
         culling (:meth:`cull_vertices`).
 
-        Examples
-        --------
-        >>>
         """
         for u, v in self.face_halfedges(fkey):
             self.halfedge[u][v] = None
@@ -531,6 +533,7 @@ class HalfEdge(Datastructure):
         Returns
         -------
         None
+
         """
         for u in list(self.vertices()):
             if u not in self.halfedge:
@@ -559,6 +562,7 @@ class HalfEdge(Datastructure):
         int or tuple[int, dict[str, Any]]
             If `data` is False, the next vertex identifier.
             If `data` is True, the next vertex as a (key, attr) tuple.
+
         """
         for key in self.vertex:
             if not data:
@@ -579,6 +583,7 @@ class HalfEdge(Datastructure):
         int or tuple[int, dict[str, Any]]
             If `data` is False, the next face identifier.
             If `data` is True, the next face as a (fkey, attr) tuple.
+
         """
         for key in self.face:
             if not data:
@@ -615,6 +620,7 @@ class HalfEdge(Datastructure):
         Examples
         --------
         >>>
+
         """
         seen = set()
         for u in self.halfedge:
@@ -647,6 +653,7 @@ class HalfEdge(Datastructure):
         int or tuple[int, dict[str, Any]]
             The next vertex that matches the condition,
             or, if `data` is True, the next vertex and its attributes.
+
         """
         for key, attr in self.vertices(True):
             is_match = True
@@ -721,6 +728,7 @@ class HalfEdge(Datastructure):
         Examples
         --------
         >>>
+
         """
         for key, attr in self.vertices(True):
             if predicate(key, attr):
@@ -746,6 +754,7 @@ class HalfEdge(Datastructure):
         tuple[int, int] or tuple[tuple[int, int], dict[str, Any]]
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a (u, v, data) tuple.
+
         """
         for key in self.edges():
             is_match = True
@@ -802,9 +811,6 @@ class HalfEdge(Datastructure):
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a (u, v, data) tuple.
 
-        Examples
-        --------
-        >>>
         """
         for key, attr in self.edges(True):
             if predicate(key, attr):
@@ -830,6 +836,7 @@ class HalfEdge(Datastructure):
         int or tuple[int, dict[str, Any]]
             The next face that matches the condition,
             or, if `data` is True, the next face and its attributes.
+
         """
         for fkey in self.faces():
             is_match = True
@@ -885,9 +892,6 @@ class HalfEdge(Datastructure):
             The next face that matches the condition,
             or, if `data` is True, the next face and its attributes.
 
-        Examples
-        --------
-        >>>
         """
         for fkey, attr in self.faces(True):
             if predicate(fkey, attr):
@@ -917,6 +921,7 @@ class HalfEdge(Datastructure):
         Notes
         -----
         Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -945,6 +950,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
         """
         if key not in self.vertex:
             raise KeyError(key)
@@ -980,6 +986,7 @@ class HalfEdge(Datastructure):
         -----
         Unsetting the value of a vertex attribute implicitly sets it back to the value
         stored in the default vertex attribute dict.
+
         """
         if name in self.vertex[key]:
             del self.vertex[key][name]
@@ -1009,6 +1016,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
         """
         if key not in self.vertex:
             raise KeyError(key)
@@ -1054,6 +1062,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If any of the vertices does not exist.
+
         """
         if not keys:
             keys = self.vertices()
@@ -1088,6 +1097,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If any of the vertices does not exist.
+
         """
         if not keys:
             keys = self.vertices()
@@ -1114,6 +1124,7 @@ class HalfEdge(Datastructure):
         Notes
         ----
         Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1141,6 +1152,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the face does not exist.
+
         """
         if key not in self.face:
             raise KeyError(key)
@@ -1177,6 +1189,7 @@ class HalfEdge(Datastructure):
         -----
         Unsetting the value of a face attribute implicitly sets it back to the value
         stored in the default face attribute dict.
+
         """
         if key not in self.face:
             raise KeyError(key)
@@ -1209,6 +1222,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the face does not exist.
+
         """
         if key not in self.face:
             raise KeyError(key)
@@ -1251,6 +1265,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If any of the faces does not exist.
+
         """
         if not keys:
             keys = self.faces()
@@ -1287,6 +1302,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If any of the faces does not exist.
+
         """
         if not keys:
             keys = self.faces()
@@ -1309,6 +1325,7 @@ class HalfEdge(Datastructure):
         Notes
         ----
         Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1337,6 +1354,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
@@ -1371,6 +1389,7 @@ class HalfEdge(Datastructure):
         -----
         Unsetting the value of an edge attribute implicitly sets it back to the value
         stored in the default edge attribute dict.
+
         """
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
@@ -1404,6 +1423,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
@@ -1448,6 +1468,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         edges = keys or self.edges()
         if value is not None:
@@ -1483,6 +1504,7 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         edges = keys or self.edges()
         if values is not None:
@@ -1502,6 +1524,7 @@ class HalfEdge(Datastructure):
         -------
         str
             The formatted summary text.
+
         """
         tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- vertices: {}", "- edges: {}", "- faces: {}"])
         return tpl.format(self.name, self.number_of_vertices(), self.number_of_edges(), self.number_of_faces())
@@ -1512,6 +1535,7 @@ class HalfEdge(Datastructure):
         Returns
         -------
         int
+
         """
         return len(list(self.vertices()))
 
@@ -1521,6 +1545,7 @@ class HalfEdge(Datastructure):
         Returns
         -------
         int
+
         """
         return len(list(self.edges()))
 
@@ -1530,6 +1555,7 @@ class HalfEdge(Datastructure):
         Returns
         -------
         int
+
         """
         return len(list(self.faces()))
 
@@ -1548,6 +1574,7 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is valid.
             False, otherwise.
+
         """
         for key in self.vertices():
             if key not in self.halfedge:
@@ -1593,6 +1620,7 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is regular.
             False, otherwise.
+
         """
         if not self.vertex or not self.face:
             return False
@@ -1627,6 +1655,7 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is manifold.
             False, otherwise.
+
         """
         if not self.vertex:
             return False
@@ -1658,15 +1687,15 @@ class HalfEdge(Datastructure):
     def is_orientable(self):
         """Verify that the mesh is orientable.
 
-        A manifold mesh is orientable if the following conditions are fulfilled:
-
-        * Any two adjacent faces have compatible orientation, i.e. the faces have a unified cycle direction.
+        A manifold mesh is orientable if any two adjacent faces have compatible orientation,
+        i.e. the faces have a unified cycle direction.
 
         Returns
         -------
         bool
             True, if the mesh is orientable.
             False, otherwise.
+
         """
         raise NotImplementedError
 
@@ -1678,6 +1707,7 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is a triangle mesh.
             False, otherwise.
+
         """
         if not self.face:
             return False
@@ -1691,6 +1721,7 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is a quad mesh.
             False, otherwise.
+
         """
         if not self.face:
             return False
@@ -1704,6 +1735,7 @@ class HalfEdge(Datastructure):
         bool
             True if the mesh has no vertices.
             False otherwise.
+
         """
         if self.number_of_vertices() == 0:
             return True
@@ -1717,6 +1749,7 @@ class HalfEdge(Datastructure):
         bool
             True if the mesh is not empty and has no naked edges.
             False otherwise.
+
         """
         if self.is_empty():
             return False
@@ -1732,6 +1765,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The Euler characteristic.
+
         """
         V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
@@ -1750,6 +1784,7 @@ class HalfEdge(Datastructure):
         ----------
         .. [1] Wolfram MathWorld. *Genus*.
                Available at: http://mathworld.wolfram.com/Genus.html.
+
         """
         X = self.euler()
         # each boundary must be taken into account as if it was one face
@@ -1776,6 +1811,7 @@ class HalfEdge(Datastructure):
         bool
             True if the vertex is in the mesh.
             False otherwise.
+
         """
         return key in self.vertex
 
@@ -1792,6 +1828,7 @@ class HalfEdge(Datastructure):
         bool
             True if the vertex is connected to at least one other vertex.
             False otherwise.
+
         """
         return self.vertex_degree(key) > 0
 
@@ -1808,6 +1845,7 @@ class HalfEdge(Datastructure):
         bool
             True if the vertex is on the boundary.
             False otherwise.
+
         """
         for nbr in self.halfedge[key]:
             if self.halfedge[key][nbr] is None:
@@ -1839,9 +1877,6 @@ class HalfEdge(Datastructure):
         For example, a dual mesh constructed relying on these conventions will have
         oposite face cycle directions compared to the original.
 
-        Examples
-        --------
-        >>>
         """
         temp = list(self.halfedge[key])
         if not ordered:
@@ -1882,7 +1917,7 @@ class HalfEdge(Datastructure):
         key : int
             The identifier of the vertex.
         ring : int, optional
-            The number of neighborhood rings to include. Default is ``1``.
+            The number of neighborhood rings to include.
 
         Returns
         -------
@@ -1892,10 +1927,6 @@ class HalfEdge(Datastructure):
         Notes
         -----
         The vertices in the neighborhood are unordered.
-
-        Examples
-        --------
-        >>>
 
         """
         nbrs = set(self.vertex_neighbors(key))
@@ -1922,6 +1953,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The degree of the vertex.
+
         """
         return len(self.vertex_neighbors(key))
 
@@ -1932,6 +1964,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The lowest degree of all vertices.
+
         """
         if not self.vertex:
             return 0
@@ -1944,6 +1977,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The highest degree of all vertices.
+
         """
         if not self.vertex:
             return 0
@@ -1966,9 +2000,6 @@ class HalfEdge(Datastructure):
         list[int]
             The faces connected to a vertex.
 
-        Examples
-        --------
-        >>>
         """
         if not ordered:
             faces = list(self.halfedge[key].values())
@@ -2000,6 +2031,7 @@ class HalfEdge(Datastructure):
         bool
             True if the edge exists.
             False otherwise.
+
         """
         return key in set(self.edges())
 
@@ -2016,6 +2048,7 @@ class HalfEdge(Datastructure):
         bool
             True if the halfedge is part of the mesh.
             False otherwise.
+
         """
         u, v = key
         return u in self.halfedge and v in self.halfedge[u]
@@ -2035,6 +2068,7 @@ class HalfEdge(Datastructure):
         tuple[int, int]
             The identifiers of the adjacent faces.
             If the edge is on the boundary, one of the identifiers is None.
+
         """
         return self.halfedge[u][v], self.halfedge[v][u]
 
@@ -2059,9 +2093,6 @@ class HalfEdge(Datastructure):
         KeyError
             If the halfedge does not exist.
 
-        Examples
-        --------
-        >>>
         """
         return self.halfedge[u][v]
 
@@ -2080,6 +2111,7 @@ class HalfEdge(Datastructure):
         bool
             True if the edge is on the boundary.
             False otherwise.
+
         """
         return self.halfedge[v][u] is None or self.halfedge[u][v] is None
 
@@ -2099,6 +2131,7 @@ class HalfEdge(Datastructure):
         -------
         list[tuple[int, int]]
             The edges on the same loop as the given edge.
+
         """
         u, v = edge
         uv_loop = self.halfedge_loop((u, v))
@@ -2120,6 +2153,7 @@ class HalfEdge(Datastructure):
         -------
         list[tuple[int, int]]
             The edges on the same loop as the given edge.
+
         """
         u, v = edge
         if self.is_edge_on_boundary(u, v):
@@ -2149,6 +2183,7 @@ class HalfEdge(Datastructure):
         -------
         list[tuple[int, int]]
             The edges on the same loop as the given edge.
+
         """
         u, v = edge
         edges = [(u, v)]
@@ -2183,6 +2218,7 @@ class HalfEdge(Datastructure):
         -------
         list[tuple[int, int]]
             The edges on the same strip as the given edge.
+
         """
         u, v = edge
         if self.halfedge[v][u] is None:
@@ -2209,6 +2245,7 @@ class HalfEdge(Datastructure):
         -------
         list[tuple[int, int]]
             The edges on the same strip as the given halfedge.
+
         """
         u, v = edge
         edges = [(u, v)]
@@ -2245,9 +2282,6 @@ class HalfEdge(Datastructure):
             True if the face exists.
             False otherwise.
 
-        Examples
-        --------
-        >>>
         """
         return fkey in self.face
 
@@ -2263,6 +2297,7 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             Ordered vertex identifiers.
+
         """
         return self.face[fkey]
 
@@ -2278,6 +2313,7 @@ class HalfEdge(Datastructure):
         -------
         list[tuple[int, int]]
             The halfedges of a face.
+
         """
         vertices = self.face_vertices(fkey)
         return list(pairwise(vertices + vertices[0:1]))
@@ -2294,6 +2330,7 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             The corners of the face in the form of a list of vertex triplets.
+
         """
         vertices = self.face_vertices(fkey)
         return list(window(vertices + vertices[0:2], 3))
@@ -2310,6 +2347,7 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             The identifiers of the neighboring faces.
+
         """
         nbrs = []
         for u, v in self.face_halfedges(fkey):
@@ -2332,6 +2370,7 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             A list of face identifiers.
+
         """
         nbrs = set(self.face_neighbors(key))
         i = 1
@@ -2357,6 +2396,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The count.
+
         """
         return len(self.face_neighbors(fkey))
 
@@ -2367,6 +2407,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The lowest degree.
+
         """
         if not self.face:
             return 0
@@ -2379,6 +2420,7 @@ class HalfEdge(Datastructure):
         -------
         int
             The highest degree.
+
         """
         if not self.face:
             return 0
@@ -2406,6 +2448,7 @@ class HalfEdge(Datastructure):
         ------
         ValueError
             If the vertex is not part of the face.
+
         """
         i = self.face[fkey].index(key)
         return self.face[fkey][(i - n) % len(self.face[fkey])]
@@ -2432,6 +2475,7 @@ class HalfEdge(Datastructure):
         ------
         ValueError
             If the vertex is not part of the face.
+
         """
         i = self.face[fkey].index(key)
         return self.face[fkey][(i + n) % len(self.face[fkey])]
@@ -2456,6 +2500,7 @@ class HalfEdge(Datastructure):
         -----
         For use in form-finding algorithms, that rely on form-force duality information,
         further checks relating to the orientation of the corresponding are required.
+
         """
         for u, v in self.face_halfedges(f1):
             if self.halfedge[v][u] == f2:
@@ -2476,6 +2521,7 @@ class HalfEdge(Datastructure):
         list[int] or None
             The vertices separating face 1 from face 2,
             or None, if the faces are not adjacent.
+
         """
         return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
@@ -2492,6 +2538,7 @@ class HalfEdge(Datastructure):
         bool
             True if the face is on the boundary.
             False otherwise.
+
         """
         a = [self.halfedge[v][u] for u, v in self.face_halfedges(key)]
         if None in a:
@@ -2516,6 +2563,7 @@ class HalfEdge(Datastructure):
         -------
         tuple[int, int]
             The next halfedge.
+
         """
         face = self.halfedge_face(u, v)
         if face is not None:
@@ -2539,6 +2587,7 @@ class HalfEdge(Datastructure):
         -------
         tuple[int, int]
             The previous halfedge.
+
         """
         face = self.halfedge_face(u, v)
         if face is not None:
@@ -2558,6 +2607,7 @@ class HalfEdge(Datastructure):
         Returns
         -------
         list[tuple[int, int]]
+
         """
         edges = []
         for nbr in self.vertex_neighbors(vertex):
