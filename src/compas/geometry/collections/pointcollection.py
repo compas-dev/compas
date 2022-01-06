@@ -7,6 +7,7 @@ from .collection import Collection
 
 
 class PointCollection(Collection):
+    """No longer exist. Will be removed from API..."""
 
     def __init__(self, points):
         self._items = points

@@ -7,11 +7,4 @@ __all__ = ['CollectionNumpy']
 
 
 class CollectionNumpy(object):
-
-    __slots__ = ['_items']
-
-    def transform(self, X):
-        raise NotImplementedError
-
-    def transformed(self, X):
-        raise NotImplementedError
+    """No longer exist. Will be removed from API..."""

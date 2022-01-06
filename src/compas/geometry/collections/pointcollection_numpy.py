@@ -13,6 +13,7 @@ __all__ = ['PointCollectionNumpy']
 
 
 class PointCollectionNumpy(CollectionNumpy):
+    """No longer exist. Will be removed from API..."""
 
     def __init__(self, points):
         self._data = []
