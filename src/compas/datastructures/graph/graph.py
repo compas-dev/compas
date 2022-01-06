@@ -39,6 +39,7 @@ class Graph(Datastructure):
     Examples
     --------
     >>>
+
     """
 
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
@@ -55,24 +56,8 @@ class Graph(Datastructure):
         if default_edge_attributes:
             self.default_edge_attributes.update(default_edge_attributes)
 
-    def __str__(self):
-        tpl = "<Graph with {} nodes, {} edges>"
-        return tpl.format(self.number_of_nodes(), self.number_of_edges())
-
     # --------------------------------------------------------------------------
-    # properties
-    # --------------------------------------------------------------------------
-
-    @property
-    def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
-
-    # --------------------------------------------------------------------------
-    # serialization
+    # data
     # --------------------------------------------------------------------------
 
     @property
@@ -160,6 +145,26 @@ class Graph(Datastructure):
                 self.adjacency[u][v] = None
 
     # --------------------------------------------------------------------------
+    # properties
+    # --------------------------------------------------------------------------
+
+    @property
+    def name(self):
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
+    # --------------------------------------------------------------------------
+    # customization
+    # --------------------------------------------------------------------------
+
+    def __str__(self):
+        tpl = "<Graph with {} nodes, {} edges>"
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
+
+    # --------------------------------------------------------------------------
     # constructors
     # --------------------------------------------------------------------------
 
@@ -175,6 +180,7 @@ class Graph(Datastructure):
         Returns
         -------
         :class:`compas.datastructures.Graph`
+
         """
         graph = cls()
         for u, v in edges:
@@ -196,6 +202,7 @@ class Graph(Datastructure):
         Returns
         -------
         :class:`compas.datastructures.Graph`
+
         """
         g = cls()
         g.attributes.update(graph.graph)
@@ -215,6 +222,7 @@ class Graph(Datastructure):
         -------
         networkx.DiGraph
             A newly created NetworkX DiGraph.
+
         """
         import networkx as nx
         graph = nx.DiGraph()
@@ -233,7 +241,13 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     def clear(self):
-        """Clear all the network data."""
+        """Clear all the network data.
+
+        Returns
+        -------
+        None
+
+        """
         del self.node
         del self.edge
         del self.adjacency
@@ -251,6 +265,7 @@ class Graph(Datastructure):
         -------
         hashable
             The identifier of the node.
+
         """
         return self.get_any_nodes(1)[0]
 
@@ -271,6 +286,7 @@ class Graph(Datastructure):
         -------
         list[hashable]
             The identifiers of the nodes.
+
         """
         if exclude_leaves:
             nodes = set(self.nodes()) - set(self.leaves())
@@ -288,6 +304,7 @@ class Graph(Datastructure):
         -------
         tuple[hashable, hashable]
             The identifier of the edge in the form of a pair of vertex identifiers.
+
         """
         return choice(list(self.edges()))
 
@@ -306,6 +323,7 @@ class Graph(Datastructure):
         -------
         list[tuple[hashable, hashable]]
             The identifiers of the random edges.
+
         """
         return sample(list(self.edges()), n)
 
@@ -321,6 +339,7 @@ class Graph(Datastructure):
         -------
         list[hashable]
             The identifiers of the nodes.
+
         """
         return sample(list(self.nodes()), size)
 
@@ -336,6 +355,7 @@ class Graph(Datastructure):
         -------
         list[tuple[hashable, hashable]]
             The identifiers of the random edges.
+
         """
         return sample(list(self.edges()), size)
 
@@ -346,6 +366,7 @@ class Graph(Datastructure):
         -------
         dict[hashable, int]
             A dictionary of key-index pairs.
+
         """
         return {key: index for index, key in enumerate(self.nodes())}
 
@@ -356,6 +377,7 @@ class Graph(Datastructure):
         -------
         dict[int, hashable]
             A dictionary of index-key pairs.
+
         """
         return dict(enumerate(self.nodes()))
 
@@ -367,6 +389,7 @@ class Graph(Datastructure):
         -------
         dict[tuple[hashable, hashable], int]
             A dictionary of uv-index pairs.
+
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges())}
 
@@ -378,6 +401,7 @@ class Graph(Datastructure):
         -------
         dict[int, tuple[hashable, hashable]]
             A dictionary of index-uv pairs.
+
         """
         return dict(enumerate(self.edges()))
 
@@ -413,6 +437,7 @@ class Graph(Datastructure):
         --------
         >>> graph = Graph()
         >>> graph.add_node()
+
         """
         if key is None:
             key = self._max_node = self._max_node + 1
@@ -453,6 +478,7 @@ class Graph(Datastructure):
         Examples
         --------
         >>>
+
         """
         attr = attr_dict or {}
         attr.update(kwattr)
@@ -488,6 +514,7 @@ class Graph(Datastructure):
         Examples
         --------
         >>>
+
         """
         if key in self.edge:
             del self.edge[key]
@@ -521,6 +548,7 @@ class Graph(Datastructure):
         Examples
         --------
         >>>
+
         """
         del self.adjacency[u][v]
         del self.adjacency[v][u]
@@ -540,6 +568,7 @@ class Graph(Datastructure):
         -------
         str
             The formatted summary.
+
         """
         tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- nodes: {}", "- edges: {}"])
         return tpl.format(self.name, self.number_of_nodes(), self.number_of_edges())
@@ -551,6 +580,7 @@ class Graph(Datastructure):
         -------
         int
             The number of nodes.
+
         """
         return len(list(self.nodes()))
 
@@ -561,6 +591,7 @@ class Graph(Datastructure):
         -------
         int
             The number of edges.
+
         """
         return len(list(self.edges()))
 
@@ -581,6 +612,7 @@ class Graph(Datastructure):
         hashable or tuple[hashable, dict[str, Any]]
             If `data` is False, the next node identifier.
             If `data` is True, the next node as a (key, attr) tuple.
+
         """
         for key in self.node:
             if not data:
@@ -605,6 +637,7 @@ class Graph(Datastructure):
         hashable or tuple[hashable, dict[str, Any]]
             If `data` is False, the next node that matches the condition.
             If `data` is True, the next node and its attributes.
+
         """
         for key, attr in self.nodes(True):
             is_match = True
@@ -674,6 +707,7 @@ class Graph(Datastructure):
         Examples
         --------
         >>>
+
         """
         for key, attr in self.nodes(True):
             if predicate(key, attr):
@@ -695,6 +729,7 @@ class Graph(Datastructure):
         tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
             If `data` is False, the next edge identifier (u, v).
             If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+
         """
         for u, nbrs in iter(self.edge.items()):
             for v, attr in iter(nbrs.items()):
@@ -720,6 +755,7 @@ class Graph(Datastructure):
         tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
             If `data` is False, the next edge identifier (u, v).
             If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+
         """
         for key in self.edges():
             is_match = True
@@ -779,6 +815,7 @@ class Graph(Datastructure):
         Examples
         --------
         >>>
+
         """
         for key, attr in self.edges(True):
             if predicate(key, attr):
@@ -804,6 +841,7 @@ class Graph(Datastructure):
         Returns
         -------
         None
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -823,6 +861,7 @@ class Graph(Datastructure):
         Returns
         -------
         None
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -858,6 +897,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If the node does not exist.
+
         """
         if key not in self.node:
             raise KeyError(key)
@@ -889,6 +929,7 @@ class Graph(Datastructure):
         -----
         Unsetting the value of a node attribute implicitly sets it back to the value
         stored in the default node attribute dict.
+
         """
         if name in self.node[key]:
             del self.node[key][name]
@@ -918,6 +959,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If the node does not exist.
+
         """
         if key not in self.node:
             raise KeyError(key)
@@ -962,6 +1004,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If any of the nodes does not exist.
+
         """
         if not keys:
             keys = self.nodes()
@@ -996,6 +1039,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If any of the nodes does not exist.
+
         """
         if not keys:
             keys = self.nodes()
@@ -1030,6 +1074,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = key
         if u not in self.edge or v not in self.edge[u]:
@@ -1062,6 +1107,7 @@ class Graph(Datastructure):
         -----
         Unsetting the value of an edge attribute implicitly sets it back to the value
         stored in the default edge attribute dict.
+
         """
         u, v = key
         if u not in self.edge or v not in self.edge[u]:
@@ -1093,6 +1139,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = key
         if u not in self.edge or v not in self.edge[u]:
@@ -1135,6 +1182,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         if not keys:
             keys = self.edges()
@@ -1169,6 +1217,7 @@ class Graph(Datastructure):
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         if not keys:
             keys = self.edges()
@@ -1194,6 +1243,7 @@ class Graph(Datastructure):
         -------
         bool
             True or False.
+
         """
         return key in self.node
 
@@ -1213,6 +1263,7 @@ class Graph(Datastructure):
         Notes
         -----
         A node is a *leaf* if it has only one neighbor.
+
         """
         return self.degree(key) == 1
 
@@ -1223,6 +1274,7 @@ class Graph(Datastructure):
         -------
         list[hashable]
             A list of node identifiers.
+
         """
         return [key for key in self.nodes() if self.is_leaf(key)]
 
@@ -1238,6 +1290,7 @@ class Graph(Datastructure):
         -------
         bool
             True or False.
+
         """
         return self.degree(key) > 0
 
@@ -1253,6 +1306,7 @@ class Graph(Datastructure):
         -------
         list[hashable]
             A list of node identifiers.
+
         """
         return list(self.adjacency[key])
 
@@ -1270,6 +1324,7 @@ class Graph(Datastructure):
         -------
         list[hashable]
             A list of node identifiers.
+
         """
         nbrs = set(self.neighbors(key))
         i = 1
@@ -1297,6 +1352,7 @@ class Graph(Datastructure):
         -------
         list[hashable]
             A list of node identifiers.
+
         """
         return list(self.edge[key])
 
@@ -1312,6 +1368,7 @@ class Graph(Datastructure):
         -------
         list[hashable]
             A list of node identifiers.
+
         """
         return list(set(self.adjacency[key]) - set(self.edge[key]))
 
@@ -1327,6 +1384,7 @@ class Graph(Datastructure):
         -------
         int
             The number of neighbors of the node.
+
         """
         return len(self.neighbors(key))
 
@@ -1342,6 +1400,7 @@ class Graph(Datastructure):
         -------
         int
             The number of outgoing neighbors of the node.
+
         """
         return len(self.neighbors_out(key))
 
@@ -1357,6 +1416,7 @@ class Graph(Datastructure):
         -------
         int
             The number of incoming neighbors of the node.
+
         """
         return len(self.neighbors_in(key))
 
@@ -1372,6 +1432,7 @@ class Graph(Datastructure):
         -------
         list[tuple[hashable, hashable]]
             The edges connected to the node.
+
         """
         edges = []
         for nbr in self.neighbors(key):
@@ -1401,6 +1462,7 @@ class Graph(Datastructure):
         -------
         bool
             True if the edge is present, False otherwise.
+
         """
         if directed:
             return u in self.edge and v in self.edge[u]

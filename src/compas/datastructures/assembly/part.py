@@ -31,14 +31,14 @@ class Part(Datastructure):
         The local coordinate system of the part.
     shape : :class:`compas.geometry.Shape`, optional
         The base shape of the part geometry.
-    features : list[tuple[:class:`compas.geometry.Shape`, str]], optional
+    features : sequence[tuple[:class:`compas.geometry.Shape`, str]], optional
         The features to be added to the base shape of the part geometry.
 
     Attributes
     ----------
     attributes : dict[str, Any]
         General data structure attributes that will be included in the data dict and serialization.
-    key : Union[int, str]
+    key : int or str
         The identifier of the part in the connectivity graph of the parent assembly.
     frame : :class:`compas.geometry.Frame`
         The local coordinate system of the part.
@@ -57,6 +57,7 @@ class Part(Datastructure):
     ----------------
     operations : dict[str, callable]
         Available operations for combining features with a base shape.
+
     """
 
     operations = {
@@ -76,17 +77,9 @@ class Part(Datastructure):
         self.features = features or []
         self.transformations = deque()
 
-    def __str__(self):
-        tpl = "<Part with shape {} and features {}>"
-        return tpl.format(self.shape, self.features)
-
-    @property
-    def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
+    # ==========================================================================
+    # data
+    # ==========================================================================
 
     @property
     def DATASCHEMA(self):
@@ -125,6 +118,18 @@ class Part(Datastructure):
         self.features = [(Shape.from_data(shape), operation) for shape, operation in data['features']]
         self.transformations = deque([Transformation.from_data(T) for T in data['transformations']])
 
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
+    @property
+    def name(self):
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
     @property
     def frame(self):
         if not self._frame:
@@ -150,6 +155,22 @@ class Part(Datastructure):
         geometry.transform(T)
         return geometry
 
+    # ==========================================================================
+    # customization
+    # ==========================================================================
+
+    def __str__(self):
+        tpl = "<Part with shape {} and features {}>"
+        return tpl.format(self.shape, self.features)
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
     def transform(self, T):
         """Transform the part with respect to the local cooordinate system.
 
@@ -160,6 +181,7 @@ class Part(Datastructure):
         Returns
         -------
         None
+
         """
         self.transformations.appendleft(T)
         self.shape.transform(T)
@@ -179,6 +201,7 @@ class Part(Datastructure):
         Returns
         -------
         None
+
         """
         if operation not in Part.operations:
             raise FeatureError
@@ -204,6 +227,7 @@ class Part(Datastructure):
         -------
         :class:`compas.datastructures.Mesh`
             The resulting mesh.
+
         """
         cls = cls or Mesh
         return cls.from_shape(self.geometry)
