@@ -10,6 +10,8 @@ h1 {
 font-weight: 500;
 margin-top: 0;
 margin-bottom: 1rem;
+padding-bottom: 1rem;
+border-bottom: 4px solid #eee;
 }
 
 h2 {

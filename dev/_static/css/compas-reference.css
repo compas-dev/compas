@@ -44,9 +44,9 @@
 
 /* ----------------------------------------------------------------- */
 .admonition {
-  padding: 0.75rem 1.25rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding: 0 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   border: 1px solid transparent;
 }
 
@@ -210,9 +210,12 @@ table {
 }
 
 .field-list ul {
-  padding-left: 0;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.field-list ul.simple {
+  padding-left: 0;
 }
 
 .footnote,
