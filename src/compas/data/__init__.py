@@ -5,6 +5,12 @@ data
 
 .. currentmodule:: compas.data
 
+.. rst-class:: lead
+
+This package provides a base data class for all COMPAS data objects such as geometry objects, robots, and data structures,
+and the infrastructure for data validation, conversion, coercion, and JSON serialisation.
+
+
 Classes
 =======
 
