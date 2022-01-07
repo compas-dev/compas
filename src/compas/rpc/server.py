@@ -16,7 +16,7 @@ class Server(SimpleXMLRPCServer):
     Notes
     -----
     This class has to be used by a service to start the XMLRPC server in a way
-    that can be pinged to check if the server is live, and can be cleanly terminated.
+    that can be pinged to check if the server is alive, and can be cleanly terminated.
 
     Examples
     --------
