@@ -108,7 +108,7 @@
 <h1>Proxy</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.rpc.Proxy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.rpc.</span></span><span class="sig-name descname"><span class="pre">Proxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">python</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'http://127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1753</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_conn_attempts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoreload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capture_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/rpc/proxy.py#L29"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.rpc.</span></span><span class="sig-name descname"><span class="pre">Proxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">python</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'http://127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1753</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_conn_attempts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoreload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capture_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/rpc/proxy.py#L26"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Create a proxy object as intermediary between client code and remote functionality.</p>
 <p>This class is a context manager, so when used in a <code class="docutils literal notranslate"><span class="pre">with</span></code> statement,
@@ -118,20 +118,30 @@ saving start up time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>package</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, optional) – The base package for the requested functionality.
-Default is <cite>None</cite>, in which case a full path to function calls should be provided.</p></li>
-<li><p><strong>python</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, optional) – The python executable that should be used to execute the code.
-Default is <code class="docutils literal notranslate"><span class="pre">'pythonw'</span></code>.</p></li>
-<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, optional) – The server address.
-Default is <code class="docutils literal notranslate"><span class="pre">'http://127.0.0.1'</span></code>.</p></li>
-<li><p><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>:, optional) – The port number on the remote server.
-Default is <code class="docutils literal notranslate"><span class="pre">1753</span></code>.</p></li>
-<li><p><strong>service</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, package name to start server.) – Default is <code class="docutils literal notranslate"><span class="pre">'compas.rpc.services.default'</span></code>.</p></li>
-<li><p><strong>max_conn_attempts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional) – Amount of attempts to connect to RPC server before time out.</p></li>
-<li><p><strong>autoreload</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <code class="docutils literal notranslate"><span class="pre">True</span></code> to automatically reload the proxied package if changes are detected.) – This is particularly useful during development. The server will monitor changes to the files
+<li><p><strong>package</strong> (<em>str, optional</em>) – The base package for the requested functionality.
+Default is None, in which case a full path to function calls should be provided.</p></li>
+<li><p><strong>python</strong> (<em>str, optional</em>) – The python executable that should be used to execute the code.</p></li>
+<li><p><strong>url</strong> (<em>str, optional</em>) – The server address.</p></li>
+<li><p><strong>port</strong> (<em>int, optional</em>) – The port number on the remote server.</p></li>
+<li><p><strong>service</strong> (<em>str, optional</em>) – Package name to start server.
+Default is <code class="docutils literal notranslate"><span class="pre">'compas.rpc.services.default'</span></code>.</p></li>
+<li><p><strong>max_conn_attempts</strong> (<em>int, optional</em>) – Amount of attempts to connect to RPC server before time out.</p></li>
+<li><p><strong>autoreload</strong> (<em>bool, optional</em>) – If True, automatically reload the proxied package if changes are detected.
+This is particularly useful during development. The server will monitor changes to the files
 that were loaded as a result of accessing the specified <cite>package</cite> and if any change is detected,
 it will unload the module, so that the next invocation uses a fresh version.</p></li>
-<li><p><strong>capture_output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <code class="docutils literal notranslate"><span class="pre">True</span></code> to capture the stdout/stderr output of the remote process, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.) – In general, <code class="docutils literal notranslate"><span class="pre">capture_output</span></code> should be <code class="docutils literal notranslate"><span class="pre">True</span></code> when using a <code class="docutils literal notranslate"><span class="pre">pythonw</span></code> as executable (default).</p></li>
+<li><p><strong>capture_output</strong> (<em>bool, optional</em>) – If True, capture the stdout/stderr output of the remote process.
+In general, <cite>capture_output</cite> should be True when using a <cite>pythonw</cite> as executable (default).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>address</strong> (<em>str, read-only</em>) – Address of the server as a combination of <cite>url</cite> and <cite>port</cite>.</p></li>
+<li><p><strong>profile</strong> (<em>str</em>) – A profile of the code executed by the server.</p></li>
+<li><p><strong>package</strong> (<em>str</em>) – Fully qualified name of the package or module
+from where functions should be imported on the server side.</p></li>
+<li><p><strong>service</strong> (<em>str</em>) – Fully qualified package name required for starting the server/service.</p></li>
+<li><p><strong>python</strong> (<em>str</em>) – The type of Python executable that should be used to execute the code.</p></li>
 </ul>
 </dd>
 </dl>
@@ -147,10 +157,10 @@ start the server.</p>
 <p class="rubric">Examples</p>
 <p>Minimal example showing connection to the proxy server, and ensuring the
 server is disposed after using it:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
-
-<span class="k">with</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.numerical&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">numerical</span><span class="p">:</span>
-    <span class="k">pass</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.numerical&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">numerical</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>
