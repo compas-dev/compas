@@ -34,7 +34,7 @@ def is_sequence_of_str(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         The sequence of items.
 
     Returns
@@ -47,6 +47,7 @@ def is_sequence_of_str(sequence):
     --------
     >>> is_sequence_of_str(['a', 'b', 'c'])
     True
+
     """
     return is_sequence_of_type(sequence, basestring)
 
@@ -56,7 +57,7 @@ def is_sequence_of_int(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         The sequence of items.
 
     Returns
@@ -69,6 +70,7 @@ def is_sequence_of_int(sequence):
     --------
     >>> is_sequence_of_int([1, 2, 3])
     True
+
     """
     return is_sequence_of_type(sequence, int)
 
@@ -78,7 +80,7 @@ def is_sequence_of_float(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         The sequence of items.
 
     Returns
@@ -91,6 +93,7 @@ def is_sequence_of_float(sequence):
     --------
     >>> is_sequence_of_float([1.0, 2.0, 3.0])
     True
+
     """
     return is_sequence_of_type(sequence, float)
 
@@ -100,7 +103,7 @@ def is_sequence_of_list(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         The sequence of items.
 
     Returns
@@ -113,6 +116,7 @@ def is_sequence_of_list(sequence):
     --------
     >>> is_sequence_of_list([[1], [1], [1]])
     True
+
     """
     return is_sequence_of_type(sequence, list)
 
@@ -122,7 +126,7 @@ def is_sequence_of_tuple(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         The sequence of items.
 
     Returns
@@ -135,6 +139,7 @@ def is_sequence_of_tuple(sequence):
     --------
     >>> is_sequence_of_tuple([(1, ), (1, ), (1, )])
     True
+
     """
     return is_sequence_of_type(sequence, tuple)
 
@@ -144,7 +149,7 @@ def is_sequence_of_dict(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         The sequence of items.
 
     Returns
@@ -157,6 +162,7 @@ def is_sequence_of_dict(sequence):
     --------
     >>> is_sequence_of_dict([{'a': 1}, {'b': 2}, {'c': 3}])
     True
+
     """
     return is_sequence_of_type(sequence, dict)
 
@@ -166,7 +172,7 @@ def is_sequence_of_type(sequence, t):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         The sequence of items.
     t : object
         The item type.
@@ -181,6 +187,7 @@ def is_sequence_of_type(sequence, t):
     --------
     >>> is_sequence_of_type([1, 2, 3], int)
     True
+
     """
     if any(not isinstance(item, t) for item in sequence):
         return False
@@ -207,6 +214,7 @@ def is_item_iterable(item):
     False
     >>> is_item_iterable('abc')
     True
+
     """
     try:
         _ = [_ for _ in item]
@@ -220,7 +228,7 @@ def is_sequence_of_iterable(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         A sequence of items.
 
     Returns
@@ -233,6 +241,7 @@ def is_sequence_of_iterable(sequence):
     --------
     >>> is_sequence_of_iterable(['abc', [1.0], (2, 'a', None)])
     True
+
     """
     return all(is_item_iterable(item) for item in sequence)
 
@@ -246,12 +255,12 @@ def coerce_sequence_of_tuple(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         A sequence of items.
 
     Returns
     -------
-    list of tuple
+    list[tuple]
         A list containing the items of the original sequence,
         with each iterable item converted to a tuple,
         and non-iterable items wrapped in a tuple.
@@ -261,6 +270,7 @@ def coerce_sequence_of_tuple(sequence):
     >>> items = coerce_sequence_of_tuple(['a', 1, (None, ), [2.0, 3.0]])
     >>> is_sequence_of_tuple(items)
     True
+
     """
     items = []
     for item in sequence:
@@ -278,12 +288,12 @@ def coerce_sequence_of_list(sequence):
 
     Parameters
     ----------
-    sequence : list or tuple
+    sequence : sequence
         A sequence of items.
 
     Returns
     -------
-    list of list
+    list[list]
         A list containing the items of the original sequence,
         with each iterable item converted to a list,
         and non-iterable items wrapped in a list.
@@ -293,6 +303,7 @@ def coerce_sequence_of_list(sequence):
     >>> items = coerce_sequence_of_list(['a', 1, (None, ), [2.0, 3.0]])
     >>> is_sequence_of_list(items)
     True
+
     """
     items = []
     for item in sequence:

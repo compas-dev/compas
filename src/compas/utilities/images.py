@@ -28,21 +28,18 @@ def gif_from_images(files,
     files : list
         The image series.
     gif_path : str
-        The location to svae the- GIF.
+        The location to save the GIF.
     fps : int, optional
-        Frames per second. Default is ``10``.
-    loop : int
+        Frames per second.
+    loop : int, optional
         The number of loops.
     reverse : bool, optional
-        Flag for reversing the image series. Default is ``False``.
+        If True, reverse the image series.
     pingpong : bool, optional
-        Default is ``False``.
+        If True, add a reverse sequence to the end of the base sequence to go back to the beginning.
     subrectangles : bool, optional
-        Default is ``True``.
+        If True, optimize the file size by looking for invariant subrectangles.
 
-    Examples
-    --------
-    >>>
     """
     if reverse:
         files.reverse()
