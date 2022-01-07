@@ -67,9 +67,9 @@ def i_to_rgb(i, normalize=False):
     Parameters
     ----------
     i : float
-        A number between `0.0` and `1.0`.
+        A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -102,6 +102,7 @@ def i_to_rgb(i, normalize=False):
     (0.0, 1.0, 1.0)
     >>> i_to_rgb(0.0, True)
     (0.0, 0.0, 1.0)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -138,7 +139,7 @@ def i_to_red(i, normalize=False):
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -154,6 +155,7 @@ def i_to_red(i, normalize=False):
     (255, 0, 0)
     >>> i_to_red(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -171,7 +173,7 @@ def i_to_green(i, normalize=False):
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -187,6 +189,7 @@ def i_to_green(i, normalize=False):
     (0, 255, 0)
     >>> i_to_green(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -204,7 +207,7 @@ def i_to_blue(i, normalize=False):
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -220,6 +223,7 @@ def i_to_blue(i, normalize=False):
     (0, 0, 255)
     >>> i_to_blue(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -237,7 +241,7 @@ def i_to_white(i, normalize=False):
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -253,6 +257,7 @@ def i_to_white(i, normalize=False):
     (255, 255, 255)
     >>> i_to_white(0.0)
     (0, 0, 0)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -271,7 +276,7 @@ def i_to_black(i, normalize=False):
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -287,6 +292,7 @@ def i_to_black(i, normalize=False):
     (0, 0, 0)
     >>> i_to_black(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -307,6 +313,11 @@ class Colormap(object):
     spec : {'rgb', 'red', 'green', 'blue', 'white', 'black'}
         A color specification.
 
+    Class Attributes
+    ----------------
+    colorfuncs : dict[str, callable]
+        A dictionary mapping color specification names to corresponding converters.
+
     Examples
     --------
     >>> data = list(range(10))
@@ -324,6 +335,7 @@ class Colormap(object):
     (255, 226, 0)
     (255, 113, 0)
     (255, 0, 0)
+
     """
 
     colorfuncs = {
@@ -352,7 +364,7 @@ def is_color_rgb(color):
 
     Parameters
     ----------
-    color : obj
+    color : [int, int, int] of [float, float, float]
         The color object.
 
     Returns
@@ -378,6 +390,7 @@ def is_color_rgb(color):
     >>> color = (256, 0, 0)
     >>> is_color_rgb(color)
     False
+
     """
     if isinstance(color, (tuple, list)):
         if len(color) == 3:
@@ -395,7 +408,7 @@ def is_color_hex(color):
 
     Parameters
     ----------
-    color : obj
+    color : str
         The color object.
 
     Returns
@@ -414,6 +427,7 @@ def is_color_hex(color):
     False
     >>> is_color_hex("#ff000")
     False
+
     """
     if isinstance(color, basestring):
         match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
@@ -428,7 +442,7 @@ def rgb_to_rgb(rgb, g=None, b=None):
 
     Parameters
     ----------
-    rgb : int or float or tuple or list
+    rgb : int or float or [int, int, int] of [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
     g : int or float, optional
         The green component.
@@ -439,7 +453,7 @@ def rgb_to_rgb(rgb, g=None, b=None):
 
     Returns
     -------
-    tuple
+    tuple[int, int, int]
         Three RGB color components in integer format, each in the range of 0-255.
 
     Examples
@@ -452,6 +466,7 @@ def rgb_to_rgb(rgb, g=None, b=None):
     (255, 0, 0)
     >>> rgb_to_rgb((1, 0, 0))
     (1, 0, 0)
+
     """
     if g is None and b is None:
         r, g, b = rgb
@@ -476,7 +491,7 @@ def rgb_to_hex(rgb, g=None, b=None):
 
     Parameters
     ----------
-    rgb : int or float or tuple or list
+    rgb : int or float or [int, int, int] of [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
     g : int or float, optional
         The green component.
@@ -500,6 +515,7 @@ def rgb_to_hex(rgb, g=None, b=None):
     '#ff0000'
     >>> rgb_to_hex((1, 0, 0))
     '#010000'
+
     """
     r, g, b = rgb_to_rgb(rgb, g=g, b=b)
     return '#{0:02x}{1:02x}{2:02x}'.format(r, g, b)
@@ -517,8 +533,9 @@ def hex_to_rgb(value, normalize=False):
 
     Returns
     -------
-    tuple
-        The RGB color.
+    tuple[int, int, int] or tuple[float, float, float]
+        If `normalize` is True, the RGB color with 0-1 float components.
+        If `normalize` is False, the RGB color with 0-255 integer components.
 
     Examples
     --------
@@ -526,6 +543,7 @@ def hex_to_rgb(value, normalize=False):
     (255, 0, 0)
     >>> hex_to_rgb('#ff0000', normalize=True)
     (1.0, 0.0, 0.0)
+
     """
     value = value.lstrip('#').lower()
     r = HEX_DEC[value[0:2]]
@@ -541,15 +559,16 @@ def color_to_rgb(color, normalize=False):
 
     Parameters
     ----------
-    color : str or tuple or float
+    color : str or [int, int, int] or [float, float, float]
         The color.
     normalize : bool, optional
-        If true, normalize the resulting RGB color components.
+        If True, normalize the resulting RGB color components.
 
     Returns
     -------
-    tuple
-        The corresponding RGB color specification.
+    tuple[int, int, int] or tuple[float, float, float]
+        If `normalize` is True, the RGB color with 0-1 float components.
+        If `normalize` is False, the RGB color with 0-255 integer components.
 
     Examples
     --------
@@ -565,6 +584,7 @@ def color_to_rgb(color, normalize=False):
     (255, 0, 0)
     >>> color_to_rgb((255, 0, 0), normalize=True)
     (1.0, 0.0, 0.0)
+
     """
     if isinstance(color, basestring):
         r, g, b = hex_to_rgb(color)
@@ -584,22 +604,21 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
 
     Parameters
     ----------
-    color : str or tuple or list or dict
+    color : str or [int, int, int] or [float, float, float] or dict[hashable, [int, int, int]] or dict[hashable, [float, float, float]]
         The base color specification.
         This can be a single color (as HEX or RGB), a list of colors, or a dict of colors.
-    keys : list
+    keys : sequence[hashable]
         The keys of the color dict.
-    default : str or tuple, optional
+    default : str or tuple[int, int, int] or tuple[float, float, float], optional
         A valid color specification (HEX or RGB).
     colorformat : {'hex', 'rgb'}, optional
         The format of the colors in the color dict.
-        Default is `'rgb'`.
     normalize : bool, optional
-        Normalize the color components, if true and `colorformat` is `'rgb'`.
+        If True and `colorformat` is ``'rgb'``, normalize the color components.
 
     Returns
     -------
-    dict
+    dict[hashable, tuple[int, int, int]] or dict[hashable, tuple[float, float, float]]
         A dictionary mapping the provided keys to the provided color(s).
 
     Raises
@@ -615,6 +634,7 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
     {0: '#ff0000', 1: '#ff0000', 2: '#ff0000'}
     >>> color_to_colordict('#ff0000', [0, 1, 2], colorformat='rgb', normalize=True)
     {0: (1.0, 0.0, 0.0), 1: (1.0, 0.0, 0.0), 2: (1.0, 0.0, 0.0)}
+
     """
     color = color or default
     if color is None:
@@ -654,11 +674,11 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
 
 
 def is_color_light(color):
-    r"""Is a color 'light'.
+    r"""Is a color "light".
 
     Parameters
     ----------
-    color: str or tuple
+    color: str or tuple[float, float, float] or tuple[int, int, int]
         The color specification in HEX or RGB format.
 
     Returns
@@ -667,19 +687,16 @@ def is_color_light(color):
         True, if the color is light.
         False, otherwise.
 
-    Examples
-    --------
-    >>>
-
     Notes
     -----
-    A color is considered 'light' if the following is True for normalized RGB components:
+    A color is considered "light" if the following is True for normalized RGB components:
 
     .. math::
 
         0.2126   \frac{r + 0.055}{1.055}^2.4
         + 0.7152 \frac{g + 0.055}{1.055}^2.4
         + 0.0722 \frac{b + 0.055}{1.055}^2.4 > 0.179
+
     """
     if is_color_hex(color):
         rgb = hex_to_rgb(color)

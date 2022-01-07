@@ -16,6 +16,7 @@ class ThreadExceptHookHandler(object):
     Discussion: https://stackoverflow.com/a/31622038/269335
     PR (not yet merged): https://github.com/python/cpython/pull/8610
     Disclaimer (!): https://news.ycombinator.com/item?id=11090814
+
     """
 
     def __enter__(self):
@@ -49,7 +50,7 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
     waiting for its completion before moving forward (without doing a busy wait).
 
     It is useful to minimize "callback hell" when more advanced options
-    like ``asyncio`` are not available.
+    like `asyncio` are not available.
 
     Parameters
     ----------
@@ -57,11 +58,9 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
         An asynchronous function that receives at least one callback parameter
         to signal completion.
     callback_name : string, optional
-        Name of the callback parameter of ``async_func``.
-        Default is `callback`.
+        Name of the callback parameter of `async_func`.
     errback_name : string, optional
-        Name of the error handling callback parameter of ``async_func``.
-        Default is None.
+        Name of the error handling callback parameter of `async_func`.
 
     Notes
     -----
@@ -70,7 +69,7 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
 
     Examples
     --------
-    The following example shows how to await an async function (``do_sync_stuff`` in
+    The following example shows how to await an async function (``do_async_stuff`` in
     the example), using this utility:
 
     .. code-block:: python
