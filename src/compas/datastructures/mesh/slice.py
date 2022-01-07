@@ -168,6 +168,6 @@ class IntersectionMeshPlane(object):
                 u, v = split
                 try:
                     self.mesh.split_face(fkey, u, v)
-                except Exception as ex:
+                except Exception:
                     continue
         return self.positive, self.negative
