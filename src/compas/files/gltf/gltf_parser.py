@@ -18,7 +18,7 @@ from compas.files.gltf.gltf_scene import GLTFScene
 
 
 class GLTFParser(object):
-    """Parse the contents of the reader into a :class:`compas.files.GLTFContent` object.
+    """Parse the contents of the reader into a GLTFContent object.
 
     Parameters
     ----------
@@ -29,6 +29,7 @@ class GLTFParser(object):
     reader : :class:`compas.files.GLTFReader`
     content : :class:`compas.files.GLTFContent`
     """
+
     def __init__(self, reader):
         self.reader = reader
         self.content = GLTFContent()
