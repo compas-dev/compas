@@ -10,11 +10,13 @@ except ImportError:
     from xmlrpc.server import SimpleXMLRPCServer
 
 
-__all__ = ['Server']
-
-
 class Server(SimpleXMLRPCServer):
     """Version of a `SimpleXMLRPCServer` that can be cleanly terminated from the client side.
+
+    Notes
+    -----
+    This class has to be used by a service to start the XMLRPC server in a way
+    that can be pinged to check if the server is alive, and can be cleanly terminated.
 
     Examples
     --------
@@ -39,15 +41,16 @@ class Server(SimpleXMLRPCServer):
             server.register_instance(DefaultService())
             server.serve_forever()
 
-    Notes
-    -----
-    This class has to be used by a service to start the XMLRPC server in a way
-    that can be pinged to check if the server is live, and can be cleanly terminated.
-
     """
 
     def ping(self):
         """Simple function used to check if a remote server can be reached.
+
+        Returns
+        -------
+        int
+            Always returns 1, since the ping is considered a success
+            if the function can be reached from the client.
 
         Notes
         -----
@@ -57,6 +60,14 @@ class Server(SimpleXMLRPCServer):
         return 1
 
     def remote_shutdown(self):
+        """Stop the server through a call from the client side.
+
+        Returns
+        -------
+        int
+            Always returns 1.
+
+        """
         threading.Thread(target=self._shutdown_thread).start()
         return 1
 
