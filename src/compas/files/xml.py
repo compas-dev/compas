@@ -19,7 +19,7 @@ prettify_string = xml_impl.prettify_string
 
 
 class XML(object):
-    """Read XML files.
+    """Class for working with XML files.
 
     This class simplifies reading XML files and strings
     across different Python implementations.
