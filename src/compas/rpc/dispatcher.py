@@ -48,7 +48,7 @@ class Dispatcher(object):
         module : module
             A module object.
         newly_loaded_modules : sequence[str]
-            ???
+            A list of module names that have been loaded.
 
         Returns
         -------
