@@ -7,7 +7,13 @@ __all__ = [
 
 
 def delete_unused_data():
-    """Delete all collections, mesh and curve objects, meshes, curves, materials."""
+    """Delete all collections, mesh and curve objects, meshes, curves, materials.
+
+    Returns
+    -------
+    None
+
+    """
     for block in bpy.data.meshes:
         if block.users == 0:
             bpy.data.meshes.remove(block)
