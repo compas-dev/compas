@@ -21,6 +21,16 @@ class MeshArtist(GHArtist, MeshArtist):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
+    show_vertices : bool, optional
+        If True, draw the vertices of the mesh.
+    show_edges : bool, optional
+        If True, draw the edges of the mesh.
+    show_faces : bool, optional
+        If True, draw the faces of the mesh.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.MeshArtist` for more info.
+
     """
 
     def __init__(self,
@@ -41,34 +51,34 @@ class MeshArtist(GHArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             A list of vertices to draw.
-            Default is ``None``, in which case all vertices are drawn.
-        edges : list, optional
+            Default is None, in which case all vertices are drawn.
+        edges : list[tuple[int, int]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        faces : list, optional
+            The default is None, in which case all edges are drawn.
+        faces : list[int], optional
             A selection of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        vertexcolor : tuple or dict of tuple, optional
+            The default is None, in which case all faces are drawn.
+        vertexcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
             The color specification for the vertices.
-            The default color is the value of ``~MeshArtist.default_vertexcolor``.
-        edgecolor : tuple or dict of tuple, optional
+            The default color is the value of :attr:`MeshArtist.default_vertexcolor`.
+        edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
             The color specification for the edges.
-            The default color is the value of ``~MeshArtist.default_edgecolor``.
-        facecolor : tuple or dict of tuple, optional
+            The default color is the value of :attr:`MeshArtist.default_edgecolor`.
+        facecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
             The color specification for the faces.
-            The default color is the value of ``~MeshArtist.default_facecolor``.
-        color : tuple, optional
+            The default color is the value of :attr:`MeshArtist.default_facecolor`.
+        color : tuple[int, int, int], optional
             The color of the mesh.
-            Default is the value of ``~MeshArtist.default_color``.
+            Default is the value of :attr:`MeshArtist.default_color`.
         join_faces : bool, optional
-            Join the faces into 1 mesh.
-            Default is ``False``, in which case the faces are drawn as individual meshes.
+            If True, join the individual faces into one mesh.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Mesh`, :class:`Rhino.Geometry.Point3d` and :class:`Rhino.Geometry.Line` depending on the selection.
+        list[:rhino:`Rhino.Geometry.Mesh`, :rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
+
         """
         geometry = []
         if self.show_mesh:
@@ -84,22 +94,23 @@ class MeshArtist(GHArtist, MeshArtist):
     def draw_mesh(self, color=None):
         """Draw the mesh as a RhinoMesh.
 
-        This method is an alias for ``~MeshArtist.draw``.
+        This method is an alias for :attr:`MeshArtist.draw`.
 
         Parameters
         ----------
-        color : tuple, optional
+        color : tuple[int, int, int], optional
             The color of the mesh.
-            Default is the value of ``~MeshArtist.default_color``.
+            Default is the value of :attr:`MeshArtist.default_color`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Mesh`
+        :rhino:`Rhino.Geometry.Mesh`
 
         Notes
         -----
         The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
         Faces with more than 4 vertices will be triangulated on-the-fly.
+
         """
         color = color or self.default_color
         vertices, faces = self.mesh.to_vertices_and_faces()
@@ -110,16 +121,16 @@ class MeshArtist(GHArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             A selection of vertices to draw.
-            Default is ``None``, in which case all vertices are drawn.
-        color : tuple or dict of tuple, optional
+            Default is None, in which case all vertices are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
             The color specification for the vertices.
-            The default is the value of ``~MeshArtist.default_vertexcolor``.
+            The default is the value of :attr:`MeshArtist.default_vertexcolor`.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Point3d`
+        list[:rhino:`Rhino.Geometry.Point3d`]
 
         """
         self.vertex_color = color
@@ -139,19 +150,18 @@ class MeshArtist(GHArtist, MeshArtist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[int], optional
             A selection of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        color : tuple or dict of tuple, optional
+            The default is None, in which case all faces are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
             The color specification for the faces.
-            The default color is the value of ``~MeshArtist.default_facecolor``.
+            The default color is the value of :attr:`MeshArtist.default_facecolor`.
         join_faces : bool, optional
-            Join the faces into 1 mesh.
-            Default is ``False``, in which case the faces are drawn as individual meshes.
+            If True, join the individual faces into one mesh.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Mesh`
+        list[:rhino:`Rhino.Geometry.Mesh`]
 
         """
         self.face_color = color
@@ -177,16 +187,16 @@ class MeshArtist(GHArtist, MeshArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A selection of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : tuple or dict of tuple, optional
+            The default is None, in which case all edges are drawn.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
             The color specification for the edges.
-            The default color is the value of ``~MeshArtist.default_edgecolor``.
+            The default color is the value of :attr:`MeshArtist.default_edgecolor`.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Line`
+        list[:rhino:`Rhino.Geometry.Line`]
 
         """
         self.edge_color = color
@@ -203,13 +213,31 @@ class MeshArtist(GHArtist, MeshArtist):
         return compas_ghpython.draw_lines(lines)
 
     def clear_edges(self):
-        """GH Artists are state-less. Clear does not have any effect."""
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
         pass
 
     def clear_vertices(self):
-        """GH Artists are state-less. Clear does not have any effect."""
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
         pass
 
     def clear_faces(self):
-        """GH Artists are state-less. Clear does not have any effect."""
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
         pass

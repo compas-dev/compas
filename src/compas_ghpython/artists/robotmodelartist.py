@@ -18,14 +18,21 @@ class RobotModelArtist(GHArtist, RobotModelArtist):
     ----------
     model : :class:`compas.robots.RobotModel`
         Robot model.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.RobotModelArtist` for more info.
+
     """
 
     def __init__(self, model, **kwargs):
         super(RobotModelArtist, self).__init__(model=model, **kwargs)
 
+    # again not really sure why this is here
     def transform(self, native_mesh, transformation):
         xtransform(native_mesh, transformation)
 
+    # same here
+    # there is no reference to self...
     def create_geometry(self, geometry, name=None, color=None):
         if color:
             color = rgb_to_rgb(color[0], color[1], color[2])
@@ -36,5 +43,13 @@ class RobotModelArtist(GHArtist, RobotModelArtist):
             mesh.FillHoles()
         return mesh
 
+    # should this not have a return value?!
     def draw(self):
+        """Draw the robot model.
+
+        Returns
+        -------
+        None
+
+        """
         self.draw_visual()
