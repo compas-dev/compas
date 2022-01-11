@@ -326,6 +326,10 @@ margin: 0;
 padding: 0;
 }
 
+.highlighted {
+background-color: #ffffaa;
+}
+
 .highlight {
 margin-top: 1rem;
 margin-bottom: 1rem;
