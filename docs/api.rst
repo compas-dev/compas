@@ -7,10 +7,10 @@ API Reference
     :titlesonly:
 
     api/compas
-    api/compas_rhino
     api/compas_blender
     api/compas_ghpython
     api/compas_plotters
+    api/compas_rhino
 
 
 Package Structure
