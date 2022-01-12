@@ -60,7 +60,7 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
     # doesn't make sense to me that there is no reference to self (except for the collection)
     # suggests that this method shouldn't be here
     def create_geometry(self,
-                        geometry: Union[Mesh, Shape],  # seems incorrect to also accept a shape since it does not have an attribute dict by default
+                        geometry: Mesh,
                         name: str = None,
                         color: Union[RGBColor, Tuple[int, int, int, int], Tuple[float, float, float, float]] = None
                         ) -> bpy.types.Object:
