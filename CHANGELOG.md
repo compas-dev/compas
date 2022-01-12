@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed `compas.geometry.Collection`
 * Removed `compas.geometry.CollectionNumpy`
 * Removed `compas.geometry.PointCollection`
 * Removed `compas.geometry.PointCollectionNumpy`
