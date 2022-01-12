@@ -2,6 +2,7 @@ from typing import Union
 from typing import Tuple
 from typing import Optional
 from typing import Any
+from typing import List
 
 import bpy
 import mathutils
@@ -9,7 +10,7 @@ import mathutils
 import compas_blender
 from compas_blender.utilities import RGBColor
 from compas.datastructures import Mesh
-from compas.geometry import Transformation, Shape
+from compas.geometry import Transformation
 from compas.robots import RobotModel
 from compas.artists import RobotModelArtist
 from .artist import BlenderArtist
@@ -101,52 +102,55 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
         if len(self.collection.objects) == 0:
             self.create()
 
-    def draw(self) -> None:
+    def draw(self) -> List[bpy.types.Object]:
         """Draw the robot model.
 
         Returns
         -------
-        None
+        list[:blender:`bpy.types.Object`]
 
         """
         self._ensure_geometry()
-        self.draw_visual()
+        return self.draw_visual()
 
-    def draw_visual(self) -> None:
+    def draw_visual(self) -> List[bpy.types.Object]:
         """Draw the robot model.
 
         Returns
         -------
-        None
+        list[:blender:`bpy.types.Object`]
 
         """
         self._ensure_geometry()
         visuals = super(RobotModelArtist, self).draw_visual()
         for visual in visuals:
             visual.hide_set(False)
+        return visuals
 
-    def draw_collision(self) -> None:
+    def draw_collision(self) -> List[bpy.types.Object]:
         """Draw the collision mesh of the robot model.
 
         Returns
         -------
-        None
+        list[:blender:`bpy.types.Object`]
 
         """
         self._ensure_geometry()
         collisions = super(RobotModelArtist, self).draw_collision()
         for collision in collisions:
             collision.hide_set(False)
+        return collisions
 
-    def draw_attached_meshes(self) -> None:
+    def draw_attached_meshes(self) -> List[bpy.types.Object]:
         """Draw the meshes attached to the robot model, if any.
 
         Returns
         -------
-        None
+        list[:blender:`bpy.types.Object`]
 
         """
         self._ensure_geometry()
         meshes = super(RobotModelArtist, self).draw_attached_meshes()
         for mesh in meshes:
             mesh.hide_set(False)
+        return meshes
