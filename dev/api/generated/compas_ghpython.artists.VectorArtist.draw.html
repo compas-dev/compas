@@ -111,15 +111,18 @@
 <h1>VectorArtist.draw</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_ghpython.artists.VectorArtist.draw">
-<span class="sig-prename descclassname"><span class="pre">VectorArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/vectorartist.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">VectorArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/vectorartist.py#L28"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, optional) – Point of application of the vector.
-Default is <code class="docutils literal notranslate"><span class="pre">Point(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, optional) – Point of application of the vector.
+Default is <code class="docutils literal notranslate"><span class="pre">Point(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>show_point</strong> (<em>bool, optional</em>) – If True, draw the point of application of the vector.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The Rhino line and endpoints, if requested.</p>
+<dd class="field-even"><p>list[<a class="reference external" href="https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino.Geometry.Point3d.htm">Rhino.Geometry.Point3d</a>, <a class="reference external" href="https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino.Geometry.Line.htm">Rhino.Geometry.Line</a>] – The Rhino line and endpoints, if requested.</p>
 </dd>
 </dl>
 </dd></dl>
