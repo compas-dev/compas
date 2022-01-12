@@ -26,7 +26,7 @@ def vertex_coloring(adjacency):
 
     Notes
     -----
-    This algorithms works on any data structure that can be interpreted as a graph, e.g. 
+    This algorithms works on any data structure that can be interpreted as a graph, e.g.
     networks, meshes, volmeshes, etc..
 
     For more info, see [1]_.

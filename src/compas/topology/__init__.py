@@ -7,8 +7,7 @@ topology
 
 .. rst-class:: lead
 
-    Package for algorithms that require only topological information and no geometry.
-    In some cases, geometry is used to speed up the calculations, if it is available.
+    Package containing topological algorithms for traversal, connectivity, combinatorics, etc.
 
 
 Connectivity
