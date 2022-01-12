@@ -16,6 +16,10 @@ class BoxArtist(RhinoArtist, ShapeArtist):
         A COMPAS box.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
+
     """
 
     def __init__(self, box, layer=None, **kwargs):
@@ -26,13 +30,14 @@ class BoxArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the box.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the objects created in Rhino.
+
         """
         color = color or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]

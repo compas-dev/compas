@@ -16,6 +16,10 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
         A COMPAS cylinder.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
+
     """
 
     def __init__(self, cylinder, layer=None, **kwargs):
@@ -26,16 +30,17 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the cylinder.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CylinderArtist.u``.
+            Default is :attr:`CylinderArtist.u`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the objects created in Rhino.
+
         """
         color = color or self.color
         u = u or self.u

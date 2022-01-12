@@ -25,7 +25,48 @@ class MeshArtist(RhinoArtist, MeshArtist):
         A COMPAS mesh.
     layer : str, optional
         The name of the layer that will contain the mesh.
+    vertices : list[int], optional
+        Selection of vertices to draw.
+    edges : list[tuple[int, int]], optional
+        Selection of edges to draw.
+    faces : list[int], optional
+        Selection of faces to draw.
+    vertexcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        Color of the vertices.
+        Default color is :attr:`MeshArtists.default_vertexcolor`.
+    edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        Color of the edges.
+        Default color is :attr:`MeshArtists.default_edgecolor`.
+    facecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        Color of the faces.
+        Default color is :attr:`MeshArtists.default_facecolor`.
+    show_vertices : bool, optional
+        If True, draw the vertices.
+    show_edges : bool, optional
+        If True, draw the edges.
+    show_faces : bool, optional
+        If True, draw the faces.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`MeshArtist`.
+
+    Class Attributes
+    ----------------
+    default_color : tuple[int, int, int]
+        Default base color of the mesh.
+    default_vertexcolor : tuple[int, int, int]
+        Default color for vertices.
+    default_edgecolor : tuple[int, int, int]
+        Default color for edges.
+    default_facecolor : tuple[int, int, int]
+        Default color for faces.
+
     """
+
+    default_color = (0, 0, 0)
+    default_vertexcolor = (255, 255, 255)
+    default_edgecolor = (0, 0, 0)
+    default_facecolor = (200, 200, 200)
 
     def __init__(self,
                  mesh,
@@ -33,9 +74,9 @@ class MeshArtist(RhinoArtist, MeshArtist):
                  vertices=None,
                  edges=None,
                  faces=None,
-                 vertexcolor=(255, 255, 255),
-                 edgecolor=(0, 0, 0),
-                 facecolor=(221, 221, 221),
+                 vertexcolor=None,
+                 edgecolor=None,
+                 facecolor=None,
                  show_mesh=False,
                  show_vertices=True,
                  show_edges=True,
@@ -60,42 +101,112 @@ class MeshArtist(RhinoArtist, MeshArtist):
     # ==========================================================================
 
     def clear(self):
+        """Delete all objects drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_mesh(self):
+        """Delete the mesh drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.mesh".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertices(self):
+        """Delete all vertices drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
+        """Delete all edges drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.edge.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_faces(self):
+        """Delete all faces drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.face.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexnormals(self):
+        """Delete all vertex normals drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.vertexnormal.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facenormals(self):
+        """Delete all face normals drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.facenormal.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexlabels(self):
+        """Delete all vertex labels drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.vertexlabel.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
+        """Delete all edge labels drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
+        """Delete all face labels drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.facelabel.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
@@ -108,27 +219,26 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             A list of vertices to draw.
-            Default is ``None``, in which case all vertices are drawn.
-        edges : list, optional
+            Default is None, in which case all vertices are drawn.
+        edges : list[tuple[int, int]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        faces : list, optional
+            The default is None, in which case all edges are drawn.
+        faces : list[int], optional
             A selection of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        vertexcolor : tuple or dict of tuple, optional
-            The color specification for the vertices.
-            The default color is the value of ``~MeshArtist.default_vertexcolor``.
-        edgecolor : tuple or dict of tuple, optional
-            The color specification for the edges.
-            The default color is the value of ``~MeshArtist.default_edgecolor``.
-        facecolor : tuple or dict of tuple, optional
-            The color specification for the faces.
-            The default color is the value of ``~MeshArtist.default_facecolor``.
+            The default is None, in which case all faces are drawn.
+        vertexcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the vertices.
+            The default color is the value of :attr:`MeshArtist.default_vertexcolor`.
+        edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            The color of the edges.
+            The default color is the value of :attr:`MeshArtist.default_edgecolor`.
+        facecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the faces.
+            The default color is the value of :attr:`MeshArtist.default_facecolor`.
         join_faces : bool, optional
-            Join the faces into 1 mesh.
-            Default is ``False``, in which case the faces are drawn as individual meshes.
+            If True, join the faces into a single mesh.
 
         Returns
         -------
@@ -150,22 +260,22 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        color : tuple, optional
+        color : tuple[int, int, int], optional
             The color of the mesh.
-            Default is the value of ``~MeshArtist.default_color``.
+            Default is the value of :attr:`MeshArtist.default_color`.
         disjoint : bool, optional
-            Draw the faces of the mesh with disjoint vertices.
-            Default is ``False``.
+            If True, draw the faces of the mesh with disjoint vertices.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         Notes
         -----
         The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
         Faces with more than 4 vertices will be triangulated on-the-fly.
+
         """
         color = color or self.default_color
         vertex_index = self.mesh.vertex_index()
@@ -182,16 +292,16 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             A selection of vertices to draw.
-            Default is ``None``, in which case all vertices are drawn.
-        color : tuple or dict of tuple, optional
-            The color specification for the vertices.
-            The default is the value of ``~MeshArtist.default_vertexcolor``.
+            Default is None, in which case all vertices are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the vertices.
+            The default is the value of :attr:`MeshArtist.default_vertexcolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -213,16 +323,16 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A selection of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : tuple or dict of tuple, optional
-            The color specification for the edges.
-            The default color is the value of ``~MeshArtist.default_edgecolor``.
+            The default is None, in which case all edges are drawn.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            The color of the edges.
+            The default color is the value of :attr:`MeshArtist.default_edgecolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -245,19 +355,18 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[int], optional
             A selection of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        color : tuple or dict of tuple, optional
-            The color specification for the faces.
-            The default color is the value of ``~MeshArtist.default_facecolor``.
+            The default is None, in which case all faces are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the faces.
+            The default color is the value of :attr:`MeshArtist.default_facecolor`.
         join_faces : bool, optional
-            Join the faces into 1 mesh.
-            Default is ``False``, in which case the faces are drawn as individual meshes.
+            If True, join the faces into a single mesh.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -289,19 +398,17 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             A selection of vertex normals to draw.
             Default is to draw all vertex normals.
-        color : tuple, optional
+        color : tuple[int, int, int], optional
             The color specification of the normal vectors.
-            The default color is green, ``(0, 255, 0)``.
         scale : float, optional
             Scale factor for the vertex normals.
-            Default is ``1.0``.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -326,19 +433,17 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[int], optional
             A selection of face normals to draw.
             Default is to draw all face normals.
-        color : tuple, optional
+        color : tuple[int, int, int], optional
             The color specification of the normal vectors.
-            The default color is cyan, ``(0, 255, 255)``.
         scale : float, optional
             Scale factor for the face normals.
-            Default is ``1.0``.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -367,16 +472,16 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        text : dict, optional
+        text : dict[int, str], optional
             A dictionary of vertex labels as vertex-text pairs.
-            The default value is ``None``, in which case every vertex will be labelled with its key.
-        color : tuple or dict of tuple, optional
+            The default value is None, in which case every vertex will be labelled with its identifier.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
             The color specification of the labels.
             The default color is the same as the default vertex color.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -405,16 +510,16 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        text : dict, optional
+        text : dict[tuple[int, int], str], optional
             A dictionary of edge labels as edge-text pairs.
-            The default value is ``None``, in which case every edge will be labelled with its key.
-        color : tuple or dict of tuple, optional
+            The default value is None, in which case every edge will be labelled with its identifier.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
             The color specification of the labels.
-            The default color is the same as the default color for edges.
+            The default color is the same as the default edge color.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -441,16 +546,16 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
         Parameters
         ----------
-        text : dict, optional
+        text : dict[int, str], optional
             A dictionary of face labels as face-text pairs.
-            The default value is ``None``, in which case every face will be labelled with its key.
-        color : tuple or dict of tuple, optional
+            The default value is None, in which case every face will be labelled with its key.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
             The color specification of the labels.
             The default color is the same as the default face color.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """

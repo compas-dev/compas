@@ -16,6 +16,10 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
         A COMPAS point.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
+
     """
 
     def __init__(self, point, layer=None, **kwargs):
@@ -26,7 +30,7 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
