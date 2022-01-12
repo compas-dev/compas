@@ -48,7 +48,7 @@ class RobotModelArtist(GHArtist, RobotModelArtist):
 
         Returns
         -------
-        generator[:rhino:`Rhino.Geometry.Mesh`]
+        list[:rhino:`Rhino.Geometry.Mesh`]
 
         """
         return self.draw_visual()
