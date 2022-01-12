@@ -37,8 +37,8 @@ class BaseForm(System.Windows.Forms.Form):
         Returns
         -------
         bool
-            ``True`` if the dialog was closed using the OK button.
-            ``False`` otherwise.
+            True if the dialog was closed using the OK button.
+            False otherwise.
         """
         if Rhino.UI.Dialogs.ShowSemiModal(self) == DialogResult.OK:
             return True

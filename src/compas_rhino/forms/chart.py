@@ -47,7 +47,7 @@ class ChartForm(BaseForm):
         Size of the steps along the X-axis.
     ylimits : 2-tuple, optional
         Minimum and maximum values on the Y-axis.
-        Default is ``None``, in which case the limits will be computed from the
+        Default is None, in which case the limits will be computed from the
         min/max values of the data in the series.
     ystep : int, optional
         Size of the steps along the Y-axis.

@@ -25,7 +25,7 @@ class FacesConduit(BaseConduit):
         The faces defined as lists of indices in ``vertices``.
     color : list of str or 3-tuple, optional
         The colors of the faces.
-        Default is ``None``, in which case the default color is used for all faces.
+        Default is None, in which case the default color is used for all faces.
 
     Attributes
     ----------

@@ -62,8 +62,8 @@ def network_update_attributes(network):
     Returns
     -------
     bool
-        ``True`` if the update was successful.
-        ``False`` otherwise.
+        True if the update was successful.
+        False otherwise.
     """
     names = sorted(network.attributes.keys())
     values = [str(network.attributes[name]) for name in names]
@@ -94,8 +94,8 @@ def network_update_node_attributes(network, nodes, names=None):
     Returns
     -------
     bool
-        ``True`` if the update was successful.
-        ``False`` otherwise.
+        True if the update was successful.
+        False otherwise.
 
     """
     names = names or network.default_node_attributes.keys()
@@ -138,8 +138,8 @@ def network_update_edge_attributes(network, edges, names=None):
     Returns
     -------
     bool
-        ``True`` if the update was successful.
-        ``False`` otherwise.
+        True if the update was successful.
+        False otherwise.
 
     """
     names = names or network.default_edge_attributes.keys()
@@ -219,8 +219,8 @@ def mesh_update_attributes(mesh):
     Returns
     -------
     bool
-        ``True`` if the update was successful.
-        ``False`` otherwise.
+        True if the update was successful.
+        False otherwise.
 
     """
     names = sorted(mesh.attributes.keys())
@@ -295,8 +295,8 @@ def mesh_update_face_attributes(mesh, faces, names=None):
     Returns
     -------
     bool
-        ``True`` if the update was successful.
-        ``False`` otherwise.
+        True if the update was successful.
+        False otherwise.
 
     """
     names = names or mesh.default_face_attributes.keys()
@@ -339,8 +339,8 @@ def mesh_update_edge_attributes(mesh, edges, names=None):
     Returns
     -------
     bool
-        ``True`` if the update was successful.
-        ``False`` otherwise.
+        True if the update was successful.
+        False otherwise.
 
     """
     names = names or mesh.default_edge_attributes.keys()
@@ -527,8 +527,8 @@ def mesh_move_face(mesh, face, constraint=None, allow_off=True):
     Returns
     -------
     bool
-        ``True`` if the update was successful.
-        ``False`` otherwise.
+        True if the update was successful.
+        False otherwise.
 
     """
     def OnDynamicDraw(sender, e):

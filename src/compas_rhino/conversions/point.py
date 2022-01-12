@@ -81,7 +81,7 @@ class RhinoPoint(RhinoVector):
             Default is ``0.0``.
         return_param : bool, optional
             Return not only the point coordinates, but also the parameter of the point on the curve.
-            Default is ``False``.
+            Default is False.
 
         Returns
         -------

@@ -118,7 +118,7 @@ def _try_remove_bootstrapper(path):
 
     Returns
     -------
-    bool: ``True`` if the operation did not cause errors, ``False`` otherwise.
+    bool: True if the operation did not cause errors, False otherwise.
     """
 
     bootstrapper = _get_bootstrapper_path(path)

@@ -547,9 +547,9 @@ class RhinoNurbsCurve(NurbsCurve):
         count : int
             The number of segments.
         return_points : bool, optional
-            If ``True``, return the list of division parameters,
+            If True, return the list of division parameters,
             and the points corresponding to those parameters.
-            If ``False``, return only the list of parameters.
+            If False, return only the list of parameters.
 
         Returns
         -------
@@ -571,9 +571,9 @@ class RhinoNurbsCurve(NurbsCurve):
         length : float
             The length of the segments.
         return_points : bool, optional
-            If ``True``, return the list of division parameters,
+            If True, return the list of division parameters,
             and the points corresponding to those parameters.
-            If ``False``, return only the list of parameters.
+            If False, return only the list of parameters.
 
         Returns
         -------

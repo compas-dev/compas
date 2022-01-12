@@ -766,7 +766,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     color : RGB :obj:`tuple`, optional
     disjoint : :obj:`bool`, optional
         Draw the mesh with disjoint faces.
-        Default is ``False``.
+        Default is False.
 
     Returns
     -------

@@ -206,13 +206,13 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
         The full, hierarchical name of the layer.
     include_hidden : bool, optional
         Include all hidden objects.
-        Default is ``True``.
+        Default is True.
     include_children : bool, optional
         Include the objects of any child layers.
-        Default is ``True``.
+        Default is True.
     purge : bool, optional
         Purge history after deleting.
-        Default is ``True``.
+        Default is True.
     """
     if not rs.IsLayer(name):
         return
@@ -244,13 +244,13 @@ def clear_layers(layers, include_children=True, include_hidden=True, purge=True)
         A list of layer names as fully qualified hierarchical paths.
     include_children : bool, optional
         Include the objects of any child layers.
-        Default is ``True``.
+        Default is True.
     include_hidden : bool, optional
         Include all hidden objects.
-        Default is ``True``.
+        Default is True.
     purge : bool, optional
         Purge history after deleting.
-        Default is ``True``.
+        Default is True.
     """
     rs.EnableRedraw(False)
     to_delete = []

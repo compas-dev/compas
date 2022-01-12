@@ -25,8 +25,8 @@ def boolean_union_mesh_mesh(A, B, remesh=False):
     B : tuple
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        Remesh the result if True.
+        Default is False.
 
     Returns
     -------
@@ -47,8 +47,8 @@ def boolean_difference_mesh_mesh(A, B, remesh=False):
     B : tuple
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        Remesh the result if True.
+        Default is False.
 
     Returns
     -------
@@ -69,8 +69,8 @@ def boolean_intersection_mesh_mesh(A, B, remesh=False):
     B : tuple
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        Remesh the result if True.
+        Default is False.
 
     Returns
     -------
