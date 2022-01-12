@@ -14,6 +14,10 @@ class SphereArtist(GHArtist, ShapeArtist):
     ----------
     sphere : :class:`compas.geometry.Sphere`
         A COMPAS sphere.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+
     """
 
     def __init__(self, sphere, **kwargs):
@@ -24,18 +28,19 @@ class SphereArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the sphere.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~SphereArtist.u``.
+            Default is :attr:`SphereArtist.u`
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~SphereArtist.v``.
+            Default is :attr:`SphereArtist.v`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Mesh`
+        :rhino:`Rhino.Geometry.Mesh`
+
         """
         color = color or self.color
         u = u or self.u

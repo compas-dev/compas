@@ -56,7 +56,7 @@ def draw_points(points):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Point3d`
+    list[:rhino:`Rhino.Geometry.Point3d`]
 
     Notes
     -----
@@ -84,7 +84,7 @@ def draw_lines(lines):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Line`
+    list[:rhino:`Rhino.Geometry.Line`]
 
     Notes
     -----
@@ -114,7 +114,7 @@ def draw_geodesics(geodesics):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Curve`
+    list[:rhino:`Rhino.Geometry.Curve`]
 
     Notes
     -----
@@ -147,7 +147,7 @@ def draw_polylines(polylines):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Polyline`
+    list[:rhino:`Rhino.Geometry.Polyline`]
 
     Notes
     -----
@@ -177,7 +177,7 @@ def draw_faces(faces):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Mesh`
+    list[:rhino:`Rhino.Geometry.Mesh`]
 
     Notes
     -----
@@ -227,11 +227,11 @@ def draw_cylinders(cylinders, cap=False):
     Other Parameters
     ----------------
     cap : bool, optional
-        Default is ``False``.
+        Default is False.
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Cylinder`
+    list[:rhino:`Rhino.Geometry.Cylinder`]
 
     Notes
     -----
@@ -281,7 +281,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Brep`
+    list[:rhino:`Rhino.Geometry.Brep`]
 
     Notes
     -----
@@ -321,7 +321,7 @@ def draw_spheres(spheres):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Sphere`
+    list[:rhino:`Rhino.Geometry.Sphere`]
 
     Notes
     -----
@@ -359,7 +359,7 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Mesh`
+    list[:rhino:`Rhino.Geometry.Mesh`]
 
     """
     mesh = Mesh()
@@ -417,8 +417,8 @@ def draw_network(network):
     Returns
     -------
     tuple
-        A list of :class:`Rhino.Geometry.Point3d`.
-        A list of :class:`Rhino.Geometry.Line`.
+        A list[:rhino:`Rhino.Geometry.Point3d`].
+        A list[:rhino:`Rhino.Geometry.Line`].
 
     """
     points = []
@@ -446,7 +446,7 @@ def draw_circles(circles):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Circle`
+    list[:rhino:`Rhino.Geometry.Circle`]
 
     Notes
     -----

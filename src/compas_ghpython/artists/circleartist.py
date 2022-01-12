@@ -14,6 +14,10 @@ class CircleArtist(GHArtist, PrimitiveArtist):
     ----------
     circle : :class:`compas.geometry.Circle`
         A COMPAS circle.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+
     """
 
     def __init__(self, circle, **kwargs):
@@ -24,7 +28,8 @@ class CircleArtist(GHArtist, PrimitiveArtist):
 
         Returns
         -------
-        :class:`Rhino.Geometry.Circle`
+        :rhino:`Rhino.Geometry.Circle`
+
         """
         circles = [self._get_args(self.primitive, self.color)]
         return compas_ghpython.draw_circles(circles)[0]

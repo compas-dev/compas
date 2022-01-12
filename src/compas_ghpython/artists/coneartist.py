@@ -14,6 +14,10 @@ class ConeArtist(GHArtist, ShapeArtist):
     ----------
     shape : :class:`compas.geometry.Cone`
         A COMPAS cone.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+
     """
 
     def __init__(self, cone, **kwargs):
@@ -24,15 +28,16 @@ class ConeArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the cone.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~ConeArtist.u``.
+            Default is :attr:`ConeArtist.u`
 
         Returns
         -------
-        :class:`Rhino.Geometry.Mesh`
+        :rhino:`Rhino.Geometry.Mesh`
+
         """
         color = color or self.color
         u = u or self.u
