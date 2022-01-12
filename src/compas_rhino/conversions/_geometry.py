@@ -100,6 +100,7 @@ class RhinoGeometry(object):
         ------
         :class:`ConversionError`
             If the geometry of the Rhino DocObject cannot be converted to the geometry type of the wrapper.
+
         """
         wrapper = cls()
         wrapper.guid = guid
@@ -135,7 +136,7 @@ class RhinoGeometry(object):
 
         Parameters
         ----------
-        obj : :rhino:`Rhino_DocObjects_RhinoObject`
+        geometry : :rhino:`Rhino_DocObjects_RhinoObject`
             The Rhino object.
 
         Returns
@@ -147,6 +148,7 @@ class RhinoGeometry(object):
         ------
         :class:`ConversionError`
             If the geometry cannot be converted to the geometry type of the wrapper.
+
         """
         wrapper = cls()
         wrapper.geometry = geometry
@@ -160,13 +162,14 @@ class RhinoGeometry(object):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or Rhino.Geomtry.Transform
+        T : :class:`compas.geometry.Transformation` or :rhino:`Rhino.Geometry.Transform`
             The transformation matrix.
 
         Returns
         -------
         None
             The Rhino object is transformed in place.
+
         """
         if not isinstance(T, Rhino.Geometry.Transform):
             M = Rhino.Geometry.Transform(0.0)

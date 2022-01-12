@@ -417,7 +417,7 @@ def mesh_move_vertex(mesh, vertex, constraint=None, allow_off=True):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
     vertex : int
-    constraint : :class:`Rhino.Geometry`, optional
+    constraint : :rhino:`Rhino.Geometry`, optional
         A Rhino geometry object to constrain the movement to.
         By default the movement is unconstrained.
     allow_off : bool, optional (True)
