@@ -14,14 +14,45 @@ from .artist import BlenderArtist
 
 
 class CircleArtist(BlenderArtist, PrimitiveArtist):
-    """Artist for drawing circles.
+    """Artist for drawing circles in Blender.
 
     Parameters
     ----------
     circle : :class:`compas.geometry.Circle`
         A COMPAS circle.
-    collection :  str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection :  str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        from compas.geometry import Plane, Circle
+        from compas_blender.artists import CircleArtist
+
+        circle = Circle(Plane([0, 0, 0], [0,, 0, 1]), 1.0)
+
+        artist = CircleArtist(circle)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Plane, Circle
+        from compas.artists import Artist
+
+        circle = Circle(Plane([0, 0, 0], [0,, 0, 1]), 1.0)
+
+        artist = Artist(circle)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -35,17 +66,19 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[float, float, float] or tuple[int, int, int], optional
             The RGB color of the capsule.
+            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
         show_point : bool, optional
-            Default is ``False``.
+            If True, also draw the center point of the circle.
         show_normal : bool, optional
-            Default is ``False``.
+            If True, also draw the normal vector of the circle.
 
         Returns
         -------
-        list
+        list[:blender:`bpy.types.Object`]
             The objects created in Blender.
+
         """
         color = color or self.color
         point = self.primitive.plane.point
