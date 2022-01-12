@@ -13,32 +13,44 @@ from compas_blender.artists import BlenderArtist
 
 
 class PointArtist(BlenderArtist, PrimitiveArtist):
-    """Artist for drawing points.
+    """Artist for drawing points in Blender.
 
     Parameters
     ----------
     point : :class:`compas.geometry.Point`
         A COMPAS point.
-
-    Notes
-    -----
-    See :class:`compas_blender.artists.PrimitiveArtist` for all other parameters.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
 
     Examples
     --------
+    Use the Blender artist explicitly.
+
     .. code-block:: python
 
-        import random
-        from compas.geometry import Pointcloud
-        from compas.utilities import i_to_rgb
-
+        from compas.geometry import Point
         from compas_blender.artists import PointArtist
 
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
+        point = Point(0, 0, 0)
 
-        for point in pcl.points:
-            artist = PointArtist(point, color=i_to_rgb(random.random()))
-            artist.draw()
+        artist = PointArtist(point)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Point
+        from compas.artists import Artist
+
+        point = Point(0, 0, 0)
+
+        artist = Artist(point)
+        artist.draw()
 
     """
 
@@ -51,16 +63,23 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
     def draw(self, color: Optional[RGBColor] = None) -> List[bpy.types.Object]:
         """Draw the point.
 
+        Parameters
+        ----------
+        color : tuple[float, float, float] or tuple[int, int, int], optional
+            Color of the point object.
+            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
+
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+
         """
         color = color or self.color
         points = [{
-                'pos': self.primitive,
-                'name': f"{self.primitive.name}",
-                'color': color,
-                'radius': 0.01
-            }]
+            'pos': self.primitive,
+            'name': f"{self.primitive.name}",
+            'color': color,
+            'radius': 0.01
+        }]
         objects = compas_blender.draw_points(points, self.collection)
         return objects

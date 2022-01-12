@@ -13,27 +13,28 @@ from .artist import BlenderArtist
 
 
 class FrameArtist(BlenderArtist, PrimitiveArtist):
-    """Artist for drawing frames.
+    """Artist for drawing frames in Blender.
 
     Parameters
     ----------
     frame: :class:`compas.geometry.Frame`
         A COMPAS frame.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
     scale: float, optional
         Scale factor that controls the length of the axes.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
 
     Attributes
     ----------
-    frame: :class:`compas.geometry.Frame`
-        A COMPAS frame.
-    collection: str
-        The name of the frame's collection.
     scale : float
         Scale factor that controls the length of the axes.
         Default is ``1.0``.
     color_origin : tuple of 3 int between 0 and 255
+        Color for the point at the frame origin.
         Default is ``(0, 0, 0)``.
     color_xaxis : tuple of 3 int between 0 and 255
         Default is ``(255, 0, 0)``.
@@ -41,7 +42,9 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         Default is ``(0, 255, 0)``.
     color_zaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 255)``.
+
     """
+
     def __init__(self,
                  frame: Frame,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
@@ -61,7 +64,8 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+
         """
         self.clear()
         objects = []
@@ -74,14 +78,15 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+
         """
         points = [{
-                'pos': self.primitive.point,
-                'name': f"{self.primitive.name}.origin",
-                'color': self.color_origin,
-                'radius': 0.01
-            }]
+            'pos': self.primitive.point,
+            'name': f"{self.primitive.name}.origin",
+            'color': self.color_origin,
+            'radius': 0.01
+        }]
         return compas_blender.draw_points(points, self.collection)
 
     def draw_axes(self) -> List[bpy.types.Object]:
@@ -89,7 +94,8 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+
         """
         origin = self.primitive.point
         X = self.primitive.point + self.primitive.xaxis.scaled(self.scale)

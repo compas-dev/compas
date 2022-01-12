@@ -90,8 +90,23 @@ def _set_object_color(obj, rgb, alpha=1.0):
 
 def draw_texts(texts: List[Dict],
                collection: Union[Text, bpy.types.Collection] = None,
-               color: Union[Tuple, Dict] = (1.0, 1.0, 1.0)) -> List[bpy.types.Object]:
-    """Draw text objects."""
+               color: Tuple[float, float, float] = (1.0, 1.0, 1.0)) -> List[bpy.types.Object]:
+    """Draw text objects.
+
+    Parameters
+    ----------
+    texts : list[dict]
+        A list of dicts describing the text objects.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+    color : tuple[int, int, int] or tuple[float, float, float], optional
+        The text color.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     bpy.ops.object.text_add()
     empty = bpy.context.object
     _link_object(empty, collection)
@@ -120,7 +135,20 @@ def draw_texts(texts: List[Dict],
 # https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
 def draw_points(points: List[Dict],
                 collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
-    """Draw point objects."""
+    """Draw point objects.
+
+    Parameters
+    ----------
+    points : list[dict]
+        A list of dicts describing the points.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     P = len(points)
     N = len(str(P))
     add_point = bpy.ops.mesh.primitive_uv_sphere_add
@@ -146,7 +174,20 @@ def draw_points(points: List[Dict],
 # https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
 def draw_pointcloud(points: List[Dict],
                     collection: Union[Text, bpy.types.Collection] = None) -> bpy.types.Object:
-    """Draw point objects as a single cloud."""
+    """Draw point objects as a single cloud.
+
+    Parameters
+    ----------
+    points : list[dict]
+        A list of dicts describing the points of the pointcloud.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     P = len(points)
     N = len(str(P))
     bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=10, ring_count=10)
@@ -172,7 +213,23 @@ def draw_pointcloud(points: List[Dict],
 def draw_lines(lines: List[Dict],
                collection: Union[Text, bpy.types.Collection] = None,
                centroid: bool = True) -> List[bpy.types.Object]:
-    """Draw line objects."""
+    """Draw line objects.
+
+    Parameters
+    ----------
+    lines : list[dict]
+        A list of dicts describing the lines.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+    centroid : bool, optional
+        If True, use the centroids of the lines as the relative base for their coordinates,
+        instead of the origin of the world coordinates system.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     L = len(lines)
     N = len(str(L))
     objects = [0] * L
@@ -207,7 +264,23 @@ def draw_lines(lines: List[Dict],
 def draw_polylines(polylines: List[Dict],
                    collection: Union[Text, bpy.types.Collection] = None,
                    centroid: bool = True) -> List[bpy.types.Object]:
-    """Draw polyline objects."""
+    """Draw polyline objects.
+
+    Parameters
+    ----------
+    polylines : list[dict]
+        A list of dicts describing the polylines.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+    centroid : bool, optional
+        If True, use the centroids of the polylines as the relative base for their coordinates,
+        instead of the origin of the world coordinates system.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     P = len(polylines)
     N = len(str(P))
     objects = [0] * P
@@ -238,20 +311,65 @@ def draw_polylines(polylines: List[Dict],
 def draw_polygons(polygons: List[Dict],
                   collection: Union[Text, bpy.types.Collection] = None,
                   centroid: bool = True) -> List[bpy.types.Object]:
-    """Draw polyline objects."""
+    """Draw polyline objects.
+
+    Parameters
+    ----------
+    polygons : list[dict]
+        A list of dicts describing the polygons.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+    centroid : bool, optional
+        If True, use the centroids of the polygons as the relative base for their coordinates,
+        instead of the origin of the world coordinates system.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     raise NotImplementedError
 
 
 def draw_curves(curves: List[Dict],
                 collection: Union[Text, bpy.types.Collection] = None,
                 centroid: bool = True) -> List[bpy.types.Object]:
-    """Draw curve objects."""
+    """Draw curve objects.
+
+    Parameters
+    ----------
+    curves : list[dict]
+        A list of dicts describing the curves.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+    centroid : bool, optional
+        If True, use the centroids of the curves as the relative base for their coordinates,
+        instead of the origin of the world coordinates system.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     raise NotImplementedError
 
 
 def draw_faces(faces: List[Dict],
                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
-    """Draw polygonal faces."""
+    """Draw polygonal faces.
+
+    Parameters
+    ----------
+    faces : list[dict]
+        A list of dicts describing the faces.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     F = len(faces)
     N = len(str(F))
     objects = [0] * F
@@ -267,7 +385,20 @@ def draw_faces(faces: List[Dict],
 
 def draw_circles(circles: List[Dict],
                  collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
-    """Draw circle objects as mesh primitives."""
+    """Draw circle objects as mesh primitives.
+
+    Parameters
+    ----------
+    circles : list[dict]
+        A list of dicts describing the circles.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     from math import acos
     from math import atan2
     bpy.ops.mesh.primitive_circle_add()
@@ -293,7 +424,20 @@ def draw_circles(circles: List[Dict],
 
 def draw_planes(planes: List[Dict],
                 collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
-    """Draw plane objects as mesh primitives."""
+    """Draw plane objects as mesh primitives.
+
+    Parameters
+    ----------
+    planes : list[dict]
+        A list of dicts describing the planes.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     from math import acos
     from math import atan2
     bpy.ops.mesh.primitive_plane_add()
@@ -323,7 +467,20 @@ def draw_planes(planes: List[Dict],
 def draw_cylinders(cylinders: List[Dict],
                    collection: Union[Text, bpy.types.Collection] = None,
                    uv: int = 10) -> List[bpy.types.Object]:
-    """Draw cylinder objects as mesh primitives."""
+    """Draw cylinder objects as mesh primitives.
+
+    Parameters
+    ----------
+    cylinders : list[dict]
+        A list of dicts describing the cylinders.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     from math import acos
     from math import atan2
     bpy.ops.mesh.primitive_cylinder_add(location=[0, 0, 0], radius=1, depth=1, vertices=uv)
@@ -356,7 +513,20 @@ def draw_cylinders(cylinders: List[Dict],
 def draw_spheres(spheres: List[Dict],
                  collection: Union[Text, bpy.types.Collection] = None,
                  uv: int = 10) -> List[bpy.types.Object]:
-    """Draw sphere objects as mesh primitives."""
+    """Draw sphere objects as mesh primitives.
+
+    Parameters
+    ----------
+    spheres : list[dict]
+        A list of dicts describing the spheres.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=uv, ring_count=uv)
     empty = bpy.context.object
     _link_object(empty, collection)
@@ -378,7 +548,20 @@ def draw_spheres(spheres: List[Dict],
 
 def draw_cubes(cubes: List[Dict],
                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
-    """Draw cube objects as mesh primitives."""
+    """Draw cube objects as mesh primitives.
+
+    Parameters
+    ----------
+    cubes : list[dict]
+        A list of dicts describing the cubes.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     bpy.ops.mesh.primitive_cube_add(size=1, location=[0, 0, 0])
     empty = bpy.context.object
     _link_object(empty, collection)
@@ -403,7 +586,25 @@ def draw_pipes(pipes: List[Dict],
                collection: Union[Text, bpy.types.Collection] = None,
                centroid: bool = True,
                smooth: bool = True) -> List[bpy.types.Object]:
-    """Draw polyline objects."""
+    """Draw polyline objects.
+
+    Parameters
+    ----------
+    pipes : list[dict]
+        A list of dicts describing the pipes.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+    centroid : bool, optional
+        If True, use the centroids of the pipes as the relative base for their coordinates,
+        instead of the origin of the world coordinates system.
+    smooth : bool, optional
+        If True, use a NURBS curve instead of a polyline.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     P = len(pipes)
     N = len(str(P))
     objects = [0] * P
@@ -446,7 +647,27 @@ def draw_mesh(vertices: List[List[float]],
               color: Tuple[float, float, float] = (1.0, 1.0, 1.0),
               centroid: bool = True,
               collection: Union[Text, bpy.types.Collection] = None, **kwargs) -> bpy.types.Object:
-    """Draw a mesh object."""
+    """Draw a mesh object.
+
+    Parameters
+    ----------
+    vertices : list[[float, float, float] or :class:`compas.geometry.Point`]
+        The vertices of the mesh.
+    faces : list[list[int]]
+        The faces of the mesh.
+    color : tuple[float, float, float], optional
+        The color of the mesh.
+    centroid : bool, optional
+        If True, use the centroid of the mesh as the relative base for the vertex coordinates,
+        instead of the origin of the world coordinates system.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     mp = centroid_points(vertices) if centroid else [0, 0, 0]
     vertices = [subtract_vectors(vertex, mp) for vertex in vertices]
     mesh = bpy.data.meshes.new(name)
