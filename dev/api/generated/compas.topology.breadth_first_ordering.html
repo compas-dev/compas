@@ -109,19 +109,24 @@
 <h1>breadth_first_ordering</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.topology.breadth_first_ordering">
-<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">breadth_first_ordering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/traversal.py#L149"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Return a breadth-first ordering of all vertices in an adjacency dictionary
-reachable from a chosen root vertex.</p>
+<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">breadth_first_ordering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/traversal.py#L138"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute a breadth-first ordering of the nodes of a graph, starting from a root node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>adjacency</strong> (<em>dict</em>) – An adjacency dictionary. Each key represents a vertex
-and maps to a list of neighboring vertex keys.</p></li>
-<li><p><strong>root</strong> (<em>str</em>) – The vertex from which to start the breadth-first search.</p></li>
+<li><p><strong>adjacency</strong> (<em>dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]</em>) – An adjacency dictionary representing the connectivity of the graph
+by mapping nodes identifiers to neighbour identifiers.
+Examples of valid adjacency dicts are</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">{0:</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4],</span> <span class="pre">1:</span> <span class="pre">[0],</span> <span class="pre">2:</span> <span class="pre">[0],</span> <span class="pre">3:</span> <span class="pre">[0],</span> <span class="pre">4:</span> <span class="pre">[0]}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{0:</span> <span class="pre">{1:</span> <span class="pre">None,</span> <span class="pre">2:</span> <span class="pre">None,</span> <span class="pre">3:</span> <span class="pre">None,</span> <span class="pre">4:</span> <span class="pre">None},</span> <span class="pre">1:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">2:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">3:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">4:</span> <span class="pre">{0:</span> <span class="pre">None}}</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>root</strong> (<em>hashable</em>) – The node from which to start the breadth-first search.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – A breadth-first ordering of all vertices in the adjacency dict.</p>
+<dd class="field-even"><p><em>list[hashable]</em> – A breadth-first ordering of all nodes of the graph.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -134,10 +139,6 @@ the list of nodes to visit.</p>
 <p>By appending the neighbors to the end of the list of nodes to visit,
 and by visiting the nodes at the start of the list first, the network is
 traversed in <em>breadth-first</em> order.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

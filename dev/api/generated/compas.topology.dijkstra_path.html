@@ -109,31 +109,32 @@
 <h1>dijkstra_path</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.topology.dijkstra_path">
-<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">dijkstra_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/traversal.py#L496"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Find the shortest path between two vertices if the edge weights are not
-all the same.</p>
+<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">dijkstra_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/traversal.py#L527"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Find the shortest path between two nodes of a graph if the weights of the connecting edges are not all the same.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>adjacency</strong> (<em>dict</em>) – An adjacency dictionary. Each key represents a vertex
-and maps to a list of neighboring vertex keys.</p></li>
-<li><p><strong>weight</strong> (<em>dict</em>) – A dictionary of edge weights.</p></li>
-<li><p><strong>source</strong> (<em>str</em>) – The start vertex.</p></li>
-<li><p><strong>target</strong> (<em>str</em>) – The end vertex.</p></li>
+<li><p><strong>adjacency</strong> (<em>dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]</em>) – An adjacency dictionary representing the connectivity of the graph
+by mapping nodes identifiers to neighbour identifiers.
+Examples of valid adjacency dicts are</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">{0:</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4],</span> <span class="pre">1:</span> <span class="pre">[0],</span> <span class="pre">2:</span> <span class="pre">[0],</span> <span class="pre">3:</span> <span class="pre">[0],</span> <span class="pre">4:</span> <span class="pre">[0]}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{0:</span> <span class="pre">{1:</span> <span class="pre">None,</span> <span class="pre">2:</span> <span class="pre">None,</span> <span class="pre">3:</span> <span class="pre">None,</span> <span class="pre">4:</span> <span class="pre">None},</span> <span class="pre">1:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">2:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">3:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">4:</span> <span class="pre">{0:</span> <span class="pre">None}}</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>weight</strong> (<em>dict[tuple[hashable, hashable], float]</em>) – A dictionary of edge weights.</p></li>
+<li><p><strong>source</strong> (<em>hashable</em>) – The start vertex.</p></li>
+<li><p><strong>target</strong> (<em>hashable</em>) – The end vertex.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The shortest path.</p>
+<dd class="field-even"><p><em>list[hashable]</em> – The shortest path.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>The edge weights should all be positive.
 For a directed graph, set the weights of the reversed edges to <code class="docutils literal notranslate"><span class="pre">+inf</span></code>.
 For an undirected graph, add the same weight for an edge in both directions.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

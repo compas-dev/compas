@@ -109,19 +109,23 @@
 <h1>face_adjacency_rhino</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.topology.face_adjacency_rhino">
-<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">face_adjacency_rhino</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/orientation_rhino.py#L72"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">face_adjacency_rhino</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/orientation_rhino.py#L69"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct an adjacency dictionary of the given faces, assuming that the faces have arbitrary orientation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xyz</strong> (<em>list</em>) – The coordinates of the face vertices.</p></li>
-<li><p><strong>faces</strong> (<em>list</em>) – The indices of the face vertices in the coordinates list.</p></li>
+<li><p><strong>xyz</strong> (sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – The coordinates of the face vertices.</p></li>
+<li><p><strong>faces</strong> (<em>sequence[sequence[int]]</em>) – A list of faces with each face defined by a list of indices into the list of xyz coordinates.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dict</em> – For every face a list of neighbouring faces.</p>
+<dd class="field-even"><p><em>dict[int, list[int]]</em> – For every face a list of neighbouring faces.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>If the number of faces is larger than one hundred (100),
+this function uses Rhino’s RTree for limiting the search for neighbours
+to the immediate surroundings of any given face.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
@@ -129,10 +133,6 @@
 <span class="go">{0: [1], 1: [0]}</span>
 </code></pre></div>
 </div>
-<p class="rubric">Notes</p>
-<p>This function uses Rhino’s RTree for limiting the search for neighbours
-to the immediate surroundings of any given face
-if the number of faces is greater than 100.</p>
 </dd></dl>
 
 </section>

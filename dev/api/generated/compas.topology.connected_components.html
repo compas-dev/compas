@@ -109,14 +109,21 @@
 <h1>connected_components</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.topology.connected_components">
-<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">connected_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/combinatorics.py#L66"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Identify the vertices of connected components.</p>
+<span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">connected_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/combinatorics.py#L74"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Identify the connected components of a graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>adjacency</strong> (<em>dict</em>) – An adjacency dictionary mapping vertex identifiers to neighbours.</p>
+<dd class="field-odd"><p><strong>adjacency</strong> (<em>dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]</em>) – An adjacency dictionary representing the connectivity of the graph
+by mapping nodes identifiers to neighbour identifiers.
+Examples of valid adjacency dicts are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{0:</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4],</span> <span class="pre">1:</span> <span class="pre">[0],</span> <span class="pre">2:</span> <span class="pre">[0],</span> <span class="pre">3:</span> <span class="pre">[0],</span> <span class="pre">4:</span> <span class="pre">[0]}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{0:</span> <span class="pre">{1:</span> <span class="pre">None,</span> <span class="pre">2:</span> <span class="pre">None,</span> <span class="pre">3:</span> <span class="pre">None,</span> <span class="pre">4:</span> <span class="pre">None},</span> <span class="pre">1:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">2:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">3:</span> <span class="pre">{0:</span> <span class="pre">None},</span> <span class="pre">4:</span> <span class="pre">{0:</span> <span class="pre">None}}</span></code></p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list of list of hashable</em> – A nested list of vertex identifiers.</p>
+<dd class="field-even"><p><em>list[list[hashable]]</em> – A list of connected components,
+with each component a list of connected nodes.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
