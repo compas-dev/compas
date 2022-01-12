@@ -43,13 +43,12 @@ class RobotModelArtist(GHArtist, RobotModelArtist):
             mesh.FillHoles()
         return mesh
 
-    # should this not have a return value?!
     def draw(self):
-        """Draw the robot model.
+        """Draw the visual meshes of the robot model.
 
         Returns
         -------
-        None
+        generator[:rhino:`Rhino.Geometry.Mesh`]
 
         """
-        self.draw_visual()
+        return self.draw_visual()
