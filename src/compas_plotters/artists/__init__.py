@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-compas_plotters.artists
+artists
 ********************************************************************************
 
 .. currentmodule:: compas_plotters.artists
@@ -20,6 +20,7 @@ Primitive Artists
     PolygonArtist
     CircleArtist
     EllipseArtist
+
 
 Datastructure Artists
 =====================

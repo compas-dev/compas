@@ -15,15 +15,15 @@ class PlotterArtist(Artist):
 
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, plotter, **kwargs):
         super().__init__(**kwargs)
-        self._plotter = None
+        self._plotter = plotter
 
     @property
     def plotter(self):
-        if not self._plotter:
-            from compas_plotters import Plotter
-            self._plotter = Plotter()
+        # if not self._plotter:
+        #     from compas_plotters import Plotter
+        #     self._plotter = Plotter()
         return self._plotter
 
     @abstractproperty

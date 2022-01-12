@@ -73,12 +73,17 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
     "nbsphinx",
-    "sphinx.ext.autodoc.typehints"
+    "sphinx.ext.autodoc.typehints",
 ]
 
 # autodoc options
 
+autodoc_type_aliases = {}
+
+# this does not work properly yet
 autodoc_typehints = "none"
+autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "documented"
 
 autodoc_mock_imports = [
     "System",
@@ -350,7 +355,7 @@ html_theme_options = {
     "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
 }
 html_context = {}
-html_static_path = []
+html_static_path = sphinx_compas_theme.get_html_static_path()
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False

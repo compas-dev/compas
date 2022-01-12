@@ -69,10 +69,10 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Default is ``100``.
     xlabel : str, optional
         Label for the x-axis.
-        Default is ``None``.
+        Default is None.
     ylabel : str, optional
         Label for the y-axis.
-        Default is ``None``.
+        Default is None.
     fontname : str, optional
         Fontname of the main labels and text.
         Default is ``'Times New Roman'``.
@@ -81,13 +81,13 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Default is ``10``.
     grid : bool, optional
         Display grid.
-        Default is ``False``.
+        Default is False.
     xlim : 2-tuple, optional
         Limits of the X-axis.
-        Default is ``None``.
+        Default is None.
     ylim : 2-tuple, optional
         Limits of the Y-axis.
-        Default is ``None``.
+        Default is None.
     ticklength : float, optional
         Length of the ticks.
         Default is ``20``.
@@ -171,10 +171,10 @@ def create_axes_3d(size=(10, 7),
         Default is ``10``.
     grid : bool, optional
         Display grid.
-        Default is ``False``.
+        Default is False.
     limits : dict, optional
         Axis limits and tick spacing.
-        Default is ``None``.
+        Default is None.
     ticklength : float, optional
         Length of the ticks.
         Default is ``20``.
@@ -454,7 +454,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         * end (list): XY(Z) coordinatesof the end point.
         * width (float, optional): The width of the line. Default is ``1.0``.
         * color (rgb tuple or hex string, optional): The color of the line. Default is black.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
 
@@ -633,7 +633,7 @@ def draw_xarrows_xy(lines, axes):
 
         * start (list): XY(Z) coordinates of the starting point.
         * end (list): XY(Z) coordinates of the end point.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
         * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
@@ -737,7 +737,7 @@ def draw_xpolygons_xy(polygons, axes):
         The following properties can be specified in the dict.
 
         * points (list): XY(Z) coordinates of the polygon vertices.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
         * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
