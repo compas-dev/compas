@@ -14,6 +14,10 @@ class CapsuleArtist(GHArtist, ShapeArtist):
     ----------
     capsule : :class:`compas.geometry.Capsule`
         A COMPAS capsule.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+
     """
 
     def __init__(self, capsule, **kwargs):
@@ -24,18 +28,19 @@ class CapsuleArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the capsule.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CapsuleArtist.u``.
+            Default is :attr:`CapsuleArtist.u`.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~CapsuleArtist.v``.
+            Default is :attr:`CapsuleArtist.v`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Mesh`
+        :rhino:`Rhino.Geometry.Mesh`
+
         """
         color = color or self.color
         u = u or self.u

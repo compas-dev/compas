@@ -22,13 +22,16 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
     ----------
     volmesh : :class:`compas.datastructures.VolMesh`
         A COMPAS volmesh.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.VolMeshArtist` for more info.
+
     """
 
     def __init__(self, volmesh, **kwargs):
         super(VolMeshArtist, self).__init__(volmesh=volmesh, **kwargs)
 
     def draw(self):
-        """"""
         raise NotImplementedError
 
     def draw_vertices(self, vertices=None, color=None):
@@ -38,14 +41,15 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         ----------
         vertices : list
             A list of vertices to draw.
-            Default is ``None``, in which case all vertices are drawn.
-        color : str, tuple, dict
+            Default is None, in which case all vertices are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]]
             The color specification for the vertices.
-            The default color of the vertices is ``~VolMeshArtist.default_vertexcolor``.
+            The default color of the vertices is :attr:`VolMeshArtist.default_vertexcolor`.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Point3d`
+        list[:rhino:`Rhino.Geometry.Point3d`]
+
         """
         self.vertex_color = color
         vertices = vertices or list(self.volmesh.vertices())
@@ -64,16 +68,17 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : str, tuple, dict
+            The default is None, in which case all edges are drawn.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
             The color specification for the edges.
-            The default color is ``~VolMeshArtist.default_edgecolor``.
+            The default color is :attr:`VolMeshArtist.default_edgecolor`.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Line`
+        list[:rhino:`Rhino.Geometry.Line`]
+
         """
         self.edge_color = color
         edges = edges or list(self.volmesh.edges())
@@ -93,16 +98,19 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[list[int]], optional
             A list of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        color : str, tuple, dict
+            The default is None, in which case all faces are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
             The color specification for the faces.
-            The default color is ``~VolMeshArtist.default_facecolor``.
+            The default color is :attr:`VolMeshArtist.default_facecolor`.
+        join_faces : bool, optional
+            If True, join the faces into one mesh.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Mesh`
+        list[:rhino:`Rhino.Geometry.Mesh`]
+
         """
         self.face_color = color
         faces = faces or list(self.volmesh.faces())

@@ -14,6 +14,10 @@ class BoxArtist(GHArtist, ShapeArtist):
     ----------
     box : :class:`compas.geometry.Box`
         A COMPAS box.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+
     """
 
     def __init__(self, box, **kwargs):
@@ -24,12 +28,13 @@ class BoxArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the box.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Mesh`
+        :rhino:`Rhino.Geometry.Mesh`
+
         """
         color = color or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]

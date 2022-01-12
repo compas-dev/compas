@@ -56,26 +56,6 @@ Shapes
     Torus
 
 
-Collections
------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Collection
-    PointCollection
-
-**CPython**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    CollectionNumpy
-    PointCollectionNumpy
-
-
 Transformations
 ---------------
 
@@ -960,16 +940,6 @@ from .trimesh import (  # noqa: E402
 if not compas.IPY:
     from .icp import icp_numpy
 
-from .collections import (  # noqa: E402
-    Collection,
-    PointCollection,
-)
-if not compas.IPY:
-    from .collections import (
-        CollectionNumpy,
-        PointCollectionNumpy
-    )
-
 from .curves import (
     Curve,
     NurbsCurve
@@ -1280,9 +1250,6 @@ __all__ = [
     'Transformation',
     'Translation',
 
-    'Collection',
-    'PointCollection',
-
     'Curve',
     'NurbsCurve',
 
@@ -1312,6 +1279,4 @@ if not compas.IPY:
         'local_to_world_coordinates_numpy',
         'delaunay_from_points_numpy',
         'voronoi_from_points_numpy',
-        'CollectionNumpy',
-        'PointCollectionNumpy',
     ]

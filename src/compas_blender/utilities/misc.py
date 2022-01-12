@@ -14,13 +14,14 @@ def unload_modules(top_level_module_name):
 
     Parameters
     ----------
-    top_level_module_name : :obj:`str`
+    top_level_module_name : str
         Name of the top-level module to unload.
 
     Returns
     -------
-    list
+    list[str]
         List of unloaded module names.
+
     """
     modules = list(filter(lambda m: m.startswith(top_level_module_name), sys.modules))
 

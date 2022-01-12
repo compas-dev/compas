@@ -14,6 +14,10 @@ class TorusArtist(GHArtist, ShapeArtist):
     ----------
     torus : :class:`compas.geometry.Torus`
         A COMPAS torus.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+
     """
 
     def __init__(self, torus, **kwargs):
@@ -24,18 +28,19 @@ class TorusArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the torus.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~TorusArtist.u``.
+            Default is :attr:`TorusArtist.u`
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~TorusArtist.v``.
+            Default is :attr:`TorusArtist.v`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Mesh`
+        :rhino:`Rhino.Geometry.Mesh`
+
         """
         color = color or self.color
         u = u or self.u

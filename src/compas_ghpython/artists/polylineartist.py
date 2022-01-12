@@ -14,6 +14,9 @@ class PolylineArtist(GHArtist, PrimitiveArtist):
     ----------
     polyline : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
 
     """
 
@@ -25,10 +28,11 @@ class PolylineArtist(GHArtist, PrimitiveArtist):
 
         Returns
         -------
-        :class:`Rhino.Geometry.Polyline`.
+        :rhino:`Rhino.Geometry.Polyline`.
+
         """
         polylines = [self._get_args(self.primitive)]
-        return compas_ghpython.draw_polylines(polylines)
+        return compas_ghpython.draw_polylines(polylines)[0]
 
     @staticmethod
     def _get_args(primitive):

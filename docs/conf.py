@@ -341,7 +341,8 @@ def linkcode_resolve(domain, info):
 
 
 extlinks = {
-    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s")
+    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
+    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s")
 }
 
 # -- Options for HTML output ----------------------------------------------

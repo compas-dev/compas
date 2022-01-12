@@ -15,18 +15,18 @@ def boolean_union_mesh_mesh(A, B, remesh=False):
 
     Parameters
     ----------
-    A : tuple
+    A : tuple[sequence[[float, float, foat], :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple
+    B : tuple[sequence[[float, float, foat], :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        If True, remesh the result.
 
     Returns
     -------
-    tuple
+    tuple[list[[float, float, foat]], list[[int, int, int]]]
         The vertices and the faces of the boolean union.
+
     """
     return _boolean_operation(A, B, 'UNION')
 
@@ -37,18 +37,18 @@ def boolean_difference_mesh_mesh(A, B, remesh=False):
 
     Parameters
     ----------
-    A : tuple
+    A : tuple[sequence[[float, float, foat], :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple
+    B : tuple[sequence[[float, float, foat], :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        If True, remesh the result.
 
     Returns
     -------
-    tuple
+    tuple[list[[float, float, foat]], list[[int, int, int]]]
         The vertices and the faces of the boolean difference.
+
     """
     return _boolean_operation(A, B, 'DIFFERENCE')
 
@@ -59,18 +59,18 @@ def boolean_intersection_mesh_mesh(A, B, remesh=False):
 
     Parameters
     ----------
-    A : tuple
+    A : tuple[sequence[[float, float, foat], :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple
+    B : tuple[sequence[[float, float, foat], :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        If True, remesh the result.
 
     Returns
     -------
-    tuple
+    tuple[list[[float, float, foat]], list[[int, int, int]]]
         The vertices and the faces of the boolean intersection.
+
     """
     return _boolean_operation(A, B, 'INTERSECT')
 

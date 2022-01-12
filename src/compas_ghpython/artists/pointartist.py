@@ -14,6 +14,10 @@ class PointArtist(GHArtist, PrimitiveArtist):
     ----------
     point : :class:`compas.geometry.Point`
         A COMPAS point.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+
     """
 
     def __init__(self, point, **kwargs):
@@ -24,7 +28,8 @@ class PointArtist(GHArtist, PrimitiveArtist):
 
         Returns
         -------
-        :class:`Rhino.Geometry.Point3d`
+        :rhino:`Rhino.Geometry.Point3d`
+
         """
         points = [self._get_args(self.primitive)]
         return compas_ghpython.utilities.draw_points(points)[0]

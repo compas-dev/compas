@@ -14,6 +14,10 @@ class CylinderArtist(GHArtist, ShapeArtist):
     ----------
     cylinder : :class:`compas.geometry.Cylinder`
         A COMPAS cylinder.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+
     """
 
     def __init__(self, cylinder, **kwargs):
@@ -24,15 +28,16 @@ class CylinderArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the cylinder.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CylinderArtist.u``.
+            Default is :attr:`CylinderArtist.u`
 
         Returns
         -------
-        :class:`Rhino.Geometry.Mesh`
+        :rhino:`Rhino.Geometry.Mesh`
+
         """
         color = color or self.color
         u = u or self.u
