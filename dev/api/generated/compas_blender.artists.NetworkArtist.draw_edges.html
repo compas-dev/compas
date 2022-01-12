@@ -111,18 +111,19 @@
 <h1>NetworkArtist.draw_edges</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_blender.artists.NetworkArtist.draw_edges">
-<span class="sig-prename descclassname"><span class="pre">NetworkArtist.</span></span><span class="sig-name descname"><span class="pre">draw_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/networkartist.py#L178"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">NetworkArtist.</span></span><span class="sig-name descname"><span class="pre">draw_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/networkartist.py#L243"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw a selection of edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>edges</strong> (<em>list</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
-<li><p><strong>color</strong> (<em>rgb-tuple or dict of rgb-tuples</em>) – The color specification for the edges.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[hashable, hashable]], optional</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
+The default is None, in which case all edges are drawn.</p></li>
+<li><p><strong>color</strong> (<em>rgb-tuple or dict[tuple[hashable, hashable], rgb-tuple], optional</em>) – The color specification for the edges.
+The default color of edges is <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Object</span></code></p>
+<dd class="field-even"><p>list[<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Object.html">bpy.types.Object</a>]</p>
 </dd>
 </dl>
 </dd></dl>

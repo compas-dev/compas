@@ -111,27 +111,37 @@
 <dt class="sig sig-object py" id="compas_blender.artists.VectorArtist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">VectorArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/vectorartist.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.artist.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.BlenderArtist</span></code></a>, <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.primitiveartist.PrimitiveArtist</span></code></a></p>
-<p>Artist for drawing vectors.</p>
+<p>Artist for drawing vectors in Blender.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>primitive</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – A COMPAS vector.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>primitive</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – A COMPAS vector.</p></li>
+<li><p><strong>collection</strong> (str or <a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The Blender scene collection the object(s) created by this artist belong to.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – Additional keyword arguments.
+For more info,
+see <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.BlenderArtist</span></code></a> and <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.PrimitiveArtist</span></code></a>.</p></li>
+</ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.PrimitiveArtist</span></code> for all other parameters.</p>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_rgb</span>
+<p>Use the Blender artist explicitly.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
 <span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">VectorArtist</span>
 
-<span class="n">pcl</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">vector</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-    <span class="n">vector</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">artist</span> <span class="o">=</span> <span class="n">VectorArtist</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()))</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">point</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">VectorArtist</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<p>Or, use the artist through the plugin mechanism.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
+
+<span class="n">vector</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>

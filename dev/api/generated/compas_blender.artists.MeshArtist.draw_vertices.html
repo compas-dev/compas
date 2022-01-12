@@ -111,18 +111,19 @@
 <h1>MeshArtist.draw_vertices</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_blender.artists.MeshArtist.draw_vertices">
-<span class="sig-prename descclassname"><span class="pre">MeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/meshartist.py#L210"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">MeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/meshartist.py#L271"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw a selection of vertices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list</em>) – A list of vertex keys identifying which vertices to draw.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all vertices are drawn.</p></li>
-<li><p><strong>color</strong> (<em>rgb-tuple or dict of rgb-tuple</em>) – The color specification for the vertices.</p></li>
+<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – A list of vertex keys identifying which vertices to draw.
+Default is None, in which case all vertices are drawn.</p></li>
+<li><p><strong>color</strong> (<em>rgb-tuple or dict[int, rgb-tuple], optional</em>) – The color specification for the vertices.
+The default color of vertices is <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_vertexcolor</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Object</span></code></p>
+<dd class="field-even"><p>list[<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Object.html">bpy.types.Object</a>]</p>
 </dd>
 </dl>
 </dd></dl>

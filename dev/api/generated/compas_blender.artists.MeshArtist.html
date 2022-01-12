@@ -111,38 +111,59 @@
 <dt class="sig sig-object py" id="compas_blender.artists.MeshArtist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/meshartist.py#L26"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.artist.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.BlenderArtist</span></code></a>, <a class="reference internal" href="compas.artists.MeshArtist.html#compas.artists.MeshArtist" title="compas.artists.meshartist.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.meshartist.MeshArtist</span></code></a></p>
-<p>A mesh artist defines functionality for visualising COMPAS meshes in Blender.</p>
+<p>Artist for drawing mesh data structures in Blender.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p></li>
-<li><p><strong>collection</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The name of the collection the object belongs to.</p></li>
-<li><p><strong>vertices</strong> (<em>list of int, optional</em>) – A list of vertex identifiers.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all vertices are drawn.</p></li>
-<li><p><strong>edges</strong> (<em>list, optional</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
-<li><p><strong>faces</strong> (<em>list, optional</em>) – A list of face identifiers.
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are drawn.</p></li>
-<li><p><strong>vertexcolor</strong> (<em>rgb-tuple or dict of rgb-tuples, optional</em>) – The color specification for the vertices.</p></li>
-<li><p><strong>edgecolor</strong> (<em>rgb-tuple or dict of rgb-tuples, optional</em>) – The color specification for the edges.</p></li>
-<li><p><strong>facecolor</strong> (<em>rgb-tuple or dict of rgb-tuples, optional</em>) – The color specification for the faces.</p></li>
-<li><p><strong>show_mesh</strong> (<em>bool, optional</em>)</p></li>
-<li><p><strong>show_vertices</strong> (<em>bool, optional</em>)</p></li>
-<li><p><strong>show_edges</strong> (<em>bool, optional</em>)</p></li>
-<li><p><strong>show_faces</strong> (<em>bool, optional</em>)</p></li>
+<li><p><strong>collection</strong> (str or <a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The Blender scene collection the object(s) created by this artist belong to.</p></li>
+<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – A list of vertex identifiers.
+Default is None, in which case all vertices are drawn.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
+The default is None, in which case all edges are drawn.</p></li>
+<li><p><strong>faces</strong> (<em>list[int], optional</em>) – A list of face identifiers.
+The default is None, in which case all faces are drawn.</p></li>
+<li><p><strong>vertexcolor</strong> (<em>rgb-tuple or dict[int, rgb-tuple], optional</em>) – The color specification for the vertices.</p></li>
+<li><p><strong>edgecolor</strong> (<em>rgb-tuple or dict[tuple[int, int], rgb-tuple], optional</em>) – The color specification for the edges.</p></li>
+<li><p><strong>facecolor</strong> (<em>rgb-tuple or dict[int, rgb-tuple], optional</em>) – The color specification for the faces.</p></li>
+<li><p><strong>show_mesh</strong> (<em>bool, optional</em>) – If True, draw the mesh.</p></li>
+<li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – If True, draw the individual vertices.</p></li>
+<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – If True, draw the individual edges.</p></li>
+<li><p><strong>show_faces</strong> (<em>bool, optional</em>) – If True, draw the individual faces.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>vertexcollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the vertices.</p></li>
-<li><p><strong>edgecollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the edges.</p></li>
-<li><p><strong>facecollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the faces.</p></li>
-<li><p><strong>vertexlabelcollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the vertex labels.</p></li>
-<li><p><strong>edgelabelcollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the edge labels.</p></li>
-<li><p><strong>facelabelcollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the face labels.</p></li>
+<li><p><strong>vertexcollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the vertices.</p></li>
+<li><p><strong>edgecollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the edges.</p></li>
+<li><p><strong>facecollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the faces.</p></li>
+<li><p><strong>vertexlabelcollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the vertex labels.</p></li>
+<li><p><strong>edgelabelcollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the edge labels.</p></li>
+<li><p><strong>facelabelcollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the face labels.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<p>Use the Blender artist explicitly.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_meshgrid</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<p>Or, use the artist through the plugin mechanism.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_meshgrid</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -151,13 +172,13 @@ The default is <code class="docutils literal notranslate"><span class="pre">None
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_edges.html#compas_blender.artists.MeshArtist.clear_edges" title="compas_blender.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
-<td><p>Clear the edges of the mesh.</p></td>
+<td><p>Clear the objects contained in the edge collection (<code class="docutils literal notranslate"><span class="pre">self.edgecollection</span></code>).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_faces.html#compas_blender.artists.MeshArtist.clear_faces" title="compas_blender.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
-<td><p>Clear the faces of the mesh.</p></td>
+<td><p>Clear the objects contained in the face collection (<code class="docutils literal notranslate"><span class="pre">self.facecollection</span></code>).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_vertices.html#compas_blender.artists.MeshArtist.clear_vertices" title="compas_blender.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
-<td><p>Clear the vertices of the mesh.</p></td>
+<td><p>Clear the objects contained in the vertex collection (<code class="docutils literal notranslate"><span class="pre">self.vertexcollection</span></code>).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw.html#compas_blender.artists.MeshArtist.draw" title="compas_blender.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the mesh using the chosen visualization settings.</p></td>

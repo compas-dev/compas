@@ -111,21 +111,18 @@
 <h1>RobotModelArtist.create_geometry</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_blender.artists.RobotModelArtist.create_geometry">
-<span class="sig-prename descclassname"><span class="pre">RobotModelArtist.</span></span><span class="sig-name descname"><span class="pre">create_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/robotmodelartist.py#L38"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Draw geometry in the respective CAD environment.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is an abstract method that needs to be implemented by derived classes.</p>
-</div>
+<span class="sig-prename descclassname"><span class="pre">RobotModelArtist.</span></span><span class="sig-name descname"><span class="pre">create_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/robotmodelartist.py#L63"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Create the scene objecy representing the robot geometry.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – Instance of a mesh data structure</p></li>
-<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the mesh to draw.</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The geometry representing the robot.</p></li>
+<li><p><strong>name</strong> (<em>str, optional</em>) – A name for the scene object.</p></li>
+<li><p><strong>color</strong> (<em>tuple[int, int, int] or tuple[float, float, float], optional</em>) – The color of the object.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>object</em> – CAD-specific geometry</p>
+<dd class="field-even"><p><em>bpy.types.Object</em></p>
 </dd>
 </dl>
 </dd></dl>

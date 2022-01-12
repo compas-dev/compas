@@ -111,31 +111,54 @@
 <dt class="sig sig-object py" id="compas_blender.artists.NetworkArtist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">NetworkArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/networkartist.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.artist.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.BlenderArtist</span></code></a>, <a class="reference internal" href="compas.artists.NetworkArtist.html#compas.artists.NetworkArtist" title="compas.artists.networkartist.NetworkArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.networkartist.NetworkArtist</span></code></a></p>
-<p>Artist for COMPAS network objects.</p>
+<p>Artist for drawing network data structures in Blender.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – A COMPAS network.</p></li>
-<li><p><strong>collection</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The name of the collection the object belongs to.</p></li>
-<li><p><strong>nodes</strong> (<em>list of int, optional</em>) – A list of node identifiers.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all nodes are drawn.</p></li>
-<li><p><strong>edges</strong> (<em>list, optional</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
-<li><p><strong>nodecolor</strong> (<em>rgb-tuple or dict of rgb-tuples, optional</em>) – The color specification for the nodes.</p></li>
-<li><p><strong>edgecolor</strong> (<em>rgb-tuple or dict of rgb-tuples, optional</em>) – The color specification for the edges.</p></li>
-<li><p><strong>show_nodes</strong> (<em>bool, optional</em>)</p></li>
-<li><p><strong>show_edges</strong> (<em>bool, optional</em>)</p></li>
+<li><p><strong>collection</strong> (str or <a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The name of the collection the object belongs to.</p></li>
+<li><p><strong>nodes</strong> (<em>list[hashable], optional</em>) – A list of node identifiers.
+Default is None, in which case all nodes are drawn.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[hashable, hashable]], optional</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
+The default is None, in which case all edges are drawn.</p></li>
+<li><p><strong>nodecolor</strong> (<em>rgb-tuple or dict[hashable, rgb-tuple], optional</em>) – The color specification for the nodes.</p></li>
+<li><p><strong>edgecolor</strong> (<em>rgb-tuple or dict[tuple[hashable, hashable]], rgb-tuple], optional</em>) – The color specification for the edges.</p></li>
+<li><p><strong>show_nodes</strong> (<em>bool, optional</em>) – If True, draw the nodes of the network.</p></li>
+<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – If True, draw the edges of the network.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>nodecollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the nodes.</p></li>
-<li><p><strong>edgecollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the edges.</p></li>
-<li><p><strong>nodelabelcollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the node labels.</p></li>
-<li><p><strong>edgelabelcollection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Collection</span></code>) – The collection containing the edge labels.</p></li>
+<li><p><strong>nodecollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the nodes.</p></li>
+<li><p><strong>edgecollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the edges.</p></li>
+<li><p><strong>nodelabelcollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the node labels.</p></li>
+<li><p><strong>edgelabelcollection</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The collection containing the edge labels.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<p>Use the Blender artist explicitly.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">NetworkArtist</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
+
+<span class="n">artist</span> <span class="o">=</span> <span class="n">NetworkArtist</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<p>Or, use the artist through the plugin mechanism.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
+
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -144,16 +167,16 @@ The default is <code class="docutils literal notranslate"><span class="pre">None
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_edgelabels.html#compas_blender.artists.NetworkArtist.clear_edgelabels" title="compas_blender.artists.NetworkArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear all objects contained in the edgelabel collection.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_edges.html#compas_blender.artists.NetworkArtist.clear_edges" title="compas_blender.artists.NetworkArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
-<td><p>Clear the edges of the network.</p></td>
+<td><p>Clear all objects contained in the edge collection.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_nodelabels.html#compas_blender.artists.NetworkArtist.clear_nodelabels" title="compas_blender.artists.NetworkArtist.clear_nodelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_nodelabels</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear all objects contained in the nodelabel collection.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_nodes.html#compas_blender.artists.NetworkArtist.clear_nodes" title="compas_blender.artists.NetworkArtist.clear_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_nodes</span></code></a></p></td>
-<td><p>Clear the nodes of the network.</p></td>
+<td><p>Clear all objects contained in the node collection.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw.html#compas_blender.artists.NetworkArtist.draw" title="compas_blender.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the network.</p></td>
