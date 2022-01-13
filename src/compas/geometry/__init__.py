@@ -775,8 +775,21 @@ from .transformations import (
     Transformation,
     Translation
 )
+if not compas.IPY:
+    from .transformations import (
+        transform_points_numpy,
+        transform_vectors_numpy,
+        homogenize_numpy,
+        dehomogenize_numpy,
+        homogenize_and_flatten_frames_numpy,
+        dehomogenize_and_unflatten_frames_numpy,
+        world_to_local_coordinates_numpy,
+        local_to_world_coordinates_numpy
+    )
+
 from .geometry import Geometry
-from .primitives import (
+
+from .primitives import (  # noqa: E402
     Primitive,
     Bezier,
     Circle,
@@ -790,7 +803,7 @@ from .primitives import (
     Quaternion,
     Vector
 )
-from .shapes import (
+from .shapes import (  # noqa: E402
     Shape,
     Box,
     Capsule,
@@ -800,40 +813,64 @@ from .shapes import (
     Sphere,
     Torus
 )
-from .bbox import (
+from .bbox import (  # noqa: E402
     bounding_box,
     bounding_box_xy
 )
-from .bestfit import bestfit_plane
-from .booleans import (
+if not compas.IPY:
+    from .bbox import (
+        oriented_bounding_box_numpy,
+        oriented_bounding_box_xy_numpy,
+        oabb_numpy
+    )
+from .bestfit import bestfit_plane  # noqa: E402
+if not compas.IPY:
+    from .bestfit import (
+        bestfit_plane_numpy,
+        bestfit_frame_numpy,
+        bestfit_circle_numpy,
+        bestfit_sphere_numpy
+    )
+from .booleans import (  # noqa: E402
     boolean_union_mesh_mesh,
     boolean_difference_mesh_mesh,
     boolean_intersection_mesh_mesh
 )
-from .hull import (
+from .hull import (  # noqa: E402
     convex_hull,
     convex_hull_xy
 )
-from .interpolation import (
+if not compas.IPY:
+    from .hull import (
+        convex_hull_numpy,
+        convex_hull_xy_numpy
+    )
+from .interpolation import (  # noqa: E402
     barycentric_coordinates,
     discrete_coons_patch,
     tween_points,
     tween_points_distance
 )
-from .offset import (
+from .offset import (  # noqa: E402
     offset_line,
     offset_polyline,
     offset_polygon
 )
-from .pointclouds import Pointcloud
-from .quadmesh import quadmesh_planarize
-from .triangulation import (
+from .pointclouds import Pointcloud  # noqa: E402
+from .quadmesh import quadmesh_planarize  # noqa: E402
+from .triangulation import (   # noqa: E402
     conforming_delaunay_triangulation,
     constrained_delaunay_triangulation,
     delaunay_from_points,
     delaunay_triangulation
 )
-from .trimesh import (
+
+if not compas.IPY:
+    from .triangulation import (
+        delaunay_from_points_numpy,
+        voronoi_from_points_numpy
+    )
+from .trimesh import (  # noqa: E402
     trimesh_mean_curvature,
     trimesh_gaussian_curvature,
     trimesh_principal_curvature,
@@ -847,10 +884,14 @@ from .trimesh import (
     trimesh_remesh_along_isoline,
     trimesh_slice
 )
+if not compas.IPY:
+    from .icp import icp_numpy
+
 from .curves import (
     Curve,
     NurbsCurve
 )
+
 from .surfaces import (
     Surface,
     NurbsSurface
@@ -1164,37 +1205,6 @@ __all__ = [
 ]
 
 if not compas.IPY:
-    from .transformations import (
-        transform_points_numpy,
-        transform_vectors_numpy,
-        homogenize_numpy,
-        dehomogenize_numpy,
-        homogenize_and_flatten_frames_numpy,
-        dehomogenize_and_unflatten_frames_numpy,
-        world_to_local_coordinates_numpy,
-        local_to_world_coordinates_numpy
-    )
-    from .bbox import (
-        oriented_bounding_box_numpy,
-        oriented_bounding_box_xy_numpy,
-        oabb_numpy
-    )
-    from .bestfit import (
-        bestfit_plane_numpy,
-        bestfit_frame_numpy,
-        bestfit_circle_numpy,
-        bestfit_sphere_numpy
-    )
-    from .hull import (
-        convex_hull_numpy,
-        convex_hull_xy_numpy
-    )
-    from .triangulation import (
-        delaunay_from_points_numpy,
-        voronoi_from_points_numpy
-    )
-    from .icp import icp_numpy
-
     __all__ += [
         'oriented_bounding_box_numpy',
         'oriented_bounding_box_xy_numpy',
