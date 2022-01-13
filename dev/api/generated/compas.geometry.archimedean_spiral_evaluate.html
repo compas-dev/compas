@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="vector_variance" href="compas.geometry.vector_variance.html" />
+  <link rel="prev" title="KDTree.nearest_neighbors" href="compas.geometry.KDTree.nearest_neighbors.html" />
   
 
   <script type="text/javascript" async
@@ -109,31 +109,26 @@
 <h1>archimedean_spiral_evaluate</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.archimedean_spiral_evaluate">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">archimedean_spiral_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/analytical.py#L70"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Evalutes a spiral at a parameter. The analytical polar equation is r = a + b * theta.</p>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">archimedean_spiral_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/analytical.py#L66"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Evalutes a spiral at a parameter.</p>
+<p>The analytical polar equation is r = a + b * theta.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<em>float</em>) – Parameter</p></li>
-<li><p><strong>a</strong> (<em>float</em>) – Constant</p></li>
-<li><p><strong>b</strong> (<em>float</em>) – Constant</p></li>
-<li><p><strong>z</strong> (<em>float, optional</em>) – Height. Default is 0.</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – Parameter.</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – The angle of the tangent at the beginning is equal to a.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The radius between turns is equal to 2 * pi * b.</p></li>
+<li><p><strong>z</strong> (<em>float, optional</em>) – Elevation of the spiral segment above the XY plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The (x, y, z) coordinates.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – The XYZ coordinates.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>The radius between turns is equal to 2 * pi * b.
-The angle of the tangent at the beginning is equal to a.
-The length of an arc of the spiral from 0 t is equal to L(t) = b / 2 * t ** 2 <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>GeoGebra. <em>Archimedean Spiral built by parametric equations</em>. Available at: <a class="reference external" href="https://www.geogebra.org/m/dZuH5hWa">https://www.geogebra.org/m/dZuH5hWa</a>.</p>
-</dd>
-</dl>
+<ul class="simple">
+<li><p>GeoGebra. <em>Archimedean Spiral built by parametric equations</em>. Available at: <a class="reference external" href="https://www.geogebra.org/m/dZuH5hWa">https://www.geogebra.org/m/dZuH5hWa</a>.</p></li>
+</ul>
 </dd></dl>
 
 </section>
@@ -203,11 +198,11 @@ The length of an arc of the spiral from 0 t is equal to L(t) = b / 2 * t ** 2 <a
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.vector_variance.html" title="vector_variance" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.KDTree.nearest_neighbors.html" title="KDTree.nearest_neighbors" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          vector_variance
+          KDTree.nearest_neighbors
         </div>
       </a>
       

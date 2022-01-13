@@ -114,12 +114,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>tuple of vertices and faces</em>) – The mesh to slice.</p></li>
-<li><p><strong>planes</strong> (<em>list of (point, normal) tuples or compas.geometry.Plane</em>) – The slicing planes.</p></li>
+<li><p><strong>mesh</strong> (tuple[sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], sequence[[int, int, int]]]) – A mesh represented by a list of vertices and a list of faces.</p></li>
+<li><p><strong>planes</strong> (sequence[[point, vector] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>]) – The slicing planes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list of arrays</em> – The points defining the slice polylines.</p>
+<dd class="field-even"><p><em>list[list[float, float, float]]</em> – The points defining the slice polylines.</p>
 </dd>
 </dl>
 </dd></dl>

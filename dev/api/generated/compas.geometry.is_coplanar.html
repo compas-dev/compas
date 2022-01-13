@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="is_colinear_line_line" href="compas.geometry.is_colinear_line_line.html" />
+  <link rel="prev" title="is_colinear_xy" href="compas.geometry.is_colinear_xy.html" />
   
 
   <script type="text/javascript" async
@@ -109,19 +109,18 @@
 <h1>is_coplanar</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.is_coplanar">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_coplanar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L126"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_coplanar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L123"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Determine if the points are coplanar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>list of points</em>) – A sequence of point locations.</p></li>
-<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for planarity validation.
-Default is <code class="docutils literal notranslate"><span class="pre">0.01</span></code>.</p></li>
+<li><p><strong>points</strong> (<em>sequence[point]</em>) – A sequence of point locations.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for planarity validation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the points are coplanar.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if the points are coplanar.
+False otherwise.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -202,11 +201,11 @@ in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.is_colinear_line_line.html" title="is_colinear_line_line" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.is_colinear_xy.html" title="is_colinear_xy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          is_colinear_line_line
+          is_colinear_xy
         </div>
       </a>
       

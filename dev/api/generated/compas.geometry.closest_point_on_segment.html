@@ -109,17 +109,17 @@
 <h1>closest_point_on_segment</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.closest_point_on_segment">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">closest_point_on_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L712"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">closest_point_on_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L718"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Computes closest point on line segment (p1, p2) to test point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>sequence of float</em>) – XYZ coordinates.</p></li>
-<li><p><strong>saegment</strong> (<em>tuple</em>) – Two points defining the segment.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates.</p></li>
+<li><p><strong>segment</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Two points defining the segment.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – XYZ coordinates of closest point.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – XYZ coordinates of closest point.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

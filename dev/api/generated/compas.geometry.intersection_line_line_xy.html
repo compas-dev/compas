@@ -109,19 +109,18 @@
 <h1>intersection_line_line_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.intersection_line_line_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_line_line_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/intersections/intersections.py#L692"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_line_line_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/intersections/intersections.py#L701"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the intersection of two lines, assuming they lie on the XY plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ab</strong> (<em>tuple</em>) – XY(Z) coordinates of two points defining a line.</p></li>
-<li><p><strong>cd</strong> (<em>tuple</em>) – XY(Z) coordinates of two points defining another line.</p></li>
-<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for membership verification.
-Default is <code class="docutils literal notranslate"><span class="pre">1e-6</span></code>.</p></li>
+<li><p><strong>l1</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – A line defined by two points, with at least XY coordinates.</p></li>
+<li><p><strong>l2</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – A line defined by two points, with at least XY coordinates.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for membership verification.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>point or None</em> – XYZ coordinates of intersection point if one exists, with Z = 0.
+<dd class="field-even"><p><em>[float, float, 0.0] or None</em> – XYZ coordinates of intersection point if one exists, with Z = 0.
 Otherwise, None.</p>
 </dd>
 </dl>

@@ -109,25 +109,25 @@
 <h1>matrix_from_translation</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.matrix_from_translation">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_translation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1049"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_translation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1094"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns a 4x4 translation matrix in row-major order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>translation</strong> (<em>list of float</em>) – The x, y and z components of the translation.</p>
+<dd class="field-odd"><p><strong>translation</strong> (<em>[float, float, float]</em>) – The x, y and z components of the translation.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list of list of float</em> – The 4x4 transformation matrix representing a translation.</p>
+<dd class="field-even"><p><em>list[list[float]]</em> – The 4x4 transformation matrix representing a translation.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">matrix_from_translation</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-</code></pre></div>
-</div>
 <p class="rubric">Notes</p>
 <div class="language-none notranslate"><div class="highlight"><pre><code><span></span>[ .  .  .  0 ]
 [ .  .  .  1 ]
 [ .  .  .  2 ]
 [ .  .  .  . ]
+</code></pre></div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">matrix_from_translation</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 </code></pre></div>
 </div>
 </dd></dl>

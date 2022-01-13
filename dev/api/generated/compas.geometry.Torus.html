@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Sphere.validate_json" href="compas.geometry.Sphere.validate_json.html" />
+  <link rel="prev" title="Capsule.validate_json" href="compas.geometry.Capsule.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -115,19 +115,19 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>plane</strong> (<a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a> or tuple of point and normal) – The plane of the torus.</p></li>
+<li><p><strong>plane</strong> ([point, normal] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The plane of the torus.</p></li>
 <li><p><strong>radius_axis</strong> (<em>float</em>) – The radius of the axis.</p></li>
 <li><p><strong>radius_pipe</strong> (<em>float</em>) – The radius of the pipe.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>plane</strong> (<a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The plane of the torus.</p></li>
+<li><p><strong>plane</strong> (<a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The torus’ plane.</p></li>
 <li><p><strong>radius_axis</strong> (<em>float</em>) – The radius of the axis.</p></li>
 <li><p><strong>radius_pipe</strong> (<em>float</em>) – The radius of the pipe.</p></li>
-<li><p><strong>center (read-only)</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The center of the torus.</p></li>
-<li><p><strong>area (read-only)</strong> (<em>float</em>) – The surface area of the torus.</p></li>
-<li><p><strong>volume (read-only)</strong> (<em>float</em>) – The volume of the torus.</p></li>
+<li><p><strong>center</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The centre of the torus.</p></li>
+<li><p><strong>area</strong> (<em>float, read-only</em>) – The surface area of the torus.</p></li>
+<li><p><strong>volume</strong> (<em>float, read-only</em>) – The volume of the torus.</p></li>
 </ul>
 </dd>
 </dl>
@@ -135,6 +135,14 @@
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Torus</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">torus</span> <span class="o">=</span> <span class="n">Torus</span><span class="p">(</span><span class="n">Plane</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Torus</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">torus</span> <span class="o">=</span> <span class="n">Torus</span><span class="p">(</span><span class="n">Plane</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;plane&#39;</span><span class="p">:</span> <span class="n">Plane</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;radius_axis&#39;</span><span class="p">:</span> <span class="mf">5.</span><span class="p">,</span> <span class="s1">&#39;radius_pipe&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdict</span> <span class="o">==</span> <span class="n">torus</span><span class="o">.</span><span class="n">data</span>
+<span class="go">True</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -260,11 +268,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Sphere.validate_json.html" title="Sphere.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Capsule.validate_json.html" title="Capsule.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Sphere.validate_json
+          Capsule.validate_json
         </div>
       </a>
       

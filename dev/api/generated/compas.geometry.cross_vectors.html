@@ -109,17 +109,17 @@
 <h1>cross_vectors</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.cross_vectors">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">cross_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L885"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">cross_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L897"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the cross product of two vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>tuple, list, Vector</em>) – XYZ components of the first vector.</p></li>
-<li><p><strong>v</strong> (<em>tuple, list, Vector</em>) – XYZ components of the second vector.</p></li>
+<li><p><strong>u</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – XYZ components of the first vector.</p></li>
+<li><p><strong>v</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – XYZ components of the second vector.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>cross</strong> (<em>list</em>) – The cross product of the two vectors.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – The cross product of the two vectors.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -132,13 +132,15 @@ and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> can be comp
  v_{x} &amp; v_{y} &amp; v_{z}
  \end{bmatrix}</div><p>Therefore, the cross product can be written as:</p>
 <div class="math notranslate nohighlight">
- \mathbf{u} \times \mathbf{v}
- =
- \begin{bmatrix}
- u_{y} * v_{z} - u_{z} * v_{y} \\
- u_{z} * v_{x} - u_{x} * v_{z} \\
- u_{x} * v_{y} - u_{y} * v_{x}
- \end{bmatrix}</div><p class="rubric">Examples</p>
+ \begin{eqnarray}
+     \mathbf{u} \times \mathbf{v}
+     &amp; =
+     \begin{bmatrix}
+     u_{y} * v_{z} - u_{z} * v_{y} \\
+     u_{z} * v_{x} - u_{x} * v_{z} \\
+     u_{x} * v_{y} - u_{y} * v_{x}
+     \end{bmatrix}
+ \end{eqnarray}</div><p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_vectors</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
 <span class="go">[0.0, 0.0, 1.0]</span>
 </code></pre></div>

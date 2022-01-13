@@ -109,17 +109,17 @@
 <h1>quaternion_multiply</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.quaternion_multiply">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">quaternion_multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/quaternions.py#L127"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">quaternion_multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/quaternions.py#L128"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Multiplies two quaternions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>r</strong> (<em>list</em>) – Quaternion as a list of four real values <code class="docutils literal notranslate"><span class="pre">[rw,</span> <span class="pre">rx,</span> <span class="pre">ry,</span> <span class="pre">rz]</span></code>.</p></li>
-<li><p><strong>q</strong> (<em>list</em>) – Quaternion as a list of four real values <code class="docutils literal notranslate"><span class="pre">[qw,</span> <span class="pre">qx,</span> <span class="pre">qy,</span> <span class="pre">qz]</span></code>.</p></li>
+<li><p><strong>r</strong> ([float, float, float, float] or <a class="reference internal" href="compas.geometry.Quaternion.html#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Quaternion</span></code></a>) – Quaternion or sequence of four floats <code class="docutils literal notranslate"><span class="pre">[w,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code>.</p></li>
+<li><p><strong>q</strong> ([float, float, float, float] or <a class="reference internal" href="compas.geometry.Quaternion.html#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Quaternion</span></code></a>) – Quaternion or sequence of four floats <code class="docutils literal notranslate"><span class="pre">[w,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – Quaternion <span class="math notranslate nohighlight">\(p = rq\)</span> as a list of four real values <code class="docutils literal notranslate"><span class="pre">[pw,</span> <span class="pre">px,</span> <span class="pre">py,</span> <span class="pre">pz]</span></code>.</p>
+<dd class="field-even"><p><em>[float, float, float, float]</em> – Quaternion <span class="math notranslate nohighlight">\(p = rq\)</span> as a list of four real values <code class="docutils literal notranslate"><span class="pre">[pw,</span> <span class="pre">px,</span> <span class="pre">py,</span> <span class="pre">pz]</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -128,6 +128,9 @@ provided that both <span class="math notranslate nohighlight">\(r\)</span> and <
 The result is also unit-length.
 Multiplication of quaternions is not commutative!</p>
 <p class="rubric">References</p>
+<ul class="simple">
+<li><p>Quaternion: <a class="reference external" href="http://mathworld.wolfram.com/Quaternion.html">http://mathworld.wolfram.com/Quaternion.html</a></p></li>
+</ul>
 </dd></dl>
 
 </section>

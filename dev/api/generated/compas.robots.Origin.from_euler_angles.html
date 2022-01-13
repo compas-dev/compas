@@ -116,14 +116,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>euler_angles</strong> (<em>list of float</em>) – Three numbers that represent the angles of rotations about the defined axes.</p></li>
-<li><p><strong>static</strong> (<em>bool, optional</em>) – If true the rotations are applied to a static frame.
-If not, to a rotational.
-Defaults to true.</p></li>
-<li><p><strong>axes</strong> (<em>str, optional</em>) – A 3 character string specifying the order of the axes.
-Defaults to ‘xyz’.</p></li>
-<li><p><strong>point</strong> (<em>list of float, optional</em>) – The point of the frame.
-Defaults to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>euler_angles</strong> (<em>[float, float, float]</em>) – Three numbers that represent the angles of rotations about the defined axes.</p></li>
+<li><p><strong>static</strong> (<em>bool, optional</em>) – If True, the rotations are applied to a static frame.
+If False, to a rotational.</p></li>
+<li><p><strong>axes</strong> (<em>str, optional</em>) – A 3 character string specifying the order of the axes.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, optional) – The point of the frame.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

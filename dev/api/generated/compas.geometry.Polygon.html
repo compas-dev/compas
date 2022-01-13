@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Point.validate_json" href="compas.geometry.Point.validate_json.html" />
+  <link rel="prev" title="Ellipse.validate_json" href="compas.geometry.Ellipse.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -111,31 +111,28 @@
 <dt class="sig sig-object py" id="compas.geometry.Polygon">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polygon.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></a></p>
-<p>An object representing an ordered collection of points in space connected
-by straight line segments forming a closed boundary around the interior space.</p>
-<p>A polygon has a closed boundary that separates its interior from the
-exterior. The boundary does not intersect itself, and is described by an
-ordered set of of points.</p>
+<p>A polygon is defined by a sequence of points forming a closed loop.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list of point</em>) – An ordered list of points.</p>
+<dd class="field-odd"><p><strong>points</strong> (list[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – An ordered list of points.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – The data representation of the polygon.</p></li>
-<li><p><strong>points</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The polygon points.</p></li>
-<li><p><strong>lines</strong> (list of <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only) – The polygon segments.</p></li>
-<li><p><strong>centroid</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The centroid of the polygon surface.</p></li>
-<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – The normal vector of the polygon plane.</p></li>
-<li><p><strong>length</strong> (<em>float, read-only</em>) – The length of the polygon boundary.</p></li>
-<li><p><strong>area</strong> (<em>float, read-only</em>) – The area of the polygon surface.</p></li>
+<li><p><strong>points</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The points of the polygon.</p></li>
+<li><p><strong>lines</strong> (list of <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only) – The lines of the polygon.</p></li>
+<li><p><strong>length</strong> (<em>float, read-only</em>) – The length of the boundary.</p></li>
+<li><p><strong>centroid</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The centroid of the polygon.</p></li>
+<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – The (average) normal of the polygon.</p></li>
+<li><p><strong>area</strong> (<em>float, read-only</em>) – The area of the polygon.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>All <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> objects are considered closed. Therefore the first and
-last element in the list of points are not the same. The existence of the
-closing edge is implied.</p>
+<p>A polygon is defined by a sequence of points connected by line segments
+forming a closed boundary that separates its interior from the exterior.</p>
+<p>In the sequence of points, the first and last element are not the same.
+The existence of the closing edge is implied.
+The boundary should not intersect itself.</p>
 <p>Polygons are not necessarily planar by construction; they can be warped.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
@@ -277,11 +274,11 @@ closing edge is implied.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Point.validate_json.html" title="Point.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Ellipse.validate_json.html" title="Ellipse.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Point.validate_json
+          Ellipse.validate_json
         </div>
       </a>
       

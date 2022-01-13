@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="bestfit_plane_numpy" href="compas.geometry.bestfit_plane_numpy.html" />
+  <link rel="next" title="bestfit_plane" href="compas.geometry.bestfit_plane.html" />
   
 
   
@@ -109,14 +109,19 @@
 <h1>bestfit_frame_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.bestfit_frame_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_frame_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bestfit/bestfit_numpy.py#L46"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_frame_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bestfit/bestfit_numpy.py#L48"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Fit a frame to a set of points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list</em>) – XYZ coordinates of the points.</p>
+<dd class="field-odd"><p><strong>points</strong> (<em>array_like[point]</em>) – XYZ coordinates of the points.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>3-tuple</em> – The frame origin, and the local X and Y axes.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>[float, float, float]</em> – The frame origin.</p></li>
+<li><p><em>[float, float, float]</em> – The local X axis.</p></li>
+<li><p><em>[float, float, float]</em> – The local Y axis.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -202,10 +207,10 @@
       
 
       
-      <a href="compas.geometry.bestfit_plane_numpy.html" title="bestfit_plane_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.bestfit_plane.html" title="bestfit_plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          bestfit_plane_numpy
+          bestfit_plane
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

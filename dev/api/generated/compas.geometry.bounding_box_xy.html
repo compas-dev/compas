@@ -111,16 +111,16 @@
 <dt class="sig sig-object py" id="compas.geometry.bounding_box_xy">
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bounding_box_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bbox/bbox.py#L49"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the axis-aligned minimum bounding box of a list of points in the XY-plane.</p>
-<p class="rubric">Notes</p>
-<p>This function simply ignores the Z components of the points, if it is provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list</em>) – XY(Z) coordinates of the points.</p>
+<dd class="field-odd"><p><strong>points</strong> (<em>sequence[point]</em>) – XY(Z) coordinates of the points.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – XYZ coordinates of four points defining a rectangle in the XY plane.</p>
+<dd class="field-even"><p><em>list[[float, float, 0.0]]</em> – XYZ coordinates of four points defining a rectangle in the XY plane.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function simply ignores the Z components of the points, if it is provided.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

@@ -112,15 +112,18 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Rotation.from_frame">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Rotation.</span></span><span class="sig-name descname"><span class="pre">from_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Computes the rotational transformation from world XY to frame.</p>
+<dd><p>Construct a rotation transformationn from world XY to frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame</strong> ([point, vector, vector] or <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – A frame describing the targeted Cartesian coordinate system.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Rotation.html#compas.geometry.Rotation" title="compas.geometry.Rotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Rotation</span></code></a></p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>Creating a rotation from a frame means that we omit all translational
 components. If that is unwanted, use <code class="docutils literal notranslate"><span class="pre">Transformation.from_frame(frame)</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>) – A frame describing the targeted Cartesian coordinate system.</p>
-</dd>
-</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.68</span><span class="p">,</span> <span class="mf">0.68</span><span class="p">,</span> <span class="mf">0.27</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.67</span><span class="p">,</span> <span class="mf">0.73</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">])</span>

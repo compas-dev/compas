@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="bestfit_circle_numpy" href="compas.geometry.bestfit_circle_numpy.html" />
+  <link rel="next" title="convex_hull_xy_numpy" href="compas.geometry.convex_hull_xy_numpy.html" />
   
 
   
-  <link rel="prev" title="convex_hull" href="compas.geometry.convex_hull.html" />
+  <link rel="prev" title="convex_hull_numpy" href="compas.geometry.convex_hull_numpy.html" />
   
 
   <script type="text/javascript" async
@@ -113,15 +113,16 @@
 <dd><p>Computes the convex hull of a set of 2D points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list</em>) – XY(Z) coordinates of the points.</p>
+<dd class="field-odd"><p><strong>points</strong> (<em>sequence[point]</em>) – XY(Z) coordinates of the points.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – XY(Z) coordinates of vertices of the convex hull in counter-clockwise order,
+<dd class="field-even"><p><em>list[[float, float, 0.0]]</em> – XY(Z) coordinates of vertices of the convex hull in counter-clockwise order,
 starting from the vertex with the lexicographically smallest coordinates.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Implements Andrew’s monotone chain algorithm <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. O(n log n) complexity.</p>
+<p>Implements Andrew’s monotone chain algorithm <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.
+O(n log n) complexity.</p>
 <p class="rubric">References</p>
 <dl class="footnote brackets">
 <dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
@@ -202,20 +203,20 @@ Available at: <a class="reference external" href="https://en.wikibooks.org/wiki/
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.convex_hull.html" title="convex_hull" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.convex_hull_numpy.html" title="convex_hull_numpy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          convex_hull
+          convex_hull_numpy
         </div>
       </a>
       
 
       
-      <a href="compas.geometry.bestfit_circle_numpy.html" title="bestfit_circle_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.convex_hull_xy_numpy.html" title="convex_hull_xy_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          bestfit_circle_numpy
+          convex_hull_xy_numpy
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

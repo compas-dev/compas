@@ -114,14 +114,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (tuple or <a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A mesh represented by a list of vertices and a list of faces
-or a COMPAS mesh object.</p></li>
-<li><p><strong>scalarfield</strong> (<em>list or array of float</em>) – A scalar value per vertex of the mesh.</p></li>
+<li><p><strong>mesh</strong> (tuple[sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], sequence[[int, int, int]]]) – A mesh represented by a list of vertices and a list of faces.</p></li>
+<li><p><strong>scalarfield</strong> (<em>sequence[float]</em>) – A scalar value per vertex of the mesh.</p></li>
 <li><p><strong>scalar</strong> (<em>float</em>) – A value within the range of the scalarfield.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – Vertices and faces of the remeshed mesh.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>list[[float, float, float]]</em> – Vertices of the remeshed mesh.</p></li>
+<li><p><em>list[[int, int, int]]</em> – Faces of the remeshed mesh.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

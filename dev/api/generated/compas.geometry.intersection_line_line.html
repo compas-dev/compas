@@ -114,18 +114,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>l1</strong> (<em>tuple, list</em>) – XYZ coordinates of two points defining the first line.</p></li>
-<li><p><strong>l2</strong> (<em>tuple, list</em>) – XYZ coordinates of two points defining the second line.</p></li>
-<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for membership verification.
-Default is <code class="docutils literal notranslate"><span class="pre">1e-6</span></code>.</p></li>
+<li><p><strong>l1</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – XYZ coordinates of two points defining the first line.</p></li>
+<li><p><strong>l2</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – XYZ coordinates of two points defining the second line.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for membership verification.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p><em>tuple</em> – Two intersection points.</p>
-<p>If the lines intersect, these two points are identical.
-If the lines are skewed and thus only have an apparent intersection, the two points are different.</p>
-<p>In all other cases the return is <cite>(None, None)</cite>.</p>
-</p>
+<dd class="field-even"><p><em>tuple[[float, float, float], [float, float, float]] or tuple[None, None]</em> – Two intersection points.
+If the lines intersect, these two points are identical.
+If the lines are skewed and thus only have an apparent intersection, the two points are different.
+In all other cases there are no intersection points.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

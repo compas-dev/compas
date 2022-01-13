@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="boolean_union_mesh_mesh" href="compas.geometry.boolean_union_mesh_mesh.html" />
+  <link rel="next" title="offset_line" href="compas.geometry.offset_line.html" />
   
 
   
@@ -115,16 +115,15 @@ a given distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points1</strong> (<em>list</em>) – The first set of points</p></li>
-<li><p><strong>points2</strong> (<em>list</em>) – The second set of points</p></li>
-<li><p><strong>dist</strong> (<em>float</em>) – The distance from the first set to the second at which to compute the
-interpolated set.</p></li>
-<li><p><strong>index</strong> (<em>int</em>) – The index of the point in the first set from which to calculate the
-distance to the second set. If no value is given, the first point will be used.</p></li>
+<li><p><strong>points1</strong> (<em>list[point]</em>) – The first set of points.</p></li>
+<li><p><strong>points2</strong> (<em>list[point]</em>) – The second set of points.</p></li>
+<li><p><strong>dist</strong> (<em>float</em>) – The distance from the first set to the second at which to compute the interpolated set.</p></li>
+<li><p><strong>index</strong> (<em>int, optional</em>) – The index of the point in the first set from which to calculate the distance to the second set.
+If no value is given, the first point will be used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – List of points</p>
+<dd class="field-even"><p><em>list[list[point]]</em> – List of points.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -206,10 +205,10 @@ distance to the second set. If no value is given, the first point will be used.<
       
 
       
-      <a href="compas.geometry.boolean_union_mesh_mesh.html" title="boolean_union_mesh_mesh" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.offset_line.html" title="offset_line" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          boolean_union_mesh_mesh
+          offset_line
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

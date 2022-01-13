@@ -111,21 +111,19 @@
 <h1>Rotation.euler_angles</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Rotation.euler_angles">
-<span class="sig-prename descclassname"><span class="pre">Rotation.</span></span><span class="sig-name descname"><span class="pre">euler_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/rotation.py#L330"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Returns Euler angles from the <code class="docutils literal notranslate"><span class="pre">Rotation</span></code> according to specified
+<span class="sig-prename descclassname"><span class="pre">Rotation.</span></span><span class="sig-name descname"><span class="pre">euler_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/rotation.py#L329"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Returns Euler angles from the rotation according to specified
 axis sequence and rotation type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>static</strong> (<em>bool, optional</em>) – If true the rotations are applied to a static frame.
-If not, to a rotational.
-Defaults to True.</p></li>
-<li><p><strong>axes</strong> (<em>str, optional</em>) – A 3 character string specifying the order of the axes.
-Defaults to ‘xyz’.</p></li>
+<li><p><strong>static</strong> (<em>bool, optional</em>) – If True the rotations are applied to a static frame.
+If False, to a rotational.</p></li>
+<li><p><strong>axes</strong> (<em>str, optional</em>) – A 3 character string specifying the order of the axes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>list of float</strong> (<em>The 3 Euler angles.</em>)</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – The 3 Euler angles.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

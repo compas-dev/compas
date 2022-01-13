@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Polyline.divide_polyline" href="compas.geometry.Polyline.divide_polyline.html" />
+  <link rel="next" title="Polyline.divide" href="compas.geometry.Polyline.divide.html" />
   
 
   
-  <link rel="prev" title="Polygon.validate_json" href="compas.geometry.Polygon.validate_json.html" />
+  <link rel="prev" title="Line.validate_json" href="compas.geometry.Line.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -111,25 +111,25 @@
 <dt class="sig sig-object py" id="compas.geometry.Polyline">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/polyline.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></a></p>
-<p>A polyline is a sequence of points connected by line segments.</p>
-<p>A polyline is a piecewise linear element.
-It does not have an interior.
-It can be open or closed.
-It can be self-intersecting.</p>
+<p>A polyline is defined by a sequence of points connected by line segments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list of point</em>) – An ordered list of points.
+<dd class="field-odd"><p><strong>points</strong> (list[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – An ordered list of points.
 Each consecutive pair of points forms a segment of the polyline.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – The data representation of the polyline.</p></li>
-<li><p><strong>points</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The polyline points.</p></li>
-<li><p><strong>lines</strong> (list of <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only) – The polyline segments.</p></li>
+<li><p><strong>points</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The points of the polyline.</p></li>
+<li><p><strong>lines</strong> (list of <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only) – The lines of the polyline.</p></li>
 <li><p><strong>length</strong> (<em>float, read-only</em>) – The length of the polyline.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>A polyline is a piecewise linear element.
+It does not have an interior.
+It can be open or closed.
+It can be self-intersecting.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span> <span class="o">=</span> <span class="n">Polyline</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">length</span>
@@ -155,6 +155,12 @@ Each consecutive pair of points forms a segment of the polyline.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide.html#compas.geometry.Polyline.divide" title="compas.geometry.Polyline.divide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide</span></code></a></p></td>
+<td><p>Divide a polyline in equal segments.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_by_length.html#compas.geometry.Polyline.divide_by_length" title="compas.geometry.Polyline.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
+<td><p>Splits a polyline in segments of a given length.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_polyline.html#compas.geometry.Polyline.divide_polyline" title="compas.geometry.Polyline.divide_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_polyline</span></code></a></p></td>
 <td><p>Divide a polyline in equal segments.</p></td>
 </tr>
@@ -176,10 +182,13 @@ Each consecutive pair of points forms a segment of the polyline.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.split_at_corners.html#compas.geometry.Polyline.split_at_corners" title="compas.geometry.Polyline.split_at_corners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_at_corners</span></code></a></p></td>
 <td><p>Splits a polyline at corners larger than the given angle_threshold</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.tangent_at_point_on_polyline.html#compas.geometry.Polyline.tangent_at_point_on_polyline" title="compas.geometry.Polyline.tangent_at_point_on_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at_point_on_polyline</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.tangent_at.html#compas.geometry.Polyline.tangent_at" title="compas.geometry.Polyline.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
 <td><p>Calculates the tangent vector of a point on a polyline</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.transform.html#compas.geometry.Polyline.transform" title="compas.geometry.Polyline.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.tangent_at_point_on_polyline.html#compas.geometry.Polyline.tangent_at_point_on_polyline" title="compas.geometry.Polyline.tangent_at_point_on_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at_point_on_polyline</span></code></a></p></td>
+<td><p>Calculates the tangent vector of a point on a polyline</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.transform.html#compas.geometry.Polyline.transform" title="compas.geometry.Polyline.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform this polyline.</p></td>
 </tr>
 </tbody>
@@ -289,20 +298,20 @@ Each consecutive pair of points forms a segment of the polyline.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Polygon.validate_json.html" title="Polygon.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Line.validate_json.html" title="Line.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Polygon.validate_json
+          Line.validate_json
         </div>
       </a>
       
 
       
-      <a href="compas.geometry.Polyline.divide_polyline.html" title="Polyline.divide_polyline" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.Polyline.divide.html" title="Polyline.divide" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Polyline.divide_polyline
+          Polyline.divide
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

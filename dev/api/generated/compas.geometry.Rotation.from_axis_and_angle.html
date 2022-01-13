@@ -112,18 +112,24 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Rotation.from_axis_and_angle">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Rotation.</span></span><span class="sig-name descname"><span class="pre">from_axis_and_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Calculates a <code class="docutils literal notranslate"><span class="pre">Rotation</span></code> from a rotation axis and an angle and an optional point of rotation.</p>
+<dd><p>Construct a rotation transformation from a rotation axis and an angle and an optional point of rotation.</p>
 <p>The rotation is based on the right hand rule, i.e. anti-clockwise if the
 axis of rotation points towards the observer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>axis</strong> (<em>list of float</em>) – Three numbers that represent the axis of rotation.</p></li>
+<li><p><strong>axis</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – Three numbers that represent the axis of rotation.</p></li>
 <li><p><strong>angle</strong> (<em>float</em>) – The rotation angle in radians.</p></li>
-<li><p><strong>point</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> or list of float) – A point to perform a rotation around an origin other than [0, 0, 0].</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – A point to perform a rotation around an origin other than [0, 0, 0].</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Rotation.html#compas.geometry.Rotation" title="compas.geometry.Rotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Rotation</span></code></a></p>
+</dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The rotation is based on the right hand rule, i.e. anti-clockwise
+if the axis of rotation points towards the observer.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">axis1</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">([</span><span class="o">-</span><span class="mf">0.043</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.254</span><span class="p">,</span> <span class="mf">0.617</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle1</span> <span class="o">=</span> <span class="mf">0.1</span>
@@ -135,9 +141,6 @@ axis of rotation points towards the observer.</p>
 <span class="go">True</span>
 </code></pre></div>
 </div>
-<p class="rubric">Notes</p>
-<p>The rotation is based on the right hand rule, i.e. anti-clockwise
-if the axis of rotation points towards the observer.</p>
 </dd></dl>
 
 </section>

@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="is_coplanar" href="compas.geometry.is_coplanar.html" />
+  <link rel="next" title="is_colinear_xy" href="compas.geometry.is_colinear_xy.html" />
   
 
   
@@ -109,20 +109,19 @@
 <h1>is_colinear_line_line</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.is_colinear_line_line">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_colinear_line_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L74"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_colinear_line_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L73"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Determine if two lines are colinear.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>line1</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Line 1.</p></li>
 <li><p><strong>line2</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Line 2.</p></li>
-<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for colinearity verification.
-Default is <code class="docutils literal notranslate"><span class="pre">1e-6</span></code>.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for colinearity verification.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the lines are colinear.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if the lines are colinear.
+False otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -204,10 +203,10 @@ Default is <code class="docutils literal notranslate"><span class="pre">1e-6</sp
       
 
       
-      <a href="compas.geometry.is_coplanar.html" title="is_coplanar" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.is_colinear_xy.html" title="is_colinear_xy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          is_coplanar
+          is_colinear_xy
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

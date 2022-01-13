@@ -109,18 +109,23 @@
 <h1>circle_from_points_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.circle_from_points_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">circle_from_points_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/constructors.py#L73"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">circle_from_points_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/constructors.py#L77"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Create a circle from three points lying in the XY-plane</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<em>sequence of float</em>) – XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</p></li>
-<li><p><strong>b</strong> (<em>sequence of float</em>) – XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</p></li>
-<li><p><strong>c</strong> (<em>sequence of float</em>) – XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</p></li>
+<li><p><strong>a</strong> ([float, float] or [float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</p></li>
+<li><p><strong>b</strong> ([float, float] or [float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</p></li>
+<li><p><strong>c</strong> ([float, float] or [float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – XYZ coordinates of center in the XY-plane (Z = 0.0) and radius of the circle.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>[float, float, 0.0]</em> – Center of the circle in the XY plane.</p></li>
+<li><p><em>float</em> – Radius of the circle.</p></li>
+<li><p><em>[0.0, 0.0, 1.0]</em> – Normal of the plane containing the circle.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

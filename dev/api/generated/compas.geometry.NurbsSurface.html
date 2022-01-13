@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Surface.validate_json" href="compas.geometry.Surface.validate_json.html" />
+  <link rel="prev" title="Polygon.validate_json" href="compas.geometry.Polygon.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -111,22 +111,25 @@
 <dt class="sig sig-object py" id="compas.geometry.NurbsSurface">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">NurbsSurface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/surfaces/nurbs.py#L40"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Surface.html#compas.geometry.Surface" title="compas.geometry.surfaces.surface.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.surfaces.surface.Surface</span></code></a></p>
-<p>Class representing a NURBS surface.</p>
+<p>A NURBS surface is defined by control points, weights, knots, and a degree, in two directions U and V.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>List[List[Point]]</em>) – The control points of the surface.</p></li>
-<li><p><strong>weights</strong> (<em>List[List[float]]</em>) – The weights of the control points.</p></li>
-<li><p><strong>u_knots</strong> (<em>List[float]</em>) – The knot vector, in the U direction, without duplicates.</p></li>
-<li><p><strong>v_knots</strong> (<em>List[float]</em>) – The knot vector, in the V direction, without duplicates.</p></li>
-<li><p><strong>u_mults</strong> (<em>List[int]</em>) – The multiplicities of the knots in the knot vector of the U direction.</p></li>
-<li><p><strong>v_mults</strong> (<em>List[int]</em>) – The multiplicities of the knots in the knot vector of the V direction.</p></li>
-<li><p><strong>u_degree</strong> (<em>int</em>) – The degree of the polynomials in the U direction.</p></li>
-<li><p><strong>v_degree</strong> (<em>int</em>) – The degree of the polynomials in the V direction.</p></li>
-<li><p><strong>u_domain</strong> (<em>Tuple[float, float]</em>) – The parameter domain in the U direction.</p></li>
-<li><p><strong>v_domain</strong> (<em>Tuple[float, float]</em>) – The parameter domain in the V direction.</p></li>
-<li><p><strong>is_u_periodic</strong> (<em>bool</em>) – True if the curve is periodic in the U direction.</p></li>
-<li><p><strong>is_v_periodic</strong> (<em>bool</em>) – True if the curve is periodic in the V direction.</p></li>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the surface.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>points</strong> (list[list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]], read-only) – The control points as rows along the U direction.</p></li>
+<li><p><strong>weights</strong> (<em>list[float], read-only</em>) – The weights of the control points.</p></li>
+<li><p><strong>u_knots</strong> (<em>list[float], read-only</em>) – The knots in the U direction, without multiplicity.</p></li>
+<li><p><strong>v_knots</strong> (<em>list[float], read-only</em>) – The knots in the V direction, without multiplicity.</p></li>
+<li><p><strong>u_mults</strong> (<em>list[int], read-only</em>) – Multiplicity of the knots in the U direction.</p></li>
+<li><p><strong>v_mults</strong> (<em>list[int], read-only</em>) – Multiplicity of the knots in the V direction.</p></li>
+<li><p><strong>u_degree</strong> (<em>int, read-only</em>) – The degree of the curve in the U direction.</p></li>
+<li><p><strong>v_degree</strong> (<em>int, read-only</em>) – The degree of the curve in the V direction.</p></li>
+<li><p><strong>u_domain</strong> (<em>tuple[float, float], read-only</em>) – Min/Max values of the parameters in the U direction.</p></li>
+<li><p><strong>v_domain</strong> (<em>tuple[float, float], read-only</em>) – Min/Max values of the parameters in the V direction.</p></li>
+<li><p><strong>is_u_periodic</strong> (<em>bool, read-only</em>) – Flag indicating that the surface is periodic in the U direction.</p></li>
+<li><p><strong>is_v_periodic</strong> (<em>bool, read-only</em>) – Flag indicating that the surface is periodic in the V direction.</p></li>
 </ul>
 </dd>
 </dl>
@@ -313,11 +316,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Surface.validate_json.html" title="Surface.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Polygon.validate_json.html" title="Polygon.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Surface.validate_json
+          Polygon.validate_json
         </div>
       </a>
       

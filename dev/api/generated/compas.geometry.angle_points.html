@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="logarithmic_spiral_evaluate" href="compas.geometry.logarithmic_spiral_evaluate.html" />
+  <link rel="prev" title="Translation.validate_json" href="compas.geometry.Translation.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -109,19 +109,19 @@
 <h1>angle_points</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.angle_points">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">angle_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/angles.py#L147"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">angle_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/angles.py#L151"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the smallest angle between the vectors defined by three points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<em>sequence of float</em>) – XYZ coordinates.</p></li>
-<li><p><strong>b</strong> (<em>sequence of float</em>) – XYZ coordinates.</p></li>
-<li><p><strong>c</strong> (<em>sequence of float</em>) – XYZ coordinates.</p></li>
-<li><p><strong>deg</strong> (<em>boolean</em>) – returns angle in degrees if True</p></li>
+<li><p><strong>a</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates.</p></li>
+<li><p><strong>b</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates.</p></li>
+<li><p><strong>c</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates.</p></li>
+<li><p><strong>deg</strong> (<em>bool, optional</em>) – If True, returns the angle in degrees.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>float</em> – The smallest angle between the vectors in radians (in degrees if deg == True).
+<dd class="field-even"><p><em>float</em> – The smallest angle in radians (in degrees if <code class="docutils literal notranslate"><span class="pre">deg</span> <span class="pre">==</span> <span class="pre">True</span></code>).
 The angle is always positive.</p>
 </dd>
 </dl>
@@ -200,11 +200,11 @@ The angle is always positive.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.logarithmic_spiral_evaluate.html" title="logarithmic_spiral_evaluate" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Translation.validate_json.html" title="Translation.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          logarithmic_spiral_evaluate
+          Translation.validate_json
         </div>
       </a>
       

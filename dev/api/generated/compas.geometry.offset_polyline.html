@@ -109,23 +109,32 @@
 <h1>offset_polyline</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.offset_polyline">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">offset_polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polyline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/offset/offset.py#L125"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">offset_polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polyline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/offset/offset.py#L157"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Offset a polyline by a distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polyline</strong> (<em>list of point</em>) – The XYZ coordinates of the vertices of a polyline.</p></li>
-<li><p><strong>distance</strong> (<em>float or list of tuples of floats</em>) – The offset distance as float.
+<li><p><strong>polyline</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a>) – The XYZ coordinates of the vertices of a polyline.</p></li>
+<li><p><strong>distance</strong> (<em>float or list[tuple[float, float]]</em>) – The offset distance as float.
 A single value determines a constant offset globally.
-Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
-Distance &gt; 0: offset to the “left”, distance &lt; 0: offset to the “right”.</p></li>
-<li><p><strong>normal</strong> (<em>vector</em>) – The normal of the offset plane.</p></li>
+Alternatively, pairs of local offset values per line segment can be used to create variable offsets.</p></li>
+<li><p><strong>normal</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, optional) – The normal of the offset plane.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance value for intersection calculations.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>offset polyline</strong> (<em>list of point</em>) – The XYZ coordinates of the resulting polyline.</p>
+<dd class="field-even"><p><em>list[[float, float, float]]</em> – The XYZ coordinates of the resulting polyline.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The offset direction is determined by the provided normal vector.
+If the polyline is in the XY plane and the normal is along the positive Z axis,
+positive offset distances will result in counterclockwise offsets,
+and negative values in clockwise direction.</p>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
+</code></pre></div>
+</div>
 </dd></dl>
 
 </section>

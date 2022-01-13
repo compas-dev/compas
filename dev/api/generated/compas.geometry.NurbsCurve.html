@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Curve.validate_json" href="compas.geometry.Curve.validate_json.html" />
+  <link rel="prev" title="Bezier.validate_json" href="compas.geometry.Bezier.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -111,24 +111,30 @@
 <dt class="sig sig-object py" id="compas.geometry.NurbsCurve">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">NurbsCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/curves/nurbs.py#L40"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.curves.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.curves.curve.Curve</span></code></a></p>
-<p>Class representing a NURBS curve.</p>
+<p>A NURBS curve is defined by control points, weights, knots, and a degree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>List[Point]</em>) – The control points of the curve.</p></li>
-<li><p><strong>weights</strong> (<em>List[float]</em>) – The weights of the control points.</p></li>
-<li><p><strong>knots</strong> (<em>List[float]</em>) – The knot vector, without duplicates.</p></li>
-<li><p><strong>multiplicities</strong> (<em>List[int]</em>) – The multiplicities of the knots in the knot vector.</p></li>
-<li><p><strong>knotsequence</strong> (<em>List[float]</em>) – The knot vector, with repeating values according to the multiplicities.</p></li>
-<li><p><strong>degree</strong> (<em>int</em>) – The degree of the polynomials.</p></li>
-<li><p><strong>order</strong> (<em>int</em>) – The order of the curve.</p></li>
-<li><p><strong>domain</strong> (<em>Tuple[float, float]</em>) – The parameter domain.</p></li>
-<li><p><strong>start</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>) – The point corresponding to the start of the parameter domain.</p></li>
-<li><p><strong>end</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>) – The point corresponding to the end of the parameter domain.</p></li>
-<li><p><strong>is_closed</strong> (<em>bool</em>) – True if the curve is closed.</p></li>
-<li><p><strong>is_periodic</strong> (<em>bool</em>) – True if the curve is periodic.</p></li>
-<li><p><strong>is_rational</strong> (<em>bool</em>) – True is the curve is rational.</p></li>
-<li><p><strong>length</strong> (<em>float</em>) – Length of the curve.</p></li>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the curve.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], read-only) – The control points.</p></li>
+<li><p><strong>weights</strong> (<em>list[float], read-only</em>) – The weights of the control points.</p></li>
+<li><p><strong>knots</strong> (<em>list[float], read-only</em>) – The knots, without multiplicity.</p></li>
+<li><p><strong>knotsequence</strong> (<em>list[float], read-only</em>) – The complete knot vector.</p></li>
+<li><p><strong>multiplicity</strong> (<em>list[int], read-only</em>) – The multiplicities of the knots.</p></li>
+<li><p><strong>degree</strong> (<em>int, read-only</em>) – The degree of the curve.</p></li>
+<li><p><strong>dimension</strong> (<em>int, read-only</em>) – The spatial dimension of the curve.</p></li>
+<li><p><strong>domain</strong> (<em>tuple[float, float]</em>) – The domain of the parameter space of the curve.</p></li>
+<li><p><strong>order</strong> (<em>int, read-only</em>) – The order of the curve (degree + 1).</p></li>
+<li><p><strong>start</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The start point of the curve.</p></li>
+<li><p><strong>end</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The end point of the curve.</p></li>
+<li><p><strong>is_closed</strong> (<em>bool, read-only</em>) – Flag indicating that the curve is closed.</p></li>
+<li><p><strong>is_periodic</strong> (<em>bool, read-only</em>) – Flag indicating that the curve is periodic.</p></li>
+<li><p><strong>is_rational</strong> (<em>bool, read-only</em>) – Flag indicating that the curve is rational.
+If the curve is rational, the weights of the control points are rational numbers.</p></li>
+<li><p><strong>bounding_box</strong> (<a class="reference internal" href="compas.geometry.Box.html#compas.geometry.Box" title="compas.geometry.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Box</span></code></a>, read-only) – The axis aligned bounding box of the curve.</p></li>
+<li><p><strong>length</strong> (<em>float</em>) – The length of the curve.</p></li>
 </ul>
 </dd>
 </dl>
@@ -312,11 +318,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Curve.validate_json.html" title="Curve.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Bezier.validate_json.html" title="Bezier.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Curve.validate_json
+          Bezier.validate_json
         </div>
       </a>
       

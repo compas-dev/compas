@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="bestfit_plane" href="compas.geometry.bestfit_plane.html" />
+  <link rel="next" title="archimedean_spiral_evaluate" href="compas.geometry.archimedean_spiral_evaluate.html" />
   
 
   
@@ -111,19 +111,18 @@
 <h1>KDTree.nearest_neighbors</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.KDTree.nearest_neighbors">
-<span class="sig-prename descclassname"><span class="pre">KDTree.</span></span><span class="sig-name descname"><span class="pre">nearest_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/kdtree.py#L133"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">KDTree.</span></span><span class="sig-name descname"><span class="pre">nearest_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/kdtree.py#L131"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Find the N nearest neighbors to a given point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>list</em>) – XYZ coordinates of the bbase point.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates of the base point.</p></li>
 <li><p><strong>number</strong> (<em>int</em>) – The number of nearest neighbors.</p></li>
-<li><p><strong>distance_sort</strong> (<em>bool, optional</em>) – Sort the nearest neighbors by distance to the base point.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>distance_sort</strong> (<em>bool, optional</em>) – Sort the nearest neighbors by distance to the base point.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – A list of N nearest neighbors.</p>
+<dd class="field-even"><p><em>list[[[float, float, float], int or str, float]]</em> – A list of N nearest neighbors.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -205,10 +204,10 @@ Default is <code class="docutils literal notranslate"><span class="pre">False</s
       
 
       
-      <a href="compas.geometry.bestfit_plane.html" title="bestfit_plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.archimedean_spiral_evaluate.html" title="archimedean_spiral_evaluate" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          bestfit_plane
+          archimedean_spiral_evaluate
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

@@ -99,15 +99,15 @@
 <h1>ellipse_evaluate</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.ellipse_evaluate">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">ellipse_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/analytical.py#L43"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">ellipse_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/analytical.py#L39"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evalutes an ellipse at a parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<em>float</em>) – Parameter</p></li>
-<li><p><strong>a</strong> (<em>float</em>) – Constant</p></li>
-<li><p><strong>b</strong> (<em>float</em>) – Constant</p></li>
-<li><p><strong>z</strong> (<em>float, optional</em>) – Height. Default is 0.</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – Parameter.</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – Ellipse major.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Ellipse minor.</p></li>
+<li><p><strong>z</strong> (<em>float, optional</em>) – Elevation of the ellipse above the XY plane.</p></li>
 </ul>
 </dd>
 </dl>
@@ -115,7 +115,7 @@
 <p>The radius along the x and y axes are a and b, respectively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>list</em> – The (x, y, z) coordinates.</p>
+<dd class="field-odd"><p><em>[float, float, float]</em> – The XYZ coordinates.</p>
 </dd>
 </dl>
 </dd></dl>

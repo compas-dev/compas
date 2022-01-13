@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Primitive.validate_json" href="compas.geometry.Primitive.validate_json.html" />
+  <link rel="prev" title="Polyline.validate_json" href="compas.geometry.Polyline.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -109,20 +109,19 @@
 <h1>Bezier</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Bezier">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Bezier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/curve.py#L73"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Bezier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/curve.py#L81"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></a></p>
-<p>A Bezier curve.</p>
-<p>A Bezier curve of degree <code class="docutils literal notranslate"><span class="pre">n</span></code> is a linear combination of <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">+</span> <span class="pre">1</span></code> Bernstein
-basis polynomials of degree <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<p>A Bezier curve is defined by control points and a degree.</p>
+<p>A Bezier curve of degree <cite>n</cite> is a linear combination of <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">+</span> <span class="pre">1</span></code> Bernstein
+basis polynomials of degree <cite>n</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>sequence</em>) – A sequence of control points, represented by their location in 3D space.</p>
+<dd class="field-odd"><p><strong>points</strong> (<em>sequence[point]</em>) – A sequence of control points, represented by their location in 3D space.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – The dictionary representation of the curve.</p></li>
-<li><p><strong>points</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The control points of the curve.</p></li>
-<li><p><strong>degree</strong> (<em>int, read-only</em>) – The curve degree.</p></li>
+<li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – The control points.</p></li>
+<li><p><strong>degree</strong> (<em>int, read-only</em>) – The degree of the curve.</p></li>
 </ul>
 </dd>
 </dl>
@@ -261,11 +260,11 @@ basis polynomials of degree <code class="docutils literal notranslate"><span cla
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Primitive.validate_json.html" title="Primitive.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Polyline.validate_json.html" title="Polyline.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Primitive.validate_json
+          Polyline.validate_json
         </div>
       </a>
       

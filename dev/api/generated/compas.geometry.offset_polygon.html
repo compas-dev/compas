@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="barycentric_coordinates" href="compas.geometry.barycentric_coordinates.html" />
+  <link rel="next" title="boolean_union_mesh_mesh" href="compas.geometry.boolean_union_mesh_mesh.html" />
   
 
   
@@ -109,21 +109,21 @@
 <h1>offset_polygon</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.offset_polygon">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">offset_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/offset/offset.py#L74"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">offset_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/offset/offset.py#L105"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Offset a polygon (closed) by a distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polygon</strong> (<em>list of point</em>) – The XYZ coordinates of the corners of the polygon.
+<li><p><strong>polygon</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – The XYZ coordinates of the corners of the polygon.
 The first and last coordinates must not be identical.</p></li>
-<li><p><strong>distance</strong> (<em>float or list of float</em>) – The offset distance as float.
+<li><p><strong>distance</strong> (<em>float or list[tuple[float, float]]</em>) – The offset distance as float.
 A single value determines a constant offset globally.
-Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
-Distance &gt; 0: offset to the outside, distance &lt; 0: offset to the inside.</p></li>
+A list of pairs of local offset values per line segment can be used to create variable offsets.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance value for intersection calculations.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>offset polygon</strong> (<em>list of point</em>) – The XYZ coordinates of the corners of the offset polygon.
+<dd class="field-even"><p><em>list[[float, float, float]]</em> – The XYZ coordinates of the corners of the offset polygon.
 The first and last coordinates are identical.</p>
 </dd>
 </dl>
@@ -216,10 +216,10 @@ polygon.</p>
       
 
       
-      <a href="compas.geometry.barycentric_coordinates.html" title="barycentric_coordinates" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.boolean_union_mesh_mesh.html" title="boolean_union_mesh_mesh" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          barycentric_coordinates
+          boolean_union_mesh_mesh
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

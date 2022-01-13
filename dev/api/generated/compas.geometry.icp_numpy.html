@@ -114,14 +114,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<em>list of point</em>) – The source data.</p></li>
-<li><p><strong>target</strong> (<em>list of point</em>) – The target data.</p></li>
-<li><p><strong>tol</strong> (<em>float, optional</em>) – Tolerance for finding matches.
-Default is <code class="docutils literal notranslate"><span class="pre">1e-3</span></code>.</p></li>
+<li><p><strong>source</strong> (<em>array_like[point]</em>) – The source data.</p></li>
+<li><p><strong>target</strong> (<em>array_like[point]</em>) – The target data.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – Tolerance for finding matches.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>The transformed points</em></p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>ndarray[float](N, 3)</em> – The transformed points.</p></li>
+<li><p><em>ndarray[float](4, 4)</em> – The bestfit transformation matrix.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

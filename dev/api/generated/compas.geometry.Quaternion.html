@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Pointcloud.validate_json" href="compas.geometry.Pointcloud.validate_json.html" />
+  <link rel="prev" title="Vector.validate_json" href="compas.geometry.Vector.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -111,7 +111,7 @@
 <dt class="sig sig-object py" id="compas.geometry.Quaternion">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/quaternion.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></a></p>
-<p>Creates a <code class="docutils literal notranslate"><span class="pre">Quaternion</span></code> object.</p>
+<p>A quaternion is defined by 4 components, X, Y, Z, and W.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -121,10 +121,15 @@
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>wxyz</strong> (<em>list of float, read-only</em>) – Quaternion data listing the real part first.</p></li>
-<li><p><strong>xyzw</strong> (<em>list of float, read-only</em>) – Quaternion data listing the real part last.</p></li>
-<li><p><strong>norm</strong> (<em>float, read-only</em>) – The length of the quaternion.</p></li>
-<li><p><strong>is_unit</strong> (<em>bool, read-only</em>) – True if the quaternion has unit length.</p></li>
+<li><p><strong>w</strong> (<em>float</em>) – The W component of the quaternion.</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – The X component of the quaternion.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The Y component of the quaternion.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – The Z component of the quaternion.</p></li>
+<li><p><strong>wxyz</strong> (<em>list of float, read-only</em>) – Quaternion as a list of float in the ‘wxyz’ convention.</p></li>
+<li><p><strong>xyzw</strong> (<em>list of float, read-only</em>) – Quaternion as a list of float in the ‘xyzw’ convention.</p></li>
+<li><p><strong>norm</strong> (<em>float, read-only</em>) – The length (euclidean norm) of the quaternion.</p></li>
+<li><p><strong>is_unit</strong> (<em>bool, read-only</em>) – True if the quaternion is unit-length.
+False otherwise.</p></li>
 </ul>
 </dd>
 </dl>
@@ -208,10 +213,10 @@ is also unit-length.</p>
 <td><p>Creates a quaternion object from a frame.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix" title="compas.geometry.Quaternion.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
-<td><p>Create a <a class="reference internal" href="#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a> from a transformation matrix.</p></td>
+<td><p>Create a Quaternion from a transformation matrix.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_rotation.html#compas.geometry.Quaternion.from_rotation" title="compas.geometry.Quaternion.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
-<td><p>Create a <a class="reference internal" href="#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code></a> from a <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Rotatation</span></code>.</p></td>
+<td><p>Create a Quaternion from a Rotatation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.unitize.html#compas.geometry.Quaternion.unitize" title="compas.geometry.Quaternion.unitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitize</span></code></a></p></td>
 <td><p>Scales the quaternion to make it unit-length.</p></td>
@@ -329,11 +334,11 @@ is also unit-length.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Pointcloud.validate_json.html" title="Pointcloud.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Vector.validate_json.html" title="Vector.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Pointcloud.validate_json
+          Vector.validate_json
         </div>
       </a>
       

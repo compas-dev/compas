@@ -109,19 +109,19 @@
 <h1>matrix_from_axis_and_angle</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.matrix_from_axis_and_angle">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_axis_and_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L699"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_axis_and_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L713"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculates a rotation matrix from an rotation axis, an angle and an optional
 point of rotation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>axis</strong> (<em>list of float</em>) – Three numbers that represent the axis of rotation.</p></li>
+<li><p><strong>axis</strong> (<em>[float, float, float]</em>) – Three numbers that represent the axis of rotation.</p></li>
 <li><p><strong>angle</strong> (<em>float</em>) – The rotation angle in radians.</p></li>
-<li><p><strong>point</strong> (<em>list of float, optional</em>) – A point to perform a rotation around an origin other than [0, 0, 0].</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, optional) – A point to perform a rotation around an origin other than [0, 0, 0].</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list of list of float</em> – A 4x4 transformation matrix representing a rotation.</p>
+<dd class="field-even"><p><em>list[list[float]]</em> – A 4x4 transformation matrix representing a rotation.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

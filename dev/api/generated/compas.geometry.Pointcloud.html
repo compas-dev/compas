@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Polyline.validate_json" href="compas.geometry.Polyline.validate_json.html" />
+  <link rel="prev" title="Point.validate_json" href="compas.geometry.Point.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -112,6 +112,21 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Pointcloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/pointclouds/pointcloud.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></a></p>
 <p>Class for working with pointclouds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>sequence[point]</em>) – A sequence of points to add to the cloud.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict[str, Any], optional</em>) – Additional keyword arguments collected in a dict.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – The points of the cloud.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -135,7 +150,7 @@
 <td><p>Construct a pointcloud from a PLY file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.transform.html#compas.geometry.Pointcloud.transform" title="compas.geometry.Pointcloud.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
-<td><p>Transform the geometry.</p></td>
+<td><p>Apply a transformation to the pointcloud.</p></td>
 </tr>
 </tbody>
 </table>
@@ -244,11 +259,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Polyline.validate_json.html" title="Polyline.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Point.validate_json.html" title="Point.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Polyline.validate_json
+          Point.validate_json
         </div>
       </a>
       

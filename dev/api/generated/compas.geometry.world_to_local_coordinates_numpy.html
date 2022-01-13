@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="transform_vectors_numpy" href="compas.geometry.transform_vectors_numpy.html" />
+  <link rel="prev" title="world_to_local_coordinates" href="compas.geometry.world_to_local_coordinates.html" />
   
 
   <script type="text/javascript" async
@@ -109,17 +109,17 @@
 <h1>world_to_local_coordinates_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.world_to_local_coordinates_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">world_to_local_coordinates_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L97"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">world_to_local_coordinates_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L115"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert global coordinates to local coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a> or [point, xaxis, yaxis]) – The local coordinate system.</p></li>
-<li><p><strong>xyz</strong> (<em>array-like</em>) – The global coordinates of the points to convert.</p></li>
+<li><p><strong>frame</strong> ([point, vector, vector] or <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – The local coordinate system.</p></li>
+<li><p><strong>xyz</strong> (array-like[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – The global coordinates of the points to convert.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>array</em> – The coordinates of the given points in the local coordinate system.</p>
+<dd class="field-even"><p><em>(N, 3) ndarray</em> – The coordinates of the given points in the local coordinate system.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -200,11 +200,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.transform_vectors_numpy.html" title="transform_vectors_numpy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.world_to_local_coordinates.html" title="world_to_local_coordinates" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          transform_vectors_numpy
+          world_to_local_coordinates
         </div>
       </a>
       

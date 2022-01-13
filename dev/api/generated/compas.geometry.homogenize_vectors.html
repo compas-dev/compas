@@ -109,30 +109,29 @@
 <h1>homogenize_vectors</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.homogenize_vectors">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">homogenize_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L1227"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">homogenize_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L1239"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Homogenise a list of vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vectors</strong> (<em>list</em>) – A list of vectors.</p></li>
-<li><p><strong>w</strong> (<em>float, optional</em>) – Homogenisation parameter.
-Defaults to <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>vectors</strong> (sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>]) – A list of vectors.</p></li>
+<li><p><strong>w</strong> (<em>float, optional</em>) – Homogenisation parameter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – Homogenised vectors.</p>
+<dd class="field-even"><p><em>list[[float, float, float]]</em> – Homogenised vectors.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Vectors described by XYZ components are homogenised by appending a homogenisation
+parameter to the components, and by dividing each component by that parameter.
+Homogenisatioon of vectors is often used in relation to transformations.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vectors</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">homogenize_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
 <span class="go">[[1.0, 0.0, 0.0, 1.0]]</span>
 </code></pre></div>
 </div>
-<p class="rubric">Notes</p>
-<p>Vectors described by XYZ components are homogenised by appending a homogenisation
-parameter to the components, and by dividing each component by that parameter.
-Homogenisatioon of vectors is often used in relation to transformations.</p>
 </dd></dl>
 
 </section>

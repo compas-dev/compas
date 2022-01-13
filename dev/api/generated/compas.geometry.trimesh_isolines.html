@@ -115,22 +115,25 @@ assigned to its vertices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>M</strong> (tuple or <a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A mesh represented by a list of vertices and a list of faces
-or by a COMPAS mesh object.</p></li>
-<li><p><strong>S</strong> (<em>list</em>) – A list of scalars.</p></li>
-<li><p><strong>N</strong> (<em>int, optional</em>) – The number of isolines.
-Default is <code class="docutils literal notranslate"><span class="pre">50</span></code>.</p></li>
+<li><p><strong>M</strong> (tuple[sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], sequence[[int, int, int]]]) – A mesh represented by a list of vertices and a list of faces.</p></li>
+<li><p><strong>S</strong> (<em>list[float]</em>) – A list of scalars.</p></li>
+<li><p><strong>N</strong> (<em>int, optional</em>) – The number of isolines.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>(list, list)</em> – The coordinates of the polyline points and the segments of the polylines defined as pairs of points.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>list[[float, float, float]]</em> – The coordinates of the polyline points.</p></li>
+<li><p><em>list[[int, int]]</em> – The segments of the polylines defined as pairs of points.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>To convert the vertices and edges to sets of isolines, use <code class="xref py py-func docutils literal notranslate"><span class="pre">groupsort_isolines()</span></code></p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
 </div>
-<p>To convert the vertices and edges to sets of isolines, use <code class="xref py py-func docutils literal notranslate"><span class="pre">groupsort_isolines()</span></code></p>
 </dd></dl>
 
 </section>

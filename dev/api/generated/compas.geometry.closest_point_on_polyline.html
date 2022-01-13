@@ -109,18 +109,18 @@
 <h1>closest_point_on_polyline</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.closest_point_on_polyline">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">closest_point_on_polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyline</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L772"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">closest_point_on_polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyline</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L778"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Find the closest point on a polyline to a given point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>list</em>) – XYZ coordinates of a 2D or 3D point (Z will be ignored).</p></li>
-<li><p><strong>polyline</strong> (list of points or <a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a>) – A sequence of XYZ coordinates representing the locations of the corners of a polyline.
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates of a 2D or 3D point (Z will be ignored).</p></li>
+<li><p><strong>polyline</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a>) – A sequence of XYZ coordinates representing the locations of the corners of a polyline.
 The vertices are assumed to be in order.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – XYZ coordinates of closest point.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – XYZ coordinates of closest point.</p>
 </dd>
 </dl>
 </dd></dl>

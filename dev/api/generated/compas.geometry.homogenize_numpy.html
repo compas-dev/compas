@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="dehomogenize_and_unflatten_frames_numpy" href="compas.geometry.dehomogenize_and_unflatten_frames_numpy.html" />
+  <link rel="prev" title="euler_angles_from_quaternion" href="compas.geometry.euler_angles_from_quaternion.html" />
   
 
   <script type="text/javascript" async
@@ -109,14 +109,18 @@
 <h1>homogenize_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.homogenize_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">homogenize_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L171"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">homogenize_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L191"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Dehomogenizes points or vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Points</span></code> or list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Vectors</span></code>)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (array_like[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>] or array_like[[float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>]) – The input data.</p></li>
+<li><p><strong>w</strong> (<em>float, optional</em>) – The homogenization factor.
+Use <code class="docutils literal notranslate"><span class="pre">1.0</span></code> for points, and <code class="docutils literal notranslate"><span class="pre">0.0</span></code> for vectors.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+<dd class="field-even"><p><em>(N, 4) ndarray</em></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -195,11 +199,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.dehomogenize_and_unflatten_frames_numpy.html" title="dehomogenize_and_unflatten_frames_numpy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.euler_angles_from_quaternion.html" title="euler_angles_from_quaternion" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          dehomogenize_and_unflatten_frames_numpy
+          euler_angles_from_quaternion
         </div>
       </a>
       

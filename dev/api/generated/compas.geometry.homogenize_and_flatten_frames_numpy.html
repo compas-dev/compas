@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="local_to_world_coordinates_numpy" href="compas.geometry.local_to_world_coordinates_numpy.html" />
+  <link rel="next" title="identity_matrix" href="compas.geometry.identity_matrix.html" />
   
 
   
@@ -109,15 +109,14 @@
 <h1>homogenize_and_flatten_frames_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.homogenize_and_flatten_frames_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">homogenize_and_flatten_frames_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L220"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">homogenize_and_flatten_frames_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L247"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Homogenize a list of frames and flatten the 3D list into a 2D list using numpy.</p>
-<p>The frame consists of a point and 2 orthonormal vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>frames</strong> (list of <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>)</p>
+<dd class="field-odd"><p><strong>frames</strong> (array_like[[point, vector, vector] or <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>]) – The input frames.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> – An array of points and vectors.</p>
+<dd class="field-even"><p><em>(N x 3, 4) ndarray</em> – An array of points and vectors.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -207,10 +206,10 @@
       
 
       
-      <a href="compas.geometry.local_to_world_coordinates_numpy.html" title="local_to_world_coordinates_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.identity_matrix.html" title="identity_matrix" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          local_to_world_coordinates_numpy
+          identity_matrix
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

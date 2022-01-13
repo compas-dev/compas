@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Shape.validate_json" href="compas.geometry.Shape.validate_json.html" />
+  <link rel="prev" title="NurbsSurface.validate_json" href="compas.geometry.NurbsSurface.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -109,7 +109,7 @@
 <h1>Box</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Box">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ysize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zsize</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/shapes/box.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ysize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zsize</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/shapes/box.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.shapes._shape.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.shapes._shape.Shape</span></code></a></p>
 <p>A box is defined by a frame and its dimensions along the frame’s x-, y- and z-axes.</p>
 <p>The center of the box is positioned at the origin of the
@@ -128,23 +128,33 @@ faces of a box are planar. Faces which do not share an edge are parallel.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>frame</strong> (<em>compas.geometry.Frame</em>) – The local coordinate system of the box.</p></li>
-<li><p><strong>xsize</strong> (<em>float</em>) – The size of the box in the local X direction.</p></li>
-<li><p><strong>ysize</strong> (<em>float</em>) – The size of the box in the local Y direction.</p></li>
-<li><p><strong>zsize</strong> (<em>float</em>) – The size of the box in the local Z direction.</p></li>
-<li><p><strong>width (read-only)</strong> (<em>float</em>) – Alias for <code class="docutils literal notranslate"><span class="pre">xsize</span></code>.</p></li>
-<li><p><strong>depth (read-only)</strong> (<em>float</em>) – Alias for <code class="docutils literal notranslate"><span class="pre">ysize</span></code>.</p></li>
-<li><p><strong>height (read-only)</strong> (<em>float</em>) – Alias for <code class="docutils literal notranslate"><span class="pre">zsize</span></code>.</p></li>
-<li><p><strong>diagonal (read-only)</strong> (<em>tuple of compas.geometry.Point</em>) – The start and end point of the main diagonal of the box.</p></li>
-<li><p><strong>dimensions (read-only)</strong> (<em>list of float</em>) – List of sizes in local coordinate directions.</p></li>
-<li><p><strong>area (read-only)</strong> (<em>float</em>) – The surface area of the box.</p></li>
-<li><p><strong>volume (read-only)</strong> (<em>float</em>) – The volume of the box.</p></li>
-<li><p><strong>vertices (read-only)</strong> (<em>list of list</em>) – The XYZ coordinates of the corners of the box.
-With respect to the local Z axis, the vertices of the bottom
-face are listed first in clockwise direction, starting at the bottom left corner.
-The vertices of the top face are listed in counterclockwise direction.</p></li>
-<li><p><strong>faces (read-only)</strong> (<em>list of list</em>) – The vertices of the faces of the box.
-The cycle directions of the faces are such that face normals point outwards.</p></li>
+<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – The box’s frame.</p></li>
+<li><p><strong>xsize</strong> (<em>float</em>) – The size of the box in the box frame’s x direction.</p></li>
+<li><p><strong>ysize</strong> (<em>float</em>) – The size of the box in the box frame’s y direction.</p></li>
+<li><p><strong>ysize</strong> (<em>float</em>) – The size of the box in the box frame’s z direction.</p></li>
+<li><p><strong>xmin</strong> (<em>float, read-only</em>) – Minimum value along local X axis.</p></li>
+<li><p><strong>xmax</strong> (<em>float, read-only</em>) – Maximum value along local X axis.</p></li>
+<li><p><strong>ymin</strong> (<em>float, read-only</em>) – Minimum value along local Y axis.</p></li>
+<li><p><strong>ymax</strong> (<em>float, read-only</em>) – Maximum value along local Y axis.</p></li>
+<li><p><strong>zmin</strong> (<em>float, read-only</em>) – Minimum value along local Z axis.</p></li>
+<li><p><strong>zmax</strong> (<em>float, read-only</em>) – Maximum value along local Z axis.</p></li>
+<li><p><strong>width</strong> (<em>float, read-only</em>) – The width of the box in X direction.</p></li>
+<li><p><strong>depth</strong> (<em>float, read-only</em>) – The depth of the box in Y direction.</p></li>
+<li><p><strong>height</strong> (<em>float, read-only</em>) – The height of the box in Z direction.</p></li>
+<li><p><strong>diagonal</strong> (<a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only) – Diagonal of the box.</p></li>
+<li><p><strong>dimensions</strong> (<em>list[float], read-only</em>) – The dimensions of the box in the local frame.</p></li>
+<li><p><strong>area</strong> (<em>float, read-only</em>) – The surface area of the box.</p></li>
+<li><p><strong>volume</strong> (<em>float, read-only</em>) – The volume of the box.</p></li>
+<li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], read-only) – The XYZ coordinates of the corners of the box.</p></li>
+<li><p><strong>vertices</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], read-only) – The XYZ coordinates of the vertices of the box.</p></li>
+<li><p><strong>faces</strong> (<em>list[list[int]], read-only</em>) – The faces of the box defined as lists of vertex indices.</p></li>
+<li><p><strong>bottom</strong> (<em>list[int], read-only</em>) – The vertex indices of the bottom face.</p></li>
+<li><p><strong>front</strong> (<em>list[int], read-only</em>) – The vertex indices of the front face.</p></li>
+<li><p><strong>right</strong> (<em>list[int], read-only</em>) – The vertex indices of the right face.</p></li>
+<li><p><strong>back</strong> (<em>list[int], read-only</em>) – The vertex indices of the back face.</p></li>
+<li><p><strong>left</strong> (<em>list[int], read-only</em>) – The vertex indices of the left face.</p></li>
+<li><p><strong>top</strong> (<em>list[int], read-only</em>) – The vertex indices of the top face.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]], read-only</em>) – The edges of the box as vertex index pairs.</p></li>
 </ul>
 </dd>
 </dl>
@@ -290,11 +300,11 @@ The cycle directions of the faces are such that face normals point outwards.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Shape.validate_json.html" title="Shape.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.NurbsSurface.validate_json.html" title="NurbsSurface.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Shape.validate_json
+          NurbsSurface.validate_json
         </div>
       </a>
       

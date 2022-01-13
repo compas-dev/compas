@@ -109,14 +109,17 @@
 <h1>matrix_from_parallel_projection</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.matrix_from_parallel_projection">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_parallel_projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1123"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_parallel_projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1179"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns an parallel projection matrix to project onto a plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>plane</strong> (<em>compas.geometry.Plane or (point, normal)</em>) – The plane to project onto.</p></li>
-<li><p><strong>direction</strong> (<em>list of float</em>) – Direction of the projection.</p></li>
+<li><p><strong>plane</strong> ([point, normal] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The plane to project onto.</p></li>
+<li><p><strong>direction</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – Direction of the projection.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list[list[float]]</em> – A 4-by-4 transformation matrix.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

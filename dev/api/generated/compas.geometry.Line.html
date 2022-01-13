@@ -115,19 +115,18 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>p1</strong> (<em>point</em>) – The first point.</p></li>
-<li><p><strong>p2</strong> (<em>point</em>) – The second point.</p></li>
+<li><p><strong>p1</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The first point.</p></li>
+<li><p><strong>p2</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The second point.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – The data representation of the line.</p></li>
-<li><p><strong>start</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The first point of the line.</p></li>
-<li><p><strong>end</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The second point of the line.</p></li>
-<li><p><strong>vector</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – A vector pointing from <code class="docutils literal notranslate"><span class="pre">start</span></code> to <code class="docutils literal notranslate"><span class="pre">end</span></code>.</p></li>
-<li><p><strong>direction</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – A unit vector pointing from <code class="docutils literal notranslate"><span class="pre">start</span></code> to <code class="docutils literal notranslate"><span class="pre">end</span></code>.</p></li>
-<li><p><strong>midpoint</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – A point half way between <code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code>.</p></li>
-<li><p><strong>length</strong> (<em>float, read-only</em>) – The length of the line segment between <code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code>.</p></li>
+<li><p><strong>start</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The start point of the line.</p></li>
+<li><p><strong>end</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The end point of the line.</p></li>
+<li><p><strong>vector</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – A vector pointing from start to end.</p></li>
+<li><p><strong>length</strong> (<em>float, read-only</em>) – The length of the vector from start to end.</p></li>
+<li><p><strong>direction</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – A unit vector pointing from start and end.</p></li>
+<li><p><strong>midpoint</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The midpoint between start and end.</p></li>
 </ul>
 </dd>
 </dl>
@@ -162,10 +161,10 @@
 <td><p>Transform this line.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.transform_collection.html#compas.geometry.Line.transform_collection" title="compas.geometry.Line.transform_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code></a></p></td>
-<td><p>Transform a collection of <code class="docutils literal notranslate"><span class="pre">Line</span></code> objects.</p></td>
+<td><p>Transform a collection of Line objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.transformed_collection.html#compas.geometry.Line.transformed_collection" title="compas.geometry.Line.transformed_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code></a></p></td>
-<td><p>Create a collection of transformed <code class="docutils literal notranslate"><span class="pre">Line</span></code> objects.</p></td>
+<td><p>Create a collection of transformed Line objects.</p></td>
 </tr>
 </tbody>
 </table>

@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="axis_and_angle_from_matrix" href="compas.geometry.axis_and_angle_from_matrix.html" />
+  <link rel="next" title="homogenize_numpy" href="compas.geometry.homogenize_numpy.html" />
   
 
   
@@ -109,21 +109,19 @@
 <h1>euler_angles_from_quaternion</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.euler_angles_from_quaternion">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">euler_angles_from_quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1362"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">euler_angles_from_quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1446"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns Euler angles from a quaternion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>quaternion</strong> (<em>list</em>) – Quaternion as a list of four real values <code class="docutils literal notranslate"><span class="pre">[w,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code>.</p></li>
-<li><p><strong>static</strong> (<em>bool, optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the rotations are applied to a static frame.
-If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the rotations are applied to a rotational frame.
-Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>axes</strong> (<em>str, optional</em>) – A three-character string specifying the order of the axes.
-Defaults to <code class="docutils literal notranslate"><span class="pre">'xyz'</span></code>.</p></li>
+<li><p><strong>quaternion</strong> (<em>[float, float, float, float]</em>) – Quaternion as a list of four real values <code class="docutils literal notranslate"><span class="pre">[w,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code>.</p></li>
+<li><p><strong>static</strong> (<em>bool, optional</em>) – If True, the rotations are applied to a static frame.
+If False, the rotations are applied to a rotational frame.</p></li>
+<li><p><strong>axes</strong> (<em>str, optional</em>) – A three-character string specifying the order of the axes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – Euler angles as a list of three real values <code class="docutils literal notranslate"><span class="pre">[a,</span> <span class="pre">b,</span> <span class="pre">c]</span></code>.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – Euler angles as a list of three real values <code class="docutils literal notranslate"><span class="pre">[a,</span> <span class="pre">b,</span> <span class="pre">c]</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -205,10 +203,10 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'xyz'</
       
 
       
-      <a href="compas.geometry.axis_and_angle_from_matrix.html" title="axis_and_angle_from_matrix" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.homogenize_numpy.html" title="homogenize_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          axis_and_angle_from_matrix
+          homogenize_numpy
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

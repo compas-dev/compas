@@ -112,21 +112,15 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Translation.from_data">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Translation.</span></span><span class="sig-name descname"><span class="pre">from_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a data dict.</p>
+<dd><p>Construct an object of this type from the provided data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – A dictionary with a transformation matrix stored under the key “matrix”.</p>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – The data dictionary.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Transformation</em> – The <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a> – An instance of this object type if the data contained in the dict has the correct schema.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="n">matrix</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

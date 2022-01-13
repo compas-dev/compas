@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="is_point_on_segment" href="compas.geometry.is_point_on_segment.html" />
+  <link rel="prev" title="matrix_inverse" href="compas.geometry.matrix_inverse.html" />
   
 
   <script type="text/javascript" async
@@ -109,17 +109,17 @@
 <h1>mirror_point_plane</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.mirror_point_plane">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">mirror_point_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations.py#L725"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">mirror_point_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations.py#L752"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Mirror a point about a plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>point</strong> (<em>list of float</em>) – XYZ coordinates of mirror point.</p></li>
-<li><p><strong>plane</strong> (<em>tuple</em>) – Base point and normal defining the mirror plane.</p></li>
+<li><p><strong>plane</strong> ([point, vector] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – Base point and normal defining the mirror plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list of float</em> – XYZ coordinates of the mirrored point.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – XYZ coordinates of the mirrored point.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -191,11 +191,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.is_point_on_segment.html" title="is_point_on_segment" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.matrix_inverse.html" title="matrix_inverse" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          is_point_on_segment
+          matrix_inverse
         </div>
       </a>
       

@@ -114,13 +114,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>sequence of float</em>) – XYZ components of the first vector.</p></li>
-<li><p><strong>v</strong> (<em>sequence of float</em>) – XYZ components of the second vector.</p></li>
-<li><p><strong>deg</strong> (<em>boolean</em>) – returns angle in degrees if True</p></li>
+<li><p><strong>u</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – XYZ components of the first vector.</p></li>
+<li><p><strong>v</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – XYZ components of the second vector.</p></li>
+<li><p><strong>deg</strong> (<em>bool, optional</em>) – If True, returns the angle in degrees.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – Tolerance for the length of the vectors.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>float</em> – The smallest angle in radians (in degrees if deg == True).
+<dd class="field-even"><p><em>float</em> – The smallest angle in radians (in degrees if <code class="docutils literal notranslate"><span class="pre">deg</span> <span class="pre">==</span> <span class="pre">True</span></code>).
 The angle is always positive.</p>
 </dd>
 </dl>

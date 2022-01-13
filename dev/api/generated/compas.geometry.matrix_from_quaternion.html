@@ -109,14 +109,14 @@
 <h1>matrix_from_quaternion</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.matrix_from_quaternion">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L869"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L907"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculates a rotation matrix from quaternion coefficients.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>quaternion</strong> (<em>list of float</em>) – Four numbers that represents the four coefficient values of a quaternion.</p>
+<dd class="field-odd"><p><strong>quaternion</strong> (<em>[float, float, float, float]</em>) – Four numbers that represents the four coefficient values of a quaternion.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list of list of float</em> – The 4x4 transformation matrix representing a rotation.</p>
+<dd class="field-even"><p><em>list[list[float]]</em> – The 4x4 transformation matrix representing a rotation.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If quaternion is invalid.</p>

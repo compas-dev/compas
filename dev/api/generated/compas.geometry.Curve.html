@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Translation.validate_json" href="compas.geometry.Translation.validate_json.html" />
+  <link rel="prev" title="Shape.validate_json" href="compas.geometry.Shape.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -110,7 +110,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Curve">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/curves/curve.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.data.Data</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.geometry.Geometry</span></code></a></p>
 <p>Base class for curves.</p>
 <p class="rubric">Inherited Methods</p>
 <table class="longtable docutils align-default">
@@ -139,6 +139,12 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.to_jsonstring.html#compas.geometry.Curve.to_jsonstring" title="compas.geometry.Curve.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.transform.html#compas.geometry.Curve.transform" title="compas.geometry.Curve.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<td><p>Transform the geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.transformed.html#compas.geometry.Curve.transformed" title="compas.geometry.Curve.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.validate_data.html#compas.geometry.Curve.validate_data" title="compas.geometry.Curve.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
@@ -217,11 +223,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Translation.validate_json.html" title="Translation.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Shape.validate_json.html" title="Shape.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Translation.validate_json
+          Shape.validate_json
         </div>
       </a>
       

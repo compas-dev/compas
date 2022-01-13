@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="is_colinear" href="compas.geometry.is_colinear.html" />
+  <link rel="next" title="axis_and_angle_from_matrix" href="compas.geometry.axis_and_angle_from_matrix.html" />
   
 
   
@@ -109,24 +109,22 @@
 <h1>is_polygon_in_polygon_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.is_polygon_in_polygon_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_polygon_in_polygon_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_2.py#L365"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_polygon_in_polygon_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_2.py#L356"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Determine if a polygon is in the interior of another polygon on the XY-plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polygon1</strong> (<em>list</em>) – List of XY(Z) coordinates of 2D or 3D points
-(Z will be ignored) representing the locations of the corners of the exterior polygon.
+<li><p><strong>polygon1</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – List of XY(Z) coordinates of points representing the locations of the corners of the exterior polygon (Z will be ignored).
 The vertices are assumed to be in order. The polygon is assumed to be closed:
 the first and last vertex in the sequence should not be the same.</p></li>
-<li><p><strong>polygon2</strong> (<em>list</em>) – List of XY(Z) coordinates of 2D or 3D points
-(Z will be ignored) representing the locations of the corners of the interior polygon.
+<li><p><strong>polygon2</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – List of XY(Z) coordinates of points representing the locations of the corners of the interior polygon (Z will be ignored).
 The vertices are assumed to be in order. The polygon is assumed to be closed:
 the first and last vertex in the sequence should not be the same.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if polygon2 is inside polygon1.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if polygon2 is inside polygon1.
+False otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -208,10 +206,10 @@ the first and last vertex in the sequence should not be the same.</p></li>
       
 
       
-      <a href="compas.geometry.is_colinear.html" title="is_colinear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.axis_and_angle_from_matrix.html" title="axis_and_angle_from_matrix" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          is_colinear
+          axis_and_angle_from_matrix
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

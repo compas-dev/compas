@@ -109,19 +109,22 @@
 <h1>angle_planes</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.angle_planes">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">angle_planes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/angles.py#L365"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">angle_planes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/angles.py#L373"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the smallest angle between the two normal vectors of two planes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (point and vector or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The first plane.</p></li>
-<li><p><strong>b</strong> (point and vector or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The second plane.</p></li>
-<li><p><strong>deg</strong> (<em>boolean</em>) – Returns angle in degrees if True.</p></li>
+<li><p><strong>a</strong> ([point, vector] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The first plane.</p></li>
+<li><p><strong>b</strong> ([point, vector] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The second plane.</p></li>
+<li><p><strong>deg</strong> (<em>bool, optional</em>) – If True, returns the angle in degrees.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>float</em> – The smallest angle in radians (in degrees if deg == True).
-The angle is always positive.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>float</em> – The smallest angle in radians, or in degrees if <code class="docutils literal notranslate"><span class="pre">deg</span> <span class="pre">==</span> <span class="pre">True</span></code>.</p></li>
+<li><p><em>float</em> – The other angle.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

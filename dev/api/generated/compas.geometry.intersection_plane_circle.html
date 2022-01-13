@@ -109,22 +109,27 @@
 <h1>intersection_plane_circle</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.intersection_plane_circle">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_plane_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/intersections/intersections.py#L650"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_plane_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/intersections/intersections.py#L652"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Computes the intersection of a plane and a circle.</p>
-<p>There are 4 cases of plane-circle intersection : 1) they do not intersect,
-2) they coincide (circle.plane == plane), 3) they intersect in 2
-points (secant), 4) they intersect in 1 point (tangent).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>plane</strong> (<em>tuple</em>) – point, normal of the plane.</p></li>
-<li><p><strong>circle</strong> (<em>tuple</em>) – (point, normal), radius of the circle</p></li>
+<li><p><strong>plane</strong> ([point, vector] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – A plane defined by a point and normal vector.</p></li>
+<li><p><strong>circle</strong> ([plane, float] or <a class="reference internal" href="compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a>) – A circle defined by a plane and radius.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>None or point or list of points</em></p>
+<dd class="field-even"><p><em>tuple[[float, float, float], [float, float, float]] or [float, float, float] or None</em> – Two points (secant intersection), one point (tangent intersection), or None (otherwise).</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>There are 4 cases of plane-circle intersection:</p>
+<ol class="arabic simple">
+<li><p>they intersect in 2 points (secant),</p></li>
+<li><p>they intersect in 1 point (tangent),</p></li>
+<li><p>they do not intersect, or</p></li>
+<li><p>they coincide (circle.plane == plane).</p></li>
+</ol>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="mf">10.0</span>

@@ -109,17 +109,17 @@
 <h1>project_point_plane</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.project_point_plane">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">project_point_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations.py#L771"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">project_point_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations.py#L798"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Project a point onto a plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>list of float</em>) – XYZ coordinates of the point.</p></li>
-<li><p><strong>plane</strong> (<em>tuple</em>) – Base point and normal vector defining the projection plane.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates of the point.</p></li>
+<li><p><strong>plane</strong> ([point, vector] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – Base point and normal vector defining the projection plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – XYZ coordinates of the projected point.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – XYZ coordinates of the projected point.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

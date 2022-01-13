@@ -109,19 +109,22 @@
 <h1>closest_point_in_cloud_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.closest_point_in_cloud_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">closest_point_in_cloud_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cloud</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L631"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">closest_point_in_cloud_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cloud</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L635"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculates the closest point in a list of points in the XY-plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>sequence of float</em>) – XY(Z) coordinates of a the base point.</p></li>
-<li><p><strong>cloud</strong> (<em>sequence</em>) – A list of points forming the cloud, with each point represented by its XY(Z) coordinates.</p></li>
+<li><p><strong>point</strong> ([float, float] or [float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XY(Z) coordinates of a the base point.</p></li>
+<li><p><strong>cloud</strong> (sequence[[float, float] or [float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – A list of points forming the cloud, with each point represented by its XY(Z) coordinates.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – The distance to the closest point.
-The XYZ coordinates of the closest point (with Z = 0).
-The index of the closest point in the cloud.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>float</em> – The distance to the closest point.</p></li>
+<li><p><em>[float, float, 0.0]</em> – The XYZ coordinates of the closest point in the XY plane.</p></li>
+<li><p><em>int</em> – The index of the closest point in the cloud.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

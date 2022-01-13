@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Line.validate_json" href="compas.geometry.Line.validate_json.html" />
+  <link rel="prev" title="Pointcloud.validate_json" href="compas.geometry.Pointcloud.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -115,16 +115,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>point</em>) – The base point of the plane.</p></li>
-<li><p><strong>normal</strong> (<em>vector</em>) – The normal vector of the plane.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The base point of the plane.</p></li>
+<li><p><strong>normal</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The normal vector of the plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – The data representation of the plane.</p></li>
-<li><p><strong>point</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The base point of the plane.</p></li>
-<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The normal of the plane.</p></li>
-<li><p><strong>d</strong> (<em>float, read-only</em>) – The <em>d</em> parameter of the equation describing the plane.</p></li>
+<li><p><strong>point</strong> (<a class="reference internal" href="#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The base point of the plane.</p></li>
+<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The normal vector of the plane.</p></li>
+<li><p><strong>d</strong> (<em>float, read-only</em>) – The <em>d</em> parameter of the linear equation describing the plane.</p></li>
+<li><p><strong>abcd</strong> (<em>list[float], read-only</em>) – The coefficients of the plane equation.</p></li>
 </ul>
 </dd>
 </dl>
@@ -274,11 +274,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Line.validate_json.html" title="Line.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Pointcloud.validate_json.html" title="Pointcloud.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Line.validate_json
+          Pointcloud.validate_json
         </div>
       </a>
       

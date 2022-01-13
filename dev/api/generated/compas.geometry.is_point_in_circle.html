@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="is_point_in_halfspace" href="compas.geometry.is_point_in_halfspace.html" />
+  <link rel="next" title="is_point_in_circle_xy" href="compas.geometry.is_point_in_circle_xy.html" />
   
 
   
@@ -109,18 +109,18 @@
 <h1>is_point_in_circle</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.is_point_in_circle">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_point_in_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L428"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_point_in_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L419"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Determine if a point lies in a circle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> ([x, y, z] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – A point.</p></li>
-<li><p><strong>circle</strong> (<em>[point, float, vector]</em>) – A circle.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – A point.</p></li>
+<li><p><strong>circle</strong> ([plane, float] or <a class="reference internal" href="compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a>) – A circle.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the point lies in the circle.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if the point lies in the circle.
+False otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -202,10 +202,10 @@
       
 
       
-      <a href="compas.geometry.is_point_in_halfspace.html" title="is_point_in_halfspace" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.is_point_in_circle_xy.html" title="is_point_in_circle_xy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          is_point_in_halfspace
+          is_point_in_circle_xy
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

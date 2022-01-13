@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="angle_points" href="compas.geometry.angle_points.html" />
+  <link rel="next" title="interop" href="../compas.interop.html" />
   
 
   
@@ -109,28 +109,26 @@
 <h1>logarithmic_spiral_evaluate</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.logarithmic_spiral_evaluate">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">logarithmic_spiral_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/analytical.py#L103"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Evalutes a logarithmic spiral at a parameter. The analytical polar equation is r = a * exp(b * theta).</p>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">logarithmic_spiral_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/analytical.py#L95"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Evalutes a logarithmic spiral at a parameter.</p>
+<p>The analytical polar equation is r = a * exp(b * theta).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<em>float</em>) – Parameter</p></li>
-<li><p><strong>a</strong> (<em>float</em>) – Constant</p></li>
-<li><p><strong>b</strong> (<em>float</em>) – Constant</p></li>
-<li><p><strong>z</strong> (<em>float, optional</em>) – Height. Default is 0.</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – Parameter.</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – The angle of the tangent at the beginning is equal to a.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The radius between turns is equal to 2 * pi * b.</p></li>
+<li><p><strong>z</strong> (<em>float, optional</em>) – Elevation of the spiral segment above the XY plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The (x, y, z) coordinates.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – The XYZ coordinates.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p>GeoGebra. <em>An equiangular spiral - parametric equation</em>.
-Available at: <a class="reference external" href="https://www.geogebra.org/m/zsHgCvq7">https://www.geogebra.org/m/zsHgCvq7</a>.</p>
-</dd>
-</dl>
+<ul class="simple">
+<li><p>GeoGebra. <em>An equiangular spiral - parametric equation</em>. Available at: <a class="reference external" href="https://www.geogebra.org/m/zsHgCvq7">https://www.geogebra.org/m/zsHgCvq7</a>.</p></li>
+</ul>
 </dd></dl>
 
 </section>
@@ -210,10 +208,10 @@ Available at: <a class="reference external" href="https://www.geogebra.org/m/zsH
       
 
       
-      <a href="compas.geometry.angle_points.html" title="angle_points" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="../compas.interop.html" title="interop" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          angle_points
+          interop
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

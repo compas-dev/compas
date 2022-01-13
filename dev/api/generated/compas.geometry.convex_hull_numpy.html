@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="convex_hull_xy_numpy" href="compas.geometry.convex_hull_xy_numpy.html" />
+  <link rel="next" title="convex_hull_xy" href="compas.geometry.convex_hull_xy.html" />
   
 
   
-  <link rel="prev" title="bestfit_sphere_numpy" href="compas.geometry.bestfit_sphere_numpy.html" />
+  <link rel="prev" title="convex_hull" href="compas.geometry.convex_hull.html" />
   
 
   <script type="text/javascript" async
@@ -113,11 +113,17 @@
 <dd><p>Compute the convex hull of a set of points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list</em>) – XYZ coordinates of the points.</p>
+<dd class="field-odd"><p><strong>points</strong> (<em>array_like[point]</em>) – XYZ coordinates of the points.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – Indices of the points on the hull.
-Faces of the hull.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>ndarray[int](N, )</em> – Indices of the points on the hull.</p></li>
+<li><p><em>ndarray[int](M, 3)</em> – Faces of the hull.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the input data is not 3D.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -198,20 +204,20 @@ with <a class="reference internal" href="compas.topology.unify_cycles.html#compa
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.bestfit_sphere_numpy.html" title="bestfit_sphere_numpy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.convex_hull.html" title="convex_hull" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          bestfit_sphere_numpy
+          convex_hull
         </div>
       </a>
       
 
       
-      <a href="compas.geometry.convex_hull_xy_numpy.html" title="convex_hull_xy_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.convex_hull_xy.html" title="convex_hull_xy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          convex_hull_xy_numpy
+          convex_hull_xy
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

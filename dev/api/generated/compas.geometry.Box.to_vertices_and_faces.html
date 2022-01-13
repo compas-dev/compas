@@ -111,15 +111,19 @@
 <h1>Box.to_vertices_and_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Box.to_vertices_and_faces">
-<span class="sig-prename descclassname"><span class="pre">Box.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangulated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/shapes/box.py#L522"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Box.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangulated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/shapes/box.py#L532"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns a list of vertices and faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>triangulated</strong> (<em>bool, optional</em>) – Flag indicating that the faces have to be triangulated.</p>
+<dd class="field-odd"><p><strong>triangulated</strong> (<em>bool, optional</em>) – If True, triangulate the faces.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>(vertices, faces)</em> – A list of vertex locations and a list of faces,
-with each face defined as a list of indices into the list of vertices.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>list[list[float]]</em> – A list of vertex locations</p></li>
+<li><p><em>list[list[int]]</em> – And a list of faces,
+with each face defined as a list of indices into the list of vertices.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

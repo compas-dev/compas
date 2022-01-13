@@ -111,7 +111,13 @@
 <dt class="sig sig-object py" id="compas.geometry.Reflection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Reflection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/reflection.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.transformations.transformation.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.transformations.transformation.Transformation</span></code></a></p>
-<p>Creates a <code class="docutils literal notranslate"><span class="pre">Reflection</span></code> that mirrors points at a plane.</p>
+<p>Class representing a reflection transformation.</p>
+<p>A reflection transformation mirrors points at a plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>matrix</strong> (<em>list[list[float]], optional</em>) – A 4x4 matrix (or similar) representing a reflection.</p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">normal</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
@@ -129,10 +135,10 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_frame.html#compas.geometry.Reflection.from_frame" title="compas.geometry.Reflection.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a></p></td>
-<td><p>Creates a reflection object that mirrors wrt the given frame.</p></td>
+<td><p>Construct a reflection transformation that mirrors wrt the given frame.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_plane.html#compas.geometry.Reflection.from_plane" title="compas.geometry.Reflection.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
-<td><p>Creates a reflection object that mirrors wrt the given plane.</p></td>
+<td><p>Construct a reflection transformation that mirrors wrt the given plane.</p></td>
 </tr>
 </tbody>
 </table>
@@ -147,25 +153,25 @@
 <td><p>Concatenate another transformation to this transformation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Reflection.concatenated.html#compas.geometry.Reflection.concatenated" title="compas.geometry.Reflection.concatenated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenated</span></code></a></p></td>
-<td><p>Concatenate two transformations into one <code class="docutils literal notranslate"><span class="pre">Transformation</span></code>.</p></td>
+<td><p>Concatenate two transformations into one <cite>Transformation</cite>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.copy.html#compas.geometry.Reflection.copy" title="compas.geometry.Reflection.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Returns a copy of the transformation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Reflection.decomposed.html#compas.geometry.Reflection.decomposed" title="compas.geometry.Reflection.decomposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decomposed</span></code></a></p></td>
-<td><p>Decompose the <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> into its <code class="docutils literal notranslate"><span class="pre">Scale</span></code>, <code class="docutils literal notranslate"><span class="pre">Shear</span></code>, <code class="docutils literal notranslate"><span class="pre">Rotation</span></code>, <code class="docutils literal notranslate"><span class="pre">Translation</span></code> and <code class="docutils literal notranslate"><span class="pre">Projection</span></code> components.</p></td>
+<td><p>Decompose the <cite>Transformation</cite> into its components.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_change_of_basis.html#compas.geometry.Reflection.from_change_of_basis" title="compas.geometry.Reflection.from_change_of_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_change_of_basis</span></code></a></p></td>
-<td><p>Computes a change of basis transformation between two frames.</p></td>
+<td><p>Construct a change of basis transformation between two frames.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_data.html#compas.geometry.Reflection.from_data" title="compas.geometry.Reflection.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a data dict.</p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_euler_angles.html#compas.geometry.Reflection.from_euler_angles" title="compas.geometry.Reflection.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a></p></td>
 <td><p>Construct a transformation from a rotation represented by Euler angles.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_frame_to_frame.html#compas.geometry.Reflection.from_frame_to_frame" title="compas.geometry.Reflection.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a></p></td>
-<td><p>Computes a transformation between two frames.</p></td>
+<td><p>Construct a transformation between two frames.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_json.html#compas.geometry.Reflection.from_json" title="compas.geometry.Reflection.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
@@ -174,10 +180,10 @@
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_list.html#compas.geometry.Reflection.from_list" title="compas.geometry.Reflection.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
-<td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a list of 16 numbers.</p></td>
+<td><p>Creates a transformation from a list of 16 numbers.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Reflection.from_matrix.html#compas.geometry.Reflection.from_matrix" title="compas.geometry.Reflection.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
-<td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a 4x4 matrix-like object.</p></td>
+<td><p>Creates a transformation from a list[list[float]] object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.inverse.html#compas.geometry.Reflection.inverse" title="compas.geometry.Reflection.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a></p></td>
 <td><p>Returns the inverse transformation.</p></td>
@@ -189,7 +195,7 @@
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Reflection.to_data.html#compas.geometry.Reflection.to_data" title="compas.geometry.Reflection.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Reflection.to_json.html#compas.geometry.Reflection.to_json" title="compas.geometry.Reflection.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>

@@ -111,13 +111,18 @@
 <h1>Transformation.decomposed</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Transformation.decomposed">
-<span class="sig-prename descclassname"><span class="pre">Transformation.</span></span><span class="sig-name descname"><span class="pre">decomposed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformation.py#L519"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Decompose the <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> into its <code class="docutils literal notranslate"><span class="pre">Scale</span></code>, <code class="docutils literal notranslate"><span class="pre">Shear</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Rotation</span></code>, <code class="docutils literal notranslate"><span class="pre">Translation</span></code> and <code class="docutils literal notranslate"><span class="pre">Projection</span></code> components.</p>
+<span class="sig-prename descclassname"><span class="pre">Transformation.</span></span><span class="sig-name descname"><span class="pre">decomposed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformation.py#L465"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Decompose the <cite>Transformation</cite> into its components.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>5-tuple of Transformation</em> – The scale, shear, rotation, translation, and projection components
-of the current transformation.</p>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><a class="reference internal" href="compas.geometry.Scale.html#compas.geometry.Scale" title="compas.geometry.Scale"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Scale</span></code></a> – The scale component of the current transformation.</p></li>
+<li><p><a class="reference internal" href="compas.geometry.Shear.html#compas.geometry.Shear" title="compas.geometry.Shear"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shear</span></code></a> – The shear component of the current transformation.</p></li>
+<li><p><a class="reference internal" href="compas.geometry.Rotation.html#compas.geometry.Rotation" title="compas.geometry.Rotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Rotation</span></code></a> – The rotation component of the current transformation.</p></li>
+<li><p><a class="reference internal" href="compas.geometry.Translation.html#compas.geometry.Translation" title="compas.geometry.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Translation</span></code></a> – The translation component of the current transformation.</p></li>
+<li><p><a class="reference internal" href="compas.geometry.Projection.html#compas.geometry.Projection" title="compas.geometry.Projection"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Projection</span></code></a> – The projection component of the current transformation.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

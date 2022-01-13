@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="is_point_in_circle_xy" href="compas.geometry.is_point_in_circle_xy.html" />
+  <link rel="next" title="is_point_behind_plane" href="compas.geometry.is_point_behind_plane.html" />
   
 
   
-  <link rel="prev" title="is_intersection_line_line_xy" href="compas.geometry.is_intersection_line_line_xy.html" />
+  <link rel="prev" title="is_intersection_segment_segment" href="compas.geometry.is_intersection_segment_segment.html" />
   
 
   <script type="text/javascript" async
@@ -109,25 +109,28 @@
 <h1>is_intersection_segment_segment_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.is_intersection_segment_segment_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_intersection_segment_segment_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cd</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_2.py#L427"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_intersection_segment_segment_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cd</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_2.py#L417"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Determines if two segments, ab and cd, intersect.</p>
-<p>The segments intersect if both of the following conditions are true:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>c is on the left of ab, and d is on the right, or vice versa</p></li>
-<li><p>d is on the left of ac, and on the right of bc, or vice versa</p></li>
-</ul>
-</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ab, cd</strong> (<em>tuple</em>) – A sequence of XY(Z) coordinates of two 2D or 3D points
-(Z will be ignored) representing the start and end points of a segment.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ab</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Two points representing the start and end points of a segment.
+Z coordinates will be ignored.</p></li>
+<li><p><strong>cd</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Two points representing the start and end points of a segment.
+Z coordinates will be ignored.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the segments intersect.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if the segments intersect.
+False otherwise.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The segments intersect if both of the following conditions are true:</p>
+<ul class="simple">
+<li><p><cite>c</cite> is on the left of <cite>ab</cite>, and <cite>d</cite> is on the right, or vice versa.</p></li>
+<li><p><cite>d</cite> is on the left of <cite>ac</cite>, and on the right of <cite>bc</cite>, or vice versa.</p></li>
+</ul>
 </dd></dl>
 
 </section>
@@ -197,20 +200,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.is_intersection_line_line_xy.html" title="is_intersection_line_line_xy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.is_intersection_segment_segment.html" title="is_intersection_segment_segment" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          is_intersection_line_line_xy
+          is_intersection_segment_segment
         </div>
       </a>
       
 
       
-      <a href="compas.geometry.is_point_in_circle_xy.html" title="is_point_in_circle_xy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.is_point_behind_plane.html" title="is_point_behind_plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          is_point_in_circle_xy
+          is_point_behind_plane
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

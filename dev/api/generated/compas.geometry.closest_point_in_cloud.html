@@ -114,18 +114,21 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>tuple</em>) – XYZ coordinates of the base point.</p></li>
-<li><p><strong>cloud</strong> (<em>sequence</em>) – A sequence locations in three-dimensional space.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates of the base point.</p></li>
+<li><p><strong>cloud</strong> (sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – A sequence locations in three-dimensional space.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – The distance to the closest point.
-XYZ coordinates of the closest point.
-The index of the closest point in the original list.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>float</em> – The distance to the closest point.</p></li>
+<li><p><em>[float, float, float]</em> – XYZ coordinates of the closest point.</p></li>
+<li><p><em>int</em> – The index of the closest point in the original list.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Check kdTree class for an optimized implementation (MR).</p>
+<p>Check kdTree class for an optimized implementation.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

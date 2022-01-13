@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="tween_points_distance" href="compas.geometry.tween_points_distance.html" />
+  <link rel="prev" title="offset_polygon" href="compas.geometry.offset_polygon.html" />
   
 
   <script type="text/javascript" async
@@ -114,12 +114,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> (<em>(list, list)</em>) – The vertices and faces of mesh A.</p></li>
-<li><p><strong>B</strong> (<em>(list, list)</em>) – The vertices and faces of mesh B.</p></li>
+<li><p><strong>A</strong> (<em>tuple[sequence[point], sequence[[int, int, int]]]</em>) – The vertices and faces of mesh A.</p></li>
+<li><p><strong>B</strong> (<em>tuple[sequence[point], sequence[[int, int, int]]]</em>) – The vertices and faces of mesh B.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – The vertices and the faces of the boolean union.</p>
+<dd class="field-even"><p><em>tuple[list[point], list[[int, int, int]]]</em> – The vertices and the faces of the boolean union.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -217,11 +217,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.tween_points_distance.html" title="tween_points_distance" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.offset_polygon.html" title="offset_polygon" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          tween_points_distance
+          offset_polygon
         </div>
       </a>
       

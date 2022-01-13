@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="convex_hull_numpy" href="compas.geometry.convex_hull_numpy.html" />
+  <link rel="prev" title="convex_hull_xy" href="compas.geometry.convex_hull_xy.html" />
   
 
   <script type="text/javascript" async
@@ -109,31 +109,25 @@
 <h1>convex_hull_xy_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.convex_hull_xy_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">convex_hull_xy_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/hull/hull_numpy.py#L52"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">convex_hull_xy_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/hull/hull_numpy.py#L58"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the convex hull of a set of points in the XY plane.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This function requires Numpy ands Scipy.</p>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list</em>) – XY(Z) coordinates of the points.</p>
+<dd class="field-odd"><p><strong>points</strong> (<em>array_like[point]</em>) – XY(Z) coordinates of the points.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><em>list</em> – Indices of the points on the hull.</p></li>
-<li><p><em>list</em> – Faces of the hull.</p></li>
+<li><p><em>ndarray[int](N, )</em> – Indices of the points on the hull.</p></li>
+<li><p><em>ndarray[int](M, 2)</em> – Lines of the hull.</p></li>
 </ul>
 </p>
 </dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the input data is not at least 2D.</p>
+</dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>The faces of the hull returned by this function do not necessarily have consistent
-cycle directions. To obtain a mesh with consistent cycle directions, construct
-a mesh from the returned vertices, this function should be used in combination
-with <a class="reference internal" href="compas.topology.unify_cycles.html#compas.topology.unify_cycles" title="compas.topology.unify_cycles"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.topology.unify_cycles()</span></code></a>.</p>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1">#</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
 </div>
 </dd></dl>
@@ -205,11 +199,11 @@ with <a class="reference internal" href="compas.topology.unify_cycles.html#compa
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.convex_hull_numpy.html" title="convex_hull_numpy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.convex_hull_xy.html" title="convex_hull_xy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          convex_hull_numpy
+          convex_hull_xy
         </div>
       </a>
       

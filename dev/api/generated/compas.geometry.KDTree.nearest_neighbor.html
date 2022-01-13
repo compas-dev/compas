@@ -111,19 +111,18 @@
 <h1>KDTree.nearest_neighbor</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.KDTree.nearest_neighbor">
-<span class="sig-prename descclassname"><span class="pre">KDTree.</span></span><span class="sig-name descname"><span class="pre">nearest_neighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/kdtree.py#L88"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">KDTree.</span></span><span class="sig-name descname"><span class="pre">nearest_neighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/kdtree.py#L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Find the nearest neighbor to a given point,
 excluding neighbors that have already been found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>list</em>) – XYZ coordinates of the base point.</p></li>
-<li><p><strong>exclude</strong> (<em>set, optional</em>) – A set of points to exclude from the search.
-Defaults to an empty set.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XYZ coordinates of the base point.</p></li>
+<li><p><strong>exclude</strong> (<em>sequence[int or str], optional</em>) – A sequence of point identified by their label to exclude from the search.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – XYZ coordinates of the nearest neighbor.
+<dd class="field-even"><p><em>[[float, float, float], int or str, float]</em> – XYZ coordinates of the nearest neighbor.
 Label of the nearest neighbor.
 Distance to the base point.</p>
 </dd>

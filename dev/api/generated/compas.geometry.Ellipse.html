@@ -111,23 +111,24 @@
 <dt class="sig sig-object py" id="compas.geometry.Ellipse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Ellipse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">major</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/ellipse.py#L9"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.primitives._primitive.Primitive</span></code></a></p>
-<p>A ellipse is defined by a plane and a major.</p>
+<p>A ellipse is defined by a plane and a major and minor axis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>plane</strong> (<a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a> or tuple of point and normal) – The plane of the ellipse.</p></li>
+<li><p><strong>plane</strong> ([point, vector] or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The plane of the ellipse.</p></li>
 <li><p><strong>major</strong> (<em>float</em>) – The major of the ellipse.</p></li>
+<li><p><strong>minor</strong> (<em>float</em>) – The minor of the ellipse.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>plane</strong> (<a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The plane of the ellipse.</p></li>
-<li><p><strong>major</strong> (<em>float</em>) – The major.</p></li>
-<li><p><strong>minor</strong> (<em>float</em>) – The minor.</p></li>
-<li><p><strong>center</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The base point of the plane and center of the ellipse.</p></li>
-<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The normal vector of the plane.</p></li>
-<li><p><strong>circumference</strong> (<em>float, read-only</em>) – The circumference of the ellipse.</p></li>
+<li><p><strong>major</strong> (<em>float</em>) – The major of the ellipse.</p></li>
+<li><p><strong>minor</strong> (<em>float</em>) – The minor of the ellipse.</p></li>
+<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – The normal of the ellipse.</p></li>
+<li><p><strong>center</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The center of the ellipse.</p></li>
 <li><p><strong>area</strong> (<em>float, read-only</em>) – The area of the ellipse.</p></li>
+<li><p><strong>circumference</strong> (<em>float, read-only</em>) – The circumference of the ellipse.</p></li>
 </ul>
 </dd>
 </dl>

@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Ellipse.validate_json" href="compas.geometry.Ellipse.validate_json.html" />
+  <link rel="prev" title="Plane.validate_json" href="compas.geometry.Plane.validate_json.html" />
   
 
   <script type="text/javascript" async
@@ -115,21 +115,20 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>point</em>) – The origin of the frame.</p></li>
-<li><p><strong>xaxis</strong> (<em>vector</em>) – The x-axis of the frame.</p></li>
-<li><p><strong>yaxis</strong> (<em>vector</em>) – The y-axis of the frame.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The origin of the frame.</p></li>
+<li><p><strong>xaxis</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The x-axis of the frame.</p></li>
+<li><p><strong>yaxis</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The y-axis of the frame.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – The data representation of the frame.</p></li>
 <li><p><strong>point</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The base point of the frame.</p></li>
 <li><p><strong>xaxis</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The local X axis of the frame.</p></li>
 <li><p><strong>yaxis</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The local Y axis of the frame.</p></li>
-<li><p><strong>zaxis</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The local Z axis of the frame.</p></li>
-<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The normal vector of the base plane of the frame.</p></li>
-<li><p><strong>quaternion</strong> (<a class="reference internal" href="compas.geometry.Quaternion.html#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Quaternion</span></code></a>) – The quaternion representing the rotation of the frame.</p></li>
-<li><p><strong>axis_angle_vector</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The rotation vector of the frame.</p></li>
+<li><p><strong>zaxis</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – The Z axis of the frame.</p></li>
+<li><p><strong>normal</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – The normal of the base plane of the frame.</p></li>
+<li><p><strong>quaternion</strong> (<a class="reference internal" href="compas.geometry.Quaternion.html#compas.geometry.Quaternion" title="compas.geometry.Quaternion"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Quaternion</span></code></a>, read-only) – The quaternion from the rotation given by the frame.</p></li>
+<li><p><strong>axis_angle_vector</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only) – The axis-angle vector representing the rotation of the frame.</p></li>
 </ul>
 </dd>
 </dl>
@@ -178,10 +177,10 @@ vector as starting point.</p>
 <td><p>Construct a frame from a rotation represented by quaternion coefficients.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_rotation.html#compas.geometry.Frame.from_rotation" title="compas.geometry.Frame.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
-<td><p>Constructs a frame from a <code class="docutils literal notranslate"><span class="pre">Rotation</span></code>.</p></td>
+<td><p>Constructs a frame from a Rotation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation" title="compas.geometry.Frame.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a></p></td>
-<td><p>Constructs a frame from a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code>.</p></td>
+<td><p>Constructs a frame from a Transformation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.local_to_local_coordinates.html#compas.geometry.Frame.local_to_local_coordinates" title="compas.geometry.Frame.local_to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_to_local_coordinates</span></code></a></p></td>
 <td><p>Returns the object's coordinates in frame1 in the local coordinates of frame2.</p></td>
@@ -311,11 +310,11 @@ vector as starting point.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Ellipse.validate_json.html" title="Ellipse.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Plane.validate_json.html" title="Plane.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Ellipse.validate_json
+          Plane.validate_json
         </div>
       </a>
       

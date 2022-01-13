@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="is_colinear_xy" href="compas.geometry.is_colinear_xy.html" />
+  <link rel="next" title="is_colinear" href="compas.geometry.is_colinear.html" />
   
 
   
-  <link rel="prev" title="NurbsSurface.validate_json" href="compas.geometry.NurbsSurface.validate_json.html" />
+  <link rel="prev" title="quadmesh_planarize" href="compas.geometry.quadmesh_planarize.html" />
   
 
   <script type="text/javascript" async
@@ -115,21 +115,19 @@ and assuming that all points lie in the XY plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<em>sequence of float</em>) – XY(Z) coordinates of the base point.</p></li>
-<li><p><strong>b</strong> (<em>sequence of float</em>) – XY(Z) coordinates of the first end point.</p></li>
-<li><p><strong>c</strong> (<em>sequence of float</em>) – XY(Z) coordinates of the second end point.</p></li>
-<li><p><strong>colinear</strong> (<em>bool, optional</em>) – Allow points to be colinear.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>a</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – Base point defined by XY(Z) coordinates.</p></li>
+<li><p><strong>b</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – First end point defined by XY(Z) coordinates.</p></li>
+<li><p><strong>c</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – Second end point defined by XY(Z) coordinates.</p></li>
+<li><p><strong>colinear</strong> (<em>bool, optional</em>) – If True, colinear points will return a positive result.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if ccw.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if ccw.
+False otherwise.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>For more info, see <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <p class="rubric">References</p>
+<p>For more info, see <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <dl class="footnote brackets">
 <dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Marsh, C. <em>Computational Geometry in Python: From Theory to Application</em>.
@@ -222,20 +220,20 @@ Available at: <a class="reference external" href="https://www.toptal.com/python/
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.NurbsSurface.validate_json.html" title="NurbsSurface.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.quadmesh_planarize.html" title="quadmesh_planarize" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          NurbsSurface.validate_json
+          quadmesh_planarize
         </div>
       </a>
       
 
       
-      <a href="compas.geometry.is_colinear_xy.html" title="is_colinear_xy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.is_colinear.html" title="is_colinear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          is_colinear_xy
+          is_colinear
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

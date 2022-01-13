@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="orthonormalize_axes" href="compas.geometry.orthonormalize_axes.html" />
+  <link rel="next" title="mirror_point_plane" href="compas.geometry.mirror_point_plane.html" />
   
 
   
@@ -109,21 +109,21 @@
 <h1>matrix_inverse</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.matrix_inverse">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L153"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L171"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculates the inverse of a square matrix M.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>M</strong> (<em>list of list of float</em>) – A square matrix of any dimension.</p>
+<dd class="field-odd"><p><strong>M</strong> (<em>list[list[float]]</em>) – A square matrix of any dimension.</p>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list[list[float]]</em> – The inverted matrix.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If the matrix is not squared</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If the matrix is singular.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If the matrix is not invertible.</p></li>
 </ul>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>list of list of float</em> – The inverted matrix.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -221,10 +221,10 @@
       
 
       
-      <a href="compas.geometry.orthonormalize_axes.html" title="orthonormalize_axes" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.mirror_point_plane.html" title="mirror_point_plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          orthonormalize_axes
+          mirror_point_plane
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

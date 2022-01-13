@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="is_point_behind_plane" href="compas.geometry.is_point_behind_plane.html" />
+  <link rel="next" title="is_polygon_convex_xy" href="compas.geometry.is_polygon_convex_xy.html" />
   
 
   
-  <link rel="prev" title="is_intersection_segment_segment" href="compas.geometry.is_intersection_segment_segment.html" />
+  <link rel="prev" title="is_point_on_segment_xy" href="compas.geometry.is_point_on_segment_xy.html" />
   
 
   <script type="text/javascript" async
@@ -109,22 +109,20 @@
 <h1>is_polygon_convex</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.is_polygon_convex">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_polygon_convex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L179"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_polygon_convex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_3.py#L175"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Determine if a polygon is convex.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>polygon</strong> (list of points or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – A polygon.</p>
+<dd class="field-odd"><p><strong>polygon</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – A polygon.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>bool</em> – True if the polygon is convex.
+False otherwise.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>Use this function for <em>spatial</em> polygons.
 If the polygon is in a horizontal plane, use <a class="reference internal" href="compas.geometry.is_polygon_convex_xy.html#compas.geometry.is_polygon_convex_xy" title="compas.geometry.is_polygon_convex_xy"><code class="xref py py-func docutils literal notranslate"><span class="pre">is_polygon_convex_xy()</span></code></a> instead.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the polygon is convex.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
-</dd>
-</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_polygon_convex</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
@@ -200,20 +198,20 @@ If the polygon is in a horizontal plane, use <a class="reference internal" href=
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.is_intersection_segment_segment.html" title="is_intersection_segment_segment" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.is_point_on_segment_xy.html" title="is_point_on_segment_xy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          is_intersection_segment_segment
+          is_point_on_segment_xy
         </div>
       </a>
       
 
       
-      <a href="compas.geometry.is_point_behind_plane.html" title="is_point_behind_plane" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.is_polygon_convex_xy.html" title="is_polygon_convex_xy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          is_point_behind_plane
+          is_polygon_convex_xy
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

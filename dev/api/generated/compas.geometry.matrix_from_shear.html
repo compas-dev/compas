@@ -109,21 +109,24 @@
 <h1>matrix_from_shear</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.matrix_from_shear">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_shear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1249"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">matrix_from_shear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L1325"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Constructs a shear matrix by an angle along the direction vector on the
 shear plane (defined by point and normal).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>angle</strong> (<em>float</em>) – The angle in radians.</p></li>
-<li><p><strong>direction</strong> (<em>list of float</em>) – The direction vector as list of 3 numbers.
+<li><p><strong>direction</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The direction vector as list of 3 numbers.
 It must be orthogonal to the normal vector.</p></li>
-<li><p><strong>point</strong> (<em>list of float</em>) – The point of the shear plane as list of 3 numbers.</p></li>
-<li><p><strong>normal</strong> (<em>list of float</em>) – The normal of the shear plane as list of 3 numbers.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The point of the shear plane as list of 3 numbers.</p></li>
+<li><p><strong>normal</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The normal of the shear plane as list of 3 numbers.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If direction and normal are not orthogonal.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list[list[float]]</em> – A 4-by-4 transformation matrix.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If direction and normal are not orthogonal.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

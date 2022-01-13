@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="is_intersection_segment_segment_xy" href="compas.geometry.is_intersection_segment_segment_xy.html" />
+  <link rel="prev" title="is_point_in_circle" href="compas.geometry.is_point_in_circle.html" />
   
 
   <script type="text/javascript" async
@@ -109,18 +109,18 @@
 <h1>is_point_in_circle_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.is_point_in_circle_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_point_in_circle_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_2.py#L342"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">is_point_in_circle_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/predicates/predicates_2.py#L333"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Determine if a point lies in a circle lying on the XY-plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>sequence of float</em>) – XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</p></li>
-<li><p><strong>circle</strong> (<em>tuple</em>) – center, radius of the circle on the xy plane.</p></li>
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – XY(Z) coordinates of a point (Z will be ignored).</p></li>
+<li><p><strong>circle</strong> (<em>[point, float]</em>) – Center and radius of the circle on the XY plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the point lies in the circle.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if the point lies in the circle.
+False otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -192,11 +192,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.is_intersection_segment_segment_xy.html" title="is_intersection_segment_segment_xy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.is_point_in_circle.html" title="is_point_in_circle" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          is_intersection_segment_segment_xy
+          is_point_in_circle
         </div>
       </a>
       

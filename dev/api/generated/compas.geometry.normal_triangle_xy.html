@@ -109,18 +109,21 @@
 <h1>normal_triangle_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.normal_triangle_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">normal_triangle_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/normals.py#L104"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">normal_triangle_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triangle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/normals.py#L108"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the normal vector of a triangle assumed to lie in the XY plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>triangle</strong> (<em>list of list</em>) – A list of triangle point coordinates.
-Z-coordinates are ignored.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>triangle</strong> ([point, point, point] or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – A list of triangle point coordinates.
+Z-coordinates are ignored.</p></li>
+<li><p><strong>unitized</strong> (<em>bool, optional</em>) – If True, unitize the normal vector.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The normal vector, which is a vector perpendicular to the XY plane.</p>
+<dd class="field-even"><p><em>[float, float, float]</em> – The normal vector, which is a vector perpendicular to the XY plane.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If the triangle does not have three vertices.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If the triangle does not have three vertices.</p>
 </dd>
 </dl>
 </dd></dl>

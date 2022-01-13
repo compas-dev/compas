@@ -111,21 +111,13 @@
 <h1>Shear.to_data</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Shear.to_data">
-<span class="sig-prename descclassname"><span class="pre">Shear.</span></span><span class="sig-name descname"><span class="pre">to_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformation.py#L180"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p>
+<span class="sig-prename descclassname"><span class="pre">Shear.</span></span><span class="sig-name descname"><span class="pre">to_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L211"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Convert an object to its native data representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>dict</em> – A dictionary with a transformation matrix stored under the key “matrix”.</p>
+<dd class="field-odd"><p><em>dict</em> – The data representation of the object as described by the schema.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="n">matrix</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span> <span class="o">==</span> <span class="n">data</span>
-<span class="go">True</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

@@ -116,18 +116,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>euler_angles</strong> (<em>list of float</em>) – Three numbers that represent the angles of rotations about the defined axes.</p></li>
-<li><p><strong>static</strong> (<em>bool, optional</em>) – If true the rotations are applied to a static frame.
-If not, to a rotational.
-Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>axes</strong> (<em>str, optional</em>) – A 3 character string specifying the order of the axes.
-Defaults to <code class="docutils literal notranslate"><span class="pre">'xyz'</span></code>.</p></li>
-<li><p><strong>point</strong> (<em>list of float, optional</em>) – The point of the frame.
-Defaults to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>euler_angles</strong> (<em>[float, float, float]</em>) – Three numbers that represent the angles of rotations about the defined axes.</p></li>
+<li><p><strong>static</strong> (<em>bool, optional</em>) – If True the rotations are applied to a static frame.
+If False, to a rotational.</p></li>
+<li><p><strong>axes</strong> (<em>str, optional</em>) – A 3 character string specifying the order of the axes.</p></li>
+<li><p><strong>point</strong> (<em>list[float], optional</em>) – The point of the frame.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a> – The constructed transformation.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a> – The transformation.</p>
 </dd>
 </dl>
 </dd></dl>

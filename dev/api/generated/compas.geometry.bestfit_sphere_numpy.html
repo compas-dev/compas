@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="convex_hull_numpy" href="compas.geometry.convex_hull_numpy.html" />
+  <link rel="next" title="bounding_box" href="compas.geometry.bounding_box.html" />
   
 
   
@@ -109,14 +109,18 @@
 <h1>bestfit_sphere_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.bestfit_sphere_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_sphere_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bestfit/bestfit_numpy.py#L147"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_sphere_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bestfit/bestfit_numpy.py#L156"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the sphere’s center and radius that fits best through a set of points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list of points</em>) – XYZ coordinates of the points.</p>
+<dd class="field-odd"><p><strong>points</strong> (<em>array_like[point]</em>) – XYZ coordinates of the points.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>tuple</strong> (<em>center, radius</em>) – sphere center (XYZ coordinates) and sphere radius.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>[float, float, float]</em> – Sphere center (XYZ coordinates).</p></li>
+<li><p><em>float</em> – Sphere radius.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -213,10 +217,10 @@ Available at: <a class="reference external" href="https://jekel.me/2015/Least-Sq
       
 
       
-      <a href="compas.geometry.convex_hull_numpy.html" title="convex_hull_numpy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.bounding_box.html" title="bounding_box" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          convex_hull_numpy
+          bounding_box
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="world_to_local_coordinates" href="compas.geometry.world_to_local_coordinates.html" />
+  <link rel="prev" title="decompose_matrix" href="compas.geometry.decompose_matrix.html" />
   
 
   <script type="text/javascript" async
@@ -109,14 +109,14 @@
 <h1>dehomogenize_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.dehomogenize_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">dehomogenize_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L194"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">dehomogenize_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/transformations_numpy.py#L219"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Dehomogenizes points or vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Points</span></code> or list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Vectors</span></code>)</p>
+<dd class="field-odd"><p><strong>data</strong> (<em>array_like[[float, float, float, float]]</em>) – The data to dehomogenize.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+<dd class="field-even"><p><em>(N, 3) ndarray</em></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -195,11 +195,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.world_to_local_coordinates.html" title="world_to_local_coordinates" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.decompose_matrix.html" title="decompose_matrix" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          world_to_local_coordinates
+          decompose_matrix
         </div>
       </a>
       

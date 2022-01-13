@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="offset_line" href="compas.geometry.offset_line.html" />
+  <link rel="next" title="barycentric_coordinates" href="compas.geometry.barycentric_coordinates.html" />
   
 
   
@@ -109,30 +109,37 @@
 <h1>intersection_sphere_sphere</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.intersection_sphere_sphere">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_sphere_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sphere1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/intersections/intersections.py#L454"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_sphere_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sphere1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/intersections/intersections.py#L449"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Computes the intersection of 2 spheres.</p>
-<p>There are 4 cases of sphere-sphere intersection : 1) the spheres intersect
-in a circle, 2) they intersect in a point, 3) they overlap, 4) they do not
-intersect.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sphere1</strong> (<em>tuple</em>) – center, radius of the sphere.</p></li>
-<li><p><strong>sphere2</strong> (<em>tuple</em>) – center, radius of the sphere.</p></li>
+<li><p><strong>sphere1</strong> ([point, float] or <a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a>) – A sphere defined by a point and radius.</p></li>
+<li><p><strong>sphere2</strong> ([point, float] or <a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a>) – A sphere defined by a point and radius.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>case</strong> (<em>str</em>) – <cite>point</cite>, <cite>circle</cite>, or <cite>sphere</cite></p></li>
-<li><p><strong>result</strong> (<em>tuple</em>) –</p>
-<ul>
-<li><p>point: xyz coordinates</p></li>
-<li><p>circle: center, radius, normal</p></li>
-<li><p>sphere: center, radius</p></li>
-</ul>
-</li>
+<li><p><em>{‘point’, ‘circle’, or ‘sphere’}</em> – The type of intersection.</p></li>
+<li><p><em>[float, float, float] or tuple[[float, float, float], float, [float, float, float]] or tuple[[float, float, float], float]</em> – If the type is ‘point’, the coordinates of the point.
+If the type is ‘circle’, the center point and radius of the circle, and the normal of the plane containing the circle.
+If the type is ‘sphere’, the center point and radius of the sphere.</p></li>
 </ul>
 </p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>There are 4 cases of sphere-sphere intersection <a class="footnote-reference brackets" href="#id2" id="id1">1</a>:</p>
+<ol class="arabic simple">
+<li><p>the spheres intersect in a circle,</p></li>
+<li><p>they intersect in a point,</p></li>
+<li><p>they overlap,</p></li>
+<li><p>they do not intersect.</p></li>
+</ol>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p><a class="reference external" href="https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -149,8 +156,6 @@ intersect.</p>
 <span class="gp">... </span>        <span class="n">center</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">res</span>
 </code></pre></div>
 </div>
-<p class="rubric">References</p>
-<p><a class="reference external" href="https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection</a></p>
 </dd></dl>
 
 </section>
@@ -230,10 +235,10 @@ intersect.</p>
       
 
       
-      <a href="compas.geometry.offset_line.html" title="offset_line" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.barycentric_coordinates.html" title="barycentric_coordinates" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          offset_line
+          barycentric_coordinates
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

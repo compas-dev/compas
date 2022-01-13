@@ -114,30 +114,32 @@
 polylines (ab, bc, dc, ad).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>polylines</strong> (<em>sequence</em>) – The XYZ coordinates of the vertices of the polyline.
-The vertices are assumed to be in order.
-The polyline is assumed to be open:</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ab</strong> (<em>list[point]</em>) – The XYZ coordinates of the vertices of the first polyline.</p></li>
+<li><p><strong>bc</strong> (<em>list[point]</em>) – The XYZ coordinates of the vertices of the second polyline.</p></li>
+<li><p><strong>dc</strong> (<em>list[point]</em>) – The XYZ coordinates of the vertices of the third polyline.</p></li>
+<li><p><strong>ad</strong> (<em>list[point]</em>) – The XYZ coordinates of the vertices of the fourth polyline.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>points</strong> (<em>list of tuples</em>) – The points of the coons patch.</p></li>
-<li><p><strong>faces</strong> (<em>list of lists</em>) – List of faces (face = list of vertex indices as integers)</p></li>
+<li><p><strong>points</strong> (<em>list[point]</em>) – The points of the coons patch.</p></li>
+<li><p><strong>faces</strong> (<em>list[list[int]]</em>) – List of faces, with every face a list of indices into the point list.</p></li>
 </ul>
 </p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Direction and order of polylines:</p>
+<p>The vertices of the polylines are assumed to be in the following order:</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">b</span> <span class="o">-----&gt;</span> <span class="n">c</span>
 <span class="o">^</span>        <span class="o">^</span>
-<span class="o">|</span>        <span class="o">|</span>
 <span class="o">|</span>        <span class="o">|</span>
 <span class="o">|</span>        <span class="o">|</span>
 <span class="n">a</span> <span class="o">-----&gt;</span> <span class="n">d</span>
 </code></pre></div>
 </div>
-<p>One polyline can be None to create a triangular patch
-(Warning! This will result in duplicate vertices)</p>
+<p>To create a triangular patch, one of the input polylines should be None.
+(Warning! This will result in duplicate vertices.)</p>
 <p>For more information see <a class="footnote-reference brackets" href="#id3" id="id1">1</a> and <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
 <p class="rubric">References</p>
 <dl class="footnote brackets">
