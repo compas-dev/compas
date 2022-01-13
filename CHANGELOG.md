@@ -9,11 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_blender.conversions.BlenderGeometry`.
+* Added `compas_blender.conversions.BlenderCurve`.
+* Added `compas_blender.conversions.BlenderMesh`.
+* Added option to return strip faces from `compas.datastructure.Halfedge.edge_strip`.
+
 ### Changed
 
+* Fixed bug in `mesh_slice_plane()` , `Mesh.slice_plane()`.
 * Changed `compas_rhino.geometry.RhinoNurbsSurface.closest_point` to fix bug of rhino_curve to rhino_surface, plus return tuple instead.
+* Changed `compas_plotters.plotter.Plotter` to normal class instead of singleton.
 
 ### Removed
+
+* Removed `compas.geometry.Collection`
+* Removed `compas.geometry.CollectionNumpy`
+* Removed `compas.geometry.PointCollection`
+* Removed `compas.geometry.PointCollectionNumpy`
 
 
 ## [1.13.3] 2021-12-17

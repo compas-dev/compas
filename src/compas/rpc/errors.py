@@ -3,12 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ['RPCServerError', 'RPCClientError']
-
-
 class RPCServerError(Exception):
-    pass
+    """Exception for errors originating from the server."""
 
 
 class RPCClientError(Exception):
-    pass
+    """Exception for errors originating from the client."""

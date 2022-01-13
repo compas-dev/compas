@@ -16,6 +16,10 @@ class VectorArtist(GHArtist, PrimitiveArtist):
     ----------
     vector : :class:`compas.geometry.Vector`
         A COMPAS vector.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+
     """
 
     def __init__(self, vector, **kwargs):
@@ -29,10 +33,12 @@ class VectorArtist(GHArtist, PrimitiveArtist):
         point : [float, float, float] or :class:`compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
+        show_point : bool, optional
+            If True, draw the point of application of the vector.
 
         Returns
         -------
-        list
+        list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
             The Rhino line and endpoints, if requested.
 
         """

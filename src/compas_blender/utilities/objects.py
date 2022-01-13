@@ -21,7 +21,18 @@ __all__ = [
 
 
 def delete_all_objects(purge_data: bool = True):
-    """Delete all mesh and curve scene objects, and the attached mesh and curve data blocks."""
+    """Delete all mesh and curve scene objects, and the attached mesh and curve data blocks.
+
+    Parameters
+    ----------
+    purge_data : bool, optional
+        If True, also delete the underlying data blocks.
+
+    Returns
+    -------
+    None
+
+    """
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.delete(use_global=True, confirm=False)
     if purge_data:
@@ -30,6 +41,18 @@ def delete_all_objects(purge_data: bool = True):
 
 def delete_object(obj: bpy.types.Object, purge_data: bool = True):
     """Delete a scene object.
+
+    Parameters
+    ----------
+    obj : :blender:`bpy.types.Object`
+        The Blender scene object.
+    purge_data : bool, optional
+        If True, also delete the underlying data blocks.
+
+    Returns
+    -------
+    None
+
     """
     bpy.data.objects.remove(obj)
     if purge_data:
@@ -37,7 +60,20 @@ def delete_object(obj: bpy.types.Object, purge_data: bool = True):
 
 
 def delete_objects(objects: Iterable[bpy.types.Object], purge_data: bool = True):
-    """Delete multiple scene objects."""
+    """Delete multiple scene objects.
+
+    Parameters
+    ----------
+    objects : list[:blender:`bpy.types.Object`]
+        A list of scene objects.
+    purge_data : bool, optional
+        If True, also delete the underlying data blocks.
+
+    Returns
+    -------
+    None
+
+    """
     for obj in objects:
         delete_object(obj, purge_data=False)
     if purge_data:
@@ -45,13 +81,35 @@ def delete_objects(objects: Iterable[bpy.types.Object], purge_data: bool = True)
 
 
 def delete_object_by_name(name: str):
-    """Delete the scene object corresponding to the given name."""
+    """Delete the scene object corresponding to the given name.
+
+    Parameters
+    ----------
+    name : str
+        The name of the Blender scene object.
+
+    Returns
+    -------
+    None
+
+    """
     obj = get_object_by_name(name)
     delete_object(obj)
 
 
 def delete_objects_by_names(names: Iterable[Text]):
-    """Delete the scene objects corresponding to the list of names."""
+    """Delete the scene objects corresponding to the list of names.
+
+    Parameters
+    ----------
+    names : list[str]
+        The names of the Blender scene object.
+
+    Returns
+    -------
+    None
+
+    """
     objects = get_objects_by_names(names)
     delete_objects(objects)
 
@@ -62,12 +120,34 @@ def delete_objects_by_names(names: Iterable[Text]):
 
 
 def get_object_by_name(name: str) -> bpy.types.Object:
-    """Get the object with the given name."""
+    """Get the object with the given name.
+
+    Parameters
+    ----------
+    name : str
+        The name of the Blender scene object.
+
+    Returns
+    -------
+    :blender:`bpy.types.Object`
+
+    """
     return bpy.data.objects[name]
 
 
 def get_objects_by_names(names: Iterable[str]) -> List[bpy.types.Object]:
-    """Get the objects corresponding to the given names."""
+    """Get the objects corresponding to the given names.
+
+    Parameters
+    ----------
+    names : list[str]
+        The names of the Blender scene object.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
     return [bpy.data.objects[name] for name in names]
 
 

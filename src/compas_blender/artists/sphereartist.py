@@ -13,14 +13,45 @@ from .artist import BlenderArtist
 
 
 class SphereArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing sphere shapes.
+    """Artist for drawing sphere shapes in Blender.
 
     Parameters
     ----------
     sphere : :class:`compas.geometry.Sphere`
         A COMPAS sphere.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.ShapeArtist`.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        from compas.geometry import Sphere
+        from compas_blender.artists import SphereArtist
+
+        sphere = Sphere([0, 0, 0], 1)
+
+        artist = SphereArtist(sphere)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Sphere
+        from compas.artists import Artist
+
+        sphere = Sphere([0, 0, 0], 1)
+
+        artist = Artist(sphere)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -35,14 +66,15 @@ class SphereArtist(BlenderArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[float, float, float] or tuple[int, int, int], optional
             The RGB color of the sphere.
+            The default color is :attr:`compas.artists.ShapeArtist.color`.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~SphereArtist.u``.
+            Default is ``SphereArtist.u``.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~SphereArtist.v``.
+            Default is ``SphereArtist.v``.
 
         Returns
         -------

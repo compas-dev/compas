@@ -13,14 +13,45 @@ from compas_blender.artists import BlenderArtist
 
 
 class PolylineArtist(BlenderArtist, PrimitiveArtist):
-    """Artist for drawing polylines.
+    """Artist for drawing polylines in Blender.
 
     Parameters
     ----------
     polyline : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        from compas.geometry import Polyline
+        from compas_blender.artists import PolylineArtist
+
+        polyline = Polyline([[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 1, 1]])
+
+        artist = PolylineArtist(polyline)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Polyline
+        from compas.artists import Artist
+
+        polyline = Polyline([[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 1, 1]])
+
+        artist = Artist(polyline)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -35,15 +66,15 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[float, float, float] or tuple[int, int, int], optional
             The RGB color of the polyline.
+            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
         show_points : bool, optional
-            Show the points of the polyline.
-            Default is ``False``.
+            If True, draw the corner points of the polyline.
 
         Returns
         -------
-        list of bpy.types.Object
+        list[:blender:`bpy.types.Object`]
 
         """
         color = color or self.color

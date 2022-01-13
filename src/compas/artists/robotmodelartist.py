@@ -16,19 +16,20 @@ from .artist import Artist
 class AbstractRobotModelArtist(object):
 
     def transform(self, geometry, transformation):
-        """Transforms a CAD-specific geometry using a **COMPAS** transformation.
+        """Transforms a CAD-specific geometry using a Transformation.
 
         Parameters
         ----------
         geometry : object
             A CAD-specific (i.e. native) geometry object as returned by :meth:`create_geometry`.
-        transformation : `Transformation`
-            **COMPAS** transformation to update the geometry object.
+        transformation : :class:`compas.geometry.Transformation`
+            Transformation to update the geometry object.
+
         """
         raise NotImplementedError
 
     def create_geometry(self, geometry, name=None, color=None):
-        """Draw a **COMPAS** geometry in the respective CAD environment.
+        """Draw geometry in the respective CAD environment.
 
         Note
         ----
@@ -36,8 +37,8 @@ class AbstractRobotModelArtist(object):
 
         Parameters
         ----------
-        geometry : :class:`Mesh`
-            Instance of a **COMPAS** mesh
+        geometry : :class:`compas.datastructures.Mesh`
+            Instance of a mesh data structure
         name : str, optional
             The name of the mesh to draw.
 
@@ -45,6 +46,7 @@ class AbstractRobotModelArtist(object):
         -------
         object
             CAD-specific geometry
+
         """
         raise NotImplementedError
 
@@ -52,7 +54,7 @@ class AbstractRobotModelArtist(object):
 class RobotModelArtist(AbstractRobotModelArtist, Artist):
     """Provides common functionality to most robot model artist implementations.
 
-    In **COMPAS**, the `artists` are classes that assist with the visualization of
+    In COMPAS, "artists" are classes that assist with the visualization of
     datastructures and models, in a way that maintains the data separated from the
     specific CAD interfaces, while providing a way to leverage native performance
     of the CAD environment.
@@ -66,6 +68,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
     ----------
     model : :class:`compas.robots.RobotModel`
         Instance of a robot model.
+
     """
 
     def __init__(self, model):
@@ -83,6 +86,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         tool_model : :class:`compas.robots.ToolModel`
             The tool that should be attached to the robot's flange.
+
         """
         self.attached_tool_model = tool_model
         self.create(tool_model.root, 'attached_tool')
@@ -121,7 +125,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         mesh : :class:`compas.datastructures.Mesh`
             The mesh to attach to the robot model.
-        name : :obj:`str`
+        name : str
             The identifier of the mesh.
         link : :class:`compas.robots.Link`
             The link within the robot model or tool model to attach the mesh to. Optional.
@@ -131,7 +135,8 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Returns
         -------
-        ``None``
+        None
+
         """
         if not link:
             link = self.model.get_end_effector_link()
@@ -159,12 +164,13 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        name : :obj:`str`
+        name : str
             The identifier of the mesh.
 
         Returns
         -------
-        ``None``
+        None
+
         """
         for _, items in self.attached_items:
             items.pop(name, None)
@@ -180,12 +186,13 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         link : :class:`compas.robots.Link`, optional
             Link instance to create. Defaults to the robot model's root.
-        context : :obj:`str`, optional
+        context : str, optional
             Subdomain identifier to insert in the mesh names.
 
         Returns
         -------
         None
+
         """
         if link is None:
             link = self.model.root
@@ -223,20 +230,19 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Parameters
         ----------
         link : :class:`compas.robots.Link`, optional
-            Base link instance. Defaults to the robot model's root.
-        visual : :obj:`bool`, optional
-            Whether to include the robot's visual meshes. Defaults
-            to ``True``.
-        collision : :obj:`bool`, optional
-            Whether to include the robot's collision meshes.  Defaults
-            to ``False``.
-        attached_meshes : :obj:`bool`, optional
-            Whether to include the robot's attached meshes.  Defaults
-            to ``True``.
+            Base link instance.
+            Defaults to the robot model's root.
+        visual : bool, optional
+            Whether to include the robot's visual meshes.
+        collision : bool, optional
+            Whether to include the robot's collision meshes.
+        attached_meshes : bool, optional
+            Whether to include the robot's attached meshes.
 
         Returns
         -------
-        :obj:`list` of :class:`compas.datastructures.Mesh`
+        list[:class:`compas.datastructures.Mesh`]
+
         """
         if link is None:
             link = self.model.root
@@ -269,6 +275,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         Returns
         -------
         None
+
         """
         self.model.scale(factor)
 
@@ -279,6 +286,18 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
     def scale_link(self, link, transformation):
         """Recursive function to apply the scale transformation on each link.
+
+        Parameters
+        ----------
+        link : :class:`compas.robots.Link`
+            A link.
+        transformation : :class:`compas.geometry.Transformation`
+            A transformation to apply to th link's geometry.
+
+        Returns
+        -------
+        None
+
         """
         self._scale_link_helper(link, transformation)
 
@@ -306,12 +325,13 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         ----------
         item: :class:`compas.robots.Visual` or :class:`compas.robots.Collision`
             The visual or collidable object of a link.
-        transformation: :class:`Transformation`
+        transformation: :class:`compas.geometry.Transformation`
             The (absolute) transformation to apply onto the link's geometry.
 
         Returns
         -------
         None
+
         """
         if getattr(item, 'current_transformation'):
             relative_transformation = transformation * item.current_transformation.inverse()
@@ -326,14 +346,17 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict` or :class:`compas.robots.Configuration`
+        joint_state : dict or :class:`compas.robots.Configuration`
             A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
-            ``True`` if the visual geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the visual geometry will also be updated.
         collision : bool, optional
-            ``True`` if the collision geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the collision geometry will also be updated.
+
+        Returns
+        -------
+        None
+
         """
         _ = self._update(self.model, joint_state, visual, collision)
         if self.attached_tool_model:
@@ -362,19 +385,22 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : :obj:`dict`or :class:`compas.robots.Configuration`, optional
+        joint_state : dict or :class:`compas.robots.Configuration`, optional
             A dictionary with joint names as keys and joint positions as values.
             Defaults to an empty dictionary.
         transformation : :class:`compas.geometry.Transformation`, optional
             The (absolute) transformation to apply to the entire tool's geometry.
-            If ``None`` is given, no additional transformation will be applied.
-            Defaults to ``None``.
+            If None is given, no additional transformation will be applied.
+            Defaults to None.
         visual : bool, optional
-            ``True`` if the visual geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the visual geometry will also be updated.
         collision : bool, optional
-            ``True`` if the collision geometry should be also updated, otherwise ``False``.
-            Defaults to ``True``.
+            If True, the collision geometry will also be updated.
+
+        Returns
+        -------
+        None
+
         """
         joint_state = joint_state or {}
         if self.attached_tool_model:
@@ -385,27 +411,54 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
             self.attached_tool_model.current_transformation = transformation
 
     def draw_visual(self):
-        """Draws all visual geometry of the robot model."""
+        """Draws all visual geometry of the robot model.
+
+        Returns
+        -------
+        list[object]
+            A list of context-specific mesh representations.
+
+        """
+        visual = []
         for native_geometry in self._iter_geometry(self.model, 'visual'):
-            yield native_geometry
+            visual.append(native_geometry)
         if self.attached_tool_model:
             for native_geometry in self._iter_geometry(self.attached_tool_model, 'visual'):
-                yield native_geometry
+                visual.append(native_geometry)
+        return visual
 
     def draw_collision(self):
-        """Draws all collision geometry of the robot model."""
+        """Draws all collision geometry of the robot model.
+
+        Returns
+        -------
+        list[object]
+            A list of context-specific mesh representations.
+
+        """
+        visual = []
         for native_geometry in self._iter_geometry(self.model, 'collision'):
-            yield native_geometry
+            visual.append(native_geometry)
         if self.attached_tool_model:
             for native_geometry in self._iter_geometry(self.attached_tool_model, 'collision'):
-                yield native_geometry
+                visual.append(native_geometry)
+        return visual
 
     def draw_attached_meshes(self):
-        """Draws all meshes attached to the robot model."""
+        """Draws all meshes attached to the robot model.
+
+        Returns
+        -------
+        list[object]
+            A list of context-specific mesh representations.
+
+        """
+        visual = []
         for items in self.attached_items.values():
             for item in items.values():
                 for native_mesh in item.native_geometry:
-                    yield native_mesh
+                    visual.append(native_mesh)
+        return visual
 
     @staticmethod
     def _iter_geometry(model, geometry_type):

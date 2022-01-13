@@ -14,6 +14,10 @@ class PolygonArtist(GHArtist, PrimitiveArtist):
     ----------
     polygon : :class:`compas.geometry.Polygon`
         A COMPAS polygon.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+
     """
 
     def __init__(self, polygon, **kwargs):
@@ -25,16 +29,17 @@ class PolygonArtist(GHArtist, PrimitiveArtist):
         Parameters
         ----------
         show_points : bool, optional
-            Default is ``False``.
+            If True, draw the points of the polygon.
         show_edges : bool, optional
-            Default is ``False``.
+            If True, draw the edges of the polygon.
         show_face : bool, optional
-            Default is ``True``.
+            If True, draw the face of the polygon.
 
         Returns
         -------
-        list
+        list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`, :rhino:`Rhino.Geometry.Mesh`]
             The Rhino points, lines and face.
+
         """
         _points = map(list, self.primitive.points)
         result = []

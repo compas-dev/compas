@@ -13,7 +13,32 @@ Color = Tuple[float, float, float]
 
 
 class SegmentArtist(PlotterArtist, PrimitiveArtist):
-    """Artist for drawing COMPAS lines as segments."""
+    """Artist for drawing COMPAS lines as segments.
+
+    Parameters
+    ----------
+    line : :class:`compas.geometry.Line`
+        A COMPAS line.
+    draw_points : bool, optional
+        If True, draw the start and end point of the line.
+    linewidth : float, optional
+        Width of the line.
+    linestyle : {'solid', 'dotted', 'dashed', 'dashdot'}, optional
+        Style of the line.
+    color : tuple[float, float, float], optional
+        Color of the line.
+    zorder : int, optional
+        Stacking order of the line on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+
+    Attributes
+    ----------
+    line : :class:`compas.geometry.Line`
+        The line associated with the artist.
+
+    """
 
     def __init__(self,
                  line: Line,
@@ -48,6 +73,13 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
         return [self.line.start[:2], self.line.end[:2]]
 
     def draw(self) -> None:
+        """Draw the line associated with the artist.
+
+        Returns
+        -------
+        None
+
+        """
         line2d = Line2D([self.line.start[0], self.line.end[0]], [self.line.start[1], self.line.end[1]],
                         linewidth=self.linewidth,
                         linestyle=self.linestyle,
@@ -59,6 +91,13 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
             self._end_artist = self.plotter.add(self.line.end, edgecolor=self.color)
 
     def redraw(self) -> None:
+        """Update the line using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         self._mpl_line.set_xdata([self.line.start[0], self.line.end[0]])
         self._mpl_line.set_ydata([self.line.start[1], self.line.end[1]])
         self._mpl_line.set_color(self.color)
