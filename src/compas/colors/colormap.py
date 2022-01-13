@@ -86,11 +86,18 @@ class ColorMap(object):
         """
         from compas_plotters.plotter import Plotter
         from compas.geometry import Pointcloud
-        from compas.geometry import Plane, Circle
+        from compas.geometry import Plane, Circle, Polygon
         plotter = Plotter()
-        cloud = Pointcloud.from_bounds(10, 10, 0, len(self.colors))
+        w = 8
+        h = 5
+        n = len(self.colors)
+        d = 8 / n
+        cloud = Pointcloud.from_bounds(w, h, 0, n)
+        white = Color.white()
         for i, color in enumerate(self.colors):
             c = Circle(Plane(cloud[i], [0, 0, 1]), 0.1)
-            plotter.add(c, facecolor=color, edgecolor=color)
+            p = Polygon([[i * d, -2, 0], [(i + 1) * d, -2, 0], [(i + 1) * d, -1, 0], [i * d, -1, 0]])
+            plotter.add(c, facecolor=color, edgecolor=white, linewidth=0.5)
+            plotter.add(p, facecolor=color, edgecolor=color)
         plotter.zoom_extents()
         plotter.show()
