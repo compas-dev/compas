@@ -24,17 +24,19 @@ def normal_polygon(polygon, unitized=True):
 
     Parameters
     ----------
-    polygon : list of list
+    polygon : sequence[point] or :class:`compas.geometry.Polygon`
         A list of polygon point coordinates.
+    unitized : bool, optional
+        If True, unitize the normal vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector.
 
     Raises
     ------
-    ValueError
+    AssertionError
         If less than three points are provided.
 
     Notes
@@ -76,17 +78,19 @@ def normal_triangle(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : [point, point, point] or :class:`compas.geometry.Polygon`
         A list of triangle point coordinates.
+    unitized : bool, optional
+        If True, unitize the normal vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector.
 
     Raises
     ------
-    ValueError
+    AssertionError
         If the triangle does not have three vertices.
 
     """
@@ -106,18 +110,20 @@ def normal_triangle_xy(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : [point, point, point] or :class:`compas.geometry.Polygon`
         A list of triangle point coordinates.
         Z-coordinates are ignored.
+    unitized : bool, optional
+        If True, unitize the normal vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector, which is a vector perpendicular to the XY plane.
 
     Raises
     ------
-    ValueError
+    AssertionError
         If the triangle does not have three vertices.
 
     """
