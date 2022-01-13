@@ -18,6 +18,7 @@ from sphinx.ext.napoleon.docstring import NumpyDocstring
 
 current_m2r2_setup = m2r2.setup
 
+
 def patched_m2r2_setup(app):
     try:
         return current_m2r2_setup(app)
@@ -27,6 +28,7 @@ def patched_m2r2_setup(app):
     return dict(
         version=m2r2.__version__, parallel_read_safe=True, parallel_write_safe=True,
     )
+
 
 m2r2.setup = patched_m2r2_setup
 
@@ -71,10 +73,14 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
     "nbsphinx",
-    "sphinx.ext.autodoc.typehints"
+    "sphinx.ext.autodoc.typehints",
+    # "sphinx_autodoc_typehints",
+    # "sphinx_autodoc_napoleon_typehints",
 ]
 
 # autodoc options
+
+autodoc_typehints = "none"
 
 autodoc_mock_imports = [
     "System",
@@ -288,6 +294,7 @@ intersphinx_mapping = {
 
 # linkcode
 
+
 def linkcode_resolve(domain, info):
     if domain != 'py':
         return None
@@ -329,9 +336,10 @@ def linkcode_resolve(domain, info):
 
 # extlinks
 
+
 extlinks = {
     "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
-    "blender": ("https://docs.blender.org/api/current/%s.html", "%s")
+    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s")
 }
 
 # -- Options for HTML output ----------------------------------------------
@@ -345,7 +353,7 @@ html_theme_options = {
     "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
 }
 html_context = {}
-html_static_path = []
+html_static_path = sphinx_compas_theme.get_html_static_path()
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False

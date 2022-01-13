@@ -16,46 +16,51 @@ class NetworkArtist(Artist):
     network : :class:`compas.datastructures.Network`
         A COMPAS network.
 
-    Class Attributes
-    ----------------
-    default_nodecolor : tuple
-        The default color for nodes that do not have a specified color.
-    default_edgecolor : tuple
-        The default color for edges that do not have a specified color.
-
     Attributes
     ----------
     network : :class:`compas.datastructures.Network`
         The COMPAS network associated with the artist.
-    nodes : list
+    nodes : list[hashable]
         The list of nodes to draw.
-        Default is a list of all nodes of the network.
-    edges : list
+        Defaults to all nodes.
+    edges : list[tuple[hashable, hashable]]
         The list of edges to draw.
         Default is a list of all edges of the network.
-    node_xyz : dict[int, tuple(float, float, float)]
+    node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.
-    node_color : dict[int, tuple(int, int, int)]
+    node_color : dict[hashable, tuple[float, float, float]]
         Mapping between nodes and RGB color values.
-        The colors have to be integer tuples with values in the range ``0-255``.
-        Missing nodes get the default node color (``MeshArtist.default_nodecolor``).
-    node_text : dict[int, str]
+        Missing nodes get the default node color :attr:`default_nodecolor`.
+    edge_color : dict[tuple[hashable, hashable], tuple[float, float, float]]
+        Mapping between edges and colors.
+        Missing edges get the default edge color :attr:`default_edgecolor`.
+    node_text : dict[hashable, str]
         Mapping between nodes and text labels.
-        Missing nodes are labelled with the corresponding node identifiers.
-    edge_color : dict[tuple(int, int), tuple(int, int, int)]
-        Mapping between edges and RGB color values.
-        The colors have to be integer tuples with values in the range ``0-255``.
-        Missing edges get the default edge color (``MeshArtist.default_edgecolor``).
-    edge_text : dict[tuple(int, int), str]
+    edge_text : dict[tuple[hashable, hashable], str]
         Mapping between edges and text labels.
-        Missing edges are labelled with the corresponding edge identifiers.
+    node_size : dict[hashable, float]
+        Mapping between nodes and sizes.
+        Missing nodes get assigned the default node size :attr:`default_nodesize`.
+    edge_width : dict[tuple[hashable, hashable], float]
+        Mapping between edges and line widths.
+        Missing edges get assigned the default edge width :attr:`default_edgewidth`.
+
+    Class Attributes
+    ----------------
+    default_nodecolor : tuple[float, float, float]
+        The default color for nodes that do not have a specified color.
+    default_edgecolor : tuple[float, float, float]
+        The default color for edges that do not have a specified color.
+    default_nodesize : float
+        The default size for nodes that do not have a specified size.
+    default_edgewidth : float
+        The default width for edges that do not have a specified width.
 
     """
 
     default_nodecolor = (1, 1, 1)
     default_edgecolor = (0, 0, 0)
-
     default_nodesize = 5
     default_edgewidth = 1.0
 
@@ -205,16 +210,22 @@ class NetworkArtist(Artist):
 
         Parameters
         ----------
-        nodes : list, optional
+        nodes : list[int], optional
             The nodes to include in the drawing.
             Default is all nodes.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color of the nodes,
             as either a single color to be applied to all nodes,
             or a color dict, mapping specific nodes to specific colors.
-        text : dict, optional
+        text : dict[int, str], optional
             The text labels for the nodes
             as a text dict, mapping specific nodes to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the nodes in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -224,27 +235,54 @@ class NetworkArtist(Artist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : dict, optional
+        text : dict[tuple[int, int]], optional
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the edges in the visualization context.
+
         """
         raise NotImplementedError
 
     @abstractmethod
     def clear_nodes(self):
+        """Clear the nodes of the network.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
+        """Clear the edges of the network.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     def clear(self):
+        """Clear the nodes and the edges of the network.
+
+        Returns
+        -------
+        None
+
+        """
         self.clear_nodes()
         self.clear_edges()

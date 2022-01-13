@@ -20,37 +20,68 @@ colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
 
 
 class NetworkArtist(BlenderArtist, NetworkArtist):
-    """Artist for COMPAS network objects.
+    """Artist for drawing network data structures in Blender.
 
     Parameters
     ----------
     network : :class:`compas.datastructures.Network`
         A COMPAS network.
-    collection: str or :class:`bpy.types.Collection`
+    collection : str or :blender:`bpy.types.Collection`
         The name of the collection the object belongs to.
-    nodes : list of int, optional
+    nodes : list[hashable], optional
         A list of node identifiers.
-        Default is ``None``, in which case all nodes are drawn.
-    edges : list, optional
+        Default is None, in which case all nodes are drawn.
+    edges : list[tuple[hashable, hashable]], optional
         A list of edge keys (as uv pairs) identifying which edges to draw.
-        The default is ``None``, in which case all edges are drawn.
-    nodecolor : rgb-tuple or dict of rgb-tuples, optional
+        The default is None, in which case all edges are drawn.
+    nodecolor : rgb-tuple or dict[hashable, rgb-tuple], optional
         The color specification for the nodes.
-    edgecolor : rgb-tuple or dict of rgb-tuples, optional
+    edgecolor : rgb-tuple or dict[tuple[hashable, hashable]], rgb-tuple], optional
         The color specification for the edges.
     show_nodes : bool, optional
+        If True, draw the nodes of the network.
     show_edges : bool, optional
+        If True, draw the edges of the network.
 
     Attributes
     ----------
-    nodecollection : :class:`bpy.types.Collection`
+    nodecollection : :blender:`bpy.types.Collection`
         The collection containing the nodes.
-    edgecollection : :class:`bpy.types.Collection`
+    edgecollection : :blender:`bpy.types.Collection`
         The collection containing the edges.
-    nodelabelcollection : :class:`bpy.types.Collection`
+    nodelabelcollection : :blender:`bpy.types.Collection`
         The collection containing the node labels.
-    edgelabelcollection : :class:`bpy.types.Collection`
+    edgelabelcollection : :blender:`bpy.types.Collection`
         The collection containing the edge labels.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        import compas
+        from compas.datastructures import Network
+        from compas_blender.artists import NetworkArtist
+
+        network = Network.from_obj(compas.get('lines.obj'))
+
+        artist = NetworkArtist(network)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        import compas
+        from compas.datastructures import Network
+        from compas.artists import Artist
+
+        network = Network.from_obj(compas.get('lines.obj'))
+
+        artist = Artist(network)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -102,15 +133,43 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
     # ==========================================================================
 
     def clear_nodes(self):
+        """Clear all objects contained in the node collection.
+
+        Returns
+        -------
+        None
+
+        """
         compas_blender.delete_objects(self.nodecollection.objects)
 
     def clear_edges(self):
+        """Clear all objects contained in the edge collection.
+
+        Returns
+        -------
+        None
+
+        """
         compas_blender.delete_objects(self.edgecollection.objects)
 
     def clear_nodelabels(self):
+        """Clear all objects contained in the nodelabel collection.
+
+        Returns
+        -------
+        None
+
+        """
         compas_blender.delete_objects(self.nodelabelcollection.objects)
 
     def clear_edgelabels(self):
+        """Clear all objects contained in the edgelabel collection.
+
+        Returns
+        -------
+        None
+
+        """
         compas_blender.delete_objects(self.edgelabelcollection.objects)
 
     # ==========================================================================
@@ -127,16 +186,21 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
         Parameters
         ----------
-        nodes : list of int, optional
+        nodes : list[hashable], optional
             A list of node identifiers.
-            Default is ``None``, in which case all nodes are drawn.
-        edges : list, optional
+            Default is None, in which case all nodes are drawn.
+        edges : list[tuple[hashable, hashable]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        nodecolor : rgb-tuple or dict of rgb-tuples, optional
+            The default is None, in which case all edges are drawn.
+        nodecolor : rgb-tuple or dict[hashable, rgb-tuple], optional
             The color specification for the nodes.
-        edgecolor : rgb-tuple or dict of rgb-tuples, optional
+        edgecolor : rgb-tuple or dict[tuple[hashable, hashable], rgb-tuple], optional
             The color specification for the edges.
+
+        Returns
+        -------
+        None
+
         """
         self.clear()
         if self.show_nodes:
@@ -152,15 +216,16 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
         Parameters
         ----------
-        nodes : list of int, optional
+        nodes : list[hashable], optional
             A list of node identifiers.
-            Default is ``None``, in which case all nodes are drawn.
-        color : rgb-tuple or dict of rgb-tuples
+            Default is None, in which case all nodes are drawn.
+        color : rgb-tuple or dict[hashable, rgb-tuple], optional
             The color specification for the nodes.
+            The default color of nodes is :attr:`default_nodecolor`.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
 
         """
         self.node_color = color
@@ -183,15 +248,16 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
         Parameters
         ----------
-        edges : list
+        edges : list[tuple[hashable, hashable]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : rgb-tuple or dict of rgb-tuples
+            The default is None, in which case all edges are drawn.
+        color : rgb-tuple or dict[tuple[hashable, hashable], rgb-tuple], optional
             The color specification for the edges.
+            The default color of edges is :attr:`default_edgecolor`.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
 
         """
         self.edge_color = color
@@ -215,16 +281,17 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
         Parameters
         ----------
-        text : dict, optional
+        text : dict[hashable, str], optional
             A dictionary of vertex labels as vertex-text pairs.
-            The default value is ``None``, in which case every vertex will be labeled with its key.
-        color : rgb-tuple or dict of rgb-tuple
+            The default value is None, in which case every vertex will be labeled with its key.
+        color : rgb-tuple or dict[hashable, rgb-tuple], optional
             The color specification of the labels.
             The default color is the same as the default vertex color.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+
         """
         if not text or text == 'key':
             node_text = {vertex: str(vertex) for vertex in self.nodes}
@@ -253,16 +320,17 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
         Parameters
         ----------
-        text : dict, optional
+        text : dict[tuple[hashable, hashable], str], optional
             A dictionary of edge labels as edge-text pairs.
-            The default value is ``None``, in which case every edge will be labeled with its key.
-        color : rgb-tuple or dict of rgb-tuple
+            The default value is None, in which case every edge will be labeled with its key.
+        color : rgb-tuple or dict[tuple[hashable, hashable], rgb-tuple], optional
             The color specification of the labels.
             The default color is the same as the default color for edges.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+
         """
         if text is None:
             edge_text = {(u, v): "{}-{}".format(u, v) for u, v in self.edges}

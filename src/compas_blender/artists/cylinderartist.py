@@ -13,14 +13,45 @@ from .artist import BlenderArtist
 
 
 class CylinderArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing cylinder shapes.
+    """Artist for drawing cylinder shapes in Blender.
 
     Parameters
     ----------
     cylinder : :class:`compas.geometry.Cylinder`
         A COMPAS cylinder.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.ShapeArtist`.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        from compas.geometry import Plane, Circle, Cylinder
+        from compas_blender.artists import CylinderArtist
+
+        cylinder = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), 0.3), 1.0)
+
+        artist = CylinderArtist(cylinder)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Plane, Circle, Cylinder
+        from compas.artists import Artist
+
+        cylinder = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), 0.3), 1.0)
+
+        artist = Artist(cylinder)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -35,16 +66,17 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[float, float, float] or tuple[int, int, int], optional
             The RGB color of the cylinder.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CylinderArtist.u``.
+            Default is :attr:`~CylinderArtist.u`.
 
         Returns
         -------
-        list
+        list[:blender:`bpy.types.Object`]
             The objects created in Blender.
+
         """
         u = u or self.u
         color = color or self.color
