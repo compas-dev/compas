@@ -1,5 +1,0 @@
-* polyline divide by length function does not make much sense (and returns an incorrect result)
-* polyline divide functions should be renamed
-* polyline divide return values shoould be changed
-* add base shape with functionality of polyhedron
-
