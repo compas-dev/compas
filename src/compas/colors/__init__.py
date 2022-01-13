@@ -7,7 +7,8 @@ colors
 
 .. rst-class:: lead
 
-This package provides a general color class, color maps, and color conversions.
+This package provides a class for working with colors in different color spaces,
+and color maps for various color palettes.
 
 
 Classes
