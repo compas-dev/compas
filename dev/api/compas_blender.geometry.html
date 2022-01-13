@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="BlenderCurve" href="generated/compas_blender.geometry.BlenderCurve.html" />
+  <link rel="next" title="boolean_difference_mesh_mesh" href="generated/compas_blender.geometry.booleans.boolean_difference_mesh_mesh.html" />
   
 
   
-  <link rel="prev" title="BlenderArtist.register" href="generated/compas_blender.artists.BlenderArtist.register.html" />
+  <link rel="prev" title="BlenderMesh.transform" href="generated/compas_blender.conversions.BlenderMesh.transform.html" />
   
 
   <script type="text/javascript" async
@@ -86,7 +86,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- content -->
-      <main class="col-12 col-md-9 col-xl-9 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
         
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-3 bg-white px-0">
@@ -105,21 +105,37 @@
         
         <span class="target" id="module-compas_blender.geometry"></span><section id="geometry">
 <h1>geometry</h1>
-<p>Object-oriented convenience wrappers for native Blender geometry.</p>
+<section id="classes">
+<h2>Classes</h2>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.geometry.BlenderCurve.html#compas_blender.geometry.BlenderCurve" title="compas_blender.geometry.BlenderCurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlenderCurve</span></code></a>(obj)</p></td>
-<td><p></p></td>
+</tbody>
+</table>
+</section>
+<section id="plugins">
+<h2>Plugins</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.geometry.booleans.boolean_difference_mesh_mesh.html#compas_blender.geometry.booleans.boolean_difference_mesh_mesh" title="compas_blender.geometry.booleans.boolean_difference_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">booleans.boolean_difference_mesh_mesh</span></code></a></p></td>
+<td><p>Compute the boolean difference of two triangle meshes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.geometry.BlenderMesh.html#compas_blender.geometry.BlenderMesh" title="compas_blender.geometry.BlenderMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlenderMesh</span></code></a>(obj)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.geometry.booleans.boolean_intersection_mesh_mesh.html#compas_blender.geometry.booleans.boolean_intersection_mesh_mesh" title="compas_blender.geometry.booleans.boolean_intersection_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">booleans.boolean_intersection_mesh_mesh</span></code></a></p></td>
+<td><p>Compute the boolean intersection of two triangle meshes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.geometry.booleans.boolean_union_mesh_mesh.html#compas_blender.geometry.booleans.boolean_union_mesh_mesh" title="compas_blender.geometry.booleans.boolean_union_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">booleans.boolean_union_mesh_mesh</span></code></a></p></td>
+<td><p>Compute the boolean union of two triangle meshes.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
 </section>
 
         
@@ -148,6 +164,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas_blender.artists.html">artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.conversions.html">conversions</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_blender.ui.html">ui</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_blender.utilities.html">utilities</a></li>
@@ -171,6 +188,18 @@
       <!-- sidebar -->
       <!-- toc -->
       
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#plugins">Plugins</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      
       <!-- toc -->
     </div>
   </div>
@@ -179,20 +208,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="generated/compas_blender.artists.BlenderArtist.register.html" title="BlenderArtist.register" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="generated/compas_blender.conversions.BlenderMesh.transform.html" title="BlenderMesh.transform" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          BlenderArtist.register
+          BlenderMesh.transform
         </div>
       </a>
       
 
       
-      <a href="generated/compas_blender.geometry.BlenderCurve.html" title="BlenderCurve" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="generated/compas_blender.geometry.booleans.boolean_difference_mesh_mesh.html" title="boolean_difference_mesh_mesh" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          BlenderCurve
+          boolean_difference_mesh_mesh
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
