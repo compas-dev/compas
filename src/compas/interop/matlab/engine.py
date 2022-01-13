@@ -3,9 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ['MatlabEngine']
-
-
 class MatlabEngineError(Exception):
 
     def __init__(self, message=None):
@@ -29,12 +26,10 @@ class MatlabEngine(object):
     session_name : str
         The name of the current Matlab session.
 
-    Notes
-    -----
-    For more info, see [1]_, [2]_, [3]_, [4]_, [5]_.
-
     References
     ----------
+    For more info, see [1]_, [2]_, [3]_, [4]_, [5]_.
+
     .. [1] MathWorks, 2017. *MATLAB APY for Python*.
            Available at: https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html
     .. [2] MathWorks, 2017. *Pass Data to MATLAB from Python*.
@@ -63,6 +58,10 @@ class MatlabEngine(object):
 
     def _init(self):
         """Load the Matlab API.
+
+        Returns
+        -------
+        None
 
         Raises
         ------
@@ -154,6 +153,10 @@ class MatlabEngine(object):
             The name of the session.
             Default is ``None``.
             If ``None``, attempt to connect to an existing session, or create a new session if none exists.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
