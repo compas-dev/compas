@@ -5,6 +5,13 @@ from __future__ import print_function
 import colorsys
 from compas.data import Data
 
+BASE16 = '0123456789abcdef'
+
+try:
+    HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
+except Exception:
+    HEX_DEC = {v: int(v, 16) for v in [x + y for x in BASE16 for y in BASE16]}
+
 
 class Color(Data):
     """Class for working with colors.
@@ -31,12 +38,10 @@ class Color(Data):
     ----------
     rgb : tuple[float, float, float]
         RGB1 color tuple, with components in the range 0-1.
-    rgba : tuple[float, float, float, float]
-        RGB1 color tuple, with transparency, and components in the range 0-1.
     rgb255 : tuple[int, int, int]
         RGB255 color tuple, with components in the range 0-255.
-    rgba255 : tuple[int, int, int, int]
-        RGB255 color tuple, with transparency, and components in the range 0-255.
+    hex : str
+        Hexadecimal color string.
     hls : tuple[float, float, float]
         Hue, luminance, saturation values in the range 0-1.
     yuv : tuple[float, float, float]
@@ -110,13 +115,13 @@ class Color(Data):
         b = self.b
         return r, g, b
 
-    @property
-    def rgba(self):
-        r = self.r
-        g = self.g
-        b = self.b
-        a = self.a
-        return r, g, b, a
+    # @property
+    # def rgba(self):
+    #     r = self.r
+    #     g = self.g
+    #     b = self.b
+    #     a = self.a
+    #     return r, g, b, a
 
     @property
     def rgb255(self):
@@ -125,13 +130,17 @@ class Color(Data):
         b = int(self.b * 255)
         return r, g, b
 
+    # @property
+    # def rgba255(self):
+    #     r = int(self.r * 255)
+    #     g = int(self.g * 255)
+    #     b = int(self.b * 255)
+    #     a = int(self.a * 255)
+    #     return r, g, b, a
+
     @property
-    def rgba255(self):
-        r = int(self.r * 255)
-        g = int(self.g * 255)
-        b = int(self.b * 255)
-        a = int(self.a * 255)
-        return r, g, b, a
+    def hex(self):
+        return '#{0:02x}{1:02x}{2:02x}'.format(self.r, self.g, self.b)
 
     @property
     def hls(self):
@@ -315,6 +324,26 @@ class Color(Data):
             r, g, b = 255, 0, 0
         else:
             r, g, b = 0, 0, 0
+        return cls(r / 255.0, g / 255.0, b / 255.0)
+
+    @classmethod
+    def from_hex(cls, value):
+        """Construct a color from a hexadecimal color value.
+
+        Parameters
+        ----------
+        value : str
+            The hexadecimal color.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        """
+        value = value.lstrip('#').lower()
+        r = HEX_DEC[value[0:2]]
+        g = HEX_DEC[value[2:4]]
+        b = HEX_DEC[value[4:6]]
         return cls(r / 255.0, g / 255.0, b / 255.0)
 
     # --------------------------------------------------------------------------
