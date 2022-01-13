@@ -29,15 +29,26 @@ from compas.geometry.transformations import Transformation
 
 
 class Rotation(Transformation):
-    """Create a rotation transformation.
+    """Class representing a rotation transformation.
 
     The class contains methods for converting rotation matrices to axis-angle
     representations, Euler angles, quaternion and basis vectors.
 
     Parameters
     ----------
-    matrix : 4x4 matrix-like, optional
+    matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a rotation.
+
+    Attributes
+    ----------
+    quaternion : :class:`compas.geometry.Quaternion`, read-only
+        The quaternion from the rotation.
+    axis_and_angle : tuple[:class:`compas.geometry.Vector`, float], read-only
+        The axis and the angle of the rotation.
+    axis_angle_vector : :class:`compas.geometry.Vector`, read-only
+        The axis-angle vector of the rotation.
+    basis_vectors : tuple[:class:`compas.geometry.Vector`, :class:`compas.geometry.Vector`], read-only
+        The basis vectors of the rotation.
 
     Raises
     ------
@@ -59,6 +70,7 @@ class Rotation(Transformation):
     >>> f2 = Frame.worldXY()
     >>> f1 == f2.transformed(Rx * Ry * Rz)
     True
+
     """
 
     def __init__(self, matrix=None, check=True):
@@ -69,24 +81,55 @@ class Rotation(Transformation):
                     raise ValueError('This is not a proper rotation matrix.')
         super(Rotation, self).__init__(matrix=matrix)
 
+    @property
+    def quaternion(self):
+        from compas.geometry import Quaternion
+        return Quaternion.from_matrix(self.matrix)
+
+    @property
+    def axis_and_angle(self):
+        from compas.geometry import Vector
+        axis, angle = axis_and_angle_from_matrix(self.matrix)
+        return Vector(*axis), angle
+
+    @property
+    def axis_angle_vector(self):
+        axis, angle = self.axis_and_angle
+        return axis.scaled(angle)
+
+    @property
+    def basis_vectors(self):
+        from compas.geometry import Vector
+        xaxis, yaxis = basis_vectors_from_matrix(self.matrix)
+        return Vector(*xaxis), Vector(*yaxis)
+
     def __repr__(self):
         return "Rotation({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):
-        """Calculates a ``Rotation`` from a rotation axis and an angle and an optional point of rotation.
+        """Construct a rotation transformation from a rotation axis and an angle and an optional point of rotation.
 
         The rotation is based on the right hand rule, i.e. anti-clockwise if the
         axis of rotation points towards the observer.
 
         Parameters
         ----------
-        axis : list of float
+        axis : [float, float, float] or :class:`compas.geometry.Vector`
             Three numbers that represent the axis of rotation.
         angle : float
             The rotation angle in radians.
-        point : :class:`Point` or list of float
+        point : [float, float, float] or :class:`compas.geometry.Point`
             A point to perform a rotation around an origin other than [0, 0, 0].
+
+        Returns
+        -------
+        :class:`compas.geometry.Rotation`
+
+        Notes
+        -----
+        The rotation is based on the right hand rule, i.e. anti-clockwise
+        if the axis of rotation points towards the observer.
 
         Examples
         --------
@@ -99,11 +142,6 @@ class Rotation(Transformation):
         >>> allclose([angle1], [angle2])
         True
 
-        Notes
-        -----
-        The rotation is based on the right hand rule, i.e. anti-clockwise
-        if the axis of rotation points towards the observer.
-
         """
         R = cls()
         R.matrix = matrix_from_axis_and_angle(axis, angle, point=point)
@@ -111,20 +149,25 @@ class Rotation(Transformation):
 
     @classmethod
     def from_basis_vectors(cls, xaxis, yaxis):
-        """Creates a ``Rotation`` from basis vectors (= orthonormal vectors).
+        """Construct a rotation transformation from basis vectors (= orthonormal vectors).
 
         Parameters
         ----------
-        xaxis : compas.geometry.Vector or list
+        xaxis : [float, float, float] or :class:`compas.geometry.Vector`
             The x-axis of the frame.
-        yaxis : compas.geometry.Vector or list
+        yaxis : [float, float, float] or :class:`compas.geometry.Vector`
             The y-axis of the frame.
+
+        Returns
+        -------
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------
         >>> xaxis = [0.68, 0.68, 0.27]
         >>> yaxis = [-0.67, 0.73, -0.15]
         >>> R = Rotation.from_basis_vectors(xaxis, yaxis)
+
         """
         xaxis = normalize_vector(list(xaxis))
         yaxis = normalize_vector(list(yaxis))
@@ -141,17 +184,21 @@ class Rotation(Transformation):
 
     @classmethod
     def from_frame(cls, frame):
-        """Computes the rotational transformation from world XY to frame.
+        """Construct a rotation transformationn from world XY to frame.
+
+        Parameters
+        ----------
+        frame : [point, vector, vector] or :class:`compas.geometry.Frame`
+            A frame describing the targeted Cartesian coordinate system.
+
+        Returns
+        -------
+        :class:`compas.geometry.Rotation`
 
         Notes
         -----
         Creating a rotation from a frame means that we omit all translational
         components. If that is unwanted, use ``Transformation.from_frame(frame)``.
-
-        Parameters
-        ----------
-        frame : :class:`Frame`
-            A frame describing the targeted Cartesian coordinate system.
 
         Examples
         --------
@@ -161,6 +208,7 @@ class Rotation(Transformation):
         >>> f2 = Frame.from_transformation(T)
         >>> f1 == f2
         True
+
         """
         R = cls()
         matrix = matrix_from_frame(frame)
@@ -172,12 +220,16 @@ class Rotation(Transformation):
 
     @classmethod
     def from_quaternion(cls, quaternion):
-        """Calculates a ``Rotation`` from quaternion coefficients.
+        """Construct a rotation transformation` from quaternion coefficients.
 
         Parameters
         ----------
-        quaternion : compas.geometry.Quaternion or list
+        quaternion : [float, float, float, float] or :class:`compas.geometry.Quaternion`
             Four numbers that represents the four coefficient values of a quaternion.
+
+        Returns
+        -------
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------
@@ -187,6 +239,7 @@ class Rotation(Transformation):
         >>> q2 = R.quaternion
         >>> allclose(q1, q2, tol=1e-3)
         True
+
         """
         R = cls()
         R.matrix = matrix_from_quaternion(quaternion)
@@ -194,14 +247,18 @@ class Rotation(Transformation):
 
     @classmethod
     def from_axis_angle_vector(cls, axis_angle_vector, point=[0, 0, 0]):
-        """Calculates a ``Rotation`` from an axis-angle vector.
+        """Construct a rotation transformation from an axis-angle vector.
 
         Parameters
         ----------
-        axis_angle_vector : list of float
+        axis_angle_vector : [float, float, float] or :class:`compas.geometry.Vector`
             Three numbers that represent the axis of rotation and angle of rotation through the vector's magnitude.
-        point : list of float, optional
+        point : [float, float, float] or :class:`compas.geometry.Point`, optional
             A point to perform a rotation around an origin other than [0, 0, 0].
+
+        Returns
+        -------
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------
@@ -211,13 +268,14 @@ class Rotation(Transformation):
         >>> aav2 = R.axis_angle_vector
         >>> allclose(aav1, aav2)
         True
+
         """
         angle = length_vector(axis_angle_vector)
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
 
     @classmethod
     def from_euler_angles(cls, euler_angles, static=True, axes='xyz', **kwargs):
-        """Calculates a ``Rotation`` from Euler angles.
+        """Construct a rotation transformation from Euler angles.
 
         In 3D space any orientation can be achieved by composing three
         elemental rotations, rotations about the axes (x,y,z) of a coordinate
@@ -227,14 +285,18 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        euler_angles: list of float
+        euler_angles: [float, float, float]
             Three numbers that represent the angles of rotations about the
             defined axes.
         static: bool, optional
-            If true the rotations are applied to a static frame. If not, to a
-            rotational. Defaults to true.
+            If True the rotations are applied to a static frame.
+            If False, to a rotational.
         axes: str, optional
-            A 3 character string specifying order of the axes. Defaults to 'xyz'.
+            A 3 character string specifying order of the axes.
+
+        Returns
+        -------
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------
@@ -254,72 +316,9 @@ class Rotation(Transformation):
         >>> R2 = Rx * Ry * Rz
         >>> R1 == R2
         True
+
         """
         return super(Rotation, cls).from_euler_angles(euler_angles, static, axes)
-
-    @property
-    def quaternion(self):
-        """Returns the Quaternion from the ``Rotation``.
-
-        Returns
-        -------
-        :class:`Quaternion`
-
-        Examples
-        --------
-        >>> from compas.geometry import allclose
-        >>> q1 = [0.945, -0.021, -0.125, 0.303]
-        >>> R = Rotation.from_quaternion(q1)
-        >>> q2 = R.quaternion
-        >>> allclose(q1, q2, tol=1e-3)
-        True
-        """
-        from compas.geometry import Quaternion
-        return Quaternion.from_matrix(self.matrix)
-
-    @property
-    def axis_and_angle(self):
-        """Returns the axis and the angle of the ``Rotation``.
-
-        Returns
-        -------
-        tuple: (:class:`Vector`, float)
-
-        Examples
-        --------
-        >>> from compas.geometry import allclose
-        >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
-        >>> angle1 = 0.1
-        >>> R = Rotation.from_axis_and_angle(axis1, angle1)
-        >>> axis2, angle2 = R.axis_and_angle
-        >>> allclose(axis1, axis2)
-        True
-        >>> allclose([angle1], [angle2])
-        True
-        """
-        from compas.geometry import Vector
-        axis, angle = axis_and_angle_from_matrix(self.matrix)
-        return Vector(*axis), angle
-
-    @property
-    def axis_angle_vector(self):
-        """Returns the axis-angle vector of the ``Rotation``.
-
-        Returns
-        -------
-        :class:`Vector`
-
-        Examples
-        --------
-        >>> from compas.geometry import allclose
-        >>> aav1 = [-0.043, -0.254, 0.617]
-        >>> R = Rotation.from_axis_angle_vector(aav1)
-        >>> aav2 = R.axis_angle_vector
-        >>> allclose(aav1, aav2)
-        True
-        """
-        axis, angle = self.axis_and_angle
-        return axis.scaled(angle)
 
     # split up into two properties
     # euler_angles
@@ -328,22 +327,21 @@ class Rotation(Transformation):
     # could be added to base Transformation
     # always relevant
     def euler_angles(self, static=True, axes='xyz'):
-        """Returns Euler angles from the ``Rotation`` according to specified
+        """Returns Euler angles from the rotation according to specified
         axis sequence and rotation type.
 
         Parameters
         ----------
         static : bool, optional
-            If true the rotations are applied to a static frame.
-            If not, to a rotational.
-            Defaults to True.
+            If True the rotations are applied to a static frame.
+            If False, to a rotational.
         axes : str, optional
             A 3 character string specifying the order of the axes.
-            Defaults to 'xyz'.
 
         Returns
         -------
-        list of float: The 3 Euler angles.
+        [float, float, float]
+            The 3 Euler angles.
 
         Examples
         --------
@@ -354,18 +352,6 @@ class Rotation(Transformation):
         >>> ea2 = R1.euler_angles(*args)
         >>> allclose(ea1, ea2)
         True
+
         """
         return euler_angles_from_matrix(self.matrix, static, axes)
-
-    @property
-    def basis_vectors(self):
-        """Returns the basis vectors of the ``Rotation``.
-
-        Returns
-        -------
-        tuple of (:class:`Vector`, :class:`Vector`)
-            The basis vectors.
-        """
-        from compas.geometry import Vector
-        xaxis, yaxis = basis_vectors_from_matrix(self.matrix)
-        return Vector(*xaxis), Vector(*yaxis)

@@ -337,6 +337,7 @@ def linkcode_resolve(domain, info):
 
     return f"https://github.com/compas-dev/compas/blob/main/src/{filename}.py#L{lineno}"
 
+
 # extlinks
 
 
@@ -363,5 +364,5 @@ html_copy_source = False
 html_show_sourcelink = False
 html_permalinks = False
 html_permalinks_icon = ""
-html_experimental_html5_writer = True
+html_experimental_html5_writer = False
 html_compact_lists = True

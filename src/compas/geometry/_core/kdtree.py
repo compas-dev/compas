@@ -20,10 +20,10 @@ class KDTree(object):
 
     Parameters
     ----------
-    objects : list, optional
+    objects : sequence[[float, float, float] or :class:`compas.geometry.Point`], optional
         A list of objects to populate the tree with.
         If objects are provided, the tree is built automatically.
-        Defaults to ``None``.
+        Otherwise, use :meth:`build`.
 
     Attributes
     ----------
@@ -49,29 +49,28 @@ class KDTree(object):
     """
 
     def __init__(self, objects=None):
-        """Initialise a KDTree object."""
         self.root = None
         if objects:
-            self.root = self.build(list([(objects[i], i) for i in range(len(objects))]))
+            self.root = self.build([(o, i) for i, o in enumerate(objects)])
 
     def build(self, objects, axis=0):
         """Populate a kd-tree with given objects.
 
         Parameters
         ----------
-        objects : list
-            The tree objects.
+        objects : sequence[tuple[[float, float, float] or :class:`compas.geometry.Point`, int or str]]
+            The tree objects as a sequence of point-label tuples.
         axis : int, optional
             The axis along which to build.
 
         Returns
         -------
-        Node
-            The root node.
+        Node or None
+            The root node, or None if the sequence of objects is empty.
 
         """
         if not objects:
-            return None
+            return
 
         objects.sort(key=lambda o: o[0][axis])
         median_idx = len(objects) // 2
@@ -91,15 +90,14 @@ class KDTree(object):
 
         Parameters
         ----------
-        point : list
+        point : [float, float, float] or :class:`compas.geometry.Point`
             XYZ coordinates of the base point.
-        exclude : set, optional
-            A set of points to exclude from the search.
-            Defaults to an empty set.
+        exclude : sequence[int or str], optional
+            A sequence of point identified by their label to exclude from the search.
 
         Returns
         -------
-        list:
+        [[float, float, float], int or str, float]
             XYZ coordinates of the nearest neighbor.
             Label of the nearest neighbor.
             Distance to the base point.
@@ -124,7 +122,7 @@ class KDTree(object):
             if d ** 2 < best[2]:
                 search(far)
 
-        exclude = exclude or set()
+        exclude = set(exclude or [])
         best = [None, None, float('inf')]
         search(self.root)
         best[2] **= 0.5
@@ -135,17 +133,16 @@ class KDTree(object):
 
         Parameters
         ----------
-        point : list
-            XYZ coordinates of the bbase point.
+        point : [float, float, float] or :class:`compas.geometry.Point`
+            XYZ coordinates of the base point.
         number : int
             The number of nearest neighbors.
         distance_sort : bool, optional
             Sort the nearest neighbors by distance to the base point.
-            Default is ``False``.
 
         Returns
         -------
-        list
+        list[[[float, float, float], int or str, float]]
             A list of N nearest neighbors.
 
         """

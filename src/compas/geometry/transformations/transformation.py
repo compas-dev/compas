@@ -29,7 +29,7 @@ from compas.geometry.transformations import translation_from_matrix
 
 
 class Transformation(Data):
-    """The ``Transformation`` represents a 4x4 transformation matrix.
+    """Class representing a general 4x4 transformation matrix.
 
     It is the base class for transformations like :class:`Rotation`,
     :class:`Translation`, :class:`Scale`, :class:`Reflection`,
@@ -44,8 +44,29 @@ class Transformation(Data):
 
     Parameters
     ----------
-    matrix : list of list of float, optional
+    matrix : list[list[float]], optional
         The 4x4 transformation matrix.
+
+    Attributes
+    ----------
+    scale : :class:`compas.geometry.Scale`, read-only
+        The scale component of the transformation matrix.
+    shear : :class:`compas.geometry.Shear`, read-only
+        The shear component of the transformation matrix.
+    rotation : :class:`compas.geometry.Rotation`, read-only
+        The rotation component of the transformation matrix.
+    translation : :class:`compas.geometry.Translation`, read-only
+        The translation component of the transformation matrix.
+    projection : :class:`compas.geometry.Projection`, read-only
+        The projection component of the transformation matrix.
+    translation_vector : :class:`compas.geometry.Vector`, read-only
+        The translation component of the transformation matrix as a translation vector.
+    basis_vectors : tuple[:class:`compas.geometry.Vector`, :class:`compas.geometry.Vector`], read-only
+        The basis vectors from the rotation component of the transformation matrix.
+    list : list[float], read-only
+        Flattens the 4x4 transformation matrix into a list of 16 numbers.
+    determinant : float, read-only
+        The determinant of the matrix of the transformation.
 
     Examples
     --------
@@ -54,7 +75,18 @@ class Transformation(Data):
     >>> T = Transformation.from_frame(f1)
     >>> Sc, Sh, R, Tl, P = T.decomposed()
     >>> Tinv = T.inverse()
+
     """
+
+    def __init__(self, matrix=None):
+        super(Transformation, self).__init__()
+        if not matrix:
+            matrix = identity_matrix(4)
+        self.matrix = matrix
+
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
 
     @property
     def DATASCHEMA(self):
@@ -66,14 +98,62 @@ class Transformation(Data):
     def JSONSCHEMANAME(self):
         return 'transformation'
 
-    def __init__(self, matrix=None):
-        """Construct a transformation from a 4x4 transformation matrix.
-        """
-        super(Transformation, self).__init__()
+    @property
+    def data(self):
+        return {'matrix': self.matrix}
 
-        if not matrix:
-            matrix = identity_matrix(4)
-        self.matrix = matrix
+    @data.setter
+    def data(self, data):
+        self.matrix = data['matrix']
+
+    @property
+    def scale(self):
+        S, H, R, T, P = self.decomposed()
+        return S
+
+    @property
+    def shear(self):
+        S, H, R, T, P = self.decomposed()
+        return H
+
+    @property
+    def rotation(self):
+        S, H, R, T, P = self.decomposed()
+        return R
+
+    @property
+    def translation(self):
+        S, H, R, T, P = self.decomposed()
+        return T
+
+    @property
+    def projection(self):
+        S, H, R, T, P = self.decomposed()
+        return P
+
+    @property
+    def translation_vector(self):
+        from compas.geometry import Vector
+        vector = translation_from_matrix(self.matrix)
+        return Vector(*vector)
+
+    @property
+    def basis_vectors(self):
+        from compas.geometry import Vector
+        x, y = basis_vectors_from_matrix(self.rotation.matrix)
+        return Vector(*x), Vector(*y)
+
+    @property
+    def list(self):
+        return [a for c in self.matrix for a in c]
+
+    @property
+    def determinant(self):
+        return matrix_determinant(self.matrix)
+
+    # ==========================================================================
+    # customisation
+    # ==========================================================================
 
     def __mul__(self, other):
         return self.concatenated(other)
@@ -121,119 +201,51 @@ class Transformation(Data):
     def __len__(self):
         return len(self.matrix)
 
-    def copy(self):
-        """Returns a copy of the transformation.
-        """
-        cls = type(self)
-        matrix = [
-            self.matrix[0][:],
-            self.matrix[1][:],
-            self.matrix[2][:],
-            self.matrix[3][:]]
-        return cls(matrix)
-
-    @property
-    def data(self):
-        """Return a ``Transformation`` object's to a data dict.
-
-        Returns
-        -------
-        dict
-            A dictionary with a transformation matrix stored under the key "matrix".
-
-        Examples
-        --------
-        >>> matrix = [[1, 0, 0, 3], [0, 1, 0, 4], [0, 0, 1, 5], [0, 0, 0, 1]]
-        >>> data = {'matrix': matrix}
-        >>> T = Transformation.from_data(data)
-        >>> T.data == data
-        True
-        """
-        return {'matrix': self.matrix}
-
-    @data.setter
-    def data(self, data):
-        self.matrix = data['matrix']
-
-    @classmethod
-    def from_data(cls, data):
-        """Creates a ``Transformation`` from a data dict.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            A dictionary with a transformation matrix stored under the key "matrix".
-
-        Returns
-        -------
-        Transformation
-            The ``Transformation`` object.
-
-        Examples
-        --------
-        >>> matrix = [[1, 0, 0, 3], [0, 1, 0, 4], [0, 0, 1, 5], [0, 0, 0, 1]]
-        >>> data = {'matrix': matrix}
-        >>> T = Transformation.from_data(data)
-        """
-        return cls(data['matrix'])
-
-    def to_data(self):
-        """Convert a ``Transformation`` object to a data dict.
-
-        Returns
-        -------
-        dict
-            A dictionary with a transformation matrix stored under the key "matrix".
-
-        Examples
-        --------
-        >>> matrix = [[1, 0, 0, 3], [0, 1, 0, 4], [0, 0, 1, 5], [0, 0, 0, 1]]
-        >>> data = {'matrix': matrix}
-        >>> T = Transformation.from_data(data)
-        >>> T.to_data() == data
-        True
-        """
-        return self.data
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
 
     @classmethod
     def from_matrix(cls, matrix):
-        """Creates a ``Transformation`` from a 4x4 matrix-like object.
+        """Creates a transformation from a list[list[float]] object.
 
         Parameters
         ----------
-        matrix : 4x4 matrix-like
+        matrix : list[list[float]]
             The 4x4 transformation matrix.
 
         Returns
         -------
-        Transformation
-            The ``Transformation`` object.
+        :class:`compas.geometry.Transformation`
+            The transformation.
+
         """
         return cls(matrix)
 
     @classmethod
     def from_list(cls, numbers):
-        """Creates a ``Transformation`` from a list of 16 numbers.
+        """Creates a transformation from a list of 16 numbers.
 
         Parameters
         ----------
-        numbers : :obj:`list` of :obj:`float`
+        numbers : list[float]
             A list of 16 numbers
 
         Returns
         -------
-        Transformation
-            The ``Transformation`` object.
+        :class:`compas.geometry.Transformation`
+            The transformation.
+
+        Notes
+        -----
+        Since the transformation matrix follows the row-major order, the
+        translational components must be at the list's indices 3, 7, 11.
 
         Examples
         --------
         >>> numbers = [1, 0, 0, 3, 0, 1, 0, 4, 0, 0, 1, 5, 0, 0, 0, 1]
         >>> T = Transformation.from_list(numbers)
 
-        Notes
-        -----
-        Since the transformation matrix follows the row-major order, the
-        translational components must be at the list's indices 3, 7, 11.
         """
         matrix = identity_matrix(4)
         for i in range(4):
@@ -242,29 +254,26 @@ class Transformation(Data):
         return cls(matrix)
 
     @classmethod
-    def from_euler_angles(cls, euler_angles, static=True,
-                          axes='xyz', point=[0, 0, 0]):
+    def from_euler_angles(cls, euler_angles, static=True, axes='xyz', point=[0, 0, 0]):
         """Construct a transformation from a rotation represented by Euler angles.
 
         Parameters
         ----------
-        euler_angles : list of float
+        euler_angles : [float, float, float]
             Three numbers that represent the angles of rotations about the defined axes.
         static : bool, optional
-            If true the rotations are applied to a static frame.
-            If not, to a rotational.
-            Defaults to ``True``.
+            If True the rotations are applied to a static frame.
+            If False, to a rotational.
         axes : str, optional
             A 3 character string specifying the order of the axes.
-            Defaults to ``'xyz'``.
-        point : list of float, optional
+        point : list[float], optional
             The point of the frame.
-            Defaults to ``[0, 0, 0]``.
 
         Returns
         -------
         :class:`compas.geometry.Transformation`
-            The constructed transformation.
+            The transformation.
+
         """
         R = matrix_from_euler_angles(euler_angles, static, axes)
         T = matrix_from_translation(point)
@@ -274,17 +283,21 @@ class Transformation(Data):
     # should not one of the two just have a "to" function
     @classmethod
     def from_frame(cls, frame):
-        """Computes a transformation from world XY to frame.
+        """Construct a transformation from world XY to frame.
 
         Parameters
         ----------
-        frame : :class:`Frame`
+        frame : :class:`compas.geometry.Frame`
             A frame describing the targeted Cartesian coordinate system.
 
         Returns
         -------
-        Transformation
-            The ``Transformation`` object.
+        :class:`compas.geometry.Transformation`
+            The transformation.
+
+        Notes
+        -----
+        It is the same as from_frame_to_frame(Frame.worldXY(), frame).
 
         Examples
         --------
@@ -295,32 +308,28 @@ class Transformation(Data):
         >>> f1 == f2
         True
 
-        Notes
-        -----
-        It is the same as from_frame_to_frame(Frame.worldXY(), frame).
-
         """
         return cls(matrix_from_frame(frame))
 
     @classmethod
     def from_frame_to_frame(cls, frame_from, frame_to):
-        """Computes a transformation between two frames.
+        """Construct a transformation between two frames.
 
         This transformation allows to transform geometry from one Cartesian
-        coordinate system defined by "frame_from" to another Cartesian
-        coordinate system defined by "frame_to".
+        coordinate system defined by `frame_from` to another Cartesian
+        coordinate system defined by `frame_to`.
 
         Parameters
         ----------
-        frame_from : :class:`Frame`
+        frame_from : :class:`compas.geometry.Frame`
             A frame defining the original Cartesian coordinate system.
-        frame_to : :class:`Frame`
+        frame_to : :class:`compas.geometry.Frame`
             A frame defining the targeted Cartesian coordinate system.
 
         Returns
         -------
-        Transformation
-            The ``Transformation`` object representing a change of basis.
+        :class:`compas.geometry.Transformation`
+            The transformation.
 
         Examples
         --------
@@ -331,6 +340,7 @@ class Transformation(Data):
         >>> f1.transform(T)
         >>> f1 == f2
         True
+
         """
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
@@ -338,17 +348,22 @@ class Transformation(Data):
 
     @classmethod
     def from_change_of_basis(cls, frame_from, frame_to):
-        """Computes a change of basis transformation between two frames.
+        """Construct a change of basis transformation between two frames.
 
         A basis change is essentially a remapping of geometry from one
         coordinate system to another.
 
         Parameters
         ----------
-        frame_from : :class:`Frame`
+        frame_from : :class:`compas.geometry.Frame`
             A frame defining the original Cartesian coordinate system.
-        frame_to : :class:`Frame`
+        frame_to : :class:`compas.geometry.Frame`
             A frame defining the targeted Cartesian coordinate system.
+
+        Returns
+        -------
+        :class:`compas.geometry.Transformation`
+            The transformation representing a change of basis.
 
         Examples
         --------
@@ -361,111 +376,32 @@ class Transformation(Data):
         Point(1.395, 0.955, 1.934)
         >>> Frame.local_to_local_coordinates(f1, f2, p_f1)
         Point(1.395, 0.955, 1.934)
+
         """
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
         return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
 
-    @property
-    def scale(self):
-        """The scale component of the transformation matrix.
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
+    def copy(self):
+        """Returns a copy of the transformation.
 
         Returns
         -------
-        compas.geometry.Scale
-            The scale component of the transformation.
+        :class:`compas.geometry.Transformation`
+            An independent copy of the transformation.
+
         """
-        S, H, R, T, P = self.decomposed()
-        return S
-
-    @property
-    def shear(self):
-        """The shear component of the transformation matrix.
-
-        Returns
-        -------
-        compas.geometry.Shear
-            The shear component of the transformation.
-        """
-        S, H, R, T, P = self.decomposed()
-        return H
-
-    @property
-    def rotation(self):
-        """The rotation component of the transformation matrix.
-
-        Returns
-        -------
-        compas.geometry.Rotation
-            The rotation component of the transformation.
-        """
-        S, H, R, T, P = self.decomposed()
-        return R
-
-    @property
-    def translation(self):
-        """The translation component of the transformation matrix.
-
-        Returns
-        -------
-        compas.geometry.Translation
-            The translation component of the transformation.
-        """
-        S, H, R, T, P = self.decomposed()
-        return T
-
-    @property
-    def projection(self):
-        """The projection component of the transformation matrix.
-
-        Returns
-        -------
-        compas.geometry.Projection
-            The projectionn component of the transformation.
-        """
-        S, H, R, T, P = self.decomposed()
-        return P
-
-    @property
-    def translation_vector(self):
-        from compas.geometry import Vector
-        vector = translation_from_matrix(self.matrix)
-        return Vector(*vector)
-
-    @property
-    def basis_vectors(self):
-        """The basis vectors from the rotation component of the transformation matrix.
-
-        Returns
-        -------
-        tuple of :class:`compas.geometry.Vector`
-            The basis vectors of the rotation component of the tranformation.
-        """
-        from compas.geometry import Vector
-        x, y = basis_vectors_from_matrix(self.rotation.matrix)
-        return Vector(*x), Vector(*y)
-
-    @property
-    def list(self):
-        """Flattens the 4x4 transformation matrix into a list of 16 numbers.
-
-        Returns
-        -------
-        list
-            The transformation matrix as a flattened list in row-major order.
-        """
-        return [a for c in self.matrix for a in c]
-
-    @property
-    def determinant(self):
-        """The determinant of the matrix of the transformation.
-
-        Returns
-        -------
-        float
-            The determinant of the matrix of this transformation.
-        """
-        return matrix_determinant(self.matrix)
+        cls = type(self)
+        matrix = [
+            self.matrix[0][:],
+            self.matrix[1][:],
+            self.matrix[2][:],
+            self.matrix[3][:]]
+        return cls(matrix)
 
     def transpose(self):
         """Transpose the matrix of this transformation.
@@ -474,6 +410,7 @@ class Transformation(Data):
         -------
         None
             The transformation is transposed in-place.
+
         """
         self.matrix = transpose_matrix(self.matrix)
 
@@ -482,15 +419,23 @@ class Transformation(Data):
 
         Returns
         -------
-        Transformation
+        :class:`compas.geometry.Transformation`
             The transposed transformation object.
+
         """
         T = self.copy()
         T.transpose()
         return T
 
     def invert(self):
-        """Invert this transformation."""
+        """Invert this transformation.
+
+        Returns
+        -------
+        None
+            The transformation is transposed in-place.
+
+        """
         self.matrix = matrix_inverse(self.matrix)
 
     def inverse(self):
@@ -498,7 +443,7 @@ class Transformation(Data):
 
         Returns
         -------
-        Transformation
+        :class:`compas.geometry.Transformation`
             The inverse transformation.
 
         Examples
@@ -509,6 +454,7 @@ class Transformation(Data):
         >>> I = Transformation(identity_matrix(4))
         >>> I == T * T.inverse()
         True
+
         """
         T = self.copy()
         T.invert()
@@ -517,14 +463,20 @@ class Transformation(Data):
     inverted = inverse
 
     def decomposed(self):
-        """Decompose the ``Transformation`` into its ``Scale``, ``Shear``,
-        ``Rotation``, ``Translation`` and ``Projection`` components.
+        """Decompose the `Transformation` into its components.
 
         Returns
         -------
-        5-tuple of Transformation
-            The scale, shear, rotation, translation, and projection components
-            of the current transformation.
+        :class:`compas.geometry.Scale`
+            The scale component of the current transformation.
+        :class:`compas.geometry.Shear`
+            The shear component of the current transformation.
+        :class:`compas.geometry.Rotation`
+            The rotation component of the current transformation.
+        :class:`compas.geometry.Translation`
+            The translation component of the current transformation.
+        :class:`compas.geometry.Projection`
+            The projection component of the current transformation.
 
         Examples
         --------
@@ -543,6 +495,7 @@ class Transformation(Data):
         True
         >>> T1 == T
         True
+
         """
         from compas.geometry import Scale  # noqa: F811
         from compas.geometry import Shear
@@ -573,11 +526,12 @@ class Transformation(Data):
         Notes
         -----
         Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
+
         """
         self.matrix = multiply_matrices(self.matrix, other.matrix)
 
     def concatenated(self, other):
-        """Concatenate two transformations into one ``Transformation``.
+        """Concatenate two transformations into one `Transformation`.
 
         Parameters
         ----------
@@ -586,12 +540,13 @@ class Transformation(Data):
 
         Returns
         -------
-        T : :class:`compas.geometry.Transformation`
+        :class:`compas.geometry.Transformation`
             The new transformation that is the concatenation of this one and the other.
 
         Notes
         -----
         Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
+
         """
         cls = type(self)
         if isinstance(other, cls):

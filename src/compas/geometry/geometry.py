@@ -17,7 +17,7 @@ class Geometry(Data):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the geometry.
 
         Returns
@@ -32,13 +32,14 @@ class Geometry(Data):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the geometry.
 
         Returns
         -------
         :class:`Geometry`
             The transformed geometry.
+
         """
         primitive = self.copy()
         primitive.transform(transformation)

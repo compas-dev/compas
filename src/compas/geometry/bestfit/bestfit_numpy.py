@@ -26,13 +26,15 @@ def bestfit_plane_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple
-        A point on the plane, and the normal vector.
+    [float, float, float]
+        A point on the plane.
+    [float, float, float]
+        The normal vector.
 
     Examples
     --------
@@ -48,13 +50,17 @@ def bestfit_frame_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    3-tuple
-        The frame origin, and the local X and Y axes.
+    [float, float, float]
+        The frame origin.
+    [float, float, float]
+        The local X axis.
+    [float, float, float]
+        The local Y axis.
 
     Examples
     --------
@@ -70,14 +76,17 @@ def bestfit_circle_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple
-        XYZ coordinates of the center of the circle, the normal vector of the
-        local frame, and the radius of the circle.
+    [float, float, float]
+        XYZ coordinates of the center of the circle.
+    [float, float, float]
+        The normal vector of the local frame.
+    float
+        The radius of the circle.
 
     Notes
     -----
@@ -149,13 +158,15 @@ def bestfit_sphere_numpy(points):
 
     Parameters
     ----------
-    points: list of points
+    points: array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple: center, radius
-        sphere center (XYZ coordinates) and sphere radius.
+    [float, float, float]
+        Sphere center (XYZ coordinates).
+    float
+        Sphere radius.
 
     Notes
     -----

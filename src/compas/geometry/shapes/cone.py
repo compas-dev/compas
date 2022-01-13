@@ -23,7 +23,7 @@ class Cone(Shape):
 
     Parameters
     ----------
-    circle : tuple or :class:`compas.geometry.Circle`
+    circle : [plane, radius] or :class:`compas.geometry.Circle`
         The base circle of the cone.
     height : float
         The height of the cone.
@@ -31,17 +31,23 @@ class Cone(Shape):
     Attributes
     ----------
     plane : :class:`compas.geometry.Plane`
-        The plane containing the circle.
+        The plane of the cone.
     circle : :class:`compas.geometry.Circle`
-        The base circle of the cone.
+        The circle of the cone.
+    center : :class:`compas.geometry.Point`
+        The center of the cone.
     radius : float
-        The radius of the base circle.
+        The radius of the cone.
     height : float
         The height of the cone.
-    normal (read-only) : :class:`compas.geometry.Vector`
-        The normal of the base plane.
-    diameter : float
+    normal : :class:`compas.geometry.Vector`, read-only
+        The normal of the cone.
+    diameter : float, read-only
         The diameter of the cone.
+    area : float, read-only
+        The surface area of the cone.
+    volume : float, read-only
+        The volume of the cone.
 
     Examples
     --------
@@ -53,8 +59,22 @@ class Cone(Shape):
 
     """
 
+    __slots__ = ['_circle', '_height']
+
+    def __init__(self, circle, height, **kwargs):
+        super(Cone, self).__init__(**kwargs)
+        self._circle = None
+        self._height = None
+        self.circle = circle
+        self.height = height
+
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def DATASCHEMA(self):
+        """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         return schema.Schema({
             'circle': {
@@ -66,26 +86,12 @@ class Cone(Shape):
 
     @property
     def JSONSCHEMANAME(self):
+        """str : Name of the schema of the data representation in JSON format."""
         return 'cone'
-
-    __slots__ = ['_circle', '_height']
-
-    def __init__(self, circle, height, **kwargs):
-        super(Cone, self).__init__(**kwargs)
-        self._circle = None
-        self._height = None
-        self.circle = circle
-        self.height = height
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the cone.
-
-        Returns
-        -------
-        dict
-            The cone data.
-
+        """dict : Returns the data dictionary that represents the cone.
         """
         return {'circle': self.circle.data, 'height': self.height}
 
@@ -94,9 +100,38 @@ class Cone(Shape):
         self.circle = Circle.from_data(data['circle'])
         self.height = data['height']
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a cone from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Cone`
+            The constructed cone.
+
+        Examples
+        --------
+        >>> from compas.geometry import Cone
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Plane
+        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
+        >>> cone = Cone.from_data(data)
+
+        """
+        cone = cls(Circle.from_data(data['circle']), data['height'])
+        return cone
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
     @property
     def plane(self):
-        """Plane: The plane of the cone."""
         return self.circle.plane
 
     @plane.setter
@@ -105,7 +140,6 @@ class Cone(Shape):
 
     @property
     def circle(self):
-        """float: The circle of the cone."""
         return self._circle
 
     @circle.setter
@@ -114,7 +148,6 @@ class Cone(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the cone."""
         return self.circle.radius
 
     @radius.setter
@@ -123,7 +156,6 @@ class Cone(Shape):
 
     @property
     def height(self):
-        """float: The height of the cone."""
         return self._height
 
     @height.setter
@@ -132,17 +164,14 @@ class Cone(Shape):
 
     @property
     def normal(self):
-        """Vector: The normal of the cone."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float: The diameter of the cone."""
         return self.circle.diameter
 
     @property
     def center(self):
-        """Point: The center of the cone."""
         return self.circle.center
 
     @center.setter
@@ -151,13 +180,11 @@ class Cone(Shape):
 
     @property
     def area(self):
-        """Float: The surface area of the cone."""
         r = self.circle.radius
         return pi * r * (r + sqrt(self.height**2 + r**2))
 
     @property
     def volume(self):
-        """Float: The volume of the cone."""
         return pi * self.circle.radius**2 * (self.height / 3)
 
     # ==========================================================================
@@ -193,32 +220,6 @@ class Cone(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a cone from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        Cone
-            The constructed cone.
-
-        Examples
-        --------
-        >>> from compas.geometry import Cone
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-        >>> cone = Cone.from_data(data)
-
-        """
-        cone = cls(Circle.from_data(data['circle']), data['height'])
-        return cone
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -231,13 +232,16 @@ class Cone(Shape):
         u : int, optional
             Number of faces in the "u" direction.
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
             raise ValueError('The value for u should be u > 3.')
@@ -281,8 +285,12 @@ class Cone(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the cone.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

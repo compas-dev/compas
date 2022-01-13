@@ -33,10 +33,15 @@ def transform_points_numpy(points, T):
 
     Parameters
     ----------
-    points : list of :class:`Point` or list of list of float
+    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
         A list of points to be transformed.
-    T : :class:`Transformation` or list of list of float
+    T : :class:`compas.geometry.Transformation` or list[list[float]]
         The transformation to apply.
+
+    Returns
+    -------
+    (N, 3) ndarray
+        The transformed points.
 
     Examples
     --------
@@ -44,6 +49,7 @@ def transform_points_numpy(points, T):
     >>> points = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> points_transformed = transform_points_numpy(points, T)
+
     """
     T = asarray(T)
     points = homogenize_numpy(points, w=1.0)
@@ -55,10 +61,15 @@ def transform_vectors_numpy(vectors, T):
 
     Parameters
     ----------
-    vectors : list of :class:`Vector`
+    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
         A list of vectors to be transformed.
-    T : :class:`Transformation`
+    T : :class:`compas.geometry.Transformation`
         The transformation to apply.
+
+    Returns
+    -------
+    (N, 3) ndarray
+        The transformed vectors.
 
     Examples
     --------
@@ -66,6 +77,7 @@ def transform_vectors_numpy(vectors, T):
     >>> vectors = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> vectors_transformed = transform_vectors_numpy(vectors, T)
+
     """
     T = asarray(T)
     vectors = homogenize_numpy(vectors, w=0.0)
@@ -77,10 +89,15 @@ def transform_frames_numpy(frames, T):
 
     Parameters
     ----------
-    frames : list of :class:`Frame`
+    frames : sequence[[point, vector, vector] or :class:`compas.geometry.Frame`]
         A list of frames to be transformed.
-    T : :class:`Transformation`
+    T : :class:`compas.geometry.Transformation`
         The transformation to apply on the frames.
+
+    Returns
+    -------
+    (N, 3, 3) ndarray
+        The transformed frames.
 
     Examples
     --------
@@ -88,6 +105,7 @@ def transform_frames_numpy(frames, T):
     >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
     >>> T =  matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames_numpy(frames, T)
+
     """
     T = asarray(T)
     points_and_vectors = homogenize_and_flatten_frames_numpy(frames)
@@ -99,14 +117,14 @@ def world_to_local_coordinates_numpy(frame, xyz):
 
     Parameters
     ----------
-    frame : :class:`Frame` or [point, xaxis, yaxis]
+    frame : [point, vector, vector] or :class:`compas.geometry.Frame`
         The local coordinate system.
-    xyz : array-like
+    xyz : array-like[[float, float, float] or :class:`compas.geometry.Point`]
         The global coordinates of the points to convert.
 
     Returns
     -------
-    array
+    (N, 3) ndarray
         The coordinates of the given points in the local coordinate system.
 
     Examples
@@ -117,6 +135,7 @@ def world_to_local_coordinates_numpy(frame, xyz):
     >>> rst = world_to_local_coordinates_numpy(frame, xyz)
     >>> np.allclose(rst, [[3.726, 4.088, 1.550]], rtol=1e-3)
     True
+
     """
     origin = frame[0]
     uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
@@ -131,14 +150,14 @@ def local_to_world_coordinates_numpy(frame, rst):
 
     Parameters
     ----------
-    frame : :class:`Frame` or [point, xaxis, yaxis]
+    frame : [point, vector, vector] or :class:`compas.geometry.Frame`
         The local coordinate system.
-    rst : array-like
+    rst : array-like[[float, float, float] or :class:`compas.geometry.Point`]
         The coordinates of the points wrt the local coordinate system.
 
     Returns
     -------
-    array
+    (N, 3) ndarray
         The world coordinates of the given points.
 
     Notes
@@ -153,6 +172,7 @@ def local_to_world_coordinates_numpy(frame, rst):
     >>> xyz = local_to_world_coordinates_numpy(frame, rst)
     >>> np.allclose(xyz, [[2.000, 3.000, 5.000]], rtol=1e-3)
     True
+
     """
     origin = frame[0]
     uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
@@ -168,16 +188,20 @@ def local_to_world_coordinates_numpy(frame, rst):
 # ==============================================================================
 
 
-def homogenize_numpy(points, w=1.0):
+def homogenize_numpy(data, w=1.0):
     """Dehomogenizes points or vectors.
 
     Parameters
     ----------
-    points: list of :class:`Points` or list of :class:`Vectors`
+    data : array_like[[float, float, float] or :class:`compas.geometry.Point`] or array_like[[float, float, float] or :class:`compas.geometry.Vector`]
+        The input data.
+    w : float, optional
+        The homogenization factor.
+        Use ``1.0`` for points, and ``0.0`` for vectors.
 
     Returns
     -------
-    :class:`numpy.ndarray`
+    (N, 4) ndarray
 
     Examples
     --------
@@ -185,22 +209,24 @@ def homogenize_numpy(points, w=1.0):
     >>> res = homogenize_numpy(points, w=1.0)
     >>> np.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 1.0], [1.0, -0.0, 0.0, 1.0]])
     True
+
     """
-    points = asarray(points)
-    points = hstack((points, w * ones((points.shape[0], 1))))
-    return points
+    data = asarray(data)
+    data = hstack((data, w * ones((data.shape[0], 1))))
+    return data
 
 
-def dehomogenize_numpy(points):
+def dehomogenize_numpy(data):
     """Dehomogenizes points or vectors.
 
     Parameters
     ----------
-    points: list of :class:`Points` or list of :class:`Vectors`
+    data : array_like[[float, float, float, float]]
+        The data to dehomogenize.
 
     Returns
     -------
-    :class:`numpy.ndarray`
+    (N, 3) ndarray
 
     Examples
     --------
@@ -208,27 +234,27 @@ def dehomogenize_numpy(points):
     >>> res = dehomogenize_numpy(points)
     >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, -0.0, 0.0]])
     True
+
     """
     def func(a):
         return a if a else 1.
     func = vectorize(func)
 
-    points = asarray(points)
-    return points[:, :-1] / func(points[:, -1]).reshape((-1, 1))
+    data = asarray(data)
+    return data[:, :-1] / func(data[:, -1]).reshape((-1, 1))
 
 
 def homogenize_and_flatten_frames_numpy(frames):
     """Homogenize a list of frames and flatten the 3D list into a 2D list using numpy.
 
-    The frame consists of a point and 2 orthonormal vectors.
-
     Parameters
     ----------
-    frames: list of :class:`Frame`
+    frames : array_like[[point, vector, vector] or :class:`compas.geometry.Frame`]
+        The input frames.
 
     Returns
     -------
-    :class:`numpy.ndarray`
+    (N x 3, 4) ndarray
         An array of points and vectors.
 
     Examples
@@ -238,6 +264,7 @@ def homogenize_and_flatten_frames_numpy(frames):
     >>> res = homogenize_and_flatten_frames_numpy(frames)
     >>> np.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]])
     True
+
     """
     n = len(frames)
     frames = asarray(frames).reshape(n * 3, 3)
@@ -250,12 +277,12 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
 
     Parameters
     ----------
-    points_and_vectors: list of list of float
+    points_and_vectors : array_like[[float, float, float, float]]
         Homogenized points and vectors.
 
     Returns
     -------
-    :class:`numpy.ndarray`
+    (N / 3, 3, 3) ndarray
         The frames.
 
     Examples
@@ -264,6 +291,7 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
     >>> res = dehomogenize_and_unflatten_frames_numpy(points_and_vectors)
     >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])
     True
+
     """
     frames = dehomogenize_numpy(points_and_vectors)
     return frames.reshape((int(frames.shape[0]/3.), 3, 3))

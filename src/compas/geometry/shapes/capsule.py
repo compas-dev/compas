@@ -20,7 +20,7 @@ class Capsule(Shape):
 
     Parameters
     ----------
-    line : tuple or :class:`compas.geometry.Line`
+    line : [point, point] or :class:`compas.geometry.Line`
         The axis line of the capsule.
     radius : float
         The radius of the capsule.
@@ -28,21 +28,19 @@ class Capsule(Shape):
     Attributes
     ----------
     line : :class:`compas.geometry.Line`
-        The axis line of the capsule.
-    start : :class:`compas.geometry.Point`
-        The start point of the axis line.
-        This is the base point of the capsule.
-    end : :class:`compas.geometry.Point`
-        The end point of the axis line.
-        This is the top of the capsule.
+        The centre line of the capsule.
     radius : float
         The radius of the capsule.
-    length (read-only) : float
-        The length of the capsule axis line.
-    area (read-only) : float
-        The surface area of the capsule.
-    volume (read-only) : float
+    start : :class:`compas.geometry.Point`, read-only
+        The start point of the centre line.
+    end : :class:`compas.geometry.Point`, read-only
+        The end point of the centre line.
+    length : float, read-only
+        The length of the centre line of the capsule.
+    volume : float, read-only
         The volume of the capsule.
+    area : float, read-only
+        The area of the capsule surface.
 
     Examples
     --------
@@ -50,18 +48,6 @@ class Capsule(Shape):
     >>> capsule = Capsule(line, 2.3)
 
     """
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'line': Line.DATASCHEMA.fget(None),
-            'radius': schema.And(float, lambda x: x > 0)
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        return 'capsule'
 
     __slots__ = ['_line', '_radius']
 
@@ -72,15 +58,27 @@ class Capsule(Shape):
         self.line = line
         self.radius = radius
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : Schema of the data representation."""
+        import schema
+        return schema.Schema({
+            'line': Line.DATASCHEMA.fget(None),
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        """str : Name of the schema of the data representation in JSON format."""
+        return 'capsule'
+
     @property
     def data(self):
-        """Returns the data dictionary that represents the capsule.
-
-        Returns
-        -------
-        dict
-            The capsule data.
-
+        """dict : Returns the data dictionary that represents the capsule.
         """
         return {'line': self.line.data, 'radius': self.radius}
 
@@ -88,6 +86,28 @@ class Capsule(Shape):
     def data(self, data):
         self.line = Line.from_data(data['line'])
         self.radius = data['radius']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a capsule from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Capsule`
+            The constructed capsule.
+
+        """
+        capsule = Capsule(Line.from_data(data['line']), data['radius'])
+        return capsule
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def line(self):
@@ -107,7 +127,6 @@ class Capsule(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the capsule."""
         return self._radius
 
     @radius.setter
@@ -165,23 +184,6 @@ class Capsule(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a capsule from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        :class: `Capsule`
-            The constructed capsule.
-        """
-        capsule = Capsule(Line.from_data(data['line']), data['radius'])
-        return capsule
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -196,13 +198,16 @@ class Capsule(Shape):
         v : int, optional
             Number of faces in the 'v' direction.
         triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
             raise ValueError('The value for u should be u > 3.')
@@ -276,11 +281,16 @@ class Capsule(Shape):
         return vertices, faces
 
     def transform(self, transformation):
-        """Transform this ``Capsule`` using a given transformation.
+        """Transform this `Capsule` using a given transformation.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the capsule.
+
+        Returns
+        -------
+        None
+
         """
         self.line.transform(transformation)
