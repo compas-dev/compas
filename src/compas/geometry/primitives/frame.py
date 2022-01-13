@@ -665,12 +665,12 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def to_local_coordinates(self, obj):
+    def to_local_coordinates(self, obj_in_wcf):
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
         ----------
-        obj : [float, float, float] or :class:`compas.geometry.Geometry`
+        obj_in_wcf : [float, float, float] or :class:`compas.geometry.Geometry`
             An object in the world coordinate frame.
 
         Returns
@@ -693,16 +693,16 @@ class Frame(Primitive):
 
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self)
-        if isinstance(obj, (list, tuple)):
-            return Point(*obj).transformed(T)
-        return obj.transformed(T)
+        if isinstance(obj_in_wcf, (list, tuple)):
+            return Point(*obj_in_wcf).transformed(T)
+        return obj_in_wcf.transformed(T)
 
-    def to_world_coordinates(self, obj):
+    def to_world_coordinates(self, obj_in_lcf):
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
         ----------
-        obj : [float, float, float] or :class:`compas.geometry.Geometry`
+        obj_in_lcf : [float, float, float] or :class:`compas.geometry.Geometry`
             An object in local coordinate system of the frame.
 
         Returns
@@ -725,9 +725,9 @@ class Frame(Primitive):
 
         """
         T = Transformation.from_change_of_basis(self, Frame.worldXY())
-        if isinstance(obj, list):
-            return Point(*obj).transformed(T)
-        return obj.transformed(T)
+        if isinstance(obj_in_lcf, list):
+            return Point(*obj_in_lcf).transformed(T)
+        return obj_in_lcf.transformed(T)
 
     def transform(self, T):
         """Transform the frame.
