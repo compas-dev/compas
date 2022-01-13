@@ -74,13 +74,16 @@ extensions = [
     "m2r2",
     "nbsphinx",
     "sphinx.ext.autodoc.typehints",
-    # "sphinx_autodoc_typehints",
-    # "sphinx_autodoc_napoleon_typehints",
 ]
 
 # autodoc options
 
+autodoc_type_aliases = {}
+
+# this does not work properly yet
 autodoc_typehints = "none"
+autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "documented"
 
 autodoc_mock_imports = [
     "System",

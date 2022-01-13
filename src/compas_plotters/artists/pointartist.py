@@ -13,7 +13,32 @@ Color = Tuple[float, float, float]
 
 
 class PointArtist(PlotterArtist, PrimitiveArtist):
-    """Artist for COMPAS points."""
+    """Artist for COMPAS points.
+
+    Parameters
+    ----------
+    point : :class:`compas.geometry.Point`
+        A COMPAS point.
+    size : int, optional
+        The size of the point.
+    facecolor : Color, optional
+        Color of the interior of the point representing the point.
+    edgecolor : Color, optional
+        Color of the boundary of the point representing the point.
+    zorder : int, optional
+        Stacking order above the XY plane of the plotter canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments. See :class:`PlotterArtist` or :class:`PrimitiveArtist`.
+
+    Attributes
+    ----------
+    point : :class:`compas.geometry.Point`
+        The point associated with the artist.
+    size : float
+        Size of the point, relative to the resolution of the plotter.
+        ``size = self._size / self.plotter.dpi``.
+
+    """
 
     def __init__(self,
                  point: Point,
@@ -33,11 +58,11 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
         self.zorder = zorder
 
     @property
-    def point(self):
+    def point(self) -> Point:
         return self.primitive
 
     @point.setter
-    def point(self, point):
+    def point(self, point: Point):
         self.primitive = point
 
     @property
@@ -60,6 +85,13 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
         return [self.point[:2]]
 
     def draw(self) -> None:
+        """Draw the circle.
+
+        Returns
+        -------
+        None
+
+        """
         circle = Circle(
             [0, 0],
             radius=self.size,
@@ -72,6 +104,13 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
         self.update_data()
 
     def redraw(self) -> None:
+        """Update the point using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         self._mpl_circle.set_radius(self.size)
         self._mpl_circle.set_edgecolor(self.edgecolor)
         self._mpl_circle.set_facecolor(self.facecolor)

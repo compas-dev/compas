@@ -13,7 +13,36 @@ Color = Tuple[float, float, float]
 
 
 class CircleArtist(PlotterArtist, PrimitiveArtist):
-    """Artist for COMPAS circles."""
+    """Artist for COMPAS circles.
+
+    Parameters
+    ----------
+    circle : :class:`compas.geometry.Circle`
+        A COMPAS circle.
+    linewidth : float, optional
+        Width of the circle boundary.
+    linestyle : {'solid', 'dotted', 'dashed', 'dashdot'}, optional
+        Style of the circle boundary.
+    facecolor : tuple[float ,float, float], optional
+        Color of the interior of the circle.
+    edgecolor : tuple[float, float, float], optional
+        Color of the boundary of the circle.
+    fill : bool, optional
+        If True, draw the interior of the circle.
+    alpha : float, optional
+        Transparency of the circle.
+    zorder : int, optional
+        Stacking order of the circle on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+
+    Attributes
+    ----------
+    circle : :class:`compas.geometry.Circle`
+        The circle associated with the artist.
+
+    """
 
     def __init__(self,
                  circle: Circle,
@@ -60,6 +89,13 @@ class CircleArtist(PlotterArtist, PrimitiveArtist):
         return points
 
     def draw(self) -> None:
+        """Draw the circle on the plotter canvas.
+
+        Returns
+        -------
+        None
+
+        """
         circle = CirclePatch(
             self.circle.center[:2],
             linewidth=self.linewidth,
@@ -75,6 +111,13 @@ class CircleArtist(PlotterArtist, PrimitiveArtist):
         self.update_data()
 
     def redraw(self) -> None:
+        """Update the circle using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         self._mpl_circle.center = self.circle.center[:2]
         self._mpl_circle.set_radius(self.circle.radius)
         self._mpl_circle.set_edgecolor(self.edgecolor)

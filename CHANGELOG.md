@@ -12,11 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added option to return strip faces from `compas.datastructure.Halfedge.edge_strip`.
 
 ### Changed
-* Fixed bug in `mesh_slice_plane()` , `Mesh.slice_plane()`.
 
+* Fixed bug in `mesh_slice_plane()` , `Mesh.slice_plane()`.
 * Changed `compas_rhino.geometry.RhinoNurbsSurface.closest_point` to fix bug of rhino_curve to rhino_surface, plus return tuple instead.
-* Changed `compas.geometry.Collection` to work with all types of geometry objects.
-* Changed base of `compas.geometry.Collection` to `compas.data.Data`.
+* Changed `compas_plotters.plotter.Plotter` to normal class instead of singleton.
 
 ### Removed
 
