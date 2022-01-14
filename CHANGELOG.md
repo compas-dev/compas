@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas.colors.Color`.
 * Added `compas.colors.ColorMap`.
-
 * Added `compas_blender.conversions.BlenderGeometry`.
 * Added `compas_blender.conversions.BlenderCurve`.
 * Added `compas_blender.conversions.BlenderMesh`.
