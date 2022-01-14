@@ -9,11 +9,19 @@ from System.Windows.Forms import FormBorderStyle
 import Rhino
 
 
-__all__ = ['BaseForm']
-
-
 class BaseForm(System.Windows.Forms.Form):
-    """Base class for Windows forms."""
+    """Base class for Windows forms.
+
+    Parameters
+    ----------
+    title : str, optional
+        The title of the form.
+    width : int, optional
+        The width of the form.
+    height : int, optional
+        The height of the form.
+
+    """
 
     def __init__(self, title='Form', width=None, height=None):
         self.Text = title
@@ -29,6 +37,13 @@ class BaseForm(System.Windows.Forms.Form):
         self.FormClosed += self.on_form_closed
 
     def init(self):
+        """Initialize the form.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     def show(self):
@@ -39,10 +54,25 @@ class BaseForm(System.Windows.Forms.Form):
         bool
             True if the dialog was closed using the OK button.
             False otherwise.
+
         """
         if Rhino.UI.Dialogs.ShowSemiModal(self) == DialogResult.OK:
             return True
         return False
 
     def on_form_closed(self, sender, eargs):
+        """Callback for the closing event of the form.
+
+        Parameters
+        ----------
+        sender : System.Object
+            The sender object.
+        eargs : System.Object.EventArgs
+            The event arguments.
+
+        Returns
+        -------
+        None
+
+        """
         pass

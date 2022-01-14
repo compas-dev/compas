@@ -17,9 +17,6 @@ from System.Windows.Forms import FormBorderStyle
 from System.Windows.Forms import DockStyle
 
 
-__all__ = ['BrowserForm']
-
-
 class BrowserForm(BaseForm):
     """A form for displaying web pages.
 
@@ -29,13 +26,15 @@ class BrowserForm(BaseForm):
         The url of a web page.
     title : str, optional
         The title of the form.
-        Default is ``'BrowserForm'``
     width : int, optional
         The width of the form.
-        Default is ``1024``.
     height : int, optional
         The height of the form.
-        Default is ``786``.
+
+    Attributes
+    ----------
+    url : System.Uri
+        Address of the resource to display in the browser.
 
     Examples
     --------
@@ -66,6 +65,13 @@ class BrowserForm(BaseForm):
             raise NotImplementedError
 
     def init(self):
+        """Initialize the form.
+
+        Returns
+        -------
+        None
+
+        """
         self.browser = WebBrowser()
         self.browser.Url = self.url
         self.browser.StatusTextChanged += self.on_statustext_changed
@@ -77,4 +83,18 @@ class BrowserForm(BaseForm):
         self.Controls.Add(self.status_strip)
 
     def on_statustext_changed(self, sender, eargs):
+        """Callback for changes in the status text.
+
+        Parameters
+        ----------
+        sender : System.Object
+            The sender object.
+        eargs : System.Object.EventArgs
+            The event arguments.
+
+        Returns
+        -------
+        None
+
+        """
         self.status.Text = self.browser.StatusText

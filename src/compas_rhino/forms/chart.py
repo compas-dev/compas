@@ -18,9 +18,6 @@ clr.AddReference("System.Windows.Forms.DataVisualization")
 from System.Windows.Forms.DataVisualization import Charting  # noqa: E402
 
 
-__all__ = ['ChartForm']
-
-
 class Series(object):
     pass
 
@@ -30,7 +27,7 @@ class ChartForm(BaseForm):
 
     Parameters
     ----------
-    series : list of dict
+    series : list[dict]
         A list of dictionaries with each dictionary defining the attributes of a series.
         The following attributes are supported:
 
@@ -41,22 +38,25 @@ class ChartForm(BaseForm):
         * linetype (optional): The visual style of the graph line.
           Should be one of ``{'solid', 'dotted', 'dashed'}``.
 
-    xlimits : 2-tuple
+    xlimits : tuple[float, float]
         Minimum and maximum values on the X-axis.
     xstep : int
         Size of the steps along the X-axis.
-    ylimits : 2-tuple, optional
+    ylimits : tuple[float, float], optional
         Minimum and maximum values on the Y-axis.
         Default is None, in which case the limits will be computed from the
         min/max values of the data in the series.
     ystep : int, optional
         Size of the steps along the Y-axis.
         Default is ``int((ymax - ymin) / 10.)```.
-
-    Other Parameters
-    ----------------
-    bgcolor : str, tuple, System.Drawing.Color
+    chartsize : tuple[int, int], optional
+        The size of the form in pixels.
+    padding : tuple[int, int, int, int], optional
+        Padding of the area inside the form.
+    bgcolor : tuple[int, int, int], optional
         The background color of the chart area.
+    title : str, optional
+        Title of the form.
 
     Examples
     --------
@@ -148,6 +148,13 @@ class ChartForm(BaseForm):
             raise NotImplementedError
 
     def init(self):
+        """Initialize the form.
+
+        Returns
+        -------
+        None
+
+        """
         w = self.chartwidth + self.padding[1] + self.padding[3]
         h = self.chartheight + self.padding[0] + self.padding[2]
         self.ClientSize = Size(w, h)

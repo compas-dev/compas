@@ -18,7 +18,20 @@ __all__ = ['SliderForm']
 
 
 class SliderForm(BaseForm):
-    """A form for sliders."""
+    """A form for sliders.
+
+    Parameters
+    ----------
+    minval : int
+        The lowest value of the sliding range.
+    maxval : int
+        The highest value of the sliding range.
+    step : int
+        Size of one increment in the sliding range.
+    value : int
+        Starting value.
+
+    """
 
     def __init__(self, minval, maxval, step, value):
         self.minval = minval
@@ -28,6 +41,13 @@ class SliderForm(BaseForm):
         super(SliderForm, self).__init__()
 
     def init(self):
+        """Initialize the form.
+        
+        Returns
+        -------
+        None
+
+        """
         textbox = TextBox()
         textbox.Text = str(self.value)
         textbox.Location = Point(10, 10)
@@ -50,10 +70,38 @@ class SliderForm(BaseForm):
         self.trackbar = trackbar
 
     def on_textchanged(self, sender, e):
+        """Callback for changes made to the text input field.
+
+        Parameters
+        ----------
+        sender : System.Object
+            The sender object.
+        e : System.Object.EventArgs
+            The event arguments.
+
+        Returns
+        -------
+        None
+
+        """
         if sender.Text:
             self.trackbar.Value = int(sender.Text)
 
     def on_scroll(self, sender, e):
+        """Callback for changes made with the slider.
+
+        Parameters
+        ----------
+        sender : System.Object
+            The sender object.
+        e : System.Object.EventArgs
+            The event arguments.
+
+        Returns
+        -------
+        None
+
+        """
         self.textbox.Text = str(sender.Value)
         sc.doc.Views.Redraw()
 

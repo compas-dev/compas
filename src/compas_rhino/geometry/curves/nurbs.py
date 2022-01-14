@@ -41,33 +41,38 @@ def rhino_curve_from_parameters(points, weights, knots, multiplicities, degree):
 class RhinoNurbsCurve(NurbsCurve):
     """Class representing a NURBS curve based on the NurbsCurve of Rhino.Geometry.
 
+    Parameters
+    ----------
+    name : str, optional
+        Name of the curve.
+
     Attributes
     ----------
-    points: list of :class:`compas.geometry.Point`
+    points : list[:class:`compas.geometry.Point`], read-only
         The control points of the curve.
-    weights: list of float
+    weights : list[float], read-only
         The weights of the control points.
-    knots: list of float
+    knots : list[float], read-only
         The knot vector, without duplicates.
-    multiplicities: list of int
+    multiplicities : list[int], read-only
         The multiplicities of the knots in the knot vector.
-    knotsequence: list of float
+    knotsequence : list[float], read-only
         The knot vector, with repeating values according to the multiplicities.
-    degree: int
+    degree : int, read-only
         The degree of the polynomials.
-    order: int
+    order : int, read-only
         The order of the curve.
-    domain: tuple of float
+    domain : tuple[float, float], read-only
         The parameter domain.
-    start: :class:`compas.geometry.Point`
+    start : :class:`compas.geometry.Point`, read-only
         The point corresponding to the start of the parameter domain.
-    end: :class:`compas.geometry.Point`
+    end : :class:`compas.geometry.Point`, read-only
         The point corresponding to the end of the parameter domain.
-    is_closed: bool
+    is_closed : bool, read-only
         True if the curve is closed.
-    is_periodic: bool
+    is_periodic : bool, read-only
         True if the curve is periodic.
-    is_rational: bool
+    is_rational : bool, read-only
         True is the curve is rational.
 
     References
@@ -145,13 +150,13 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Parameters
         ----------
-        points : list of :class:`compas.geometry.Point`
+        points : list[:class:`compas.geometry.Point`]
             The control points.
-        weights : list of float
+        weights : list[float]
             The control point weights.
-        knots : list of float
+        knots : list[float]
             The curve knots, without duplicates.
-        multiplicities : list of int
+        multiplicities : list[int]
             The multiplicities of the knots.
         degree : int
             The degree of the curve.
@@ -174,9 +179,9 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Parameters
         ----------
-        points : list of :class:`compas.geometry.Point`
+        points : list[:class:`compas.geometry.Point`]
             The control points.
-        degree : int
+        degree : int, optional
             The degree of the curve.
         is_periodic : bool, optional
             Flag indicating whether the curve is periodic or not.
@@ -197,7 +202,7 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Parameters
         ----------
-        points : list of :class:`compas.geometry.Point`
+        points : list[:class:`compas.geometry.Point`]
             The control points.
         precision : float, optional
             The required precision of the interpolation.
@@ -214,7 +219,18 @@ class RhinoNurbsCurve(NurbsCurve):
 
     @classmethod
     def from_step(cls, filepath):
-        """Load a NURBS curve from an STP file."""
+        """Load a NURBS curve from an STP file.
+
+        Parameters
+        ----------
+        filepath : str
+            A filepath.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+
+        """
         raise NotImplementedError
 
     @classmethod
@@ -316,85 +332,71 @@ class RhinoNurbsCurve(NurbsCurve):
 
     @property
     def points(self):
-        """list of :class:`compas.geometry.Point`: The control points."""
         if self.rhino_curve:
             return [point_to_compas(point) for point in self.rhino_curve.Points]
 
     @property
     def weights(self):
-        """list of float: The weights of the control points."""
         if self.rhino_curve:
             return [point.Weight for point in self.rhino_curve.Points]
 
     @property
     def knots(self):
-        """list of float: Knots without repeating elements."""
         if self.rhino_curve:
             return [key for key, _ in groupby(self.rhino_curve.Knots)]
 
     @property
     def knotsequence(self):
-        """list of float: Knots with multiplicities."""
         if self.rhino_curve:
             return list(self.rhino_curve.Knots)
 
     @property
     def multiplicities(self):
-        """list of int: Multiplicities of the knots."""
         if self.rhino_curve:
             return [len(list(group)) for _, group in groupby(self.rhino_curve.Knots)]
 
     @property
     def degree(self):
-        """int: The degree of the curve (degree = order - 1)."""
         if self.rhino_curve:
             return self.rhino_curve.Degree
 
     @property
     def dimension(self):
-        """int: The dimension of the curve."""
         if self.rhino_curve:
             return self.rhino_curve.Dimension
 
     @property
     def domain(self):
-        """tuple of float: The parameter domain of the curve."""
         if self.rhino_curve:
             return self.rhino_curve.Domain.T0, self.rhino_curve.Domain.T1
 
     @property
     def order(self):
-        """int: The order of the curve (order = degree + 1)."""
         if self.rhino_curve:
             return self.rhino_curve.Order
 
     @property
     def start(self):
-        """:class:`compas.geometry.Point`: The point at the start of the curve."""
         if self.rhino_curve:
             return point_to_compas(self.rhino_curve.PointAtStart)
 
     @property
     def end(self):
-        """:class:`compas.geometry.Point`: The point at the end of the curve."""
         if self.rhino_curve:
             return point_to_compas(self.rhino_curve.PointAtEnd)
 
     @property
     def is_closed(self):
-        """bool"""
         if self.rhino_curve:
             return self.rhino_curve.IsClosed
 
     @property
     def is_periodic(self):
-        """bool"""
         if self.rhino_curve:
             return self.rhino_curve.IsPeriodic
 
     @property
     def is_rational(self):
-        """bool"""
         if self.rhino_curve:
             return self.rhino_curve.IsRational
 
@@ -403,28 +405,71 @@ class RhinoNurbsCurve(NurbsCurve):
     # ==============================================================================
 
     def copy(self):
-        """Make an independent copy of the current curve."""
+        """Make an independent copy of the current curve.
+
+        Returns
+        -------
+        None
+
+        """
         cls = type(self)
         curve = cls()
         curve.rhino_curve = self.rhino_curve.Duplicate()
         return curve
 
     def transform(self, T):
-        """Transform this curve."""
+        """Transform this curve.
+
+        Parameters
+        ----------
+        T : :class:`compas.geometry.Transformation`
+            A COMPAS transformation.
+
+        Returns
+        -------
+        None
+
+        """
         self.rhino_curve.Transform(xform_to_rhino(T))
 
     def transformed(self, T):
-        """Transform a copy of the curve."""
+        """Transform a copy of the curve.
+
+        Parameters
+        ----------
+        T : :class:`compas.geometry.Transformation`
+            A COMPAS transformation.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+
+        """
         copy = self.copy()
         copy.transform(T)
         return copy
 
     def reverse(self):
-        """Reverse the parametrisation of the curve."""
+        """Reverse the parametrisation of the curve.
+
+        Returns
+        -------
+        None
+
+        """
         self.rhino_curve.Reverse()
 
     def space(self, n=10):
-        """Compute evenly spaced parameters over the curve domain."""
+        """Compute evenly spaced parameters over the curve domain.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        generator[float]
+
+        """
         u, v = self.domain
         return linspace(u, v, n)
 
@@ -553,7 +598,7 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Returns
         -------
-        list of float or tuple of list of float and list of :class:`compas.geometry.Point`
+        list[float] or tuple of list[float] and list[:class:`compas.geometry.Point`]
             The parameters defining the discretisation,
             and potentially the points corresponding to those parameters.
         """
@@ -577,7 +622,7 @@ class RhinoNurbsCurve(NurbsCurve):
 
         Returns
         -------
-        list of float or tuple of list of float and list of :class:`compas.geometry.Point`
+        list[float] or tuple of list[float] and list[:class:`compas.geometry.Point`]
             The parameters defining the discretisation,
             and potentially the points corresponding to those parameters.
         """
