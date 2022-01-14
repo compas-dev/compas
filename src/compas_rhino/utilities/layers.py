@@ -78,6 +78,11 @@ def create_layers_from_path(path, separator='::'):
     path : str
         The path string.
     separator : str, optional
+        Separator between components of the layer path.
+
+    Returns
+    -------
+    None
 
     Examples
     --------
@@ -108,9 +113,14 @@ def create_layers_from_paths(names, separator='::'):
 
     Parameters
     ----------
-    names : list of str
+    names : list[str]
         The path strings of the nested layer structures.
     separator : str, optional
+        Separator between components of the layer path.
+
+    Returns
+    -------
+    None
 
     Examples
     --------
@@ -143,10 +153,14 @@ def create_layers_from_dict(layers):
 
     Parameters
     ----------
-    layers : dict
+    layers : dict[str, dict]
         A dictionary of nested layer definitions.
         The keys of the dict are the layer names.
         The corresponding values define optional layer properties and nested layers.
+
+    Returns
+    -------
+    None
 
     Examples
     --------
@@ -205,14 +219,16 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
     name : str
         The full, hierarchical name of the layer.
     include_hidden : bool, optional
-        Include all hidden objects.
-        Default is True.
+        If True, include all hidden objects.
     include_children : bool, optional
-        Include the objects of any child layers.
-        Default is True.
+        If True, include the objects of child layers.
     purge : bool, optional
-        Purge history after deleting.
-        Default is True.
+        If True, purge history after deleting.
+
+    Returns
+    -------
+    None
+
     """
     if not rs.IsLayer(name):
         return
@@ -230,7 +246,13 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
 
 
 def clear_current_layer():
-    """Delete all objects from the current layer."""
+    """Delete all objects from the current layer.
+
+    Returns
+    -------
+    None
+
+    """
     layer = rs.CurrentLayer()
     clear_layer(layer)
 
@@ -240,17 +262,19 @@ def clear_layers(layers, include_children=True, include_hidden=True, purge=True)
 
     Parameters
     ----------
-    layers : list of str
+    layers : list[str]
         A list of layer names as fully qualified hierarchical paths.
-    include_children : bool, optional
-        Include the objects of any child layers.
-        Default is True.
     include_hidden : bool, optional
-        Include all hidden objects.
-        Default is True.
+        If True, include all hidden objects.
+    include_children : bool, optional
+        If True, include the objects of child layers.
     purge : bool, optional
-        Purge history after deleting.
-        Default is True.
+        If True, purge history after deleting.
+
+    Returns
+    -------
+    None
+
     """
     rs.EnableRedraw(False)
     to_delete = []
@@ -277,15 +301,14 @@ def delete_layers(layers):
 
     Parameters
     ----------
-    layers : :obj:`dict` or :obj:`list` of :obj:`str`
-        Can be given as either a list of strings or as a dictionary.
-
+    layers : dict or list[str]
         When given as a list the list elements should be name of layers given
         with ``"::"`` as a separator between hierarchies.
+        When provided as a dictionary, keys represent layer names, and values are dictionaries defining optional nested layers.
 
-        It can also be defined as a dictionary of layers with the keys
-        representing layer names, and the values also dictionaries defining
-        optional nested layers.
+    Returns
+    -------
+    None
 
     Examples
     --------

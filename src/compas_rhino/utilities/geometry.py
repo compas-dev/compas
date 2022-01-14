@@ -15,8 +15,8 @@ def uv_points_from_surface(srf, u_div, v_div):
 
     Parameters
     ----------
-    srf : Rhino surface
-        The object identifier
+    srf : System.Guid
+        The surface identifier.
     u_div : int
         Number of poinst in u direction
     v_div : int
@@ -24,7 +24,7 @@ def uv_points_from_surface(srf, u_div, v_div):
 
     Returns
     -------
-    2D array (nested list)
+    list[list[:rhino:`Rhino.Geometry.Point3d`]]
         Points for every uv division.
 
     """

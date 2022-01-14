@@ -115,12 +115,13 @@ def draw_labels(labels, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of labels dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -179,12 +180,13 @@ def draw_points(points, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of point dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -235,12 +237,13 @@ def draw_lines(lines, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of line dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -304,12 +307,13 @@ def draw_geodesics(geodesics, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of geodesic dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -371,12 +375,13 @@ def draw_polylines(polylines, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of polyline dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -429,34 +434,25 @@ def draw_polylines(polylines, **kwargs):
 
 
 @wrap_drawfunc
-def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, join=False, **kwargs):
+def draw_breps(faces, u=10, v=10, join=False, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
 
     Parameters
     ----------
-    faces : list of dict
+    faces : list[dict]
         A list of brep dictionaries.
-    srf : GUID, optional
-        A target surface.
+        See Notes, for more information about the structure of the dict.
     u : int, optional
-        Default is 10.
+        Number of spans in the U direction.
     v : int, optional
-        Default is 10.
-
-    Other Parameters
-    ----------------
-    trim : bool, optional
-    tangency : bool, optional
-    spacing : float, optional
-    flex : float, optional
-    pull : float, optional
+        Number of spans in the V direction.
     join : bool, optional
-        Join the individual faces as polysurfaces. Default is False.
+        If True, join the individual faces as polysurfaces
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -552,13 +548,15 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
 
     Parameters
     ----------
-    cylinders : list of dict
+    cylinders : list[dict]
         A list of cylinder dictionaries.
+        See Notes, for more information about the structure of the dict.
     cap : bool, optional
+        If True, add caps.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -626,8 +624,9 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
     Parameters
     ----------
-    pipes : list of dict
+    pipes : list[dict]
         A list of pipe dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Other Parameters
     ----------------
@@ -636,7 +635,7 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -699,12 +698,13 @@ def draw_spheres(spheres, **kwargs):
 
     Parameters
     ----------
-    spheres : list of dict
+    spheres : list[dict]
         A list of sphere dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -758,19 +758,18 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
 
     Parameters
     ----------
-    vertices : :obj:`list` of point
+    vertices : list[[float, float, float] or :class:`compas.geometry.Point`]
         A list of point locations.
-    faces : :obj:`list` of :obj:`list` of :obj:`int`
-        A list of faces as lists of indices into ``vertices``.
-    name : :obj:`str`, optional
-    color : RGB :obj:`tuple`, optional
-    disjoint : :obj:`bool`, optional
-        Draw the mesh with disjoint faces.
-        Default is False.
+    faces : list[list[int]]
+        A list of faces as lists of indices into `vertices`.
+    name : str, optional
+    color : tuple[[int, int, int]], optional
+    disjoint : bool, optional
+        If True, draw the mesh with disjoint faces.
 
     Returns
     -------
-    str or GUID
+    System.Guid
 
     """
     mesh = RhinoMesh()
@@ -850,12 +849,13 @@ def draw_faces(faces, **kwargs):
 
     Parameters
     ----------
-    faces : list of dict
+    faces : list[dict]
         A list of face dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -919,12 +919,13 @@ def draw_circles(circles, **kwargs):
 
     Parameters
     ----------
-    circles : list of dict
+    circles : list[dict]
         A list of circle dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
