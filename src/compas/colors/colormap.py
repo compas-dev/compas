@@ -191,17 +191,27 @@ class ColorMap(object):
         raise ValueError("`rangetype` should be one of 'full', 'light', 'dark'.")
 
     @classmethod
-    def from_two_colors(cls, color1, color2):
-        dr = (color2[0] - color1[0]) / 255
-        dg = (color2[1] - color1[1]) / 255
-        db = (color2[2] - color1[2]) / 255
+    def from_two_colors(cls, c1, c2):
+        """Create a color map from two colors.
+
+        Parameters
+        ----------
+        c1 : :class:`compas.colors.Color`
+            The first color.
+        c2 : :class:`compas.colors.Color`
+            The second color.
+
+        Returns
+        -------
+        :class:`compas.colors.ColorMap`
+
+        """
         colors = []
-        for i in linspace(0, 255, 256):
-            r = color1[0] + i * dr
-            g = color1[1] + i * dg
-            b = color1[2] + i * db
-            color = Color(r, g, b)
-            colors.append(color)
+        for i in linspace(0, 1, 256):
+            r = c1[0] * (1 - i) + c2[0] * i
+            g = c1[1] * (1 - i) + c2[1] * i
+            b = c1[2] * (1 - i) + c2[2] * i
+            colors.append(Color(r, g, b))
         return cls(colors)
 
     # --------------------------------------------------------------------------
