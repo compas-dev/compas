@@ -42,7 +42,7 @@ class SliderForm(BaseForm):
 
     def init(self):
         """Initialize the form.
-        
+
         Returns
         -------
         None
