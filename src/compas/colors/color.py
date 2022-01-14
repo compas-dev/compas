@@ -43,13 +43,17 @@ class Color(Data):
     hex : str
         Hexadecimal color string.
     hls : tuple[float, float, float]
-        Hue, luminance, saturation values in the range 0-1.
-    yuv : tuple[float, float, float]
-        Luma and chroma components, with chroma defined by the blue and red projections.
-    luma : float
-        The brightness of a yuv signal.
-    chroma : tuple[float, float]
-        The color of a yuv signal.
+        Hue, Lightness, Saturation.
+    hsv : tuple[float, float, float]
+        Hue, Saturation, Value / Brightness.
+    lightness : float
+        How much white the color appears to contain.
+        This is the "Lightness" in HLS.
+        Making a color "lighter" is like adding more white.
+    brightness : float
+        How well-lit the color appears to be.
+        This is the "Value" in HSV.
+        Making a color "brighter" is like shining a stronger light on it, or illuminating it better.
     is_light : bool
         If True, the color is considered light.
 
@@ -115,28 +119,12 @@ class Color(Data):
         b = self.b
         return r, g, b
 
-    # @property
-    # def rgba(self):
-    #     r = self.r
-    #     g = self.g
-    #     b = self.b
-    #     a = self.a
-    #     return r, g, b, a
-
     @property
     def rgb255(self):
         r = int(self.r * 255)
         g = int(self.g * 255)
         b = int(self.b * 255)
         return r, g, b
-
-    # @property
-    # def rgba255(self):
-    #     r = int(self.r * 255)
-    #     g = int(self.g * 255)
-    #     b = int(self.b * 255)
-    #     a = int(self.a * 255)
-    #     return r, g, b, a
 
     @property
     def hex(self):
@@ -147,26 +135,63 @@ class Color(Data):
         return colorsys.rgb_to_hls(* self.rgb)
 
     @property
+    def hsv(self):
+        return colorsys.rgb_to_hsv(* self.rgb)
+
+    @property
+    def lightness(self):
+        return self.hls[1]
+
+    @property
+    def brightness(self):
+        return self.hsv[2]
+
+    @property
+    def is_light(self):
+        return self.luminance > 0.179
+
+    @property
     def yuv(self):
+        """tuple[float, float, float] :
+        Luma and chroma components, with chroma defined by the blue and red projections.
+        """
         y = self.luma
         u, v = self.chroma
         return y, u, v
 
     @property
     def luma(self):
+        """float :
+        The brightness of a yuv signal.
+        """
         return 0.299 * self.r + 0.587 * self.g + 0.114 * self.b
 
     @property
     def chroma(self):
+        """tuple[float, float] :
+        The color of a yuv signal.
+        "How different from a grey of the same lightness the color appears to be."
+        """
         y = self.luma
         u = 0.492 * (self.b - y)
         v = 0.877 * (self.r - y)
         return u, v
 
     @property
-    def is_light(self):
-        L = 0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b
-        return L > 0.179
+    def luminance(self):
+        """float :
+        The amount of light that passes through, is emitted from, or is reflected from a particular area.
+        Here, it expresses the preceived brightness of the color.
+        Note that this is not the same as the "Lightness" of HLS or the "Value/Brightness" of HSV.
+        """
+        return 0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b
+
+    @property
+    def saturation(self):
+        """float : The perceived freedom of whiteness."""
+        maxval = max(self.r, self.g, self.b)
+        minval = min(self.r, self.g, self.b)
+        return (maxval - minval) / maxval
 
     # --------------------------------------------------------------------------
     # customization
@@ -174,6 +199,15 @@ class Color(Data):
 
     def __repr__(self):
         return 'Color({}, {}, {}, {})'.format(self.r, self.g, self.b, self.a)
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.r
+        if key == 1:
+            return self.g
+        if key == 2:
+            return self.b
+        raise KeyError
 
     def __len__(self):
         return 3
@@ -736,13 +770,64 @@ class Color(Data):
         color.invert()
         return color
 
+    def saturate(self, factor=10):
+        """Saturate the color by a given percentage.
+
+        Parameters
+        ----------
+        factor : float, optional
+            Percentage of saturation increase.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If the percentage of saturation is not in the range 0-100.
+
+        """
+        if factor > 100 or factor < 0:
+            raise ValueError('Percentage of saturation should be in the range 0-100.')
+
+        factor = 1.0 + factor / 100
+
+        h, l, s = self.hls
+        r, g, b = colorsys.hls_to_rgb(h, l, min(1.0, s * factor))
+        self.r = r
+        self.g = g
+        self.b = b
+
+    def saturated(self, factor=10):
+        """Return a saturated copy of the color.
+
+        Parameters
+        ----------
+        factor : float, optional
+            Percentage of saturation increase.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        Raises
+        ------
+        ValueError
+            If the percentage of desaturation is not in the range 0-100.
+
+        """
+        color = self.copy()
+        color.saturate(factor=factor)
+        return color
+
     def desaturate(self, factor=10):
         """Desaturate the color by a given percentage.
 
         Parameters
         ----------
         factor : float, optional
-            Percentage of lightness reduction.
+            Percentage of saturation reduction.
 
         Returns
         -------
@@ -771,7 +856,7 @@ class Color(Data):
         Parameters
         ----------
         factor : float, optional
-            Percentage of lightness reduction.
+            Percentage of saturation reduction.
 
         Returns
         -------
