@@ -44,7 +44,6 @@ from ._modify import (  # noqa : F401 F403
     mesh_move_vertices,
     mesh_move_face
 )
-from .inspectors import MeshVertexInspector  # noqa : F401 F403
 
 from ._object import BaseObject
 from .meshobject import MeshObject
