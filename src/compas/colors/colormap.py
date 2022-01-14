@@ -37,7 +37,7 @@ class ColorMap(object):
     --------
     >>> cmap = ColorMap.from_palette('bamako')
     >>> for i in range(100):
-    ...     color = cmap[random.random()]
+    ...     color = cmap(random.random())
     ...
 
     >>> cmap = ColorMap.from_mpl('viridis')
@@ -71,12 +71,29 @@ class ColorMap(object):
     # customization
     # --------------------------------------------------------------------------
 
-    def __getitem__(self, key):
+    def __getitem__(self, index):
+        return self.colors[index]
+
+    def __call__(self, value, minval=0.0, maxval=1.0):
+        """Returns the color in the map corresponding to the given value.
+
+        Parameters
+        ----------
+        value : float
+            The data value for which a color should be computed.
+        minval : float, optional
+            The minimum value of the data range.
+        maxval : float, optional
+            The maximum value of the data range.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        """
+        key = (value - minval) / (maxval - minval)
         if key > 1.0 or key < 0.0:
-            raise KeyError('The key value must be in the range 0-1.')
-        # this currently just computes the closest index to the key
-        # more accurate would be to compute an interpolation
-        # but perhaps that is not necessary
+            raise KeyError('The normalized value must be in the range 0 - 1.')
         index = int(key * (len(self.colors) - 1))
         return self.colors[index]
 
@@ -191,7 +208,7 @@ class ColorMap(object):
         raise ValueError("`rangetype` should be one of 'full', 'light', 'dark'.")
 
     @classmethod
-    def from_two_colors(cls, c1, c2):
+    def from_two_colors(cls, c1, c2, diverging=False):
         """Create a color map from two colors.
 
         Parameters
@@ -200,6 +217,8 @@ class ColorMap(object):
             The first color.
         c2 : :class:`compas.colors.Color`
             The second color.
+        diverging : bool, optional
+            If True, use white as transition color in the middle.
 
         Returns
         -------
@@ -207,11 +226,68 @@ class ColorMap(object):
 
         """
         colors = []
-        for i in linspace(0, 1, 256):
+        if diverging:
+            for i in linspace(0, 1.0, 128):
+                r = c1[0] * (1 - i) + 1.0 * i
+                g = c1[1] * (1 - i) + 1.0 * i
+                b = c1[2] * (1 - i) + 1.0 * i
+                colors.append(Color(r, g, b))
+            for i in linspace(0, 1.0, 128):
+                r = 1.0 * (1 - i) + c2[0] * i
+                g = 1.0 * (1 - i) + c2[1] * i
+                b = 1.0 * (1 - i) + c2[2] * i
+                colors.append(Color(r, g, b))
+        else:
+            for i in linspace(0, 1, 256):
+                r = c1[0] * (1 - i) + c2[0] * i
+                g = c1[1] * (1 - i) + c2[1] * i
+                b = c1[2] * (1 - i) + c2[2] * i
+                colors.append(Color(r, g, b))
+        return cls(colors)
+
+    @classmethod
+    def from_three_colors(cls, c1, c2, c3):
+        """Construct a color map from three colors.
+
+        Parameters
+        ----------
+        c1 : :class:`compas.colors.Color`
+            The first color.
+        c2 : :class:`compas.colors.Color`
+            The second color.
+        c3 : :class:`compas.colors.Color`
+            The third color.
+
+        Returns
+        -------
+        :class:`compas.colors.ColorMap`
+
+        """
+        colors = []
+        for i in linspace(0, 1.0, 128):
             r = c1[0] * (1 - i) + c2[0] * i
             g = c1[1] * (1 - i) + c2[1] * i
             b = c1[2] * (1 - i) + c2[2] * i
             colors.append(Color(r, g, b))
+        for i in linspace(0, 1.0, 128):
+            r = c2[0] * (1 - i) + c3[0] * i
+            g = c2[1] * (1 - i) + c3[1] * i
+            b = c2[2] * (1 - i) + c3[2] * i
+            colors.append(Color(r, g, b))
+        return cls(colors)
+
+    @classmethod
+    def from_rgb(cls):
+        """Construct a color map from the complete rgb color space.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        """
+        colors = []
+        for i in linspace(0, 1.0, 256):
+            colors.append(Color.from_i(i))
         return cls(colors)
 
     # --------------------------------------------------------------------------
@@ -267,9 +343,3 @@ class ColorMap(object):
             plotter.add(p, facecolor=color, edgecolor=color)
         plotter.zoom_extents()
         plotter.show()
-
-
-mpl_magma = ColorMap.from_mpl('magma')
-mpl_inferno = ColorMap.from_mpl('inferno')
-mpl_plasma = ColorMap.from_mpl('plasma')
-mpl_viridis = ColorMap.from_mpl('viridis')
