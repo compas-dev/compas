@@ -294,30 +294,6 @@ class ColorMap(object):
     # methods
     # --------------------------------------------------------------------------
 
-    def get(self, value, minval=0.0, maxval=1.0):
-        """Returns the color in the map corresponding to the given value.
-
-        Parameters
-        ----------
-        value : float
-            The data value for which a color should be computed.
-        minval : float, optional
-            The minimum value of the data range.
-        maxval : float, optional
-            The maximum value of the data range.
-
-        Returns
-        -------
-        :class:`compas.colors.Color`
-
-        Notes
-        -----
-        This is the same as :meth:`__getitem__` but with additional options.
-
-        """
-        key = (value - minval) / (maxval - minval)
-        return self[key]
-
     def plot(self):
         """Visualize the current map with the plotter.
 
@@ -329,11 +305,11 @@ class ColorMap(object):
         from compas_plotters.plotter import Plotter
         from compas.geometry import Pointcloud
         from compas.geometry import Plane, Circle, Polygon
-        plotter = Plotter()
-        w = 8
-        h = 5
+        plotter = Plotter(figsize=(16, 12))
+        w = 16
+        h = 10
         n = len(self.colors)
-        d = 8 / n
+        d = w / n
         cloud = Pointcloud.from_bounds(w, h, 0, n)
         white = Color.white()
         for i, color in enumerate(self.colors):
