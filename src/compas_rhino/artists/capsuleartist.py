@@ -16,6 +16,10 @@ class CapsuleArtist(RhinoArtist, ShapeArtist):
         A COMPAS capsule.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
+
     """
 
     def __init__(self, capsule, layer=None, **kwargs):
@@ -26,19 +30,20 @@ class CapsuleArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the capsule.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CapsuleArtist.u``.
+            Default is :attr:`~CapsuleArtist.u`.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~CapsuleArtist.v``.
+            Default is :attr:`CapsuleArtist.v`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the objects created in Rhino.
+
         """
         color = color or self.color
         u = u or self.u

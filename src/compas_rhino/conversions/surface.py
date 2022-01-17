@@ -73,13 +73,13 @@ class RhinoSurface(RhinoGeometry):
             The type of COMPAS mesh.
         facefilter : callable, optional
             A filter for selection which Brep faces to include.
-            If provided, the filter should return ``True`` or ``False`` per face.
+            If provided, the filter should return True or False per face.
             A very simple filter that includes all faces is ``def facefilter(face): return True``.
-            Default parameter value is ``None`` in which case all faces are included.
+            Default parameter value is None in which case all faces are included.
         cleanup : bool, optional
             Flag indicating to clean up the result.
             Cleaning up means to remove isolated faces and unused vertices.
-            Default is ``False``.
+            Default is False.
 
         Returns
         -------
@@ -174,12 +174,12 @@ class RhinoSurface(RhinoGeometry):
             Default is the same as the u direction.
         weld: bool, optional
             Weld the vertices of the mesh.
-            Default is ``False``.
+            Default is False.
         facefilter: callable, optional
             A filter for selection which Brep faces to include.
-            If provided, the filter should return ``True`` or ``False`` per face.
+            If provided, the filter should return True or False per face.
             A very simple filter that includes all faces is ``def facefilter(face): return True``.
-            Default parameter value is ``None`` in which case all faces are included.
+            Default parameter value is None in which case all faces are included.
         cls: :class:`compas.geometry.Mesh`, optional
             The type of COMPAS mesh.
 
@@ -318,7 +318,7 @@ class RhinoSurface(RhinoGeometry):
     #         Default is ``10`` in both directions.
     #     over_space : bool, optional
     #         Construct the grid over the UV space of the surface.
-    #         Default is ``True``.
+    #         Default is True.
 
     #     Returns
     #     -------

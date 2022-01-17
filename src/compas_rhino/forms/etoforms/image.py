@@ -88,10 +88,10 @@ class ImageForm(Eto.Forms.Dialog[bool]):
         Default is ``ImageForm``.
     width : int, optional
         Width of the form.
-        Default is ``None``.
+        Default is None.
     height : int, optional
         Height of the form.
-        Default is ``None``.
+        Default is None.
 
     Examples
     --------

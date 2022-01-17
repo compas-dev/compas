@@ -16,6 +16,10 @@ class PolygonArtist(RhinoArtist, PrimitiveArtist):
         A COMPAS polygon.
     layer : str, optional
         The name of the layer that will contain the mesh.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
+
     """
 
     def __init__(self, polygon, layer=None, **kwargs):
@@ -27,16 +31,17 @@ class PolygonArtist(RhinoArtist, PrimitiveArtist):
         Parameters
         ----------
         show_points : bool, optional
-            Default is ``False``.
+            If True, draw the corner points of the polygon.
         show_edges : bool, optional
-            Default is ``False``.
+            If True, draw the boundary edges of the polygon.
         show_face : bool, optional
-            Default is ``True``.
+            If True, draw the face of the polygon.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         _points = map(list, self.primitive.points)
         guids = []

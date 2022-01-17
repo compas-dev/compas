@@ -18,6 +18,9 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
         Scale factor that controls the length of the axes.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
 
     Attributes
     ----------
@@ -32,6 +35,7 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
         Default is ``(0, 255, 0)``.
     color_zaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 255)``.
+
     """
 
     def __init__(self, frame, layer=None, scale=1.0, **kwargs):
@@ -47,8 +51,9 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
 
         Returns
         -------
-        guids: list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         points = []
         lines = []

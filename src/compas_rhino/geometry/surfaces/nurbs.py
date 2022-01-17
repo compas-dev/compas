@@ -55,30 +55,31 @@ class RhinoNurbsSurface(NurbsSurface):
 
     Attributes
     ----------
-    points: List[List[Point]]
+    points: list[list[:class:`compas.geometry.Point`]]
         The control points of the surface.
-    weights: List[List[float]]
+    weights: list[list[float]]
         The weights of the control points.
-    u_knots: List[float]
+    u_knots: list[float]
         The knot vector, in the U direction, without duplicates.
-    v_knots: List[float]
+    v_knots: list[float]
         The knot vector, in the V direction, without duplicates.
-    u_mults: List[int]
+    u_mults: list[int]
         The multiplicities of the knots in the knot vector of the U direction.
-    v_mults: List[int]
+    v_mults: list[int]
         The multiplicities of the knots in the knot vector of the V direction.
     u_degree: int
         The degree of the polynomials in the U direction.
     v_degree: int
         The degree of the polynomials in the V direction.
-    u_domain: Tuple[float, float]
+    u_domain: tuple[float, float]
         The parameter domain in the U direction.
-    v_domain: Tuple[float, float]
+    v_domain: tuple[float, float]
         The parameter domain in the V direction.
     is_u_periodic: bool
         True if the surface is periodic in the U direction.
     is_v_periodic: bool
         True if the surface is periodic in the V direction.
+
     """
 
     def __init__(self, name=None):
@@ -168,7 +169,8 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Parameters
         ----------
-        rhino_surface : Rhino.Geometry.NurbsSurface
+        rhino_surface : :rhino:`Rhino.Geometry.NurbsSurface`
+            A Rhino surface.
 
         Returns
         -------
@@ -185,17 +187,17 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Parameters
         ----------
-        points : List[List[:class:`compas.geometry.Point`]]
+        points : list[list[:class:`compas.geometry.Point`]]
             The control points.
-        weights : List[List[float]]
+        weights : list[list[float]]
             The weights of the control points.
-        u_knots : List[float]
+        u_knots : list[float]
             The knots in the U direction, without multiplicity.
-        v_knots : List[float]
+        v_knots : list[float]
             The knots in the V direction, without multiplicity.
-        u_mults : List[int]
+        u_mults : list[int]
             Multiplicity of the knots in the U direction.
-        v_mults : List[int]
+        v_mults : list[int]
             Multiplicity of the knots in the V direction.
         u_degree : int
             Degree in the U direction.
@@ -205,6 +207,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         surface = cls()
         surface.rhino_surface = rhino_surface_from_parameters(points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree)
@@ -216,7 +219,7 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Parameters
         ----------
-        points : List[List[:class:`compas.geometry.Point`]]
+        points : list[list[:class:`compas.geometry.Point`]]
             The control points.
         u_degree : int
             Degree in the U direction.
@@ -226,6 +229,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         points = list(zip(*points))
         u_count = len(points[0])
@@ -246,6 +250,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         raise NotImplementedError
 
@@ -261,6 +266,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.NurbsSurface`
+
         """
         surface = cls()
         # these curves probably need to be processed first
@@ -375,6 +381,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
+
         """
         curve = self.rhino_surface.IsoCurve(1, u)
         return RhinoCurve.from_geometry(curve).to_compas()
@@ -389,6 +396,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
+
         """
         curve = self.rhino_surface.IsoCurve(0, v)
         return RhinoCurve.from_geometry(curve).to_compas()
@@ -398,7 +406,8 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Returns
         -------
-        List[:class:`compas.geometry.NurbsCurve`]
+        list[:class:`compas.geometry.NurbsCurve`]
+
         """
         raise NotImplementedError
 
@@ -413,6 +422,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.Point`
+
         """
         point = self.rhino_surface.PointAt(u, v)
         return point_to_compas(point)
@@ -428,6 +438,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.Vector`
+
         """
         vector = self.rhino_surface.CurvatureAt(u, v)
         return vector_to_compas(vector)
@@ -443,6 +454,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.Frame`
+
         """
         result, plane = self.rhino_surface.FrameAt(u, v)
         if result:
@@ -456,14 +468,15 @@ class RhinoNurbsSurface(NurbsSurface):
         point : :class:`compas.geometry.Point`
             The test point.
         return_parameters : bool, optional
-            Return the UV parameters of the closest point as tuple in addition to the point location.
+            If True, return the UV parameters of the closest point as tuple in addition to the point location.
 
         Returns
         -------
         :class:`compas.geometry.Point`
-            If ``return_parameters`` is False.
+            If `return_parameters` is False.
         :class:`compas.geometry.Point`, (float, float)
-            If ``return_parameters`` is True.
+            If `return_parameters` is True.
+
         """
         result, u, v = self.rhino_surface.ClosestPoint(point_to_rhino(point))
         if not result:
@@ -485,6 +498,7 @@ class RhinoNurbsSurface(NurbsSurface):
         Returns
         -------
         :class:`compas.geometry.Box`
+
         """
         box = self.rhino_surface.GetBoundingBox(optimal)
         return box_to_compas(box)

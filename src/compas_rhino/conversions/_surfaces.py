@@ -15,11 +15,12 @@ def surface_to_compas_data(surface):
 
     Parameters
     ----------
-    surface: :class:`Rhino.Geometry.Surface`
+    surface: :rhino:`Rhino.Geometry.Surface`
 
     Returns
     -------
-    :obj:`dict`
+    dict
+
     """
     surface = surface.ToNurbsSurface()
 
@@ -73,11 +74,12 @@ def data_to_rhino_surface(data):
 
     Parameters
     ----------
-    data: :obj:`dict`
+    data: dict
 
     Returns
     -------
-    :class:`Rhino.Geometry.NurbsSurface`
+    :rhino:`Rhino.Geometry.NurbsSurface`
+
     """
     points = [[Point.from_data(point) for point in row] for row in data['points']]
 
