@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import warnings
+
 import re
 
 try:
@@ -9,35 +11,11 @@ try:
 except NameError:
     basestring = str
 
-
-__all__ = [
-    'i_to_rgb',
-    'i_to_red',
-    'i_to_green',
-    'i_to_blue',
-    'i_to_white',
-    'i_to_black',
-    'is_color_rgb',
-    'is_color_hex',
-    'is_color_light',
-
-    'rgb_to_hex',
-    'rgb_to_rgb',
-    'hex_to_rgb',
-    'color_to_colordict',
-    'color_to_rgb',
-
-    'Colormap',
-
-    'red',
-    'green',
-    'blue',
-    'yellow',
-    'cyan',
-    'white',
-    'black',
-]
-
+warnings.warn(
+    "The colors module in utilities is deprecated. Use compas.colors instead",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 red = 255, 0, 0
 orange = 255, 125, 0
