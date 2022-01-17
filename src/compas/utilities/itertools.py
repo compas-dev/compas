@@ -304,7 +304,7 @@ def iterable_like(target, reference, fillvalue=None):
     -----
     Values will be yielded one at a time until the reference iterable is exhausted.
     If `target` contains more values than `reference`, `fillvalue` will be used to cover the difference.
-    Otherwise, only the same number of items from `reference` will be yielded as there would have been from `target`. 
+    Otherwise, only the same number of items from `reference` will be yielded as there would have been from `target`.
 
     Examples
     --------
