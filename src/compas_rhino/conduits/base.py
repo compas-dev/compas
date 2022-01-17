@@ -25,11 +25,17 @@ class BaseConduit(Rhino.Display.DisplayConduit):
 
     @contextmanager
     def enabled(self):
-        """Create a safe context for the conduit with automatic enabling and disabling.
+        """Create a context for the conduit with automatic enabling and disabling.
 
         Yields
         ------
         None
+
+        Notes
+        -----
+        The conduit is automatically enabled when the context is entered,
+        and is guaranteed to be disabled when the context is exited,
+        even when an error occurs during the execution of the code in the context.
 
         Examples
         --------
@@ -99,7 +105,15 @@ class BaseConduit(Rhino.Display.DisplayConduit):
         -------
         None
 
+        Raises
+        ------
+        ValueError
+            If `pause` is not a positive number.
+
         """
+        if pause < 0:
+            raise ValueError("The value of pause should be a positive number.")
+
         if k % self.refreshrate == 0:
             sc.doc.Views.Redraw()
         Rhino.RhinoApp.Wait()

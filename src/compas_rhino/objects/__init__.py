@@ -54,13 +54,13 @@ from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
-import warnings
+# import warnings
 
-warnings.warn(
-    "The objects module in compas_rhino is deprecated. Use the equivalent functionality from compas_ui instead",
-    DeprecationWarning,
-    stacklevel=2
-)
+# warnings.warn(
+#     "The objects module in compas_rhino is deprecated. Use the equivalent functionality from compas_ui instead",
+#     DeprecationWarning,
+#     stacklevel=2
+# )
 
 BaseObject.register(Mesh, MeshObject)
 BaseObject.register(Network, NetworkObject)
