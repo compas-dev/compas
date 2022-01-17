@@ -172,6 +172,22 @@ class Bezier(Primitive):
     # methods
     # ==========================================================================
 
+    def transform(self, T):
+        """Transform this curve.
+
+        Parameters
+        ----------
+        T : :class:`compas.geometry.Transformation`
+            The transformation.
+
+        Returns
+        -------
+        None
+
+        """
+        for point in self.points:
+            point.transform(T)
+
     def point(self, t):
         """Compute a point on the curve.
 

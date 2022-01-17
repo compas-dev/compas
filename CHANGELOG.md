@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.conversions.BlenderCurve`.
 * Added `compas_blender.conversions.BlenderMesh`.
 * Added option to return strip faces from `compas.datastructure.Halfedge.edge_strip`.
+* Added `compas.geometry.Bezier.transform`.
 
 ### Changed
 
