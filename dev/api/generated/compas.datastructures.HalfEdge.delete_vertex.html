@@ -110,21 +110,20 @@
 <h1>HalfEdge.delete_vertex</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfEdge.delete_vertex">
-<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">delete_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L455"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">delete_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L438"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Delete a vertex from the mesh and everything that is attached to it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>key</strong> (<em>int</em>) – The identifier of the vertex.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>None</em></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>In some cases, disconnected vertices can remain after application of this
 method. To remove these vertices as well, combine this method with vertex
 culling (<a class="reference internal" href="compas.datastructures.HalfEdge.cull_vertices.html#compas.datastructures.HalfEdge.cull_vertices" title="compas.datastructures.HalfEdge.cull_vertices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cull_vertices()</span></code></a>).</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

@@ -113,23 +113,23 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>Mesh</em>) – A triangle mesh.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A triangle mesh.</p></li>
 <li><p><strong>target</strong> (<em>float</em>) – The target length for the mesh edges.</p></li>
-<li><p><strong>kmax</strong> (<em>int, optional [100]</em>) – The number of iterations.</p></li>
-<li><p><strong>tol</strong> (<em>float, optional [0.1]</em>) – Length deviation tolerance.</p></li>
-<li><p><strong>divergence</strong> (<em>float, optional [0.01]</em>) – ??</p></li>
-<li><p><strong>verbose</strong> (<em>bool, optional [False]</em>) – Print feedback messages.</p></li>
-<li><p><strong>allow_boundary_split</strong> (<em>bool, optional [False]</em>) – Allow boundary edges to be split.</p></li>
-<li><p><strong>allow_boundary_swap</strong> (<em>bool, optional [False]</em>) – Allow boundary edges or edges connected to the boundary to be swapped.</p></li>
-<li><p><strong>allow_boundary_collapse</strong> (<em>bool, optional [False]</em>) – Allow boundary edges or edges connected to the boundary to be collapsed.</p></li>
-<li><p><strong>smooth</strong> (<em>bool, optional [True]</em>) – Apply smoothing at every iteration.</p></li>
-<li><p><strong>fixed</strong> (<em>list, optional [None]</em>) – A list of vertices that have to stay fixed.</p></li>
-<li><p><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined function that is called after every iteration.</p></li>
-<li><p><strong>callback_args</strong> (<em>list, optional [None]</em>) – A list of additional parameters to be passed to the callback function.</p></li>
+<li><p><strong>kmax</strong> (<em>int, optional</em>) – The number of iterations.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – Length deviation tolerance.</p></li>
+<li><p><strong>divergence</strong> (<em>float, optional</em>) – ??</p></li>
+<li><p><strong>verbose</strong> (<em>bool, optional</em>) – Print feedback messages.</p></li>
+<li><p><strong>allow_boundary_split</strong> (<em>bool, optional</em>) – Allow boundary edges to be split.</p></li>
+<li><p><strong>allow_boundary_swap</strong> (<em>bool, optional</em>) – Allow boundary edges or edges connected to the boundary to be swapped.</p></li>
+<li><p><strong>allow_boundary_collapse</strong> (<em>bool, optional</em>) – Allow boundary edges or edges connected to the boundary to be collapsed.</p></li>
+<li><p><strong>smooth</strong> (<em>bool, optional</em>) – Apply smoothing at every iteration.</p></li>
+<li><p><strong>fixed</strong> (<em>list[int], optional</em>) – A list of vertices that have to stay fixed.</p></li>
+<li><p><strong>callback</strong> (<em>callable, optional</em>) – A user-defined function that is called after every iteration.</p></li>
+<li><p><strong>callback_args</strong> (<em>list[Any], optional</em>) – A list of additional parameters to be passed to the callback function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>None</em></p>
+<dd class="field-even"><p><em>None</em> – The mesh is modified in place.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -155,10 +155,6 @@ Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processi
 Available at: <a class="reference external" href="http://portal.acm.org/citation.cfm?doid=1057432.1057457">http://portal.acm.org/citation.cfm?doid=1057432.1057457</a>.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

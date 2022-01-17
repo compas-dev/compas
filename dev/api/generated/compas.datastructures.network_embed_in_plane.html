@@ -108,14 +108,14 @@
 <h1>network_embed_in_plane</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.network_embed_in_plane">
-<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">network_embed_in_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">straightline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/planarity.py#L225"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">network_embed_in_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">straightline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/planarity.py#L222"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Embed the network in the plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>network</strong> (<em>Network</em>) – A network object.</p></li>
-<li><p><strong>fixed</strong> (<em>list (None)</em>) – Two fixed points.</p></li>
-<li><p><strong>straightline</strong> (<em>bool (True)</em>) – Embed using straight lines.</p></li>
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – A network object.</p></li>
+<li><p><strong>fixed</strong> (<em>list, optional</em>) – Two fixed points.</p></li>
+<li><p><strong>straightline</strong> (<em>bool, optional</em>) – If True, embed using straight lines only.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -126,10 +126,6 @@ False otherwise.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.10)"><strong>ImportError</strong></a> – If NetworkX is not installed.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

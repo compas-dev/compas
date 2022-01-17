@@ -115,13 +115,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polygons</strong> (<em>list</em>) – A list of polygons, with each polygon defined as an ordered list of
+<li><p><strong>polygons</strong> (<em>list[list[float]]</em>) – A list of polygons, with each polygon defined as an ordered list of
 XYZ coordinates of its corners.</p></li>
-<li><p><strong>precision</strong> (<em>str, optional</em>) – The precision of the geometric map that is used to connect the lines.</p></li>
+<li><p><strong>precision</strong> (<em>str, optional</em>) – The precision of the geometric map that is used to connect the lines.
+Defaults to <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.PRECISION</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Mesh</em> – A mesh object.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – A mesh object.</p>
 </dd>
 </dl>
 </dd></dl>

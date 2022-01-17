@@ -110,20 +110,21 @@
 <h1>Network.edges_where_predicate</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Network.edges_where_predicate">
-<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">edges_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L771"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">edges_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L796"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get edges for which a certain condition or set of conditions is true using a lambda function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate.
-The callable takes 2 parameters: a key <code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v)</span></code> tuple and <code class="docutils literal notranslate"><span class="pre">attr</span></code> and should return <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the nodes and their data attributes.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+The callable takes 2 parameters:
+an edge identifier (tuple of node identifiers) and edge attributes,
+and should return True or False.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the edge attributes in addition to the edge attributes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><p><em>tuple</em> – The next edge identifier (u, v), if <code class="docutils literal notranslate"><span class="pre">data</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.
-Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.</p>
+<dd class="field-even"><p><em>tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]</em> – If <cite>data</cite> is False, the next edge identifier (u, v).
+If <cite>data</cite> is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

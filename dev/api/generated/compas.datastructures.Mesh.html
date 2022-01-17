@@ -114,23 +114,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the graph.
-Defaults to “Graph”.</p></li>
-<li><p><strong>default_vertex_attributes</strong> (<em>dict, optional</em>) – Default values for vertex attributes.</p></li>
-<li><p><strong>default_edge_attributes</strong> (<em>dict, optional</em>) – Default values for edge attributes.</p></li>
-<li><p><strong>default_face_attributes</strong> (<em>dict, optional</em>) – Default values for face attributes.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>attributes</strong> (<em>dict</em>) – A dictionary of general mesh attributes: <code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">&quot;Mesh&quot;}</span></code>.</p></li>
-<li><p><strong>default_vertex_attributes</strong> (<em>dict</em>) – The names of pre-assigned vertex attributes and their default values:
-<code class="docutils literal notranslate"><span class="pre">{'x':</span> <span class="pre">0.0,</span> <span class="pre">'y':</span> <span class="pre">0.0,</span> <span class="pre">'z':</span> <span class="pre">0.0}</span></code></p></li>
-<li><p><strong>default_edge_attributes</strong> (<em>dict</em>) – The default data attributes assigned to every new edge.</p></li>
-<li><p><strong>default_face_attributes</strong> (<em>dict</em>) – The default data attributes assigned to every new face.</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – The name of the mesh.
-Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.attributes['name']</span></code></p></li>
-<li><p><strong>adjacency</strong> (<em>dict, read-only</em>) – The vertex adjacency dictionary.</p></li>
+<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the datastructure.</p></li>
+<li><p><strong>default_vertex_attributes</strong> (<em>dict[str, Any], optional</em>) – Default values for vertex attributes.</p></li>
+<li><p><strong>default_edge_attributes</strong> (<em>dict[str, Any], optional</em>) – Default values for edge attributes.</p></li>
+<li><p><strong>default_face_attributes</strong> (<em>dict[str, Any], optional</em>) – Default values for face attributes.</p></li>
 </ul>
 </dd>
 </dl>
@@ -167,7 +154,7 @@ Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.
 <td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.connected_components.html#compas.datastructures.Mesh.connected_components" title="compas.datastructures.Mesh.connected_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connected_components</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Find the connected components of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.dual.html#compas.datastructures.Mesh.dual" title="compas.datastructures.Mesh.dual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dual</span></code></a></p></td>
 <td><p>Construct the dual of a mesh.</p></td>
@@ -215,7 +202,7 @@ Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.
 <td><p>Compute the coordinates of the vertices of a face.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_curvature.html#compas.datastructures.Mesh.face_curvature" title="compas.datastructures.Mesh.face_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_curvature</span></code></a></p></td>
-<td><p>Dimensionless face curvature as the maximum face vertex deviation from the best-fit plane of the face vertices divided by the average lengths of the face vertices to the face centroid.</p></td>
+<td><p>Dimensionless face curvature.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_flatness.html#compas.datastructures.Mesh.face_flatness" title="compas.datastructures.Mesh.face_flatness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_flatness</span></code></a></p></td>
 <td><p>Compute the flatness of the mesh face.</p></td>
@@ -311,7 +298,7 @@ Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.
 <td><p>Compute the (axis aligned) bounding box of a projection of the mesh in the XY plane.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.quads_to_triangles.html#compas.datastructures.Mesh.quads_to_triangles" title="compas.datastructures.Mesh.quads_to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quads_to_triangles</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Convert all quadrilateral faces of a mesh to triangles by adding a diagonal edge.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.slice_plane.html#compas.datastructures.Mesh.slice_plane" title="compas.datastructures.Mesh.slice_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice_plane</span></code></a></p></td>
 <td><p>Slice a mesh with a plane and construct the resulting submeshes.</p></td>
@@ -335,7 +322,7 @@ Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.
 <td><p>Subdivide the input mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_lines.html#compas.datastructures.Mesh.to_lines" title="compas.datastructures.Mesh.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Convert the mesh to a collection of lines.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_obj.html#compas.datastructures.Mesh.to_obj" title="compas.datastructures.Mesh.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the mesh to an OBJ file.</p></td>
@@ -347,13 +334,13 @@ Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.
 <td><p>Write a mesh object to a PLY file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_points.html#compas.datastructures.Mesh.to_points" title="compas.datastructures.Mesh.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Convert the mesh to a collection of points.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_polygons.html#compas.datastructures.Mesh.to_polygons" title="compas.datastructures.Mesh.to_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygons</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Convert the mesh to a collection of polygons.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_polylines.html#compas.datastructures.Mesh.to_polylines" title="compas.datastructures.Mesh.to_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polylines</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Convert the mesh to a collection of polylines.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_stl.html#compas.datastructures.Mesh.to_stl" title="compas.datastructures.Mesh.to_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_stl</span></code></a></p></td>
 <td><p>Write a mesh to an STL file.</p></td>
@@ -365,7 +352,7 @@ Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.
 <td><p>Transform a mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.transformed.html#compas.datastructures.Mesh.transformed" title="compas.datastructures.Mesh.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p></td>
+<td><p>Return a transformed copy of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.unify_cycles.html#compas.datastructures.Mesh.unify_cycles" title="compas.datastructures.Mesh.unify_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unify_cycles</span></code></a></p></td>
 <td><p>Unify the cycle directions of all faces.</p></td>
@@ -544,181 +531,178 @@ Shorthand for <code class="docutils literal notranslate"><span class="pre">mesh.
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.get_any_face.html#compas.datastructures.Mesh.get_any_face" title="compas.datastructures.Mesh.get_any_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code></a></p></td>
 <td><p>Get the identifier of a random face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.get_any_face_vertex.html#compas.datastructures.Mesh.get_any_face_vertex" title="compas.datastructures.Mesh.get_any_face_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face_vertex</span></code></a></p></td>
-<td><p>Get the identifier of a random vertex of a specific face.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.get_any_vertex.html#compas.datastructures.Mesh.get_any_vertex" title="compas.datastructures.Mesh.get_any_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.get_any_vertex.html#compas.datastructures.Mesh.get_any_vertex" title="compas.datastructures.Mesh.get_any_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code></a></p></td>
 <td><p>Get the identifier of a random vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.get_any_vertices.html#compas.datastructures.Mesh.get_any_vertices" title="compas.datastructures.Mesh.get_any_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.get_any_vertices.html#compas.datastructures.Mesh.get_any_vertices" title="compas.datastructures.Mesh.get_any_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code></a></p></td>
 <td><p>Get a list of identifiers of a random set of n vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_after.html#compas.datastructures.Mesh.halfedge_after" title="compas.datastructures.Mesh.halfedge_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_after</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_after.html#compas.datastructures.Mesh.halfedge_after" title="compas.datastructures.Mesh.halfedge_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_after</span></code></a></p></td>
+<td><p>Find the halfedge after the given halfedge in the same face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_before.html#compas.datastructures.Mesh.halfedge_before" title="compas.datastructures.Mesh.halfedge_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_before</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_before.html#compas.datastructures.Mesh.halfedge_before" title="compas.datastructures.Mesh.halfedge_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_before</span></code></a></p></td>
+<td><p>Find the halfedge before the given halfedge in the same face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_face.html#compas.datastructures.Mesh.halfedge_face" title="compas.datastructures.Mesh.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_face.html#compas.datastructures.Mesh.halfedge_face" title="compas.datastructures.Mesh.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a></p></td>
 <td><p>Find the face corresponding to a halfedge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_loop.html#compas.datastructures.Mesh.halfedge_loop" title="compas.datastructures.Mesh.halfedge_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_loop</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_loop.html#compas.datastructures.Mesh.halfedge_loop" title="compas.datastructures.Mesh.halfedge_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_loop</span></code></a></p></td>
 <td><p>Find all edges on the same loop as the halfedge, in the direction of the halfedge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_strip.html#compas.datastructures.Mesh.halfedge_strip" title="compas.datastructures.Mesh.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_strip.html#compas.datastructures.Mesh.halfedge_strip" title="compas.datastructures.Mesh.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a></p></td>
 <td><p>Find all edges on the same strip as a given halfedge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_edge.html#compas.datastructures.Mesh.has_edge" title="compas.datastructures.Mesh.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_edge.html#compas.datastructures.Mesh.has_edge" title="compas.datastructures.Mesh.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
 <td><p>Verify that the mesh contains a specific edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_face.html#compas.datastructures.Mesh.has_face" title="compas.datastructures.Mesh.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_face.html#compas.datastructures.Mesh.has_face" title="compas.datastructures.Mesh.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a></p></td>
 <td><p>Verify that a face is part of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_halfedge.html#compas.datastructures.Mesh.has_halfedge" title="compas.datastructures.Mesh.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_halfedge.html#compas.datastructures.Mesh.has_halfedge" title="compas.datastructures.Mesh.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a></p></td>
 <td><p>Verify that a halfedge is part of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_vertex.html#compas.datastructures.Mesh.has_vertex" title="compas.datastructures.Mesh.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.has_vertex.html#compas.datastructures.Mesh.has_vertex" title="compas.datastructures.Mesh.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a></p></td>
 <td><p>Verify that a vertex is in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.index_key.html#compas.datastructures.Mesh.index_key" title="compas.datastructures.Mesh.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.index_key.html#compas.datastructures.Mesh.index_key" title="compas.datastructures.Mesh.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a></p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.index_vertex.html#compas.datastructures.Mesh.index_vertex" title="compas.datastructures.Mesh.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.index_vertex.html#compas.datastructures.Mesh.index_vertex" title="compas.datastructures.Mesh.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a></p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_closed.html#compas.datastructures.Mesh.is_closed" title="compas.datastructures.Mesh.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_closed.html#compas.datastructures.Mesh.is_closed" title="compas.datastructures.Mesh.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a></p></td>
 <td><p>Verify that the mesh is closed.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_edge_on_boundary.html#compas.datastructures.Mesh.is_edge_on_boundary" title="compas.datastructures.Mesh.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_edge_on_boundary.html#compas.datastructures.Mesh.is_edge_on_boundary" title="compas.datastructures.Mesh.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a></p></td>
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_empty.html#compas.datastructures.Mesh.is_empty" title="compas.datastructures.Mesh.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_empty.html#compas.datastructures.Mesh.is_empty" title="compas.datastructures.Mesh.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a></p></td>
 <td><p>Verify that the mesh is empty.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_face_on_boundary.html#compas.datastructures.Mesh.is_face_on_boundary" title="compas.datastructures.Mesh.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_face_on_boundary.html#compas.datastructures.Mesh.is_face_on_boundary" title="compas.datastructures.Mesh.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a></p></td>
 <td><p>Verify that a face is on a boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_manifold.html#compas.datastructures.Mesh.is_manifold" title="compas.datastructures.Mesh.is_manifold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_manifold.html#compas.datastructures.Mesh.is_manifold" title="compas.datastructures.Mesh.is_manifold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code></a></p></td>
 <td><p>Verify that the mesh is manifold.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_orientable.html#compas.datastructures.Mesh.is_orientable" title="compas.datastructures.Mesh.is_orientable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_orientable.html#compas.datastructures.Mesh.is_orientable" title="compas.datastructures.Mesh.is_orientable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code></a></p></td>
 <td><p>Verify that the mesh is orientable.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_quadmesh.html#compas.datastructures.Mesh.is_quadmesh" title="compas.datastructures.Mesh.is_quadmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_quadmesh.html#compas.datastructures.Mesh.is_quadmesh" title="compas.datastructures.Mesh.is_quadmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code></a></p></td>
 <td><p>Verify that the mesh consists of only quads.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_regular.html#compas.datastructures.Mesh.is_regular" title="compas.datastructures.Mesh.is_regular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_regular.html#compas.datastructures.Mesh.is_regular" title="compas.datastructures.Mesh.is_regular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code></a></p></td>
 <td><p>Verify that the mesh is regular.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_trimesh.html#compas.datastructures.Mesh.is_trimesh" title="compas.datastructures.Mesh.is_trimesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_trimesh.html#compas.datastructures.Mesh.is_trimesh" title="compas.datastructures.Mesh.is_trimesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code></a></p></td>
 <td><p>Verify that the mesh consists of only triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_valid.html#compas.datastructures.Mesh.is_valid" title="compas.datastructures.Mesh.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_valid.html#compas.datastructures.Mesh.is_valid" title="compas.datastructures.Mesh.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a></p></td>
 <td><p>Verify that the mesh is valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_vertex_connected.html#compas.datastructures.Mesh.is_vertex_connected" title="compas.datastructures.Mesh.is_vertex_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_vertex_connected.html#compas.datastructures.Mesh.is_vertex_connected" title="compas.datastructures.Mesh.is_vertex_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code></a></p></td>
 <td><p>Verify that a vertex is connected.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_vertex_on_boundary.html#compas.datastructures.Mesh.is_vertex_on_boundary" title="compas.datastructures.Mesh.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_vertex_on_boundary.html#compas.datastructures.Mesh.is_vertex_on_boundary" title="compas.datastructures.Mesh.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a></p></td>
 <td><p>Verify that a vertex is on a boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.key_index.html#compas.datastructures.Mesh.key_index" title="compas.datastructures.Mesh.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.key_index.html#compas.datastructures.Mesh.key_index" title="compas.datastructures.Mesh.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a></p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.number_of_edges.html#compas.datastructures.Mesh.number_of_edges" title="compas.datastructures.Mesh.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.number_of_edges.html#compas.datastructures.Mesh.number_of_edges" title="compas.datastructures.Mesh.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
 <td><p>Count the number of edges in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.number_of_faces.html#compas.datastructures.Mesh.number_of_faces" title="compas.datastructures.Mesh.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.number_of_faces.html#compas.datastructures.Mesh.number_of_faces" title="compas.datastructures.Mesh.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a></p></td>
 <td><p>Count the number of faces in the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.number_of_vertices.html#compas.datastructures.Mesh.number_of_vertices" title="compas.datastructures.Mesh.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.number_of_vertices.html#compas.datastructures.Mesh.number_of_vertices" title="compas.datastructures.Mesh.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a></p></td>
 <td><p>Count the number of vertices in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.remove_unused_vertices.html#compas.datastructures.Mesh.remove_unused_vertices" title="compas.datastructures.Mesh.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.remove_unused_vertices.html#compas.datastructures.Mesh.remove_unused_vertices" title="compas.datastructures.Mesh.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a></p></td>
 <td><p>Remove all unused vertices from the mesh object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.summary.html#compas.datastructures.Mesh.summary" title="compas.datastructures.Mesh.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.summary.html#compas.datastructures.Mesh.summary" title="compas.datastructures.Mesh.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a></p></td>
 <td><p>Print a summary of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_data.html#compas.datastructures.Mesh.to_data" title="compas.datastructures.Mesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_data.html#compas.datastructures.Mesh.to_data" title="compas.datastructures.Mesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_json.html#compas.datastructures.Mesh.to_json" title="compas.datastructures.Mesh.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_json.html#compas.datastructures.Mesh.to_json" title="compas.datastructures.Mesh.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_jsonstring.html#compas.datastructures.Mesh.to_jsonstring" title="compas.datastructures.Mesh.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.to_jsonstring.html#compas.datastructures.Mesh.to_jsonstring" title="compas.datastructures.Mesh.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.unset_edge_attribute.html#compas.datastructures.Mesh.unset_edge_attribute" title="compas.datastructures.Mesh.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.unset_edge_attribute.html#compas.datastructures.Mesh.unset_edge_attribute" title="compas.datastructures.Mesh.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of an edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.unset_face_attribute.html#compas.datastructures.Mesh.unset_face_attribute" title="compas.datastructures.Mesh.unset_face_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_face_attribute</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.unset_face_attribute.html#compas.datastructures.Mesh.unset_face_attribute" title="compas.datastructures.Mesh.unset_face_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_face_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.unset_vertex_attribute.html#compas.datastructures.Mesh.unset_vertex_attribute" title="compas.datastructures.Mesh.unset_vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_vertex_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.unset_vertex_attribute.html#compas.datastructures.Mesh.unset_vertex_attribute" title="compas.datastructures.Mesh.unset_vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_vertex_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.update_default_edge_attributes.html#compas.datastructures.Mesh.update_default_edge_attributes" title="compas.datastructures.Mesh.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.update_default_edge_attributes.html#compas.datastructures.Mesh.update_default_edge_attributes" title="compas.datastructures.Mesh.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a></p></td>
 <td><p>Update the default edge attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.update_default_face_attributes.html#compas.datastructures.Mesh.update_default_face_attributes" title="compas.datastructures.Mesh.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.update_default_face_attributes.html#compas.datastructures.Mesh.update_default_face_attributes" title="compas.datastructures.Mesh.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a></p></td>
 <td><p>Update the default face attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.update_default_vertex_attributes.html#compas.datastructures.Mesh.update_default_vertex_attributes" title="compas.datastructures.Mesh.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.update_default_vertex_attributes.html#compas.datastructures.Mesh.update_default_vertex_attributes" title="compas.datastructures.Mesh.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a></p></td>
 <td><p>Update the default vertex attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.validate_data.html#compas.datastructures.Mesh.validate_data" title="compas.datastructures.Mesh.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.validate_data.html#compas.datastructures.Mesh.validate_data" title="compas.datastructures.Mesh.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.validate_json.html#compas.datastructures.Mesh.validate_json" title="compas.datastructures.Mesh.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.validate_json.html#compas.datastructures.Mesh.validate_json" title="compas.datastructures.Mesh.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_attribute.html#compas.datastructures.Mesh.vertex_attribute" title="compas.datastructures.Mesh.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_attribute.html#compas.datastructures.Mesh.vertex_attribute" title="compas.datastructures.Mesh.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a></p></td>
 <td><p>Get or set an attribute of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_attributes.html#compas.datastructures.Mesh.vertex_attributes" title="compas.datastructures.Mesh.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_attributes.html#compas.datastructures.Mesh.vertex_attributes" title="compas.datastructures.Mesh.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a></p></td>
 <td><p>Get or set multiple attributes of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_degree.html#compas.datastructures.Mesh.vertex_degree" title="compas.datastructures.Mesh.vertex_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_degree</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_degree.html#compas.datastructures.Mesh.vertex_degree" title="compas.datastructures.Mesh.vertex_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_degree</span></code></a></p></td>
 <td><p>Count the neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_edges.html#compas.datastructures.Mesh.vertex_edges" title="compas.datastructures.Mesh.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_edges.html#compas.datastructures.Mesh.vertex_edges" title="compas.datastructures.Mesh.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
+<td><p>Find all edges connected to a given vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_faces.html#compas.datastructures.Mesh.vertex_faces" title="compas.datastructures.Mesh.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_faces.html#compas.datastructures.Mesh.vertex_faces" title="compas.datastructures.Mesh.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
 <td><p>The faces connected to a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_index.html#compas.datastructures.Mesh.vertex_index" title="compas.datastructures.Mesh.vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_index</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_index.html#compas.datastructures.Mesh.vertex_index" title="compas.datastructures.Mesh.vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_index</span></code></a></p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_max_degree.html#compas.datastructures.Mesh.vertex_max_degree" title="compas.datastructures.Mesh.vertex_max_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_max_degree</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_max_degree.html#compas.datastructures.Mesh.vertex_max_degree" title="compas.datastructures.Mesh.vertex_max_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_max_degree</span></code></a></p></td>
 <td><p>Compute the maximum degree of all vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_min_degree.html#compas.datastructures.Mesh.vertex_min_degree" title="compas.datastructures.Mesh.vertex_min_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_min_degree</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_min_degree.html#compas.datastructures.Mesh.vertex_min_degree" title="compas.datastructures.Mesh.vertex_min_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_min_degree</span></code></a></p></td>
 <td><p>Compute the minimum degree of all vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_neighborhood.html#compas.datastructures.Mesh.vertex_neighborhood" title="compas.datastructures.Mesh.vertex_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_neighborhood.html#compas.datastructures.Mesh.vertex_neighborhood" title="compas.datastructures.Mesh.vertex_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood</span></code></a></p></td>
 <td><p>Return the vertices in the neighborhood of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_neighbors.html#compas.datastructures.Mesh.vertex_neighbors" title="compas.datastructures.Mesh.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_neighbors.html#compas.datastructures.Mesh.vertex_neighbors" title="compas.datastructures.Mesh.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
 <td><p>Return the neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_sample.html#compas.datastructures.Mesh.vertex_sample" title="compas.datastructures.Mesh.vertex_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_sample</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertex_sample.html#compas.datastructures.Mesh.vertex_sample" title="compas.datastructures.Mesh.vertex_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_sample</span></code></a></p></td>
 <td><p>A random sample of the vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices.html#compas.datastructures.Mesh.vertices" title="compas.datastructures.Mesh.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices.html#compas.datastructures.Mesh.vertices" title="compas.datastructures.Mesh.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a></p></td>
 <td><p>Iterate over the vertices of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_attribute.html#compas.datastructures.Mesh.vertices_attribute" title="compas.datastructures.Mesh.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_attribute.html#compas.datastructures.Mesh.vertices_attribute" title="compas.datastructures.Mesh.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a></p></td>
 <td><p>Get or set an attribute of multiple vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_attributes.html#compas.datastructures.Mesh.vertices_attributes" title="compas.datastructures.Mesh.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_attributes.html#compas.datastructures.Mesh.vertices_attributes" title="compas.datastructures.Mesh.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a></p></td>
 <td><p>Get or set multiple attributes of multiple vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_where.html#compas.datastructures.Mesh.vertices_where" title="compas.datastructures.Mesh.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_where.html#compas.datastructures.Mesh.vertices_where" title="compas.datastructures.Mesh.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a></p></td>
 <td><p>Get vertices for which a certain condition or set of conditions is true.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_where_predicate.html#compas.datastructures.Mesh.vertices_where_predicate" title="compas.datastructures.Mesh.vertices_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.vertices_where_predicate.html#compas.datastructures.Mesh.vertices_where_predicate" title="compas.datastructures.Mesh.vertices_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code></a></p></td>
 <td><p>Get vertices for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 </tbody>

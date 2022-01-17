@@ -112,13 +112,20 @@
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" title="compas.datastructures.datastructure.Datastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></a></p>
 <p>A data structure for managing the connections between different parts of an assembly.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>attributes</strong> (<em>dict</em>) – General attributes of the assembly that will be included in the data dict.</p></li>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the assembly.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>attributes</strong> (<em>dict[str, Any]</em>) – General attributes of the data structure that will be included in the data dict and serialization.</p></li>
 <li><p><strong>graph</strong> (<a class="reference internal" href="compas.datastructures.Graph.html#compas.datastructures.Graph" title="compas.datastructures.Graph"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Graph</span></code></a>) – The graph that is used under the hood to store the parts and their connections.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>

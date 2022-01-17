@@ -110,17 +110,12 @@
 <h1>VolMesh.to_vertices_and_cells</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.VolMesh.to_vertices_and_cells">
-<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_cells</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L174"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_cells</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L179"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return the vertices and cells of a volmesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p><em>tuple</em> – A 2-tuple containing</p>
-<ul class="simple">
-<li><p>a list of vertices, represented by their XYZ coordinates, and</p></li>
-<li><p>a list of cells.</p></li>
-</ul>
-<p>Each cell is a list of faces, which are lists of indices referencing the list of vertex coordinates.</p>
-</p>
+<dd class="field-odd"><p><em>tuple[list[list[float]], list[list[list[int]]]]</em> – A list of vertices, represented by their XYZ coordinates,
+and a list of cells, with each cell a list of faces, and each face a list of vertex indices.</p>
 </dd>
 </dl>
 </dd></dl>

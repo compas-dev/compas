@@ -118,20 +118,24 @@
 The name will be stored in <code class="xref py py-attr docutils literal notranslate"><span class="pre">Part.attributes</span></code>.</p></li>
 <li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>, optional) – The local coordinate system of the part.</p></li>
 <li><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>, optional) – The base shape of the part geometry.</p></li>
-<li><p><strong>features</strong> (list of tuple(<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>, str), optional) – The features to be added to the base shape of the part geometry.</p></li>
+<li><p><strong>features</strong> (sequence[tuple[<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>, str]], optional) – The features to be added to the base shape of the part geometry.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>attributes</strong> (<em>dict</em>) – General object attributes that will be included in the data dict.</p></li>
+<li><p><strong>attributes</strong> (<em>dict[str, Any]</em>) – General data structure attributes that will be included in the data dict and serialization.</p></li>
 <li><p><strong>key</strong> (<em>int or str</em>) – The identifier of the part in the connectivity graph of the parent assembly.</p></li>
 <li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – The local coordinate system of the part.</p></li>
 <li><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>) – The base shape of the part geometry.</p></li>
-<li><p><strong>features</strong> (list of tuple(<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>, str)) – The features added to the base shape of the part geometry.</p></li>
-<li><p><strong>transformations</strong> (deque of <a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a>) – The stack of transformations applied to the part geometry.
+<li><p><strong>features</strong> (list[tuple[<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>, str]]) – The features added to the base shape of the part geometry.</p></li>
+<li><p><strong>transformations</strong> (Deque[<a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a>]) – The stack of transformations applied to the part geometry.
 The most recent transformation is on the left of the stack.
 All transformations are with respect to the local coordinate system.</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="compas.geometry.Polyhedron.html#compas.geometry.Polyhedron" title="compas.geometry.Polyhedron"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyhedron</span></code></a>, read-only) – The geometry of the part after combining the base shape and features through the specified operations.</p></li>
 </ul>
+</dd>
+<dt class="field-odd">Class Attributes</dt>
+<dd class="field-odd"><p><strong>operations</strong> (<em>dict[str, callable]</em>) – Available operations for combining features with a base shape.</p>
 </dd>
 </dl>
 <p class="rubric">Methods</p>

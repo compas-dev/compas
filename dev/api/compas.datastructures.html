@@ -195,7 +195,7 @@
 <td><p>Verify that a network lies in the XY plane.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.network_join_edges.html#compas.datastructures.network_join_edges" title="compas.datastructures.network_join_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_join_edges</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Join the edges incidental on the given node, if there are exactly two incident edges.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.network_polylines.html#compas.datastructures.network_polylines" title="compas.datastructures.network_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_polylines</span></code></a></p></td>
 <td><p>Join network edges into polylines.</p></td>
@@ -213,7 +213,7 @@
 <td><p>Transform a network.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.network_transformed.html#compas.datastructures.network_transformed" title="compas.datastructures.network_transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_transformed</span></code></a></p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">network</span></code>.</p></td>
+<td><p>Return a transformed copy of the network.</p></td>
 </tr>
 </tbody>
 </table>
@@ -259,7 +259,7 @@
 <td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_connected_components.html#compas.datastructures.mesh_connected_components" title="compas.datastructures.mesh_connected_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_connected_components</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Find the connected components of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_conway_ambo.html#compas.datastructures.mesh_conway_ambo" title="compas.datastructures.mesh_conway_ambo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_conway_ambo</span></code></a></p></td>
 <td><p>Generates the ambo mesh from a seed mesh.</p></td>
@@ -340,7 +340,7 @@
 <td><p>Planarise a set of connected faces.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_quads_to_triangles.html#compas.datastructures.mesh_quads_to_triangles" title="compas.datastructures.mesh_quads_to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_quads_to_triangles</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Convert all quadrilateral faces of a mesh to triangles by adding a diagonal edge.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_slice_plane.html#compas.datastructures.mesh_slice_plane" title="compas.datastructures.mesh_slice_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_slice_plane</span></code></a></p></td>
 <td><p>Slice a mesh with a plane and construct the resulting submeshes.</p></td>
@@ -394,7 +394,7 @@
 <td><p>Transform a mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transformed.html#compas.datastructures.mesh_transformed" title="compas.datastructures.mesh_transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transformed</span></code></a></p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p></td>
+<td><p>Return a transformed copy of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_unify_cycles.html#compas.datastructures.mesh_unify_cycles" title="compas.datastructures.mesh_unify_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_unify_cycles</span></code></a></p></td>
 <td><p>Unify the cycle directions of all faces.</p></td>
@@ -480,19 +480,19 @@
 <td><p>Transform a mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.mesh_transformed_numpy.html#compas.datastructures.mesh_transformed_numpy" title="compas.datastructures.mesh_transformed_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_transformed_numpy</span></code></a></p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p></td>
+<td><p>Return a transformed copy of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.trimesh_cotangent_laplacian_matrix.html#compas.datastructures.trimesh_cotangent_laplacian_matrix" title="compas.datastructures.trimesh_cotangent_laplacian_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_cotangent_laplacian_matrix</span></code></a></p></td>
 <td><p>Construct the Laplacian of a triangular mesh with cotangent weights.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.trimesh_descent.html#compas.datastructures.trimesh_descent" title="compas.datastructures.trimesh_descent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_descent</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Compute the gradient per face of the heightfield of the vertices of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.trimesh_pull_points_numpy.html#compas.datastructures.trimesh_pull_points_numpy" title="compas.datastructures.trimesh_pull_points_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_pull_points_numpy</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Pull points onto a mesh by computing the closest point on the mesh for each of the points.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.trimesh_samplepoints_numpy.html#compas.datastructures.trimesh_samplepoints_numpy" title="compas.datastructures.trimesh_samplepoints_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_samplepoints_numpy</span></code></a></p></td>
-<td><p>Compute sample points on a triangle mesh surface</p></td>
+<td><p>Compute sample points on a triangle mesh surface.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.trimesh_smooth_laplacian_cotangent.html#compas.datastructures.trimesh_smooth_laplacian_cotangent" title="compas.datastructures.trimesh_smooth_laplacian_cotangent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_smooth_laplacian_cotangent</span></code></a></p></td>
 <td><p>Smooth a triangle mesh using a laplacian matrix with cotangent weights.</p></td>
@@ -518,7 +518,7 @@
 <td><p>Transform a mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.volmesh_transformed.html#compas.datastructures.volmesh_transformed" title="compas.datastructures.volmesh_transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volmesh_transformed</span></code></a></p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>.</p></td>
+<td><p>Return a transformed copy of the volmesh.</p></td>
 </tr>
 </tbody>
 </table>

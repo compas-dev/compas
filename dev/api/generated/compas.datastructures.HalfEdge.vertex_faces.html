@@ -110,26 +110,20 @@
 <h1>HalfEdge.vertex_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfEdge.vertex_faces">
-<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">vertex_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1942"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">vertex_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1970"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>The faces connected to a vertex.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>int</em>) – The identifier of the vertex.</p></li>
-<li><p><strong>ordered</strong> (<em>bool, optional</em>) – Return the faces in cycling order.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>include_none</strong> (<em>bool, optional</em>) – Include <em>outside</em> faces in the list.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>ordered</strong> (<em>bool, optional</em>) – If True, return the faces in cycling order.</p></li>
+<li><p><strong>include_none</strong> (<em>bool, optional</em>) – If True, include <em>outside</em> faces in the list.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The faces connected to a vertex.</p>
+<dd class="field-even"><p><em>list[int]</em> – The faces connected to a vertex.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

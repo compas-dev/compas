@@ -108,20 +108,20 @@
 <h1>network_polylines</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.network_polylines">
-<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">network_polylines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/operations/join.py#L38"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Join network edges into polylines.
-The polylines stop at points with a valency different from 2 in the network of line.
+<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">network_polylines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/operations/join.py#L59"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Join network edges into polylines.</p>
+<p>The polylines stop at points with a valency different from 2 in the network of line.
 Optional splits can be included.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>network</strong> (<em>Network</em>) – A network.</p></li>
-<li><p><strong>splits</strong> (<em>list, optional</em>) – List of point coordinates for optional splits.
-Default is ‘’None’’.</p></li>
+<li><p><strong>splits</strong> (sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], optional) – List of point coordinates for polyline splits.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>polylines</strong> (<em>list</em>) – The joined polylines. If the polyline is closed, the two extremities are the same.</p>
+<dd class="field-even"><p><em>list[list[[float, float, float]]]</em> – The joined polylines.
+If a polyline is closed, the two extremities are the same.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

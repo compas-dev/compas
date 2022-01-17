@@ -113,21 +113,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – Instance of a mesh.</p></li>
-<li><p><strong>u</strong> (<em>hashable</em>) – Identifier of the first vertex.</p></li>
-<li><p><strong>v</strong> (<em>hashable</em>) – Identifier of the second vertex.</p></li>
-<li><p><strong>t</strong> (<em>float (0.5)</em>) – The location of the split point along the original edge.
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – Instance of a mesh.</p></li>
+<li><p><strong>u</strong> (<em>int</em>) – Identifier of the first vertex.</p></li>
+<li><p><strong>v</strong> (<em>int</em>) – Identifier of the second vertex.</p></li>
+<li><p><strong>t</strong> (<em>float, optional</em>) – The location of the split point along the original edge.
 The value should be between 0.0 and 1.0</p></li>
-<li><p><strong>allow_boundary</strong> (<em>bool (False)</em>) – Allow splits on boundary edges.</p></li>
+<li><p><strong>allow_boundary</strong> (<em>bool, optional</em>) – If True, allow splits on boundary edges.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>This operation only works as expected for triangle meshes.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

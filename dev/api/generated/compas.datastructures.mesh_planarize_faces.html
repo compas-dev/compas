@@ -108,7 +108,7 @@
 <h1>mesh_planarize_faces</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.mesh_planarize_faces">
-<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_planarize_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/planarisation.py#L60"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_planarize_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/planarisation.py#L59"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Planarise a set of connected faces.</p>
 <p>Planarisation is implemented as a two-step iterative procedure. At every
 iteration, faces are first individually projected to their best-fit plane,
@@ -117,12 +117,12 @@ corners of the faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</p></li>
-<li><p><strong>fixed</strong> (<em>list, optional [None]</em>) – A list of fixed vertices.</p></li>
-<li><p><strong>kmax</strong> (<em>int, optional [100]</em>) – The number of iterations.</p></li>
-<li><p><strong>d</strong> (<em>float, optional [1.0]</em>) – A damping factor.</p></li>
-<li><p><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined callback that is called after every iteration.</p></li>
-<li><p><strong>callback_args</strong> (<em>list, optional [None]</em>) – A list of arguments to be passed to the callback function.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A mesh object.</p></li>
+<li><p><strong>fixed</strong> (<em>list[int], optional</em>) – A list of fixed vertices.</p></li>
+<li><p><strong>kmax</strong> (<em>int, optional</em>) – The number of iterations.</p></li>
+<li><p><strong>d</strong> (<em>float, optional</em>) – A damping factor.</p></li>
+<li><p><strong>callback</strong> (<em>callable, optional</em>) – A user-defined callback that is called after every iteration.</p></li>
+<li><p><strong>callback_args</strong> (<em>list[Any], optional</em>) – A list of arguments to be passed to the callback function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

@@ -108,17 +108,20 @@
 <h1>meshes_join_and_weld</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.meshes_join_and_weld">
-<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">meshes_join_and_weld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/join.py#L98"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">meshes_join_and_weld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/join.py#L99"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Join and and weld meshes within some precision distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>meshes</strong> (<em>list</em>) – A list of meshes.</p></li>
-<li><p><strong>precision</strong> (<em>str</em>) – Tolerance distance for welding.</p></li>
+<li><p><strong>meshes</strong> (list[<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>]) – A list of meshes.</p></li>
+<li><p><strong>precision</strong> (<em>str, optional</em>) – Precision for point comparison in the form of a string formatting specifier.
+For example, floating point precision (<code class="docutils literal notranslate"><span class="pre">'3f'</span></code>), or decimal integer (<code class="docutils literal notranslate"><span class="pre">'d'</span></code>).
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.PRECISION</span></code>.</p></li>
+<li><p><strong>cls</strong> (Type[<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>], optional) – The type of return mesh.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>mesh</em> – The joined and welded mesh.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – The joined and welded mesh.</p>
 </dd>
 </dl>
 </dd></dl>

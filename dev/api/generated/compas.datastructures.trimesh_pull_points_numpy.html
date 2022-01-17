@@ -109,7 +109,22 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.trimesh_pull_points_numpy">
 <span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">trimesh_pull_points_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/pull_numpy.py#L26"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
+<dd><p>Pull points onto a mesh by computing the closest point on the mesh for each of the points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A mesh data structure.</p></li>
+<li><p><strong>points</strong> (sequence[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – The input points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list[[float, float, float]]</em> – The points on the mesh.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>It will not be verified that the input mesh is a triangle mesh.
+It will just be treated as if it is…</p>
+</dd></dl>
 
 </section>
 

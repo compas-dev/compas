@@ -108,26 +108,28 @@
 <h1>mesh_contours_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.mesh_contours_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_contours_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/contours_numpy.py#L51"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_contours_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/contours_numpy.py#L51"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the contours of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>Mesh</em>) – The mesh object.</p></li>
-<li><p><strong>N</strong> (<em>int, optional</em>) – The density of the contours.
-Default is <code class="docutils literal notranslate"><span class="pre">50</span></code>.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The mesh object.</p></li>
+<li><p><strong>levels</strong> (<em>int, optional</em>) – The number of contours.</p></li>
+<li><p><strong>density</strong> (<em>int, optional</em>) – The density of the interpolation grid.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p><em>tuple</em> – A tuple of a list of levels and a list of contours.</p>
-<p>The list of levels contains the z-values at each of the contours.
-Each contour is a list of paths, and each path is a list polygons.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>list[float]</em> – A list of levels.</p></li>
+<li><p><em>list[list[float]]</em> – A list of contours.
+The list of levels contains the z-values at each of the contours.
+Each contour is a list of paths, and each path is a list polygons.</p></li>
+</ul>
 </p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The contours are defined as the isolines of the z-coordinates of the vertices
-of the mesh.</p>
+<p>The contours are defined as the isolines of the z-coordinates of the vertices of the mesh.</p>
 </dd></dl>
 
 </section>

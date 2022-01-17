@@ -110,19 +110,19 @@
 <h1>HalfEdge.edge_attribute</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfEdge.edge_attribute">
-<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1317"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1319"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get or set an attribute of an edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>edge</strong> (<em>2-tuple of int</em>) – The identifier of the edge as a pair of vertex identifiers.</p></li>
+<li><p><strong>edge</strong> (<em>tuple[int, int]</em>) – The identifier of the edge as a pair of vertex identifiers.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – The name of the attribute.</p></li>
 <li><p><strong>value</strong> (<em>obj, optional</em>) – The value of the attribute.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+Default is None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>object or None</em> – The value of the attribute, or <code class="docutils literal notranslate"><span class="pre">None</span></code> when the function is used as a “setter”.</p>
+<dd class="field-even"><p><em>obj or None</em> – The value of the attribute, or None when the function is used as a “setter”.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.10)"><strong>KeyError</strong></a> – If the edge does not exist.</p>

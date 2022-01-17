@@ -114,20 +114,16 @@ In all faces by default or in a given set of faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>old_vkey</strong> (<em>hashable</em>) – The old vertex key.</p></li>
-<li><p><strong>new_vkey</strong> (<em>hashable</em>) – The new vertex key.</p></li>
-<li><p><strong>fkeys</strong> (<em>list, optional</em>) – List of face keys where to subsitute the old vertex by the new one.
+<li><p><strong>old_vkey</strong> (<em>int</em>) – The old vertex key.</p></li>
+<li><p><strong>new_vkey</strong> (<em>int</em>) – The new vertex key.</p></li>
+<li><p><strong>fkeys</strong> (<em>list[int], optional</em>) – List of face keys where to subsitute the old vertex by the new one.
 Default is to subsitute in all faces.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>fkeys</strong> (<em>list</em>) – The list of modified faces.</p>
+<dd class="field-even"><p><em>list[int]</em> – The list of modified faces.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

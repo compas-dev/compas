@@ -110,16 +110,14 @@
 <h1>HalfEdge.add_face</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfEdge.add_face">
-<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">add_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fkey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L394"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">add_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fkey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L382"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add a face to the mesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list</em>) – A list of vertex keys.</p></li>
-<li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – Face attributes.</p></li>
-<li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named face attributes.
-Named face attributes overwrite corresponding attributes in the
-attribute dict (<code class="docutils literal notranslate"><span class="pre">attr_dict</span></code>).</p></li>
+<li><p><strong>vertices</strong> (<em>list[int]</em>) – A list of vertex keys.</p></li>
+<li><p><strong>attr_dict</strong> (<em>dict[str, Any], optional</em>) – A dictionary of face attributes.</p></li>
+<li><p><strong>**kwattr</strong> (<em>dict[str, Any], optional</em>) – A dictionary of additional attributes compiled of remaining named arguments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -135,10 +133,6 @@ automatically. An automatically generated key is an integer that increments
 the highest integer value of any key used so far by 1.</p>
 <p>If a key with an integer value is provided that is higher than the current
 highest integer key value, then the highest integer value is updated accordingly.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

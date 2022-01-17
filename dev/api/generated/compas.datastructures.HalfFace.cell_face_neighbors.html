@@ -110,8 +110,23 @@
 <h1>HalfFace.cell_face_neighbors</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfFace.cell_face_neighbors">
-<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">cell_face_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L2174"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">cell_face_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L2314"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Find the faces adjacent to a given face of a cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cell</strong> (<em>int</em>) – The identifier of the cell.</p></li>
+<li><p><strong>face</strong> (<em>int</em>) – The identifier of the face.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – The identifier of the face.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method is similar to <a class="reference internal" href="compas.datastructures.HalfEdge.face_neighbors.html#compas.datastructures.HalfEdge.face_neighbors" title="compas.datastructures.HalfEdge.face_neighbors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">face_neighbors()</span></code></a>,
+but in the context of a cell of the <cite>VolMesh</cite>.</p>
+</dd></dl>
 
 </section>
 

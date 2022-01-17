@@ -113,15 +113,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – The original mesh.</p></li>
-<li><p><strong>plane</strong> (<em>compas.geometry.Plane</em>) – The cutting plane.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The original mesh.</p></li>
+<li><p><strong>plane</strong> (<a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The cutting plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None or tuple of <a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – If the mesh and plane do not intersect,
+<dd class="field-even"><p>tuple[<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>] or None – The “positive” and “negative” submeshes.
+If the mesh and plane do not intersect,
 or if the intersection is degenerate (point or line),
-the function returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.
-Otherwise, the “positive” and “negative” submeshes are returned.</p>
+the function returns None.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

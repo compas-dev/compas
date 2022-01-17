@@ -110,20 +110,15 @@
 <h1>VolMesh.cell_to_vertices_and_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.VolMesh.cell_to_vertices_and_faces">
-<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">cell_to_vertices_and_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L211"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">cell_to_vertices_and_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L214"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return the vertices and faces of a cell.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cell</strong> (<em>hashable</em>) – Identifier of the cell.</p>
+<dd class="field-odd"><p><strong>cell</strong> (<em>int</em>) – Identifier of the cell.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p><em>tuple</em> – A 2-tuple containing</p>
-<ul class="simple">
-<li><p>a list of vertices, represented by their XYZ coordinates, and</p></li>
-<li><p>a list of faces.</p></li>
-</ul>
-<p>Each face is a list of indices referencing the list of vertex coordinates.</p>
-</p>
+<dd class="field-even"><p><em>tuple[list[list[float]], list[list[int]]]</em> – A 2-tuple containing a list of vertices, represented by their XYZ coordinates,
+and a list of faces, with each face a list of vertex indices.</p>
 </dd>
 </dl>
 </dd></dl>

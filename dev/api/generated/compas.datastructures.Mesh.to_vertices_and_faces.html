@@ -110,23 +110,17 @@
 <h1>Mesh.to_vertices_and_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh.to_vertices_and_faces">
-<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_faces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/mesh.py#L491"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_faces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/mesh.py#L478"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return the vertices and faces of a mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p><em>tuple</em> – A 2-tuple containing</p>
-<ul class="simple">
-<li><p>a list of vertices, represented by their XYZ coordinates, and</p></li>
-<li><p>a list of faces.</p></li>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>list[list[float]]</em> – The vertices as a list of XYZ coordinates.</p></li>
+<li><p><em>list[list[int]]</em> – The faces as a list of lists of vertex indices.</p></li>
 </ul>
-<p>Each face is a list of indices referencing the list of vertex coordinates.</p>
 </p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

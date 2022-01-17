@@ -108,36 +108,26 @@
 <h1>Graph</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Graph">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_node_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_edge_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_node_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_edge_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" title="compas.datastructures.datastructure.Datastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></a></p>
 <p>Base graph data structure for describing the topological relationships between nodes connected by edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the graph.
-Defaults to “Graph”.</p></li>
-<li><p><strong>default_node_attributes</strong> (<em>dict, optional</em>) – Default values for node attributes.</p></li>
-<li><p><strong>default_edge_attributes</strong> (<em>dict, optional</em>) – Default values for edge attributes.</p></li>
+<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the datastructure.</p></li>
+<li><p><strong>default_node_attributes</strong> (<em>dict[str, Any], optional</em>) – Default values for node attributes.</p></li>
+<li><p><strong>default_edge_attributes</strong> (<em>dict[str, Any], optional</em>) – Default values for edge attributes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>node</strong> (<em>dict</em>) – The node dictionary. Each key in the node dictionary
-represents a node of the network and maps to a dictionary of
-node attributes.</p></li>
-<li><p><strong>edge</strong> (<em>dict of dict</em>) – The edge dictionary. Each key in the edge dictionary
-corresponds to a key in the node dictionary, and maps to a dictionary
-with connected nodes. In the latter, the keys are again references
-to items in the node dictionary, and the values are dictionaries
-of edge attributes. For example, an edge between node 1 and node 2 is represented as follows
-<code class="docutils literal notranslate"><span class="pre">Graph.edge[1][2]</span> <span class="pre">-&gt;</span> <span class="pre">{...}</span></code></p></li>
-<li><p><strong>adjacency</strong> (<em>dict of dict</em>) – The edges of the graph are directed.
-The undirected connectivity information is represented in the adjacency dict.</p></li>
-<li><p><strong>attributes</strong> (<em>dict</em>) – A dictionary of miscellaneous information about the graph.</p></li>
-<li><p><strong>default_node_attributes</strong> (<em>dict</em>) – A dictionary mapping node attribute names to their default values.</p></li>
-<li><p><strong>default_edge_attributes</strong> (<em>dict</em>) – A dictionary mapping edge attribute names to their default values.</p></li>
-<li><p><strong>data</strong> (<em>dict</em>) – A dictionary representing the essential data of a graph that can be used in serialization
-processes.</p></li>
+<li><p><strong>attributes</strong> (<em>dict[str, Any]</em>) – General attributes of the data structure that are included in the data representation and serialization.</p></li>
+<li><p><strong>default_node_attributes</strong> (<em>dict[str, Any]</em>) – dictionary containing default values for the attributes of nodes.
+It is recommended to add a default to this dictionary using <a class="reference internal" href="compas.datastructures.Graph.update_default_node_attributes.html#compas.datastructures.Graph.update_default_node_attributes" title="compas.datastructures.Graph.update_default_node_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_node_attributes()</span></code></a>
+for every node attribute used in the data structure.</p></li>
+<li><p><strong>default_edge_attributes</strong> (<em>dict[str, Any]</em>) – dictionary containing default values for the attributes of edges.
+It is recommended to add a default to this dictionary using <a class="reference internal" href="compas.datastructures.Graph.update_default_edge_attributes.html#compas.datastructures.Graph.update_default_edge_attributes" title="compas.datastructures.Graph.update_default_edge_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_edge_attributes()</span></code></a>
+for every edge attribute used in the data structure.</p></li>
 </ul>
 </dd>
 </dl>
@@ -204,7 +194,7 @@ processes.</p></li>
 <td><p>Get edges for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_edges.html#compas.datastructures.Graph.from_edges" title="compas.datastructures.Graph.from_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_edges</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Create a new graph instance from information about the edges.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_networkx.html#compas.datastructures.Graph.from_networkx" title="compas.datastructures.Graph.from_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_networkx</span></code></a></p></td>
 <td><p>Create a new graph instance from a NetworkX DiGraph instance.</p></td>
@@ -240,7 +230,7 @@ processes.</p></li>
 <td><p>Verify if a specific node is connected.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.key_index.html#compas.datastructures.Graph.key_index" title="compas.datastructures.Graph.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a></p></td>
-<td><p>Returns a dictionary that maps node dictionary keys to the corresponding index in a node list or array.</p></td>
+<td><p>Returns a dictionary that maps node identifiers to their corresponding index in a node list or array.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.leaves.html#compas.datastructures.Graph.leaves" title="compas.datastructures.Graph.leaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">leaves</span></code></a></p></td>
 <td><p>Return all leaves of the network.</p></td>
@@ -282,13 +272,13 @@ processes.</p></li>
 <td><p>Get nodes for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.number_of_edges.html#compas.datastructures.Graph.number_of_edges" title="compas.datastructures.Graph.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
-<td><p>Compute the number of edges of the network.</p></td>
+<td><p>Compute the number of edges of the graph.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.number_of_nodes.html#compas.datastructures.Graph.number_of_nodes" title="compas.datastructures.Graph.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a></p></td>
-<td><p>Compute the number of nodes of the network.</p></td>
+<td><p>Compute the number of nodes of the graph.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.summary.html#compas.datastructures.Graph.summary" title="compas.datastructures.Graph.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a></p></td>
-<td><p>Print a summary of the graph.</p></td>
+<td><p>Return a summary of the graph.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_networkx.html#compas.datastructures.Graph.to_networkx" title="compas.datastructures.Graph.to_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_networkx</span></code></a></p></td>
 <td><p>Create a new NetworkX graph instance from a graph.</p></td>

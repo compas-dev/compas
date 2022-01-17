@@ -113,19 +113,18 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</p></li>
-<li><p><strong>maxdev</strong> (<em>float, optional</em>) – A maximum value for the allowed deviation from flatness.
-Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A mesh object.</p></li>
+<li><p><strong>maxdev</strong> (<em>float, optional</em>) – A maximum value for the allowed deviation from flatness.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dict</em> – For each face, a deviation from <em>flatness</em>.</p>
+<dd class="field-even"><p><em>dict[int, float]</em> – For each face, a deviation from <em>flatness</em>.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>The “flatness” of a face is expressed as the ratio of the distance between
 the diagonals to the average edge length. For the fabrication of glass panels,
-for example, <code class="docutils literal notranslate"><span class="pre">0.02</span></code> could be a reasonable maximum value.</p>
+for example, 0.02 could be a reasonable maximum value.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This function only works as expected for quadrilateral faces.</p>

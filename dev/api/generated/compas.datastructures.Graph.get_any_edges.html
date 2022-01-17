@@ -110,14 +110,17 @@
 <h1>Graph.get_any_edges</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Graph.get_any_edges">
-<span class="sig-prename descclassname"><span class="pre">Graph.</span></span><span class="sig-name descname"><span class="pre">get_any_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L302"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Graph.</span></span><span class="sig-name descname"><span class="pre">get_any_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L311"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get the identifiers of a set of random edges.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.13.3: </span>Use <a class="reference internal" href="compas.datastructures.Graph.edge_sample.html#compas.datastructures.Graph.edge_sample" title="compas.datastructures.Graph.edge_sample"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_sample()</span></code></a> instead.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – The number of edges in the set.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The identifiers of the random edges.</p>
+<dd class="field-even"><p><em>list[tuple[hashable, hashable]]</em> – The identifiers of the random edges.</p>
 </dd>
 </dl>
 </dd></dl>

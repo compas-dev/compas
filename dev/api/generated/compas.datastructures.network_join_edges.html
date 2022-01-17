@@ -109,7 +109,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.network_join_edges">
 <span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">network_join_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/operations/join.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
+<dd><p>Join the edges incidental on the given node, if there are exactly two incident edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Network</span></code>) – A network data structure.</p></li>
+<li><p><strong>key</strong> (<em>hashable</em>) – The node identifier.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>None</em> – The network is modified in place.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A new edge is created to replace the two joined edges.
+The attributes of the joined edges are not transferred to the new edge.
+Therefore, the new edge has only default edge attributes.</p>
+</dd></dl>
 
 </section>
 

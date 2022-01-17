@@ -115,14 +115,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>network</strong> (<em>compas.datastructures.Network</em>) – The network object.</p></li>
-<li><p><strong>breakpoints</strong> (<em>list, optional</em>) – The vertices at which to break the found faces.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – The network object.</p></li>
+<li><p><strong>breakpoints</strong> (<em>list, optional</em>) – The vertices at which to break the found faces.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p><code class="docutils literal notranslate"><span class="pre">breakpoints</span></code> are primarily used to break up the outside face in between
+<p>Breakpoints are primarily used to break up the outside face in between
 specific vertices. For example, in structural applications involving dual
 diagrams, any vertices where external forces are applied (loads or reactions)
 should be input as breakpoints.</p>
@@ -133,10 +132,6 @@ It relies on the geometry of the network to be repesented as a planar,
 straight-line embedding. It determines an ordering of the neighboring vertices
 around each vertex, and then follows the <em>walls</em> of the network, always
 taking turns in the same direction.</p>
-</div>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
 </div>
 </dd></dl>
 

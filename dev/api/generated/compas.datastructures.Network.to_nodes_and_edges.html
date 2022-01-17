@@ -110,23 +110,17 @@
 <h1>Network.to_nodes_and_edges</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Network.to_nodes_and_edges">
-<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">to_nodes_and_edges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L259"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">to_nodes_and_edges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L251"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return the nodes and edges of a network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p><em>tuple</em> – A 2-tuple containing</p>
-<ul class="simple">
-<li><p>a list of nodes, represented by their XYZ coordinates, and</p></li>
-<li><p>a list of edges.</p></li>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>list[list[float]]</em> – A list of nodes, represented by their XYZ coordinates.</p></li>
+<li><p><em>list[tuple[hashable, hashable]]</em> – A list of edges, with each edge represented by a pair of indices in the node list.</p></li>
 </ul>
-<p>Each face is a list of indices referencing the list of node coordinates.</p>
 </p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

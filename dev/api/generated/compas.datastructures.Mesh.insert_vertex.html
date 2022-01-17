@@ -110,32 +110,22 @@
 <h1>Mesh.insert_vertex</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh.insert_vertex">
-<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">insert_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/mesh.py#L706"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">insert_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/mesh.py#L700"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Insert a vertex in the specified face.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fkey</strong> (<em>int</em>) – The key of the face in which the vertex should be inserted.</p></li>
 <li><p><strong>key</strong> (<em>int, optional</em>) – The key to be used to identify the inserted vertex.</p></li>
-<li><p><strong>xyz</strong> (<em>list, optional</em>) – Specific XYZ coordinates for the inserted vertex.</p></li>
-<li><p><strong>return_fkeys</strong> (<em>bool, optional</em>) – By default, this method returns only the key of the inserted vertex.
-This flag can be used to indicate that the keys of the newly created
-faces should be returned as well.</p></li>
+<li><p><strong>xyz</strong> (<em>list[float], optional</em>) – Specific XYZ coordinates for the inserted vertex.</p></li>
+<li><p><strong>return_fkeys</strong> (<em>bool, optional</em>) – If True, return the identifiers of the newly created faces in addition to the identifier of the inserted vertex.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>int</em> – The key of the inserted vertex, if <code class="docutils literal notranslate"><span class="pre">return_fkeys</span></code> is false.</p></li>
-<li><p><em>tuple</em> – The key of the newly created vertex
-and a list with the newly created faces, if <code class="docutils literal notranslate"><span class="pre">return_fkeys</span></code> is true.</p></li>
-</ul>
-</p>
+<dd class="field-even"><p><em>int or tuple[int, list[int]]</em> – If <cite>return_fkeys</cite> is False, the key of the inserted vertex.
+If <cite>return_fkeys</cite> is True, the key of the newly created vertex and a list with the newly created faces.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

@@ -115,20 +115,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list, dict</em>) – A list of vertices, represented by their XYZ coordinates,
+<li><p><strong>vertices</strong> (<em>list[list[float]] or dict[int, list[float]]</em>) – A list of vertices, represented by their XYZ coordinates,
 or a dictionary of vertex keys pointing to their XYZ coordinates.</p></li>
-<li><p><strong>faces</strong> (<em>list, dict</em>) – A list of faces, represented by a list of indices referencing the list of vertex coordinates,
+<li><p><strong>faces</strong> (<em>list[list[int]] or dict[int, list[int]]</em>) – A list of faces, represented by a list of indices referencing the list of vertex coordinates,
 or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Mesh</em> – A mesh object.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – A mesh object.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

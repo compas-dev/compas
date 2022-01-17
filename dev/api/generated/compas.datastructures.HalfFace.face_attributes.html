@@ -110,22 +110,20 @@
 <h1>HalfFace.face_attributes</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfFace.face_attributes">
-<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">face_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L1224"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">face_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L1232"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get or set multiple attributes of a face.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>face</strong> (<em>int</em>) – The identifier of the face.</p></li>
-<li><p><strong>names</strong> (<em>list, optional</em>) – A list of attribute names.</p></li>
-<li><p><strong>values</strong> (<em>list, optional</em>) – A list of attribute values.</p></li>
+<li><p><strong>names</strong> (<em>list[str], optional</em>) – A list of attribute names.</p></li>
+<li><p><strong>values</strong> (<em>list[Any], optional</em>) – A list of attribute values.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dict, list or None</em> – If the parameter <code class="docutils literal notranslate"><span class="pre">names</span></code> is empty,
-a dictionary of all attribute name-value pairs of the face.
-If the parameter <code class="docutils literal notranslate"><span class="pre">names</span></code> is not empty,
-a list of the values corresponding to the provided names.
-<code class="docutils literal notranslate"><span class="pre">None</span></code> if the function is used as a “setter”.</p>
+<dd class="field-even"><p><em>dict[str, Any] or list[Any] or None</em> – If the parameter <cite>names</cite> is empty, a dictionary of all attribute name-value pairs of the face.
+If the parameter <cite>names</cite> is not empty, a list of the values corresponding to the provided names.
+None if the function is used as a “setter”.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.10)"><strong>KeyError</strong></a> – If the face does not exist.</p>

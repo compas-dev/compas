@@ -110,8 +110,23 @@
 <h1>VolMesh.cell_halfedge_face</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.VolMesh.cell_halfedge_face">
-<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">cell_halfedge_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halfedge</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L2166"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">cell_halfedge_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halfedge</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L2271"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Find the face corresponding to a specific halfedge of a cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cell</strong> (<em>int</em>) – The identifier of the cell.</p></li>
+<li><p><strong>halfedge</strong> (<em>tuple[int, int]</em>) – The identifier of the halfedge.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – The identifier of the face.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method is similar to <a class="reference internal" href="compas.datastructures.HalfEdge.halfedge_face.html#compas.datastructures.HalfEdge.halfedge_face" title="compas.datastructures.HalfEdge.halfedge_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">halfedge_face()</span></code></a>,
+but in the context of a cell of the <cite>VolMesh</cite>.</p>
+</dd></dl>
 
 </section>
 

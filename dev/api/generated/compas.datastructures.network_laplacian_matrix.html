@@ -113,23 +113,19 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>network</strong> (<em>obj</em>) – Network datastructure object to get data from.</p></li>
-<li><p><strong>normalize</strong> (<em>bool</em>) – Normalize the entries such that the value on the diagonal is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
-<li><p><strong>rtype</strong> (<em>{‘array’, ‘csc’, ‘csr’, ‘coo’, ‘list’}</em>) – Format of the result.</p></li>
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – Network data structure.</p></li>
+<li><p><strong>normalize</strong> (<em>bool, optional</em>) – If True, normalize the entries such that the value on the diagonal is 1.</p></li>
+<li><p><strong>rtype</strong> (<em>{‘array’, ‘csc’, ‘csr’, ‘coo’, ‘list’}, optional</em>) – Format of the result.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>array-like</em> – Constructed Laplacian matrix.</p>
+<dd class="field-even"><p><em>array_like</em> – Constructed Laplacian matrix.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p><code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">L.dot(xyz)</span></code> is currently a vector that points from the centroid to the node.
 Therefore <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">xyz</span> <span class="pre">-</span> <span class="pre">d</span></code>. By changing the signs in the laplacian, the dsiplacement
 vectors could be used in a more natural way <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">xyz</span> <span class="pre">+</span> <span class="pre">d</span></code>.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
