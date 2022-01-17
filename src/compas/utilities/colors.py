@@ -364,7 +364,7 @@ def is_color_rgb(color):
 
     Parameters
     ----------
-    color : [int, int, int] of [float, float, float]
+    color : [int, int, int] or [float, float, float]
         The color object.
 
     Returns
@@ -442,7 +442,7 @@ def rgb_to_rgb(rgb, g=None, b=None):
 
     Parameters
     ----------
-    rgb : int or float or [int, int, int] of [float, float, float]
+    rgb : int or float or [int, int, int] or [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
     g : int or float, optional
         The green component.
@@ -491,7 +491,7 @@ def rgb_to_hex(rgb, g=None, b=None):
 
     Parameters
     ----------
-    rgb : int or float or [int, int, int] of [float, float, float]
+    rgb : int or float or [int, int, int] or [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
     g : int or float, optional
         The green component.

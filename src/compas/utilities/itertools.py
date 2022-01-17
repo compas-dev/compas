@@ -108,9 +108,9 @@ def meshgrid(x, y, indexing='xy'):
 
     Returns
     -------
-    list[list[float]
+    list[list[float]]
         The X values of the coordinate grid.
-    list[list[float]
+    list[list[float]]
         The Y values of the coordinate grid.
 
     Notes
