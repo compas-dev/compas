@@ -6,17 +6,17 @@ from Rhino.Geometry import Transform
 
 
 def xform_from_transformation(transformation):
-    """Creates a Rhino Transform instance from a :class:`Transformation`.
+    """Creates a Rhino transformation from a COMPAS transformation.
 
     Parameters
     ----------
-    transformation (:class:`Transformation`):
-        Compas transformation object
+    transformation : :class:`compas.geometry.Transformation`
+        COMPAS transformation.
 
     Returns
     -------
-    :class:`Rhino.Geometry.Transform`
-        RhinoCommon Transform object
+    :rhino:`Rhino.Geometry.Transform`
+
     """
     transform = Transform(1.0)
     for i in range(0, 4):
@@ -28,59 +28,64 @@ def xform_from_transformation(transformation):
 xform_to_rhino = xform_from_transformation
 
 
-def xform_from_transformation_matrix(transformation_matrix):
-    """Creates a Rhino Transform instance from 4x4 transformation matrix.
+def xform_from_transformation_matrix(matrix):
+    """Creates a Rhino transformation from a 4x4 transformation matrix.
 
     Parameters
     ----------
-    transformation_matrix : :obj:`list` of :obj:`list` of :obj:`float`
+    matrix : list[list[float]]
         The 4x4 transformation matrix in row-major order.
 
     Returns
     -------
-    :class:`Rhino.Geometry.Transform`
-        RhinoCommon Transform object
+    :rhino:`Rhino.Geometry.Transform`
+
     """
     transform = Transform(1.0)
     for i in range(0, 4):
         for j in range(0, 4):
-            transform[i, j] = transformation_matrix[i][j]
+            transform[i, j] = matrix[i][j]
     return transform
 
 
 xform_matrix_to_rhino = xform_from_transformation_matrix
 
 
-def xtransform(geo, transformation):
-    """Transforms the Rhino Geometry object with a :class:`Transformation`.
+def xtransform(geometry, transformation):
+    """Transforms the Rhino Geometry object with a COMPAS transformation.
 
     Parameters
     ----------
-    geo : class:`Rhino.Geometry.GeometryBase`
-        Rhino Geometry object
-    transformation : :class:`Transformation`
-        COMPAS Transformation object
+    geometry : :rhino:`Rhino.Geometry.GeometryBase`
+        Rhino Geometry object.
+    transformation : :class:`compas.geometry.Transformation`
+        COMPAS transformation.
+
+    Returns
+    -------
+    None
+
     """
     T = xform_from_transformation(transformation)
-    geo.Transform(T)
+    geometry.Transform(T)
 
 
-def xtransformed(geo, transformation):
+def xtransformed(geometry, transformation):
     """Returns a copy of the transformed Rhino Geometry object.
 
     Parameters
     ----------
-    geo : class:`Rhino.Geometry.GeometryBase`
-        Rhino Geometry object
-    transformation : :class:`Transformation`
-        COMPAS Transformation object
+    geometry : :rhino:`Rhino.Geometry.GeometryBase`
+        Rhino Geometry object.
+    transformation : :class:`compas.geometry.Transformation`
+        COMPAS transformation.
 
     Returns
     -------
-    :class:`Rhino.Geometry.GeometryBase`
-        The transformed geometry
+    :rhino:`Rhino.Geometry.GeometryBase`
+
     """
     T = xform_from_transformation(transformation)
-    geo_copy = geo.Duplicate()
-    geo_copy.Transform(T)
-    return geo_copy
+    geometry = geometry.Duplicate()
+    geometry.Transform(T)
+    return geometry

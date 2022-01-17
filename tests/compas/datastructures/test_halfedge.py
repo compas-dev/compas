@@ -353,7 +353,7 @@ def test_loops_and_strips_open_boundary(grid):
 
     loop = grid.edge_loop(edge)
     strip = grid.edge_strip(edge)
-    
+
     assert edge in strip
     assert len(strip) == 11
     assert grid.is_edge_on_boundary(* strip[0])
@@ -394,3 +394,22 @@ def test_split_strip_open_corner(grid):
 
     assert grid.is_valid()
     assert grid.number_of_faces() == 121
+
+
+def test_strip_faces_closed(box):
+    edge = box.edge_sample()[0]
+
+    strip, faces = box.edge_strip(edge, return_faces=True)
+
+    assert len(strip) == 5
+    assert len(faces) == 4
+    assert box.edge_faces(* strip[0]) == box.edge_faces(* strip[-1])
+
+
+def test_strip_faces_open(grid):
+    edge = grid.edge_sample()[0]
+
+    strip, faces = grid.edge_strip(edge, return_faces=True)
+
+    assert grid.is_face_on_boundary(faces[0])
+    assert grid.is_face_on_boundary(faces[-1])

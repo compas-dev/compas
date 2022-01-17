@@ -4,4 +4,4 @@ from __future__ import division
 
 
 class DataArtistNotRegistered(Exception):
-    pass
+    """Exception that is raised when no artist is registered for a given data type."""

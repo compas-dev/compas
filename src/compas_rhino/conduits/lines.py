@@ -2,18 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
-from System.Collections.Generic import List
 from System.Drawing.Color import FromArgb
 
 from Rhino.Geometry import Point3d
-from Rhino.Geometry import Line
 
-from compas.utilities import color_to_rgb
+from compas.utilities import is_sequence_of_iterable
+from compas.utilities import iterable_like
 from .base import BaseConduit
 
 
@@ -22,23 +16,28 @@ class LinesConduit(BaseConduit):
 
     Parameters
     ----------
-    lines : list of 2-tuple
+    lines : list[[point, point] or :class:`compas.geometry.Line`]
         A list of start-end point pairs that define the lines.
-    thickness : list of int, optional
+    thickness : list[int], optional
         The thickness of the individual lines.
-        Default is ``1.0`` for all lines.
-    color : list of str or 3-tuple, optional
+        Default is :attr:`LinesConduit.default_thickness` for all lines.
+    color : list[tuple[int, int, int]], optional
         The colors of the faces.
-        Default is ``(255, 255, 255)`` for all lines.
+        Default is :attr:`LinesConduit.default_color` for all lines.
 
     Attributes
     ----------
-    color : list of RGB colors
-        A color specification per line.
-    thickness : list of float
-        A thickness value per line.
-    lines : list
-        A list of start-end point pairs that define the lines.
+    color : list[System.Drawing.Color]
+        A color per line.
+    thickness : list[float]
+        A thickness per line.
+
+    Class Attributes
+    ----------------
+    default_thickness : float
+        The default thickness is ``1.0``.
+    default_color : System.Drawing.Color
+        the default color is ``FromArgb(255, 255, 255)``.
 
     Examples
     --------
@@ -58,10 +57,11 @@ class LinesConduit(BaseConduit):
 
     """
 
+    default_thickness = 1.0
+    default_color = FromArgb(255, 255, 255)
+
     def __init__(self, lines, thickness=None, color=None, **kwargs):
         super(LinesConduit, self).__init__(**kwargs)
-        self._default_thickness = 1.0
-        self._default_color = FromArgb(255, 255, 255)
         self._thickness = None
         self._color = None
         self.lines = lines or []
@@ -74,18 +74,13 @@ class LinesConduit(BaseConduit):
 
     @thickness.setter
     def thickness(self, thickness):
-        if thickness:
-            try:
-                len(thickness)
-            except TypeError:
-                thickness = [thickness]
-            l = len(self.lines)  # noqa: E741
-            t = len(thickness)
-            if t < l:
-                thickness += [self._default_thickness for i in range(l - t)]
-            elif t > l:
-                thickness[:] = thickness[:l]
-            self._thickness = thickness
+        thickness = thickness or self.default_thickness
+        try:
+            len(thickness)
+        except TypeError:
+            thickness = [thickness]
+        thickness = iterable_like(self.lines, thickness, self.default_thickness)
+        self._thickness = list(thickness)
 
     @property
     def color(self):
@@ -93,42 +88,22 @@ class LinesConduit(BaseConduit):
 
     @color.setter
     def color(self, color):
-        if color:
-            l = len(self.lines)  # noqa: E741
-            if isinstance(color, (basestring, tuple)):
-                color = [color for _ in range(l)]
-            color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
-            c = len(color)
-            if c < l:
-                color += [self._default_color for i in range(l - c)]
-            elif c > l:
-                color[:] = color[:l]
-            self._color = color
+        color = color or self.default_color
+        if not is_sequence_of_iterable(color):
+            color = [color]
+        self._color = [FromArgb(*c) for c in iterable_like(self.lines, color, self.default_color)]
 
     def DrawForeground(self, e):
-        try:
-            if self.color:
-                draw = e.Display.DrawLine
-                if self.thickness:
-                    for i, (start, end) in enumerate(self.lines):
-                        draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
-                else:
-                    for i, (start, end) in enumerate(self.lines):
-                        draw(Point3d(*start), Point3d(*end), self.color[i], self._default_thickness)
+        """Draw the lines.
 
-            elif self.thickness:
-                draw = e.Display.DrawLine
-                if self.color:
-                    for i, (start, end) in enumerate(self.lines):
-                        draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
-                else:
-                    for i, (start, end) in enumerate(self.lines):
-                        draw(Point3d(*start), Point3d(*end), self._default_color, self.thickness[i])
+        Parameters
+        ----------
+        e : Rhino.Display.DrawEventArgs
 
-            else:
-                lines = List[Line](len(self.lines))
-                for start, end in self.lines:
-                    lines.Add(Line(Point3d(*start), Point3d(*end)))
-                e.Display.DrawLines(lines, self._default_color, self._default_thickness)
-        except Exception as e:
-            print(e)
+        Returns
+        -------
+        None
+
+        """
+        for (start, end), color, thickness in zip(self.lines, self.color, self.thickness):
+            e.Display.DrawLine(Point3d(*start), Point3d(*end), color, thickness)

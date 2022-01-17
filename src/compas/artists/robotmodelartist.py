@@ -415,41 +415,50 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Returns
         -------
-        None
+        list[object]
+            A list of context-specific mesh representations.
 
         """
+        visual = []
         for native_geometry in self._iter_geometry(self.model, 'visual'):
-            yield native_geometry
+            visual.append(native_geometry)
         if self.attached_tool_model:
             for native_geometry in self._iter_geometry(self.attached_tool_model, 'visual'):
-                yield native_geometry
+                visual.append(native_geometry)
+        return visual
 
     def draw_collision(self):
         """Draws all collision geometry of the robot model.
 
         Returns
         -------
-        None
+        list[object]
+            A list of context-specific mesh representations.
 
         """
+        visual = []
         for native_geometry in self._iter_geometry(self.model, 'collision'):
-            yield native_geometry
+            visual.append(native_geometry)
         if self.attached_tool_model:
             for native_geometry in self._iter_geometry(self.attached_tool_model, 'collision'):
-                yield native_geometry
+                visual.append(native_geometry)
+        return visual
 
     def draw_attached_meshes(self):
         """Draws all meshes attached to the robot model.
 
         Returns
         -------
-        None
+        list[object]
+            A list of context-specific mesh representations.
 
         """
+        visual = []
         for items in self.attached_items.values():
             for item in items.values():
                 for native_mesh in item.native_geometry:
-                    yield native_mesh
+                    visual.append(native_mesh)
+        return visual
 
     @staticmethod
     def _iter_geometry(model, geometry_type):

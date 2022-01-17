@@ -16,6 +16,10 @@ class TorusArtist(RhinoArtist, ShapeArtist):
         A COMPAS torus.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
+
     """
 
     def __init__(self, torus, layer=None, **kwargs):
@@ -26,19 +30,20 @@ class TorusArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
-            The RGB color of the torus.
+        color : tuple[int, int, int], optional
+            The color of the torus.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~TorusArtist.u``.
+            Default is :attr:`TorusArtist.u`.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~TorusArtist.v``.
+            Default is :attr:`TorusArtist.v`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the objects created in Rhino.
+
         """
         color = color or self.color
         u = u or self.u

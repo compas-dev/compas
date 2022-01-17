@@ -23,9 +23,6 @@ except ImportError:
     from System.Diagnostics import Process
 
 
-__all__ = ['Proxy']
-
-
 class Proxy(object):
     """Create a proxy object as intermediary between client code and remote functionality.
 
@@ -37,28 +34,42 @@ class Proxy(object):
 
     Parameters
     ----------
-    package : :obj:`str`:, optional
+    package : str, optional
         The base package for the requested functionality.
-        Default is `None`, in which case a full path to function calls should be provided.
-    python : :obj:`str`:, optional
+        Default is None, in which case a full path to function calls should be provided.
+    python : str, optional
         The python executable that should be used to execute the code.
-        Default is ``'pythonw'``.
-    url : :obj:`str`:, optional
+    url : str, optional
         The server address.
-        Default is ``'http://127.0.0.1'``.
-    port : :obj:`int`:, optional
+    port : int, optional
         The port number on the remote server.
-        Default is ``1753``.
-    service : :obj:`str`:, package name to start server.
+    service : str, optional
+        Package name to start server.
         Default is ``'compas.rpc.services.default'``.
-    max_conn_attempts: :obj:`int`, optional
+    max_conn_attempts: int, optional
         Amount of attempts to connect to RPC server before time out.
-    autoreload : :obj:`bool`, ``True`` to automatically reload the proxied package if changes are detected.
+    autoreload : bool, optional
+        If True, automatically reload the proxied package if changes are detected.
         This is particularly useful during development. The server will monitor changes to the files
         that were loaded as a result of accessing the specified `package` and if any change is detected,
         it will unload the module, so that the next invocation uses a fresh version.
-    capture_output : :obj:`bool`, ``True`` to capture the stdout/stderr output of the remote process, otherwise ``False``.
-        In general, ``capture_output`` should be ``True`` when using a ``pythonw`` as executable (default).
+    capture_output : bool, optional
+        If True, capture the stdout/stderr output of the remote process.
+        In general, `capture_output` should be True when using a `pythonw` as executable (default).
+
+    Attributes
+    ----------
+    address : str, read-only
+        Address of the server as a combination of `url` and `port`.
+    profile : str
+        A profile of the code executed by the server.
+    package : str
+        Fully qualified name of the package or module
+        from where functions should be imported on the server side.
+    service : str
+        Fully qualified package name required for starting the server/service.
+    python : str
+        The type of Python executable that should be used to execute the code.
 
     Notes
     -----
@@ -78,12 +89,10 @@ class Proxy(object):
     Minimal example showing connection to the proxy server, and ensuring the
     server is disposed after using it:
 
-    .. code-block:: python
-
-        from compas.rpc import Proxy
-
-        with Proxy('compas.numerical') as numerical:
-            pass
+    >>> from compas.rpc import Proxy
+    >>> with Proxy('compas.numerical') as numerical:
+    ...     pass
+    ...
 
     """
 
@@ -109,16 +118,9 @@ class Proxy(object):
             self._server = self.start_server()
             self._implicitely_started_server = True
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        # If we started the RPC server, we will try to clean up and stop it
-        # otherwise we just disconnect from it
-        if self._implicitely_started_server:
-            self.stop_server()
-        else:
-            self._server.__close()
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def address(self):
@@ -126,7 +128,6 @@ class Proxy(object):
 
     @property
     def profile(self):
-        """A profile of the executed code."""
         return self._profile
 
     @profile.setter
@@ -135,7 +136,6 @@ class Proxy(object):
 
     @property
     def package(self):
-        """The base package from which functionality will be called."""
         return self._package
 
     @package.setter
@@ -161,6 +161,46 @@ class Proxy(object):
     def python(self, python):
         self._python = python
 
+    # ==========================================================================
+    # customization
+    # ==========================================================================
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        # If we started the RPC server, we will try to clean up and stop it
+        # otherwise we just disconnect from it
+        if self._implicitely_started_server:
+            self.stop_server()
+        else:
+            self._server.__close()
+
+    def __getattr__(self, name):
+        """Find server attributes (methods) corresponding to attributes that do not exist on the proxy itself.
+
+        1. Use :attr:`package` as a namespace for the requested attribute to create a fully qualified path on the server.
+        2. Try to get the fully qualified attribute from :attr:`_server`.
+        3. If successful, store the result in :attr:`_function`.
+        3. Return a handle to :meth:`_proxy`, which will delegate calls to :attr:`_function`.
+
+        Returns
+        -------
+        callable
+
+        """
+        if self.package:
+            name = "{}.{}".format(self.package, name)
+        try:
+            self._function = getattr(self._server, name)
+        except Exception:
+            raise RPCServerError()
+        return self._proxy
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
     def _try_reconnect(self):
         """Try and reconnect to an existing proxy server.
 
@@ -168,6 +208,7 @@ class Proxy(object):
         -------
         ServerProxy
             Instance of the proxy if reconnection succeeded, otherwise ``None``.
+
         """
         server = ServerProxy(self.address)
         try:
@@ -255,11 +296,16 @@ class Proxy(object):
     def stop_server(self):
         """Stop the remote server and terminate/kill the python process that was used to start it.
 
+        Returns
+        -------
+        None
+
         Examples
         --------
         >>> p = Proxy()  # doctest: +SKIP
         >>> p.stop_server()  # doctest: +SKIP
         >>> p.start_server()  # doctest: +SKIP
+
         """
         print("Stopping the server proxy.")
         try:
@@ -269,7 +315,13 @@ class Proxy(object):
         self._terminate_process()
 
     def restart_server(self):
-        """Restart the server."""
+        """Restart the server.
+
+        Returns
+        -------
+        None
+
+        """
         self.stop_server()
         self.start_server()
 
@@ -290,35 +342,35 @@ class Proxy(object):
         except Exception:
             pass
 
-    def __getattr__(self, name):
-        if self.package:
-            name = "{}.{}".format(self.package, name)
-        try:
-            self._function = getattr(self._server, name)
-        except Exception:
-            raise RPCServerError()
-        return self._proxy
-
     def _proxy(self, *args, **kwargs):
         """Callable replacement for the requested functionality.
 
         Parameters
         ----------
-        args : list
+        *args : list
             Positional arguments to be passed to the remote function.
-        kwargs : dict
+        **kwargs : dict, optional
             Named arguments to be passed to the remote function.
 
         Returns
         -------
         object
-            The result returned by the remote function.
+            The 'data' part of the result dict returned by the remote function.
+            The result dict has the following structure ::
+
+                {
+                    'error'   : ...,  # A traceback of the error raised on the server, if any.
+                    'profile' : ...,  # A profile of the code executed on the server, if there was no error.
+                    'data'    : ...,  # The result returned by the target function, if there was no error.
+                }
 
         Warnings
         --------
         The `args` and `kwargs` have to be JSON-serializable.
-        This means that, currently, only native Python objects are supported.
-        The returned results will also always be in the form of built-in Python objects.
+        This means that, currently, only COMPAS data objects (geometry, robots, data structures) and native Python objects are supported.
+        The returned results will also always be in the form of COMPAS data objects and built-in Python objects.
+        Numpy objects are automatically converted to their built-in Python equivalents.
+
         """
         idict = {'args': args, 'kwargs': kwargs}
         istring = json.dumps(idict, cls=DataEncoder)

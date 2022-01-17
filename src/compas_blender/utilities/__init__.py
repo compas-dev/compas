@@ -13,6 +13,7 @@ collections
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     create_collection
     create_collections
@@ -26,6 +27,7 @@ data
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     delete_unused_data
 
@@ -35,6 +37,7 @@ drawing
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     draw_points
     draw_pointcloud
@@ -52,6 +55,7 @@ objects
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     delete_object
     delete_objects

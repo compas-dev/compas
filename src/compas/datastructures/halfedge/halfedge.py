@@ -2190,32 +2190,41 @@ class HalfEdge(Datastructure):
                 break
         return edges
 
-    def edge_strip(self, edge):
+    def edge_strip(self, edge, return_faces=False):
         """Find all edges on the same strip as a given edge.
 
         Parameters
         ----------
         edge : tuple[int, int]
             The identifier of the starting edge.
+        return_faces : bool, optional
+            Return the faces on the strip in addition to the edges.
 
         Returns
         -------
         list[tuple[int, int]]
             The edges on the same strip as the given edge.
-
+        tuple[list[tuple[int, int]], list[int]]
+            The edges on the same strip and the corresponding faces.
         """
         u, v = edge
         if self.halfedge[v][u] is None:
-            return self.halfedge_strip((u, v))
-        if self.halfedge[u][v] is None:
+            strip = self.halfedge_strip((u, v))
+        elif self.halfedge[u][v] is None:
             edges = self.halfedge_strip((v, u))
-            return [(u, v) for v, u in edges[::-1]]
-        vu_strip = self.halfedge_strip((v, u))
-        vu_strip[:] = [(u, v) for v, u in vu_strip[::-1]]
-        if vu_strip[0] == vu_strip[-1]:
-            return vu_strip
-        uv_strip = self.halfedge_strip((u, v))
-        return vu_strip[:-1] + uv_strip
+            strip = [(u, v) for v, u in edges[::-1]]
+        else:
+            vu_strip = self.halfedge_strip((v, u))
+            vu_strip[:] = [(u, v) for v, u in vu_strip[::-1]]
+            if vu_strip[0] == vu_strip[-1]:
+                strip = vu_strip
+            else:
+                uv_strip = self.halfedge_strip((u, v))
+                strip = vu_strip[:-1] + uv_strip
+        if not return_faces:
+            return strip
+        faces = [self.halfedge_face(u, v) for u, v in strip[:-1]]
+        return strip, faces
 
     def halfedge_strip(self, edge):
         """Find all edges on the same strip as a given halfedge.

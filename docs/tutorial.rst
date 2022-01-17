@@ -15,3 +15,4 @@ Tutorial
     tutorial/rpc
     tutorial/geomaps
     tutorial/plotters
+    tutorial/colors

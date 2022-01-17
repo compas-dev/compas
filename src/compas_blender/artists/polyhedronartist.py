@@ -12,14 +12,45 @@ from .artist import BlenderArtist
 
 
 class PolyhedronArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing polyhedron shapes.
+    """Artist for drawing polyhedron shapes in Blender.
 
     Parameters
     ----------
     polyhedron : :class:`compas.geometry.Polyhedron`
         A COMPAS polyhedron.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.ShapeArtist`.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        from compas.geometry import Polyhedron
+        from compas_blender.artists import PolyhedronArtist
+
+        polyhedron = Polyhedron.from_platonicsolid(12)
+
+        artist = PolyhedronArtist(polyhedron)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Polyhedron
+        from compas.artists import Artist
+
+        polyhedron = Polyhedron.from_platonicsolid(12)
+
+        artist = Artist(polyhedron)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -34,13 +65,15 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[float, float, float] or tuple[int, int, int], optional
             The RGB color of the polyhedron.
+            The default color is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list
+        list[:blender:`bpy.types.Object`]
             The objects created in Blender.
+
         """
         color = color or self.color
         vertices, faces = self.shape.to_vertices_and_faces()

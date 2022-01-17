@@ -23,18 +23,24 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         A COMPAS network.
     layer : str, optional
         The parent layer of the network.
-    nodes : list of int, optional
+    nodes : list[int], optional
         A list of node identifiers.
-        Default is ``None``, in which case all nodes are drawn.
-    edges : list, optional
-        A list of edge keys (as uv pairs) identifying which edges to draw.
-        The default is ``None``, in which case all edges are drawn.
-    nodecolor : rgb-tuple or dict of rgb-tuples, optional
-        The color specification for the nodes.
-    edgecolor : rgb-tuple or dict of rgb-tuples, optional
-        The color specification for the edges.
+        Default is None, in which case all nodes are drawn.
+    edges : list[tuple[int, int]], optional
+        A list of edge identifiers.
+        The default is None, in which case all edges are drawn.
+    nodecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        The color of the nodes.
+    edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        The color of the edges.
     show_nodes : bool, optional
+        If True, draw the nodes of the network.
     show_edges : bool, optional
+        If True, draw the edges of the network.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`NetworkArtist`.
+
     """
 
     def __init__(self,
@@ -62,22 +68,57 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
     # ==========================================================================
 
     def clear(self):
+        """Delete all objects drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_nodes(self):
+        """Delete all nodes drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
+        """Delete all edges drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.edge.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_nodelabels(self):
+        """Delete all node labels drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.nodexlabel.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
+        """Delete all edge labels drawn by this artist.
+
+        Returns
+        -------
+        None
+
+        """
         guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
@@ -90,23 +131,24 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
 
         Parameters
         ----------
-        nodes : list, optional
+        nodes : list[int], optional
             A list of nodes to draw.
-            Default is ``None``, in which case all nodes are drawn.
-        edges : list, optional
+            Default is None, in which case all nodes are drawn.
+        edges : list[tuple[int, int]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        nodecolor : tuple or dict of tuple, optional
-            The color specification for the nodes.
-            The default color is the value of ``~NetworkArtist.default_nodecolor``.
-        edgecolor : tuple or dict of tuple, optional
-            The color specification for the edges.
-            The default color is the value of ``~NetworkArtist.default_edgecolor``.
+            The default is None, in which case all edges are drawn.
+        nodecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the nodes.
+            The default color is :attr:`NetworkArtist.default_nodecolor`.
+        edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            The color of the edges.
+            The default color is :attr:`NetworkArtist.default_edgecolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         self.clear()
         guids = self.draw_nodes(nodes=nodes, color=nodecolor)
@@ -118,17 +160,18 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
 
         Parameters
         ----------
-        nodes : list, optional
+        nodes : list[int], optional
             A list of nodes to draw.
-            Default is ``None``, in which case all nodes are drawn.
-        color : tuple or dict of tuple, optional
-            The color specification for the nodes.
-            The default color is the value of ``~NetworkArtist.default_nodecolor``.
+            Default is None, in which case all nodes are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            Color of the nodes.
+            The default color is :attr:`NetworkArtist.default_nodecolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         self.node_color = color
         node_xyz = self.node_xyz
@@ -147,17 +190,18 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : tuple or dict of tuple, optional
-            The color specification for the edges.
-            The default color is the value of ``~NetworkArtist.default_edgecolor``.
+            The default is None, in which case all edges are drawn.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            Color of the edges.
+            The default color is :attr:`NetworkArtist.default_edgecolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         self.edge_color = color
         node_xyz = self.node_xyz
@@ -181,17 +225,18 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
 
         Parameters
         ----------
-        text : dict, optional
+        text : dict[int, str], optional
             A dictionary of node labels as node-text pairs.
-            The default value is ``None``, in which case every node will be labelled with its key.
-        color : 3-tuple or dict of 3-tuple, optional
-            The color sepcification of the labels.
+            The default value is None, in which case every node will be labelled with its key.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            Color of the labels.
             The default color is the same as the default color of the nodes.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         if not text or text == 'key':
             node_text = {node: str(node) for node in self.nodes}
@@ -218,17 +263,18 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
 
         Parameters
         ----------
-        text : dict, optional
+        text : dict[tuple[int, int], str], optional
             A dictionary of edgelabels as edge-text pairs.
-            The default value is ``None``, in which case every edge will be labelled with its key.
-        color : 3-tuple or dict of 3-tuple, optional
-            The color sepcification of the labels.
+            The default value is None, in which case every edge will be labelled with its key.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            Color of the labels.
             The default color is the same as the default color of the edges.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         if text is None:
             edge_text = {edge: "{}-{}".format(*edge) for edge in self.edges}

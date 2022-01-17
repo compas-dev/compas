@@ -23,36 +23,36 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
     ----------
     network : :class:`compas.datastructures.Network`
         A COMPAS network.
-    layer : str, optional
-        The parent layer of the network.
-    nodes : list of int, optional
-        A list of node identifiers.
-        Default is ``None``, in which case all nodes are drawn.
-    edges : list, optional
-        A list of edge keys (as uv pairs) identifying which edges to draw.
-        The default is ``None``, in which case all edges are drawn.
-    nodecolor : rgb-tuple or dict of rgb-tuples, optional
-        The color specification for the nodes.
-    edgecolor : rgb-tuple or dict of rgb-tuples, optional
-        The color specification for the edges.
+    nodes : list[int], optional
+        Selection of node identifiers.
+        Default is None, in which case all nodes are drawn.
+    edges : list[tuple[int, int]], optional
+        Selection of edge identifiers.
+        The default is None, in which case all edges are drawn.
+    nodecolor : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+        Color specification for the nodes.
+    edgecolor : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
+        Color specification for the edges.
     show_nodes : bool, optional
+        If True, draw the nodes of the network.
     show_edges : bool, optional
+        If True, draw the edges of the network.
     nodesize : int, optional
+        The size of the nodes.
     sizepolicy : {'relative', 'absolute'}, optional
+        The policy for sizing the nodes.
+        If ``'relative'``, the value of `nodesize` is scaled by the number of nodes.
+        If ``'absolute'``, the value of `nodesize` is scaled by the resolution of the plotter (:attr:NetworkArtist.plotter.dpi).
 
     Attributes
     ----------
-    nodecollection : :class:`PatchCollection`
-        The collection containing the nodes.
-    edgecollection : :class:`LineCollection`
-        The collection containing the edges.
+    node_size : dict[int, float]
+        Mapping between node identifiers and node sizes.
+    zorder_edges : int, read-only
+        The stacking order of the edges relative to the base stacking order of the network.
+    zorder_nodes : int, read-only
+        The stacking order of the nodes relative to the base stacking order of the network.
 
-    Class Attributes
-    ----------------
-    default_nodesize : int
-    default_edgewidth : float
-    zorder_nodes : int
-    zorder_edges : int
     """
 
     def __init__(self,
@@ -124,11 +124,25 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
     # ==============================================================================
 
     def clear_nodes(self):
+        """Clear the current nodes from the canvas.
+
+        Returns
+        -------
+        None
+
+        """
         if self._nodecollection:
             self.plotter.axes.remove_collection(self._nodecollection)
         self._nodecollection = None
 
     def clear_edges(self):
+        """Clear the current edges from the canvas.
+
+        Returns
+        -------
+        None
+
+        """
         if self._edgecollection:
             self.plotter.axes.remove_collection(self._edgecollection)
         self._edgecollection = None
@@ -142,16 +156,21 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
         Parameters
         ----------
-        nodes : list of int, optional
+        nodes : list[int], optional
             A list of node identifiers.
-            Default is ``None``, in which case all nodes are drawn.
-        edges : list, optional
+            Default is None, in which case all nodes are drawn.
+        edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        nodecolor : rgb-tuple or dict of rgb-tuples, optional
+            The default is None, in which case all edges are drawn.
+        nodecolor : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color specification for the nodes.
-        edgecolor : rgb-tuple or dict of rgb-tuples, optional
+        edgecolor : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
             The color specification for the edges.
+
+        Returns
+        -------
+        None
+
         """
         self.clear()
         if self.show_nodes:
@@ -166,11 +185,16 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
         Parameters
         ----------
-        nodes : list of int, optional
+        nodes : list[int], optional
             A list of node identifiers.
-            Default is ``None``, in which case all nodes are drawn.
-        color : rgb-tuple or dict of rgb-tuples, optional
+            Default is None, in which case all nodes are drawn.
+        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
             The color specification for the nodes.
+
+        Returns
+        -------
+        None
+
         """
         self.clear_nodes()
         if nodes:
@@ -206,11 +230,16 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : rgb-tuple or dict of rgb-tuples, optional
+            The default is None, in which case all edges are drawn.
+        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
             The color specification for the edges.
+
+        Returns
+        -------
+        None
+
         """
         self.clear_edges()
         if edges:
@@ -242,13 +271,13 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
         Parameters
         ----------
-        text : dict of int to str, optional
+        text : dict[int, str], optional
             A node-label map.
-            If not text dict is provided, the node identifiers are drawn.
 
         Returns
         -------
         None
+
         """
         if self._nodelabelcollection:
             for artist in self._nodelabelcollection:
@@ -286,12 +315,13 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
         Parameters
         ----------
-        text : dict of tuple of int to str
+        text : dict[tuple[int, int], str]
             An edge-label map.
 
         Returns
         -------
         None
+
         """
         if self._edgelabelcollection:
             for artist in self._edgelabelcollection:

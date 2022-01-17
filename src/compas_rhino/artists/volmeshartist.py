@@ -23,6 +23,10 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         A COMPAS volmesh.
     layer : str, optional
         The name of the layer that will contain the volmesh.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`VolMeshArtist`.
+
     """
 
     def __init__(self, volmesh, layer=None, **kwargs):
@@ -73,34 +77,34 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             A list of vertices to draw.
-            Default is ``None``, in which case all vertices are drawn.
-        edges : list, optional
+            Default is None, in which case all vertices are drawn.
+        edges : list[tuple[int, int]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        faces : list, optional
+            The default is None, in which case all edges are drawn.
+        faces : list[int], optional
             A selection of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        cells : list, optional
+            The default is None, in which case all faces are drawn.
+        cells : list[int], optional
             A selection of cells to draw.
-            The default is ``None``, in which case all cells are drawn.
-        vertexcolor : tuple or dict of tuple, optional
-            The color specification for the vertices.
-            The default color is the value of ``~VolMeshArtist.default_vertexcolor``.
-        edgecolor : tuple or dict of tuple, optional
-            The color specification for the edges.
-            The default color is the value of ``~VolMeshArtist.default_edgecolor``.
-        facecolor : tuple or dict of tuple, optional
-            The color specification for the faces.
-            The default color is the value of ``~VolMeshArtist.default_facecolor``.
-        cellcolor : tuple or dict of tuple, optional
-            The color specification for the cells.
-            The default color is the value of ``~VolMeshArtist.default_cellcolor``.
+            The default is None, in which case all cells are drawn.
+        vertexcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the vertices.
+            The default color is the value of :attr:`VolMeshArtist.default_vertexcolor`.
+        edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            The color of the edges.
+            The default color is the value of :attr:`VolMeshArtist.default_edgecolor`.
+        facecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the faces.
+            The default color is the value of :attr:`VolMeshArtist.default_facecolor`.
+        cellcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the cells.
+            The default color is the value of :attr:`VolMeshArtist.default_cellcolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -115,16 +119,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             A list of vertices to draw.
-            Default is ``None``, in which case all vertices are drawn.
-        color : str, tuple, dict
-            The color specification for the vertices.
-            The default color of the vertices is ``~VolMeshArtist.default_vertexcolor``.
+            Default is None, in which case all vertices are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the vertices.
+            The default color of the vertices is :attr:`VolMeshArtist.default_vertexcolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -145,16 +149,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : str, tuple, dict
-            The color specification for the edges.
-            The default color is ``~VolMeshArtist.default_edgecolor``.
+            The default is None, in which case all edges are drawn.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            The color of the edges.
+            The default color is :attr:`VolMeshArtist.default_edgecolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -176,16 +180,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[int], optional
             A list of faces to draw.
-            The default is ``None``, in which case all faces are drawn.
-        color : str, tuple, dict
-            The color specification for the faces.
-            The default color is ``~VolMeshArtist.default_facecolor``.
+            The default is None, in which case all faces are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the faces.
+            The default color is :attr:`VolMeshArtist.default_facecolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -206,16 +210,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        cells : list
+        cells : list[int], optional
             A list of cells to draw.
-            The default is ``None``, in which case all cells are drawn.
-        color : str, tuple, dict
-            The color specification for the cells.
-            The default color is ``~VolMeshArtist.default_cellcolor``.
+            The default is None, in which case all cells are drawn.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            The color of the cells.
+            The default color is :attr:`VolMeshArtist.default_cellcolor`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
             Every cell is drawn as an individual mesh.
 
@@ -249,16 +253,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        text : dict
+        text : dict[int, str], optional
             A dictionary of vertex labels as vertex-text pairs.
-            The default value is ``None``, in which case every vertex will be labelled with its key.
-        color : str, tuple, dict
-            The color sepcification of the labels.
+            The default value is None, in which case every vertex will be labelled with its key.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            Color of the labels.
             The default color is the same as the color of the vertices.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -287,16 +291,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        text : dict
+        text : dict[tuple[int, int], str], optional
             A dictionary of edge labels as edge-text pairs.
-            The default value is ``None``, in which case every edge will be labelled with its key.
-        color : str, tuple, dict
-            The color sepcification of the labels.
+            The default value is None, in which case every edge will be labelled with its key.
+        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+            Color of the labels.
             The default color is tha same as the color of the edges.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -323,16 +327,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        text : dict
+        text : dict[int, str], optional
             A dictionary of face labels as face-text pairs.
-            The default value is ``None``, in which case every face will be labelled with its key.
-        color : str, tuple, dict
-            The color sepcification of the labels.
+            The default value is None, in which case every face will be labelled with its key.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            Color of the labels.
             The default color is the same as the color of the faces.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
@@ -361,16 +365,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
         Parameters
         ----------
-        text : dict
+        text : dict[int, str], optional
             A dictionary of cell labels as cell-text pairs.
-            The default value is ``None``, in which case every cell will be labelled with its key.
-        color : str, tuple, dict
-            The color sepcification of the labels.
+            The default value is None, in which case every cell will be labelled with its key.
+        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+            Color of the labels.
             The default color is the same as the color of the cells.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """

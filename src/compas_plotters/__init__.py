@@ -3,18 +3,14 @@
 compas_plotters
 ********************************************************************************
 
-2D visualization framework based on ``matplotlib`` for COMPAS geometry objects and data structures.
-
 .. currentmodule:: compas_plotters
 
-Classes
-=======
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Plotter
+    compas_plotters.artists
+    compas_plotters.plotter
 
 """
 

@@ -398,8 +398,8 @@ class MeshObject(BaseObject):
         Returns
         -------
         bool
-            ``True`` if the update was successful.
-            ``False`` otherwise.
+            True if the update was successful.
+            False otherwise.
         """
         return mesh_update_attributes(self.mesh)
 
@@ -437,8 +437,8 @@ class MeshObject(BaseObject):
         Returns
         -------
         bool
-            ``True`` if the update was successful.
-            ``False`` otherwise.
+            True if the update was successful.
+            False otherwise.
 
         """
         return mesh_update_edge_attributes(self.mesh, edges, names=names)

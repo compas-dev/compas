@@ -13,14 +13,41 @@ from compas_blender.artists import BlenderArtist
 
 
 class PolygonArtist(BlenderArtist, PrimitiveArtist):
-    """Artist for drawing polygons.
+    """Artist for drawing polygons in Blender.
 
     Parameters
     ----------
     polygon : :class:`compas.geometry.Polygon`
         A COMPAS polygon.
-    collection : str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas.geometry import Polygon
+        from compas_blender.artists import PolygonArtist
+
+        polygon = Polygon.from_sides_and_radius_xy(5, 1)
+
+        artist = PolygonArtist(polygon)
+        artist.draw()
+
+    .. code-block:: python
+
+        from compas.geometry import Polygon
+        from compas.artists import Artist
+
+        polygon = Polygon.from_sides_and_radius_xy(5, 1)
+
+        artist = Artist(polygon)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -38,18 +65,20 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[float, float, float] or tuple[int, int, int], optional
             The RGB color of the polygon.
+            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
         show_points : bool, optional
-            Default is ``False``.
+            If True, draw the corner points of the polygon.
         show_edges : bool, optional
-            Default is ``False``.
+            If True, draw the edges of the polygon.
         show_face : bool, optional
-            Default is ``True``.
+            If True, draw the face of the polygon.
 
         Returns
         -------
-        list of bpy.types.Object
+        list[:blender:`bpy.types.Object`]
+
         """
         color = color or self.color
         objects = []

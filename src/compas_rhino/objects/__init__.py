@@ -44,7 +44,6 @@ from ._modify import (  # noqa : F401 F403
     mesh_move_vertices,
     mesh_move_face
 )
-from .inspectors import MeshVertexInspector  # noqa : F401 F403
 
 from ._object import BaseObject
 from .meshobject import MeshObject
@@ -55,9 +54,18 @@ from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
+# import warnings
+
+# warnings.warn(
+#     "The objects module in compas_rhino is deprecated. Use the equivalent functionality from compas_ui instead",
+#     DeprecationWarning,
+#     stacklevel=2
+# )
+
 BaseObject.register(Mesh, MeshObject)
 BaseObject.register(Network, NetworkObject)
 BaseObject.register(VolMesh, VolMeshObject)
+
 
 __all__ = [
     'BaseObject',

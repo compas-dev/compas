@@ -14,26 +14,26 @@ def trimesh_geodistance(M, source, method='exact'):
 
     Parameters
     ----------
-    M : (list, list)
+    M : tuple[sequence[[float, float, float] or :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
     source : int
         The index of the vertex from where the geodesic distances should be calculated.
-    method : {'exact', 'heat'}
+    method : {'exact', 'heat'}, optional
         The method for calculating the distances.
-        Default is `'exact'`.
 
     Returns
     -------
-    list of float
+    list[float]
         A list of geodesic distances from the source vertex.
 
     Raises
     ------
     NotImplementedError
-        If ``method`` is not one of ``{'exact', 'heat'}``.
+        If `method` is not one of ``{'exact', 'heat'}``.
 
     Examples
     --------
     >>>
+
     """
     raise NotImplementedError

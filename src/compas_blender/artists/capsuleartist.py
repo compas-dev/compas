@@ -13,14 +13,45 @@ from .artist import BlenderArtist
 
 
 class CapsuleArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing capsule shapes.
+    """Artist for drawing capsule shapes in Blender.
 
     Parameters
     ----------
     capsule : :class:`compas.geometry.Capsule`
         A COMPAS capsule.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.ShapeArtist`.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        from compas.geometry import Capsule
+        from compas_blender.artists import CapsuleArtist
+
+        capsule = Capsule(([0, 0, 0], [1, 0, 0]), 0.3)
+
+        artist = CapsuleArtist(capsule)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Capsule
+        from compas.artists import Artist
+
+        capsule = Capsule(([0, 0, 0], [1, 0, 0]), 0.3)
+
+        artist = Artist(capsule)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -35,19 +66,21 @@ class CapsuleArtist(BlenderArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[float, float, float] or tuple[int, int, int], optional
             The RGB color of the capsule.
+            The default color is :attr:`compas.artists.ShapeArtist.color`.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~CapsuleArtist.u``.
+            Default is :attr:`CapsuleArtist.u`.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``~CapsuleArtist.v``.
+            Default is :attr:`CapsuleArtist.v`.
 
         Returns
         -------
-        list
+        list[:blender:`bpy.types.Object`]
             The objects created in Blender.
+
         """
         u = u or self.u
         v = v or self.v

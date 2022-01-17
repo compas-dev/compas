@@ -29,6 +29,10 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
         Robot model.
     layer : str, optional
         The name of the layer that will contain the robot meshes.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`RobotModelArtist`.
+
     """
 
     def __init__(self, model, layer=None, **kwargs):
@@ -39,6 +43,22 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
         native_mesh.Transform(T)
 
     def create_geometry(self, geometry, name=None, color=None):
+        """Create a Rhino mesh corresponding to the geometry of the model.
+
+        Parameters
+        ----------
+        geometry : :class:`compas.datastructures.Mesh`
+            A COMPAS mesh data structure.
+        name : str, optional
+            Name of the mesh object.
+        color : tuple[int, int, int], optional
+            Color of the mesh object.
+
+        Returns
+        -------
+        :rhino:`Rhino.Geometry.Mesh`
+
+        """
         # Imported colors take priority over a the parameter color
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']
@@ -108,12 +128,11 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         collisions = super(RobotModelArtist, self).draw_collision()
-        collisions = list(collisions)
-
         self._enter_layer()
 
         new_guids = []
@@ -129,12 +148,11 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         visuals = super(RobotModelArtist, self).draw_visual()
-        visuals = list(visuals)
-
         self._enter_layer()
 
         new_guids = []
@@ -150,12 +168,11 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         acms = super(RobotModelArtist, self).draw_attached_meshes()
-        acms = list(acms)
-
         self._enter_layer()
 
         new_guids = []
@@ -167,7 +184,14 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
         return new_guids
 
     def draw(self):
-        """Same as draw_visual."""
+        """Draw the geometry of the model.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
+
+        """
         return self.draw_visual()
 
     def redraw(self, timeout=None):
@@ -178,7 +202,10 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
         timeout : float, optional
             The amount of time the artist waits before updating the Rhino view.
             The time should be specified in seconds.
-            Default is ``None``.
+
+        Returns
+        -------
+        None
 
         """
         if timeout:
@@ -188,7 +215,13 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
         compas_rhino.rs.Redraw()
 
     def clear_layer(self):
-        """Clear the main layer of the artist."""
+        """Clear the main layer of the artist.
+
+        Returns
+        -------
+        None
+
+        """
         if self.layer:
             compas_rhino.clear_layer(self.layer)
         else:

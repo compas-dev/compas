@@ -24,6 +24,7 @@ def timestamp():
     --------
     >>> type(timestamp()) == type('')
     True
+
     """
     return datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d%H%M%S')
 
@@ -40,5 +41,6 @@ def now():
     --------
     >>> type(now()) == type('')
     True
+
     """
     return timestamp()

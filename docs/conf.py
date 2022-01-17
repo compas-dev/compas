@@ -73,12 +73,17 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
     "nbsphinx",
-    "sphinx.ext.autodoc.typehints"
+    "sphinx.ext.autodoc.typehints",
 ]
 
 # autodoc options
 
-autodoc_typehints = 'description'
+autodoc_type_aliases = {}
+
+# this does not work properly yet
+autodoc_typehints = "none"
+autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "documented"
 
 autodoc_mock_imports = [
     "System",
@@ -186,102 +191,29 @@ NumpyDocstring._parse = patched_parse
 
 # plot options
 
-# plot_include_source
+plot_include_source = False
+plot_html_show_source_link = False
+plot_html_show_formats = False
+plot_formats = ['png']
 # plot_pre_code
 # plot_basedir
-# plot_formats
 # plot_rcparams
 # plot_apply_rcparams
 # plot_working_directory
 
-# {% has_class = false -%}
-# {% for option in options -%}
-# {% if option.startswith(":class:") %}
-# {% has_class = true %}
-# {% endif %}
-# {% endfor %}
-
-
 plot_template = """
-{{ source_code }}
-
 {{ only_html }}
-
-   {% if source_link or (html_show_formats and not multi_image) %}
-   (
-   {%- if source_link -%}
-   `Source code <{{ source_link }}>`__
-   {%- endif -%}
-   {%- if html_show_formats and not multi_image -%}
-     {%- for img in images -%}
-       {%- for fmt in img.formats -%}
-         {%- if source_link or not loop.first -%}, {% endif -%}
-         `{{ fmt }} <{{ dest_dir }}/{{ img.basename }}.{{ fmt }}>`__
-       {%- endfor -%}
-     {%- endfor -%}
-   {%- endif -%}
-   )
-   {% endif %}
 
    {% for img in images %}
    {% set has_class = false %}
 
    .. figure:: {{ build_dir }}/{{ img.basename }}.{{ default_fmt }}
-      {% for option in options -%}
-      {%- if option.startswith(":class:") -%}
-      {%- set has_class = true -%}
-      {%- if "img-fluid" not in option -%}
-      {%- set option = option + " img-fluid" -%}
-      {%- endif -%}
-      {%- if "figure-img" not in option -%}
-      {%- set option = option + " figure-img" -%}
-      {%- endif -%}
-      {%- endif -%}
-      {{ option }}
-      {% endfor %}
-      {%- if not has_class -%}
       :class: figure-img img-fluid
-      {%- endif %}
-
-      {% if html_show_formats and multi_image -%}
-        (
-        {%- for fmt in img.formats -%}
-        {%- if not loop.first -%}, {% endif -%}
-        `{{ fmt }} <{{ dest_dir }}/{{ img.basename }}.{{ fmt }}>`__
-        {%- endfor -%}
-        )
-      {%- endif -%}
 
       {{ caption }}
-   {% endfor %}
-
-{{ only_latex }}
-
-   {% for img in images %}
-   {% if "pdf" in img.formats -%}
-   .. figure:: {{ build_dir }}/{{ img.basename }}.pdf
-      {% for option in options -%}
-      {{ option }}
-      {% endfor %}
-
-      {{ caption }}
-   {% endif -%}
-   {% endfor %}
-
-{{ only_texinfo }}
-
-   {% for img in images %}
-   .. image:: {{ build_dir }}/{{ img.basename }}.png
-      {% for option in options -%}
-      {{ option }}
-      {% endfor %}
 
    {% endfor %}
-
 """
-
-plot_html_show_source_link = False
-plot_html_show_formats = False
 
 # intersphinx options
 
@@ -332,11 +264,13 @@ def linkcode_resolve(domain, info):
 
     return f"https://github.com/compas-dev/compas/blob/main/src/{filename}.py#L{lineno}"
 
+
 # extlinks
 
 
 extlinks = {
-    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s")
+    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
+    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s")
 }
 
 # -- Options for HTML output ----------------------------------------------
@@ -350,12 +284,12 @@ html_theme_options = {
     "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
 }
 html_context = {}
-html_static_path = []
+html_static_path = sphinx_compas_theme.get_html_static_path()
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
 html_show_sourcelink = False
 html_permalinks = False
 html_permalinks_icon = ""
-html_experimental_html5_writer = True
+html_experimental_html5_writer = False
 html_compact_lists = True

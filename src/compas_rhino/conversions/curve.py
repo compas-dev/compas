@@ -113,13 +113,13 @@ class RhinoCurve(RhinoGeometry):
             Default is ``0.0``.
         return_param : bool, optional
             Return not only the point coordinates, but also the parameter of the point on the curve.
-            Default is ``False``.
+            Default is False.
 
         Returns
         -------
         list
-            The XYZ coordinates of the closest point, if ``return_param`` is ``False``.
-            The XYZ coordinates of the closest point and the curve parameter, if ``return_param`` is ``True``.
+            The XYZ coordinates of the closest point, if ``return_param`` is False.
+            The XYZ coordinates of the closest point and the curve parameter, if ``return_param`` is True.
 
         """
         rc, t = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)

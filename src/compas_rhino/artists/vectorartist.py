@@ -17,6 +17,10 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
         A COMPAS vector.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
+
     """
 
     def __init__(self, vector, layer=None, **kwargs):
@@ -31,12 +35,11 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
         show_point : bool, optional
-            Show the point of application of the vector.
-            Default is ``False``.
+            If True, draw the base point of the vector.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """

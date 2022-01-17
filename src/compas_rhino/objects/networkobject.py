@@ -279,8 +279,8 @@ class NetworkObject(BaseObject):
         Returns
         -------
         bool
-            ``True`` if the update was successful.
-            ``False`` otherwise.
+            True if the update was successful.
+            False otherwise.
         """
         return network_update_attributes(self.network)
 
@@ -298,8 +298,8 @@ class NetworkObject(BaseObject):
         Returns
         -------
         bool
-            ``True`` if the update was successful.
-            ``False`` otherwise.
+            True if the update was successful.
+            False otherwise.
 
         """
         return network_update_node_attributes(self.network, nodes, names=names)
@@ -318,8 +318,8 @@ class NetworkObject(BaseObject):
         Returns
         -------
         bool
-            ``True`` if the update was successful.
-            ``False`` otherwise.
+            True if the update was successful.
+            False otherwise.
         """
         return network_update_edge_attributes(self.network, edges, names=names)
 

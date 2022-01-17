@@ -25,7 +25,7 @@ def _tag_without_namespace(element, default_namespace):
 
 
 class URDF(object):
-    """class for working with URDF files.
+    """Class for working with URDF files.
 
     This class abstracts away the underlying XML of the Unified Robot
     Description Format (`URDF`_) and represents its as an object graph.

@@ -34,7 +34,7 @@ def install(version=None, packages=None, clean=False):
         Default is the result of ``installable_rhino_packages``,
         which collects all installable packages in the current environment.
     clean : bool, optional
-        If ``True``, this will clean up the entire scripts folder and remove
+        If True, this will clean up the entire scripts folder and remove
         also existing symlinks that are not importable in the current environment.
 
     Examples
@@ -294,7 +294,7 @@ def after_rhino_install(installed_packages):
     Returns
     -------
     :obj:`list` of 3-tuple (str, str, bool)
-        List containing a 3-tuple with component name, message and ``True``/``False`` success flag.
+        List containing a 3-tuple with component name, message and True/False success flag.
     """
     pass
 

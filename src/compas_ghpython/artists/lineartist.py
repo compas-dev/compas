@@ -14,6 +14,10 @@ class LineArtist(GHArtist, PrimitiveArtist):
     ----------
     line : :class:`compas.geometry.Line`
         A COMPAS line.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+
     """
 
     def __init__(self, line, **kwargs):
@@ -24,7 +28,8 @@ class LineArtist(GHArtist, PrimitiveArtist):
 
         Returns
         -------
-        :class:`Rhino.Geometry.Line`
+        :rhino:`Rhino.Geometry.Line`
+
         """
         lines = [self._get_args(self.primitive)]
         return compas_ghpython.draw_lines(lines)[0]

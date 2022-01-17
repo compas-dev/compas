@@ -16,6 +16,9 @@ class ConeArtist(RhinoArtist, ShapeArtist):
         A COMPAS cone.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 
@@ -27,16 +30,17 @@ class ConeArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int], optional
             The RGB color of the cone.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``~ConeArtist.u``.
+            Default is :attr:`ConeArtist.u`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the objects created in Rhino.
+
         """
         color = color or self.color
         u = u or self.u

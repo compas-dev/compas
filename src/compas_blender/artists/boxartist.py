@@ -12,14 +12,45 @@ from .artist import BlenderArtist
 
 
 class BoxArtist(BlenderArtist, ShapeArtist):
-    """Artist for drawing box shapes.
+    """Artist for drawing box shapes in Blender.
 
     Parameters
     ----------
     box : :class:`compas.geometry.Box`
         A COMPAS box.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.ShapeArtist`.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        from compas.geometry import Box
+        from compas_blender.artists import BoxArtist
+
+        box = Box.from_width_height_depth(1, 1, 1)
+
+        artist = BoxArtist(box)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Box
+        from compas.artists import Artist
+
+        box = Box.from_width_height_depth(1, 1, 1)
+
+        artist = Artist(box)
+        artist.draw()
+
     """
 
     def __init__(self,
@@ -34,13 +65,15 @@ class BoxArtist(BlenderArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : rgb-tuple, optional
             The RGB color of the box.
+            The default color is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list
-            The objects created in Blender.
+        list[:blender:`bpy.types.Object`]
+            The object(s) created in Blender to represent the box.
+
         """
         color = color or self.color
         vertices, faces = self.shape.to_vertices_and_faces()

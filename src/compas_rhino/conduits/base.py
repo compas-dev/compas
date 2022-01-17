@@ -16,7 +16,7 @@ class BaseConduit(Rhino.Display.DisplayConduit):
     ----------
     refreshrate : int, optional
         The number of iterations after which the conduit should be redrawn.
-        Default is ``1``.
+
     """
 
     def __init__(self, refreshrate=1):
@@ -25,6 +25,27 @@ class BaseConduit(Rhino.Display.DisplayConduit):
 
     @contextmanager
     def enabled(self):
+        """Create a context for the conduit with automatic enabling and disabling.
+
+        Yields
+        ------
+        None
+
+        Notes
+        -----
+        The conduit is automatically enabled when the context is entered,
+        and is guaranteed to be disabled when the context is exited,
+        even when an error occurs during the execution of the code in the context.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            with conduit.enabled():
+                for i in range(10):
+                    conduit.redraw(k=1)
+
+        """
         self.enable()
         try:
             yield
@@ -34,31 +55,65 @@ class BaseConduit(Rhino.Display.DisplayConduit):
             self.disable()
 
     def CalculateBoundingBox(self, e):
+        """Calculate the model extents that should be included in the visualization.
+
+        Parameters
+        ----------
+        e : Rhino.DisplayCalculateBoundingBoxEventArgs
+
+        Returns
+        -------
+        None
+
+        """
         bbox = Rhino.Geometry.BoundingBox(-1000, -1000, -1000, 1000, 1000, 1000)
         e.IncludeBoundingBox(bbox)
 
     def enable(self):
-        """Enable the conduit."""
+        """Enable the conduit.
+
+        Returns
+        -------
+        None
+
+        """
         self.Enabled = True
 
     def disable(self):
-        """Disable the conduit."""
+        """Disable the conduit.
+
+        Returns
+        -------
+        None
+
+        """
         self.Enabled = False
 
-    def redraw(self, k=0, pause=None):
+    def redraw(self, k=0, pause=0.0):
         """Redraw the conduit.
 
         Parameters
         ----------
         k : int, optional
             The current iteration.
-            If the current iteration is a multiple of ``refreshrate``, the conduit will be redrawn.
-            Default is ``0``.
+            If the current iteration is a multiple of :attr:`BaseConduit.refreshrate`, the conduit will be redrawn.
         pause : float, optional
             Include a pause after redrawing.
             The pause value should be provided in seconds.
-            Default is no pause.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If `pause` is not a positive number.
+
         """
+        if pause < 0:
+            raise ValueError("The value of pause should be a positive number.")
+
         if k % self.refreshrate == 0:
             sc.doc.Views.Redraw()
         Rhino.RhinoApp.Wait()
