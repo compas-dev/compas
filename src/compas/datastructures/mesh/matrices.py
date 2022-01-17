@@ -37,14 +37,14 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed adjacency matrix.
 
     Examples
@@ -70,14 +70,14 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed connectivity matrix.
 
     Examples
@@ -107,14 +107,14 @@ def mesh_degree_matrix(mesh, rtype='array'):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed vertex degree matrix.
 
     Examples
@@ -144,14 +144,14 @@ def mesh_face_matrix(mesh, rtype='array'):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed mesh face matrix.
 
     Notes
@@ -203,15 +203,14 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
-        Default is ``"csr"``.
 
     Returns
     -------
-    array-like
+    array_like
         The Laplacian matrix.
 
     Notes
@@ -234,6 +233,11 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     Therefore, the uniform Laplacian of a vertex :math:`\mathbf{v}_{i}` points to
     the centroid of its neighboring vertices.
 
+    References
+    ----------
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
+        `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+
     Examples
     --------
     >>> from compas.datastructures import Mesh
@@ -249,11 +253,6 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     >>> xyz = asarray(mesh.vertices_attributes('xyz'))
     >>> L = mesh_laplacian_matrix(mesh)
     >>> d = L.dot(xyz)
-
-    References
-    ----------
-    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
-        `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     data, rows, cols = [], [], []
@@ -291,7 +290,7 @@ def trimesh_edge_cotangent(mesh, u, v):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     u : int
         The identifier of the first vertex of the halfedge.
@@ -302,10 +301,6 @@ def trimesh_edge_cotangent(mesh, u, v):
     -------
     float
         The edge cotangent.
-
-    Examples
-    --------
-    >>>
 
     """
     fkey = mesh.halfedge[u][v]
@@ -325,7 +320,7 @@ def trimesh_edge_cotangents(mesh, u, v):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     u : int
         The identifier of the first vertex of the edge.
@@ -334,12 +329,8 @@ def trimesh_edge_cotangents(mesh, u, v):
 
     Returns
     -------
-    tuple
+    tuple[float, float]
         The two edge cotangents.
-
-    Examples
-    --------
-    >>>
 
     """
     a = trimesh_edge_cotangent(mesh, u, v)
@@ -352,12 +343,12 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
 
     Returns
     -------
-    array
+    array_like
         The Laplacian matrix with cotangent weights.
 
     Notes
@@ -385,10 +376,6 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
     .. math::
 
          w_{ij} = \frac{\omega_{ij}}{\sum_{(i, k) \in \mathbf{E}_{i}} \omega_{ik}}
-
-    Examples
-    --------
-    >>>
 
     References
     ----------
@@ -437,7 +424,6 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
 
 def trimesh_positive_cotangent_laplacian_matrix(mesh):
-    """"""
     raise NotImplementedError
 
 
@@ -446,7 +432,7 @@ def trimesh_vertexarea_matrix(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The triangle mesh data structure.
 
     Returns

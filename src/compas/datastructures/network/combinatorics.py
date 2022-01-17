@@ -13,6 +13,11 @@ __all__ = [
 def network_is_connected(network):
     """Verify that the network is connected.
 
+    Parameters
+    ----------
+    network : :class:`compas.datastructures.Network`
+        A network data structure.
+
     Returns
     -------
     bool
@@ -31,6 +36,7 @@ def network_is_connected(network):
     >>> network = Network.from_obj(compas.get('lines.obj'))
     >>> network_is_connected(network)
     True
+
     """
     if network.number_of_nodes() == 0:
         return False

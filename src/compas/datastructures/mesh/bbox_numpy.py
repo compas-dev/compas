@@ -18,12 +18,12 @@ def mesh_oriented_bounding_box_numpy(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    list
+    list[list[float]]
         The bounding box of the mesh as a list of corner vertex coordinates.
 
     Examples
@@ -44,12 +44,12 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    box_xy
+    list[list[float]]
         The bounding box.
 
     Examples

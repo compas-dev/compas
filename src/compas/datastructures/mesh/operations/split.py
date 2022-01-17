@@ -18,17 +18,17 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
-    u : str
+    u : int
         The key of the first vertex of the edge.
-    v : str
+    v : int
         The key of the second vertex of the edge.
-    t : float (0.5)
+    t : float, optional
         The position of the inserted vertex.
         The value should be between 0.0 and 1.0
-    allow_boundary : bool (False)
-        Split edges on the boundary.
+    allow_boundary : bool, optional
+        If True, also split edges on the boundary.
 
     Returns
     -------
@@ -89,25 +89,21 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
-    u : hashable
+    u : int
         Identifier of the first vertex.
-    v : hashable
+    v : int
         Identifier of the second vertex.
-    t : float (0.5)
+    t : float, optional
         The location of the split point along the original edge.
         The value should be between 0.0 and 1.0
-    allow_boundary : bool (False)
-        Allow splits on boundary edges.
+    allow_boundary : bool, optional
+        If True, allow splits on boundary edges.
 
     Notes
     -----
     This operation only works as expected for triangle meshes.
-
-    Examples
-    --------
-    >>>
 
     """
     if t <= 0.0:
@@ -167,16 +163,16 @@ def mesh_split_face(mesh, fkey, u, v):
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of a mesh
-    fkey : :obj:`str`
+    fkey : int
         The face key.
-    u : hashable
+    u : int
         The key of the first split vertex.
-    v : hashable
+    v : int
         The key of the second split vertex.
 
     Returns
     -------
-    :obj:`tuple` of :obj:`int`
+    tuple[int, int]
         Keys of the created faces.
 
     Raises
@@ -200,6 +196,7 @@ def mesh_split_face(mesh, fkey, u, v):
     (25, 26)
     >>> mesh.number_of_faces()  # faces after split
     26
+
     """
     if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
         raise ValueError('The split vertices do not belong to the split face.')
@@ -234,13 +231,14 @@ def mesh_split_strip(mesh, edge):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The input mesh.
-    edge : tuple of int
+    edge : tuple[int, int]
         The edge identifying the strip.
 
     Returns
     -------
-    list of int
+    list[int]
         The split vertices in the same order as the edges of the strip.
+
     """
     strip = mesh.edge_strip(edge)
     is_closed = strip[0] == strip[-1]

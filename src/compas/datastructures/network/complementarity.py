@@ -18,12 +18,12 @@ def network_complement(network, cls=None):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network.
 
     Returns
     -------
-    Network
+    :class:`compas.datastructures.Network`
         The complement network.
 
     Examples
@@ -40,6 +40,7 @@ def network_complement(network, cls=None):
     ----------
     .. [1] Wolfram MathWorld. *Graph complement*.
            Available at: http://mathworld.wolfram.com/GraphComplement.html.
+
     """
     if not cls:
         cls = type(network)

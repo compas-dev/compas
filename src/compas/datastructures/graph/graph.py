@@ -11,52 +11,54 @@ from compas.datastructures.attributes import NodeAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
 
 
-__all__ = ['Graph']
-
-
 class Graph(Datastructure):
     """Base graph data structure for describing the topological relationships between nodes connected by edges.
 
     Parameters
     ----------
-    name: str, optional
-        The name of the graph.
-        Defaults to "Graph".
-    default_node_attributes: dict, optional
+    name : str, optional
+        The name of the datastructure.
+    default_node_attributes : dict[str, Any], optional
         Default values for node attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes : dict[str, Any], optional
         Default values for edge attributes.
 
     Attributes
     ----------
-    node : dict
-        The node dictionary. Each key in the node dictionary
-        represents a node of the network and maps to a dictionary of
-        node attributes.
-    edge : dict of dict
-        The edge dictionary. Each key in the edge dictionary
-        corresponds to a key in the node dictionary, and maps to a dictionary
-        with connected nodes. In the latter, the keys are again references
-        to items in the node dictionary, and the values are dictionaries
-        of edge attributes. For example, an edge between node 1 and node 2 is represented as follows
-        ``Graph.edge[1][2] -> {...}``
-    adjacency : dict of dict
-        The edges of the graph are directed.
-        The undirected connectivity information is represented in the adjacency dict.
-    attributes : dict
-        A dictionary of miscellaneous information about the graph.
-    default_node_attributes : dict
-        A dictionary mapping node attribute names to their default values.
-    default_edge_attributes : dict
-        A dictionary mapping edge attribute names to their default values.
-    data : dict
-        A dictionary representing the essential data of a graph that can be used in serialization
-        processes.
+    attributes : dict[str, Any]
+        General attributes of the data structure that are included in the data representation and serialization.
+    default_node_attributes : dict[str, Any]
+        dictionary containing default values for the attributes of nodes.
+        It is recommended to add a default to this dictionary using :meth:`update_default_node_attributes`
+        for every node attribute used in the data structure.
+    default_edge_attributes : dict[str, Any]
+        dictionary containing default values for the attributes of edges.
+        It is recommended to add a default to this dictionary using :meth:`update_default_edge_attributes`
+        for every edge attribute used in the data structure.
 
     Examples
     --------
     >>>
+
     """
+
+    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
+        super(Graph, self).__init__()
+        self._max_node = -1
+        self.attributes = {'name': name or 'Graph'}
+        self.node = {}
+        self.edge = {}
+        self.adjacency = {}
+        self.default_node_attributes = {}
+        self.default_edge_attributes = {}
+        if default_node_attributes:
+            self.default_node_attributes.update(default_node_attributes)
+        if default_edge_attributes:
+            self.default_edge_attributes.update(default_edge_attributes)
+
+    # --------------------------------------------------------------------------
+    # data
+    # --------------------------------------------------------------------------
 
     @property
     def DATASCHEMA(self):
@@ -75,49 +77,8 @@ class Graph(Datastructure):
     def JSONSCHEMANAME(self):
         return 'graph'
 
-    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
-        super(Graph, self).__init__()
-        self._max_node = -1
-        self.attributes = {'name': name or 'Graph'}
-        self.node = {}
-        self.edge = {}
-        self.adjacency = {}
-        self.default_node_attributes = {}
-        self.default_edge_attributes = {}
-        if default_node_attributes:
-            self.default_node_attributes.update(default_node_attributes)
-        if default_edge_attributes:
-            self.default_edge_attributes.update(default_edge_attributes)
-
-    def __str__(self):
-        tpl = "<Graph with {} nodes, {} edges>"
-        return tpl.format(self.number_of_nodes(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # properties
-    # --------------------------------------------------------------------------
-
-    @property
-    def name(self):
-        """str : The name of the data structure.
-
-        Any value assigned to this property will be stored in the attribute dict
-        of the data structure instance.
-        """
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
-
-    # --------------------------------------------------------------------------
-    # serialization
-    # --------------------------------------------------------------------------
-
     @property
     def data(self):
-        """Return a data dict of this data structure for serialization.
-        """
         data = {
             'attributes': self.attributes,
             'dna': self.default_node_attributes,
@@ -184,11 +145,43 @@ class Graph(Datastructure):
                 self.adjacency[u][v] = None
 
     # --------------------------------------------------------------------------
+    # properties
+    # --------------------------------------------------------------------------
+
+    @property
+    def name(self):
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
+    # --------------------------------------------------------------------------
+    # customization
+    # --------------------------------------------------------------------------
+
+    def __str__(self):
+        tpl = "<Graph with {} nodes, {} edges>"
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
+
+    # --------------------------------------------------------------------------
     # constructors
     # --------------------------------------------------------------------------
 
     @classmethod
     def from_edges(cls, edges):
+        """Create a new graph instance from information about the edges.
+
+        Parameters
+        ----------
+        edges : list[tuple[hashable, hashable]]
+            The edges of the graph as pairs of node identifiers.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+
+        """
         graph = cls()
         for u, v in edges:
             if u not in graph.node:
@@ -208,8 +201,8 @@ class Graph(Datastructure):
 
         Returns
         -------
-        Graph
-            A newly created graph.
+        :class:`compas.datastructures.Graph`
+
         """
         g = cls()
         g.attributes.update(graph.graph)
@@ -229,6 +222,7 @@ class Graph(Datastructure):
         -------
         networkx.DiGraph
             A newly created NetworkX DiGraph.
+
         """
         import networkx as nx
         graph = nx.DiGraph()
@@ -247,7 +241,13 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     def clear(self):
-        """Clear all the network data."""
+        """Clear all the network data.
+
+        Returns
+        -------
+        None
+
+        """
         del self.node
         del self.edge
         del self.adjacency
@@ -257,6 +257,9 @@ class Graph(Datastructure):
 
     def get_any_node(self):
         """Get the identifier of a random node.
+
+        .. deprecated:: 1.13.3
+            Use :meth:`node_sample` instead.
 
         Returns
         -------
@@ -269,17 +272,19 @@ class Graph(Datastructure):
     def get_any_nodes(self, n, exclude_leaves=False):
         """Get a list of identifiers of a random set of n nodes.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`node_sample` instead.
+
         Parameters
         ----------
         n : int
             The number of random nodes.
-        exclude_leaves : bool (False)
-            Exclude the leaves (nodes with only one connected edge) from the set.
-            Default is to include the leaves.
+        exclude_leaves : bool, optional
+            If True, exclude the leaves (nodes with only one connected edge) from the set.
 
         Returns
         -------
-        list
+        list[hashable]
             The identifiers of the nodes.
 
         """
@@ -292,15 +297,22 @@ class Graph(Datastructure):
     def get_any_edge(self):
         """Get the identifier of a random edge.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`edge_sample` instead.
+
         Returns
         -------
-        tuple
+        tuple[hashable, hashable]
             The identifier of the edge in the form of a pair of vertex identifiers.
+
         """
         return choice(list(self.edges()))
 
     def get_any_edges(self, n):
         """Get the identifiers of a set of random edges.
+
+        .. deprecated:: 1.13.3
+            Use :meth:`edge_sample` instead.
 
         Parameters
         ----------
@@ -309,8 +321,9 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[tuple[hashable, hashable]]
             The identifiers of the random edges.
+
         """
         return sample(list(self.edges()), n)
 
@@ -324,7 +337,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[hashable]
             The identifiers of the nodes.
 
         """
@@ -340,30 +353,29 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[tuple[hashable, hashable]]
             The identifiers of the random edges.
+
         """
         return sample(list(self.edges()), size)
 
     def key_index(self):
-        """Returns a dictionary that maps node dictionary keys to the
-        corresponding index in a node list or array.
+        """Returns a dictionary that maps node identifiers to their corresponding index in a node list or array.
 
         Returns
         -------
-        dict
+        dict[hashable, int]
             A dictionary of key-index pairs.
 
         """
         return {key: index for index, key in enumerate(self.nodes())}
 
     def index_key(self):
-        """Returns a dictionary that maps the indices of a node list to
-        keys in a node dictionary.
+        """Returns a dictionary that maps the indices of a node list to keys in a node dictionary.
 
         Returns
         -------
-        dict
+        dict[int, hashable]
             A dictionary of index-key pairs.
 
         """
@@ -375,7 +387,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        dict
+        dict[tuple[hashable, hashable], int]
             A dictionary of uv-index pairs.
 
         """
@@ -387,7 +399,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        dict
+        dict[int, tuple[hashable, hashable]]
             A dictionary of index-uv pairs.
 
         """
@@ -404,28 +416,28 @@ class Graph(Datastructure):
         ----------
         key : hashable, optional
             An identifier for the node.
-            Defaults to ``None``, in which case an identifier of type ``int`` is automatically generated.
-        attr_dict : dict, optional
-            Vertex attributes, defaults to ``None``.
-        kwattr
-            Other named node attributes, defaults to an empty dict.
+            Defaults to None, in which case an identifier of type int is automatically generated.
+        attr_dict : dict[str, Any], optional
+            A dictionary of vertex attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
         -------
         hashable
-            The key of the node.
+            The identifier of the node.
 
         Notes
         -----
         If no key is provided for the node, one is generated
         automatically. An automatically generated key increments the highest
-        key in use by 1::
-
-            key = int(sorted(self.node.keys())[-1]) + 1
+        integer key in use by 1.
 
         Examples
         --------
-        >>>
+        >>> graph = Graph()
+        >>> graph.add_node()
+
         """
         if key is None:
             key = self._max_node = self._max_node + 1
@@ -453,19 +465,20 @@ class Graph(Datastructure):
             The identifier of the first node of the edge.
         v : hashable
             The identifier of the second node of the edge.
-        attr_dict : dict, optional
+        attr_dict : dict[str, Any], optional
             A dictionary of edge attributes.
-        kwattr
-            Other edge attributes as additional keyword arguments.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
         -------
-        tuple
+        tuple[hashable, hashable]
             The identifiers of the edge nodes.
 
         Examples
         --------
         >>>
+
         """
         attr = attr_dict or {}
         attr.update(kwattr)
@@ -493,6 +506,10 @@ class Graph(Datastructure):
         ----------
         key : hashable
             The identifier of the node.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -524,9 +541,14 @@ class Graph(Datastructure):
         v : hashable
             The identifier of the second node.
 
+        Returns
+        -------
+        None
+
         Examples
         --------
         >>>
+
         """
         del self.adjacency[u][v]
         del self.adjacency[v][u]
@@ -540,32 +562,36 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     def summary(self):
-        """Print a summary of the graph.
+        """Return a summary of the graph.
 
         Returns
         -------
         str
+            The formatted summary.
+
         """
         tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- nodes: {}", "- edges: {}"])
         return tpl.format(self.name, self.number_of_nodes(), self.number_of_edges())
 
     def number_of_nodes(self):
-        """Compute the number of nodes of the network.
+        """Compute the number of nodes of the graph.
 
         Returns
         -------
         int
-            the number of nodes.
+            The number of nodes.
+
         """
         return len(list(self.nodes()))
 
     def number_of_edges(self):
-        """Compute the number of edges of the network.
+        """Compute the number of edges of the graph.
 
         Returns
         -------
         int
-            the number of edges.
+            The number of edges.
+
         """
         return len(list(self.edges()))
 
@@ -579,14 +605,14 @@ class Graph(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            If ``True``, yield both the identifier and the attributes.
+            If True, yield the node attributes in addition to the node identifiers.
 
         Yields
         ------
-        hashable
-            The next node identifier (*key*), if ``data`` is ``False``.
-        2-tuple
-            The next node as a (key, attr) tuple, if ``data`` is ``True``.
+        hashable or tuple[hashable, dict[str, Any]]
+            If `data` is False, the next node identifier.
+            If `data` is True, the next node as a (key, attr) tuple.
+
         """
         for key in self.node:
             if not data:
@@ -604,15 +630,14 @@ class Graph(Datastructure):
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the nodes and their data attributes.
-            Default is ``False``.
+            If True, yield the node attributes in addition to the node identifiers.
 
         Yields
         ------
-        key: hashable
-            The next node that matches the condition.
-        2-tuple
-            The next node and its attributes, if ``data=True``.
+        hashable or tuple[hashable, dict[str, Any]]
+            If `data` is False, the next node that matches the condition.
+            If `data` is True, the next node and its attributes.
+
         """
         for key, attr in self.nodes(True):
             is_match = True
@@ -669,21 +694,20 @@ class Graph(Datastructure):
         ----------
         predicate : callable
             The condition you want to evaluate.
-            The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+            The callable takes 2 parameters: the node identifier and the node attributes, and should return True or False.
         data : bool, optional
-            Yield the nodes and their data attributes.
-            Default is ``False``.
+            If True, yield the node attributes in addition to the node identifiers.
 
         Yields
         ------
-        key: hashable
-            The next node that matches the condition.
-        2-tuple
-            The next node and its attributes, if ``data=True``.
+        hashable or tuple[hashable, dict[str, Any]]
+            If `data` is False, the next node that matches the condition.
+            If `data` is True, the next node and its attributes.
 
         Examples
         --------
         >>>
+
         """
         for key, attr in self.nodes(True):
             if predicate(key, attr):
@@ -698,13 +722,14 @@ class Graph(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            If ``True``, yield both the identifier and the attributes.
+            If True, yield the edge attributes in addition to the edge identifiers.
 
         Yields
         ------
-        tuple
-            The next edge identifier (u, v), if ``data`` is ``False``.
-            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
+            If `data` is False, the next edge identifier (u, v).
+            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+
         """
         for u, nbrs in iter(self.edge.items()):
             for v, attr in iter(nbrs.items()):
@@ -723,14 +748,14 @@ class Graph(Datastructure):
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the edges and their data attributes.
-            Default is ``False``.
+            If True, yield the edge attributes in addition to the edge identifiers.
 
         Yields
         ------
-        tuple
-            The next edge identifier (u, v), if ``data`` is ``False``.
-            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
+            If `data` is False, the next edge identifier (u, v).
+            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+
         """
         for key in self.edges():
             is_match = True
@@ -775,20 +800,22 @@ class Graph(Datastructure):
         ----------
         predicate : callable
             The condition you want to evaluate.
-            The callable takes 2 parameters: a key ``(u, v)`` tuple and ``attr`` and should return ``True`` or ``False``.
+            The callable takes 2 parameters:
+            an edge identifier (tuple of node identifiers) and edge attributes,
+            and should return True or False.
         data : bool, optional
-            Yield the nodes and their data attributes.
-            Default is ``False``.
+            If True, yield the edge attributes in addition to the edge attributes.
 
         Yields
         ------
-        tuple
-            The next edge identifier (u, v), if ``data`` is ``False``.
-            Otherwise, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
+            If `data` is False, the next edge identifier (u, v).
+            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
 
         Examples
         --------
         >>>
+
         """
         for key, attr in self.edges(True):
             if predicate(key, attr):
@@ -806,12 +833,15 @@ class Graph(Datastructure):
 
         Parameters
         ----------
-        attr_dict : dict, optional
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-            Defaults to an empty ``dict``.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        None
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -823,12 +853,15 @@ class Graph(Datastructure):
 
         Parameters
         ----------
-        attr_dict : dict, optional
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-            Defaults to an empty ``dict``.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        None
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -856,15 +889,15 @@ class Graph(Datastructure):
 
         Returns
         -------
-        object or None
+        obj or None
             The value of the attribute,
-            or ``None`` if the node does not exist
-            or when the function is used as a "setter".
+            or None when the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the node does not exist.
+
         """
         if key not in self.node:
             raise KeyError(key)
@@ -896,6 +929,7 @@ class Graph(Datastructure):
         -----
         Unsetting the value of a node attribute implicitly sets it back to the value
         stored in the default node attribute dict.
+
         """
         if name in self.node[key]:
             del self.node[key][name]
@@ -907,24 +941,25 @@ class Graph(Datastructure):
         ----------
         key : hashable
             The identifier of the node.
-        names : list, optional
+        names : list[str], optional
             A list of attribute names.
-        values : list, optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is empty,
+        dict[str, Any] or list[Any] or None
+            If the parameter `names` is empty,
             the function returns a dictionary of all attribute name-value pairs of the node.
-            If the parameter ``names`` is not empty,
+            If the parameter `names` is not empty,
             the function returns a list of the values corresponding to the requested attribute names.
-            The function returns ``None`` if it is used as a "setter".
+            The function returns None if it is used as a "setter".
 
         Raises
         ------
         KeyError
             If the node does not exist.
+
         """
         if key not in self.node:
             raise KeyError(key)
@@ -956,20 +991,20 @@ class Graph(Datastructure):
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-            Default is ``None``.
-        keys : list of int, optional
+        keys : list[hashable], optional
             A list of node identifiers.
 
         Returns
         -------
-        list or None
+        list[Any] or None
             The value of the attribute for each node,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the nodes does not exist.
+
         """
         if not keys:
             keys = self.nodes()
@@ -984,28 +1019,27 @@ class Graph(Datastructure):
 
         Parameters
         ----------
-        names : list of str, optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : list of obj, optional
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        keys : list of int, optional
+        keys : list[hashable], optional
             A list of node identifiers.
 
         Returns
         -------
-        list or None
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] or list[list[Any]] or None
+            If the parameter `names` is None,
             the function returns a list containing an attribute dict per node.
-            If the parameter ``names`` is not ``None``,
+            If the parameter `names` is not None,
             the function returns a list containing a list of attribute values per node corresponding to the provided attribute names.
-            The function returns ``None`` if it is used as a "setter".
+            The function returns None if it is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the nodes does not exist.
+
         """
         if not keys:
             keys = self.nodes()
@@ -1024,23 +1058,23 @@ class Graph(Datastructure):
 
         Parameters
         ----------
-        key : 2-tuple of int
+        key : tuple[hashable, hashable]
             The identifier of the edge as a pair of node identifiers.
         name : str
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-            Default is ``None``.
 
         Returns
         -------
-        object or None
-            The value of the attribute, or ``None`` when the function is used as a "setter".
+        obj or None
+            The value of the attribute, or None when the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = key
         if u not in self.edge or v not in self.edge[u]:
@@ -1059,7 +1093,7 @@ class Graph(Datastructure):
 
         Parameters
         ----------
-        key : tuple of int
+        key : tuple[hashable, hashable]
             The edge identifier.
         name : str
             The name of the attribute.
@@ -1073,6 +1107,7 @@ class Graph(Datastructure):
         -----
         Unsetting the value of an edge attribute implicitly sets it back to the value
         stored in the default edge attribute dict.
+
         """
         u, v = key
         if u not in self.edge or v not in self.edge[u]:
@@ -1086,26 +1121,25 @@ class Graph(Datastructure):
 
         Parameters
         ----------
-        key : 2-tuple of int
+        key : tuple[hashable, hashable]
             The identifier of the edge.
-        names : list, optional
+        names : list[str], optional
             A list of attribute names.
-        values : list, optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is empty,
-            a dictionary of all attribute name-value pairs of the edge.
-            If the parameter ``names`` is not empty,
-            a list of the values corresponding to the provided names.
-            ``None`` if the function is used as a "setter".
+        dict[str, Any] or list[Any] or None
+            If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the edge.
+            If the parameter `names` is not empty, a list of the values corresponding to the provided names.
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = key
         if u not in self.edge or v not in self.edge[u]:
@@ -1135,20 +1169,20 @@ class Graph(Datastructure):
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-            Default is ``None``.
-        keys : list of 2-tuple of int, optional
+        keys : list[tuple[hashable, hashable]], optional
             A list of edge identifiers.
 
         Returns
         -------
-        list or None
+        list[Any] or None
             A list containing the value per edge of the requested attribute,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         if not keys:
             keys = self.edges()
@@ -1163,28 +1197,27 @@ class Graph(Datastructure):
 
         Parameters
         ----------
-        names : list of str, optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : list of obj, optional
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        keys : list of 2-tuple of int, optional
+        keys : list[tuple[hashable, hashable]], optional
             A list of edge identifiers.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is ``None``,
-            a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] or list[list[Any]] or None
+            If `names` is empty,
+            a list containing per edge an attribute dict with all attributes of the edge.
+            If `names` is not empty,
             a list containing per edge a list of attribute values corresponding to the requested names.
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         if not keys:
             keys = self.edges()
@@ -1239,7 +1272,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[hashable]
             A list of node identifiers.
 
         """
@@ -1271,7 +1304,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[hashable]
             A list of node identifiers.
 
         """
@@ -1286,11 +1319,10 @@ class Graph(Datastructure):
             The identifier of the node.
         ring : int, optional
             The size of the neighborhood.
-            Default is ``1``.
 
         Returns
         -------
-        list
+        list[hashable]
             A list of node identifiers.
 
         """
@@ -1318,7 +1350,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[hashable]
             A list of node identifiers.
 
         """
@@ -1334,7 +1366,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[hashable]
             A list of node identifiers.
 
         """
@@ -1398,7 +1430,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list
+        list[tuple[hashable, hashable]]
             The edges connected to the node.
 
         """
@@ -1424,8 +1456,7 @@ class Graph(Datastructure):
         v : hashable
             The identifier of the second node of the edge.
         directed : bool, optional
-            Take into account the direction of the edge.
-            Default is ``True``.
+            If True, the direction of the edge is taken into account.
 
         Returns
         -------

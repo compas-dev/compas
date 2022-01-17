@@ -1,3 +1,4 @@
+
 class AssemblyError(Exception):
     pass
 

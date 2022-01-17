@@ -71,31 +71,13 @@ class Mesh(HalfEdge):
     Parameters
     ----------
     name: str, optional
-        The name of the graph.
-        Defaults to "Graph".
-    default_vertex_attributes: dict, optional
+        The name of the datastructure.
+    default_vertex_attributes: dict[str, Any], optional
         Default values for vertex attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes: dict[str, Any], optional
         Default values for edge attributes.
-    default_face_attributes: dict, optional
+    default_face_attributes: dict[str, Any], optional
         Default values for face attributes.
-
-    Attributes
-    ----------
-    attributes : dict
-        A dictionary of general mesh attributes: ``{'name': "Mesh"}``.
-    default_vertex_attributes : dict
-        The names of pre-assigned vertex attributes and their default values:
-        ``{'x': 0.0, 'y': 0.0, 'z': 0.0}``
-    default_edge_attributes : dict
-        The default data attributes assigned to every new edge.
-    default_face_attributes : dict
-        The default data attributes assigned to every new face.
-    name : str
-        The name of the mesh.
-        Shorthand for ``mesh.attributes['name']``
-    adjacency : dict, read-only
-        The vertex adjacency dictionary.
 
     Examples
     --------
@@ -138,7 +120,6 @@ class Mesh(HalfEdge):
         obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy
 
     def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
-        name = name or 'Mesh'
         _default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         _default_edge_attributes = {}
         _default_face_attributes = {}
@@ -148,7 +129,7 @@ class Mesh(HalfEdge):
             _default_edge_attributes.update(default_edge_attributes)
         if default_face_attributes:
             _default_face_attributes.update(default_face_attributes)
-        super(Mesh, self).__init__(name=name,
+        super(Mesh, self).__init__(name=name or 'Mesh',
                                    default_vertex_attributes=_default_vertex_attributes,
                                    default_edge_attributes=_default_edge_attributes,
                                    default_face_attributes=_default_face_attributes)
@@ -182,7 +163,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         Notes
@@ -196,9 +177,6 @@ class Mesh(HalfEdge):
         * mesh.obj
         * quadmesh.obj
 
-        Examples
-        --------
-        >>>
         """
         obj = OBJ(filepath, precision)
         obj.read()
@@ -221,14 +199,18 @@ class Mesh(HalfEdge):
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
         unweld : bool, optional
-            If true, all faces have their own unique vertices.
-            If false, vertices are shared between faces if this is also the case in the mesh.
-            Default is ``False``.
+            If True, all faces have their own unique vertices.
+            If False (default), vertices are shared between faces if this is also the case in the mesh.
+
+        Returns
+        -------
+        None
 
         Warnings
         --------
         This function only writes geometric data about the vertices and
         the faces to the file.
+
         """
         obj = OBJ(filepath, precision=precision)
         obj.write(self, unweld=unweld, **kwargs)
@@ -244,12 +226,8 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        Mesh :
+        :class:`compas.datastructures.Mesh`
             A mesh object.
-
-        Examples
-        --------
-        >>>
 
         """
         ply = PLY(filepath)
@@ -266,9 +244,10 @@ class Mesh(HalfEdge):
         filepath : str
             The path to the file.
 
-        Examples
-        --------
-        >>>
+        Returns
+        -------
+        None
+
         """
         ply = PLY(filepath)
         ply.write(self, **kwargs)
@@ -286,12 +265,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        Mesh :
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
-        Examples
-        --------
-        >>>
         """
         stl = STL(filepath, precision)
         vertices = stl.parser.vertices
@@ -308,10 +284,10 @@ class Mesh(HalfEdge):
             The path to the file.
         precision : str, optional
             Rounding precision for the vertex coordinates.
-            Default is ``"3f"``.
+            Defaults to the value of :attr:`compas.PRECISION`.
         binary : bool, optional
-            When ``False``, the file will be written in ASCII encoding,
-            when ``True``, binary.  Default is ``False``.
+            If True, the file will be written in binary format.
+            ASCII otherwise.
 
         Returns
         -------
@@ -320,8 +296,9 @@ class Mesh(HalfEdge):
         Notes
         -----
         STL files only support triangle faces.
-        It is your responsibility to convert all faces of your mesh to triangles.
+        It is the user's responsibility to convert all faces of a mesh to triangles.
         For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.
+
         """
         stl = STL(filepath, precision)
         stl.write(self, binary=binary, **kwargs)
@@ -337,12 +314,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        Mesh :
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
-        Examples
-        --------
-        >>>
         """
         off = OFF(filepath)
         vertices = off.reader.vertices
@@ -358,9 +332,10 @@ class Mesh(HalfEdge):
         filepath : str
             The path to the file.
 
-        Examples
-        --------
-        >>>
+        Returns
+        -------
+        None
+
         """
         off = OFF(filepath)
         off.write(self, **kwargs)
@@ -371,7 +346,7 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        lines : list
+        lines : list[tuple[list[float], list[float]]]
             A list of pairs of point coordinates.
         delete_boundary_face : bool, optional
             The algorithm that finds the faces formed by the connected lines
@@ -379,15 +354,13 @@ class Mesh(HalfEdge):
             to be there. Therefore, there is the option to have it automatically deleted.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
+            Defaults to the value of :attr:`compas.PRECISION`.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
-        Examples
-        --------
-        >>>
         """
         from compas.datastructures import Network
         from compas.datastructures import network_find_cycles
@@ -400,7 +373,15 @@ class Mesh(HalfEdge):
             mesh.cull_vertices()
         return mesh
 
-    def to_lines(self, filepath):
+    def to_lines(self):
+        """Convert the mesh to a collection of lines.
+
+        Returns
+        -------
+        list[tuple[list[float], list[float]]]
+            A list of lines each defined by a pair of points.
+
+        """
         raise NotImplementedError
 
     @classmethod
@@ -416,15 +397,16 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        boundary_polylines : list
+        boundary_polylines : list[list[float]]
             List of polylines representing boundaries as lists of vertex coordinates.
-        other_polylines : list
+        other_polylines : list[list[float]]
             List of the other polylines as lists of vertex coordinates.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
+
         """
         corner_vertices = [geometric_key(xyz) for polyline in boundary_polylines + other_polylines for xyz in [polyline[0], polyline[-1]]]
         boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
@@ -441,6 +423,14 @@ class Mesh(HalfEdge):
         return cls.from_vertices_and_faces(vertices, faces)
 
     def to_polylines(self):
+        """Convert the mesh to a collection of polylines.
+
+        Returns
+        -------
+        list[list[list[float]]]
+            A list of polylines which are each defined as a list of points.
+
+        """
         raise NotImplementedError
 
     @classmethod
@@ -449,21 +439,18 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        vertices : list, dict
+        vertices : list[list[float]] or dict[int, list[float]]
             A list of vertices, represented by their XYZ coordinates,
             or a dictionary of vertex keys pointing to their XYZ coordinates.
-        faces : list, dict
+        faces : list[list[int]] or dict[int, list[int]]
             A list of faces, represented by a list of indices referencing the list of vertex coordinates,
             or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
-        Examples
-        --------
-        >>>
         """
         mesh = cls()
 
@@ -493,17 +480,11 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        tuple
-            A 2-tuple containing
+        list[list[float]]
+            The vertices as a list of XYZ coordinates.
+        list[list[int]]
+            The faces as a list of lists of vertex indices.
 
-            * a list of vertices, represented by their XYZ coordinates, and
-            * a list of faces.
-
-            Each face is a list of indices referencing the list of vertex coordinates.
-
-        Examples
-        --------
-        >>>
         """
         key_index = self.key_index()
         vertices = [self.vertex_coordinates(key) for key in self.vertices()]
@@ -516,18 +497,14 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        f : int
+        f : {4, 6, 8, 12, 20}
             The number of faces.
-            Should be one of ``4, 6, 8, 12, 20``.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
-        Examples
-        --------
-        >>>
         """
         p = Polyhedron.from_platonicsolid(f)
         return cls.from_vertices_and_faces(p.vertices, p.faces)
@@ -538,19 +515,16 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        shape : :class: `compas.geometry.shape`
+        shape : :class:`compas.geometry.Shape`
             The input shape to generate a mesh from.
-        kwargs:
-            Optional keyword arguments ``u`` and ``v`` for the resolution in u (Torus, Sphere, Cylinder, Cone) and v direction (Torus and Sphere).
+        **kwargs : dict[str, Any], optional
+            Optional keyword arguments to be passed on to :meth:`compas.geometry.Shape.to_vertices_and_faces`.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
-        Examples
-        --------
-        >>>
         """
         vertices, faces = shape.to_vertices_and_faces(**kwargs)
         mesh = cls.from_vertices_and_faces(vertices, faces)
@@ -563,24 +537,29 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        points : list
+        points : list[list[float]]
             XYZ coordinates of the points.
             Z coordinates should be zero.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
-        Examples
-        --------
-        >>>
         """
         from compas.geometry import delaunay_from_points
         faces = delaunay_from_points(points, boundary=boundary, holes=holes)
         return cls.from_vertices_and_faces(points, faces)
 
     def to_points(self):
+        """Convert the mesh to a collection of points.
+
+        Returns
+        -------
+        list[list[float]]
+            The points representing the vertices of the mesh.
+
+        """
         raise NotImplementedError
 
     @classmethod
@@ -589,16 +568,18 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        polygons : list
+        polygons : list[list[float]]
             A list of polygons, with each polygon defined as an ordered list of
             XYZ coordinates of its corners.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
+            Defaults to :attr:`compas.PRECISION`.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
+
         """
         faces = []
         gkey_xyz = {}
@@ -615,6 +596,14 @@ class Mesh(HalfEdge):
         return cls.from_vertices_and_faces(vertices, faces)
 
     def to_polygons(self):
+        """Convert the mesh to a collection of polygons.
+
+        Returns
+        -------
+        list[list[list[float]]]
+            A list of polygons defined each as a list of points.
+
+        """
         return [self.face_coordinates(fkey) for fkey in self.faces()]
 
     @classmethod
@@ -628,14 +617,17 @@ class Mesh(HalfEdge):
         nx : int
             The number of faces in the X direction.
         dy : float, optional
-            The size of the grid in the Y direction, if different form X.
+            The size of the grid in the Y direction.
+            Defaults to the value of `dx`.
         ny : int, optional
-            The number of faces in the Y direction, if different from Y.
+            The number of faces in the Y direction.
+            Defaults to the value of `nx`.
 
         Returns
         -------
-        Mesh
+        :class:`compas.datastructures.Mesh`
             A mesh object.
+
         """
         dy = dy or dx
         ny = ny or nx
@@ -660,12 +652,13 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        precision : str (3f)
+        precision : str, optional
             The float precision specifier used in string formatting.
+            Defaults to the value of :attr:`compas.PRECISION`.
 
         Returns
         -------
-        dict
+        dict[int, str]
             A dictionary of key-geometric key pairs.
 
         """
@@ -679,12 +672,13 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        precision : str (3f)
+        precision : str, optional
             The float precision specifier used in string formatting.
+            Defaults to the value of :attr:`compas.PRECISION`.
 
         Returns
         -------
-        dict
+        dict[str, int]
             A dictionary of geometric key-key pairs.
 
         """
@@ -712,24 +706,16 @@ class Mesh(HalfEdge):
             The key of the face in which the vertex should be inserted.
         key : int, optional
             The key to be used to identify the inserted vertex.
-        xyz : list, optional
+        xyz : list[float], optional
             Specific XYZ coordinates for the inserted vertex.
         return_fkeys : bool, optional
-            By default, this method returns only the key of the inserted vertex.
-            This flag can be used to indicate that the keys of the newly created
-            faces should be returned as well.
+            If True, return the identifiers of the newly created faces in addition to the identifier of the inserted vertex.
 
         Returns
         -------
-        int
-            The key of the inserted vertex, if ``return_fkeys`` is false.
-        tuple
-            The key of the newly created vertex
-            and a list with the newly created faces, if ``return_fkeys`` is true.
-
-        Examples
-        --------
-        >>>
+        int or tuple[int, list[int]]
+            If `return_fkeys` is False, the key of the inserted vertex.
+            If `return_fkeys` is True, the key of the newly created vertex and a list with the newly created faces.
 
         """
         fkeys = []
@@ -750,7 +736,7 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        other : compas.datastructures.Mesh
+        other : :class:`compas.datastructures.Mesh`
             The other mesh.
 
         Returns
@@ -782,6 +768,7 @@ class Mesh(HalfEdge):
         16
         >>> a.number_of_faces()
         12
+
         """
         self.default_vertex_attributes.update(other.default_vertex_attributes)
         self.default_edge_attributes.update(other.default_edge_attributes)
@@ -854,6 +841,7 @@ class Mesh(HalfEdge):
         -------
         float
             The area.
+
         """
         return sum(self.face_area(fkey) for fkey in self.faces())
 
@@ -862,8 +850,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the mesh centroid.
+
         """
         return scale_vector(sum_vectors([scale_vector(self.face_centroid(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
 
@@ -872,8 +861,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the mesh normal.
+
         """
         return scale_vector(sum_vectors([scale_vector(self.face_normal(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
 
@@ -890,13 +880,13 @@ class Mesh(HalfEdge):
             The identifier of the vertex.
         axes : str, optional
             The axes along which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------
-        list
+        list[float]
             Coordinates of the vertex.
+
         """
         return self.vertex_attributes(key, axes)
 
@@ -912,10 +902,6 @@ class Mesh(HalfEdge):
         -------
         float
             The tributary are.
-
-        Examples
-        --------
-        >>>
 
         """
         area = 0.
@@ -950,8 +936,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The components of the vector.
+
         """
         c = self.vertex_neighborhood_centroid(key)
         p = self.vertex_coordinates(key)
@@ -967,8 +954,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the centroid.
+
         """
         return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
 
@@ -983,8 +971,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The components of the normal vector.
+
         """
         vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
@@ -1004,9 +993,10 @@ class Mesh(HalfEdge):
 
         References
         ----------
-        Based on [1]_
+        Based on [#]_.
 
-        .. [1] Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
+        .. [#] Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
+
         """
         C = 0
         for u, v in pairwise(self.vertex_neighbors(vkey, ordered=True) + self.vertex_neighbors(vkey, ordered=True)[:1]):
@@ -1026,13 +1016,15 @@ class Mesh(HalfEdge):
             The key of the start vertex.
         v : int
             The key of the end vertex.
-        axes : str (xyz)
+        axes : str, optional
             The axes along which the coordinates should be included.
 
         Returns
         -------
-        tuple
-            The coordinates of the start point and the coordinates of the end point.
+        list[float]
+            The coordinates of the start point.
+        list[float]
+            The coordinates of the end point.
 
         """
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
@@ -1068,7 +1060,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The vector from u to v.
 
         """
@@ -1085,14 +1077,14 @@ class Mesh(HalfEdge):
             The key of the start vertex.
         v : int
             The key of the end vertex.
-        t : float (0.5)
+        t : float, optional
             The location of the point on the edge.
-            If the value of ``t`` is outside the range ``0-1``, the point will
+            If the value of `t` is outside the range 0-1, the point will
             lie in the direction of the edge, but not on the edge vector.
 
         Returns
         -------
-        list
+        list[float]
             The XYZ coordinates of the point.
 
         """
@@ -1112,7 +1104,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The XYZ coordinates of the midpoint.
 
         """
@@ -1131,7 +1123,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The direction vector of the edge.
 
         """
@@ -1150,13 +1142,13 @@ class Mesh(HalfEdge):
             The identifier of the face.
         axes : str, optional
             The axes along which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------
-        list of list
+        list[list[float]]
             The coordinates of the vertices of the face.
+
         """
         return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
 
@@ -1168,13 +1160,13 @@ class Mesh(HalfEdge):
         fkey : int
             The identifier of the face.
         unitized : bool, optional
-            Unitize the normal vector.
-            Default is ``True``.
+            If True, the vector is unitized.
 
         Returns
         -------
-        list
+        list[float]
             The components of the normal vector.
+
         """
         return normal_polygon(self.face_coordinates(fkey), unitized=unitized)
 
@@ -1188,8 +1180,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the centroid.
+
         """
         return centroid_points(self.face_coordinates(fkey))
 
@@ -1203,8 +1196,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the center of mass.
+
         """
         return centroid_polygon(self.face_coordinates(fkey))
 
@@ -1220,6 +1214,7 @@ class Mesh(HalfEdge):
         -------
         float
             The area of the face.
+
         """
         return area_polygon(self.face_coordinates(fkey))
 
@@ -1232,7 +1227,6 @@ class Mesh(HalfEdge):
             The identifier of the face.
         maxdev : float, optional
             A maximum value for the allowed deviation from flatness.
-            Default is ``0.02``.
 
         Returns
         -------
@@ -1248,6 +1242,7 @@ class Mesh(HalfEdge):
         Warnings
         --------
         This method only makes sense for quadrilateral faces.
+
         """
         vertices = self.face_vertices(fkey)
         f = len(vertices)
@@ -1262,7 +1257,7 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        fkey : Key
+        fkey : int
             The face key.
 
         Returns
@@ -1272,8 +1267,8 @@ class Mesh(HalfEdge):
 
         References
         ----------
-        .. [1] Wikipedia. *Types of mesh*.
-               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
+        * Wikipedia. *Types of mesh*. Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
+
         """
         face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(fkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
@@ -1283,7 +1278,7 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        fkey : Key
+        fkey : int
             The face key.
 
         Returns
@@ -1293,8 +1288,8 @@ class Mesh(HalfEdge):
 
         References
         ----------
-        .. [1] Wikipedia. *Types of mesh*.
-               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
+        * Wikipedia. *Types of mesh*. Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
+
         """
         ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
         angles = []
@@ -1308,19 +1303,22 @@ class Mesh(HalfEdge):
         return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
 
     def face_curvature(self, fkey):
-        """Dimensionless face curvature as the maximum face vertex deviation from
+        """Dimensionless face curvature.
+
+        Face curvature is defined as the maximum face vertex deviation from
         the best-fit plane of the face vertices divided by the average lengths of
         the face vertices to the face centroid.
 
         Parameters
         ----------
-        fkey : Key
+        fkey : int
             The face key.
 
         Returns
         -------
         float
             The dimensionless curvature.
+
         """
         vertices = self.face_vertices(fkey)
         points = [self.vertex_coordinates(key) for key in vertices]
@@ -1340,8 +1338,11 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        tuple
-            point, vector
+        list[float]
+            The base point of the plane.
+        list[float]
+            The normal vector of the plane.
+
         """
         return self.face_centroid(face), self.face_normal(face)
 
@@ -1354,7 +1355,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[int]
             The vertices of the longest boundary.
 
         """
@@ -1366,8 +1367,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        edges : list
+        list[tuple[int, int]]
             The edges of the longest boundary.
+
         """
         boundaries = self.edges_on_boundaries()
         return boundaries[0] if boundaries else []
@@ -1377,8 +1379,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list
+        list[int]
             The faces on the longest boundary.
+
         """
         boundaries = self.faces_on_boundaries()
         return boundaries[0] if boundaries else []
@@ -1388,12 +1391,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list of list
+        list[list[int]]
             A list of vertex keys per boundary.
 
-        Examples
-        --------
-        >>>
         """
         # all boundary vertices
         vertices_set = set()
@@ -1494,7 +1494,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list of list
+        list[list[tuple[int, int]]]
             A list of edges per boundary.
 
         """
@@ -1509,8 +1509,9 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list of list
-            Lists of faces, grouped and sorted per boundary.
+        list[list[int]]
+            lists of faces, grouped and sorted per boundary.
+
         """
         vertexgroups = self.vertices_on_boundaries()
         facegroups = []

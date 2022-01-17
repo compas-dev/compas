@@ -17,18 +17,15 @@ def network_transform(network, transformation):
 
     Parameters
     ----------
-    network : network
+    network : :class:`compas.datastructures.Network`
         The network.
-    transformation : Transformation
+    transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
     Notes
     -----
     The network is modified in-place.
 
-    Examples
-    --------
-    >>>
     """
     vertices = [network.node_coordinates(key) for key in network.nodes()]
     xyz = transform_points(vertices, transformation)
@@ -39,28 +36,25 @@ def network_transform(network, transformation):
 
 
 def network_transformed(network, transformation):
-    """Transform a copy of ``network``.
+    """Return a transformed copy of the network.
 
     Parameters
     ----------
-    network : network
+    network : :class:`compas.datastructures.Network`
         The network.
-    transformation : Transformation
+    transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
     Returns
     -------
-    network
-        A transformed independent copy of ``network``.
+    :class:`compas.datastructures.Network`
+        A transformed independent copy of `network`.
 
     Notes
     -----
     The original network is not modified.
     Instead a transformed independent copy is returned.
 
-    Examples
-    --------
-    >>>
     """
     network_copy = network.copy()
     network_transform(network_copy, transformation)

@@ -38,7 +38,7 @@ def network_is_crossed(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -82,7 +82,7 @@ def network_count_crossings(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -103,7 +103,7 @@ def network_find_crossings(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -138,7 +138,7 @@ def network_is_xy(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -163,7 +163,7 @@ def network_is_planar(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -189,9 +189,6 @@ def network_is_planar(network):
     This function uses the python binding of the *edge addition planarity suite*.
     It is available on Anaconda: https://anaconda.org/conda-forge/python-planarity.
 
-    Examples
-    --------
-    >>>
     """
     try:
         import planarity
@@ -207,7 +204,7 @@ def network_is_planar_embedding(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -227,12 +224,12 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
-    fixed : list (None)
+    fixed : list, optional
         Two fixed points.
-    straightline : bool (True)
-        Embed using straight lines.
+    straightline : bool, optional
+        If True, embed using straight lines only.
 
     Returns
     -------
@@ -245,9 +242,6 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
     ImportError
         If NetworkX is not installed.
 
-    Examples
-    --------
-    >>>
     """
     try:
         import networkx as nx

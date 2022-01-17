@@ -17,24 +17,21 @@ def network_split_edge(network, u, v, t=0.5):
         The key of the first node of the edge.
     v : str
         The key of the second node of the edge.
-    t : float
-        The position of the inserted node.
+    t : float, optional
+        The position of the inserted node on the edge.
 
     Returns
     -------
-    str
+    hashable
         The key of the inserted node.
 
     Raises
     ------
     ValueError
-        If `t` is not `0 <= t <= 1`.
+        If `t` is not in the range 0-1.
     Exception
         If `u` and `v` are not neighbors.
 
-    Examples
-    --------
-    >>>
     """
     if not network.has_edge(u, v):
         return
