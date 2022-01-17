@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `mesh_slice_plane()` , `Mesh.slice_plane()`.
 * Changed `compas_rhino.geometry.RhinoNurbsSurface.closest_point` to fix bug of rhino_curve to rhino_surface, plus return tuple instead.
 * Changed `compas_plotters.plotter.Plotter` to normal class instead of singleton.
+* Moved functionality of `compas.utilities.coercion` to `compas.data`.
 
 ### Removed
 
