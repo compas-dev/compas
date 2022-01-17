@@ -36,6 +36,12 @@ class Color(Data):
 
     Attributes
     ----------
+    r : float
+        Red component of the color in RGB1 color space.
+    g : float
+        Green component of the color in RGB1 color space.
+    b : float
+        Blue component of the color in RGB1 color space.
     rgb : tuple[float, float, float]
         RGB1 color tuple, with components in the range 0-1.
     rgb255 : tuple[int, int, int]
@@ -84,6 +90,10 @@ class Color(Data):
 
     def __init__(self, red, green, blue, alpha=1.0, **kwargs):
         super(Color, self).__init__(**kwargs)
+        self._r = 1.0
+        self._g = 1.0
+        self._b = 1.0
+        self._a = 1.0
         self.r = red
         self.g = green
         self.b = blue
@@ -111,6 +121,46 @@ class Color(Data):
     # --------------------------------------------------------------------------
     # properties
     # --------------------------------------------------------------------------
+
+    @property
+    def r(self):
+        return self._r
+
+    @r.setter
+    def r(self, red):
+        if red > 1.0 or red < 0.0:
+            raise ValueError("Components of an RGBA color should be in the range 0-1.")
+        self._r = red
+
+    @property
+    def g(self):
+        return self._g
+
+    @g.setter
+    def g(self, green):
+        if green > 1.0 or green < 0.0:
+            raise ValueError("Components of an RGBA color should be in the range 0-1.")
+        self._g = green
+
+    @property
+    def b(self):
+        return self._b
+
+    @b.setter
+    def b(self, blue):
+        if blue > 1.0 or blue < 0.0:
+            raise ValueError("Components of an RGBA color should be in the range 0-1.")
+        self._b = blue
+
+    @property
+    def a(self):
+        return self._a
+
+    @a.setter
+    def a(self, alpha):
+        if alpha > 1.0 or alpha < 0.0:
+            raise ValueError("Components of an RGBA color should be in the range 0-1.")
+        self._a = alpha
 
     @property
     def rgb(self):
