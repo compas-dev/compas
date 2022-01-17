@@ -111,19 +111,19 @@
 <h1>VolMeshArtist.draw_cells</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.artists.VolMeshArtist.draw_cells">
-<span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/volmeshartist.py#L204"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/volmeshartist.py#L208"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw a selection of cells.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cells</strong> (<em>list</em>) – A list of cells to draw.
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all cells are drawn.</p></li>
-<li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specification for the cells.
-The default color is <code class="docutils literal notranslate"><span class="pre">~VolMeshArtist.default_cellcolor</span></code>.</p></li>
+<li><p><strong>cells</strong> (<em>list[int], optional</em>) – A list of cells to draw.
+The default is None, in which case all cells are drawn.</p></li>
+<li><p><strong>color</strong> (<em>tuple[int, int, int] or dict[int, tuple[int, int, int]], optional</em>) – The color of the cells.
+The default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">VolMeshArtist.default_cellcolor</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The GUIDs of the created Rhino objects.
+<dd class="field-even"><p><em>list[System.Guid]</em> – The GUIDs of the created Rhino objects.
 Every cell is drawn as an individual mesh.</p>
 </dd>
 </dl>
@@ -154,19 +154,18 @@ Every cell is drawn as an individual mesh.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.forms.html">forms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.objects.html">objects</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.utilities.html">utilities</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>

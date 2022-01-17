@@ -112,6 +112,16 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.forms.</span></span><span class="sig-name descname"><span class="pre">SliderForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/forms/slider.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.forms.BaseForm.html#compas_rhino.forms.BaseForm" title="compas_rhino.forms.base.BaseForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseForm</span></code></a></p>
 <p>A form for sliders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minval</strong> (<em>int</em>) – The lowest value of the sliding range.</p></li>
+<li><p><strong>maxval</strong> (<em>int</em>) – The highest value of the sliding range.</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – Size of one increment in the sliding range.</p></li>
+<li><p><strong>value</strong> (<em>int</em>) – Starting value.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -120,13 +130,13 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.init.html#compas_rhino.forms.SliderForm.init" title="compas_rhino.forms.SliderForm.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Initialize the form.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_scroll.html#compas_rhino.forms.SliderForm.on_scroll" title="compas_rhino.forms.SliderForm.on_scroll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_scroll</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Callback for changes made with the slider.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_textchanged.html#compas_rhino.forms.SliderForm.on_textchanged" title="compas_rhino.forms.SliderForm.on_textchanged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_textchanged</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Callback for changes made to the text input field.</p></td>
 </tr>
 </tbody>
 </table>
@@ -138,7 +148,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.on_form_closed.html#compas_rhino.forms.SliderForm.on_form_closed" title="compas_rhino.forms.SliderForm.on_form_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_form_closed</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Callback for the closing event of the form.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.forms.SliderForm.show.html#compas_rhino.forms.SliderForm.show" title="compas_rhino.forms.SliderForm.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a></p></td>
 <td><p>Show the form as a modal dialog.</p></td>
@@ -172,19 +182,18 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.forms.html">forms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.objects.html">objects</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.utilities.html">utilities</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>

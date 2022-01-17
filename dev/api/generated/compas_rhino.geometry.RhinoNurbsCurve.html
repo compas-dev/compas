@@ -113,21 +113,24 @@
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.NurbsCurve.html#compas.geometry.NurbsCurve" title="compas.geometry.curves.nurbs.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">NurbsCurve</span></code></a></p>
 <p>Class representing a NURBS curve based on the NurbsCurve of Rhino.Geometry.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The control points of the curve.</p></li>
-<li><p><strong>weights</strong> (<em>list of float</em>) – The weights of the control points.</p></li>
-<li><p><strong>knots</strong> (<em>list of float</em>) – The knot vector, without duplicates.</p></li>
-<li><p><strong>multiplicities</strong> (<em>list of int</em>) – The multiplicities of the knots in the knot vector.</p></li>
-<li><p><strong>knotsequence</strong> (<em>list of float</em>) – The knot vector, with repeating values according to the multiplicities.</p></li>
-<li><p><strong>degree</strong> (<em>int</em>) – The degree of the polynomials.</p></li>
-<li><p><strong>order</strong> (<em>int</em>) – The order of the curve.</p></li>
-<li><p><strong>domain</strong> (<em>tuple of float</em>) – The parameter domain.</p></li>
-<li><p><strong>start</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The point corresponding to the start of the parameter domain.</p></li>
-<li><p><strong>end</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The point corresponding to the end of the parameter domain.</p></li>
-<li><p><strong>is_closed</strong> (<em>bool</em>) – True if the curve is closed.</p></li>
-<li><p><strong>is_periodic</strong> (<em>bool</em>) – True if the curve is periodic.</p></li>
-<li><p><strong>is_rational</strong> (<em>bool</em>) – True is the curve is rational.</p></li>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – Name of the curve.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], read-only) – The control points of the curve.</p></li>
+<li><p><strong>weights</strong> (<em>list[float], read-only</em>) – The weights of the control points.</p></li>
+<li><p><strong>knots</strong> (<em>list[float], read-only</em>) – The knot vector, without duplicates.</p></li>
+<li><p><strong>multiplicities</strong> (<em>list[int], read-only</em>) – The multiplicities of the knots in the knot vector.</p></li>
+<li><p><strong>knotsequence</strong> (<em>list[float], read-only</em>) – The knot vector, with repeating values according to the multiplicities.</p></li>
+<li><p><strong>degree</strong> (<em>int, read-only</em>) – The degree of the polynomials.</p></li>
+<li><p><strong>order</strong> (<em>int, read-only</em>) – The order of the curve.</p></li>
+<li><p><strong>domain</strong> (<em>tuple[float, float], read-only</em>) – The parameter domain.</p></li>
+<li><p><strong>start</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The point corresponding to the start of the parameter domain.</p></li>
+<li><p><strong>end</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The point corresponding to the end of the parameter domain.</p></li>
+<li><p><strong>is_closed</strong> (<em>bool, read-only</em>) – True if the curve is closed.</p></li>
+<li><p><strong>is_periodic</strong> (<em>bool, read-only</em>) – True if the curve is periodic.</p></li>
+<li><p><strong>is_rational</strong> (<em>bool, read-only</em>) – True is the curve is rational.</p></li>
 </ul>
 </dd>
 </dl>
@@ -308,19 +311,18 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.forms.html">forms</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.objects.html">objects</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.utilities.html">utilities</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>

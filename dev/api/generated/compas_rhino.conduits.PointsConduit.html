@@ -109,24 +109,29 @@
 <h1>PointsConduit</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.conduits.PointsConduit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.conduits.</span></span><span class="sig-name descname"><span class="pre">PointsConduit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/points.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.conduits.</span></span><span class="sig-name descname"><span class="pre">PointsConduit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/conduits/points.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.conduits.BaseConduit.html#compas_rhino.conduits.BaseConduit" title="compas_rhino.conduits.base.BaseConduit"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConduit</span></code></a></p>
 <p>A Rhino display conduit for points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>list of list of float</em>) – The coordinates of the points.</p></li>
-<li><p><strong>size</strong> (<em>list of int, optional</em>) – The size of the points.
-Default is <code class="docutils literal notranslate"><span class="pre">3</span></code> for all points.</p></li>
-<li><p><strong>color</strong> (<em>list of str or 3-tuple</em>) – The individual colors of the points.
-Default is <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></code> for all points.</p></li>
+<li><p><strong>points</strong> (list[[float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – The coordinates of the points.</p></li>
+<li><p><strong>size</strong> (<em>list[int], optional</em>) – The size of the points.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">PointsConduit.default_size</span></code> for all points.</p></li>
+<li><p><strong>color</strong> (<em>list[tuple[int, int, int]]</em>) – The individual colors of the points.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">PointsConduit.default_color</span></code> for all points.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>size</strong> (<em>list of float</em>) – The size specification per point.</p></li>
-<li><p><strong>color</strong> (<em>list of RGB colors</em>) – The color specification per point.</p></li>
-<li><p><strong>points</strong> (<em>list of point</em>) – The location of every point.</p></li>
+<li><p><strong>size</strong> (<em>list[float]</em>) – The size specification per point.</p></li>
+<li><p><strong>color</strong> (<em>list[System.Drawing.Color]</em>) – The color per point.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Class Attributes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>default_size</strong> (<em>float</em>) – The default size is <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p><strong>default_color</strong> (<em>System.Drawing.Color</em>) – The default color is <code class="docutils literal notranslate"><span class="pre">FromArgb(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -151,7 +156,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">(255,</s
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conduits.PointsConduit.DrawForeground.html#compas_rhino.conduits.PointsConduit.DrawForeground" title="compas_rhino.conduits.PointsConduit.DrawForeground"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DrawForeground</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Draw the points.</p></td>
 </tr>
 </tbody>
 </table>
@@ -163,7 +168,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">(255,</s
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conduits.PointsConduit.CalculateBoundingBox.html#compas_rhino.conduits.PointsConduit.CalculateBoundingBox" title="compas_rhino.conduits.PointsConduit.CalculateBoundingBox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CalculateBoundingBox</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Calculate the model extents that should be included in the visualization.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.conduits.PointsConduit.disable.html#compas_rhino.conduits.PointsConduit.disable" title="compas_rhino.conduits.PointsConduit.disable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable</span></code></a></p></td>
 <td><p>Disable the conduit.</p></td>
@@ -172,7 +177,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">(255,</s
 <td><p>Enable the conduit.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.conduits.PointsConduit.enabled.html#compas_rhino.conduits.PointsConduit.enabled" title="compas_rhino.conduits.PointsConduit.enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enabled</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Create a context for the conduit with automatic enabling and disabling.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conduits.PointsConduit.redraw.html#compas_rhino.conduits.PointsConduit.redraw" title="compas_rhino.conduits.PointsConduit.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p>Redraw the conduit.</p></td>
@@ -206,19 +211,18 @@ Default is <code class="docutils literal notranslate"><span class="pre">(255,</s
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.artists.html">artists</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.forms.html">forms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.objects.html">objects</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.utilities.html">utilities</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>

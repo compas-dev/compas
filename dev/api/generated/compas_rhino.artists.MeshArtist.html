@@ -117,6 +117,28 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – The name of the layer that will contain the mesh.</p></li>
+<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – Selection of vertices to draw.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – Selection of edges to draw.</p></li>
+<li><p><strong>faces</strong> (<em>list[int], optional</em>) – Selection of faces to draw.</p></li>
+<li><p><strong>vertexcolor</strong> (<em>tuple[int, int, int] or dict[int, tuple[int, int, int]], optional</em>) – Color of the vertices.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_vertexcolor</span></code>.</p></li>
+<li><p><strong>edgecolor</strong> (<em>tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional</em>) – Color of the edges.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_edgecolor</span></code>.</p></li>
+<li><p><strong>facecolor</strong> (<em>tuple[int, int, int] or dict[int, tuple[int, int, int]], optional</em>) – Color of the faces.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_facecolor</span></code>.</p></li>
+<li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – If True, draw the vertices.</p></li>
+<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – If True, draw the edges.</p></li>
+<li><p><strong>show_faces</strong> (<em>bool, optional</em>) – If True, draw the faces.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – Additional keyword arguments.
+For more info, see <a class="reference internal" href="compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.RhinoArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoArtist</span></code></a> and <a class="reference internal" href="#compas_rhino.artists.MeshArtist" title="compas_rhino.artists.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshArtist</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Class Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>default_color</strong> (<em>tuple[int, int, int]</em>) – Default base color of the mesh.</p></li>
+<li><p><strong>default_vertexcolor</strong> (<em>tuple[int, int, int]</em>) – Default color for vertices.</p></li>
+<li><p><strong>default_edgecolor</strong> (<em>tuple[int, int, int]</em>) – Default color for edges.</p></li>
+<li><p><strong>default_facecolor</strong> (<em>tuple[int, int, int]</em>) – Default color for faces.</p></li>
 </ul>
 </dd>
 </dl>
@@ -128,34 +150,34 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear.html#compas_rhino.artists.MeshArtist.clear" title="compas_rhino.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p>Clear all objects from the view.</p></td>
+<td><p>Delete all objects drawn by this artist.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_edgelabels.html#compas_rhino.artists.MeshArtist.clear_edgelabels" title="compas_rhino.artists.MeshArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Delete all edge labels drawn by this artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_edges.html#compas_rhino.artists.MeshArtist.clear_edges" title="compas_rhino.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
-<td><p>Clear the edges of the mesh.</p></td>
+<td><p>Delete all edges drawn by this artist.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_facelabels.html#compas_rhino.artists.MeshArtist.clear_facelabels" title="compas_rhino.artists.MeshArtist.clear_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Delete all face labels drawn by this artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_facenormals.html#compas_rhino.artists.MeshArtist.clear_facenormals" title="compas_rhino.artists.MeshArtist.clear_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facenormals</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Delete all face normals drawn by this artist.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_faces.html#compas_rhino.artists.MeshArtist.clear_faces" title="compas_rhino.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
-<td><p>Clear the faces of the mesh.</p></td>
+<td><p>Delete all faces drawn by this artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_mesh.html#compas_rhino.artists.MeshArtist.clear_mesh" title="compas_rhino.artists.MeshArtist.clear_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_mesh</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Delete the mesh drawn by this artist.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_vertexlabels.html#compas_rhino.artists.MeshArtist.clear_vertexlabels" title="compas_rhino.artists.MeshArtist.clear_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Delete all vertex labels drawn by this artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_vertexnormals.html#compas_rhino.artists.MeshArtist.clear_vertexnormals" title="compas_rhino.artists.MeshArtist.clear_vertexnormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexnormals</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Delete all vertex normals drawn by this artist.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_vertices.html#compas_rhino.artists.MeshArtist.clear_vertices" title="compas_rhino.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
-<td><p>Clear the vertices of the mesh.</p></td>
+<td><p>Delete all vertices drawn by this artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw.html#compas_rhino.artists.MeshArtist.draw" title="compas_rhino.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the mesh using the chosen visualization settings.</p></td>
@@ -203,7 +225,7 @@
 <td><p>Build an artist with the given type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_layer.html#compas_rhino.artists.MeshArtist.clear_layer" title="compas_rhino.artists.MeshArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the layer of the artist.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_collection.html#compas_rhino.artists.MeshArtist.draw_collection" title="compas_rhino.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p>Drawing method for drawing an entire collection of objects.</p></td>
@@ -243,19 +265,18 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.forms.html">forms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.objects.html">objects</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.utilities.html">utilities</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>

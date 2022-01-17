@@ -118,6 +118,8 @@
 <li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – A COMPAS frame.</p></li>
 <li><p><strong>scale</strong> (<em>float, optional</em>) – Scale factor that controls the length of the axes.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – The layer that should contain the drawing.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – Additional keyword arguments.
+For more info, see <a class="reference internal" href="compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.RhinoArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoArtist</span></code></a> and <code class="xref py py-class docutils literal notranslate"><span class="pre">PrimitiveArtist</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
@@ -160,7 +162,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
 <td><p>Clear all objects from the view.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.clear_layer.html#compas_rhino.artists.FrameArtist.clear_layer" title="compas_rhino.artists.FrameArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Clear the layer of the artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.draw_collection.html#compas_rhino.artists.FrameArtist.draw_collection" title="compas_rhino.artists.FrameArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p>Drawing method for drawing an entire collection of objects.</p></td>
@@ -200,19 +202,18 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.forms.html">forms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.objects.html">objects</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.utilities.html">utilities</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>

@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="VolMeshObject.registered_object_types" href="generated/compas_rhino.objects.VolMeshObject.registered_object_types.html" />
+  <link rel="prev" title="trimesh_slice" href="generated/compas_rhino.geometry.trimesh.trimesh_slice.html" />
   
 
   <script type="text/javascript" async
@@ -140,7 +140,7 @@
 <td><p>Delete multiple Rhino objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_line_coordinates.html#compas_rhino.utilities.get_line_coordinates" title="compas_rhino.utilities.get_line_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_line_coordinates</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get the start and end point coordinates of line curves.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_objects.html#compas_rhino.utilities.get_objects" title="compas_rhino.utilities.get_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects</span></code></a></p></td>
 <td><p>Get identifiers of Rhino objects, potentially filtered by name, color, layer, or type.</p></td>
@@ -158,22 +158,22 @@
 <td><p>Get the layer names of multiple objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_object_types.html#compas_rhino.utilities.get_object_types" title="compas_rhino.utilities.get_object_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_types</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get the type of multiple objects.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_object_names.html#compas_rhino.utilities.get_object_names" title="compas_rhino.utilities.get_object_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_names</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get the names of multiple objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_object_name.html#compas_rhino.utilities.get_object_name" title="compas_rhino.utilities.get_object_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_name</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get the name of one object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_point_coordinates.html#compas_rhino.utilities.get_point_coordinates" title="compas_rhino.utilities.get_point_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_point_coordinates</span></code></a></p></td>
 <td><p>Get the coordintes of the locations of point objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_polyline_coordinates.html#compas_rhino.utilities.get_polyline_coordinates" title="compas_rhino.utilities.get_polyline_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_polyline_coordinates</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get the point coordinates of polylines.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.get_polygon_coordinates.html#compas_rhino.utilities.get_polygon_coordinates" title="compas_rhino.utilities.get_polygon_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_polygon_coordinates</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get the point coordinates of polygons.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.utilities.purge_objects.html#compas_rhino.utilities.purge_objects" title="compas_rhino.utilities.purge_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">purge_objects</span></code></a></p></td>
 <td><p>Purge objects from memory.</p></td>
@@ -300,19 +300,18 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.html">compas_plotters</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.conversions.html">conversions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.forms.html">forms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.objects.html">objects</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">utilities</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../plugins.html">Extension points</a></li>
@@ -351,11 +350,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="generated/compas_rhino.objects.VolMeshObject.registered_object_types.html" title="VolMeshObject.registered_object_types" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="generated/compas_rhino.geometry.trimesh.trimesh_slice.html" title="trimesh_slice" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          VolMeshObject.registered_object_types
+          trimesh_slice
         </div>
       </a>
       
