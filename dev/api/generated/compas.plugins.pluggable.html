@@ -27,8 +27,7 @@
   <link rel="prev" title="plugins" href="../compas.plugins.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -114,7 +113,7 @@
 <p>A pluggable interface is uniquely identifiable/locatable via a URL
 derived from the parameters <code class="docutils literal notranslate"><span class="pre">domain</span></code>, <code class="docutils literal notranslate"><span class="pre">category</span></code> and name <code class="docutils literal notranslate"><span class="pre">pluggable_method</span></code>.
 In the example below, the URL of the pluggable definition is:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">plugins</span><span class="o">.</span><span class="n">compas</span><span class="o">.</span><span class="n">dev</span><span class="o">/</span><span class="n">triangulation</span><span class="o">/</span><span class="n">triangulate_mesh</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">plugins</span><span class="o">.</span><span class="n">compas</span><span class="o">.</span><span class="n">dev</span><span class="o">/</span><span class="n">triangulation</span><span class="o">/</span><span class="n">triangulate_mesh</span>
 </code></pre></div>
 </div>
 <dl class="field-list simple">
@@ -135,7 +134,7 @@ of different packages.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;triangulation&#39;</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;triangulation&#39;</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">def</span> <span class="nf">triangulate_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
 <span class="gp">... </span>   <span class="k">pass</span>
 </code></pre></div>
@@ -283,7 +282,7 @@ of different packages.</p></li>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../../_static/underscore.js"></script>
   <script src="../../_static/doctools.js"></script>
@@ -302,6 +301,11 @@ of different packages.</p></li>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

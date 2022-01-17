@@ -27,8 +27,7 @@
   <link rel="prev" title="Robots" href="robots.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -114,7 +113,7 @@ it is important that identifiers of the data in the data structure
 are properly matched to the positions of the same data in the corresponding lists or arrays.</p>
 <p>For example, the proper way to run a Force Density algorithm (<a class="reference internal" href="../api/generated/compas.numerical.fd_numpy.html#compas.numerical.fd_numpy" title="compas.numerical.fd_numpy"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.numerical.fd_numpy()</span></code></a>)
 on a mesh uses a <code class="docutils literal notranslate"><span class="pre">vertex_index</span></code> map to take care of this relationship between identifiers and indices.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">fd_numpy</span>
 
@@ -158,17 +157,17 @@ The map is used in three different ways.</p>
 <ol class="arabic">
 <li><p>To convert the identifiers of fixed vertices (vertices with only two neighbours =&gt; corner vertices)
 to indices into the lists <code class="docutils literal notranslate"><span class="pre">xyz</span></code> and <code class="docutils literal notranslate"><span class="pre">loads</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})]</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})]</span>
 </code></pre></div>
 </div>
 </li>
 <li><p>To convert the pairs of vertex identifiers in <code class="docutils literal notranslate"><span class="pre">edges</span></code> to pairs of indices into the lists <code class="docutils literal notranslate"><span class="pre">xyz</span></code> and <code class="docutils literal notranslate"><span class="pre">loads</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">vertex_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">vertex_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
 </code></pre></div>
 </div>
 </li>
 <li><p>To make sure the new vertex coordinates are assigned to the correct vertices in the data structure.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
     <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 </code></pre></div>
@@ -308,7 +307,7 @@ to indices into the lists <code class="docutils literal notranslate"><span class
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../_static/underscore.js"></script>
   <script src="../_static/doctools.js"></script>
@@ -327,6 +326,11 @@ to indices into the lists <code class="docutils literal notranslate"><span class
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

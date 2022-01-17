@@ -27,8 +27,7 @@
   <link rel="prev" title="Extension points" href="plugins.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -117,25 +116,25 @@ to the code, documentation, and test coverage of the core COMPAS packages:</p>
 <ol class="arabic">
 <li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork.</p></li>
 <li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n compas-dev <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 cython --yes
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda create -n compas-dev <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 cython --yes
 conda activate compas-dev
 </code></pre></div>
 </div>
 </li>
 <li><p>Install development dependencies:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">cd</span> path/to/compas
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">cd</span> path/to/compas
 pip install -r requirements-dev.txt
 </code></pre></div>
 </div>
 </li>
 <li><p>Make sure all tests pass and the code is free of lint:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke lint
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke lint
 invoke <span class="nb">test</span>
 </code></pre></div>
 </div>
 </li>
 <li><p>Create a branch for your contributions.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">git</span> <span class="n">branch</span> <span class="n">title</span><span class="o">-</span><span class="n">proposed</span><span class="o">-</span><span class="n">changes</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">git</span> <span class="n">branch</span> <span class="n">title</span><span class="o">-</span><span class="n">proposed</span><span class="o">-</span><span class="n">changes</span>
 <span class="n">git</span> <span class="n">checkout</span> <span class="n">title</span><span class="o">-</span><span class="n">proposed</span><span class="o">-</span><span class="n">changes</span>
 </code></pre></div>
 </div>
@@ -149,7 +148,7 @@ invoke <span class="nb">test</span>
 The procedure for submitting a PR is the following.</p>
 <ol class="arabic">
 <li><p>Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke lint
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke lint
 invoke <span class="nb">test</span>
 invoke docs
 </code></pre></div>
@@ -243,7 +242,7 @@ For example, <a class="reference internal" href="api/compas.html#module-compas" 
 From outside of these packages, functionality should be imported directly from the subpackage level,
 regardless of the code structure underneath.</p>
 <p>For example, in some <code class="docutils literal notranslate"><span class="pre">script.py</span></code>:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
@@ -258,7 +257,7 @@ regardless of the code structure underneath.</p>
 <p>To allow the public API of the modules and packages contained in a subpackage to reach the subpackage level,
 each module should declare the classes, functions and variables of its public API in the module’s <code class="docutils literal notranslate"><span class="pre">__all__</span></code> variable.
 Per package, the APIs of the contained module are collected in the <code class="docutils literal notranslate"><span class="pre">__all__</span></code> variable of the package (in the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>).</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
 </code></pre></div>
 </div>
 </section>
@@ -281,12 +280,12 @@ The tests are in the <code class="docutils literal notranslate"><span class="pre
 <ol class="arabic">
 <li><p>Apply your changes to the component source code (<code class="docutils literal notranslate"><span class="pre">src/compas_ghpython/components</span></code>).</p></li>
 <li><p>Rebuild them:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke build-ghuser-components
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke build-ghuser-components
 </code></pre></div>
 </div>
 </li>
 <li><p>Install them on Rhino/Grasshopper as usual:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_rhino.install
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_rhino.install
 </code></pre></div>
 </div>
 </li>
@@ -313,7 +312,7 @@ as the counterpart for plugins to connect to.</p></li>
 <code class="docutils literal notranslate"><span class="pre">pluggable</span></code> interface.</p></li>
 </ul>
 <p>Both of these components are declared using decorators:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@pluggable</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nd">@pluggable</span>
 <span class="k">def</span> <span class="nf">do_hard_stuff</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
     <span class="k">pass</span>
 
@@ -380,7 +379,7 @@ point: <code class="xref py py-meth docutils literal notranslate"><span class="p
 <p>For the sake of example, we are going to assume that <code class="docutils literal notranslate"><span class="pre">compas</span></code> core defines
 the following <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface in</p>
 <p><strong>compas/geometry/booleans/__init__.py</strong></p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;booleans&#39;</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;booleans&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">boolean_union_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
     <span class="k">pass</span>
 </code></pre></div>
@@ -390,11 +389,11 @@ the following <a class="reference internal" href="api/generated/compas.plugins.p
 <h4>Plugin</h4>
 <p>Now let’s write a plugin that implements this interface:</p>
 <p><strong>compas_plugin_sample/__init__.py</strong></p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">__all_plugins__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;compas_plugin_sample.boolean_trimesh&#39;</span><span class="p">]</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">__all_plugins__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;compas_plugin_sample.boolean_trimesh&#39;</span><span class="p">]</span>
 </code></pre></div>
 </div>
 <p><strong>compas_plugin_sample/boolean_trimesh.py</strong></p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">trimesh</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">trimesh</span>
 
 <span class="nd">@plugin</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;booleans&#39;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trimesh&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">boolean_union_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
@@ -436,7 +435,7 @@ naming of pluggable extension points.</p></li>
 <p>While developing plugins, it is also possible to enable print output to understand what
 how plugin selection works behind the scenes. To enable that, set <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> flag
 accordingly:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.plugins</span> <span class="kn">import</span> <span class="n">plugin_manager</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.plugins</span> <span class="kn">import</span> <span class="n">plugin_manager</span>
 <span class="n">plugin_manager</span><span class="o">.</span><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div>
 </div>
@@ -596,7 +595,7 @@ accordingly:</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="_static/underscore.js"></script>
   <script src="_static/doctools.js"></script>
@@ -615,6 +614,11 @@ accordingly:</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

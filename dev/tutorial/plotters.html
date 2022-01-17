@@ -27,8 +27,7 @@
   <link rel="prev" title="Geometric Maps" href="geomaps.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -115,7 +114,7 @@ The first three are deprecated in favour of <a class="reference external" href="
 <figure class="figure align-default">
 <img alt="../_images/plotters_example.png" class="figure-img img-fluid" src="../_images/plotters_example.png" />
 </figure>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">random</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Polyline</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
@@ -150,7 +149,7 @@ The first three are deprecated in favour of <a class="reference external" href="
 <li><p>Optionally zoom the extents of all objects that were added.</p></li>
 <li><p>Show the plot.</p></li>
 </ol>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">Plotter</span><span class="p">()</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">Plotter</span><span class="p">()</span>
 
 <span class="c1"># add objects</span>
 
@@ -164,14 +163,14 @@ and the plotter will use the artist to visualize the object.</p>
 <p>The artists provide many configuration options to modify the display styles of the objects.
 The <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.add.html#compas_plotters.Plotter.add" title="(in COMPAS v1.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add()</span></code></a> method accepts additional keyword arguments corresponding to those configuration options.
 See the API reference of the individual artists for the available options per object type.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 </code></pre></div>
 </div>
 <p>Alternatively, multiple objects of the same type can also be added using <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.add_from_list.html#compas_plotters.Plotter.add_from_list" title="(in COMPAS v1.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add_from_list()</span></code></a>.
 In this case all configurations options will be applied uniformly to all objects in the list.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">cloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">cloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">add_from_list</span><span class="p">(</span><span class="n">cloud</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 </code></pre></div>
@@ -192,7 +191,7 @@ and can be added to a plotter instance as described above:</p>
 </ul>
 <p>Bezier curves and pointclouds are currently not available yet, but will be added as well.
 Note that in all cases, the <code class="docutils literal notranslate"><span class="pre">z</span></code> coordinates of the objects are simply ignored, and only a 2D representation is depicted.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
@@ -206,7 +205,7 @@ Note that in all cases, the <code class="docutils literal notranslate"><span cla
 <h2>Data Structures</h2>
 <p>Of the three types of data structures, only network and mesh are supported.
 Also in this case, the <code class="docutils literal notranslate"><span class="pre">z</span></code> coordinates of the geometry is ignored, and only a 2D representation is depicted.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -241,7 +240,7 @@ Also in this case, the <code class="docutils literal notranslate"><span class="p
 </tr>
 </tbody>
 </table>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">pointcloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">pointcloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">grouper</span><span class="p">(</span><span class="n">pointcloud</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
     <span class="n">line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
@@ -292,7 +291,7 @@ Also in this case, the <code class="docutils literal notranslate"><span class="p
 </tr>
 </tbody>
 </table>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">poly1</span> <span class="o">=</span> <span class="n">Polygon</span><span class="o">.</span><span class="n">from_sides_and_radius_xy</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">poly1</span> <span class="o">=</span> <span class="n">Polygon</span><span class="o">.</span><span class="n">from_sides_and_radius_xy</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="n">poly2</span> <span class="o">=</span> <span class="n">Polygon</span><span class="o">.</span><span class="n">from_sides_and_radius_xy</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 <span class="n">poly3</span> <span class="o">=</span> <span class="n">Polygon</span><span class="o">.</span><span class="n">from_sides_and_radius_xy</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">([</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.25</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 
@@ -329,7 +328,7 @@ Also in this case, the <code class="docutils literal notranslate"><span class="p
 </tr>
 </tbody>
 </table>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">pointcloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">pointcloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pointcloud</span><span class="p">:</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
@@ -363,7 +362,7 @@ Also in this case, the <code class="docutils literal notranslate"><span class="p
 </tr>
 </tbody>
 </table>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">pointcloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">pointcloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">pointcloud</span><span class="p">)):</span>
     <span class="n">vector</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
@@ -380,7 +379,7 @@ Also in this case, the <code class="docutils literal notranslate"><span class="p
 <h2>Dynamic Plots</h2>
 <p>Dynamic plots, or animations, can be made with the “on” decorator <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.on.html#compas_plotters.Plotter.on" title="(in COMPAS v1.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.on()</span></code></a>.
 Simply add the decorator to a callback functions that updates the geometry in the plot at a specified interval.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@plotter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nd">@plotter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">pointcloud</span><span class="p">):</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
@@ -389,7 +388,7 @@ Simply add the decorator to a callback functions that updates the geometry in th
 </div>
 <p>For example, the following will update the locations of the points of a pointcloud
 for 50 frames and with an interval of 0.1 seconds between the frames.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span><span class="p">,</span> <span class="n">Translation</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span><span class="p">,</span> <span class="n">Translation</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_red</span><span class="p">,</span> <span class="n">pairwise</span>
 
 <span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">Plotter</span>
@@ -413,11 +412,11 @@ for 50 frames and with an interval of 0.1 seconds between the frames.</p>
 </code></pre></div>
 </div>
 <p>If you want to keep the plot alive at the end of the animation, add a call to <code class="docutils literal notranslate"><span class="pre">show</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 </div>
 <p>To save the animation to an animated gif, set the <code class="docutils literal notranslate"><span class="pre">record</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>, and add a <code class="docutils literal notranslate"><span class="pre">recording</span></code> path.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@plotter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">record</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">recording</span><span class="o">=</span><span class="s1">&#39;docs/_images/tutorial/plotters_dynamic.gif&#39;</span><span class="p">)</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nd">@plotter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">record</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">recording</span><span class="o">=</span><span class="s1">&#39;docs/_images/tutorial/plotters_dynamic.gif&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">pointcloud</span><span class="p">):</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
@@ -588,7 +587,7 @@ for 50 frames and with an interval of 0.1 seconds between the frames.</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../_static/underscore.js"></script>
   <script src="../_static/doctools.js"></script>
@@ -607,6 +606,11 @@ for 50 frames and with an interval of 0.1 seconds between the frames.</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

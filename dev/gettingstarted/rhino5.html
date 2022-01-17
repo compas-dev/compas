@@ -27,8 +27,7 @@
   <link rel="prev" title="FreeCAD" href="freecad.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -106,19 +105,19 @@
 <p>If you are using Rhino 5.0, you may also want to replace the version of IronPython
 that comes with it, such that everything works properly.</p>
 <p>To check your IronPython version in Rhino, go to the PythonScript Editor</p>
-<div class="language-none notranslate"><div class="highlight"><pre><code><span></span>Tools &gt; PythonScript &gt; Edit
+<div class="language-none notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>Tools &gt; PythonScript &gt; Edit
 </code></pre></div>
 </div>
 <figure class="figure align-default">
 <img alt="../_images/rhino_scripteditor.png" class="figure-img img-fluid" src="../_images/rhino_scripteditor.png" />
 </figure>
 <p>There, run the following snippet.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="nb">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span>
 </code></pre></div>
 </div>
 <p>This will display something like</p>
-<div class="language-none notranslate"><div class="highlight"><pre><code><span></span>sys.version_info(major=2, minor=7, micro=5, releaselevel=&#39;final&#39;, serial=0)
+<div class="language-none notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>sys.version_info(major=2, minor=7, micro=5, releaselevel=&#39;final&#39;, serial=0)
 </code></pre></div>
 </div>
 <p>If the <code class="docutils literal notranslate"><span class="pre">releaselevel</span></code> is not <code class="docutils literal notranslate"><span class="pre">'final'</span></code>,
@@ -131,11 +130,11 @@ and not the latest version of IronPython.
 Rhino doesn’t like it…</p>
 </div>
 <p>In the Rhino Python Editor, go to</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">Tools</span> <span class="o">&gt;</span> <span class="n">Options</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">Tools</span> <span class="o">&gt;</span> <span class="n">Options</span>
 </code></pre></div>
 </div>
 <p>And add</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">path</span>\<span class="n">to</span>\<span class="n">IronPython275</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">path</span>\<span class="n">to</span>\<span class="n">IronPython275</span>
 <span class="n">C</span><span class="p">:</span>\<span class="n">path</span>\<span class="n">to</span>\<span class="n">IronPython275</span>\<span class="n">Lib</span>
 <span class="n">C</span><span class="p">:</span>\<span class="n">path</span>\<span class="n">to</span>\<span class="n">IronPython275</span>\<span class="n">DLLs</span>
 </code></pre></div>
@@ -273,7 +272,7 @@ Rhino doesn’t like it…</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../_static/underscore.js"></script>
   <script src="../_static/doctools.js"></script>
@@ -292,6 +291,11 @@ Rhino doesn’t like it…</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

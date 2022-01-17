@@ -27,8 +27,7 @@
   <link rel="prev" title="i_to_white" href="compas.utilities.i_to_white.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -109,13 +108,13 @@
 <h1>i_to_black</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.utilities.i_to_black">
-<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">i_to_black</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/colors.py#L266"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">i_to_black</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/colors.py#L271"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert a number between 0.0 and 1.0 to a shade of black.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>i</strong> (<em>float</em>) – A number between 0.0 and 1.0.</p></li>
-<li><p><strong>normalize</strong> (<em>bool, optional</em>) – Normalize the resulting RGB values.
+<li><p><strong>normalize</strong> (<em>bool, optional</em>) – If True, normalize the resulting RGB values.
 Default is to return integer values ranging from 0 to 255.</p></li>
 </ul>
 </dd>
@@ -126,7 +125,7 @@ If <cite>normalize</cite> is false, the RGB values are integers between 0 and 25
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_black</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_black</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="go">(0, 0, 0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_black</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
 <span class="go">(255, 255, 255)</span>
@@ -275,7 +274,7 @@ If <cite>normalize</cite> is false, the RGB values are integers between 0 and 25
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../../_static/underscore.js"></script>
   <script src="../../_static/doctools.js"></script>
@@ -294,6 +293,11 @@ If <cite>normalize</cite> is false, the RGB values are integers between 0 and 25
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

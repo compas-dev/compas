@@ -27,8 +27,7 @@
   <link rel="prev" title="COMPAS Docs" href="index.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -110,17 +109,17 @@ using popular package managers such as conda or pip.</p>
 <h2>Install with conda</h2>
 <p>The recommended way to install COMPAS is with <a class="reference external" href="https://conda.io/docs/">conda</a>.
 For example, create an environment named <code class="docutils literal notranslate"><span class="pre">research</span></code> and install COMPAS.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda config --add channels conda-forge
 conda create -n research COMPAS
 </code></pre></div>
 </div>
 <p>Afterwards, simply activate the environment
 and run the following command to check if the installation process was successful.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate research
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate research
 python -m compas
 </code></pre></div>
 </div>
-<div class="language-none notranslate"><div class="highlight"><pre><code><span></span>Yay! COMPAS is installed correctly!
+<div class="language-none notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>Yay! COMPAS is installed correctly!
 
 COMPAS: 0.19.1
 Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clang 9.0.1 ]
@@ -129,11 +128,11 @@ Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clan
 <section id="installation-options">
 <h3>Installation options</h3>
 <p>Install COMPAS in an environment with a specific version of Python.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n research <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda create -n research <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
 </code></pre></div>
 </div>
 <p>Install COMPAS in an existing environment.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda install -n research COMPAS
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda install -n research COMPAS
 </code></pre></div>
 </div>
 </section>
@@ -141,48 +140,48 @@ Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clan
 <section id="install-with-pip">
 <h2>Install with pip</h2>
 <p>Install COMPAS using <code class="docutils literal notranslate"><span class="pre">pip</span></code> from the Python Package Index.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
 pip install COMPAS
 </code></pre></div>
 </div>
 <p>Install an editable version from local source.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">cd</span> path/to/compas
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">cd</span> path/to/compas
 pip install -e .
 </code></pre></div>
 </div>
 <p>Note that installation with <code class="docutils literal notranslate"><span class="pre">pip</span></code> is also possible within a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate my-project
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate my-project
 pip install -e .
 </code></pre></div>
 </div>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">planarity</span></code> is marked as an optional requirement for installation with <code class="docutils literal notranslate"><span class="pre">pip</span></code> on Windows.
 To include <code class="docutils literal notranslate"><span class="pre">planarity</span></code>, add a conditional to the install command.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install compas<span class="o">[</span>planarity<span class="o">]</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install compas<span class="o">[</span>planarity<span class="o">]</span>
 </code></pre></div>
 </div>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install -e .<span class="o">[</span>planarity<span class="o">]</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install -e .<span class="o">[</span>planarity<span class="o">]</span>
 </code></pre></div>
 </div>
 </section>
 <section id="update-with-conda">
 <h2>Update with conda</h2>
 <p>To update COMPAS to the latest version with <code class="docutils literal notranslate"><span class="pre">conda</span></code></p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda update -n research COMPAS
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda update -n research COMPAS
 </code></pre></div>
 </div>
 <p>To switch to a specific version</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda install -n research <span class="nv">COMPAS</span><span class="o">=</span><span class="m">0</span>.19.1
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda install -n research <span class="nv">COMPAS</span><span class="o">=</span><span class="m">0</span>.19.1
 </code></pre></div>
 </div>
 </section>
 <section id="update-with-pip">
 <h2>Update with pip</h2>
 <p>If you installed COMPAS with <code class="docutils literal notranslate"><span class="pre">pip</span></code> the update command is the following</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install --upgrade COMPAS
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install --upgrade COMPAS
 </code></pre></div>
 </div>
 <p>Or to switch to a specific version</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install <span class="nv">COMPAS</span><span class="o">==</span><span class="m">0</span>.19.1
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install <span class="nv">COMPAS</span><span class="o">==</span><span class="m">0</span>.19.1
 </code></pre></div>
 </div>
 </section>
@@ -194,7 +193,7 @@ please file an issue using the <a class="reference external" href="https://githu
 <h3>Installing Planarity</h3>
 <p>The installation process with <code class="docutils literal notranslate"><span class="pre">pip</span></code> can fail while installing <code class="docutils literal notranslate"><span class="pre">planarity</span></code>, because <code class="docutils literal notranslate"><span class="pre">cython</span></code> is not installed.
 If this is the case, install <code class="docutils literal notranslate"><span class="pre">cython</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (or <code class="docutils literal notranslate"><span class="pre">conda</span></code>), before installing COMPAS.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
 pip install COMPAS
 </code></pre></div>
 </div>
@@ -358,7 +357,7 @@ See the detail of the bug here: <a class="reference external" href="https://gith
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="_static/underscore.js"></script>
   <script src="_static/doctools.js"></script>
@@ -377,6 +376,11 @@ See the detail of the bug here: <a class="reference external" href="https://gith
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

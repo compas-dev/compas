@@ -27,8 +27,7 @@
   <link rel="prev" title="Grasshopper" href="grasshopper.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -119,7 +118,7 @@ under the Scripting tab.</p>
 <h2>Installation</h2>
 <p>These instructions are for the latest Blender 2.93 LTS which ships with Python 3.9
 If you don’t have an environment yet with Python 3.9 and COMPAS you can create one with <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda config --add channels conda-forge
 conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 COMPAS --yes
 </code></pre></div>
 </div>
@@ -139,21 +138,21 @@ conda create -n blender <span class="nv">python</span><span class="o">=</span><s
         </ul>
     </div>
     <div class="card-body">
-        <div class="tab-content"><div class="tab-pane active" id="replace_python_windows"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+        <div class="tab-content"><div class="tab-pane active" id="replace_python_windows"><div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\\Blender Foundation\\Blender 2.93\\2.93&quot;</span>
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.93\\2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<div class="tab-pane" id="replace_python_osx"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+<div class="tab-pane" id="replace_python_osx"><div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.93
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<div class="tab-pane" id="replace_python_linux"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+<div class="tab-pane" id="replace_python_linux"><div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install ~/Blender/2.93
 </code></pre></div>
 </div>
@@ -162,7 +161,7 @@ Check your Blender installation and change the path accordingly.</p>
 </div></div>
 </div>
 </div><p>On Windows and OSX, if Blender is installed in the default location, you can simply provide the version number.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install -v <span class="m">2</span>.93
 </code></pre></div>
 </div>
@@ -175,7 +174,7 @@ will not work with the version of Numpy included in the latest COMPAS releases, 
 <p>In those cases, you can simply revert to an earlier version of Numpy that is still compatible with COMPAS
 in the environment you use with Blender. For Sverchok, this would be version <code class="docutils literal notranslate"><span class="pre">1.17.5</span></code>,
 which is the one shipped with Blender originally. To revert simply do</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 conda install <span class="nv">numpy</span><span class="o">=</span><span class="m">1</span>.17.5
 </code></pre></div>
 </div>
@@ -183,7 +182,7 @@ conda install <span class="nv">numpy</span><span class="o">=</span><span class="
 <section id="verify-setup">
 <h2>Verify setup</h2>
 <p>In Blender, at the interactive Python prompt (&gt;&gt;&gt;) import the following packages</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas_blender</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy</span>
@@ -197,7 +196,7 @@ environment, as instructed above, it is not necessary to activate the environmen
 before using Blender. However, when you want to update the installed packages,
 or add more packages, make sure to activate the Blender environment first.
 Otherwise, the changes will not have any effect.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 conda install ...
 </code></pre></div>
 </div>
@@ -226,17 +225,17 @@ Just add the following to your <code class="docutils literal notranslate"><span 
         </ul>
     </div>
     <div class="card-body">
-        <div class="tab-content"><div class="tab-pane active" id="add_blender_to_path_osx"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+        <div class="tab-content"><div class="tab-pane active" id="add_blender_to_path_osx"><div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
-</div><div class="tab-pane" id="add_blender_to_path_linux"><div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.83:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</div><div class="tab-pane" id="add_blender_to_path_linux"><div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.83:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
 <p>Note that this path might be different on your system.</p>
 </div></div>
 </div>
 </div><p>After that starting Blender from the command line is much simpler.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>blender
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>blender
 </code></pre></div>
 </div>
 </section>
@@ -245,7 +244,7 @@ Just add the following to your <code class="docutils literal notranslate"><span 
 <p>To switch to the scripting interface, simply select the “Scripting” tab of the main window.</p>
 <p>The scripting interface has an embedded interactive Python terminal, which is located in the bottom half of the main window on the left.
 If COMPAS was successfully installed you can use it to directly access the <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment from where the installation was executed.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas_blender</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy</span>
@@ -262,7 +261,7 @@ Further customisation of the editor appearance is possible by opening the sideba
 <p>One of the main advantages of working in Blender is that Blender Python is CPython, and not IronPython like in Rhino and Grasshopper.
 This means that all cool Python libraries are directly available and do not need to be accessed through remote procedure calls (RPC).
 Especially for code that relies heavily on libraries such as Numpy and Scipy this simplifies the development process quite significantly.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">import</span> <span class="nn">compas_blender</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
@@ -312,15 +311,15 @@ Therefore, COMPAS Blender development is somewhat limited to individual scripts.
 If this is the case, the problem can usually be solved by reinstalling NumPy in your environment using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
 However, to avoid issues with other packages that were already installed and depend on a specific version of NumPy,
 you should install the same version as the one installed originally by <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -c <span class="s2">&quot;import numpy; print(numpy.__version__)&quot;</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -c <span class="s2">&quot;import numpy; print(numpy.__version__)&quot;</span>
 </code></pre></div>
 </div>
 <p>If the above is, for example, <code class="docutils literal notranslate"><span class="pre">1.20.3</span></code></p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install --force-reinstall <span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.20.3
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install --force-reinstall <span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.20.3
 </code></pre></div>
 </div>
 <p>Alternatively, you can create a new environment and simply install entire COMPAS using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 cython planarity --yes
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 cython planarity --yes
 conda activate blender
 pip install compas
 python -m compas_blender.install
@@ -480,7 +479,7 @@ python -m compas_blender.install
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../_static/underscore.js"></script>
   <script src="../_static/doctools.js"></script>
@@ -499,6 +498,11 @@ python -m compas_blender.install
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

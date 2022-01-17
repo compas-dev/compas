@@ -27,8 +27,7 @@
   <link rel="prev" title="Numerical Data" href="numericaldata.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -125,14 +124,14 @@ without any overhead. Therefore, the response time is much faster than with <cod
 <h2>Basic Usage</h2>
 <p>The basic usage of RPC is simple.
 For example, consider a CPython script using the Force Density method.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">fd_numpy</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">fd_numpy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">fd_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p>This script does not work in Rhino or GH because Numpy is not available.
 Therefore, instead of importing and calling the function directly,
 we call it through a proxy object.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">numerical</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.numerical&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">numerical</span><span class="o">.</span><span class="n">fd_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
@@ -140,7 +139,7 @@ we call it through a proxy object.</p>
 <p>To use functions from more than one package in the same script, simply change the
 package attribute of the proxy object, which determines where the proxy will look
 for the requested function.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;compas.numerical&#39;</span>
@@ -151,7 +150,7 @@ for the requested function.</p>
 </code></pre></div>
 </div>
 <p>The use of <a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a> is not restricted to COMPAS packages only.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">linalg</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;scipy.linalg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </code></pre></div>
@@ -180,7 +179,7 @@ For example, to load functionality from a different conda environment, or to
 load changes that were made to the packages in the environment after it was started.
 This happens frequently while a package is still under active development.</p>
 <p>Stopping and starting the server is easy.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">stop_server</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">start_server</span><span class="p">()</span>
@@ -188,7 +187,7 @@ This happens frequently while a package is still under active development.</p>
 </div>
 <p>To restart the server after every call, you can use a context manager.
 When used in this way, RPC behaves much like its predecessor <code class="docutils literal notranslate"><span class="pre">XFunc</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.numerical&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">numerical</span><span class="p">:</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.numerical&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">numerical</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">numerical</span><span class="o">.</span><span class="n">fd_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">...</span>
 </code></pre></div>
@@ -201,11 +200,11 @@ if no server is already running, but very often it is recommended
 to start it manually from the command-line.</p>
 <p>To start a new RPC server use the following command on the terminal
 (default port is <code class="docutils literal notranslate"><span class="pre">1753</span></code>):</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc start [--port PORT]
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>$ compas_rpc start [--port PORT]
 </code></pre></div>
 </div>
 <p>Conversely, to stop an existing RPC server:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc stop [--port PORT]
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>$ compas_rpc stop [--port PORT]
 </code></pre></div>
 </div>
 <div class="admonition note">
@@ -367,7 +366,7 @@ network, or on a server reachable over the internet.</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../_static/underscore.js"></script>
   <script src="../_static/doctools.js"></script>
@@ -386,6 +385,11 @@ network, or on a server reachable over the internet.</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

@@ -27,8 +27,7 @@
   <link rel="prev" title="await_callback" href="compas.utilities.await_callback.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -114,8 +113,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>i</strong> (<em>float</em>) – A number between <cite>0.0</cite> and <cite>1.0</cite>.</p></li>
-<li><p><strong>normalize</strong> (<em>bool, optional</em>) – Normalize the resulting RGB values.
+<li><p><strong>i</strong> (<em>float</em>) – A number between 0.0 and 1.0.</p></li>
+<li><p><strong>normalize</strong> (<em>bool, optional</em>) – If True, normalize the resulting RGB values.
 Default is to return integer values ranging from 0 to 255.</p></li>
 </ul>
 </dd>
@@ -126,7 +125,7 @@ If <cite>normalize</cite> is false, the RGB values are integers between 0 and 25
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_rgb</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_rgb</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="go">(255, 0, 0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_rgb</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
 <span class="go">(255, 255, 0)</span>
@@ -138,7 +137,7 @@ If <cite>normalize</cite> is false, the RGB values are integers between 0 and 25
 <span class="go">(0, 0, 255)</span>
 </code></pre></div>
 </div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_rgb</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_rgb</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="go">(1.0, 0.0, 0.0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">i_to_rgb</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="go">(1.0, 1.0, 0.0)</span>
@@ -293,7 +292,7 @@ If <cite>normalize</cite> is false, the RGB values are integers between 0 and 25
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../../_static/underscore.js"></script>
   <script src="../../_static/doctools.js"></script>
@@ -312,6 +311,11 @@ If <cite>normalize</cite> is false, the RGB values are integers between 0 and 25
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

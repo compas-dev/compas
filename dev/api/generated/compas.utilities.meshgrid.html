@@ -27,8 +27,7 @@
   <link rel="prev" title="linspace" href="compas.utilities.linspace.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -109,47 +108,62 @@
 <h1>meshgrid</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.utilities.meshgrid">
-<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">meshgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xy'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/itertools.py#L103"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">meshgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xy'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/itertools.py#L97"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct coordinate matrices from two coordinate vectors.</p>
-<p>This function mimicks the functionality of <code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code> <a class="footnote-reference brackets" href="#id2" id="id1">1</a>, but in a simpler form.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>list of float</em>)</p></li>
-<li><p><strong>y</strong> (<em>list of float</em>)</p></li>
-<li><p><strong>indexing</strong> (<em>{‘xy’, ‘ij’}, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>.</p></li>
+<li><p><strong>x</strong> (<em>list[float]</em>) – The values of the “x axis” of the grid.</p></li>
+<li><p><strong>y</strong> (<em>list[float]</em>) – The values of the “y axis” of the grid.</p></li>
+<li><p><strong>indexing</strong> (<em>{‘xy’, ‘ij’}, optional</em>) – The indexing strategy determines the structure of the output.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>(list of list, list of list)</em> – The X and Y values of the coordinate grid.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>list[list[float]]</em> – The X values of the coordinate grid.</p></li>
+<li><p><em>list[list[float]]</em> – The Y values of the coordinate grid.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The output of this function consists of two “matrices”, <cite>X</cite> and <cite>Y</cite>.
+The structure of the matrices is determined by the choice of <cite>indexing</cite>.
+Assuming <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">len(x)</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(y)</span></code>.
+If <cite>indexing</cite> is <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
+the shape of both matrices is <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">m)</span></code>,
+with <cite>X</cite> containing the elements of <cite>x</cite> in its rows, and <cite>Y</cite> the elements of <cite>y</cite> in its columns.
+If <cite>indexing</cite> is <code class="docutils literal notranslate"><span class="pre">'ij'</span></code>,
+the shape of both matrices is <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n)</span></code>,
+with <cite>X</cite> containing the elements of <cite>x</cite> in its columns, and <cite>Y</cite> the elements of <cite>y</cite> in its rows.</p>
+<p class="rubric">References</p>
+<p>This function mimicks the functionality of <code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code> <a class="footnote-reference brackets" href="#id2" id="id1">1</a>, but in a simpler form.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p><cite>numpy.meshgrid</cite>.
+Available at <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html">https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">linspace</span><span class="p">,</span> <span class="n">meshgrid</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">linspace</span><span class="p">,</span> <span class="n">meshgrid</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </code></pre></div>
 </div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
 <span class="go">[[0.0, 0.5, 1.0], [0.0, 0.5, 1.0]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Y</span>
 <span class="go">[[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]]</span>
 </code></pre></div>
 </div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ij&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
 <span class="go">[[0.0, 0.0], [0.5, 0.5], [1.0, 1.0]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Y</span>
 <span class="go">[[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]]</span>
 </code></pre></div>
 </div>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code> Available at <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html">https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html</a></p>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -293,7 +307,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../../_static/underscore.js"></script>
   <script src="../../_static/doctools.js"></script>
@@ -312,6 +326,11 @@
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

@@ -27,8 +27,7 @@
   <link rel="prev" title="window" href="compas.utilities.window.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -109,28 +108,26 @@
 <h1>iterable_like</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.utilities.iterable_like">
-<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">iterable_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/itertools.py#L260"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">iterable_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/itertools.py#L286"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Creates an iterator from a reference object with size equivalent to that of a target iterable.</p>
-<p>Values will be yielded one at a time until the target iterable is exhausted.
-If target and reference are of uneven size, fillvalue will be used to
-substitute the missing values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>target</strong> (<em>iterable</em>) – An iterable to be matched in size.</p></li>
-<li><p><strong>reference</strong> (<em>iterable</em>) – Iterable taken as basis for pairing.</p></li>
-<li><p><strong>fillvalue</strong> (<em>object, optional</em>) – Defaults to <cite>None</cite>.</p></li>
+<li><p><strong>reference</strong> (<em>iterable</em>) – The iterable containing the original data.</p></li>
+<li><p><strong>fillvalue</strong> (<em>object, optional</em>) – A value to replace missing items.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>object</em> – The next value in the iterator</p>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>object</em> – The next value in the iterator.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This function can also produce an iterable capped to the size of target
-whenever the supplied reference is larger.</p>
+<p>Values will be yielded one at a time until the reference iterable is exhausted.
+If <cite>target</cite> contains more values than <cite>reference</cite>, <cite>fillvalue</cite> will be used to cover the difference.
+Otherwise, only the same number of items from <cite>reference</cite> will be yielded as there would have been from <cite>target</cite>.</p>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">iterable_like</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="p">[</span><span class="n">color</span><span class="p">],</span> <span class="n">color</span><span class="p">))</span>
 <span class="go">[(255, 0, 0), (255, 0, 0), (255, 0, 0), (255, 0, 0)]</span>
@@ -281,7 +278,7 @@ whenever the supplied reference is larger.</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../../_static/underscore.js"></script>
   <script src="../../_static/doctools.js"></script>
@@ -300,6 +297,11 @@ whenever the supplied reference is larger.</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

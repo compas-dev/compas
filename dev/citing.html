@@ -25,8 +25,7 @@
   <link rel="prev" title="License" href="license.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -102,7 +101,7 @@
 <p class="lead">The core library of COMPAS is developed by a small team of nerds at ETH Zurich.
 If you use COMPAS in your work, please acknowledge their many sleepless nights
 and lack of social life :)</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@misc</span><span class="p">{</span><span class="n">compas</span><span class="o">-</span><span class="n">dev</span><span class="p">,</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nd">@misc</span><span class="p">{</span><span class="n">compas</span><span class="o">-</span><span class="n">dev</span><span class="p">,</span>
     <span class="n">title</span>  <span class="o">=</span> <span class="p">{{</span><span class="n">COMPAS</span><span class="p">}:</span> <span class="n">A</span> <span class="n">framework</span> <span class="k">for</span> <span class="n">computational</span> <span class="n">research</span> <span class="ow">in</span> <span class="n">architecture</span> <span class="ow">and</span> <span class="n">structures</span><span class="o">.</span><span class="p">},</span>
     <span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">Tom</span> <span class="n">Van</span> <span class="n">Mele</span> <span class="ow">and</span> <span class="n">many</span> <span class="n">others</span><span class="p">},</span>
     <span class="n">note</span>   <span class="o">=</span> <span class="p">{</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">compas</span><span class="o">.</span><span class="n">dev</span><span class="p">},</span>
@@ -225,7 +224,7 @@ and lack of social life :)</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="_static/underscore.js"></script>
   <script src="_static/doctools.js"></script>
@@ -244,6 +243,11 @@ and lack of social life :)</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

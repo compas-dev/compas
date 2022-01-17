@@ -27,8 +27,7 @@
   <link rel="prev" title="utilities" href="../compas.utilities.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -109,21 +108,19 @@
 <h1>await_callback</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.utilities.await_callback">
-<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">await_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">async_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'callback'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errback_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/azync.py#L45"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">await_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">async_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'callback'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errback_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/azync.py#L46"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wait for the completion of an asynchronous code that uses callbacks to signal completion.</p>
 <p>This helper function turns an async function into a synchronous one,
 waiting for its completion before moving forward (without doing a busy wait).</p>
 <p>It is useful to minimize “callback hell” when more advanced options
-like <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> are not available.</p>
+like <cite>asyncio</cite> are not available.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>async_func</strong> (<em>callable</em>) – An asynchronous function that receives at least one callback parameter
 to signal completion.</p></li>
-<li><p><strong>callback_name</strong> (<em>string, optional</em>) – Name of the callback parameter of <code class="docutils literal notranslate"><span class="pre">async_func</span></code>.
-Default is <cite>callback</cite>.</p></li>
-<li><p><strong>errback_name</strong> (<em>string, optional</em>) – Name of the error handling callback parameter of <code class="docutils literal notranslate"><span class="pre">async_func</span></code>.
-Default is None.</p></li>
+<li><p><strong>callback_name</strong> (<em>string, optional</em>) – Name of the callback parameter of <cite>async_func</cite>.</p></li>
+<li><p><strong>errback_name</strong> (<em>string, optional</em>) – Name of the error handling callback parameter of <cite>async_func</cite>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -131,9 +128,9 @@ Default is None.</p></li>
 <p>Exceptions thrown during the async execution are handled and re-thrown as normal
 exceptions, even if they were raised on a different thread.</p>
 <p class="rubric">Examples</p>
-<p>The following example shows how to await an async function (<code class="docutils literal notranslate"><span class="pre">do_sync_stuff</span></code> in
+<p>The following example shows how to await an async function (<code class="docutils literal notranslate"><span class="pre">do_async_stuff</span></code> in
 the example), using this utility:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">await_callback</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">await_callback</span>
 
 <span class="k">def</span> <span class="nf">do_async_stuff</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
@@ -291,7 +288,7 @@ the example), using this utility:</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../../_static/underscore.js"></script>
   <script src="../../_static/doctools.js"></script>
@@ -310,6 +307,11 @@ the example), using this utility:</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

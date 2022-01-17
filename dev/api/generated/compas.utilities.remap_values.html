@@ -27,8 +27,7 @@
   <link rel="prev" title="normalize_values" href="compas.utilities.normalize_values.html" />
   
 
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body data-spy="scroll" data-target="#compas-toc">
@@ -109,27 +108,22 @@
 <h1>remap_values</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.utilities.remap_values">
-<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">remap_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/itertools.py#L66"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Maps a list of numbers from one domain to another.
-If you do not specify a target domain 0.0-1.0 will be used.</p>
+<span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">remap_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/itertools.py#L65"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Maps a list of numbers from one domain to another.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>values</strong> (<em>list of int or float</em>) – The value to remap</p></li>
-<li><p><strong>original_min</strong> (<em>int or float</em>) – The minimun value of the original domain</p></li>
-<li><p><strong>original_max</strong> (<em>int or float</em>) – The maximum value of the original domain</p></li>
-<li><p><strong>target_min</strong> (<em>int or float</em>) – The minimun value of the target domain. Default 0.0</p></li>
-<li><p><strong>target_max</strong> (<em>int or float</em>) – The maximum value of the target domain. Default 1.0</p></li>
+<li><p><strong>values</strong> (<em>sequence[int or float]</em>) – The value to remap</p></li>
+<li><p><strong>target_min</strong> (<em>int or float, optional</em>) – The minimun value of the target domain.</p></li>
+<li><p><strong>target_max</strong> (<em>int or float, optional</em>) – The maximum value of the target domain.</p></li>
+<li><p><strong>original_min</strong> (<em>int or float, optional</em>) – The minimun value of the original domain, other than the actual minimum value.</p></li>
+<li><p><strong>original_max</strong> (<em>int or float, optional</em>) – The maximum value of the original domain, other than the actual maximum value.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The remaped list of values</p>
+<dd class="field-even"><p><em>list[float]</em> – The remaped list of values.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -273,7 +267,7 @@ If you do not specify a target domain 0.0-1.0 will be used.</p>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
   <script src="../../_static/underscore.js"></script>
   <script src="../../_static/doctools.js"></script>
@@ -292,6 +286,11 @@ If you do not specify a target domain 0.0-1.0 will be used.</p>
       hljs.initHighlighting();
       anchors.add();
 
+      new ClipboardJS('.btn', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
     });
 
     var url = $("#doc_versions").data("url");

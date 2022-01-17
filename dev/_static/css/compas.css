@@ -344,6 +344,17 @@ padding: 2rem;
 background-color: #f0f0f0;
 }
 
+.copy {
+  display: block;
+  float: right;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  top: 0px;
+  right: 40px;
+  margin-right: -40px;
+}
+
 .compas-content .anchorjs-link {
 text-decoration: none;
 }
