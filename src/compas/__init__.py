@@ -10,6 +10,7 @@ compas
     :titlesonly:
 
     compas.artists
+    compas.colors
     compas.data
     compas.datastructures
     compas.files
