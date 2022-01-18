@@ -375,28 +375,17 @@ class NurbsSurface(Surface):
         list[list[:class:`compas.geometry.Point`]]
 
         """
-        import numpy as np
-        from functools import lru_cache
-
-        @lru_cache(maxsize=None)
-        def point_at(i, j):
-            return self.point_at(i, j)
-
         nv = nv or nu
-        V, U = np.meshgrid(self.v_space(nv + 1), self.u_space(nu + 1), indexing='ij')
-
-        tris = [None] * (6 * nu * nv)
-        index = 0
-        for i, j in product(range(nv), range(nu)):
-            tris[index + 0] = point_at(U[i + 0][j + 0], V[i + 0][j + 0])
-            tris[index + 1] = point_at(U[i + 0][j + 1], V[i + 0][j + 1])
-            tris[index + 2] = point_at(U[i + 1][j + 1], V[i + 1][j + 1])
-            tris[index + 3] = point_at(U[i + 0][j + 0], V[i + 0][j + 0])
-            tris[index + 4] = point_at(U[i + 1][j + 1], V[i + 1][j + 1])
-            tris[index + 5] = point_at(U[i + 1][j + 0], V[i + 1][j + 0])
-            index += 6
-
-        return tris
+        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
+        triangles = []
+        for i, j in product(range(nu), range(nv)):
+            a = i * (nv + 1) + j
+            b = (i + 1) * (nv + 1) + j
+            c = (i + 1) * (nv + 1) + j + 1
+            d = i * (nv + 1) + j + 1
+            triangles.append([vertices[a], vertices[b], vertices[c]])
+            triangles.append([vertices[a], vertices[c], vertices[d]])
+        return triangles
 
     # ==============================================================================
     # Properties
