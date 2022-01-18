@@ -178,7 +178,7 @@ class Color(Data):
 
     @property
     def hex(self):
-        return '#{0:02x}{1:02x}{2:02x}'.format(self.r, self.g, self.b)
+        return '#{0:02x}{1:02x}{2:02x}'.format(* self.rgb255)
 
     @property
     def hls(self):
