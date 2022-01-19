@@ -54,7 +54,7 @@ class Reflection(Transformation):
 
         Parameters
         ----------
-        plane : [point, vector] or :class:`compas.geometry.Plane`
+        plane : [point, vector] | :class:`compas.geometry.Plane`
             The reflection plane.
 
         Returns
@@ -81,7 +81,7 @@ class Reflection(Transformation):
 
         Parameters
         ----------
-        frame : [point, vector, vector] or :class:`compas.geometry.Frame`
+        frame : [point, vector, vector] | :class:`compas.geometry.Frame`
 
         Returns
         -------

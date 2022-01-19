@@ -15,7 +15,7 @@ class STL(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     precision : str, optional
         A COMPAS precision specification.
@@ -55,6 +55,7 @@ class STL(object):
         Returns
         -------
         None
+
         """
         self._reader = STLReader(self.filepath)
         self._parser = STLParser(self._reader, precision=self.precision)
@@ -89,7 +90,7 @@ class STLReader(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
 
     References
@@ -111,6 +112,7 @@ class STLReader(object):
         Returns
         -------
         None
+
         """
         is_binary = False
         with _iotools.open_file(self.filepath, 'rb') as file:
@@ -275,7 +277,7 @@ class STLParser(object):
     ----------
     reader : :class:`STLReader`
         A STL file reader.
-    precision : str
+    precision : str, optional
         COMPAS precision specification for parsing geometric data.
 
     Attributes
@@ -284,6 +286,7 @@ class STLParser(object):
         The vertex coordinates.
     faces : list[list[int]]
         The faces as lists of vertex indices.
+
     """
 
     def __init__(self, reader, precision=None):
@@ -299,6 +302,7 @@ class STLParser(object):
         Returns
         -------
         None
+
         """
         gkey_index = {}
         vertices = []
@@ -326,7 +330,7 @@ class STLWriter(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     mesh : :class:`compas.datastructures.Mesh`
         The mesh.
@@ -337,6 +341,7 @@ class STLWriter(object):
         Defaults to the name of the mesh.
     precision : str, optional
         COMPAS precision specification for parsing geometric data.
+
     """
 
     def __init__(self, filepath, mesh, binary=False, solid_name=None, precision=None):
@@ -364,6 +369,7 @@ class STLWriter(object):
         Returns
         -------
         None
+
         """
         if not self.mesh.is_trimesh():
             raise ValueError('Mesh must be triangular to be encoded in STL.')

@@ -18,7 +18,7 @@ def delaunay_from_points_numpy(points):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         XYZ coordinates of the original points.
 
     Returns
@@ -42,7 +42,7 @@ def voronoi_from_points_numpy(points):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         XYZ coordinates of the voronoi sites.
 
     Returns

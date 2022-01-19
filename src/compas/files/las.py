@@ -8,7 +8,7 @@ class LAS(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     precision : str, optional
         A COMPAS precision specification.
@@ -57,8 +57,9 @@ class LASReader(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
+
     """
 
     def __init__(self, filepath):
@@ -82,6 +83,7 @@ class LASParser(object):
         A LAS file reader.
     precision : str
         COMPAS precision specification for parsing geometric data.
+
     """
 
     def __init__(self, reader, precision):

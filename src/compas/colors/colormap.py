@@ -147,7 +147,7 @@ class ColorMap(object):
 
         Parameters
         ----------
-        name : {'magma', 'inferno', 'plasma', 'viridis'}
+        name : Literal['magma', 'inferno', 'plasma', 'viridis']
             The name of the mpl colormap.
 
         Returns
@@ -177,7 +177,7 @@ class ColorMap(object):
         ----------
         color : :class:`compas.colors.Color`
             The base color.
-        rangetype : {'full', 'light', 'dark'}, optional
+        rangetype : Literal['full', 'light', 'dark'], optional
             If ``'full'``, use the full luminance range (0.0 - 1.0).
             If ``'light'``, use only the "light" part of the luminance range (0.5 - 1.0).
             If ``'dark'``, use only the "dark" part of the luminance range (0.0 - 0.5).

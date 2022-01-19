@@ -18,7 +18,7 @@ class OBJ(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     precision : str, optional
         A COMPAS precision specification.
@@ -134,6 +134,7 @@ class OBJ(object):
         Returns
         -------
         None
+
         """
         self._writer = OBJWriter(self.filepath, mesh, precision=self.precision, unweld=unweld, **kwargs)
         self._writer.write()
@@ -176,7 +177,7 @@ class OBJReader(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
 
     Attributes
@@ -197,6 +198,7 @@ class OBJReader(object):
         Groups of mesh objects defined by their vertices and faces.
     objects : dict[str, tuple[list[int], list[list[int]]]]
         Named mesh objects defined by their vertices and faces.
+
     """
 
     def __init__(self, filepath):
@@ -234,6 +236,7 @@ class OBJReader(object):
         Returns
         -------
         None
+
         """
         with _iotools.open_file(self.filepath, 'r') as f:
             self.content = f.readlines()
@@ -244,6 +247,7 @@ class OBJReader(object):
         Returns
         -------
         None
+
         """
         lines = []
         is_continuation = False
@@ -274,6 +278,7 @@ class OBJReader(object):
         Returns
         -------
         None
+
         """
         pass
 
@@ -301,6 +306,7 @@ class OBJReader(object):
         Returns
         -------
         None
+
         """
         if not self.content:
             return
@@ -345,6 +351,7 @@ class OBJReader(object):
         """Read a comment.
 
         Comments start with ``#``.
+
         """
         pass
 
@@ -355,6 +362,7 @@ class OBJReader(object):
 
         * x y z
         * x y z w
+
         """
         if len(data) == 3:
             self.vertices.append([float(x) for x in data])
@@ -483,6 +491,7 @@ class OBJParser(object):
         Groups of mesh objects defined by their parsed vertices and faces.
     objects : dict[str, tuple[list[int], list[list[int]]]]
         Named mesh objects defined by their parsed vertices and faces.
+
     """
 
     def __init__(self, reader, precision=None):
@@ -508,6 +517,7 @@ class OBJParser(object):
         Returns
         -------
         None
+
         """
         index_key = OrderedDict()
         vertex = OrderedDict()
@@ -544,7 +554,7 @@ class OBJWriter(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     meshes : list[:class:`compas.datastructures.Mesh`]
         list of meshes to write to the file.
@@ -558,6 +568,7 @@ class OBJWriter(object):
         The email of the author to include in the header.
     date : str, optional
         The date to include in the header.
+
     """
 
     def __init__(self, filepath, meshes, precision=None, unweld=False, author=None, email=None, date=None):
@@ -581,6 +592,7 @@ class OBJWriter(object):
         Returns
         -------
         None
+
         """
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self._write_header()

@@ -90,7 +90,7 @@ class Translation(Transformation):
 
         Parameters
         ----------
-        vector : [float, float, float] or :class:`compas.geometry.Vector`
+        vector : [float, float, float] | :class:`compas.geometry.Vector`
             The translation vector.
 
         Returns

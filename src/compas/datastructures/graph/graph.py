@@ -609,7 +609,7 @@ class Graph(Datastructure):
 
         Yields
         ------
-        hashable or tuple[hashable, dict[str, Any]]
+        hashable | tuple[hashable, dict[str, Any]]
             If `data` is False, the next node identifier.
             If `data` is True, the next node as a (key, attr) tuple.
 
@@ -634,7 +634,7 @@ class Graph(Datastructure):
 
         Yields
         ------
-        hashable or tuple[hashable, dict[str, Any]]
+        hashable | tuple[hashable, dict[str, Any]]
             If `data` is False, the next node that matches the condition.
             If `data` is True, the next node and its attributes.
 
@@ -700,7 +700,7 @@ class Graph(Datastructure):
 
         Yields
         ------
-        hashable or tuple[hashable, dict[str, Any]]
+        hashable | tuple[hashable, dict[str, Any]]
             If `data` is False, the next node that matches the condition.
             If `data` is True, the next node and its attributes.
 
@@ -726,7 +726,7 @@ class Graph(Datastructure):
 
         Yields
         ------
-        tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
+        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
             If `data` is False, the next edge identifier (u, v).
             If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
 
@@ -752,7 +752,7 @@ class Graph(Datastructure):
 
         Yields
         ------
-        tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
+        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
             If `data` is False, the next edge identifier (u, v).
             If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
 
@@ -808,7 +808,7 @@ class Graph(Datastructure):
 
         Yields
         ------
-        tuple[hashable, hashable] or tuple[tuple[hashable, hashable], dict[str, Any]]
+        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
             If `data` is False, the next edge identifier (u, v).
             If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
 
@@ -948,7 +948,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        dict[str, Any] or list[Any] or None
+        dict[str, Any] | list[Any] | None
             If the parameter `names` is empty,
             the function returns a dictionary of all attribute name-value pairs of the node.
             If the parameter `names` is not empty,
@@ -996,7 +996,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list[Any] or None
+        list[Any] | None
             The value of the attribute for each node,
             or None if the function is used as a "setter".
 
@@ -1028,7 +1028,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list[dict[str, Any]] or list[list[Any]] or None
+        list[dict[str, Any]] | list[list[Any]] | None
             If the parameter `names` is None,
             the function returns a list containing an attribute dict per node.
             If the parameter `names` is not None,
@@ -1067,7 +1067,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        obj or None
+        object | None
             The value of the attribute, or None when the function is used as a "setter".
 
         Raises
@@ -1097,6 +1097,10 @@ class Graph(Datastructure):
             The edge identifier.
         name : str
             The name of the attribute.
+
+        Returns
+        -------
+        None
 
         Raises
         ------
@@ -1130,7 +1134,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        dict[str, Any] or list[Any] or None
+        dict[str, Any] | list[Any] | None
             If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the edge.
             If the parameter `names` is not empty, a list of the values corresponding to the provided names.
             None if the function is used as a "setter".
@@ -1174,7 +1178,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list[Any] or None
+        list[Any] | None
             A list containing the value per edge of the requested attribute,
             or None if the function is used as a "setter".
 
@@ -1206,7 +1210,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list[dict[str, Any]] or list[list[Any]] or None
+        list[dict[str, Any]] | list[list[Any]] | None
             If `names` is empty,
             a list containing per edge an attribute dict with all attributes of the edge.
             If `names` is not empty,

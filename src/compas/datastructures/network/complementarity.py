@@ -26,6 +26,11 @@ def network_complement(network, cls=None):
     :class:`compas.datastructures.Network`
         The complement network.
 
+    References
+    ----------
+    .. [1] Wolfram MathWorld. *Graph complement*.
+           Available at: http://mathworld.wolfram.com/GraphComplement.html.
+
     Examples
     --------
     >>> import compas
@@ -35,11 +40,6 @@ def network_complement(network, cls=None):
     >>> complement = network_complement(network)
     >>> any(complement.has_edge(u, v, directed=False) for u, v in network.edges())
     False
-
-    References
-    ----------
-    .. [1] Wolfram MathWorld. *Graph complement*.
-           Available at: http://mathworld.wolfram.com/GraphComplement.html.
 
     """
     if not cls:

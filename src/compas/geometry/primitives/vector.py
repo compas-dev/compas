@@ -202,7 +202,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to compare.
 
         Returns
@@ -219,7 +219,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to add.
 
         Returns
@@ -235,7 +235,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to subtract.
 
         Returns
@@ -303,7 +303,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to add.
 
         Returns
@@ -321,7 +321,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to subtract.
 
         Returns
@@ -449,9 +449,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        start : [float, float, float] or :class:`compas.geometry.Point`
+        start : [float, float, float] | :class:`compas.geometry.Point`
             The start point.
-        end : [float, float, float] or :class:`compas.geometry.Point`
+        end : [float, float, float] | :class:`compas.geometry.Point`
             The end point.
 
         Returns
@@ -478,7 +478,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        collection : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        collection : list[[float, float, float] | :class:`compas.geometry.Vector`]
             The collection of vectors.
 
         Returns
@@ -511,7 +511,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        collection : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        collection : list[[float, float, float] | :class:`compas.geometry.Vector`]
             The collection of vectors.
 
         Returns
@@ -543,7 +543,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        vectors : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -565,7 +565,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        vectors : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        vectors : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -587,9 +587,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -611,9 +611,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -635,9 +635,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -659,9 +659,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] or :class:`compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -849,7 +849,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -872,7 +872,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -895,7 +895,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -918,9 +918,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
-        normal : [float, float, float] or :class:`compas.geometry.Vector`
+        normal : [float, float, float] | :class:`compas.geometry.Vector`
             The plane's normal spanned by this and the other vector.
 
         Returns
@@ -945,12 +945,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float] or :class:`compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
         -------
-        tuple of float
+        tuple[float, float]
             The angles between the two vectors, with the smallest angle first.
 
         Examples
@@ -968,7 +968,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
@@ -995,7 +995,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

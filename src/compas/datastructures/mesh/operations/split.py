@@ -101,6 +101,11 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     allow_boundary : bool, optional
         If True, allow splits on boundary edges.
 
+    Returns
+    -------
+    int | None
+        The identifier of the split vertex, if the split was successful.
+
     Notes
     -----
     This operation only works as expected for triangle meshes.

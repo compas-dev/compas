@@ -27,18 +27,18 @@ class GLTFNode(object):
         Matrix representing the displacement from node's parent to the node.
         Default value is the identity matrix.
         Cannot be set when any of translation, rotation or scale is set.
-    translation : list of floats
+    translation : list[float]
         xyz-coordinates of the translation displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
-    rotation : list of floats
+    rotation : list[float]
         Unit quaternion representing the rotational displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
-    scale : list of floats
+    scale : list[float]
         List of length 3 representing the scaling displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
     mesh_key : int
         Key of the mesh within :attr:`compas.files.GLTFNode.context.meshes`.
-    weights : list of floats
+    weights : list[float]
         Weights used for computing morph targets in the attached mesh.
     position : tuple
         xyz-coordinates of the node, calculated from the matrix and tree structure.

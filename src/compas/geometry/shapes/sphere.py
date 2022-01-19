@@ -16,7 +16,7 @@ class Sphere(Shape):
 
     Parameters
     ----------
-    point: [float, float, float] or :class:`compas.geometry.Point`
+    point: [float, float, float] | :class:`compas.geometry.Point`
         The center of the sphere.
     radius: float
         The radius of the sphere.

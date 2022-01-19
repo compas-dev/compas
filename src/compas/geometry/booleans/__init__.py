@@ -88,5 +88,6 @@ def boolean_intersection_mesh_mesh(A, B):
     -------
     tuple[list[point], list[[int, int, int]]]
         The vertices and the faces of the boolean intersection.
+
     """
     raise NotImplementedError

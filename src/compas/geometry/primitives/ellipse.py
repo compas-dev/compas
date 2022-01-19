@@ -11,7 +11,7 @@ class Ellipse(Primitive):
 
     Parameters
     ----------
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         The plane of the ellipse.
     major : float
         The major of the ellipse.
@@ -204,7 +204,7 @@ class Ellipse(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

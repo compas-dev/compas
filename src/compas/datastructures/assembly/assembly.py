@@ -99,7 +99,7 @@ class Assembly(Datastructure):
         ----------
         part : :class:`compas.datastructures.Part`
             The part to add.
-        key : int or str, optional
+        key : int | str, optional
             The identifier of the part in the assembly.
             Note that the key is unique only in the context of the current assembly.
             Nested assemblies may have the same `key` value for one of their parts.
@@ -109,7 +109,7 @@ class Assembly(Datastructure):
 
         Returns
         -------
-        int or str
+        int | str
             The identifier of the part in the current assembly graph.
 
         """
@@ -134,7 +134,7 @@ class Assembly(Datastructure):
 
         Returns
         -------
-        tuple[int or str, int or str]
+        tuple[int | str, int | str]
             The tuple of node identifiers that identifies the connection.
 
         Raises
@@ -171,7 +171,7 @@ class Assembly(Datastructure):
 
         Yields
         ------
-        tuple[int or str, int or str] or tuple[tuple[int or str, int or str], dict[str, Any]]
+        tuple[int | str, int | str] | tuple[tuple[int | str, int | str], dict[str, Any]]
             If `data` is False, the next connection identifier (u, v).
             If `data` is True, the next connector identifier and its attributes as a ((u, v), attr) tuple.
 
@@ -189,7 +189,7 @@ class Assembly(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Part` or None
+        :class:`compas.datastructures.Part` | None
             The identified part,
             or None if the part can't be found.
 

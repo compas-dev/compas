@@ -22,6 +22,10 @@ def network_transform(network, transformation):
     transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
+    Returns
+    -------
+    None
+
     Notes
     -----
     The network is modified in-place.

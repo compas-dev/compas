@@ -225,7 +225,7 @@ class Data(object):
 
         Parameters
         ----------
-        filepath : path string, file-like object or URL string
+        filepath : path string | file-like object | URL string
             The path, file or URL to the file for serialization.
 
         Returns

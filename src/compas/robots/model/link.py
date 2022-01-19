@@ -81,6 +81,7 @@ class Inertia(Data):
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
     elements of this matrix are specified here, using the attributes
     ``ixx``, ``ixy``, ``ixz``, ``iyy``, ``iyz``, ``izz``.
+
     """
 
     def __init__(self, ixx=0., ixy=0., ixz=0., iyy=0., iyz=0., izz=0.):
@@ -133,12 +134,12 @@ class Inertial(Data):
 
     Attributes
     ----------
-    origin:
+    origin
         This is the pose of the inertial reference frame,
         relative to the link reference frame.
-    mass:
+    mass
         Mass of the link.
-    inertia:
+    inertia
         3x3 rotational inertia matrix, represented in the inertia frame.
 
     """
@@ -180,16 +181,16 @@ class Visual(LinkItem, Data):
 
     Attributes
     ----------
-    geometry:
+    geometry
         Shape of the visual element.
-    origin:
+    origin
         Reference frame of the visual element with respect
         to the reference frame of the link.
-    name:
+    name
         Name of the visual element.
-    material:
+    material
         Material of the visual element.
-    attr:
+    attr
         Non-standard attributes.
 
     """
@@ -254,8 +255,9 @@ class Visual(LinkItem, Data):
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
+        list[float]
             List of 4 floats (``0.0-1.0``) indicating RGB colors and Alpha channel.
+
         """
         if self.material:
             return self.material.get_color()
@@ -273,14 +275,14 @@ class Collision(LinkItem, Data):
 
     Attributes
     ----------
-    geometry:
+    geometry
         Shape of the collidable element.
-    origin:
+    origin
         Reference frame of the collidable element with respect
         to the reference frame of the link.
-    name:
+    name
         Name of the collidable element.
-    attr:
+    attr
         Non-standard attributes.
 
     """
@@ -346,22 +348,22 @@ class Link(Data):
 
     Attributes
     ----------
-    name:
+    name
         Name of the link itself.
-    type:
+    type
         Link type. Undocumented in URDF, but used by PR2.
-    visual:
+    visual
         Visual properties of the link.
-    collision:
+    collision
         Collision properties of the link. This can be different
         from the visual properties of a link.
-    inertial:
+    inertial
         Inertial properties of the link.
-    attr:
+    attr
         Non-standard attributes.
-    joints:
+    joints
         A list of joints that are the link's children
-    parent_joint:
+    parent_joint
         The reference to a parent joint if it exists
 
     """

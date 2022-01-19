@@ -76,7 +76,7 @@ def json_load(fp):
 
     Parameters
     ----------
-    fp : path string, file-like object or URL string
+    fp : path string | file-like object | URL string
         A readable path, a file-like object or a URL pointing to a file.
 
     Returns

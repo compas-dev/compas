@@ -19,7 +19,7 @@ def trimesh_face_circle(mesh, fkey):
 
     Returns
     -------
-    tuple[list[float], float, list[float]] or None
+    tuple[list[float], float, list[float]] | None
         The centre coordinates, the radius value and the normal vector of the circle,
         or None if the face is not a triangle.
 

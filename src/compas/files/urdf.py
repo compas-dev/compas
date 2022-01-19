@@ -34,7 +34,7 @@ class URDF(object):
     ----------
     xml : :class:`XML`
         Instance of the XML reader/parser class.
-    robot : obj
+    robot : object
         Root element of the URDF model, i.e. a robot instance.
 
     References
@@ -83,6 +83,7 @@ class URDF(object):
         Returns
         -------
         :class:`compas.files.URDF`
+
         """
         urdf = cls()
         urdf.robot = robot
@@ -94,7 +95,7 @@ class URDF(object):
 
         Parameters
         ----------
-        source : str or file
+        source : str | file
             File path or file-like object.
 
         Returns
@@ -104,6 +105,7 @@ class URDF(object):
         Examples
         --------
         >>> urdf = URDF.from_file(compas.get("ur5.xacro"))
+
         """
         return cls(XML.from_file(source))
 
@@ -125,6 +127,7 @@ class URDF(object):
         Examples
         --------
         >>> urdf = URDF.from_string('<robot name="panda"/>')
+
         """
         return cls(XML.from_string(text))
 
@@ -211,6 +214,7 @@ class URDFParser(object):
         ------
         ValueError
             If `tags` is empty.
+
         """
         if len(tags) == 0:
             raise ValueError('Must define at least one tag')
@@ -238,7 +242,7 @@ class URDFParser(object):
 
         Returns
         -------
-        obj
+        object
             An instance of the model object represented by the given element.
 
         Raises

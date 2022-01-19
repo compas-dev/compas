@@ -213,7 +213,7 @@ class NetworkArtist(Artist):
         nodes : list[int], optional
             The nodes to include in the drawing.
             Default is all nodes.
-        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
             The color of the nodes,
             as either a single color to be applied to all nodes,
             or a color dict, mapping specific nodes to specific colors.
@@ -238,7 +238,7 @@ class NetworkArtist(Artist):
         edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
+        color : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.

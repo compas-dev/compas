@@ -15,7 +15,7 @@ def trimesh_massmatrix(M):
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] or :class:`compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns

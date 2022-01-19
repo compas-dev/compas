@@ -35,9 +35,9 @@ class Quaternion(Primitive):
         The Y component of the quaternion.
     z : float
         The Z component of the quaternion.
-    wxyz : list of float, read-only
+    wxyz : list[float], read-only
         Quaternion as a list of float in the 'wxyz' convention.
-    xyzw : list of float, read-only
+    xyzw : list[float], read-only
         Quaternion as a list of float in the 'xyzw' convention.
     norm : float, read-only
         The length (euclidean norm) of the quaternion.
@@ -274,7 +274,7 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+        other : [float, float, float, float] | :class:`compas.geometry.Quaternion`
             A Quaternion.
 
         Returns

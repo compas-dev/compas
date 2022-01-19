@@ -20,7 +20,7 @@ class Cylinder(Shape):
 
     Parameters
     ----------
-    circle: [plane, radius] or :class:`compas.geometry.Circle`
+    circle: [plane, radius] | :class:`compas.geometry.Circle`
         The circle of the cylinder.
     height: float
         The height of the cylinder.

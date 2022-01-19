@@ -37,7 +37,7 @@ def network_adjacency_matrix(network, rtype='array'):
     ----------
     network : obj
         Network datastructure object to get data from.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
@@ -58,7 +58,7 @@ def network_degree_matrix(network, rtype='array'):
     ----------
     network : obj
         Network datastructure object to get data from.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
@@ -79,7 +79,7 @@ def network_connectivity_matrix(network, rtype='array'):
     ----------
     network : :class:`compas.datastructures.Network`
         Network data structure.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
@@ -102,7 +102,7 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
         Network data structure.
     normalize : bool, optional
         If True, normalize the entries such that the value on the diagonal is 1.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns

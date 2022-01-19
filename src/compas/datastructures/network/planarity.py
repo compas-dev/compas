@@ -108,7 +108,7 @@ def network_find_crossings(network):
 
     Returns
     -------
-    list
+    list[tuple[tuple[hashable, hashable], tuple[hashable, hashable]]]
         A list of edge pairs, with each edge represented by two vertex keys.
 
     Notes
@@ -226,7 +226,7 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
     ----------
     network : :class:`compas.datastructures.Network`
         A network object.
-    fixed : list, optional
+    fixed : [hashable, hashable], optional
         Two fixed points.
     straightline : bool, optional
         If True, embed using straight lines only.

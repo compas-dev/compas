@@ -76,7 +76,7 @@ def connected_components(adjacency):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are

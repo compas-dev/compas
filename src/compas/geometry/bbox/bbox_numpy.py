@@ -260,6 +260,7 @@ def oabb_numpy(points):
     -------
     list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
+
     """
     origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
     frame = Frame(origin, xaxis, yaxis)

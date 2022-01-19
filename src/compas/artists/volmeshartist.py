@@ -272,7 +272,7 @@ class VolMeshArtist(Artist):
         vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
@@ -297,7 +297,7 @@ class VolMeshArtist(Artist):
         edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
+        color : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
@@ -347,7 +347,7 @@ class VolMeshArtist(Artist):
         cells : list[int], optional
             The cells to include in the drawing.
             Default is all cells.
-        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
             The color of the cells,
             as either a single color to be applied to all cells,
             or a color dict, mapping specific cells to specific colors.

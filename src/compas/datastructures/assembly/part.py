@@ -195,7 +195,7 @@ class Part(Datastructure):
         ----------
         shape : :class:`compas.geometry.Shape`
             The shape of the feature.
-        operation : {'union', 'difference', 'intersection'}
+        operation : Literal['union', 'difference', 'intersection']
             The boolean operation through which the feature should be integrated in the base shape.
 
         Returns

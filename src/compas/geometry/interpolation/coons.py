@@ -21,20 +21,20 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
     Parameters
     ----------
-    ab : list[point]
+    ab : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the first polyline.
-    bc : list[point]
+    bc : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the second polyline.
-    dc : list[point]
+    dc : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the third polyline.
-    ad : list[point]
+    ad : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the fourth polyline.
 
     Returns
     -------
-    points : list[point]
+    list[[float, float, float]]
         The points of the coons patch.
-    faces : list[list[int]]
+    list[list[int]]
         List of faces, with every face a list of indices into the point list.
 
     Notes

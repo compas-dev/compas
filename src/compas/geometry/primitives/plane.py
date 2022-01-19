@@ -13,9 +13,9 @@ class Plane(Primitive):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         The base point of the plane.
-    normal : [float, float, float] or :class:`compas.geometry.Vector`
+    normal : [float, float, float] | :class:`compas.geometry.Vector`
         The normal vector of the plane.
 
     Attributes
@@ -177,11 +177,11 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        a : [float, float, float] or :class:`compas.geometry.Point`
+        a : [float, float, float] | :class:`compas.geometry.Point`
             The first point.
-        b : [float, float, float] or :class:`compas.geometry.Point`
+        b : [float, float, float] | :class:`compas.geometry.Point`
             The second point.
-        c : [float, float, float] or :class:`compas.geometry.Point`
+        c : [float, float, float] | :class:`compas.geometry.Point`
             The second point.
 
         Returns
@@ -211,11 +211,11 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        point : [float, float, float] or :class:`compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The base point.
-        u : [float, float, float] or :class:`compas.geometry.Vector`
+        u : [float, float, float] | :class:`compas.geometry.Vector`
             The first vector.
-        v : [float, float, float] or :class:`compas.geometry.Vector`
+        v : [float, float, float] | :class:`compas.geometry.Vector`
             The second vector.
 
         Returns
@@ -295,7 +295,7 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

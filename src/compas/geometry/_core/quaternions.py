@@ -69,7 +69,7 @@ def quaternion_norm(q):
 
     Parameters
     ----------
-    q : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
@@ -90,7 +90,7 @@ def quaternion_unitize(q):
 
     Parameters
     ----------
-    q : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
@@ -110,7 +110,7 @@ def quaternion_is_unit(q, tol=ATOL):
 
     Parameters
     ----------
-    q : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
     tol : float, optional
         Requested decimal precision.
@@ -130,9 +130,9 @@ def quaternion_multiply(r, q):
 
     Parameters
     ----------
-    r : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+    r : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
-    q : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
@@ -166,7 +166,7 @@ def quaternion_canonize(q):
 
     Parameters
     ----------
-    q : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
@@ -189,7 +189,7 @@ def quaternion_conjugate(q):
 
     Parameters
     ----------
-    q : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns

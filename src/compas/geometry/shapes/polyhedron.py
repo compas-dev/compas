@@ -131,7 +131,7 @@ class Polyhedron(Shape):
 
     Parameters
     ----------
-    vertices : list[[float, float, float] or :class:`compas.geometry.Point`]
+    vertices : list[[float, float, float] | :class:`compas.geometry.Point`]
         The point locations of the vertices of the polyhedron.
     faces : list[list[int]]
         The faces as a list of index lists.
@@ -371,7 +371,7 @@ class Polyhedron(Shape):
 
         Parameters
         ----------
-        planes : list[[point, normal] or :class:`compas.geometry.Plane`]
+        planes : list[[point, normal] | :class:`compas.geometry.Plane`]
 
         Returns
         -------

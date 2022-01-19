@@ -200,7 +200,7 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : list[list[[float, float, float], :class:`compas.geometry.Point`]]
+        points : list[list[[float, float, float] | :class:`compas.geometry.Point`]]
             The control points.
         weights : list[list[float]]
             The weights of the control points.
@@ -241,7 +241,7 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : list[list[[float, float, float] or :class:`compas.geometry.Point`]]
+        points : list[list[[float, float, float] | :class:`compas.geometry.Point`]]
             The control points.
         u_degree : int
             Degree in the U direction.
@@ -634,7 +634,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.Point` or tuple[:class:`compas.geometry.Point`, float, float]
+        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, float, float]
             If `return_parameters` is False, only the point location is returned.
             If `return_parameters` is True, the point location and the corresponding parameter are returned.
 

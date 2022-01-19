@@ -18,7 +18,7 @@ def trimesh_remesh(mesh, target_edge_length, number_of_iterations=10, do_project
 
     Parameters
     ----------
-    mesh : tuple[sequence[[float, float, float] or :class:`compas.geometry.Point`], sequence[[int, int, int]]]
+    mesh : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
     target_edge_length : float
         The target edge length.
@@ -49,7 +49,7 @@ def trimesh_remesh_constrained(mesh, target_edge_length, protected_edges, number
 
     Parameters
     ----------
-    mesh : tuple[sequence[[float, float, float] or :class:`compas.geometry.Point`], sequence[[int, int, int]]]
+    mesh : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
     target_edge_length : float
         The target edge length.
@@ -77,7 +77,7 @@ def trimesh_remesh_along_isoline(mesh, scalarfield, scalar):
 
     Parameters
     ----------
-    mesh : tuple[sequence[[float, float, float] or :class:`compas.geometry.Point`], sequence[[int, int, int]]]
+    mesh : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
     scalarfield : sequence[float]
         A scalar value per vertex of the mesh.

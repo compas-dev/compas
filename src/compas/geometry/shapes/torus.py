@@ -19,7 +19,7 @@ class Torus(Shape):
 
     Parameters
     ----------
-    plane : [point, normal] or :class:`compas.geometry.Plane`
+    plane : [point, normal] | :class:`compas.geometry.Plane`
         The plane of the torus.
     radius_axis: float
         The radius of the axis.

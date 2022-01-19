@@ -17,7 +17,7 @@ def geometric_key(xyz, precision=None, sanitize=True):
 
     Parameters
     ----------
-    xyz : list of float
+    xyz : list[float]
         The XYZ coordinates.
     precision : str, optional
         A formatting option that specifies the precision of the
@@ -94,7 +94,7 @@ def geometric_key_xy(xy, precision=None, sanitize=True):
 
     Parameters
     ----------
-    xy : list of float
+    xy : list[float]
         The XY(Z) coordinates.
     precision : str, optional
         A formatting option that specifies the precision of the

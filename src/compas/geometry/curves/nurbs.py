@@ -188,7 +188,7 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list[[float, float, float] or :class:`compas.geometry.Point`]
+        points : list[[float, float, float] | :class:`compas.geometry.Point`]
             The control points.
         weights : list[float]
             The weights of the control points.
@@ -214,7 +214,7 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list[[float, float, float] or :class:`compas.geometry.Point`]
+        points : list[[float, float, float] | :class:`compas.geometry.Point`]
             The control points.
         degree : int, optional
             The degree of the curve.
@@ -236,7 +236,7 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list[[float, float, float] or :class:`compas.geometry.Point`]
+        points : list[[float, float, float] | :class:`compas.geometry.Point`]
             A list of interpolation points.
         precision : int, optional
             The desired precision of the interpolation.
@@ -639,7 +639,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.Point` or tuple[:class:`compas.geometry.Point`, float]
+        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, float]
             If `return_parameter` is false, only the closest point is returned.
             If `return_parameter` is true, the closest point and the corresponding parameter are returned.
 

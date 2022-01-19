@@ -20,7 +20,7 @@ class Capsule(Shape):
 
     Parameters
     ----------
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         The axis line of the capsule.
     radius : float
         The radius of the capsule.

@@ -66,7 +66,7 @@ def network_polylines(network, splits=None):
     ----------
     network : Network
         A network.
-    splits : sequence[[float, float, float] or :class:`compas.geometry.Point`], optional
+    splits : sequence[[float, float, float] | :class:`compas.geometry.Point`], optional
         List of point coordinates for polyline splits.
 
     Returns

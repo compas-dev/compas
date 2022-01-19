@@ -98,7 +98,7 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        filepath : path string, file-like object or URL string
+        filepath : path string | file-like object | URL string
             A path, a file-like object or a URL pointing to a file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
@@ -130,7 +130,7 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        filepath : path string or file-like object
+        filepath : path string | file-like object
             A path or a file-like object pointing to a file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
@@ -181,9 +181,10 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        tuple[list[list[float]], list[list[list[int]]]]
-            A list of vertices, represented by their XYZ coordinates,
-            and a list of cells, with each cell a list of faces, and each face a list of vertex indices.
+        list[list[float]]
+            A list of vertices, represented by their XYZ coordinates.
+        list[list[list[int]]]
+            A list of cells, with each cell a list of faces, and each face a list of vertex indices.
 
         """
         vertex_index = self.vertex_index()
@@ -221,9 +222,10 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        tuple[list[list[float]], list[list[int]]]
-            A 2-tuple containing a list of vertices, represented by their XYZ coordinates,
-            and a list of faces, with each face a list of vertex indices.
+        list[list[float]]
+            A list of vertices, represented by their XYZ coordinates,
+        list[list[int]]
+            A list of faces, with each face a list of vertex indices.
 
         """
         vertices = self.cell_vertices(cell)

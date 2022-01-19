@@ -114,7 +114,7 @@ class Pointcloud(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Pointcloud` or list
+        other : :class:`compas.geometry.Pointcloud` | list[[float, float, float] | :class:`compas.geometry.Point`]
             The pointcloud to compare.
 
         Returns
@@ -122,6 +122,7 @@ class Pointcloud(Primitive):
         bool
             True if the pointclouds are equal.
             False otherwise.
+
         """
         if len(self) != len(other):
             return False
@@ -139,12 +140,13 @@ class Pointcloud(Primitive):
 
         Parameters
         ----------
-        filepath : str or bytes or os.PathLike
+        filepath : str | bytes | os.PathLike
             Path of the PLY file.
 
         Returns
         -------
         :class:`compas.geometry.Pointcloud`
+
         """
         pass
 
@@ -154,12 +156,13 @@ class Pointcloud(Primitive):
 
         Parameters
         ----------
-        filepath : str or bytes or os.PathLike
+        filepath : str | bytes | os.PathLike
             Path of the PCD file.
 
         Returns
         -------
         :class:`compas.geometry.Pointcloud`
+
         """
         pass
 
@@ -169,15 +172,15 @@ class Pointcloud(Primitive):
 
         Parameters
         ----------
-        x : float or tuple[float, float]
+        x : float | tuple[float, float]
             Size of the cloud in the X direction.
             If a single value, the size is (0, x).
             If a pair of values, the size is (x[0], x[1]).
-        y : float or tuple[float, float]
+        y : float | tuple[float, float]
             Size of the cloud in the Y direction.
             If a single value, the size is (0, y).
             If a pair of values, the size is (y[0], y[1]).
-        z : float or tuple[float, float]
+        z : float | tuple[float, float]
             Size of the cloud in the Z direction.
             If a single value, the size is (0, z).
             If a pair of values, the size is (z[0], z[1]).
@@ -196,6 +199,7 @@ class Pointcloud(Primitive):
         Examples
         --------
         >>>
+
         """
         try:
             len(x)

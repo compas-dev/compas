@@ -115,11 +115,11 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        axis : [float, float, float] or :class:`compas.geometry.Vector`
+        axis : [float, float, float] | :class:`compas.geometry.Vector`
             Three numbers that represent the axis of rotation.
         angle : float
             The rotation angle in radians.
-        point : [float, float, float] or :class:`compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             A point to perform a rotation around an origin other than [0, 0, 0].
 
         Returns
@@ -153,9 +153,9 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        xaxis : [float, float, float] or :class:`compas.geometry.Vector`
+        xaxis : [float, float, float] | :class:`compas.geometry.Vector`
             The x-axis of the frame.
-        yaxis : [float, float, float] or :class:`compas.geometry.Vector`
+        yaxis : [float, float, float] | :class:`compas.geometry.Vector`
             The y-axis of the frame.
 
         Returns
@@ -188,7 +188,7 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        frame : [point, vector, vector] or :class:`compas.geometry.Frame`
+        frame : [point, vector, vector] | :class:`compas.geometry.Frame`
             A frame describing the targeted Cartesian coordinate system.
 
         Returns
@@ -224,7 +224,7 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        quaternion : [float, float, float, float] or :class:`compas.geometry.Quaternion`
+        quaternion : [float, float, float, float] | :class:`compas.geometry.Quaternion`
             Four numbers that represents the four coefficient values of a quaternion.
 
         Returns
@@ -251,9 +251,9 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        axis_angle_vector : [float, float, float] or :class:`compas.geometry.Vector`
+        axis_angle_vector : [float, float, float] | :class:`compas.geometry.Vector`
             Three numbers that represent the axis of rotation and angle of rotation through the vector's magnitude.
-        point : [float, float, float] or :class:`compas.geometry.Point`, optional
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
             A point to perform a rotation around an origin other than [0, 0, 0].
 
         Returns

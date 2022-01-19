@@ -19,7 +19,7 @@ def mesh_slice_plane(mesh, plane):
 
     Returns
     -------
-    tuple[:class:`compas.datastructures.Mesh`] or None
+    tuple[:class:`compas.datastructures.Mesh`, :class:`compas.datastructures.Mesh`] | None
         The "positive" and "negative" submeshes.
         If the mesh and plane do not intersect,
         or if the intersection is degenerate (point or line),

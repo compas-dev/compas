@@ -154,14 +154,15 @@ class Limit(Data):
 
     Attributes
     ----------
-    effort : :obj:`float`
+    effort : float
         Maximum joint effort.
-    velocity : :obj:`float`
+    velocity : float
         Maximum joint velocity.
-    lower : :obj:`float`
+    lower : float
         Lower joint limit (radians for revolute joints, meter for prismatic joints).
-    upper : :obj:`float`
+    upper : float
         Upper joint limit (radians for revolute joints, meter for prismatic joints).
+
     """
 
     def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
@@ -202,12 +203,13 @@ class Limit(Data):
 
         Parameters
         ----------
-        factor : :obj:`float`
+        factor : float
             Scale factor.
 
         Returns
         -------
         None
+
         """
         self.lower *= factor
         self.upper *= factor
@@ -302,14 +304,15 @@ class Axis(Data):
 
     Attributes
     ----------
-    x : :obj:`float`
+    x : float
         X coordinate.
-    y: :obj:`float`
+    y: float
         Y coordinate.
-    z : :obj:`float`
+    z : float
         Z coordinate.
-    attr : :obj:`dict`
+    attr : dict
         Additional axis attributes.
+
     """
 
     def __init__(self, xyz='1 0 0', **kwargs):
@@ -356,8 +359,9 @@ class Axis(Data):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the axis.
+
         """
         xyz = transform_vectors(
             [[self.x, self.y, self.z]], transformation.matrix)
@@ -370,13 +374,14 @@ class Axis(Data):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the axis.
 
         Returns
         -------
         :class:`Axis`
             The transformed axis.
+
         """
         xyz = transform_vectors(
             [[self.x, self.y, self.z]], transformation.matrix)
@@ -396,15 +401,15 @@ class Joint(Data):
 
     Attributes
     ----------
-    name : :obj:`str`
+    name : str
         Unique name for the joint.
-    type : :obj:`str` or :obj:`int`
+    type : str | int
         Joint type either as a string or an index number. See class attributes for named constants and supported types.
     origin : :class:`Origin`
         Transformation from the parent link to the child link frame.
-    parent : :class:`ParentLink` or str
+    parent : :class:`ParentLink` | str
         Parent link instance or parent link name.
-    child : :class:`ChildLink` or str
+    child : :class:`ChildLink` | str
         Child link instance or name of child link.
     axis : :class:`Axis`
         Joint axis specified in the joint frame. Represents the axis of
@@ -423,30 +428,30 @@ class Joint(Data):
         Safety controller properties.
     mimic : :class:`Mimic`
         Used to specify that the defined joint mimics another existing joint.
-    attr : :obj:`dict`
+    attr : dict
         Non-standard attributes.
     child_link : :class:`Link`
         Joint's child link
-    position : :obj:`float`
+    position : float
         The current position of the joint. This depends on the
         joint type, i.e. for revolute joints, it will be the rotation angle
         in radians, for prismatic joints the translation in meters.
 
     Class Attributes
     ----------------
-    REVOLUTE : :obj:`int`
+    REVOLUTE : int
         Revolute joint type.
-    CONTINUOUS : :obj:`int`
+    CONTINUOUS : int
         Continuous joint type.
-    PRISMATIC : :obj:`int`
+    PRISMATIC : int
         Prismatic joint type.
-    FIXED : :obj:`int`
+    FIXED : int
         Fixed joint type.
-    FLOATING : :obj:`int`
+    FLOATING : int
         Floating joint type.
-    PLANAR : :obj:`int`
+    PLANAR : int
         Planar joint type.
-    SUPPORTED_TYPES : :obj:`list` of :obj:`str`
+    SUPPORTED_TYPES : list[str]
         String representations of the supported joint types.
     """
 
@@ -553,12 +558,13 @@ class Joint(Data):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the joint.
 
         Returns
         -------
         None
+
         """
         self.current_origin.transform(transformation)
         self.current_axis.transform(transformation)
@@ -568,12 +574,13 @@ class Joint(Data):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the joint.
 
         Returns
         -------
         None
+
         """
         self.current_origin = self.origin.transformed(transformation)
         self.current_axis.transform(self.current_transformation)
@@ -586,13 +593,14 @@ class Joint(Data):
 
         Parameters
         ----------
-        position : :obj:`float`
+        position : float
             Angle in radians.
 
         Returns
         -------
         :class:`Rotation`
             Transformation of type rotation for the revolute joint.
+
         """
         if not self.limit:
             raise ValueError('Revolute joints are required to define a limit')
@@ -608,13 +616,14 @@ class Joint(Data):
 
         Parameters
         ----------
-        position : :obj:`float`
+        position : float
             Angle in radians
 
         Returns
         -------
         :class:`Rotation`
             Transformation of type rotation for the continuous joint.
+
         """
         return Rotation.from_axis_and_angle(self.current_axis.vector, position, self.current_origin.point)
 
@@ -626,7 +635,7 @@ class Joint(Data):
 
         Parameters
         ----------
-        position : :obj:`float`
+        position : float
             Translation movement in meters.
 
         Returns
@@ -677,7 +686,7 @@ class Joint(Data):
 
         Parameters
         ----------
-        position : :obj:`float`
+        position : float
             Position in radians or meters depending on the joint type.
         """
 
@@ -708,7 +717,7 @@ class Joint(Data):
 
         Parameters
         ----------
-        factor : :obj:`float`
+        factor : float
             Scale factor.
 
         Returns

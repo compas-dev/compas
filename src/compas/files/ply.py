@@ -13,7 +13,7 @@ class PLY(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     precision : str, optional
         A COMPAS precision specification.
@@ -57,6 +57,7 @@ class PLY(object):
         Returns
         -------
         None
+
         """
         self._reader = PLYReader(self.filepath)
         self._parser = PLYParser(self._reader, precision=self.precision)
@@ -81,6 +82,7 @@ class PLY(object):
         Returns
         -------
         None
+
         """
         self._writer = PLYWriter(self.filepath, mesh, **kwargs)
         self._writer.write()
@@ -91,22 +93,22 @@ class PLYReader(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
 
     Class Attributes
     ----------------
-    keywords : List[str]
+    keywords : list[str]
         Reserved keywords in PLY format language.
-    property_types : Dict[str, object]
+    property_types : dict[str, object]
         Mapping between PLY property types and Python types.
-    binary_property_types : Dict[str, str]
+    binary_property_types : dict[str, str]
         Mapping between PLY property types and binary type strings.
-    number_of_bytes_per_type : Dict[str, int]
+    number_of_bytes_per_type : dict[str, int]
         Mapping between PLY property types and number of bytes.
-    struct_format_per_type : Dict[str, str]
+    struct_format_per_type : dict[str, str]
         Mapping between PLY property types and struct formats.
-    binary_byte_order : Dict[str, str]
+    binary_byte_order : dict[str, str]
         Mapping between endian type and endian symbol.
 
     """
@@ -199,6 +201,7 @@ class PLYReader(object):
         Returns
         -------
         bool
+
         """
         self._read_header()
         if self.start_header and self.end_header:
@@ -211,6 +214,7 @@ class PLYReader(object):
         Returns
         -------
         bool
+
         """
         if self.format == 'binary_big_endian':
             return True
@@ -224,6 +228,7 @@ class PLYReader(object):
         Returns
         -------
         bool
+
         """
         if self.format == 'ascii':
             return True
@@ -235,6 +240,7 @@ class PLYReader(object):
         Returns
         -------
         None
+
         """
         self._read_header()
         if self.format == 'ascii':
@@ -549,6 +555,7 @@ class PLYParser(object):
         Pairs of vertex indices defining the start and end points of edges.
     faces : list[list[int]]
         Lists of vertex indices defining faces.
+
     """
 
     def __init__(self, reader, precision=None):
@@ -565,6 +572,7 @@ class PLYParser(object):
         Returns
         -------
         None
+
         """
         self.vertices = [(vertex['x'], vertex['y'], vertex['z']) for vertex in self.reader.vertices]
         self.faces = [face['vertex_indices'] for face in self.reader.faces]
@@ -575,7 +583,7 @@ class PLYWriter(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     mesh : :class:`compas.datastructures.Mesh`
         Mesh to write to the file.
@@ -587,6 +595,7 @@ class PLYWriter(object):
         The date to include in the header.
     precision : str, optional
         COMPAS precision specification for parsing geometric data.
+
     """
 
     def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
@@ -608,6 +617,7 @@ class PLYWriter(object):
         Returns
         -------
         None
+
         """
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self._write_header()

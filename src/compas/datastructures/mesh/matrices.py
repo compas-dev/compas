@@ -39,7 +39,7 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
@@ -72,7 +72,7 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
@@ -109,7 +109,7 @@ def mesh_degree_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
@@ -146,7 +146,7 @@ def mesh_face_matrix(mesh, rtype='array'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
@@ -205,7 +205,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns

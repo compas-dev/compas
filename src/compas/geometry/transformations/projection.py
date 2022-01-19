@@ -57,7 +57,7 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        plane : [point, normal] or :class:`compas.geometry.Plane`
+        plane : [point, normal] | :class:`compas.geometry.Plane`
             The plane to project onto.
 
         Returns
@@ -84,9 +84,9 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        plane : [point, normal] or :class:`compas.geometry.Plane`
+        plane : [point, normal] | :class:`compas.geometry.Plane`
             The plane to project onto.
-        direction : [float, float, float] or :class:`compas.geometry.Vector`
+        direction : [float, float, float] | :class:`compas.geometry.Vector`
             The direction of projection direction.
 
         Returns
@@ -114,9 +114,9 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        plane : [point, normal] or :class:`compas.geometry.Plane`
+        plane : [point, normal] | :class:`compas.geometry.Plane`
             The plane to project onto.
-        center_of_projection : [float, float, float] or :class:`compas.geometry.Point`
+        center_of_projection : [float, float, float] | :class:`compas.geometry.Point`
             The camera view point.
 
         Returns

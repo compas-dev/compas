@@ -366,7 +366,7 @@ def is_color_rgb(color):
 
     Parameters
     ----------
-    color : [int, int, int] or [float, float, float]
+    color : [int, int, int] | [float, float, float]
         The color object.
 
     Returns
@@ -450,12 +450,12 @@ def rgb_to_rgb(rgb, g=None, b=None):
 
     Parameters
     ----------
-    rgb : int or float or [int, int, int] or [float, float, float]
+    rgb : int or float | [int, int, int] | [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
-    g : int or float, optional
+    g : int | float, optional
         The green component.
         This parameter is ignored if `rgb` is a full color specification.
-    b : int or float, optional
+    b : int | float, optional
         The blue component.
         This parameter is ignored if `rgb` is a full color specification.
 
@@ -502,12 +502,12 @@ def rgb_to_hex(rgb, g=None, b=None):
 
     Parameters
     ----------
-    rgb : int or float or [int, int, int] or [float, float, float]
+    rgb : int or float | [int, int, int] | [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
-    g : int or float, optional
+    g : int | float, optional
         The green component.
         This parameter is ignored if `rgb` is a full color specification.
-    b : int or float, optional
+    b : int | float, optional
         The blue component.
         This parameter is ignored if `rgb` is a full color specification.
 
@@ -547,7 +547,7 @@ def hex_to_rgb(value, normalize=False):
 
     Returns
     -------
-    tuple[int, int, int] or tuple[float, float, float]
+    tuple[int, int, int] | tuple[float, float, float]
         If `normalize` is True, the RGB color with 0-1 float components.
         If `normalize` is False, the RGB color with 0-255 integer components.
 
@@ -576,14 +576,14 @@ def color_to_rgb(color, normalize=False):
 
     Parameters
     ----------
-    color : str or [int, int, int] or [float, float, float]
+    color : str | [int, int, int] | [float, float, float]
         The color.
     normalize : bool, optional
         If True, normalize the resulting RGB color components.
 
     Returns
     -------
-    tuple[int, int, int] or tuple[float, float, float]
+    tuple[int, int, int] | tuple[float, float, float]
         If `normalize` is True, the RGB color with 0-1 float components.
         If `normalize` is False, the RGB color with 0-255 integer components.
 
@@ -624,21 +624,21 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
 
     Parameters
     ----------
-    color : str or [int, int, int] or [float, float, float] or dict[hashable, [int, int, int]] or dict[hashable, [float, float, float]]
+    color : str or [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]
         The base color specification.
         This can be a single color (as HEX or RGB), a list of colors, or a dict of colors.
     keys : sequence[hashable]
         The keys of the color dict.
-    default : str or tuple[int, int, int] or tuple[float, float, float], optional
+    default : str | tuple[int, int, int] | tuple[float, float, float], optional
         A valid color specification (HEX or RGB).
-    colorformat : {'hex', 'rgb'}, optional
+    colorformat : Literal['hex', 'rgb'], optional
         The format of the colors in the color dict.
     normalize : bool, optional
         If True and `colorformat` is ``'rgb'``, normalize the color components.
 
     Returns
     -------
-    dict[hashable, tuple[int, int, int]] or dict[hashable, tuple[float, float, float]]
+    dict[hashable, tuple[int, int, int]] | dict[hashable, tuple[float, float, float]]
         A dictionary mapping the provided keys to the provided color(s).
 
     Raises
@@ -701,7 +701,7 @@ def is_color_light(color):
 
     Parameters
     ----------
-    color: str or tuple[float, float, float] or tuple[int, int, int]
+    color: str | tuple[float, float, float] | tuple[int, int, int]
         The color specification in HEX or RGB format.
 
     Returns

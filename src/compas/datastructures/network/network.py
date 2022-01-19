@@ -114,7 +114,7 @@ class Network(Graph):
 
         Parameters
         ----------
-        filepath : path string, file-like object or URL string
+        filepath : path string | file-like object | URL string
             A path, a file-like object or a URL pointing to a file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
@@ -180,7 +180,7 @@ class Network(Graph):
 
         Parameters
         ----------
-        nodes : list[list[float]] or dict[hashable, list[float]]
+        nodes : list[list[float]] | dict[hashable, list[float]]
             A list of node coordinates or a dictionary of keys pointing to node coordinates to specify keys.
         edges : list[tuple[hashable, hshable]]
 
@@ -218,7 +218,7 @@ class Network(Graph):
 
         Parameters
         ----------
-        filepath : path string or file-like object
+        filepath : path string | file-like object
             A path or a file-like object pointing to a file.
 
         Returns
@@ -274,7 +274,7 @@ class Network(Graph):
 
         Parameters
         ----------
-        precision : str (3f)
+        precision : str, optional
             The float precision specifier used in string formatting.
 
         Returns
@@ -293,7 +293,7 @@ class Network(Graph):
 
         Parameters
         ----------
-        precision : str (3f)
+        precision : str, optional
             The float precision specifier used in string formatting.
 
         Returns

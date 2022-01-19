@@ -10,7 +10,7 @@ class DXF(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     precision : str, optional
         A COMPAS precision specification.
@@ -61,8 +61,9 @@ class DXFReader(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
+
     """
 
     def __init__(self, filepath):
@@ -88,6 +89,7 @@ class DXFParser(object):
         A DXF file reader.
     precision : str
         COMPAS precision specification for parsing geometric data.
+
     """
 
     def __init__(self, reader, precision):

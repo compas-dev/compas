@@ -67,15 +67,15 @@ def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, orig
 
     Parameters
     ----------
-    values : sequence[int or float]
+    values : sequence[int | float]
         The value to remap
-    target_min : int or float, optional
+    target_min : int | float, optional
         The minimun value of the target domain.
-    target_max : int or float, optional
+    target_max : int | float, optional
         The maximum value of the target domain.
-    original_min : int or float, optional
+    original_min : int | float, optional
         The minimun value of the original domain, other than the actual minimum value.
-    original_max : int or float, optional
+    original_max : int | float, optional
         The maximum value of the original domain, other than the actual maximum value.
 
     Returns
@@ -103,7 +103,7 @@ def meshgrid(x, y, indexing='xy'):
         The values of the "x axis" of the grid.
     y : list[float]
         The values of the "y axis" of the grid.
-    indexing : {'xy', 'ij'}, optional
+    indexing : Literal['xy', 'ij'], optional
         The indexing strategy determines the structure of the output.
 
     Returns

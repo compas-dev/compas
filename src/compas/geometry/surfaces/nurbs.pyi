@@ -1,5 +1,6 @@
 from schema import Schema
-from typing import Generator, Optional, Tuple, List, Dict
+from typing import Generator
+from typing import Optional
 
 import compas
 
@@ -29,14 +30,14 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @property
-    def data(self) -> Dict: ...
+    def data(self) -> dict: ...
 
     @data.setter
-    def data(self, data: Dict):
+    def data(self, data: dict):
         raise NotImplementedError
 
     @classmethod
-    def from_data(cls, data: Dict) -> 'NurbsSurface': ...
+    def from_data(cls, data: dict) -> 'NurbsSurface': ...
 
     # ==============================================================================
     # Constructors
@@ -44,12 +45,12 @@ class NurbsSurface(Surface):
 
     @classmethod
     def from_parameters(cls,
-                        points: List[List[Point]],
-                        weights: List[List[float]],
-                        u_knots: List[float],
-                        v_knots: List[float],
-                        u_mults: List[int],
-                        v_mults: List[int],
+                        points: list[list[Point]],
+                        weights: list[list[float]],
+                        u_knots: list[float],
+                        v_knots: list[float],
+                        u_mults: list[int],
+                        v_mults: list[int],
                         u_degree: int,
                         v_degree: int,
                         is_u_periodic: bool = False,
@@ -57,7 +58,7 @@ class NurbsSurface(Surface):
 
     @classmethod
     def from_points(cls,
-                    points: List[List[Point]],
+                    points: list[list[Point]],
                     u_degree: int = 3,
                     v_degree: int = 3) -> 'NurbsSurface': ...
 
@@ -78,29 +79,29 @@ class NurbsSurface(Surface):
 
     def to_mesh(self, nu: int = 100, nv: Optional[int] = None) -> 'compas.datastructures.Mesh': ...
 
-    def to_triangles(self, nu: int = 100, nv: Optional[int] = None) -> List[Point]: ...
+    def to_triangles(self, nu: int = 100, nv: Optional[int] = None) -> list[Point]: ...
 
     # ==============================================================================
     # Properties
     # ==============================================================================
 
     @property
-    def points(self) -> List[List[Point]]: ...
+    def points(self) -> list[list[Point]]: ...
 
     @property
-    def weights(self) -> List[List[float]]: ...
+    def weights(self) -> list[list[float]]: ...
 
     @property
-    def u_knots(self) -> List[float]: ...
+    def u_knots(self) -> list[float]: ...
 
     @property
-    def v_knots(self) -> List[float]: ...
+    def v_knots(self) -> list[float]: ...
 
     @property
-    def u_mults(self) -> List[int]: ...
+    def u_mults(self) -> list[int]: ...
 
     @property
-    def v_mults(self) -> List[int]: ...
+    def v_mults(self) -> list[int]: ...
 
     @property
     def u_degree(self) -> int: ...
@@ -130,7 +131,7 @@ class NurbsSurface(Surface):
 
     def transformed(self, T: Transformation) -> 'NurbsSurface': ...
 
-    def intersections_with_line(self, line: Line) -> List[Point]: ...
+    def intersections_with_line(self, line: Line) -> list[Point]: ...
 
     def u_space(self, n: int = 10) -> Generator[float, None, None]: ...
 
@@ -140,13 +141,13 @@ class NurbsSurface(Surface):
 
     def v_isocurve(self, v: float) -> NurbsCurve: ...
 
-    def boundary(self) -> List[NurbsCurve]: ...
+    def boundary(self) -> list[NurbsCurve]: ...
 
-    def xyz(self, nu: int = 10, nv: int = 10) -> List[Point]: ...
+    def xyz(self, nu: int = 10, nv: int = 10) -> list[Point]: ...
 
     def point_at(self, u: float, v: float) -> Point: ...
 
-    def curvature_at(self, u: float, v: float) -> Tuple[float, float, Point, Vector]: ...
+    def curvature_at(self, u: float, v: float) -> tuple[float, float, Point, Vector]: ...
 
     def frame_at(self, u: float, v: float) -> Frame: ...
 

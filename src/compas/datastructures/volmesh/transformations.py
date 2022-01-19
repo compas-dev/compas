@@ -21,6 +21,10 @@ def volmesh_transform(volmesh, transformation):
     transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
+    Returns
+    -------
+    None
+
     Notes
     -----
     The volmesh is modified in-place.

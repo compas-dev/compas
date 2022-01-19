@@ -347,7 +347,7 @@ def create_symlinks(symlinks, raise_on_error=False):
 
     Parameters
     ----------
-    symlinks: list of string tuples
+    symlinks: list[str]ing tuples
         List of ``source`` and ``link_name`` of the symlinks as tuples.
     """
     symlink, allow_polyfill_retry = _get_symlink_function()
@@ -367,7 +367,7 @@ def remove_symlink(symlink):
 
     Parameters
     ----------
-    symlink : :obj:`str`
+    symlink : str
         Symlink to remove.
     """
     # Broken links return False on .exists(), so we need to check .islink() as well
@@ -477,7 +477,7 @@ def _run_command_as_admin(command, arguments):
     ----------
     command : str
         Command name.
-    arguments : list of str
+    arguments : list[str]
         List of arguments.
     """
     _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
@@ -494,7 +494,7 @@ def _run_as_admin(command):
 
     Paramters
     ---------
-    command : :obj:`list` of :obj:`str`
+    command : list[str]
         List of strings of the command to run.
 
     Returns

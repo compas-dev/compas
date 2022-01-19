@@ -11,7 +11,7 @@ class OFF(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
 
     Attributes
@@ -45,6 +45,7 @@ class OFF(object):
         Returns
         -------
         None
+
         """
         self._reader = OFFReader(self.filepath)
         self._reader.open()
@@ -83,7 +84,7 @@ class OFFReader(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
 
     Attributes
@@ -96,6 +97,7 @@ class OFFReader(object):
     Notes
     -----
     The OFF reader currently only supports reading of vertices and faces of polygon meshes.
+
     """
 
     def __init__(self, filepath):
@@ -113,6 +115,7 @@ class OFFReader(object):
         Returns
         -------
         None
+
         """
         with _iotools.open_file(self.filepath, 'r') as f:
             self.content = f.readlines()
@@ -123,6 +126,7 @@ class OFFReader(object):
         Returns
         -------
         None
+
         """
         lines = []
         is_continuation = False
@@ -153,6 +157,7 @@ class OFFReader(object):
         Returns
         -------
         None
+
         """
         pass
 
@@ -171,6 +176,7 @@ class OFFReader(object):
         Returns
         -------
         None
+
         """
         if not self.content:
             return
@@ -226,7 +232,7 @@ class OFFWriter(object):
 
     Parameters
     ----------
-    filepath : path string, file-like object or URL string
+    filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
     mesh : :class:`compas.datastructures.Mesh`
         Mesh to write to the file.
@@ -260,6 +266,7 @@ class OFFWriter(object):
         Returns
         -------
         None
+
         """
         with _iotools.open_file(self.filepath, 'w') as self.file:
             self._write_header()

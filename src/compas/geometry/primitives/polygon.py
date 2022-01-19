@@ -25,7 +25,7 @@ class Polygon(Primitive):
 
     Parameters
     ----------
-    points : list[[float, float, float] or :class:`compas.geometry.Point`]
+    points : list[[float, float, float] | :class:`compas.geometry.Point`]
         An ordered list of points.
 
     Attributes
@@ -298,7 +298,7 @@ class Polygon(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

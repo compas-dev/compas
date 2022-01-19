@@ -22,7 +22,7 @@ def depth_first_ordering(adjacency, root):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -140,7 +140,7 @@ def breadth_first_ordering(adjacency, root):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -189,7 +189,7 @@ def breadth_first_traverse(adjacency, root, callback=None):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -226,7 +226,7 @@ def breadth_first_paths(adjacency, root, goal):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -265,7 +265,7 @@ def breadth_first_tree(adjacency, root):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -317,7 +317,7 @@ def shortest_path(adjacency, root, goal):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -332,7 +332,7 @@ def shortest_path(adjacency, root, goal):
 
     Returns
     -------
-    list[hashable] or None
+    list[hashable] | None
         The path from root to goal, or None, if no path exists between the vertices.
 
     """
@@ -363,7 +363,7 @@ def astar_lightest_path(adjacency, weights, heuristic, root, goal):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -382,7 +382,7 @@ def astar_lightest_path(adjacency, weights, heuristic, root, goal):
 
     Returns
     -------
-    list[hashable] or None
+    list[hashable] | None
         The path from root to goal, or None, if no path exists between the vertices.
 
     References
@@ -448,7 +448,7 @@ def astar_shortest_path(graph, root, goal):
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Network` or :class:`compas.datastructures.Mesh`
+    graph : :class:`compas.datastructures.Network` | :class:`compas.datastructures.Mesh`
         A network or mesh data structure.
     root : hashable
         The identifier of the starting node.
@@ -457,7 +457,7 @@ def astar_shortest_path(graph, root, goal):
 
     Returns
     -------
-    list[hashable] or None
+    list[hashable] | None
         The path from root to goal, or None, if no path exists between the vertices.
 
     References
@@ -489,7 +489,7 @@ def dijkstra_distances(adjacency, weight, target):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
@@ -529,7 +529,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are

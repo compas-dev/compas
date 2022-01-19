@@ -40,6 +40,10 @@ def gif_from_images(files,
     subrectangles : bool, optional
         If True, optimize the file size by looking for invariant subrectangles.
 
+    Returns
+    -------
+    None
+
     """
     if reverse:
         files.reverse()

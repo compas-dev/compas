@@ -89,9 +89,9 @@ def orthonormalize_axes(xaxis, yaxis):
 
     Parameters
     ----------
-    xaxis: [float, float, float] or :class:`compas.geometry.Vector`
+    xaxis: [float, float, float] | :class:`compas.geometry.Vector`
         The first axis.
-    yaxis: [float, float, float] or :class:`compas.geometry.Vector`
+    yaxis: [float, float, float] | :class:`compas.geometry.Vector`
         The second axis.
 
     Returns
@@ -132,7 +132,7 @@ def homogenize(xyz, w=1.0):
 
     Parameters
     ----------
-    xyz : sequence[[float, float, float] or :class:`compas.geometry.Point`] or sequence[[float, float, float] or :class:`compas.geometry.Vector`]
+    xyz : sequence[[float, float, float] | :class:`compas.geometry.Point`] | sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of points or vectors.
     w : float, optional
         Homogenisation parameter.
@@ -185,7 +185,7 @@ def homogenize_and_flatten_frames(frames):
 
     Parameters
     ----------
-    frames : sequence[[point, vector, vector] or :class:`compas.geometry.Frame`]
+    frames : sequence[[point, vector, vector] | :class:`compas.geometry.Frame`]
 
     Returns
     -------
@@ -239,9 +239,9 @@ def transform_points(points, T):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of points to be transformed.
-    T : list[list[float]] or :class:`compas.geometry.Transformation`
+    T : list[list[float]] | :class:`compas.geometry.Transformation`
         The transformation to apply.
 
     Returns
@@ -264,9 +264,9 @@ def transform_vectors(vectors, T):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] or :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors to be transformed.
-    T : list[list[float]] or :class:`compas.geometry.Transformation`
+    T : list[list[float]] | :class:`compas.geometry.Transformation`
         The transformation to apply.
 
     Returns
@@ -289,9 +289,9 @@ def transform_frames(frames, T):
 
     Parameters
     ----------
-    frames : sequence[[point, vector, vector] or :class:`compas.geometry.Frame`]
+    frames : sequence[[point, vector, vector] | :class:`compas.geometry.Frame`]
         A list of frames to be transformed.
-    T : list[list[float]] or :class:`compas.geometry.Transformation`
+    T : list[list[float]] | :class:`compas.geometry.Transformation`
         The transformation to apply on the frames.
 
     Returns
@@ -316,9 +316,9 @@ def world_to_local_coordinates(frame, xyz):
 
     Parameters
     ----------
-    frame : [point, vector, vector] or :class:`compas.geometry.Frame`
+    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
         The local coordinate system.
-    xyz : array-like[[float, float, float] or :class:`compas.geometry.Point`]
+    xyz : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The global coordinates of the points to convert.
 
     Returns
@@ -345,9 +345,9 @@ def local_to_world_coordinates(frame, xyz):
 
     Parameters
     ----------
-    frame : [point, vector, vector] or :class:`compas.geometry.Frame`
+    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
         The local coordinate system.
-    xyz : array-like[[float, float, float] or :class:`compas.geometry.Point`]
+    xyz : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The global coordinates of the points to convert.
 
     Returns
@@ -379,9 +379,9 @@ def translate_points(points, vector):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of points.
-    vector : [float, float, float] or :class:`compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         A translation vector.
 
     Returns
@@ -402,9 +402,9 @@ def translate_points_xy(points, vector):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of points.
-    vector : [float, float, float] or :class:`compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         A translation vector.
 
     Returns
@@ -430,7 +430,7 @@ def scale_points(points, scale):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of points.
     scale : float
         A scaling factor.
@@ -454,7 +454,7 @@ def scale_points_xy(points, scale):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of points.
     scale : float
         A scaling factor.
@@ -483,14 +483,14 @@ def rotate_points(points, angle, axis=None, origin=None):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of points.
     angle : float
         The angle of rotation in radians.
-    axis : [float, float, float] or :class:`compas.geometry.Vector`, optional
+    axis : [float, float, float] | :class:`compas.geometry.Vector`, optional
         The rotation axis.
         Default is ``[0.0, 0.0, 1.0]``
-    origin : [float, float, float] or :class:`compas.geometry.Point`, optional
+    origin : [float, float, float] | :class:`compas.geometry.Point`, optional
         The origin of the rotation axis.
         Default is ``[0.0, 0.0, 0.0]``.
 
@@ -528,11 +528,11 @@ def rotate_points_xy(points, angle, origin=None):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of points.
     angle : float
         The angle of rotation in radians.
-    origin : [float, float, float] or :class:`compas.geometry.Point`, optional
+    origin : [float, float, float] | :class:`compas.geometry.Point`, optional
         The origin of the rotation axis.
         Default is ``[0.0, 0.0, 0.0]``.
 
@@ -571,9 +571,9 @@ def mirror_vector_vector(v1, v2):
 
     Parameters
     ----------
-    v1 : [float, float, float] or :class:`compas.geometry.Vector`
+    v1 : [float, float, float] | :class:`compas.geometry.Vector`
         The vector.
-    v2 : [float, float, float] or :class:`compas.geometry.Vector`
+    v2 : [float, float, float] | :class:`compas.geometry.Vector`
         The normalized vector as mirror axis
 
     Returns
@@ -599,9 +599,9 @@ def mirror_point_point(point, mirror):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the point to mirror.
-    mirror : [float, float, float] or :class:`compas.geometry.Point`
+    mirror : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the mirror point.
 
     Returns
@@ -618,9 +618,9 @@ def mirror_point_point_xy(point, mirror):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the point to mirror.
-    mirror : [float, float, float] or :class:`compas.geometry.Point`
+    mirror : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the mirror point.
 
     Returns
@@ -637,9 +637,9 @@ def mirror_points_point(points, mirror):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points.
-    mirror : [float, float, float] or :class:`compas.geometry.Point`
+    mirror : [float, float, float] | :class:`compas.geometry.Point`
        The mirror point.
 
     Returns
@@ -656,9 +656,9 @@ def mirror_points_point_xy(points, mirror):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points with XY(Z) coordinates.
-    mirror : [float, float, float] or :class:`compas.geometry.Point`
+    mirror : [float, float, float] | :class:`compas.geometry.Point`
        The XY(Z) coordinates of the mirror point.
 
     Returns
@@ -675,9 +675,9 @@ def mirror_point_line(point, line):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the point to mirror.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the mirror line.
 
     Returns
@@ -695,9 +695,9 @@ def mirror_point_line_xy(point, line):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the point to mirror.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the line.
         XY(Z) coordinates of the two points defining the mirror line.
 
@@ -716,9 +716,9 @@ def mirror_points_line(points, line):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points to mirror.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the mirror line.
 
     Returns
@@ -735,9 +735,9 @@ def mirror_points_line_xy(points, line):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points to mirror.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the mirror line.
 
     Returns
@@ -754,9 +754,9 @@ def mirror_point_plane(point, plane):
 
     Parameters
     ----------
-    point : list of float
+    point : list[float]
         XYZ coordinates of mirror point.
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal defining the mirror plane.
 
     Returns
@@ -774,9 +774,9 @@ def mirror_points_plane(points, plane):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points to mirror.
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal defining the mirror plane.
 
     Returns
@@ -800,9 +800,9 @@ def project_point_plane(point, plane):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the point.
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal vector defining the projection plane.
 
     Returns
@@ -842,9 +842,9 @@ def project_points_plane(points, plane):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points.
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal vector defining the projection plane.
 
     Returns
@@ -865,9 +865,9 @@ def project_point_line(point, line):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the point.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the projection line.
 
     Returns
@@ -898,9 +898,9 @@ def project_point_line_xy(point, line):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the point.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the projection line.
 
     Returns
@@ -930,9 +930,9 @@ def project_points_line(points, line):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         XYZ coordinates of the points.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the projection line.
 
     Returns
@@ -958,9 +958,9 @@ def project_points_line_xy(points, line):
 
     Parameters
     ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the point.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the projection line.
 
     Returns
@@ -991,9 +991,9 @@ def reflect_line_plane(line, plane, tol=1e-6):
 
     Parameters
     ----------
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the line.
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal vector of the plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -1041,7 +1041,7 @@ def reflect_line_triangle(line, triangle, tol=1e-6):
 
     Parameters
     ----------
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the line.
     triangle : [point, point, point]
         The triangle vertices.
@@ -1102,11 +1102,11 @@ def orient_points(points, reference_plane, target_plane):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] or :class:`compas.geometry.Point`]s
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]s
         XYZ coordinates of the points.
-    reference_plane : [point, vector] or :class:`compas.geometry.Plane`
+    reference_plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal defining a reference plane.
-    target_plane : [point, vector] or :class:`compas.geometry.Plane`
+    target_plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal defining a target plane.
 
     Returns

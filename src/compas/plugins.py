@@ -260,15 +260,15 @@ def pluggable(pluggable_method=None, category=None, selector='first_match', doma
     ----------
     pluggable_method : callable
         The method to decorate as ``pluggable``.
-    category : :obj:`str`, optional
+    category : str, optional
         An optional string to group or categorize extension points.
-    selector : :obj:`str`, optional
+    selector : str, optional
         String that determines the selection mode of extension points.
 
-        - ``"first_match"``: (:obj:`str`) Execute the first matching implementation.
-        - ``"collect_all"``: (:obj:`str`) Executes all matching implementations and return list of its return values.
+        - ``"first_match"``: (str) Execute the first matching implementation.
+        - ``"collect_all"``: (str) Executes all matching implementations and return list of its return values.
 
-    domain : :obj:`str`, optional
+    domain : str, optional
         Domain name that "owns" the pluggable extension point.
         This is useful to avoid name collisions between extension points
         of different packages.

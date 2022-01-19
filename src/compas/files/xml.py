@@ -80,6 +80,7 @@ class XML(object):
         Returns
         -------
         None
+
         """
         self._reader = XMLReader.from_file(self.filepath)
 
@@ -96,6 +97,7 @@ class XML(object):
         Returns
         -------
         None
+
         """
         self.writer.write(prettify)
 
@@ -112,6 +114,7 @@ class XML(object):
         Returns
         -------
         None
+
         """
         self.write(prettify)
 
@@ -121,12 +124,13 @@ class XML(object):
 
         Parameters
         ----------
-        source : str or file
+        source : str | file
             File path or file-like object.
 
         Returns
         -------
         :class:`compas.files.XML`
+
         """
         xml = cls(source)
         xml._reader = XMLReader.from_file(source)
@@ -144,6 +148,7 @@ class XML(object):
         Returns
         -------
         :class:`compas.files.XML`
+
         """
         xml = cls()
         xml._reader = XMLReader.from_string(text)
@@ -164,6 +169,7 @@ class XML(object):
         -------
         str
             String representation of the XML.
+
         """
         return self.writer.to_string(encoding=encoding, prettify=prettify)
 
@@ -175,6 +181,7 @@ class XMLReader(object):
     ----------
     root : :class:`xml.etree.ElementTree.Element`
         Root XML element
+
     """
 
     def __init__(self, root):
@@ -186,7 +193,7 @@ class XMLReader(object):
 
         Parameters
         ----------
-        source : path string, file-like object or URL string
+        source : path string | file-like object | URL string
             A path, a file-like object or a URL pointing to a file.
         tree_parser : :class:`ET.XMLParser`, optional
             A custom tree parser.
@@ -194,6 +201,7 @@ class XMLReader(object):
         Returns
         -------
         :class:`compas.files.XMLReader`
+
         """
         return cls(xml_impl.xml_from_file(source, tree_parser))
 
@@ -211,6 +219,7 @@ class XMLReader(object):
         Returns
         -------
         :class:`compas.files.XMLReader`
+
         """
         return cls(xml_impl.xml_from_string(text, tree_parser))
 
@@ -222,6 +231,7 @@ class XMLWriter(object):
     ----------
     xml : :class:`compas.files.XML`
         The XML tree to write.
+
     """
 
     def __init__(self, xml):
@@ -238,6 +248,7 @@ class XMLWriter(object):
         Returns
         -------
         None
+
         """
         string = self.to_string(prettify=prettify)
         with open(self.xml.filepath, 'wb') as f:
@@ -256,6 +267,7 @@ class XMLWriter(object):
         Returns
         -------
         str
+
         """
         rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
         if not prettify:
@@ -276,6 +288,7 @@ class XMLElement(object):
         A list of elements contained by the current element.
     text : str, optional
         The text contained by the element.
+
     """
 
     def __init__(self, tag, attributes=None, elements=None, text=None):
@@ -290,6 +303,7 @@ class XMLElement(object):
         Returns
         -------
         :class:`ET.Element`
+
         """
         root = ET.Element(self.tag, self.attributes)
         root.text = self.text
@@ -306,6 +320,7 @@ class XMLElement(object):
         Returns
         -------
         None
+
         """
         for child in self.elements:
             subelement = ET.SubElement(element, child.tag, child.attributes)

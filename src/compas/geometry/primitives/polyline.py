@@ -18,15 +18,15 @@ class Polyline(Primitive):
 
     Parameters
     ----------
-    points : list[[float, float, float] or :class:`compas.geometry.Point`]
+    points : list[[float, float, float] | :class:`compas.geometry.Point`]
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
     Attributes
     ----------
-    points : list of :class:`compas.geometry.Point`
+    points : list[:class:`compas.geometry.Point`]
         The points of the polyline.
-    lines : list of :class:`compas.geometry.Line`, read-only
+    lines : list[:class:`compas.geometry.Line`], read-only
         The lines of the polyline.
     length : float, read-only
         The length of the polyline.
@@ -184,7 +184,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             The point on the polyline.
 
         Examples
@@ -262,7 +262,7 @@ class Polyline(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Examples
@@ -328,7 +328,7 @@ class Polyline(Primitive):
 
         Parameters
         ----------
-        point: [float, float, float] or :class:`compas.geometry.Point`
+        point: [float, float, float] | :class:`compas.geometry.Point`
 
         Returns
         -------

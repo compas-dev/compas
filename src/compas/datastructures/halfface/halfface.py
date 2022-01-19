@@ -599,7 +599,7 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        int or tuple[int, dict[str, Any]]
+        int | tuple[int, dict[str, Any]]
             If `data` is False, the next vertex identifier.
             If `data` is True, the next vertex as a (vertex, attr) a tuple.
 
@@ -620,7 +620,7 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        tuple[int, int] or tuple[tuple[int, int], dict[str, Any]]
+        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a ((u, v), attr) tuple.
 
@@ -648,7 +648,7 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        int or tuple[int, dict[str, Any]]
+        int | tuple[int, dict[str, Any]]
             If `data` is False, the next face identifier.
             If `data` is True, the next face as a (face, attr) tuple.
 
@@ -669,7 +669,7 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        int or tuple[int, dict[str, Any]]
+        int | tuple[int, dict[str, Any]]
             If `data` is False, the next face identifier.
             If `data` is True, the next face as a (face, attr) tuple.
 
@@ -705,7 +705,7 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        int or tuple[int, dict[str, Any]]
+        int | tuple[int, dict[str, Any]]
             If `data` is False, the next cell identifier.
             If `data` is True, the next cell as a (cell, attr) tuple.
 
@@ -742,6 +742,10 @@ class HalfFace(Datastructure):
         **kwattr : dict[str, Any], optional
             A dictionary of additional attributes compiled of remaining named arguments.
 
+        Returns
+        -------
+        None
+
         Notes
         -----
         Named arguments overwrite correpsonding name-value pairs in the attribute dictionary.
@@ -761,12 +765,12 @@ class HalfFace(Datastructure):
             The vertex identifier.
         name : str
             The name of the attribute
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
 
         Returns
         -------
-        obj or None
+        object | None
             The value of the attribute,
             or None when the function is used as a "setter".
 
@@ -829,7 +833,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        dict[str, Any] or list[Any] or None
+        dict[str, Any] | list[Any] | None
             If the parameter `names` is empty,
             the function returns a dictionary of all attribute name-value pairs of the vertex.
             If the parameter `names` is not empty,
@@ -867,7 +871,7 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
             Default is None.
         vertices : list[int], optional
@@ -875,7 +879,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list[Any] or None
+        list[Any] | None
             The value of the attribute for each vertex,
             or None if the function is used as a "setter".
 
@@ -908,7 +912,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list[dict[str, Any]] or list[list[Any]] or None
+        list[dict[str, Any]] | list[list[Any]] | None
             If the parameter `names` is empty,
             the function returns a list containing an attribute dict per vertex.
             If the parameter `names` is not empty,
@@ -965,12 +969,12 @@ class HalfFace(Datastructure):
             The edge identifier.
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
 
         Returns
         -------
-        obj or None
+        object | None
             The value of the attribute, or None when the function is used as a "setter".
 
         Raises
@@ -1039,7 +1043,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        dict[str, Any] or list[Any] or None
+        dict[str, Any] | list[Any] | None
             If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the edge.
             If the parameter `names` is not empty, a list of the values corresponding to the provided names.
             None if the function is used as a "setter".
@@ -1075,7 +1079,7 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
             Default is None.
         edges : list[tuple[int, int]], optional
@@ -1083,7 +1087,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list[Any] or None
+        list[Any] | None
             A list containing the value per edge of the requested attribute,
             or None if the function is used as a "setter".
 
@@ -1114,7 +1118,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list[dict[str, Any]] or list[list[Any]] or None
+        list[dict[str, Any]] | list[list[Any]] | None
             If the parameter `names` is empty,
             a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
             If the parameter `names` is not empty,
@@ -1171,12 +1175,12 @@ class HalfFace(Datastructure):
             The face identifier.
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
 
         Returns
         -------
-        obj or None
+        object | None
             The value of the attribute, or None when the function is used as a "setter".
 
         Raises
@@ -1243,7 +1247,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        dict[str, Any] or list[Any] or None
+        dict[str, Any] | list[Any] | None
             If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the face.
             If the parameter `names` is not empty, a list of the values corresponding to the provided names.
             None if the function is used as a "setter".
@@ -1278,7 +1282,7 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
             Default is None.
         faces : list[int], optional
@@ -1286,7 +1290,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list[Any] or None
+        list[Any] | None
             A list containing the value per face of the requested attribute,
             or None if the function is used as a "setter".
 
@@ -1319,7 +1323,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list[dict[str, Any]] or list[list[Any]] or None
+        list[dict[str, Any]] | list[list[Any]] | None
             If the parameter `names` is empty,
             a list containing per face an attribute dict with all attributes (default + custom) of the face.
             If the parameter `names` is not empty,
@@ -1353,6 +1357,10 @@ class HalfFace(Datastructure):
         **kwattr : dict[str, Any], optional
             A dictionary of additional attributes compiled of remaining named arguments.
 
+        Returns
+        -------
+        None
+
         Notes
         ----
         Named arguments overwrite corresponding cell-value pairs in the attribute dictionary.
@@ -1372,12 +1380,12 @@ class HalfFace(Datastructure):
             The cell identifier.
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
 
         Returns
         -------
-        obj or None
+        object | None
             The value of the attribute, or None when the function is used as a "setter".
 
         Raises
@@ -1407,6 +1415,10 @@ class HalfFace(Datastructure):
             The cell identifier.
         name : str
             The name of the attribute.
+
+        Returns
+        -------
+        None
 
         Raises
         ------
@@ -1439,7 +1451,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        dict[str, Any] or list[Any] or None
+        dict[str, Any] | list[Any] | None
             If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the cell.
             If the parameter `names` is not empty, a list of the values corresponding to the provided names.
             None if the function is used as a "setter".
@@ -1473,14 +1485,14 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
-        cells : list of int, optional
+        cells : list[int], optional
             A list of cell identifiers.
 
         Returns
         -------
-        list[Any] or None
+        list[Any] | None
             A list containing the value per face of the requested attribute,
             or None if the function is used as a "setter".
 
@@ -1514,7 +1526,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list[dict[str, Any]] or list[list[Any]] or None
+        list[dict[str, Any]] | list[list[Any]] | None
             If the parameter `names` is empty,
             a list containing per cell an attribute dict with all attributes (default + custom) of the cell.
             If the parameter `names` is empty,
@@ -1979,7 +1991,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        int or None
+        int | None
             The identifier of the adjacent half-face, or None if `halfedge` is on the boundary.
 
         Notes

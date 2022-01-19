@@ -385,6 +385,7 @@ class Box(Shape):
         Examples
         --------
         >>> box = Box.from_width_height_depth(1.0, 2.0, 3.0)
+
         """
         width = float(width)
         height = float(height)
@@ -407,7 +408,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        bbox : list[[float, float, float] or :class:`compas.geometry.Point`]
+        bbox : list[[float, float, float] | :class:`compas.geometry.Point`]
             A list of 8 point locations, representing the corners of the bounding box.
             Positions 0, 1, 2, 3 are the bottom corners.
             Positions 4, 5, 6, 7 are the top corners.
@@ -429,6 +430,7 @@ class Box(Shape):
         1.0
         >>> box.depth
         1.0
+
         """
         a = bbox[0]
         b = bbox[1]
@@ -449,9 +451,9 @@ class Box(Shape):
 
         Parameters
         ----------
-        corner1 : [float, float, float] or :class:`compas.geometry.Point`
+        corner1 : [float, float, float] | :class:`compas.geometry.Point`
             The XYZ coordinates of the bottom left corner of the base of the box.
-        corner2 : [float, float, float] or :class:`compas.geometry.Point`
+        corner2 : [float, float, float] | :class:`compas.geometry.Point`
             The XYZ coordinates of the top right corner of the base of the box.
         height : float
             The height of the box.
@@ -490,7 +492,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        diagonal : segment
+        diagonal : [point, point] | :class:`compas.geometry.Line`
             The diagonal of the box, represented by a pair of points in space.
 
         Returns
@@ -544,6 +546,7 @@ class Box(Shape):
         list[list[int]]
             And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if triangulated:
             faces = []
@@ -559,11 +562,12 @@ class Box(Shape):
 
         Parameters
         ----------
-        point : [float, float, float] or :class:`compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
 
         Returns
         -------
         bool
+
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
         point = transform_points([point], T)[0]

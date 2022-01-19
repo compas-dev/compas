@@ -439,10 +439,10 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        vertices : list[list[float]] or dict[int, list[float]]
+        vertices : list[list[float]] | dict[int, list[float]]
             A list of vertices, represented by their XYZ coordinates,
             or a dictionary of vertex keys pointing to their XYZ coordinates.
-        faces : list[list[int]] or dict[int, list[int]]
+        faces : list[list[int]] | dict[int, list[int]]
             A list of faces, represented by a list of indices referencing the list of vertex coordinates,
             or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.
 
@@ -713,7 +713,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        int or tuple[int, list[int]]
+        int | tuple[int, list[int]]
             If `return_fkeys` is False, the key of the inserted vertex.
             If `return_fkeys` is True, the key of the newly created vertex and a list with the newly created faces.
 

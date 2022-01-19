@@ -14,9 +14,9 @@ def trimesh_slice(mesh, planes):
 
     Parameters
     ----------
-    mesh : tuple[sequence[[float, float, float] or :class:`compas.geometry.Point`], sequence[[int, int, int]]]
+    mesh : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
-    planes : sequence[[point, vector] or :class:`compas.geometry.Plane`]
+    planes : sequence[[point, vector] | :class:`compas.geometry.Plane`]
         The slicing planes.
 
     Returns

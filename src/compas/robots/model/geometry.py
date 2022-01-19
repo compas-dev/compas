@@ -72,11 +72,11 @@ class Origin(Frame):
 
     Parameters
     ----------
-    point : point
+    point : [float, float, float] or :class:`compas.geometry.Point`
         The origin of the origin.
-    xaxis : vector
+    xaxis : [float, float, float] or :class:`compas.geometry.Vector`
         The x-axis of the origin.
-    yaxis : vector
+    yaxis : [float, float, float] or :class:`compas.geometry.Vector`
         The y-axis of the origin.
 
     Examples
@@ -85,6 +85,7 @@ class Origin(Frame):
     >>> from compas.geometry import Vector
     >>> o = Origin([0, 0, 0], [1, 0, 0], [0, 1, 0])
     >>> o = Origin(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
+
     """
 
     def __init__(self, point, xaxis, yaxis):
@@ -103,11 +104,11 @@ class Origin(Frame):
 
         Parameters
         ----------
-        attributes : dict
+        attributes : dict[str, Any]
             Attributes of the URDF element.
-        elements: list of obj
+        elements: list[object]
             Children elements of the URDF element.
-        text: str or None
+        text: str | None
             Text content of the URDF element.
 
         Returns
@@ -120,6 +121,7 @@ class Origin(Frame):
         >>> attributes = {'rpy': '0.0 1.57 0.0', 'xyz': '0.0 0.13 0.0'}
         >>> Origin.from_urdf(attributes, [], None)
         Frame(Point(0.000, 0.130, 0.000), Vector(0.001, 0.000, -1.000), Vector(0.000, 1.000, 0.000))
+
         """
         xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
@@ -130,7 +132,7 @@ class Origin(Frame):
 
         Parameters
         ----------
-        factor : :obj:`float`
+        factor : float
             Scale factor.
 
         Returns
@@ -141,6 +143,7 @@ class Origin(Frame):
         --------
         >>> o = Origin([0, 0, 0], [1, 0, 0], [0, 1, 0])
         >>> o.scale(10)
+
         """
         self.point = self.point * factor
 
@@ -152,6 +155,7 @@ class BaseShape(Data):
     ----------
     geometry : :class:`compas.geometry.Shape`
         The COMPAS geometry of this shape.
+
     """
 
     def __init__(self):
@@ -181,7 +185,7 @@ class Box(BaseShape):
 
     Attributes
     ----------
-    size : list of 3 float
+    size : [float, float, float]
         The dimensions of the box.
     geometry : :class:`compas.geometry.Box`
         The COMPAS geometry of this box.
@@ -191,6 +195,7 @@ class Box(BaseShape):
     >>> box = Box('1 1 1')
     >>> box.geometry
     Box(Frame(Point(0.000, 0.000, 0.000), Vector(1.000, 0.000, 0.000), Vector(0.000, 1.000, 0.000)), 1.0, 1.0, 1.0)
+
     """
 
     def __init__(self, size):
@@ -231,9 +236,9 @@ class Cylinder(BaseShape):
 
     Parameters
     ----------
-    radius : str or float
+    radius : str | float
         The cylinder's radius.
-    length : str or float
+    length : str | float
         The cylinder's length.
 
     Attributes
@@ -250,6 +255,7 @@ class Cylinder(BaseShape):
     >>> c = Cylinder(1, 4)
     >>> c.geometry
     Cylinder(Circle(Plane(Point(0.000, 0.000, 0.000), Vector(0.000, 0.000, 1.000)), 1.0), 4.0)
+
     """
 
     def __init__(self, radius, length):
@@ -295,7 +301,7 @@ class Sphere(BaseShape):
 
     Parameters
     ----------
-    radius : str or float
+    radius : str | float
         The sphere's radius.
 
     Attributes
@@ -310,6 +316,7 @@ class Sphere(BaseShape):
     >>> s = Sphere(1)
     >>> s.geometry
     Sphere(Point(0.000, 0.000, 0.000), 1.0)
+
     """
 
     def __init__(self, radius):
@@ -350,9 +357,9 @@ class Capsule(BaseShape):
 
     Parameters
     ----------
-    radius : str or float
+    radius : str | float
         The sphere's radius.
-    length : str or float
+    length : str | float
         The sphere's length.
 
     Attributes
@@ -365,6 +372,7 @@ class Capsule(BaseShape):
     Examples
     --------
     >>> c = Capsule(1, 4)
+
     """
 
     def __init__(self, radius, length):
@@ -414,7 +422,7 @@ class MeshDescriptor(BaseShape):
     ----------
     filename : str
         The mesh' filename.
-    scale : list of 3 float
+    scale : [float, float, float]
         The scale factors of the mesh in the x-, y-, and z-direction.
     geometry : :class:`compas.datastructures.Mesh`
         The COMPAS geometry of this mesh.
@@ -422,6 +430,7 @@ class MeshDescriptor(BaseShape):
     Examples
     --------
     >>> m = MeshDescriptor('link.stl')
+
     """
 
     def __init__(self, filename, scale='1.0 1.0 1.0'):
@@ -471,7 +480,7 @@ class Color(Data):
 
     Attributes
     ----------
-    rgba : list of float
+    rgba : [float, float, float, float]
         Color values as list of float
 
     Examples
@@ -479,6 +488,7 @@ class Color(Data):
     >>> c = Color('1 0 0')
     >>> c.rgba
     [1.0, 0.0, 0.0]
+
     """
 
     def __init__(self, rgba):
@@ -522,6 +532,7 @@ class Texture(Data):
     Examples
     --------
     >>> t = Texture('wood.jpg')
+
     """
 
     def __init__(self, filename):
@@ -554,9 +565,9 @@ class Material(Data):
     ----------
     name : str
         The name of the material.
-    color : :class:`compas.robots.Color` or None
+    color : :class:`compas.robots.Color` | None
         The color of the material.
-    texture : :class:`compas.robots.Texture` or None
+    texture : :class:`compas.robots.Texture` | None
         The filename of the texture.
 
     Examples
@@ -567,6 +578,7 @@ class Material(Data):
     >>> material = Material('aqua')
     >>> material.get_color()
     [0.0, 1.0, 1.0, 1.0]
+
     """
 
     def __init__(self, name=None, color=None, texture=None):
@@ -599,7 +611,7 @@ class Material(Data):
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
+        [float, float, float, float]
             List of 4 floats (``0.0-1.0``) indicating RGB colors and Alpha channel of the material.
 
         Examples
@@ -607,6 +619,7 @@ class Material(Data):
         >>> material = Material('aqua')
         >>> material.get_color()
         [0.0, 1.0, 1.0, 1.0]
+
         """
         if self.name:
             if self.name in HTML4_NAMES_TO_HEX:
@@ -631,15 +644,15 @@ class Geometry(Data):
 
     Parameters
     ----------
-    box : :class:`compas.robots.Box` or None
+    box : :class:`compas.robots.Box`, optional
         A box shape primitive.
-    cylinder : :class:`compas.robots.Cylinder` or None
+    cylinder : :class:`compas.robots.Cylinder`, optional
         A cylinder shape primitive.
-    sphere : :class:`compas.robots.Sphere` or None
+    sphere : :class:`compas.robots.Sphere`, optional
         A sphere shape primitive.
-    capsule : :class:`compas.robots.Capsule` or None
+    capsule : :class:`compas.robots.Capsule`, optional
         A capsule shape primitive.
-    mesh : :class:`compas.robots.MeshDescriptor` or None
+    mesh : :class:`compas.robots.MeshDescriptor`, optional
         A descriptor of a mesh.
     **kwargs : keyword arguments
         Additional attributes
@@ -650,13 +663,14 @@ class Geometry(Data):
         The shape of the geometry
     attr : keyword arguments
         Additional attributes
-    geo : :class:`compas.datastructures.Mesh` or :class:`compas.geometry.Shape` or None
+    geo : :class:`compas.datastructures.Mesh` | :class:`compas.geometry.Shape` | None
         The native geometry object.
 
     Examples
     --------
     >>> box = Box('1 1 1')
     >>> geo = Geometry(box=box)
+
     """
 
     def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
@@ -703,6 +717,7 @@ class Geometry(Data):
         -------
         object
             Shape's geometry, usually a mesh implementation.
+
         """
         return self.shape.geometry
 

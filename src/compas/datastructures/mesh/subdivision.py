@@ -93,7 +93,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'}, optional
+    scheme : Literal['tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'], optional
         The scheme according to which the mesh should be subdivided.
     **options : dict[str, Any], optional
         Optional additional keyword arguments.
@@ -572,7 +572,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The mesh object to be subdivided.
-    offset : float or dict[int, float]
+    offset : float | dict[int, float]
         The offset distance to create the frames.
         A single value will result in a constant offset everywhere.
         A dictionary mapping faces to offset values will be processed accordingly.

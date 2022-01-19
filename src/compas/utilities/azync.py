@@ -62,6 +62,10 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
     errback_name : string, optional
         Name of the error handling callback parameter of `async_func`.
 
+    Returns
+    -------
+    ???
+
     Notes
     -----
     Exceptions thrown during the async execution are handled and re-thrown as normal

@@ -20,7 +20,7 @@ class KDTree(object):
 
     Parameters
     ----------
-    objects : sequence[[float, float, float] or :class:`compas.geometry.Point`], optional
+    objects : sequence[[float, float, float] | :class:`compas.geometry.Point`], optional
         A list of objects to populate the tree with.
         If objects are provided, the tree is built automatically.
         Otherwise, use :meth:`build`.
@@ -58,7 +58,7 @@ class KDTree(object):
 
         Parameters
         ----------
-        objects : sequence[tuple[[float, float, float] or :class:`compas.geometry.Point`, int or str]]
+        objects : sequence[tuple[[float, float, float] | :class:`compas.geometry.Point`, int or str]]
             The tree objects as a sequence of point-label tuples.
         axis : int, optional
             The axis along which to build.
@@ -90,7 +90,7 @@ class KDTree(object):
 
         Parameters
         ----------
-        point : [float, float, float] or :class:`compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             XYZ coordinates of the base point.
         exclude : sequence[int or str], optional
             A sequence of point identified by their label to exclude from the search.
@@ -133,7 +133,7 @@ class KDTree(object):
 
         Parameters
         ----------
-        point : [float, float, float] or :class:`compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             XYZ coordinates of the base point.
         number : int
             The number of nearest neighbors.

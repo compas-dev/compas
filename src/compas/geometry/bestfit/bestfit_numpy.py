@@ -185,6 +185,7 @@ def bestfit_sphere_numpy(points):
                   (683.247, -327.154, 179.113), (231.606, -430.659, 115.458),\
                   (87.278, -419.178, -18.863), (24.731, -340.222, -127.158)]
     >>> center, radius = bestfit_sphere_numpy(points)
+
     """
 
     # Assemble the A matrix

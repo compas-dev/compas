@@ -16,7 +16,7 @@ def barycentric_coordinates(point, triangle):
 
     Parameters
     ----------
-    point: [float, float, float] or :class:`compas.geometry.Point`
+    point: [float, float, float] | :class:`compas.geometry.Point`
         Point location.
     triangle: [point, point, point]
         A triangle defined by 3 points.

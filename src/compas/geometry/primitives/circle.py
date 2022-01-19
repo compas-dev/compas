@@ -13,7 +13,7 @@ class Circle(Primitive):
 
     Parameters
     ----------
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         The plane of the circle.
     radius : float
         The radius of the circle.
@@ -198,7 +198,7 @@ class Circle(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
