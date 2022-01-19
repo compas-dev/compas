@@ -113,14 +113,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sphere1</strong> ([point, float] or <a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a>) – A sphere defined by a point and radius.</p></li>
-<li><p><strong>sphere2</strong> ([point, float] or <a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a>) – A sphere defined by a point and radius.</p></li>
+<li><p><strong>sphere1</strong> ([point, float] | <a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a>) – A sphere defined by a point and radius.</p></li>
+<li><p><strong>sphere2</strong> ([point, float] | <a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a>) – A sphere defined by a point and radius.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>{‘point’, ‘circle’, or ‘sphere’}</em> – The type of intersection.</p></li>
-<li><p><em>[float, float, float] or tuple[[float, float, float], float, [float, float, float]] or tuple[[float, float, float], float]</em> – If the type is ‘point’, the coordinates of the point.
+<li><p><em>[float, float, float] | tuple[[float, float, float], float, [float, float, float]] | tuple[[float, float, float], float]</em> – If the type is ‘point’, the coordinates of the point.
 If the type is ‘circle’, the center point and radius of the circle, and the normal of the plane containing the circle.
 If the type is ‘sphere’, the center point and radius of the sphere.</p></li>
 </ul>

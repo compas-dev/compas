@@ -110,15 +110,15 @@
 <h1>ToolModel.transformed_frames</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.transformed_frames">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">transformed_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L788"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">transformed_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L819"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the transformed frames based on the joint_state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>:class:`compas.robots.Configuration` or joint_state</strong> (<em>dict</em>) – A dictionary with the joint names as keys and values in radians and
+<dd class="field-odd"><p><strong>joint_state</strong> (dict[str, <a class="reference internal" href="compas.robots.Configuration.html#compas.robots.Configuration" title="compas.robots.Configuration"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a>]) – A dictionary with the joint names as keys and values in radians and
 meters (depending on the joint type).</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<dd class="field-even"><p>list[<code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code>]</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

@@ -113,13 +113,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>sequence of tuple</em>) – XYZ coordinates of the original points.</p></li>
-<li><p><strong>boundary</strong> (<em>sequence of tuples</em>) – list of ordered points describing the outer boundary (optional)</p></li>
-<li><p><strong>holes</strong> (<em>list of sequences of tuples</em>) – list of polygons (ordered points describing internal holes (optional)</p></li>
+<li><p><strong>points</strong> (sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]) – XYZ coordinates of the original points.</p></li>
+<li><p><strong>boundary</strong> (sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>] | <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>, optional) – List of ordered points describing the outer boundary.</p></li>
+<li><p><strong>holes</strong> (sequence[sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>] | <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>], optional) – List of polygons (ordered points describing internal holes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The faces of the triangulation.
+<dd class="field-even"><p><em>list[[int, int, int]]</em> – The faces of the triangulation.
 Each face is a triplet of indices referring to the list of point coordinates.</p>
 </dd>
 </dl>

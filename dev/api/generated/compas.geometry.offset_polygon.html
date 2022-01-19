@@ -113,9 +113,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polygon</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – The XYZ coordinates of the corners of the polygon.
+<li><p><strong>polygon</strong> (sequence[point] | <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – The XYZ coordinates of the corners of the polygon.
 The first and last coordinates must not be identical.</p></li>
-<li><p><strong>distance</strong> (<em>float or list[tuple[float, float]]</em>) – The offset distance as float.
+<li><p><strong>distance</strong> (<em>float | list[tuple[float, float]]</em>) – The offset distance as float.
 A single value determines a constant offset globally.
 A list of pairs of local offset values per line segment can be used to create variable offsets.</p></li>
 <li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance value for intersection calculations.</p></li>

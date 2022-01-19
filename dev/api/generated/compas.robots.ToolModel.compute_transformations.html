@@ -110,19 +110,19 @@
 <h1>ToolModel.compute_transformations</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.compute_transformations">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">compute_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L742"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">compute_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L772"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Recursive function to calculate the transformations of each joint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>:class:`compas.robots.Configuration` or joint_state</strong> (<em>dict</em>) – A dictionary with the joint names as keys and values in radians and
+<li><p><strong>joint_state</strong> (dict[str, <a class="reference internal" href="compas.robots.Configuration.html#compas.robots.Configuration" title="compas.robots.Configuration"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a>]) – A dictionary with the joint names as keys and values in radians and
 meters (depending on the joint type).</p></li>
 <li><p><strong>link</strong> (<a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a>) – Link instance to calculate the child joint’s transformation.</p></li>
 <li><p><strong>parent_transformation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code>) – The transfomation of the parent joint.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>dict of str</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code>) – A dictionary with the joint names as keys and values are the joint’s respective transformation.</p>
+<dd class="field-even"><p>dict[str, <code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code>] – A dictionary with the joint names as keys and values are the joint’s respective transformation.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

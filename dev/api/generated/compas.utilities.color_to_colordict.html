@@ -116,16 +116,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>str or [int, int, int] or [float, float, float] or dict[hashable, [int, int, int]] or dict[hashable, [float, float, float]]</em>) – The base color specification.
+<li><p><strong>color</strong> (<em>str or [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]</em>) – The base color specification.
 This can be a single color (as HEX or RGB), a list of colors, or a dict of colors.</p></li>
 <li><p><strong>keys</strong> (<em>sequence[hashable]</em>) – The keys of the color dict.</p></li>
-<li><p><strong>default</strong> (<em>str or tuple[int, int, int] or tuple[float, float, float], optional</em>) – A valid color specification (HEX or RGB).</p></li>
-<li><p><strong>colorformat</strong> (<em>{‘hex’, ‘rgb’}, optional</em>) – The format of the colors in the color dict.</p></li>
+<li><p><strong>default</strong> (<em>str | tuple[int, int, int] | tuple[float, float, float], optional</em>) – A valid color specification (HEX or RGB).</p></li>
+<li><p><strong>colorformat</strong> (<em>Literal[‘hex’, ‘rgb’], optional</em>) – The format of the colors in the color dict.</p></li>
 <li><p><strong>normalize</strong> (<em>bool, optional</em>) – If True and <cite>colorformat</cite> is <code class="docutils literal notranslate"><span class="pre">'rgb'</span></code>, normalize the color components.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dict[hashable, tuple[int, int, int]] or dict[hashable, tuple[float, float, float]]</em> – A dictionary mapping the provided keys to the provided color(s).</p>
+<dd class="field-even"><p><em>dict[hashable, tuple[int, int, int]] | dict[hashable, tuple[float, float, float]]</em> – A dictionary mapping the provided keys to the provided color(s).</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.10)"><strong>Exception</strong></a> – If the value of <cite>color</cite>, or the value of <cite>colorformat</cite> is not valid.</p>

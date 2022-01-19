@@ -113,13 +113,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ab</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – XYZ coordinates of two points defining a line segment.</p></li>
-<li><p><strong>cd</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – XYZ coordinates of two points defining another line segment.</p></li>
+<li><p><strong>ab</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – XYZ coordinates of two points defining a line segment.</p></li>
+<li><p><strong>cd</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – XYZ coordinates of two points defining another line segment.</p></li>
 <li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for membership verification.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple[[float, float, float], [float, float, float]] or tuple[None, None]</em> – Two intersection points.
+<dd class="field-even"><p><em>tuple[[float, float, float], [float, float, float]] | tuple[None, None]</em> – Two intersection points.
 If the segments intersect and the intersection points lie on the respective segments, the two points are identical.
 If the segments are skew and the apparent intersection points lie on the respective segments, the two points are different.
 In all other cases there are no intersection points.</p>

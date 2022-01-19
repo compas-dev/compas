@@ -113,11 +113,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polyline</strong> (sequence[point] or <a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a>) – The XYZ coordinates of the vertices of a polyline.</p></li>
-<li><p><strong>distance</strong> (<em>float or list[tuple[float, float]]</em>) – The offset distance as float.
+<li><p><strong>polyline</strong> (sequence[point] | <a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a>) – The XYZ coordinates of the vertices of a polyline.</p></li>
+<li><p><strong>distance</strong> (<em>float | list[tuple[float, float]]</em>) – The offset distance as float.
 A single value determines a constant offset globally.
 Alternatively, pairs of local offset values per line segment can be used to create variable offsets.</p></li>
-<li><p><strong>normal</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, optional) – The normal of the offset plane.</p></li>
+<li><p><strong>normal</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, optional) – The normal of the offset plane.</p></li>
 <li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance value for intersection calculations.</p></li>
 </ul>
 </dd>

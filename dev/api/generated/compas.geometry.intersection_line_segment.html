@@ -113,13 +113,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>line</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Two points defining a line.</p></li>
-<li><p><strong>segment</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Two points defining a line segment.</p></li>
+<li><p><strong>line</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Two points defining a line.</p></li>
+<li><p><strong>segment</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – Two points defining a line segment.</p></li>
 <li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for membership verification.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple[[float, float, float], [float, float, float]] or tuple[None, None]</em> – Two intersection points.
+<dd class="field-even"><p><em>tuple[[float, float, float], [float, float, float]] | tuple[None, None]</em> – Two intersection points.
 If the line and segment intersect and the second intersection point lies on the segment, the two points are identical.
 If the line and segment are skew and the second apparent intersection point lies on the segment, the two points are different.
 In all other cases there are no intersection points.</p>

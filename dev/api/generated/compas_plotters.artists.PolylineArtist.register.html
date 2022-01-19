@@ -110,14 +110,14 @@
 <h1>PolylineArtist.register</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_plotters.artists.PolylineArtist.register">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PolylineArtist.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artist_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/artist.py#L150"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PolylineArtist.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artist_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/artist.py#L155"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Register an artist type to a data type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>item_type</strong> (<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>) – The type of data item.</p></li>
 <li><p><strong>artist_type</strong> (<a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.Artist</span></code></a>) – The type of the corresponding/compatible artist.</p></li>
-<li><p><strong>context</strong> (<em>{‘Rhino’, ‘Grasshopper’, ‘Blender’, ‘Plotter’}, optional</em>) – The visualization context in which the pair should be registered.</p></li>
+<li><p><strong>context</strong> (<em>Literal[‘Rhino’, ‘Grasshopper’, ‘Blender’, ‘Plotter’], optional</em>) – The visualization context in which the pair should be registered.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

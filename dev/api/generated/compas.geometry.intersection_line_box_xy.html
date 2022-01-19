@@ -113,13 +113,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>line</strong> ([point, point] or <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – A line defined by two points, with at least XY coordinates.</p></li>
+<li><p><strong>line</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>) – A line defined by two points, with at least XY coordinates.</p></li>
 <li><p><strong>box</strong> (<em>[point, point, point, point]</em>) – A box defined by 4 points, with at least XY coordinates.</p></li>
 <li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance value for point comparison.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple[[float, float, 0.0], [float, float, 0.0]] or [float, float, 0.0] or None</em> – Two points if the line goes through the box.
+<dd class="field-even"><p><em>tuple[[float, float, 0.0], [float, float, 0.0]] | [float, float, 0.0] | None</em> – Two points if the line goes through the box.
 One point if the line goes through one of the box vertices only.
 None otherwise.</p>
 </dd>
