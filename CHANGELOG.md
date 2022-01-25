@@ -32,7 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.geometry.PointCollection`
 * Removed `compas.geometry.PointCollectionNumpy`
 * Removed `compas.interop`
-
+* Removed `numba`; `compas.numerical.drx` will be moved to a dedicated extension package.
+* Removed `ezdxf` (unused).
+* Removed `laspy` (unused).
 
 ## [1.13.3] 2021-12-17
 
