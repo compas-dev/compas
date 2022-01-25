@@ -32,9 +32,9 @@
 /* ----------------------------------------------------------------- */
 
 .admonition {
-	padding: 0 $alert-padding-x;
-	margin-top: 2rem;
-	margin-bottom: 2rem;
+	padding: 0 1rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 	border: $alert-border-width solid transparent;
 	// @include border-radius($alert-border-radius);
 }
@@ -55,6 +55,7 @@
 		theme-color-level(info, -9),
 		theme-color-level(info, 6)
 	);
+	border-color: transparent;
 }
 
 .admonition.important {
@@ -126,8 +127,8 @@ table {
 .sig {
 	padding: 0.5rem;
 	margin-bottom: 0.5rem;
-	margin-left: -0.5rem;
-	margin-right: -0.5rem;
+	// margin-left: -0.5rem;
+	// margin-right: -0.5rem;
 	border-bottom: 0px solid #eee;
 	background-color: #eee;
 	font-weight: normal;
@@ -139,13 +140,13 @@ table {
 }
 
 .sig .property {
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-	background-color: #fff;
+	padding-left: 0rem;
+	padding-right: 0.25rem;
+	// background-color: #fff;
 }
 
 .sig-prename {
-	font-weight: normal;
+	font-weight: bold;
 	border-radius: 0;
 	padding-right: 0;
 }
@@ -154,10 +155,15 @@ table {
 	font-weight: bold;
 	padding-left: 0;
 	border-radius: 0;
+	color: var(--pink);
 }
 
-.sig-param .n {
-	text-decoration: underline;
+.sig-param {
+	padding-left: 0.25rem;
+}
+  
+.sig-paren {
+	padding-left: 0.25rem
 }
 
 // .compas-content .section {
@@ -165,7 +171,12 @@ table {
 // }
 
 .sig .reference.internal {
-	float: right;
+	// float: right;
+}
+
+.viewcode-link {
+	// float: right;
+	margin-left: 1rem;
 }
 
 // ----------------
@@ -216,7 +227,7 @@ table {
 .footnote,
 .citation {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: auto minmax(0, 1fr);
 	grid-gap: 1rem;
 	margin: 1rem 0;
 }
@@ -232,11 +243,11 @@ table {
 	padding: 0;
 }
 
-dt .brackets::before {
+a.brackets::before, span.brackets::before {
 	content: '[';
 }
 
-dt .brackets::after {
+a.brackets::after, span.brackets::after {
 	content: ']';
 }
 

@@ -44,9 +44,9 @@
 
 /* ----------------------------------------------------------------- */
 .admonition {
-  padding: 0 1.25rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  padding: 0 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   border: 1px solid transparent;
 }
 
@@ -63,7 +63,7 @@
 .admonition.notes {
   color: #0c5460;
   background-color: #d1ecf1;
-  border-color: #bee5eb;
+  border-color: transparent;
 }
 .admonition.note hr,
 .admonition.notes hr {
@@ -77,7 +77,6 @@
 .admonition.important {
   color: #721c24;
   background-color: #f8d7da;
-  border-color: #f5c6cb;
 }
 .admonition.important hr {
   border-top-color: #f1b0b7;
@@ -89,7 +88,6 @@
 .admonition.warning {
   color: #721c24;
   background-color: #f8d7da;
-  border-color: #f5c6cb;
 }
 .admonition.warning hr {
   border-top-color: #f1b0b7;
@@ -101,7 +99,6 @@
 .admonition.seealso {
   color: #383d41;
   background-color: #e2e3e5;
-  border-color: #d6d8db;
 }
 .admonition.seealso hr {
   border-top-color: #c8cbcf;
@@ -150,8 +147,6 @@ table {
 .sig {
   padding: 0.5rem;
   margin-bottom: 0.5rem;
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
   border-bottom: 0px solid #eee;
   background-color: #eee;
   font-weight: normal;
@@ -163,13 +158,12 @@ table {
 }
 
 .sig .property {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  background-color: #fff;
+  padding-left: 0rem;
+  padding-right: 0.25rem;
 }
 
 .sig-prename {
-  font-weight: normal;
+  font-weight: bold;
   border-radius: 0;
   padding-right: 0;
 }
@@ -178,14 +172,19 @@ table {
   font-weight: bold;
   padding-left: 0;
   border-radius: 0;
+  color: var(--pink);
 }
 
-.sig-param .n {
-  text-decoration: underline;
+.sig-param {
+  padding-left: 0.25rem;
 }
 
-.sig .reference.internal {
-  float: right;
+.sig-paren {
+  padding-left: 0.25rem;
+}
+
+.viewcode-link {
+  margin-left: 1rem;
 }
 
 .field-list {
@@ -221,7 +220,7 @@ table {
 .footnote,
 .citation {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto minmax(0, 1fr);
   grid-gap: 1rem;
   margin: 1rem 0;
 }
@@ -237,11 +236,11 @@ table {
   padding: 0;
 }
 
-dt .brackets::before {
+a.brackets::before, span.brackets::before {
   content: "[";
 }
 
-dt .brackets::after {
+a.brackets::after, span.brackets::after {
   content: "]";
 }
 
