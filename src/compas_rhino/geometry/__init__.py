@@ -12,6 +12,7 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    RhinoCurve
     RhinoNurbsCurve
     RhinoNurbsSurface
 
@@ -37,6 +38,7 @@ Curves
     :toctree: generated/
     :nosignatures:
 
+    curves.new_curve
     curves.new_nurbscurve
     curves.new_nurbscurve_from_interpolation
     curves.new_nurbscurve_from_parameters
