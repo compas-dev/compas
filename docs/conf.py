@@ -14,6 +14,8 @@ import m2r2
 import sphinx_compas_theme
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
+sys.path.append(os.path.join(os.path.dirname(__file__), '_ext'))
+
 # patches
 
 current_m2r2_setup = m2r2.setup
@@ -74,6 +76,7 @@ extensions = [
     "m2r2",
     "nbsphinx",
     "sphinx.ext.autodoc.typehints",
+    "tabs"
 ]
 
 # autodoc options

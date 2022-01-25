@@ -2,6 +2,9 @@
 API Reference
 ********************************************************************************
 
+Packages
+========
+
 .. toctree::
     :maxdepth: 1
     :titlesonly:
@@ -87,7 +90,7 @@ we use a notation that is based on what the corresponding type hint would be:
 ``list[float]`` or ``list[list[int]]``.
 
 In cases where both tuples and lists, or other types of "positionally ordered collections of items", are acceptable as input parameters
-we use ``sequence[float]``. A sequence containing a known set of multiple types is denoted with ``sequence[float or int]``.
+we use ``Sequence[float]``. A sequence containing a known set of multiple types is denoted with ``Sequence[float | int]``.
 
 If a function requires as input a tuple or a list with a specific structure,
 we simply write ``[float, float, float]``, for example for XYZ coordinates,
@@ -101,58 +104,39 @@ Therefore, in addition to the above conventions, we define the following type al
 
 .. rst-class:: table table-bordered
 
-.. list-table:: Geometric Primitives
+.. list-table:: Basic Type Aliases
     :widths: auto
     :header-rows: 1
 
     * - Alias
       - Full Type Information
     * - ``point``
-      - :class:`compas.geometry.Point` or ``[float, float, float]``
+      - ``[float, float, float]`` | :class:`compas.geometry.Point`
     * - ``vector``
-      - :class:`compas.geometry.Vector` or ``[float, float, float]``
+      - ``[float, float, float]`` | :class:`compas.geometry.Vector`
     * - ``quaternion``
-      - :class:`compas.geometry.Quaternion` or ``[float, float, float, float]``
+      - ``[float, float, float, float]`` | :class:`compas.geometry.Quaternion`
+
+Note the use of ``a | b`` instead of ``Union[a, b]``.
+Type aliases can also be nested to further improve legibility of more complex types.
+
+.. list-table:: Nested Type Aliases
+    :widths: auto
+    :header-rows: 1
+
+    * - Alias
+      - Full Type Information
     * - ``line``
-      - :class:`compas.geometry.Line` or ``[point, point]``
-    * - ``segment``
-      - :class:`compas.geometry.Line` or ``[point, point]``
+      - ``[point, point]`` | :class:`compas.geometry.Line`
     * - ``plane``
-      - :class:`compas.geometry.Plane` or ``[point, vector]``
+      - ``[point, vector]`` | :class:`compas.geometry.Plane`
     * - ``frame``
-      - :class:`compas.geometry.Frame` or ``[point, vector, vector]``
+      - ``[point, vector, vector]`` | :class:`compas.geometry.Frame`
     * - ``circle``
-      - :class:`compas.geometry.Circle` or ``[plane, float]``
+      - ``[plane, float]``| :class:`compas.geometry.Circle`
     * - ``ellipse``
-      - :class:`compas.geometry.Ellipse` or ``[plane, float, float]``
+      - ``[plane, float, float]`` | :class:`compas.geometry.Ellipse`
     * - ``polyline``
-      - :class:`compas.geometry.Polyline` or ``sequence[point]``
+      - ``Sequence[point]`` | :class:`compas.geometry.Polyline`
     * - ``polygon``
-      - :class:`compas.geometry.Polygon` or ``sequence[point]``
-
-
-These type aliases can also be nested to further improve legibility of complex types.
-For example, for "plane-like" input, instead of writing
-
-.. code-block:: python
-
-    [[float, float, float] or :class:`compas.geometry.Point`, [float, float, float] or :class:`compas.geometry.Vector`] or :class:`compas.geometry.Plane`
-
-we can simply write the following instead.
-
-.. code-block:: python
-
-    [[point, vector] or :class:`compas.geometry.Plane`]
-
-Similarly, for a circle.
-
-.. code-block:: python
-
-    [[plane, float] or :class:`compas.geometry.Circle`]
-
-Other often used type patterns, are
-
-* ``list[[int, int, int]]`` - for a list of triangle faces, with each face defined by 3 indices referring to a list of point or vertex locations.
-* ``list[[int, int, int, int]]`` - for a list of quad faces, with each face defined by 4 indices referring to a list of point or vertex locations.
-* ``list[list[int]]`` - for a list of ngon faces, with each face defined as a variable-length list of indices referring to a list of point or vertex locations.
-* ``matrix4x4[float]`` - for a list of 4 lists of floats, with each of those lists containing 4 floats.
+      - ``Sequence[point]`` | :class:`compas.geometry.Polygon`
