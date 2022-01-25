@@ -7,33 +7,32 @@ from math import sqrt
 from compas.plugins import pluggable
 from compas.geometry import Point
 from compas.geometry import Frame
-from compas.utilities import linspace
 
 from .curve import Curve
 
 
 @pluggable(category='factories')
-def new_nurbscurve(*args, **kwargs):
+def new_nurbscurve(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_parameters(*args, **kwargs):
+def new_nurbscurve_from_parameters(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_points(*args, **kwargs):
+def new_nurbscurve_from_points(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_interpolation(*args, **kwargs):
+def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbscurve_from_step(*args, **kwargs):
+def new_nurbscurve_from_step(cls, *args, **kwargs):
     raise NotImplementedError
 
 
@@ -57,34 +56,15 @@ class NurbsCurve(Curve):
         The complete knot vector.
     multiplicity : list[int], read-only
         The multiplicities of the knots.
-    degree : int, read-only
-        The degree of the curve.
     dimension : int, read-only
         The spatial dimension of the curve.
-    domain : tuple[float, float]
-        The domain of the parameter space of the curve.
     order : int, read-only
         The order of the curve (degree + 1).
-    start : :class:`compas.geometry.Point`, read-only
-        The start point of the curve.
-    end : :class:`compas.geometry.Point`, read-only
-        The end point of the curve.
-    is_closed : bool, read-only
-        Flag indicating that the curve is closed.
-    is_periodic : bool, read-only
-        Flag indicating that the curve is periodic.
-    is_rational : bool, read-only
-        Flag indicating that the curve is rational.
-        If the curve is rational, the weights of the control points are rational numbers.
-    bounding_box : :class:`compas.geometry.Box`, read-only
-        The axis aligned bounding box of the curve.
-    length : float
-        The length of the curve.
 
     """
 
     def __new__(cls, *args, **kwargs):
-        return new_nurbscurve(*args, **kwargs)
+        return new_nurbscurve(cls, *args, **kwargs)
 
     def __init__(self, name=None):
         super(NurbsCurve, self).__init__(name=name)
@@ -206,7 +186,7 @@ class NurbsCurve(Curve):
         :class:`compas.geometry.NurbsCurve`
 
         """
-        return new_nurbscurve_from_parameters(points, weights, knots, multiplicities, degree, is_periodic=False)
+        return new_nurbscurve_from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False)
 
     @classmethod
     def from_points(cls, points, degree=3):
@@ -228,7 +208,7 @@ class NurbsCurve(Curve):
         * https://developer.rhino3d.com/api/RhinoCommon/html/M_Rhino_Geometry_NurbsCurve_Create.htm
 
         """
-        return new_nurbscurve_from_points(points, degree=degree)
+        return new_nurbscurve_from_points(cls, points, degree=degree)
 
     @classmethod
     def from_interpolation(cls, points, precision=1e-3):
@@ -250,7 +230,7 @@ class NurbsCurve(Curve):
         * https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateHSpline.htm
 
         """
-        return new_nurbscurve_from_interpolation(points, precision=1e-3)
+        return new_nurbscurve_from_interpolation(cls, points, precision=1e-3)
 
     @classmethod
     def from_step(cls, filepath):
@@ -265,7 +245,7 @@ class NurbsCurve(Curve):
         -------
         :class:`compas.geometry.NurbsCurve`
         """
-        return new_nurbscurve_from_step(filepath)
+        return new_nurbscurve_from_step(cls, filepath)
 
     @classmethod
     def from_arc(cls, arc):
@@ -379,21 +359,6 @@ class NurbsCurve(Curve):
     # Conversions
     # ==============================================================================
 
-    def to_step(self, filepath, schema="AP203"):
-        """Write the curve geometry to a STP file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path of the output file.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
     # ==============================================================================
     # Properties
     # ==============================================================================
@@ -419,15 +384,7 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @property
-    def degree(self):
-        raise NotImplementedError
-
-    @property
     def dimension(self):
-        raise NotImplementedError
-
-    @property
-    def domain(self):
         raise NotImplementedError
 
     @property
@@ -435,31 +392,7 @@ class NurbsCurve(Curve):
         return self.degree + 1
 
     @property
-    def start(self):
-        raise NotImplementedError
-
-    @property
-    def end(self):
-        raise NotImplementedError
-
-    @property
-    def is_closed(self):
-        raise NotImplementedError
-
-    @property
-    def is_periodic(self):
-        raise NotImplementedError
-
-    @property
     def is_rational(self):
-        raise NotImplementedError
-
-    @property
-    def bounding_box(self):
-        raise NotImplementedError
-
-    @property
-    def length(self):
         raise NotImplementedError
 
     # ==============================================================================
@@ -482,199 +415,3 @@ class NurbsCurve(Curve):
             self.degree,
             self.is_periodic
         )
-
-    def transform(self, T):
-        """Transform this curve.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-            The transformation.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
-    def transformed(self, T):
-        """Transform a copy of the curve.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-            The transformation.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        copy = self.copy()
-        copy.transform(T)
-        return copy
-
-    def space(self, n=10):
-        """Compute evenly spaced parameters over the curve domain.
-
-        Parameters
-        ----------
-        n : int, optional
-            The number of values in the parameter space.
-
-        Returns
-        -------
-        list[float]
-
-        """
-        start, end = self.domain
-        return linspace(start, end, n)
-
-    def xyz(self, n=10):
-        """Compute point locations corresponding to evenly spaced parameters over the curve domain.
-
-        Parameters
-        ----------
-        n : int, optional
-            The number of points in the discretisation.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.Point`]
-
-        """
-        return [self.point_at(t) for t in self.space(n)]
-
-    def locus(self, resolution=100):
-        """Compute the locus of all points on the curve.
-
-        Parameters
-        ----------
-        resolution : int
-            The number of intervals at which a point on the
-            curve should be computed. Defaults to 100.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.Point`]
-            Points along the curve.
-
-        """
-        return self.xyz(resolution)
-
-    def point_at(self, t):
-        """Compute a point on the curve.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter. Must be between 0 and 1.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-            the corresponding point on the curve.
-
-        """
-        raise NotImplementedError
-
-    def tangent_at(self, t):
-        """Compute the tangent vector at a point on the curve.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter. Must be between 0 and 1.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The corresponding tangent vector.
-
-        """
-        raise NotImplementedError
-
-    def curvature_at(self, t):
-        """Compute the curvature at a point on the curve.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter. Must be between 0 and 1.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The corresponding curvature vector.
-
-        """
-        raise NotImplementedError
-
-    def frame_at(self, t):
-        """Compute the local frame at a point on the curve.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter. Must be between 0 and 1.
-
-        Returns
-        -------
-        :class:`compas.geometry.Frame`
-            The corresponding local frame.
-
-        """
-        raise NotImplementedError
-
-    def closest_point(self, point, return_parameter=False):
-        """Compute the closest point on the curve to a given point.
-
-        Parameters
-        ----------
-        point : :class:`compas.geometry.Point`
-            The test point.
-        return_parameter : bool, optional
-            If True, the parameter corresponding to the closest point should be returned in addition to the point.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, float]
-            If `return_parameter` is false, only the closest point is returned.
-            If `return_parameter` is true, the closest point and the corresponding parameter are returned.
-
-        """
-        raise NotImplementedError
-
-    def divide_by_count(self, count):
-        """Divide the curve into a specific number of equal length segments.
-
-        Parameters
-        ----------
-        count : int
-            The number of segments.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.NurbsCurve`]
-
-        """
-        raise NotImplementedError
-
-    def divide_by_length(self, length):
-        """Divide the curve into segments of specified length.
-
-        Parameters
-        ----------
-        length : float
-            The length of the segments.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.NurbsCurve`]
-
-        """
-        raise NotImplementedError
-
-    def fair(self):
-        raise NotImplementedError

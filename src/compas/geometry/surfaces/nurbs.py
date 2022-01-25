@@ -13,27 +13,27 @@ from .surface import Surface
 
 
 @pluggable(category='factories')
-def new_nurbssurface(*args, **kwargs):
+def new_nurbssurface(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbssurface_from_parameters(*args, **kwargs):
+def new_nurbssurface_from_parameters(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbssurface_from_points(*args, **kwargs):
+def new_nurbssurface_from_points(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbssurface_from_fill(*args, **kwargs):
+def new_nurbssurface_from_fill(cls, *args, **kwargs):
     raise NotImplementedError
 
 
 @pluggable(category='factories')
-def new_nurbssurface_from_step(*args, **kwargs):
+def new_nurbssurface_from_step(cls, *args, **kwargs):
     raise NotImplementedError
 
 
@@ -59,29 +59,14 @@ class NurbsSurface(Surface):
         Multiplicity of the knots in the U direction.
     v_mults : list[int], read-only
         Multiplicity of the knots in the V direction.
-    u_degree : int, read-only
-        The degree of the curve in the U direction.
-    v_degree : int, read-only
-        The degree of the curve in the V direction.
-    u_domain : tuple[float, float], read-only
-        Min/Max values of the parameters in the U direction.
-    v_domain : tuple[float, float], read-only
-        Min/Max values of the parameters in the V direction.
-    is_u_periodic : bool, read-only
-        Flag indicating that the surface is periodic in the U direction.
-    is_v_periodic : bool, read-only
-        Flag indicating that the surface is periodic in the V direction.
 
     """
 
     def __new__(cls, *args, **kwargs):
-        return new_nurbssurface(*args, **kwargs)
+        return new_nurbssurface(cls, *args, **kwargs)
 
     def __init__(self, name=None):
         super(NurbsSurface, self).__init__(name=name)
-
-    def __eq__(self, other):
-        raise NotImplementedError
 
     def __str__(self):
         lines = [
@@ -223,6 +208,7 @@ class NurbsSurface(Surface):
 
         """
         return new_nurbssurface_from_parameters(
+            cls,
             points,
             weights,
             u_knots,
@@ -253,7 +239,7 @@ class NurbsSurface(Surface):
         :class:`compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_points(points, u_degree=u_degree, v_degree=v_degree)
+        return new_nurbssurface_from_points(cls, points, u_degree=u_degree, v_degree=v_degree)
 
     @classmethod
     def from_meshgrid(cls, nu=10, nv=10):
@@ -293,7 +279,7 @@ class NurbsSurface(Surface):
         :class:`compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_step(filepath)
+        return new_nurbssurface_from_step(cls, filepath)
 
     @classmethod
     def from_fill(cls, curve1, curve2):
@@ -309,26 +295,11 @@ class NurbsSurface(Surface):
         :class:`compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_fill(curve1, curve2)
+        return new_nurbssurface_from_fill(cls, curve1, curve2)
 
     # ==============================================================================
     # Conversions
     # ==============================================================================
-
-    def to_step(self, filepath, schema="AP203"):
-        """Write the surface geometry to a STP file.
-
-        Parameters
-        ----------
-        filepath : str
-        schema : str, optional
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
 
     def to_mesh(self, nu=100, nv=None):
         """Convert the surface to a quad mesh.
@@ -415,30 +386,6 @@ class NurbsSurface(Surface):
     def v_mults(self):
         raise NotImplementedError
 
-    @property
-    def u_degree(self):
-        raise NotImplementedError
-
-    @property
-    def v_degree(self):
-        raise NotImplementedError
-
-    @property
-    def u_domain(self):
-        raise NotImplementedError
-
-    @property
-    def v_domain(self):
-        raise NotImplementedError
-
-    @property
-    def is_u_periodic(self):
-        raise NotImplementedError
-
-    @property
-    def is_v_periodic(self):
-        raise NotImplementedError
-
     # ==============================================================================
     # Methods
     # ==============================================================================
@@ -464,20 +411,6 @@ class NurbsSurface(Surface):
             self.is_v_periodic
         )
 
-    def transform(self, T):
-        """Transform this surface.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
     def transformed(self, T):
         """Transform an independent copy of this surface.
 
@@ -493,186 +426,3 @@ class NurbsSurface(Surface):
         copy = self.copy()
         copy.transform(T)
         return copy
-
-    def u_space(self, n=10):
-        """Compute evenly spaced parameters over the surface domain in the U direction.
-
-        Parameters
-        ----------
-        n : int, optional
-            The number of parameters.
-
-        Returns
-        -------
-        list[float]
-
-        """
-        umin, umax = self.u_domain
-        return linspace(umin, umax, n)
-
-    def v_space(self, n=10):
-        """Compute evenly spaced parameters over the surface domain in the V direction.
-
-        Parameters
-        ----------
-        n : int, optional
-            The number of parameters.
-
-        Returns
-        -------
-        list[float]
-
-        """
-        vmin, vmax = self.v_domain
-        return linspace(vmin, vmax, n)
-
-    def u_isocurve(self, u):
-        """Compute the isoparametric curve at parameter u.
-
-        Parameters
-        ----------
-        u : float
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        raise NotImplementedError
-
-    def v_isocurve(self, v):
-        """Compute the isoparametric curve at parameter v.
-
-        Parameters
-        ----------
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        raise NotImplementedError
-
-    def boundary(self):
-        """Compute the boundary curves of the surface.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.NurbsCurve`]
-
-        """
-        raise NotImplementedError
-
-    def xyz(self, nu=10, nv=10):
-        """Compute point locations corresponding to evenly spaced parameters over the surface domain.
-
-        Parameters
-        ----------
-        nu : int, optional
-            The size of the grid in the U direction.
-        nv : int, optional
-            The size of the grid in the V direction.
-
-        """
-        return [self.point_at(i, j) for i, j in product(self.u_space(nu), self.v_space(nv))]
-
-    def point_at(self, u, v):
-        """Compute a point on the surface.
-
-        Parameters
-        ----------
-        u : float
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-
-        """
-        raise NotImplementedError
-
-    def curvature_at(self, u, v):
-        """Compute the curvature at a point on the surface.
-
-        Parameters
-        ----------
-        u : float
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-
-        """
-        raise NotImplementedError
-
-    def frame_at(self, u, v):
-        """Compute the local frame at a point on the curve.
-
-        Parameters
-        ----------
-        u : float
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.Frame`
-
-        """
-        raise NotImplementedError
-
-    def closest_point(self, point, return_parameters=False):
-        """Compute the closest point on the curve to a given point.
-
-        Parameters
-        ----------
-        point : :class:`compas.geometry.Point`
-            The test point.
-        return_parameters : bool, optional
-            If True, return the UV parameters of the closest point in addition to the point location.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, float, float]
-            If `return_parameters` is False, only the point location is returned.
-            If `return_parameters` is True, the point location and the corresponding parameter are returned.
-
-        """
-        raise NotImplementedError
-
-    def aabb(self):
-        """Compute the axis aligned bounding box of the surface.
-
-        Returns
-        -------
-        :class:`compas.geometry.Box`
-
-        """
-        raise NotImplementedError
-
-    def obb(self):
-        """Compute the oriented bounding box of the surface.
-
-        Returns
-        -------
-        :class:`compas.geometry.Box`
-
-        """
-        raise NotImplementedError
-
-    def intersections_with_line(self, line):
-        """Compute the intersections with a line.
-
-        Parameters
-        ----------
-        line : :class:`compas.geometry.Line`
-            The intersection line.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-            The intersection point.
-
-        """
-        raise NotImplementedError
