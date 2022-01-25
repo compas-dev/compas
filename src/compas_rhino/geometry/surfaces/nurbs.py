@@ -9,10 +9,8 @@ from compas.geometry import NurbsSurface
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
-from compas_rhino.conversions import vector_to_compas
-from compas_rhino.conversions import plane_to_compas_frame
-from compas_rhino.conversions import box_to_compas
-from compas_rhino.conversions import RhinoCurve
+
+from .surface import RhinoSurface
 
 import Rhino.Geometry
 
@@ -50,7 +48,7 @@ def rhino_surface_from_parameters(points, weights, u_knots, v_knots, u_mults, v_
     return rhino_surface
 
 
-class RhinoNurbsSurface(NurbsSurface):
+class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     """Class representing a NURBS surface.
 
     Attributes
@@ -67,24 +65,11 @@ class RhinoNurbsSurface(NurbsSurface):
         The multiplicities of the knots in the knot vector of the U direction.
     v_mults: list[int]
         The multiplicities of the knots in the knot vector of the V direction.
-    u_degree: int
-        The degree of the polynomials in the U direction.
-    v_degree: int
-        The degree of the polynomials in the V direction.
-    u_domain: tuple[float, float]
-        The parameter domain in the U direction.
-    v_domain: tuple[float, float]
-        The parameter domain in the V direction.
-    is_u_periodic: bool
-        True if the surface is periodic in the U direction.
-    is_v_periodic: bool
-        True if the surface is periodic in the V direction.
 
     """
 
     def __init__(self, name=None):
         super(RhinoNurbsSurface, self).__init__(name=name)
-        self.rhino_surface = None
 
     # ==============================================================================
     # Data
@@ -141,7 +126,7 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
             The constructed surface.
 
         """
@@ -162,24 +147,6 @@ class RhinoNurbsSurface(NurbsSurface):
     # ==============================================================================
     # Constructors
     # ==============================================================================
-
-    @classmethod
-    def from_rhino(cls, rhino_surface):
-        """Construct a NURBS surface from an existing Rhino surface.
-
-        Parameters
-        ----------
-        rhino_surface : :rhino:`Rhino.Geometry.NurbsSurface`
-            A Rhino surface.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsSurface`
-
-        """
-        curve = cls()
-        curve.rhino_surface = rhino_surface
-        return curve
 
     @classmethod
     def from_parameters(cls, points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=False, is_v_periodic=False):
@@ -206,7 +173,7 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         surface = cls()
@@ -228,7 +195,7 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         points = list(zip(*points))
@@ -249,7 +216,7 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         raise NotImplementedError
@@ -265,7 +232,7 @@ class RhinoNurbsSurface(NurbsSurface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         surface = cls()
@@ -337,168 +304,6 @@ class RhinoNurbsSurface(NurbsSurface):
         if self.rhino_surface:
             return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsV)]
 
-    @property
-    def u_degree(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Degree(0)
-
-    @property
-    def v_degree(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Degree(1)
-
-    @property
-    def u_domain(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Domain(0)
-
-    @property
-    def v_domain(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Domain(1)
-
-    @property
-    def is_u_periodic(self):
-        if self.rhino_surface:
-            return self.rhino_surface.IsPeriodic(0)
-
-    @property
-    def is_v_periodic(self):
-        if self.rhino_surface:
-            return self.rhino_surface.IsPeriodic(1)
-
     # ==============================================================================
     # Methods
     # ==============================================================================
-
-    def u_isocurve(self, u):
-        """Compute the isoparametric curve at parameter u.
-
-        Parameters
-        ----------
-        u : float
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        curve = self.rhino_surface.IsoCurve(1, u)
-        return RhinoCurve.from_geometry(curve).to_compas()
-
-    def v_isocurve(self, v):
-        """Compute the isoparametric curve at parameter v.
-
-        Parameters
-        ----------
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        curve = self.rhino_surface.IsoCurve(0, v)
-        return RhinoCurve.from_geometry(curve).to_compas()
-
-    def boundary(self):
-        """Compute the boundary curves of the surface.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.NurbsCurve`]
-
-        """
-        raise NotImplementedError
-
-    def point_at(self, u, v):
-        """Compute a point on the surface.
-
-        Parameters
-        ----------
-        u : float
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-
-        """
-        point = self.rhino_surface.PointAt(u, v)
-        return point_to_compas(point)
-
-    def curvature_at(self, u, v):
-        """Compute the curvature at a point on the surface.
-
-        Parameters
-        ----------
-        u : float
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-
-        """
-        vector = self.rhino_surface.CurvatureAt(u, v)
-        return vector_to_compas(vector)
-
-    def frame_at(self, u, v):
-        """Compute the local frame at a point on the curve.
-
-        Parameters
-        ----------
-        u : float
-        v : float
-
-        Returns
-        -------
-        :class:`compas.geometry.Frame`
-
-        """
-        result, plane = self.rhino_surface.FrameAt(u, v)
-        if result:
-            return plane_to_compas_frame(plane)
-
-    def closest_point(self, point, return_parameters=False):
-        """Compute the closest point on the curve to a given point.
-
-        Parameters
-        ----------
-        point : :class:`compas.geometry.Point`
-            The test point.
-        return_parameters : bool, optional
-            If True, return the UV parameters of the closest point as tuple in addition to the point location.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-            If `return_parameters` is False.
-        :class:`compas.geometry.Point`, (float, float)
-            If `return_parameters` is True.
-
-        """
-        result, u, v = self.rhino_surface.ClosestPoint(point_to_rhino(point))
-        if not result:
-            return
-        point = self.point_at(u, v)
-        if return_parameters:
-            return point, (u, v)
-        return point
-
-    def aabb(self, precision=0.0, optimal=False):
-        """Compute the axis aligned bounding box of the surface.
-
-        Parameters
-        ----------
-        precision : float, optional
-        optimal : float, optional
-            Flag indicating that the box should be precise.
-
-        Returns
-        -------
-        :class:`compas.geometry.Box`
-
-        """
-        box = self.rhino_surface.GetBoundingBox(optimal)
-        return box_to_compas(box)
