@@ -55,8 +55,12 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         The multiplicities of the knots in the knot vector.
     knotsequence : list[float], read-only
         The knot vector, with repeating values according to the multiplicities.
+    continuity : int, read-only
+        The degree of continuity of the curve.
+    degree : int, read-only
+        The degree of the curve.
     order : int, read-only
-        The order of the curve.
+        The order of the curve (degree + 1).
     is_rational : bool, read-only
         True is the curve is rational.
 
@@ -104,6 +108,54 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         # have not found a way to actually set this
         # not sure if that is actually possible...
         self.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
+
+    # ==============================================================================
+    # Rhino Properties
+    # ==============================================================================
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
+
+    @property
+    def points(self):
+        if self.rhino_curve:
+            return [point_to_compas(point) for point in self.rhino_curve.Points]
+
+    @property
+    def weights(self):
+        if self.rhino_curve:
+            return [point.Weight for point in self.rhino_curve.Points]
+
+    @property
+    def knots(self):
+        if self.rhino_curve:
+            return [key for key, _ in groupby(self.rhino_curve.Knots)]
+
+    @property
+    def knotsequence(self):
+        if self.rhino_curve:
+            return list(self.rhino_curve.Knots)
+
+    @property
+    def multiplicities(self):
+        if self.rhino_curve:
+            return [len(list(group)) for _, group in groupby(self.rhino_curve.Knots)]
+
+    @property
+    def degree(self):
+        if self.rhino_curve:
+            return self.rhino_curve.Degree
+
+    @property
+    def order(self):
+        if self.rhino_curve:
+            return self.rhino_curve.Order
+
+    @property
+    def is_rational(self):
+        if self.rhino_curve:
+            return self.rhino_curve.IsRational
 
     # ==============================================================================
     # Constructors
@@ -183,41 +235,6 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         return curve
 
     @classmethod
-    def from_step(cls, filepath):
-        """Load a NURBS curve from an STP file.
-
-        Parameters
-        ----------
-        filepath : str
-            A filepath.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-        """
-        raise NotImplementedError
-
-    @classmethod
-    def from_arc(cls, arc):
-        """Construct a NURBS curve from an arc.
-
-        Parameters
-        ----------
-        arc : :class:`compas.geometry.Arc`
-            An arc geometry.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-        """
-        # curve = cls()
-        # curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromArc(arc_to_rhino(arc))
-        # return curve
-        raise NotImplementedError
-
-    @classmethod
     def from_circle(cls, circle):
         """Construct a NURBS curve from a circle.
 
@@ -274,62 +291,6 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
     # ==============================================================================
     # Conversions
     # ==============================================================================
-
-    def to_line(self):
-        """Convert the NURBS curve to a line."""
-        raise NotImplementedError
-
-    def to_polyline(self):
-        """Convert the NURBS curve to a polyline."""
-        raise NotImplementedError
-
-    # ==============================================================================
-    # Rhino
-    # ==============================================================================
-
-    # ==============================================================================
-    # Properties
-    # ==============================================================================
-
-    @property
-    def points(self):
-        if self.rhino_curve:
-            return [point_to_compas(point) for point in self.rhino_curve.Points]
-
-    @property
-    def weights(self):
-        if self.rhino_curve:
-            return [point.Weight for point in self.rhino_curve.Points]
-
-    @property
-    def knots(self):
-        if self.rhino_curve:
-            return [key for key, _ in groupby(self.rhino_curve.Knots)]
-
-    @property
-    def knotsequence(self):
-        if self.rhino_curve:
-            return list(self.rhino_curve.Knots)
-
-    @property
-    def multiplicities(self):
-        if self.rhino_curve:
-            return [len(list(group)) for _, group in groupby(self.rhino_curve.Knots)]
-
-    @property
-    def dimension(self):
-        if self.rhino_curve:
-            return self.rhino_curve.Dimension
-
-    @property
-    def order(self):
-        if self.rhino_curve:
-            return self.rhino_curve.Order
-
-    @property
-    def is_rational(self):
-        if self.rhino_curve:
-            return self.rhino_curve.IsRational
 
     # ==============================================================================
     # Methods

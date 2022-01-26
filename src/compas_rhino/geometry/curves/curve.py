@@ -22,8 +22,8 @@ class RhinoCurve(Curve):
 
     Attributes
     ----------
-    degree : int, read-only
-        The degree of the polynomials.
+    dimension : int, read-only
+        The spatial dimension of the curve.
     domain : tuple[float, float], read-only
         The parameter domain.
     start : :class:`compas.geometry.Point`, read-only
@@ -46,6 +46,17 @@ class RhinoCurve(Curve):
         super(RhinoCurve, self).__init__(name=name)
         self._rhino_curve = None
 
+    def __eq__(self, other):
+        return self.rhino_curve.IsEqual(other.rhino_curve)
+
+    # ==============================================================================
+    # Data
+    # ==============================================================================
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
+
     @property
     def rhino_curve(self):
         return self._rhino_curve
@@ -54,50 +65,10 @@ class RhinoCurve(Curve):
     def rhino_curve(self, curve):
         self._rhino_curve = curve
 
-    # ==============================================================================
-    # Data
-    # ==============================================================================
-
-    # ==============================================================================
-    # Customization
-    # ==============================================================================
-
-    def __eq__(self, other):
-        return self.rhino_curve.IsEqual(other.rhino_curve)
-
-    # ==============================================================================
-    # Constructors
-    # ==============================================================================
-
-    @classmethod
-    def from_rhino(cls, rhino_curve):
-        """Construct a curve from an existing Rhino curve.
-
-        Parameters
-        ----------
-        rhino_curve : Rhino.Geometry.Curve
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoCurve`
-
-        """
-        curve = cls()
-        curve.rhino_curve = rhino_curve
-        return curve
-
-    # ==============================================================================
-    # Conversions
-    # ==============================================================================
-
-    # ==============================================================================
-    # Properties
-    # ==============================================================================
-
     @property
-    def degree(self):
+    def dimension(self):
         if self.rhino_curve:
-            return self.rhino_curve.Degree
+            return self.rhino_curve.Dimension
 
     @property
     def domain(self):
@@ -123,6 +94,31 @@ class RhinoCurve(Curve):
     def is_periodic(self):
         if self.rhino_curve:
             return self.rhino_curve.IsPeriodic
+
+    # ==============================================================================
+    # Constructors
+    # ==============================================================================
+
+    @classmethod
+    def from_rhino(cls, rhino_curve):
+        """Construct a curve from an existing Rhino curve.
+
+        Parameters
+        ----------
+        rhino_curve : Rhino.Geometry.Curve
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoCurve`
+
+        """
+        curve = cls()
+        curve.rhino_curve = rhino_curve
+        return curve
+
+    # ==============================================================================
+    # Conversions
+    # ==============================================================================
 
     # ==============================================================================
     # Methods
@@ -155,23 +151,6 @@ class RhinoCurve(Curve):
 
         """
         self.rhino_curve.Transform(xform_to_rhino(T))
-
-    def transformed(self, T):
-        """Transform a copy of the curve.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-            A COMPAS transformation.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoCurve`
-
-        """
-        copy = self.copy()
-        copy.transform(T)
-        return copy
 
     def reverse(self):
         """Reverse the parametrisation of the curve.
@@ -266,6 +245,10 @@ class RhinoCurve(Curve):
 
         """
         return self.rhino_curve.TorsionAt(t)
+
+    # ==============================================================================
+    # Methods continued
+    # ==============================================================================
 
     def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the curve to a given point.

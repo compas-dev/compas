@@ -15,6 +15,40 @@ from .surface import RhinoSurface
 import Rhino.Geometry
 
 
+class Points:
+    def __init__(self, surface):
+        self.rhino_surface = surface
+
+    @property
+    def points(self):
+        points = []
+        for i in range(self.rhino_surface.Points.CountU):
+            row = []
+            for j in range(self.rhino_surface.Points.CountV):
+                row.append(point_to_compas(self.rhino_surface.Points.GetControlPoint(i, j).Location))
+            points.append(row)
+        return points
+
+    def __getitem__(self, index):
+        try:
+            u, v = index
+        except TypeError:
+            return self.points[index]
+        else:
+            point = self.rhino_surface.Points.GetControlPoint(u, v).Location
+            return point_to_compas(point)
+
+    def __setitem__(self, index, point):
+        u, v = index
+        self.rhino_surface.Points.SetControlPoint(u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point)))
+
+    def __len__(self):
+        return self.rhino_surface.Points.CountU
+
+    def __iter__(self):
+        return iter(self.points)
+
+
 def rhino_surface_from_parameters(points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=False, is_v_periodic=False):
     rhino_surface = Rhino.Geometry.NurbsSurface.Create(
         3,
@@ -65,11 +99,16 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         The multiplicities of the knots in the knot vector of the U direction.
     v_mults: list[int]
         The multiplicities of the knots in the knot vector of the V direction.
+    u_degree: int
+        The degree of the polynomials in the U direction.
+    v_degree: int
+        The degree of the polynomials in the V direction.
 
     """
 
     def __init__(self, name=None):
         super(RhinoNurbsSurface, self).__init__(name=name)
+        self._points = None
 
     # ==============================================================================
     # Data
@@ -145,6 +184,68 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         )
 
     # ==============================================================================
+    # Properties
+    # ==============================================================================
+
+    @property
+    def points(self):
+        if self.rhino_surface:
+            if not self._points:
+                self._points = Points(self.rhino_surface)
+            return self._points
+
+    @property
+    def weights(self):
+        if self.rhino_surface:
+            weights = []
+            for i in range(self.rhino_surface.Points.CountU):
+                row = []
+                for j in range(self.rhino_surface.Points.CountV):
+                    row.append(self.rhino_surface.Points.GetWeight(i, j))
+                weights.append(row)
+            return weights
+
+    @property
+    def u_knots(self):
+        if self.rhino_surface:
+            return [key for key, _ in groupby(self.rhino_surface.KnotsU)]
+
+    @property
+    def u_knotsequence(self):
+        if self.rhino_surface:
+            return list(self.rhino_surface.KnotsU)
+
+    @property
+    def v_knots(self):
+        if self.rhino_surface:
+            return [key for key, _ in groupby(self.rhino_surface.KnotsV)]
+
+    @property
+    def v_knotsequence(self):
+        if self.rhino_surface:
+            return list(self.rhino_surface.KnotsV)
+
+    @property
+    def u_mults(self):
+        if self.rhino_surface:
+            return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsU)]
+
+    @property
+    def v_mults(self):
+        if self.rhino_surface:
+            return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsV)]
+
+    @property
+    def u_degree(self):
+        if self.rhino_surface:
+            return self.rhino_surface.Degree(0)
+
+    @property
+    def v_degree(self):
+        if self.rhino_surface:
+            return self.rhino_surface.Degree(1)
+
+    # ==============================================================================
     # Constructors
     # ==============================================================================
 
@@ -207,21 +308,6 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         return surface
 
     @classmethod
-    def from_step(cls, filepath):
-        """Load a NURBS surface from a STP file.
-
-        Parameters
-        ----------
-        filepath : str
-
-        Returns
-        -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
-
-        """
-        raise NotImplementedError
-
-    @classmethod
     def from_fill(cls, curve1, curve2):
         """Construct a NURBS surface from the infill between two NURBS curves.
 
@@ -243,66 +329,6 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     # ==============================================================================
     # Conversions
     # ==============================================================================
-
-    def to_step(self, filepath, schema="AP203"):
-        """Write the surface geometry to a STP file."""
-        raise NotImplementedError
-
-    # ==============================================================================
-    # Properties
-    # ==============================================================================
-
-    @property
-    def points(self):
-        if self.rhino_surface:
-            points = []
-            for i in range(self.rhino_surface.Points.CountU):
-                row = []
-                for j in range(self.rhino_surface.Points.CountV):
-                    row.append(point_to_compas(self.rhino_surface.Points.GetControlPoint(i, j).Location))
-                points.append(row)
-            return points
-
-    @property
-    def weights(self):
-        if self.rhino_surface:
-            weights = []
-            for i in range(self.rhino_surface.Points.CountU):
-                row = []
-                for j in range(self.rhino_surface.Points.CountV):
-                    row.append(self.rhino_surface.Points.GetWeight(i, j))
-                weights.append(row)
-            return weights
-
-    @property
-    def u_knots(self):
-        if self.rhino_surface:
-            return [key for key, _ in groupby(self.rhino_surface.KnotsU)]
-
-    @property
-    def u_knotsequence(self):
-        if self.rhino_surface:
-            return list(self.rhino_surface.KnotsU)
-
-    @property
-    def v_knots(self):
-        if self.rhino_surface:
-            return [key for key, _ in groupby(self.rhino_surface.KnotsV)]
-
-    @property
-    def v_knotsequence(self):
-        if self.rhino_surface:
-            return list(self.rhino_surface.KnotsV)
-
-    @property
-    def u_mults(self):
-        if self.rhino_surface:
-            return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsU)]
-
-    @property
-    def v_mults(self):
-        if self.rhino_surface:
-            return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsV)]
 
     # ==============================================================================
     # Methods
