@@ -56,8 +56,10 @@ class NurbsCurve(Curve):
         The complete knot vector.
     multiplicity : list[int], read-only
         The multiplicities of the knots.
-    dimension : int, read-only
-        The spatial dimension of the curve.
+    continuity : int, read-only
+        The degree of continuity of the curve.
+    degree : int, read-only
+        The degree of the curve.
     order : int, read-only
         The order of the curve (degree + 1).
 
@@ -159,8 +161,63 @@ class NurbsCurve(Curve):
         return cls.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
 
     # ==============================================================================
+    # Properties
+    # ==============================================================================
+
+    @property
+    def points(self):
+        raise NotImplementedError
+
+    @property
+    def weights(self):
+        raise NotImplementedError
+
+    @property
+    def knots(self):
+        raise NotImplementedError
+
+    @property
+    def knotsequence(self):
+        raise NotImplementedError
+
+    @property
+    def multiplicities(self):
+        raise NotImplementedError
+
+    @property
+    def continuity(self):
+        raise NotImplementedError
+
+    @property
+    def degree(self):
+        raise NotImplementedError
+
+    @property
+    def order(self):
+        return self.degree + 1
+
+    @property
+    def is_rational(self):
+        raise NotImplementedError
+
+    # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_step(cls, filepath):
+        """Load a NURBS curve from an STP file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsCurve`
+        """
+        return new_nurbscurve_from_step(cls, filepath)
 
     @classmethod
     def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
@@ -203,10 +260,6 @@ class NurbsCurve(Curve):
         -------
         :class:`compas.geometry.NurbsCurve`
 
-        References
-        ----------
-        * https://developer.rhino3d.com/api/RhinoCommon/html/M_Rhino_Geometry_NurbsCurve_Create.htm
-
         """
         return new_nurbscurve_from_points(cls, points, degree=degree)
 
@@ -225,30 +278,22 @@ class NurbsCurve(Curve):
         -------
         :class:`compas.geometry.NurbsCurve`
 
-        References
-        ----------
-        * https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateHSpline.htm
-
         """
         return new_nurbscurve_from_interpolation(cls, points, precision=1e-3)
 
     @classmethod
-    def from_step(cls, filepath):
-        """Load a NURBS curve from an STP file.
+    def from_arc(cls, arc):
+        """Construct a NURBS curve from an arc.
 
         Parameters
         ----------
-        filepath : str
-            The path to the file.
+        arc : :class:`compas.geometry.Arc`
 
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
-        """
-        return new_nurbscurve_from_step(cls, filepath)
 
-    @classmethod
-    def from_arc(cls, arc):
+        """
         raise NotImplementedError
 
     @classmethod
@@ -262,10 +307,6 @@ class NurbsCurve(Curve):
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
-
-        References
-        ----------
-        * https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromCircle.htm
 
         """
         frame = Frame.from_plane(circle.plane)
@@ -358,42 +399,6 @@ class NurbsCurve(Curve):
     # ==============================================================================
     # Conversions
     # ==============================================================================
-
-    # ==============================================================================
-    # Properties
-    # ==============================================================================
-
-    @property
-    def points(self):
-        raise NotImplementedError
-
-    @property
-    def weights(self):
-        raise NotImplementedError
-
-    @property
-    def knots(self):
-        raise NotImplementedError
-
-    @property
-    def knotsequence(self):
-        raise NotImplementedError
-
-    @property
-    def multiplicities(self):
-        raise NotImplementedError
-
-    @property
-    def dimension(self):
-        raise NotImplementedError
-
-    @property
-    def order(self):
-        return self.degree + 1
-
-    @property
-    def is_rational(self):
-        raise NotImplementedError
 
     # ==============================================================================
     # Methods

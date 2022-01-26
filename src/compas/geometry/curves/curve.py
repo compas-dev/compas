@@ -22,10 +22,8 @@ class Curve(Geometry):
 
     Attributes
     ----------
-    continuity : int, read-only
-        The degree of continuity of the curve.
-    degree : int, read-only
-        The degree of the curve.
+    dimension : int, read-only
+        The spatial dimension of the curve.
     domain : tuple[float, float], read-only
         The domain of the parameter space of the curve.
     start : :class:`compas.geometry.Point`, read-only
@@ -97,38 +95,11 @@ class Curve(Geometry):
         raise NotImplementedError
 
     # ==============================================================================
-    # Constructors
-    # ==============================================================================
-
-    # ==============================================================================
-    # Conversions
-    # ==============================================================================
-
-    def to_step(self, filepath, schema="AP203"):
-        """Write the curve geometry to a STP file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path of the output file.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
-    # ==============================================================================
     # Properties
     # ==============================================================================
 
     @property
-    def continuity(self):
-        raise NotImplementedError
-
-    @property
-    def degree(self):
+    def dimension(self):
         raise NotImplementedError
 
     @property
@@ -152,11 +123,17 @@ class Curve(Geometry):
         raise NotImplementedError
 
     # ==============================================================================
-    # Methods
+    # Constructors
     # ==============================================================================
 
-    def copy(self):
-        """Make an independent copy of the current curve.
+    @classmethod
+    def from_step(cls, filepath):
+        """Load a curve from a STP file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
 
         Returns
         -------
@@ -165,13 +142,33 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def transform(self, T):
-        """Transform this curve.
+    @classmethod
+    def from_obj(cls, filepath):
+        """Load a curve from an OBJ file.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
-            The transformation.
+        filepath : str
+            The path to the file.
+
+        Returns
+        -------
+        :class:`compas.geometry.Curve`
+
+        """
+        raise NotImplementedError
+
+    # ==============================================================================
+    # Conversions
+    # ==============================================================================
+
+    def to_step(self, filepath, schema="AP203"):
+        """Write the curve geometry to a STP file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path of the output file.
 
         Returns
         -------
@@ -180,22 +177,24 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def transformed(self, T):
-        """Transform a copy of the curve.
+    def to_obj(self, filepath):
+        """Write the curve geometry to an OBJ file.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
-            The transformation.
+        filepath : str
+            The path of the output file.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        None
 
         """
-        copy = self.copy()
-        copy.transform(T)
-        return copy
+        raise NotImplementedError
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
 
     def reverse(self):
         """Reverse the parametrisation of the curve.
@@ -206,6 +205,127 @@ class Curve(Geometry):
 
         """
         raise NotImplementedError
+
+    def reversed(self):
+        """Reverse a copy of the curve.
+
+        Returns
+        -------
+        :class:`compas.geometry.Curve`
+
+        """
+        copy = self.copy()
+        copy.reverse
+        return copy
+
+    def point_at(self, t):
+        """Compute a point of the curve at a parameter.
+
+        Parameters
+        ----------
+        t : float
+            The value of the curve parameter. Must be between 0 and 1.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            the corresponding point on the curve.
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the curve domain.
+
+        """
+        raise NotImplementedError
+
+    def tangent_at(self, t):
+        """Compute the tangent vector of the curve at a parameter.
+
+        Parameters
+        ----------
+        t : float
+            The value of the curve parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The corresponding tangent vector.
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the curve domain.
+
+        """
+        raise NotImplementedError
+
+    def curvature_at(self, t):
+        """Compute the curvature of the curve at a parameter.
+
+        Parameters
+        ----------
+        t : float
+            The value of the curve parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The corresponding curvature vector.
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the curve domain.
+
+        """
+        raise NotImplementedError
+
+    def frame_at(self, t):
+        """Compute the local frame of the curve at a parameter.
+
+        Parameters
+        ----------
+        t : float
+            The value of the curve parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The corresponding local frame.
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the curve domain.
+
+        """
+        raise NotImplementedError
+
+    def torsion_at(self, t):
+        """Compute the torsion of the curve at a parameter.
+
+        Parameters
+        ----------
+        t : float
+            The value of the curve parameter.
+
+        Returns
+        -------
+        float
+            The torsion value.
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the curve domain.
+
+        """
+        raise NotImplementedError
+
+    # ==============================================================================
+    # Methods continued
+    # ==============================================================================
 
     def space(self, n=10):
         """Compute evenly spaced parameters over the curve domain.
@@ -224,13 +344,13 @@ class Curve(Geometry):
         return linspace(start, end, n)
 
     def locus(self, resolution=100):
-        """Compute the locus of all points on the curve.
+        """Compute the locus of points on the curve.
 
         Parameters
         ----------
         resolution : int
             The number of intervals at which a point on the
-            curve should be computed. Defaults to 100.
+            curve should be computed.
 
         Returns
         -------
@@ -239,86 +359,6 @@ class Curve(Geometry):
 
         """
         return [self.point_at(t) for t in self.space(resolution)]
-
-    def point_at(self, t):
-        """Compute a point of the curve at a parameter.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter. Must be between 0 and 1.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-            the corresponding point on the curve.
-
-        """
-        raise NotImplementedError
-
-    def tangent_at(self, t):
-        """Compute the tangent vector of the curve at a parameter.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The corresponding tangent vector.
-
-        """
-        raise NotImplementedError
-
-    def curvature_at(self, t):
-        """Compute the curvature of the curve at a parameter.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The corresponding curvature vector.
-
-        """
-        raise NotImplementedError
-
-    def frame_at(self, t):
-        """Compute the local frame of the curve at a parameter.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter.
-
-        Returns
-        -------
-        :class:`compas.geometry.Frame`
-            The corresponding local frame.
-
-        """
-        raise NotImplementedError
-
-    def torsion_at(self, t):
-        """Compute the torsion of the curve at a parameter.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter.
-
-        Returns
-        -------
-        float
-            The torsion value.
-
-        """
-        raise NotImplementedError
 
     def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the curve to a given point.

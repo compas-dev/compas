@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from itertools import product
-
 from compas.plugins import pluggable
 from compas.geometry import Point
 from compas.utilities import linspace
@@ -59,6 +57,10 @@ class NurbsSurface(Surface):
         Multiplicity of the knots in the U direction.
     v_mults : list[int], read-only
         Multiplicity of the knots in the V direction.
+    u_degree : list[int], read-only
+        The degree of the surface in the U direction.
+    v_degree : list[int], read-only
+        The degree of the surface in the V direction.
 
     """
 
@@ -174,6 +176,42 @@ class NurbsSurface(Surface):
             u_degree, v_degree,
             is_u_periodic, is_v_periodic
         )
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
+
+    @property
+    def points(self):
+        raise NotImplementedError
+
+    @property
+    def weights(self):
+        raise NotImplementedError
+
+    @property
+    def u_knots(self):
+        raise NotImplementedError
+
+    @property
+    def v_knots(self):
+        raise NotImplementedError
+
+    @property
+    def u_mults(self):
+        raise NotImplementedError
+
+    @property
+    def v_mults(self):
+        raise NotImplementedError
+
+    @property
+    def u_degree(self):
+        raise NotImplementedError
+
+    @property
+    def v_degree(self):
+        raise NotImplementedError
 
     # ==============================================================================
     # Constructors
@@ -301,91 +339,6 @@ class NurbsSurface(Surface):
     # Conversions
     # ==============================================================================
 
-    def to_mesh(self, nu=100, nv=None):
-        """Convert the surface to a quad mesh.
-
-        Parameters
-        ----------
-        nu : int, optional
-            Number of faces in the U direction.
-        nv : int, optional
-            Number of faces in the V direction.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-
-        """
-        from compas.datastructures import Mesh
-
-        nv = nv or nu
-        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
-        faces = [[
-            i * (nv + 1) + j,
-            (i + 1) * (nv + 1) + j,
-            (i + 1) * (nv + 1) + j + 1,
-            i * (nv + 1) + j + 1
-        ] for i, j in product(range(nu), range(nv))]
-
-        return Mesh.from_vertices_and_faces(vertices, faces)
-
-    def to_triangles(self, nu=100, nv=None):
-        """Convert the surface to a list of triangles.
-
-        Parameters
-        ----------
-        nu : int, optional
-            Number of quads in the U direction.
-            Every quad has two triangles.
-        nv : int, optional
-            Number of quads in the V direction.
-            Every quad has two triangles.
-
-        Returns
-        -------
-        list[list[:class:`compas.geometry.Point`]]
-
-        """
-        nv = nv or nu
-        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
-        triangles = []
-        for i, j in product(range(nu), range(nv)):
-            a = i * (nv + 1) + j
-            b = (i + 1) * (nv + 1) + j
-            c = (i + 1) * (nv + 1) + j + 1
-            d = i * (nv + 1) + j + 1
-            triangles.append([vertices[a], vertices[b], vertices[c]])
-            triangles.append([vertices[a], vertices[c], vertices[d]])
-        return triangles
-
-    # ==============================================================================
-    # Properties
-    # ==============================================================================
-
-    @property
-    def points(self):
-        raise NotImplementedError
-
-    @property
-    def weights(self):
-        raise NotImplementedError
-
-    @property
-    def u_knots(self):
-        raise NotImplementedError
-
-    @property
-    def v_knots(self):
-        raise NotImplementedError
-
-    @property
-    def u_mults(self):
-        raise NotImplementedError
-
-    @property
-    def v_mults(self):
-        raise NotImplementedError
-
     # ==============================================================================
     # Methods
     # ==============================================================================
@@ -410,19 +363,3 @@ class NurbsSurface(Surface):
             self.is_u_periodic,
             self.is_v_periodic
         )
-
-    def transformed(self, T):
-        """Transform an independent copy of this surface.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsSurface`
-
-        """
-        copy = self.copy()
-        copy.transform(T)
-        return copy

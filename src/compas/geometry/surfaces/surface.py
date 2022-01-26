@@ -24,12 +24,6 @@ class Surface(Geometry):
 
     Attributes
     ----------
-    continuity : int, read-only
-        The degree of continuity of the surface.
-    u_degree : list[int], read-only
-        The degree of the surface in the U direction.
-    v_degree : list[int], read-only
-        The degree of the surface in the V direction.
     u_domain : tuple[float, float], read-only
         The parameter domain of the surface in the U direction.
     v_domain : tuple[float, float], read-only
@@ -58,8 +52,60 @@ class Surface(Geometry):
     # ==============================================================================
 
     # ==============================================================================
+    # Properties
+    # ==============================================================================
+
+    @property
+    def u_domain(self):
+        raise NotImplementedError
+
+    @property
+    def v_domain(self):
+        raise NotImplementedError
+
+    @property
+    def is_u_periodic(self):
+        raise NotImplementedError
+
+    @property
+    def is_v_periodic(self):
+        raise NotImplementedError
+
+    # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_step(cls, filepath):
+        """Load a surface from a STP file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Returns
+        -------
+        :class:`compas.geometry.Surface`
+
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def from_obj(cls, filepath):
+        """Load a surface from an OBJ file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Returns
+        -------
+        :class:`compas.geometry.Surface`
+
+        """
+        raise NotImplementedError
 
     # ==============================================================================
     # Conversions
@@ -90,51 +136,66 @@ class Surface(Geometry):
         """
         raise NotImplementedError
 
-    # ==============================================================================
-    # Properties
-    # ==============================================================================
+    def to_mesh(self, nu=100, nv=None):
+        """Convert the surface to a quad mesh.
 
-    @property
-    def u_degree(self):
-        raise NotImplementedError
+        Parameters
+        ----------
+        nu : int, optional
+            Number of faces in the U direction.
+        nv : int, optional
+            Number of faces in the V direction.
 
-    @property
-    def v_degree(self):
-        raise NotImplementedError
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
 
-    @property
-    def u_domain(self):
-        raise NotImplementedError
+        """
+        from compas.datastructures import Mesh
 
-    @property
-    def v_domain(self):
-        raise NotImplementedError
+        nv = nv or nu
+        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
+        faces = [[
+            i * (nv + 1) + j,
+            (i + 1) * (nv + 1) + j,
+            (i + 1) * (nv + 1) + j + 1,
+            i * (nv + 1) + j + 1
+        ] for i, j in product(range(nu), range(nv))]
 
-    @property
-    def is_u_periodic(self):
-        raise NotImplementedError
+        return Mesh.from_vertices_and_faces(vertices, faces)
 
-    @property
-    def is_v_periodic(self):
-        raise NotImplementedError
+    def to_triangles(self, nu=100, nv=None):
+        """Convert the surface to a list of triangles.
+
+        Parameters
+        ----------
+        nu : int, optional
+            Number of quads in the U direction.
+            Every quad has two triangles.
+        nv : int, optional
+            Number of quads in the V direction.
+            Every quad has two triangles.
+
+        Returns
+        -------
+        list[list[:class:`compas.geometry.Point`]]
+
+        """
+        nv = nv or nu
+        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
+        triangles = []
+        for i, j in product(range(nu), range(nv)):
+            a = i * (nv + 1) + j
+            b = (i + 1) * (nv + 1) + j
+            c = (i + 1) * (nv + 1) + j + 1
+            d = i * (nv + 1) + j + 1
+            triangles.append([vertices[a], vertices[b], vertices[c]])
+            triangles.append([vertices[a], vertices[c], vertices[d]])
+        return triangles
 
     # ==============================================================================
     # Methods
     # ==============================================================================
-
-    def transform(self, T):
-        """Transform this surface.
-
-        Parameters
-        ----------
-        T : :class:`~compas.geometry.Transformation`
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
 
     def u_space(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the U direction.
@@ -264,20 +325,9 @@ class Surface(Geometry):
         """
         raise NotImplementedError
 
-    def aabb(self, precision=0.0, optimal=False):
-        """Compute the axis aligned bounding box of the surface.
-
-        Parameters
-        ----------
-        precision : float, optional
-        optimal : bool, optional
-
-        Returns
-        -------
-        :class:`~compas.geometry.Box`
-
-        """
-        raise NotImplementedError
+    # ==============================================================================
+    # Methods continued
+    # ==============================================================================
 
     def closest_point(self, point, return_parameters=False):
         """Compute the closest point on the curve to a given point.
@@ -294,6 +344,21 @@ class Surface(Geometry):
         :class:`~compas.geometry.Point` | tuple[:class:`~compas.geometry.Point`, tuple[float, float]]
             If `return_parameters` is False, the nearest point on the surface.
             If `return_parameters` is True, the UV parameters in addition to the nearest point on the surface.
+
+        """
+        raise NotImplementedError
+
+    def aabb(self, precision=0.0, optimal=False):
+        """Compute the axis aligned bounding box of the surface.
+
+        Parameters
+        ----------
+        precision : float, optional
+        optimal : bool, optional
+
+        Returns
+        -------
+        :class:`~compas.geometry.Box`
 
         """
         raise NotImplementedError
