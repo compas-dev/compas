@@ -12,16 +12,6 @@ class Geometry(Data):
         # this is not obvious to ironpython
         return not self.__eq__(other)
 
-    def copy(self):
-        """Make an independent copy of this geometry.
-
-        Returns
-        -------
-        :class:`Geometry`
-
-        """
-        raise NotImplementedError
-
     def transform(self, transformation):
         """Transform the geometry.
 
