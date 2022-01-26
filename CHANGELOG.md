@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.conversions.BlenderMesh`.
 * Added option to return strip faces from `compas.datastructure.Halfedge.edge_strip`.
 * Added `compas.geometry.Bezier.transform`.
+* Added `compas.geometry.Geometry.copy`.
+* Added `compas.geometry.Curve` as base class for curves.
+* Added `compas.geometry.Surface` as base class for surfaces.
+* Added `compas_rhino.geometry.RhinoCurve` as Rhino plugin for basic curves.
+* Added `compas_rhino.geometry.RhinoSurface` as Rhino plugin for basic surfaces.
+* Added pluggable `compas.geometry.curves.curve.new_curve`.
+* Added pluggable `compas.geometry.surfaces.surface.new_surface`.
 
 ### Changed
 
@@ -24,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_plotters.plotter.Plotter` to normal class instead of singleton.
 * Moved functionality of `compas.utilities.coercion` to `compas.data`.
 * Fixed bug in `compas.geometry.NurbsSurface.to_triangles()`.
+* Rebased `compas.geometry.NurbsCurve` on `compas.geometry.Curve`.
+* Rebased `compas.geometry.NurbsSurface` on `compas.geometry.Surface`.
+* Rebased `compas_rhino.geometry.RhinoNurbsCurve` on `compas.geometry.NurbsCurve` and `compas_rhino.geometry.RhinoCurve`.
+* Rebased `compas_rhino.geometry.RhinoNurbsSurface` on `compas.geometry.NurbsSurface` and `compas_rhino.geometry.RhinoSurface`.
 
 ### Removed
 
