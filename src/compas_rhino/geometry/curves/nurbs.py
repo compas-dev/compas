@@ -9,8 +9,8 @@ from compas.geometry import NurbsCurve
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
-from compas_rhino.conversions import circle_to_rhino
-from compas_rhino.conversions import ellipse_to_rhino
+# from compas_rhino.conversions import circle_to_rhino
+# from compas_rhino.conversions import ellipse_to_rhino
 from compas_rhino.conversions import line_to_rhino
 
 from .curve import RhinoCurve
@@ -66,9 +66,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     References
     ----------
-    .. [2] https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino_Geometry_NurbsCurve.htm
-    .. [3] https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline
-    .. [4] https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/
+    * https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino_Geometry_NurbsCurve.htm
+    * https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline
+    * https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/
 
     """
 
@@ -234,41 +234,41 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateHSpline([point_to_rhino(point) for point in points])
         return curve
 
-    @classmethod
-    def from_circle(cls, circle):
-        """Construct a NURBS curve from a circle.
+    # @classmethod
+    # def from_circle(cls, circle):
+    #     """Construct a NURBS curve from a circle.
 
-        Parameters
-        ----------
-        circle : :class:`compas.geometry.Circle`
-            A circle geometry.
+    #     Parameters
+    #     ----------
+    #     circle : :class:`compas.geometry.Circle`
+    #         A circle geometry.
 
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+    #     Returns
+    #     -------
+    #     :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
-        """
-        curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromCircle(circle_to_rhino(circle))
-        return curve
+    #     """
+    #     curve = cls()
+    #     curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromCircle(circle_to_rhino(circle))
+    #     return curve
 
-    @classmethod
-    def from_ellipse(cls, ellipse):
-        """Construct a NURBS curve from an ellipse.
+    # @classmethod
+    # def from_ellipse(cls, ellipse):
+    #     """Construct a NURBS curve from an ellipse.
 
-        Parameters
-        ----------
-        ellipse : :class:`compas.geometry.Ellipse`
-            An ellipse geometry.
+    #     Parameters
+    #     ----------
+    #     ellipse : :class:`compas.geometry.Ellipse`
+    #         An ellipse geometry.
 
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+    #     Returns
+    #     -------
+    #     :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
-        """
-        curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
-        return curve
+    #     """
+    #     curve = cls()
+    #     curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
+    #     return curve
 
     @classmethod
     def from_line(cls, line):

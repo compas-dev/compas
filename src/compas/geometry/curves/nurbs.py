@@ -343,10 +343,6 @@ class NurbsCurve(Curve):
         -------
         :class:`compas.geometry.NurbsCurve`
 
-        References
-        ----------
-        * https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromEllipse.htm
-
         """
         frame = Frame.from_plane(ellipse.plane)
         frame = Frame.worldXY()
@@ -382,10 +378,6 @@ class NurbsCurve(Curve):
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
-
-        References
-        ----------
-        * https://developer.rhino3d.com/api/RhinoCommon/html/Overload_Rhino_Geometry_NurbsCurve_CreateFromLine.htm
 
         """
         return cls.from_parameters(
