@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.artists import CurveArtist
+from compas.colors import Color
 from .artist import RhinoArtist
 
 
@@ -25,13 +26,14 @@ class CurveArtist(RhinoArtist, CurveArtist):
     def __init__(self, curve, layer=None, **kwargs):
         super(CurveArtist, self).__init__(curve=curve, layer=layer, **kwargs)
 
-    def draw(self, show_points=False):
+    def draw(self, color=None):
         """Draw the curve.
 
         Parameters
         ----------
-        show_points : bool, optional
-            If True, draw the points of the curve.
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The RGB color of the curve.
+            The default color is :attr:`compas.artists.CurveArtist.color`.
 
         Returns
         -------
@@ -39,11 +41,10 @@ class CurveArtist(RhinoArtist, CurveArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        # _points = map(list, self.curve.points)
+        color = color or self.color
+        if not Color.is_rgb255(color):
+            color = Color(* list(color)).rgb255
         guids = []
-        # if show_points:
-        #     points = [{'pos': point, 'color': self.color, 'name': self.primitive.name} for point in _points]
-        #     guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        curves = [{'curve': self.curve, 'color': self.color.rgb255, 'name': self.curve.name}]
+        curves = [{'curve': self.curve, 'color': color, 'name': self.curve.name}]
         guids += compas_rhino.draw_curves(curves, layer=self.layer, clear=False, redraw=False)
         return guids

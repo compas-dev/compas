@@ -83,6 +83,7 @@ from compas.geometry import Box
 from compas.geometry import Capsule
 from compas.geometry import Circle
 from compas.geometry import Cone
+from compas.geometry import Curve
 from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -102,6 +103,7 @@ from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .circleartist import CircleArtist
 from .coneartist import ConeArtist
+from .curveartist import CurveArtist
 from .cylinderartist import CylinderArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
@@ -134,6 +136,7 @@ def register_artists():
     Artist.register(Capsule, CapsuleArtist, context='Blender')
     Artist.register(Circle, CircleArtist, context='Blender')
     Artist.register(Cone, ConeArtist, context='Blender')
+    Artist.register(Curve, CurveArtist, context='Blender')
     Artist.register(Cylinder, CylinderArtist, context='Blender')
     Artist.register(Frame, FrameArtist, context='Blender')
     Artist.register(Line, LineArtist, context='Blender')
@@ -156,6 +159,7 @@ __all__ = [
     'CapsuleArtist',
     'CircleArtist',
     'ConeArtist',
+    'CurveArtist',
     'CylinderArtist',
     'FrameArtist',
     'LineArtist',
