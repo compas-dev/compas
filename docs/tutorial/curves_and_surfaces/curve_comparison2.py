@@ -2,6 +2,7 @@ from compas.geometry import Point
 from compas.geometry import Polyline, Bezier
 from compas.geometry import NurbsCurve
 from compas.artists import Artist
+from compas.colors import Color
 
 
 points = [Point(0, 0, 0), Point(1, 2, 0), Point(2, -2, 0), Point(3, 0, 0)]
@@ -49,13 +50,13 @@ curve5 = NurbsCurve.from_parameters(
     degree=3
 )
 
-curve6 = NurbsCurve.from_parameters(
-    points=points,
-    weights=[1.0, 1.0, 1.0, 1.0],
-    knots=[0.0, 0.5, 1.0],
-    multiplicities=[3, 1, 3],
-    degree=2
-)
+# curve6 = NurbsCurve.from_parameters(
+#     points=points,
+#     weights=[1.0, 1.0, 1.0, 1.0],
+#     knots=[0.0, 0.5, 1.0],
+#     multiplicities=[3, 1, 3],
+#     degree=2
+# )
 
 # ==============================================================================
 # Visualisation
@@ -66,12 +67,15 @@ Artist.clear()
 Artist(Polyline(bezier.points)).draw()
 Artist(Polyline(bezier.locus())).draw()
 
-Artist(Polyline(curve1.points)).draw()
-Artist(Polyline(curve1.locus())).draw()
-Artist(Polyline(curve2.locus())).draw()
-Artist(Polyline(curve3.locus())).draw()
-Artist(Polyline(curve4.locus())).draw()
-Artist(Polyline(curve5.locus())).draw()
-Artist(Polyline(curve6.locus())).draw()
+Artist(Polyline(curve1.points)).draw(show_points=True)
+
+color = Color.red()
+
+Artist(curve1).draw(color=color)
+Artist(curve2).draw(color=color.lightened(factor=20))
+Artist(curve3).draw(color=color.lightened(factor=40))
+Artist(curve4).draw(color=color.lightened(factor=60))
+Artist(curve5).draw(color=color.lightened(factor=80))
+# Artist(curve6).draw(color=color.lightened(factor=50))
 
 Artist.redraw()

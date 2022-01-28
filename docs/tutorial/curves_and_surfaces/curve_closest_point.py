@@ -1,7 +1,7 @@
 from compas.geometry import Point
-from compas.geometry import Polyline
 from compas.geometry import NurbsCurve
 from compas.artists import Artist
+from compas.colors import Color
 
 
 points = [Point(0, 0, 0), Point(3, 0, 2), Point(6, 0, -3), Point(8, 0, 0)]
@@ -19,7 +19,7 @@ print(curve.point_at(t) == closest_point)
 
 Artist.clear()
 
-Artist(Polyline(curve.locus())).draw()
+Artist(curve, color=Color.from_hex('#0092D2')).draw()
 
 Artist(projection_point).draw()
 Artist(closest_point).draw()

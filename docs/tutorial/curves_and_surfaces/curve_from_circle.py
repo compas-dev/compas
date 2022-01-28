@@ -3,6 +3,7 @@ from compas.geometry import Polyline
 from compas.geometry import Circle
 from compas.geometry import NurbsCurve
 from compas.artists import Artist
+from compas.colors import Color
 
 
 circle = Circle(Plane(Point(0, 0, 0), Vector(0, 0, 1)), 1.0)
@@ -14,7 +15,7 @@ curve = NurbsCurve.from_circle(circle)
 
 Artist.clear()
 
-Artist(Polyline(curve.locus())).draw()
-Artist(Polyline(curve.points)).draw()
+Artist(curve).draw(color=Color.green())
+Artist(Polyline(curve.points)).draw(show_points=True)
 
 Artist.redraw()

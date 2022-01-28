@@ -2,6 +2,7 @@ from compas.geometry import Point
 from compas.geometry import Polyline, Bezier
 from compas.geometry import NurbsCurve
 from compas.artists import Artist
+from compas.colors import Color
 
 
 points = [Point(0, 0, 0), Point(1, 3, 0), Point(2, 0, 0)]
@@ -40,11 +41,12 @@ curve3 = NurbsCurve.from_parameters(
 Artist.clear()
 
 Artist(Polyline(bezier.points)).draw()
-Artist(Polyline(bezier.locus())).draw()
+Artist(Polyline(bezier.locus())).draw(show_points=True)
 
-Artist(Polyline(curve1.points)).draw()
-Artist(Polyline(curve1.locus())).draw()
-Artist(Polyline(curve2.locus())).draw()
-Artist(Polyline(curve3.locus())).draw()
+Artist(Polyline(curve1.points)).draw(show_points=True)
+
+Artist(curve1).draw(color=Color.black())
+Artist(curve2).draw(color=Color.pink())
+Artist(curve3).draw(color=Color.azure())
 
 Artist.redraw()

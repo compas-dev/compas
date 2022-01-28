@@ -1,9 +1,9 @@
 from compas.geometry import Vector, Point, Plane
-from compas.geometry import Line, Polyline
+from compas.geometry import Polyline
 from compas.geometry import Ellipse
-from compas.utilities import pairwise
 from compas.geometry import NurbsCurve
 from compas.artists import Artist
+from compas.colors import Color
 
 
 ellipse = Ellipse(Plane(Point(0, 0, 0), Vector(0, 0, 1)), 2.0, 1.0)
@@ -15,12 +15,7 @@ curve = NurbsCurve.from_ellipse(ellipse)
 
 Artist.clear()
 
-Artist(Polyline(curve.locus())).draw()
-
-for point in curve.points:
-    Artist(point).draw()
-
-for a, b in pairwise(curve.points):
-    Artist(Line(a, b)).draw()
+Artist(curve).draw(color=Color.green())
+Artist(Polyline(curve.points)).draw(show_points=True)
 
 Artist.redraw()
