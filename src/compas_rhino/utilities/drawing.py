@@ -971,3 +971,59 @@ def draw_circles(circles, **kwargs):
         obj.CommitChanges()
         guids.append(guid)
     return guids
+
+
+@wrap_drawfunc
+def draw_curves(curves, **kwargs):
+    """Draw curves and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    curves : list[dict]
+        A list of curve dictionaries.
+        See Notes, for more information about the structure of the dict.
+
+    Returns
+    -------
+    list[System.Guid]
+
+    Notes
+    -----
+    A curve dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'curve': compas.geometry.Curve,
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
+    """
+    guids = []
+    for data in iter(curves):
+        curve = data['curve']
+        name = data.get('name', '')
+        color = data.get('color')
+        layer = data.get('layer')
+        guid = add_curve(curve.rhino_curve)
+        if not guid:
+            continue
+        obj = find_object(guid)
+        if not obj:
+            continue
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
+        attr.Name = name
+        obj.CommitChanges()
+        guids.append(guid)
+    return guids
