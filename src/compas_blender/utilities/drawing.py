@@ -247,10 +247,10 @@ def draw_lines(lines: List[Dict],
         spline.order_u = 1
         obj = bpy.data.objects.new(name, curve)
         obj.location = origin
-        obj.data.fill_mode = 'FULL'
-        obj.data.bevel_depth = data.get('width', 0.05)
-        obj.data.bevel_resolution = 0
-        obj.data.resolution_u = 20
+        # obj.data.fill_mode = 'FULL'
+        # obj.data.bevel_depth = data.get('width', 0.05)
+        # obj.data.bevel_resolution = 0
+        # obj.data.resolution_u = 20
         rgb = data.get('color', [1.0, 1.0, 1.0])
         _set_object_color(obj, rgb)
         objects[index] = obj
@@ -297,10 +297,10 @@ def draw_polylines(polylines: List[Dict],
         spline.order_u = 1
         obj = bpy.data.objects.new(name, curve)
         obj.location = origin
-        obj.data.fill_mode = 'FULL'
-        obj.data.bevel_depth = data.get('width', 0.05)
-        obj.data.bevel_resolution = 0
-        obj.data.resolution_u = 20
+        # obj.data.fill_mode = 'FULL'
+        # obj.data.bevel_depth = data.get('width', 0.05)
+        # obj.data.bevel_resolution = 0
+        # obj.data.resolution_u = 20
         rgb = data.get('color', [1.0, 1.0, 1.0])
         _set_object_color(obj, rgb)
         objects[index] = obj
@@ -332,8 +332,7 @@ def draw_polygons(polygons: List[Dict],
 
 
 def draw_curves(curves: List[Dict],
-                collection: Union[Text, bpy.types.Collection] = None,
-                centroid: bool = True) -> List[bpy.types.Object]:
+                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw curve objects.
 
     Parameters
@@ -342,16 +341,38 @@ def draw_curves(curves: List[Dict],
         A list of dicts describing the curves.
     collection : str or :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
-    centroid : bool, optional
-        If True, use the centroids of the curves as the relative base for their coordinates,
-        instead of the origin of the world coordinates system.
 
     Returns
     -------
     list[:blender:`bpy.types.Object`]
 
     """
-    raise NotImplementedError
+    P = len(curves)
+    N = len(str(P))
+    objects = [None] * P
+    for index, props in enumerate(curves):
+        origin = [0, 0, 0]
+        curve = props['curve']
+        name = props.get('name', f'CURVE.{index:0{N}d}')
+        rgb = props.get('color', [1.0, 1.0, 1.0])
+        # create a curve data block
+        bcurve = bpy.data.curves.new(name, type='CURVE')
+        bcurve.dimensions = '3D'
+        # add a spline segment to the data block
+        spline = bcurve.splines.new('NURBS')
+        spline.points.add(len(curve.points) - 1)
+        for i, point in enumerate(curve.points):
+            spline.points[i].co = [point[0], point[1], point[2], 1.0]
+        spline.order_u = curve.order
+        spline.use_cyclic_u = curve.is_periodic
+        spline.use_endpoint_u = True
+        # create a scene object from the data block
+        obj = bpy.data.objects.new(name, bcurve)
+        obj.location = origin
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    return objects
 
 
 def draw_faces(faces: List[Dict],

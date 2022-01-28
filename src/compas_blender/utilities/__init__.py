@@ -48,6 +48,7 @@ drawing
     draw_mesh
     draw_faces
     draw_texts
+    draw_curves
 
 
 objects
@@ -96,6 +97,7 @@ from .drawing import (
     draw_polylines,
     draw_spheres,
     draw_texts,
+    draw_curves,
     RGBColor,
 )
 from .misc import unload_modules
@@ -128,6 +130,7 @@ __all__ = [
     'draw_polylines',
     'draw_spheres',
     'draw_texts',
+    'draw_curves',
     'RGBColor',
     'unload_modules'
 ]
