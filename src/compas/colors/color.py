@@ -273,6 +273,26 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
+    def from_rgb255(cls, r, g, b):
+        """Construct a color from RGB255 components.
+
+        Parameters
+        ----------
+        r : int & valuerange[0, 255]
+            Red component.
+        g : int & valuerange[0, 255]
+            Green component.
+        b : int & valuerange[0, 255]
+            Blue component.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        """
+        return cls(r/255, g/255, b/255)
+
+    @classmethod
     def from_hls(cls, h, l, s):  # noqa: E741
         """Construct a color from Hue, Luminance, and Saturation.
 
@@ -291,7 +311,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information, see https://en.wikipedia.org/wiki/HSL_and_HSV
+        https://en.wikipedia.org/wiki/HSL_and_HSV
 
         """
         r, g, b = colorsys.hls_to_rgb(h, l, s)
@@ -316,7 +336,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information, see https://en.wikipedia.org/wiki/HSL_and_HSV
+        https://en.wikipedia.org/wiki/HSL_and_HSV
 
         """
         r, g, b = colorsys.hsv_to_rgb(h, s, v)
@@ -341,7 +361,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information see https://en.wikipedia.org/wiki/YIQ
+        https://en.wikipedia.org/wiki/YIQ
 
         """
         r, g, b = colorsys.yiq_to_rgb(y, i, q)
@@ -366,7 +386,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information see https://en.wikipedia.org/wiki/YUV
+        https://en.wikipedia.org/wiki/YUV
 
         """
         r = y + 1.140 * v
@@ -692,7 +712,8 @@ class Color(Data):
     # methods
     # --------------------------------------------------------------------------
 
-    # desaturate
+    def is_rgb255(self):
+        return all(isinstance(c, int) and (c > 0 and c < 256) for c in self)
 
     def lighten(self, factor=10):
         """Lighten the color.
