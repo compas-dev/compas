@@ -250,7 +250,7 @@ class Color(Data):
         return (maxval - minval) / maxval
 
     # --------------------------------------------------------------------------
-    # customization
+    # descriptor
     # --------------------------------------------------------------------------
 
     def __get__(self, obj, otype=None):
@@ -266,6 +266,10 @@ class Color(Data):
         self.r = value.r
         self.g = value.g
         self.b = value.b
+
+    # --------------------------------------------------------------------------
+    # customization
+    # --------------------------------------------------------------------------
 
     def __repr__(self):
         return 'Color({}, {}, {}, {})'.format(self.r, self.g, self.b, self.a)
