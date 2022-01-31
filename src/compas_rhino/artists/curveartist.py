@@ -44,7 +44,5 @@ class CurveArtist(RhinoArtist, CurveArtist):
         color = color or self.color
         if not Color.is_rgb255(color):
             color = Color(* list(color)).rgb255
-        guids = []
         curves = [{'curve': self.curve, 'color': color, 'name': self.curve.name}]
-        guids += compas_rhino.draw_curves(curves, layer=self.layer, clear=False, redraw=False)
-        return guids
+        return compas_rhino.draw_curves(curves, layer=self.layer, clear=False, redraw=False)
