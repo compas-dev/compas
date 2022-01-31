@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.utilities import is_color_rgb
+from compas.colors import Color
 from .artist import Artist
 
 
@@ -34,7 +34,7 @@ class ShapeArtist(Artist):
 
     """
 
-    default_color = (1, 1, 1)
+    default_color = Color.from_hex('#0092D2')
 
     def __init__(self, shape, color=None, **kwargs):
         super(ShapeArtist, self).__init__()
@@ -58,13 +58,19 @@ class ShapeArtist(Artist):
     @property
     def color(self):
         if not self._color:
-            self._color = self.default_color
+            self.color = self.default_color
         return self._color
 
     @color.setter
-    def color(self, color):
-        if is_color_rgb(color):
-            self._color = color
+    def color(self, c):
+        if not c:
+            return
+        if Color.is_rgb255(c):
+            self._color = Color.from_rgb255(c[0], c[1], c[2])
+        elif Color.is_hex(c):
+            self._color = Color.from_hex(c)
+        else:
+            self._color = Color(c[0], c[1], c[2])
 
     @property
     def u(self):
