@@ -253,6 +253,20 @@ class Color(Data):
     # customization
     # --------------------------------------------------------------------------
 
+    def __get__(self, obj, otype=None):
+        return self
+
+    def __set__(self, obj, value):
+        if Color.is_rgb255(value):
+            value = Color.from_rgb255(value[0], value[1], value[2])
+        elif Color.is_hex(value):
+            value = Color.from_hex(value)
+        else:
+            value = Color(value[0], value[1], value[2])
+        self.r = value.r
+        self.g = value.g
+        self.b = value.b
+
     def __repr__(self):
         return 'Color({}, {}, {}, {})'.format(self.r, self.g, self.b, self.a)
 
@@ -718,7 +732,8 @@ class Color(Data):
     # methods
     # --------------------------------------------------------------------------
 
-    def is_rgb1(self):
+    @staticmethod
+    def is_rgb1(color):
         """Verify that the color is in the RGB 1 color space.
 
         Returns
@@ -726,9 +741,10 @@ class Color(Data):
         bool
 
         """
-        return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in self)
+        return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
 
-    def is_rgb255(self):
+    @staticmethod
+    def is_rgb255(color):
         """Verify that the color is in the RGB 255 color space.
 
         Returns
@@ -736,9 +752,10 @@ class Color(Data):
         bool
 
         """
-        return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in self)
+        return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
 
-    def is_hex(self):
+    @staticmethod
+    def is_hex(color):
         """Verify that the color is in hexadecimal format.
 
         Returns
@@ -746,8 +763,8 @@ class Color(Data):
         bool
 
         """
-        if isinstance(self, basestring):
-            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', self)
+        if isinstance(color, basestring):
+            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
             if match:
                 return True
             return False

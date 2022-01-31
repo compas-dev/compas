@@ -5,6 +5,7 @@ from __future__ import division
 from abc import abstractmethod
 
 from compas.utilities import is_color_rgb
+from compas.colors import Color
 from .artist import Artist
 
 
@@ -79,10 +80,10 @@ class MeshArtist(Artist):
 
     """
 
-    default_color = (0.0, 0.0, 0.0)
-    default_vertexcolor = (1.0, 1.0, 1.0)
-    default_edgecolor = (0.0, 0.0, 0.0)
-    default_facecolor = (0.9, 0.9, 0.9)
+    default_color = Color(0.0, 0.0, 0.0)
+    default_vertexcolor = Color(1.0, 1.0, 1.0)
+    default_edgecolor = Color(0.0, 0.0, 0.0)
+    default_facecolor = Color(0.9, 0.9, 0.9)
     default_vertexsize = 5
     default_edgewidth = 1.0
 

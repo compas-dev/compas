@@ -117,10 +117,10 @@ from .volmeshartist import VolMeshArtist
 
 ShapeArtist.default_color = (255, 255, 255)
 
-MeshArtist.default_color = (0, 0, 0)
-MeshArtist.default_vertexcolor = (255, 255, 255)
-MeshArtist.default_edgecolor = (0, 0, 0)
-MeshArtist.default_facecolor = (255, 255, 255)
+# MeshArtist.default_color = (0, 0, 0)
+# MeshArtist.default_vertexcolor = (255, 255, 255)
+# MeshArtist.default_edgecolor = (0, 0, 0)
+# MeshArtist.default_facecolor = (255, 255, 255)
 
 NetworkArtist.default_nodecolor = (255, 255, 255)
 NetworkArtist.default_edgecolor = (0, 0, 0)
