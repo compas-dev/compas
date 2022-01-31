@@ -2,7 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 import colorsys
+import re
 from compas.data import Data
 
 BASE16 = '0123456789abcdef'
@@ -712,8 +718,40 @@ class Color(Data):
     # methods
     # --------------------------------------------------------------------------
 
+    def is_rgb1(self):
+        """Verify that the color is in the RGB 1 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in self)
+
     def is_rgb255(self):
-        return all(isinstance(c, int) and (c > 0 and c < 256) for c in self)
+        """Verify that the color is in the RGB 255 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in self)
+
+    def is_hex(self):
+        """Verify that the color is in hexadecimal format.
+
+        Returns
+        -------
+        bool
+
+        """
+        if isinstance(self, basestring):
+            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', self)
+            if match:
+                return True
+            return False
+        return False
 
     def lighten(self, factor=10):
         """Lighten the color.
