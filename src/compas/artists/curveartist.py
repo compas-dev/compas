@@ -55,8 +55,11 @@ class CurveArtist(Artist):
 
     @color.setter
     def color(self, color):
-        if color:
-            if Color.is_rgb255(color):
-                self._color = Color.from_rgb255(* list(color))
-            else:
-                self._color = Color(* list(color))
+        if not color:
+            return
+        if Color.is_rgb255(color):
+            self._color = Color.from_rgb255(* list(color))
+        elif Color.is_hex(color):
+            self._color = Color.from_hex(color)
+        else:
+            self._color = Color(* list(color))
