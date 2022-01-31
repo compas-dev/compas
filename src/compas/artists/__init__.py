@@ -27,6 +27,7 @@ Classes
     NetworkArtist
     PrimitiveArtist
     ShapeArtist
+    SurfaceArtist
     VolMeshArtist
 
 
@@ -64,6 +65,7 @@ from .networkartist import NetworkArtist
 from .primitiveartist import PrimitiveArtist
 from .robotmodelartist import RobotModelArtist
 from .shapeartist import ShapeArtist
+from .surfaceartist import SurfaceArtist
 from .volmeshartist import VolMeshArtist
 
 from .artist import clear  # noqa: F401
@@ -82,5 +84,6 @@ __all__ = [
     'PrimitiveArtist',
     'RobotModelArtist',
     'ShapeArtist',
+    'SurfaceArtist',
     'VolMeshArtist',
 ]
