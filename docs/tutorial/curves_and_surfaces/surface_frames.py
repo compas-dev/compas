@@ -26,7 +26,7 @@ frames = [surface.frame_at(u, v) for u, v in zip(flatten(U), flatten(V))]
 
 Artist.clear()
 
-Artist(surface.to_mesh()).draw_mesh()
+Artist(surface).draw()
 
 for frame in frames:
     Artist(frame).draw()

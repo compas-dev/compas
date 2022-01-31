@@ -45,6 +45,6 @@ for row in surface.points:
 for col in zip(* list(surface.points)):
     Artist(Polyline(col)).draw()
 
-Artist(surface.to_mesh()).draw_mesh()
+Artist(surface).draw()
 
 Artist.redraw()

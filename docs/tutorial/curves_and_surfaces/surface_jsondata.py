@@ -40,6 +40,6 @@ Artist(Polyline(v.locus())).draw()
 # for curve in surface.boundary():
 #     Artist(Polyline(curve.locus())).draw()
 
-Artist(other.to_mesh()).draw_mesh()
+Artist(other).draw()
 
 Artist.redraw()
