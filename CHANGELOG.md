@@ -22,6 +22,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoSurface` as Rhino plugin for basic surfaces.
 * Added pluggable `compas.geometry.curves.curve.new_curve`.
 * Added pluggable `compas.geometry.surfaces.surface.new_surface`.
+* Added `compas.artists.CurveArtist`.
+* Added `compas.artists.SurfaceArtist`.
+* Added `compas_rhino.artists.CurveArtist`.
+* Added `compas_rhino.artists.SurfaceArtist`.
+* Added `compas_ghpython.artists.CurveArtist`.
+* Added `compas_ghpython.artists.SurfaceArtist`.
+* Added `compas_blender.artists.CurveArtist`.
+* Added `compas_blender.artists.SurfaceArtist`.
+* Added `compas_rhino.utilities.draw_curves`.
+* Added `compas_rhino.utilities.draw_surfaces`.
+* Added `compas_blender.utilities.draw_curves`.
+* Added `compas_blender.utilities.draw_surfaces`.
 
 ### Changed
 
