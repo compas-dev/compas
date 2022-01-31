@@ -43,6 +43,17 @@ Shape Artists
     SphereArtist
 
 
+Curve and Surface Artists
+=========================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    CurveArtist
+    SurfaceArtist
+
+
 Datastructure Artists
 =====================
 
@@ -92,6 +103,7 @@ from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Polyline
 from compas.geometry import Sphere
+from compas.geometry import Surface
 from compas.geometry import Torus
 from compas.geometry import Vector
 from compas.datastructures import Mesh
@@ -115,6 +127,7 @@ from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
 from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
+from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
 
@@ -148,6 +161,7 @@ def register_artists():
     Artist.register(Polyline, PolylineArtist, context='Blender')
     Artist.register(RobotModel, RobotModelArtist, context='Blender')
     Artist.register(Sphere, SphereArtist, context='Blender')
+    Artist.register(Surface, SurfaceArtist, context='Blender')
     Artist.register(Torus, TorusArtist, context='Blender')
     Artist.register(Vector, VectorArtist, context='Blender')
     print('Blender Artists registered.')
@@ -171,6 +185,7 @@ __all__ = [
     'PolylineArtist',
     'RobotModelArtist',
     'SphereArtist',
+    'SurfaceArtist',
     'TorusArtist',
     'VectorArtist',
 ]

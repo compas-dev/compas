@@ -331,50 +331,6 @@ def draw_polygons(polygons: List[Dict],
     raise NotImplementedError
 
 
-def draw_curves(curves: List[Dict],
-                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
-    """Draw curve objects.
-
-    Parameters
-    ----------
-    curves : list[dict]
-        A list of dicts describing the curves.
-    collection : str or :blender:`bpy.types.Collection`, optional
-        The Blender scene collection that should contain the objects created by this function.
-
-    Returns
-    -------
-    list[:blender:`bpy.types.Object`]
-
-    """
-    P = len(curves)
-    N = len(str(P))
-    objects = [None] * P
-    for index, props in enumerate(curves):
-        origin = [0, 0, 0]
-        curve = props['curve']
-        name = props.get('name', f'CURVE.{index:0{N}d}')
-        rgb = props.get('color', [1.0, 1.0, 1.0])
-        # create a curve data block
-        bcurve = bpy.data.curves.new(name, type='CURVE')
-        bcurve.dimensions = '3D'
-        # add a spline segment to the data block
-        spline = bcurve.splines.new('NURBS')
-        spline.points.add(len(curve.points) - 1)
-        for i, point in enumerate(curve.points):
-            spline.points[i].co = [point[0], point[1], point[2], 1.0]
-        spline.order_u = curve.order
-        spline.use_cyclic_u = curve.is_periodic
-        spline.use_endpoint_u = True
-        # create a scene object from the data block
-        obj = bpy.data.objects.new(name, bcurve)
-        obj.location = origin
-        _set_object_color(obj, rgb)
-        objects[index] = obj
-    _link_objects(objects, collection)
-    return objects
-
-
 def draw_faces(faces: List[Dict],
                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw polygonal faces.
@@ -700,3 +656,118 @@ def draw_mesh(vertices: List[List[float]],
     _set_object_color(obj, color)
     _link_objects([obj], collection=collection)
     return obj
+
+
+# ==============================================================================
+# Curves and Surfaces
+# ==============================================================================
+
+
+def draw_curves(curves: List[Dict],
+                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw curve objects.
+
+    Parameters
+    ----------
+    curves : list[dict]
+        A list of dicts describing the curves.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
+    P = len(curves)
+    N = len(str(P))
+    objects = [None] * P
+    for index, props in enumerate(curves):
+        origin = [0, 0, 0]
+        curve = props['curve']
+        name = props.get('name', f'CURVE.{index:0{N}d}')
+        rgb = props.get('color', [1.0, 1.0, 1.0])
+        # create a curve data block
+        bcurve = bpy.data.curves.new(name, type='CURVE')
+        bcurve.dimensions = '3D'
+        # add a spline segment to the data block
+        spline = bcurve.splines.new('NURBS')
+        spline.points.add(len(curve.points) - 1)
+        for i, (point, weight) in enumerate(zip(curve.points, curve.weights)):
+            spline.points[i].co = [point[0], point[1], point[2], weight]
+            spline.points[i].weight = weight
+        spline.order_u = curve.order
+        spline.use_cyclic_u = curve.is_periodic
+        spline.use_endpoint_u = True
+        # create a scene object from the data block
+        obj = bpy.data.objects.new(name, bcurve)
+        obj.location = origin
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    return objects
+
+
+def draw_surfaces(surfaces: List[Dict],
+                  collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw surface objects.
+
+    Parameters
+    ----------
+    surfaces : list[dict]
+        A list of dicts describing the surfaces.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
+    P = len(surfaces)
+    N = len(str(P))
+    objects = [None] * P
+    for index, props in enumerate(surfaces):
+        origin = [0, 0, 0]
+        surface = props['surface']
+        name = props.get('name', f'SURFACE.{index:0{N}d}')
+        rgb = props.get('color', [1.0, 1.0, 1.0])
+        # create a surface data block
+        surfdata = bpy.data.curves.new(name, type='SURFACE')
+        surfdata.dimensions = '3D'
+        surfdata.resolution_u = 16
+        surfdata.resolution_v = 16
+        # add the U splines
+        for points, weights in zip(surface.points, surface.weights):
+            spline = surfdata.splines.new('NURBS')
+            spline.points.add(len(points) - 1)
+            for i, (point, weight) in enumerate(zip(points, weights)):
+                spline.points[i].co = [point[0], point[1], point[2], weight]
+                spline.points[i].weight = weight
+            # spline.order_u = surface.u_degree + 1
+            # spline.use_cyclic_u = surface.is_u_periodic
+            spline.use_endpoint_u = True
+        # add the V splines
+        for points, weights in zip(zip(* surface.points), zip(* surface.weights)):
+            spline = surfdata.splines.new('NURBS')
+            spline.points.add(len(points) - 1)
+            for i, (point, weight) in enumerate(zip(points, weights)):
+                spline.points[i].co = [point[0], point[1], point[2], weight]
+                spline.points[i].weight = weight
+            # spline.order_v = surface.v_degree + 1
+            # spline.use_cyclic_v = surface.is_v_periodic
+            spline.use_endpoint_v = True
+        # more surface data
+        # surfdata.order_u = surface.u_degree + 1
+        # surfdata.order_v = surface.v_degree + 1
+        # surfdata.use_cyclic_u = surface.is_u_periodic
+        # surfdata.use_cyclic_v = surface.is_v_periodic
+        # surfdata.use_endpoint_u = True
+        # surfdata.use_endpoint_v = True
+        # create a scene object from the data block
+        obj = bpy.data.objects.new(name, surfdata)
+        obj.location = origin
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    return objects
