@@ -76,5 +76,5 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
         """
         color = color or self.color
-        curves = [{'curve': self.curve, 'color': color, 'name': f"{self.curve.name}"}]
+        curves = [{'curve': self.curve, 'color': color, 'name': self.curve.name}]
         return compas_blender.draw_curves(curves, collection=self.collection)
