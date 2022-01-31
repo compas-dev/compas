@@ -735,39 +735,36 @@ def draw_surfaces(surfaces: List[Dict],
         # create a surface data block
         surfdata = bpy.data.curves.new(name, type='SURFACE')
         surfdata.dimensions = '3D'
-        surfdata.resolution_u = 16
-        surfdata.resolution_v = 16
-        # add the U splines
+        surfdata.resolution_u = 32
+        surfdata.resolution_v = 32
+        # add the U(V) splines
         for points, weights in zip(surface.points, surface.weights):
             spline = surfdata.splines.new('NURBS')
             spline.points.add(len(points) - 1)
             for i, (point, weight) in enumerate(zip(points, weights)):
-                spline.points[i].co = [point[0], point[1], point[2], weight]
+                spline.points[i].co = [point[0], point[1], point[2], 1.0]
                 spline.points[i].weight = weight
-            # spline.order_u = surface.u_degree + 1
-            # spline.use_cyclic_u = surface.is_u_periodic
             spline.use_endpoint_u = True
-        # add the V splines
-        for points, weights in zip(zip(* surface.points), zip(* surface.weights)):
-            spline = surfdata.splines.new('NURBS')
-            spline.points.add(len(points) - 1)
-            for i, (point, weight) in enumerate(zip(points, weights)):
-                spline.points[i].co = [point[0], point[1], point[2], weight]
-                spline.points[i].weight = weight
-            # spline.order_v = surface.v_degree + 1
-            # spline.use_cyclic_v = surface.is_v_periodic
             spline.use_endpoint_v = True
-        # more surface data
-        # surfdata.order_u = surface.u_degree + 1
-        # surfdata.order_v = surface.v_degree + 1
-        # surfdata.use_cyclic_u = surface.is_u_periodic
-        # surfdata.use_cyclic_v = surface.is_v_periodic
-        # surfdata.use_endpoint_u = True
-        # surfdata.use_endpoint_v = True
+            spline.order_u = surface.u_degree + 1
+            spline.order_v = surface.v_degree + 1
         # create a scene object from the data block
         obj = bpy.data.objects.new(name, surfdata)
         obj.location = origin
+        # colors and stuff
         _set_object_color(obj, rgb)
         objects[index] = obj
     _link_objects(objects, collection)
+    for obj in objects:
+        # select the control points
+        for s in obj.data.splines:
+            for p in s.points:
+                p.select = True
+        # switch to edit mode
+        # connect the spline points with segments
+        bpy.context.view_layer.objects.active = obj
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.curve.make_segment()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
     return objects
