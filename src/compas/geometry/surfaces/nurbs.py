@@ -47,7 +47,7 @@ class NurbsSurface(Surface):
     ----------
     points : list[list[:class:`compas.geometry.Point`]], read-only
         The control points as rows along the U direction.
-    weights : list[float], read-only
+    weights : list[list[float]], read-only
         The weights of the control points.
     u_knots : list[float], read-only
         The knots in the U direction, without multiplicity.
