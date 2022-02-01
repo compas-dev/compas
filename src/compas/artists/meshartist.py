@@ -5,13 +5,10 @@ from __future__ import division
 from abc import abstractmethod
 from collections import defaultdict
 
-from compas.utilities import is_color_rgb
 from compas.colors import Color
 from .artist import Artist
 
 
-# keeping it here for debugging
-# should be moved to the color module
 class ColorDict(object):
     """Descriptor for color dictionaries.
 
@@ -35,17 +32,19 @@ class ColorDict(object):
     def __set_name__(self, owner, name):
         self.public_name = name
         self.private_name = '_' + name
-        self.default = 'default_' + ''.join(name.split('_'))
+        self.default_name = 'default_' + ''.join(name.split('_'))
 
     def __get__(self, obj, otype=None):
-        return getattr(obj, self.private_name)
+        return getattr(obj, self.private_name) or defaultdict(lambda: getattr(obj, self.default_name))
 
     def __set__(self, obj, value):
         if not value:
             return
 
         if isinstance(value, dict):
-            item_color = defaultdict(lambda: getattr(obj, self.default))
+            default = getattr(obj, self.default_name)
+            item_color = defaultdict(lambda: default)
+
             for item in value:
                 color = value[item]
                 if Color.is_rgb255(color):
@@ -56,24 +55,15 @@ class ColorDict(object):
                     color = Color(color[0], color[1], color[2])
                 item_color[item] = color
             setattr(obj, self.private_name, item_color)
-            return
 
-        if Color.is_rgb255(value):
-            color = Color.from_rgb255(value[0], value[1], value[2])
-        elif Color.is_hex(value):
-            color = Color.from_hex(value)
         else:
-            color = Color(value[0], value[1], value[2])
-        setattr(obj, self.private_name, defaultdict(lambda: color))
-
-
-class ArtistMeta(type):
-    """Meta class to provide support for the descriptor protocol in Python versions lower than 3.6"""
-
-    def __init__(cls, name, bases, attrs):
-        for k, v in iter(attrs.items()):
-            if hasattr(v, '__set_name__'):
-                v.__set_name__(cls, k)
+            if Color.is_rgb255(value):
+                color = Color.from_rgb255(value[0], value[1], value[2])
+            elif Color.is_hex(value):
+                color = Color.from_hex(value)
+            else:
+                color = Color(value[0], value[1], value[2])
+            setattr(obj, self.private_name, defaultdict(lambda: color))
 
 
 class MeshArtist(Artist):
@@ -147,13 +137,11 @@ class MeshArtist(Artist):
 
     """
 
-    __metaclass__ = ArtistMeta
+    color = Color.from_hex('#0092D2').lightened(50)
 
-    default_color = Color(0.0, 0.0, 0.0)
-
-    default_vertexcolor = Color(1.0, 1.0, 1.0)
-    default_edgecolor = Color(0.0, 0.0, 0.0)
-    default_facecolor = Color(0.9, 0.9, 0.9)
+    default_vertexcolor = Color.from_hex('#0092D2')
+    default_edgecolor = Color.from_hex('#0092D2')
+    default_facecolor = Color.from_hex('#0092D2').lightened(50)
 
     vertex_color = ColorDict()
     edge_color = ColorDict()
