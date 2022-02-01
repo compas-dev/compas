@@ -61,6 +61,15 @@ def _get_artist_cls(data, **kwargs):
     return cls
 
 
+class DescriptorProtocol(type):
+    """Meta class to provide support for the descriptor protocol in Python versions lower than 3.6"""
+
+    def __init__(cls, name, bases, attrs):
+        for k, v in iter(attrs.items()):
+            if hasattr(v, '__set_name__'):
+                v.__set_name__(cls, k)
+
+
 class Artist(object):
     """Base class for all artists.
 
@@ -74,6 +83,8 @@ class Artist(object):
         Dictionary mapping data types to the corresponding artists types per visualization context.
 
     """
+
+    __metaclass__ = DescriptorProtocol
 
     __ARTISTS_REGISTERED = False
 
