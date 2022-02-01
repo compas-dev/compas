@@ -253,8 +253,12 @@ class Color(Data):
     # descriptor
     # --------------------------------------------------------------------------
 
+    def __set_name__(self, owner, name):
+        self.public_name = name
+        self.private_name = '_' + name
+
     def __get__(self, obj, otype=None):
-        return self
+        return getattr(obj, self.private_name)
 
     def __set__(self, obj, value):
         if Color.is_rgb255(value):
@@ -263,9 +267,7 @@ class Color(Data):
             value = Color.from_hex(value)
         else:
             value = Color(value[0], value[1], value[2])
-        self.r = value.r
-        self.g = value.g
-        self.b = value.b
+        setattr(obj, self.private_name, value)
 
     # --------------------------------------------------------------------------
     # customization
