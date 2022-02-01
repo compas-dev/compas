@@ -13,6 +13,7 @@ import compas_rhino
 from compas.artists import MeshArtist
 from .artist import RhinoArtist
 
+# this could be removed in favour of ColorDict
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
@@ -50,23 +51,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         Additional keyword arguments.
         For more info, see :class:`RhinoArtist` and :class:`MeshArtist`.
 
-    Class Attributes
-    ----------------
-    default_color : tuple[int, int, int]
-        Default base color of the mesh.
-    default_vertexcolor : tuple[int, int, int]
-        Default color for vertices.
-    default_edgecolor : tuple[int, int, int]
-        Default color for edges.
-    default_facecolor : tuple[int, int, int]
-        Default color for faces.
-
     """
-
-    # default_color = (0, 0, 0)
-    # default_vertexcolor = (255, 255, 255)
-    # default_edgecolor = (0, 0, 0)
-    # default_facecolor = (200, 200, 200)
 
     def __init__(self,
                  mesh,
@@ -313,7 +298,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             points.append({
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.mesh.name, vertex),
-                'color': self.vertex_color.get(vertex, self.default_vertexcolor).rgb255
+                'color': self.vertex_color[vertex].rgb255
             })
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         return guids
@@ -344,7 +329,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             lines.append({
                 'start': vertex_xyz[edge[0]],
                 'end': vertex_xyz[edge[1]],
-                'color': self.edge_color.get(edge, self.default_edgecolor).rgb255,
+                'color': self.edge_color[edge].rgb255,
                 'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)
             })
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -378,7 +363,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             facets.append({
                 'points': [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                 'name': "{}.face.{}".format(self.mesh.name, face),
-                'color': self.face_color.get(face, self.default_facecolor).rgb255
+                'color': self.face_color[face].rgb255
             })
         guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
         if join_faces:
