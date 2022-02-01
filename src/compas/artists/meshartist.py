@@ -3,10 +3,77 @@ from __future__ import absolute_import
 from __future__ import division
 
 from abc import abstractmethod
+from collections import defaultdict
 
 from compas.utilities import is_color_rgb
 from compas.colors import Color
 from .artist import Artist
+
+
+# keeping it here for debugging
+# should be moved to the color module
+class ColorDict(object):
+    """Descriptor for color dictionaries.
+
+    To use this descriptor, some requirements need to be fulfilled.
+
+    The descriptor should be assigned to a class attribute
+    that has a protected counterpart that will hold the actual dictionary values,
+    and a corresponding attribute that defines the default value for missing colors.
+    Both the protected attribute and the default attribute should follow a specific naming convention.
+
+    For example, to create the property ``vertex_color`` on a ``MeshArtist``,
+    the ``MeshArtist`` should have ``self._vertex_color`` for storing the actual dictionary values,
+    and ``self.default_vertexcolor`` for storing the replacement value for missing entries in the dict.
+
+    The descriptor will then ensure that all values assigned to ``vertex_color`` will result in the creation
+    of a ``defaultdict`` that always returns instances of ``compas.colors.Color``
+    such that colors can be reliably converted between color spaces as needed, regardless of the input.
+
+    """
+
+    def __set_name__(self, owner, name):
+        self.public_name = name
+        self.private_name = '_' + name
+        self.default = 'default_' + ''.join(name.split('_'))
+
+    def __get__(self, obj, otype=None):
+        return getattr(obj, self.private_name)
+
+    def __set__(self, obj, value):
+        if not value:
+            return
+
+        if isinstance(value, dict):
+            item_color = defaultdict(lambda: getattr(obj, self.default))
+            for item in value:
+                color = value[item]
+                if Color.is_rgb255(color):
+                    color = Color.from_rgb255(color[0], color[1], color[2])
+                elif Color.is_hex(color):
+                    color = Color.from_hex(color)
+                else:
+                    color = Color(color[0], color[1], color[2])
+                item_color[item] = color
+            setattr(obj, self.private_name, item_color)
+            return
+
+        if Color.is_rgb255(value):
+            color = Color.from_rgb255(value[0], value[1], value[2])
+        elif Color.is_hex(value):
+            color = Color.from_hex(value)
+        else:
+            color = Color(value[0], value[1], value[2])
+        setattr(obj, self.private_name, defaultdict(lambda: color))
+
+
+class ArtistMeta(type):
+    """Meta class to provide support for the descriptor protocol in Python versions lower than 3.6"""
+
+    def __init__(cls, name, bases, attrs):
+        for k, v in iter(attrs.items()):
+            if hasattr(v, '__set_name__'):
+                v.__set_name__(cls, k)
 
 
 class MeshArtist(Artist):
@@ -80,15 +147,28 @@ class MeshArtist(Artist):
 
     """
 
+    __metaclass__ = ArtistMeta
+
     default_color = Color(0.0, 0.0, 0.0)
+
     default_vertexcolor = Color(1.0, 1.0, 1.0)
     default_edgecolor = Color(0.0, 0.0, 0.0)
     default_facecolor = Color(0.9, 0.9, 0.9)
+
+    vertex_color = ColorDict()
+    edge_color = ColorDict()
+    face_color = ColorDict()
+
     default_vertexsize = 5
     default_edgewidth = 1.0
 
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__()
+
+        self._default_color = None
+        self._default_vertexcolor = None
+        self._default_edgecolor = None
+        self._default_facecolor = None
 
         self._mesh = None
         self._vertices = None
@@ -177,19 +257,6 @@ class MeshArtist(Artist):
         self._vertex_xyz = vertex_xyz
 
     @property
-    def vertex_color(self):
-        if self._vertex_color is None:
-            self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
-        return self._vertex_color
-
-    @vertex_color.setter
-    def vertex_color(self, vertex_color):
-        if isinstance(vertex_color, dict):
-            self._vertex_color = vertex_color
-        elif is_color_rgb(vertex_color):
-            self._vertex_color = {vertex: vertex_color for vertex in self.mesh.vertices()}
-
-    @property
     def vertex_text(self):
         if self._vertex_text is None:
             self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}
@@ -218,19 +285,6 @@ class MeshArtist(Artist):
             self._vertex_size = {vertex: vertexsize for vertex in self.mesh.vertices()}
 
     @property
-    def edge_color(self):
-        if self._edge_color is None:
-            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
-        return self._edge_color
-
-    @edge_color.setter
-    def edge_color(self, edge_color):
-        if isinstance(edge_color, dict):
-            self._edge_color = edge_color
-        elif is_color_rgb(edge_color):
-            self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
-
-    @property
     def edge_text(self):
         if self._edge_text is None:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
@@ -257,19 +311,6 @@ class MeshArtist(Artist):
             self._edge_width = edgewidth
         elif isinstance(edgewidth, (int, float)):
             self._edge_width = {edge: edgewidth for edge in self.mesh.edges()}
-
-    @property
-    def face_color(self):
-        if self._face_color is None:
-            self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
-        return self._face_color
-
-    @face_color.setter
-    def face_color(self, face_color):
-        if isinstance(face_color, dict):
-            self._face_color = face_color
-        elif is_color_rgb(face_color):
-            self._face_color = {face: face_color for face in self.mesh.faces()}
 
     @property
     def face_text(self):
