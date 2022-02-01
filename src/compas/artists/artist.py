@@ -10,10 +10,6 @@ import compas
 from compas.artists import DataArtistNotRegistered
 from compas.plugins import pluggable
 from compas.plugins import PluginValidator
-# from compas.colors import Color
-
-# basecolor = Color.from_hex('#0092D2')
-# highlightcolor = Color.from_hex('#FF5E99')
 
 
 @pluggable(category='drawing-utils')
