@@ -153,7 +153,6 @@ class MeshArtist(Artist):
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__()
 
-        self._default_color = None
         self._default_vertexcolor = None
         self._default_edgecolor = None
         self._default_facecolor = None
@@ -222,17 +221,6 @@ class MeshArtist(Artist):
     @faces.setter
     def faces(self, faces):
         self._faces = faces
-
-    @property
-    def color(self):
-        if not self._color:
-            self._color = self.default_color
-        return self._color
-
-    @color.setter
-    def color(self, color):
-        if is_color_rgb(color):
-            self._color = color
 
     @property
     def vertex_xyz(self):
@@ -390,17 +378,17 @@ class MeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
-    def draw_mesh(self):
-        """Draw the mesh of the mesh.
+    # @abstractmethod
+    # def draw_mesh(self):
+    #     """Draw the mesh of the mesh.
 
-        Returns
-        -------
-        list
-            The identifiers of the objects representing the mesh in the visualization context.
+    #     Returns
+    #     -------
+    #     list
+    #         The identifiers of the objects representing the mesh in the visualization context.
 
-        """
-        raise NotImplementedError
+    #     """
+    #     raise NotImplementedError
 
     @abstractmethod
     def clear_vertices(self):
@@ -435,14 +423,14 @@ class MeshArtist(Artist):
         """
         raise NotImplementedError
 
-    def clear(self):
-        """Clear all components of the mesh.
+    # def clear(self):
+    #     """Clear all components of the mesh.
 
-        Returns
-        -------
-        None
+    #     Returns
+    #     -------
+    #     None
 
-        """
-        self.clear_vertices()
-        self.clear_edges()
-        self.clear_faces()
+    #     """
+    #     self.clear_vertices()
+    #     self.clear_edges()
+    #     self.clear_faces()
