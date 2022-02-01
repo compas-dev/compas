@@ -295,7 +295,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
             points.append({
                 'pos': self.vertex_xyz[vertex],
                 'name': f"{self.mesh.name}.vertex.{vertex}",
-                'color': self.vertex_color.get(vertex, self.default_vertexcolor),
+                'color': self.vertex_color[vertex],
                 'radius': 0.01
             })
         return compas_blender.draw_points(points, self.vertexcollection)
@@ -327,7 +327,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
             lines.append({
                 'start': self.vertex_xyz[edge[0]],
                 'end': self.vertex_xyz[edge[1]],
-                'color': self.edge_color.get(edge, self.default_edgecolor),
+                'color': self.edge_color[edge],
                 'name': f"{self.mesh.name}.edge.{edge[0]}-{edge[1]}"
             })
         return compas_blender.draw_lines(lines, self.edgecollection)
@@ -359,7 +359,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
             facets.append({
                 'points': [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                 'name': f"{self.mesh.name}.face.{face}",
-                'color': self.face_color.get(face, self.default_facecolor)
+                'color': self.face_color[face]
             })
         return compas_blender.draw_faces(facets, self.facecollection)
 
