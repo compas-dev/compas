@@ -258,9 +258,12 @@ class Color(Data):
         self.private_name = '_' + name
 
     def __get__(self, obj, otype=None):
-        return getattr(obj, self.private_name)
+        return getattr(obj, self.private_name) or self
 
     def __set__(self, obj, value):
+        if not value:
+            return
+
         if Color.is_rgb255(value):
             value = Color.from_rgb255(value[0], value[1], value[2])
         elif Color.is_hex(value):
@@ -747,7 +750,7 @@ class Color(Data):
         bool
 
         """
-        return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
+        return color and all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
 
     @staticmethod
     def is_rgb255(color):
@@ -758,7 +761,7 @@ class Color(Data):
         bool
 
         """
-        return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
+        return color and all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
 
     @staticmethod
     def is_hex(color):
