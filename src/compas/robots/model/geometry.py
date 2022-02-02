@@ -600,14 +600,14 @@ class Material(Data):
     def data(self):
         return {
             'name': self.name,
-            'color': self.color.data,
+            'color': self.color.data if self.color else None,
             'texture': self.texture.data if self.texture else None,
         }
 
     @data.setter
     def data(self, data):
         self.name = data['name']
-        self.color = Color.from_data(data['color'])
+        self.color = Color.from_data(data['color']) if data['color'] else None
         self.texture = Texture.from_data(data['texture']) if data['texture'] else None
 
     def get_color(self):
