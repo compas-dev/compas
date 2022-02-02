@@ -59,12 +59,12 @@ class RobotModel(Data):
 
     """
 
-    def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
+    def __init__(self, name=None, joints=(), links=(), materials=(), **kwargs):
         super(RobotModel, self).__init__()
-        self.name = name
-        self.joints = list(joints)
-        self.links = list(links)
-        self.materials = list(materials)
+        self.name = name or 'Robot'
+        self.joints = list(joints or [])
+        self.links = list(links or [])
+        self.materials = list(materials or [])
         self.attr = kwargs
         self.root = None
         self._rebuild_tree()
@@ -112,15 +112,6 @@ class RobotModel(Data):
         self._scale_factor = data.get('_scale_factor', 1.)
 
         self._rebuild_tree()
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct the :class:`compas.robots.RobotModel` from its data representation.
-        To be used in conjunction with :meth:`compas.robot.RobotModel.to_data()`.
-        """
-        robot_model = cls(data['name'])
-        robot_model.data = data
-        return robot_model
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
