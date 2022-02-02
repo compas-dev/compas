@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.conversions.BlenderMesh`.
 * Added option to return strip faces from `compas.datastructure.Halfedge.edge_strip`.
 * Added `compas.geometry.Bezier.transform`.
+* Added descriptor support to `compas.colors.Color`.
+* Added descriptor protocol metaclass to `compas.artists.Artist`.
+* Added `compas.xxx.ColorDict` descriptor.
 
 ### Changed
 
@@ -25,17 +28,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved functionality of `compas.utilities.coercion` to `compas.data`.
 * Fixed bug in `compas.geometry.NurbsSurface.to_triangles()`.
 * Renamed docs site folders `latest` to `stable` and `dev` to `latest`.
+* Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_rhino.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
 
 ### Removed
 
-* Removed `compas.geometry.Collection`
-* Removed `compas.geometry.CollectionNumpy`
-* Removed `compas.geometry.PointCollection`
-* Removed `compas.geometry.PointCollectionNumpy`
-* Removed `compas.interop`
+* Removed `compas.geometry.Collection`.
+* Removed `compas.geometry.CollectionNumpy`.
+* Removed `compas.geometry.PointCollection`.
+* Removed `compas.geometry.PointCollectionNumpy`.
+* Removed `compas.interop`.
 * Removed `numba`; `compas.numerical.drx` will be moved to a dedicated extension package.
 * Removed `ezdxf` (unused).
 * Removed `laspy` (unused).
+* Removed `compas_rhino.artists.MeshArtist.draw_mesh`.
+* Removed `compas_blender.artists.MeshArtist.draw_mesh`.
 
 ## [1.13.3] 2021-12-17
 
