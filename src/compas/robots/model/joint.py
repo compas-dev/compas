@@ -165,12 +165,13 @@ class Limit(Data):
 
     """
 
-    def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
+    def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0, **kwargs):
         super(Limit, self).__init__()
         self.effort = float(effort)
         self.velocity = float(velocity)
         self.lower = float(lower)
         self.upper = float(upper)
+        self.attr = kwargs
 
     def get_urdf_element(self):
         attributes = {
@@ -180,6 +181,7 @@ class Limit(Data):
         attributes = dict(filter(lambda x: x[1], attributes.items()))
         attributes['effort'] = self.effort
         attributes['velocity'] = self.velocity
+        attributes.update(self.attr)
         return URDFElement('limit', attributes)
 
     @property
@@ -189,6 +191,7 @@ class Limit(Data):
             'velocity': self.velocity,
             'lower': self.lower,
             'upper': self.upper,
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
@@ -197,6 +200,7 @@ class Limit(Data):
         self.velocity = data['velocity']
         self.lower = data['lower']
         self.upper = data['upper']
+        self.attr = _attr_from_data(data['attr'])
 
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
