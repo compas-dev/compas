@@ -433,10 +433,11 @@ class MeshDescriptor(BaseShape):
 
     """
 
-    def __init__(self, filename, scale='1.0 1.0 1.0'):
+    def __init__(self, filename, scale='1.0 1.0 1.0', **kwargs):
         super(MeshDescriptor, self).__init__()
         self.filename = filename
         self.scale = _parse_floats(scale)
+        self.attr = kwargs
 
     def get_urdf_element(self):
         attributes = {'filename': self.filename}
@@ -446,6 +447,7 @@ class MeshDescriptor(BaseShape):
         # but here we must be explicit.
         if self.scale != [1.0, 1.0, 1.0]:
             attributes['scale'] = "{} {} {}".format(*self.scale)
+        attributes.update(self.attr)
         return URDFElement('mesh', attributes)
 
     @property
@@ -455,6 +457,7 @@ class MeshDescriptor(BaseShape):
             'filename': self.filename,
             'scale': self.scale,
             'geometry': self.geometry.data if self.geometry else None,
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
@@ -462,6 +465,7 @@ class MeshDescriptor(BaseShape):
         self.filename = data['filename']
         self.scale = data['scale']
         self.geometry = Mesh.from_data(data['geometry']) if data['geometry'] else None
+        self.attr = _attr_from_data(data['attr'])
 
     @classmethod
     def from_data(cls, data):
