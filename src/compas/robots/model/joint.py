@@ -468,7 +468,11 @@ class Joint(Data):
     def __init__(self, name, type, parent, child, origin=None, axis=None,
                  calibration=None, dynamics=None, limit=None,
                  safety_controller=None, mimic=None, **kwargs):
-        type_idx = Joint.SUPPORTED_TYPES.index(type) if isinstance(type, str) else type
+
+        type_idx = type
+
+        if isinstance(type_idx, str) and type_idx in Joint.SUPPORTED_TYPES:
+            type_idx = Joint.SUPPORTED_TYPES.index(type_idx)
 
         if type_idx not in range(len(Joint.SUPPORTED_TYPES)):
             raise ValueError('Unsupported joint type: %s' % type)
