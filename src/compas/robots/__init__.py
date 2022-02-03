@@ -108,6 +108,24 @@ the processing of these resources.
     GithubPackageMeshLoader
     LocalPackageMeshLoader
 
+Deprecated
+==========
+
+.. deprecated:: 1.13.3
+    Use `compas.geometry` primitives instead
+
+The following classes are available for backwards compatibility but are deprecated.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Origin
+    Cylinder
+    Box
+    Sphere
+    Capsule
+
 """
 from __future__ import absolute_import
 
