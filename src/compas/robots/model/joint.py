@@ -10,10 +10,9 @@ from compas.geometry import Transformation
 from compas.geometry import Translation
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
-from compas.robots.model.geometry import Origin
-from compas.robots.model.geometry import _attr_from_data
-from compas.robots.model.geometry import _attr_to_data
-from compas.robots.model.geometry import _parse_floats
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
+from compas.robots.model.base import _parse_floats
 
 __all__ = [
     'Joint',

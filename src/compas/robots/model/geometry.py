@@ -8,9 +8,11 @@ import compas.geometry
 from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files.urdf import URDFElement
-from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.geometry import Shape
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
+from compas.robots.model.base import _parse_floats
 
 __all__ = [
     'Geometry',
@@ -44,26 +46,6 @@ HTML4_NAMES_TO_HEX = {
     u'white': u'#ffffff',
     u'yellow': u'#ffff00',
 }
-
-
-def _parse_floats(values):
-    return [float(i) for i in values.split()]
-
-
-def _attr_to_data(attr):
-    return {k: v.data if hasattr(v, 'data') else v for k, v in attr.items()}
-
-
-def _generic_from_data_or_data(data):
-    try:
-        data = URDFGenericElement.from_data(data)
-    finally:
-        return data
-
-
-def _attr_from_data(data):
-    return {k: _generic_from_data_or_data(d) for k, d in data.items()}
-
 
 class Origin(Frame):
     """Reference frame represented by an instance of :class:`Frame`.

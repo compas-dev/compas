@@ -8,6 +8,8 @@ from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Plane
 from compas.geometry import Transformation
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
 from compas.robots.model.geometry import Box
 from compas.robots.model.geometry import Capsule
 from compas.robots.model.geometry import Color
@@ -18,8 +20,6 @@ from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Sphere
 from compas.robots.model.geometry import Texture
-from compas.robots.model.geometry import _attr_from_data
-from compas.robots.model.geometry import _attr_to_data
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 

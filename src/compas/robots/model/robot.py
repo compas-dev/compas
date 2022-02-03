@@ -13,14 +13,14 @@ from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots import Configuration
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
 from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Texture
-from compas.robots.model.geometry import _attr_from_data
-from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
 from compas.robots.model.joint import Limit
