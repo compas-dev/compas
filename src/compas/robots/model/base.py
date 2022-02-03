@@ -45,6 +45,9 @@ class ProxyObject(object):
     def __getattr__(self, attr):
         return getattr(self._proxied_object, attr)
 
+    def __str__(self):
+        return str(self._proxied_object)
+
     @classmethod
     def create_proxy(cls, obj):
         """Creates a proxy wrapping around an object, only if it's not already proxied."""
