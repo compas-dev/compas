@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_plotters.plotter.Plotter` to normal class instead of singleton.
 * Moved functionality of `compas.utilities.coercion` to `compas.data`.
 * Fixed bug in `compas.geometry.NurbsSurface.to_triangles()`.
+* Fixed error message for unsupported joint types.
+* Fixed support for non-standard URDF attributes on limit and mesh geometry.
+* Fixed data serialization for URDF materials without color.
+* Removed geometric primitives (`Origin`, `Box`, `Sphere`, `Cylinder` and `Capsule`) from `compas.robots` and replaced them with the core ones from `compas.geometry`. The old names are still available but deprecated.
 
 ### Removed
 
