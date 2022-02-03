@@ -196,7 +196,7 @@ class URDFParser(object):
     _parsers = dict()
 
     @classmethod
-    def install_parser(cls, parser_type, *tags, proxy_type=None):
+    def install_parser(cls, parser_type, *tags, **kwargs):
         """Installs an URDF parser type for a defined tag.
 
         Parameters
@@ -224,7 +224,7 @@ class URDFParser(object):
             raise ValueError('Must define at least one tag')
 
         for tag in tags:
-            cls._parsers[tag] = {'type': parser_type, 'proxy': proxy_type}
+            cls._parsers[tag] = {'type': parser_type, 'proxy': kwargs.get('proxy_type')}
 
     @classmethod
     def parse_element(cls, element, path='', element_default_namespace=None):
