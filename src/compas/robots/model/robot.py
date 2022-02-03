@@ -764,8 +764,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
         link : :class:`compas.robots.Link`
             Link instance to calculate the child joint's transformation.
@@ -811,8 +811,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
 
         Returns
@@ -837,8 +837,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
 
         Returns
@@ -862,8 +862,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
         link_name : str, optional
             The name of the link we want to calculate the forward kinematics for.
