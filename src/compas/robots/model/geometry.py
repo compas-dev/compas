@@ -196,7 +196,7 @@ class MeshDescriptor(Data):
         self.filename = filename
         self.scale = _parse_floats(scale)
         self.meshes = []
-        self.attr = kwargs
+        self.attr = kwargs or {}
 
     def get_urdf_element(self):
         attributes = {'filename': self.filename}
@@ -221,7 +221,7 @@ class MeshDescriptor(Data):
     def data(self, data):
         self.filename = data['filename']
         self.scale = data['scale']
-        self.attr = _attr_from_data(data['attr'])
+        self.attr = _attr_from_data(data['attr']) if 'attr' in data else {}
 
     @classmethod
     def from_data(cls, data):
