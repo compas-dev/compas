@@ -186,7 +186,7 @@ __all__ = [
     'LocalPackageMeshLoader',
     'GithubPackageMeshLoader',
 
-    'Configuration'
+    'Configuration',
 
     # Deprecated aliases
     'Origin',
