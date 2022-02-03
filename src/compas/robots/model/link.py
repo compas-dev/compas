@@ -393,12 +393,12 @@ class Link(Data):
 
     """
 
-    def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
+    def __init__(self, name, type=None, visual=(), collision=(), inertial=None, **kwargs):
         super(Link, self).__init__()
         self.name = name
         self.type = type
-        self.visual = visual
-        self.collision = collision
+        self.visual = list(visual or [])
+        self.collision = list(collision or [])
         self.inertial = inertial
         self.attr = kwargs
         self.joints = []
