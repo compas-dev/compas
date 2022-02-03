@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas
+import compas.colors
 import compas.geometry
 from compas.data import Data
 from compas.datastructures import Mesh
@@ -10,7 +11,6 @@ from compas.files.urdf import URDFElement
 from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.geometry import Shape
-from compas.utilities import hex_to_rgb
 
 __all__ = [
     'Geometry',
@@ -627,8 +627,8 @@ class Material(Data):
         """
         if self.name:
             if self.name in HTML4_NAMES_TO_HEX:
-                r, g, b = hex_to_rgb(HTML4_NAMES_TO_HEX[self.name])
-                return [r / 255., g / 255., b / 255., 1.]
+                color = compas.colors.Color.from_hex(HTML4_NAMES_TO_HEX[self.name])
+                return color.r, color.g, color.b, color.a
         if self.color:
             return self.color.rgba
         return None

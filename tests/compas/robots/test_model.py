@@ -269,6 +269,10 @@ def test_robot_material_attributes():
         """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"><material name="LightGrey"><color rgba="0.7 0.7 0.7 1.0"/></material></robot>""")
     assert r.materials[0].color.rgba == [0.7, 0.7, 0.7, 1.0]
 
+def test_robot_material_conversion_from_name():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"><material name="aqua"/></robot>""")
+    assert r.materials[0].get_color() == (0.0, 1.0, 1.0, 1.0)
 
 def test_robot_material_attributes_to_string():
     r_original = RobotModel.from_urdf_string(
@@ -670,10 +674,9 @@ if __name__ == '__main__':
                 except Exception as e:
                     errors.append((f, e))
 
-    print('Found %d files and parsed successfully %d of them' %
-          (len(all_files), len(all_files) - len(errors)))
-
     if len(errors):
         print('\nErrors found during parsing:')
         for error in errors:
             print(' * File=%s, Error=%s' % error)
+
+    print('\nFound {} files and parsed successfully {} of them.'.format(len(all_files), len(all_files) - len(errors)))
