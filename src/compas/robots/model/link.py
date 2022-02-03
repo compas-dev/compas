@@ -450,7 +450,7 @@ URDFParser.install_parser(Inertia, 'robot/link/inertial/inertia')
 URDFParser.install_parser(Visual, 'robot/link/visual')
 URDFParser.install_parser(Collision, 'robot/link/collision')
 
-URDFParser.install_parser(FrameProxy, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
+URDFParser.install_parser(Frame, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin', proxy_type=FrameProxy)
 URDFParser.install_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
 URDFParser.install_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
 URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')

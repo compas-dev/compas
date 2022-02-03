@@ -756,4 +756,4 @@ URDFParser.install_parser(Axis, 'robot/joint/axis')
 URDFParser.install_parser(Mimic, 'robot/joint/mimic')
 URDFParser.install_parser(SafetyController, 'robot/joint/safety_controller')
 
-URDFParser.install_parser(FrameProxy, 'robot/joint/origin')
+URDFParser.install_parser(Frame, 'robot/joint/origin', proxy_type=FrameProxy)

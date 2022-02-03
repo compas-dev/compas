@@ -196,7 +196,7 @@ class URDFParser(object):
     _parsers = dict()
 
     @classmethod
-    def install_parser(cls, parser_type, *tags):
+    def install_parser(cls, parser_type, *tags, proxy_type=None):
         """Installs an URDF parser type for a defined tag.
 
         Parameters
@@ -205,6 +205,10 @@ class URDFParser(object):
             Python class handling URDF parsing of the tag.
         *tags : list[str]
             One or more URDF string tag that the parser can parse.
+        proxy_type : type, optional
+            In some cases, the parser type is a general class without
+            knowledge of URDF, and it requires a proxy class to add
+            URDF-related functions to it.
 
         Returns
         -------
@@ -220,7 +224,7 @@ class URDFParser(object):
             raise ValueError('Must define at least one tag')
 
         for tag in tags:
-            cls._parsers[tag] = parser_type
+            cls._parsers[tag] = {'type': parser_type, 'proxy': proxy_type}
 
     @classmethod
     def parse_element(cls, element, path='', element_default_namespace=None):
@@ -260,7 +264,8 @@ class URDFParser(object):
             child_path = '/'.join([path, child_name])
             children.append(cls.parse_element(child, child_path, default_ns))
 
-        parser_type = cls._parsers.get(path, None) or URDFGenericElement
+        parser_type_info = cls._parsers.get(path, None) or {'type': URDFGenericElement}
+        parser_type = parser_type_info.get('proxy') or parser_type_info['type']
 
         metadata = get_metadata(parser_type)
 
