@@ -34,8 +34,8 @@ def _attr_from_data(data):
 class ProxyObject(object):
     """Base proxy class to avoid duplication for the proxy pattern."""
 
-    def __init__(self, frame):
-        self._proxied_object = frame
+    def __init__(self, obj):
+        self._proxied_object = obj
 
     def __getattr__(self, attr):
         return getattr(self._proxied_object, attr)
@@ -46,6 +46,7 @@ class ProxyObject(object):
         if obj and not isinstance(obj, cls):
             return cls(obj)
         return obj
+
 
 class FrameProxy(ProxyObject):
     """Proxy class that adds URDF functionality to an instance of :class:`Frame`.
@@ -87,7 +88,7 @@ class FrameProxy(ProxyObject):
         """
         xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
-        return FrameProxy(Frame.from_euler_angles(rpy, static=True, axes='xyz', point=xyz))
+        return cls(Frame.from_euler_angles(rpy, static=True, axes='xyz', point=xyz))
 
     def scale(self, factor):
         """Scale the origin by a given factor.
