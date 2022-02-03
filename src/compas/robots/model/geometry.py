@@ -24,8 +24,12 @@ __all__ = [
     'Color',
     'Texture',
     'Material',
-    'Origin'
+    'Origin',
 ]
+
+# Deprecated: this is an alias for backwards compatibility, but needs to be removed on 2.x
+Origin = Frame
+
 
 # Copied from https://github.com/ubernostrum/webcolors/blob/master/webcolors.py
 HTML4_NAMES_TO_HEX = {
@@ -47,89 +51,7 @@ HTML4_NAMES_TO_HEX = {
     u'yellow': u'#ffff00',
 }
 
-class Origin(Frame):
-    """Reference frame represented by an instance of :class:`Frame`.
-
-    An origin is defined by a base point and two orthonormal base vectors.
-
-    Parameters
-    ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
-        The origin of the origin.
-    xaxis : [float, float, float] or :class:`compas.geometry.Vector`
-        The x-axis of the origin.
-    yaxis : [float, float, float] or :class:`compas.geometry.Vector`
-        The y-axis of the origin.
-
-    Examples
-    --------
-    >>> from compas.geometry import Point
-    >>> from compas.geometry import Vector
-    >>> o = Origin([0, 0, 0], [1, 0, 0], [0, 1, 0])
-    >>> o = Origin(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
-
-    """
-
-    def __init__(self, point, xaxis, yaxis):
-        super(Origin, self).__init__(point, xaxis, yaxis)
-
-    def get_urdf_element(self):
-        attributes = {
-            'xyz': "{} {} {}".format(self.point.x, self.point.y, self.point.z),
-            'rpy': "{} {} {}".format(*self.euler_angles())
-        }
-        return URDFElement('origin', attributes)
-
-    @classmethod
-    def from_urdf(cls, attributes, elements, text):
-        """Create origin instance from an URDF element.
-
-        Parameters
-        ----------
-        attributes : dict[str, Any]
-            Attributes of the URDF element.
-        elements: list[object]
-            Children elements of the URDF element.
-        text: str | None
-            Text content of the URDF element.
-
-        Returns
-        -------
-        :class:`Origin`
-            Origin instance.
-
-        Examples
-        --------
-        >>> attributes = {'rpy': '0.0 1.57 0.0', 'xyz': '0.0 0.13 0.0'}
-        >>> Origin.from_urdf(attributes, [], None)
-        Frame(Point(0.000, 0.130, 0.000), Vector(0.001, 0.000, -1.000), Vector(0.000, 1.000, 0.000))
-
-        """
-        xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
-        rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
-        return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
-
-    def scale(self, factor):
-        """Scale the origin by a given factor.
-
-        Parameters
-        ----------
-        factor : float
-            Scale factor.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        >>> o = Origin([0, 0, 0], [1, 0, 0], [0, 1, 0])
-        >>> o.scale(10)
-
-        """
-        self.point = self.point * factor
-
-
+# TODO: Delete
 class BaseShape(Data):
     """Base class for all 3D shapes.
 

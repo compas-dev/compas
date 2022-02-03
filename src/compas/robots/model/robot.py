@@ -19,7 +19,6 @@ from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
-from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Texture
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
@@ -1037,7 +1036,7 @@ class RobotModel(Data):
             raise ValueError("Joint name '%s' already used in chain." % name)
 
         if origin:
-            origin = Origin(origin.point, origin.xaxis, origin.yaxis)
+            origin = Frame(origin.point, origin.xaxis, origin.yaxis)
         if axis:
             axis = Axis('{} {} {}'.format(*list(axis)))
         if limit:

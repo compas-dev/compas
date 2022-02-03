@@ -5,11 +5,13 @@ from __future__ import print_function
 from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
+from compas.geometry import Frame
 from compas.geometry import Rotation
 from compas.geometry import Transformation
 from compas.geometry import Translation
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
+from compas.robots.model.base import FrameProxy
 from compas.robots.model.base import _attr_from_data
 from compas.robots.model.base import _attr_to_data
 from compas.robots.model.base import _parse_floats
@@ -408,8 +410,8 @@ class Joint(Data):
         Unique name for the joint.
     type : str | int
         Joint type either as a string or an index number. See class attributes for named constants and supported types.
-    origin : :class:`Origin`
-        Transformation from the parent link to the child link frame.
+    origin : :class:`Frame`
+        Frame defining the transformation from the parent link to the child link frame.
     parent : :class:`ParentLink` | str
         Parent link instance or parent link name.
     child : :class:`ChildLink` | str
@@ -485,7 +487,7 @@ class Joint(Data):
         self.type = type_idx
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
         self.child = child if isinstance(child, ChildLink) else ChildLink(child)
-        self.origin = origin or Origin.from_euler_angles([0., 0., 0.])
+        self.origin = origin or Frame.from_euler_angles([0., 0., 0.])
         self.axis = axis or Axis()
         self.calibration = calibration
         self.dynamics = dynamics
@@ -499,6 +501,14 @@ class Joint(Data):
         # the joint state, while `origin` and `axis` above are parent-relative and static.
         self.current_origin = self.origin.copy()
         self.current_axis = self.axis.copy()
+
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
 
     def get_urdf_element(self):
         attributes = {
@@ -534,7 +544,7 @@ class Joint(Data):
         self.type = Joint.SUPPORTED_TYPES.index(data['type'])
         self.parent = ParentLink.from_data(data['parent'])
         self.child = ChildLink.from_data(data['child'])
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.axis = Axis.from_data(data['axis']) if data['axis'] else None
         self.calibration = Calibration.from_data(data['calibration']) if data['calibration'] else None
         self.dynamics = Dynamics.from_data(data['dynamics']) if data['dynamics'] else None
@@ -746,4 +756,4 @@ URDFParser.install_parser(Axis, 'robot/joint/axis')
 URDFParser.install_parser(Mimic, 'robot/joint/mimic')
 URDFParser.install_parser(SafetyController, 'robot/joint/safety_controller')
 
-URDFParser.install_parser(Origin, 'robot/joint/origin')
+URDFParser.install_parser(FrameProxy, 'robot/joint/origin')

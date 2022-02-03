@@ -40,6 +40,12 @@ class ProxyObject(object):
     def __getattr__(self, attr):
         return getattr(self._proxied_object, attr)
 
+    @classmethod
+    def create_proxy(cls, obj):
+        """Creates a proxy around an object, only if it's not already proxied."""
+        if obj and not isinstance(obj, cls):
+            return cls(obj)
+        return obj
 
 class FrameProxy(ProxyObject):
     """Proxy class that adds URDF functionality to an instance of :class:`Frame`.

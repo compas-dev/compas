@@ -6,8 +6,10 @@ import compas
 from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
+from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Transformation
+from compas.robots.model.base import FrameProxy
 from compas.robots.model.base import _attr_from_data
 from compas.robots.model.base import _attr_to_data
 from compas.robots.model.geometry import Box
@@ -17,7 +19,6 @@ from compas.robots.model.geometry import Cylinder
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
-from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Sphere
 from compas.robots.model.geometry import Texture
 
@@ -29,19 +30,19 @@ def _get_geometry_and_origin(primitive):
     origin = None
     if isinstance(primitive, compas.geometry.Box):
         shape = Box.from_geometry(primitive)
-        origin = Origin(*primitive.frame)
+        origin = Frame(*primitive.frame)
     if isinstance(primitive, compas.geometry.Capsule):
         shape = Capsule.from_geometry(primitive)
         point = primitive.line.midpoint
         normal = primitive.line.vector
         plane = Plane(point, normal)
-        origin = Origin.from_plane(plane)
+        origin = Frame.from_plane(plane)
     if isinstance(primitive, compas.geometry.Cylinder):
         shape = Cylinder.from_geometry(primitive)
-        origin = Origin.from_plane(primitive.circle.plane)
+        origin = Frame.from_plane(primitive.circle.plane)
     if isinstance(primitive, compas.geometry.Sphere):
         shape = Sphere.from_geometry(primitive)
-        origin = Origin(primitive.point, [1, 0, 0], [0, 1, 0])
+        origin = Frame(primitive.point, [1, 0, 0], [0, 1, 0])
     if not shape:
         raise Exception('Unrecognized primitive type {}'.format(primitive.__class__))
     geometry = Geometry(shape)
@@ -150,6 +151,14 @@ class Inertial(Data):
         self.mass = mass
         self.inertia = inertia
 
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
+
     def get_urdf_element(self):
         elements = [self.origin, self.mass, self.inertia]
         return URDFElement('inertial', elements=elements)
@@ -164,7 +173,7 @@ class Inertial(Data):
 
     @data.setter
     def data(self, data):
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.mass = Mass.from_data(data['mass']) if data['mass'] else None
         self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
 
@@ -203,6 +212,14 @@ class Visual(LinkItem, Data):
         self.material = material
         self.attr = kwargs
 
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
+
     def get_urdf_element(self):
         attributes = {}
         if self.name is not None:
@@ -235,7 +252,7 @@ class Visual(LinkItem, Data):
     @data.setter
     def data(self, data):
         self.geometry = Geometry.from_data(data['geometry'])
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.name = data['name']
         self.material = Material.from_data(data['material']) if data['material'] else None
         self.attr = _attr_from_data(data['attr'])
@@ -294,6 +311,14 @@ class Collision(LinkItem, Data):
         self.name = name
         self.attr = kwargs
 
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
+
     def get_urdf_element(self):
         attributes = {}
         if self.name is not None:
@@ -325,7 +350,7 @@ class Collision(LinkItem, Data):
     @data.setter
     def data(self, data):
         self.geometry = Geometry.from_data(data['geometry'])
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.name = data['name']
         self.attr = _attr_from_data(data['attr'])
         self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
@@ -425,7 +450,7 @@ URDFParser.install_parser(Inertia, 'robot/link/inertial/inertia')
 URDFParser.install_parser(Visual, 'robot/link/visual')
 URDFParser.install_parser(Collision, 'robot/link/collision')
 
-URDFParser.install_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
+URDFParser.install_parser(FrameProxy, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
 URDFParser.install_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
 URDFParser.install_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
 URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
