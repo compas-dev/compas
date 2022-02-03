@@ -510,6 +510,14 @@ class Joint(Data):
     def origin(self, value):
         self._origin = FrameProxy.create_proxy(value)
 
+    @property
+    def current_origin(self):
+        return self._current_origin
+
+    @current_origin.setter
+    def current_origin(self, value):
+        self._current_origin = FrameProxy.create_proxy(value)
+
     def get_urdf_element(self):
         attributes = {
             'name': self.name,

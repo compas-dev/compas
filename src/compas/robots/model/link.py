@@ -2,50 +2,56 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
 from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
+from compas.geometry import Box
+from compas.geometry import Capsule
+from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Plane
+from compas.geometry import Sphere
 from compas.geometry import Transformation
 from compas.robots.model.base import FrameProxy
 from compas.robots.model.base import _attr_from_data
 from compas.robots.model.base import _attr_to_data
-from compas.robots.model.geometry import Box
-from compas.robots.model.geometry import Capsule
+from compas.robots.model.geometry import BoxProxy
+from compas.robots.model.geometry import CapsuleProxy
 from compas.robots.model.geometry import Color
-from compas.robots.model.geometry import Cylinder
+from compas.robots.model.geometry import CylinderProxy
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
-from compas.robots.model.geometry import Sphere
+from compas.robots.model.geometry import SphereProxy
 from compas.robots.model.geometry import Texture
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
 
 def _get_geometry_and_origin(primitive):
-    shape = None
     origin = None
-    if isinstance(primitive, compas.geometry.Box):
-        shape = Box.from_geometry(primitive)
+    geometry = None
+    if isinstance(primitive, Box):
+        shape = BoxProxy(primitive)
         origin = Frame(*primitive.frame)
-    if isinstance(primitive, compas.geometry.Capsule):
-        shape = Capsule.from_geometry(primitive)
+        geometry = Geometry(box=shape)
+    if isinstance(primitive, Capsule):
+        shape = CapsuleProxy(primitive)
         point = primitive.line.midpoint
         normal = primitive.line.vector
         plane = Plane(point, normal)
         origin = Frame.from_plane(plane)
-    if isinstance(primitive, compas.geometry.Cylinder):
-        shape = Cylinder.from_geometry(primitive)
+        geometry = Geometry(capsule=shape)
+    if isinstance(primitive, Cylinder):
+        shape = CylinderProxy(primitive)
         origin = Frame.from_plane(primitive.circle.plane)
-    if isinstance(primitive, compas.geometry.Sphere):
-        shape = Sphere.from_geometry(primitive)
+        geometry = Geometry(cylinder=shape)
+    if isinstance(primitive, Sphere):
+        shape = SphereProxy(primitive)
         origin = Frame(primitive.point, [1, 0, 0], [0, 1, 0])
-    if not shape:
+        geometry = Geometry(sphere=shape)
+    if not geometry:
         raise Exception('Unrecognized primitive type {}'.format(primitive.__class__))
-    geometry = Geometry(shape)
     return geometry, origin
 
 
@@ -453,10 +459,10 @@ URDFParser.install_parser(Collision, 'robot/link/collision')
 URDFParser.install_parser(Frame, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin', proxy_type=FrameProxy)
 URDFParser.install_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
 URDFParser.install_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
-URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
-URDFParser.install_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
-URDFParser.install_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
-URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
+URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box', proxy_type=BoxProxy)
+URDFParser.install_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder', proxy_type=CylinderProxy)
+URDFParser.install_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere', proxy_type=SphereProxy)
+URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule', proxy_type=CapsuleProxy)
 
 URDFParser.install_parser(Material, 'robot/link/visual/material')
 URDFParser.install_parser(Color, 'robot/link/visual/material/color')

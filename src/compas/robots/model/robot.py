@@ -636,15 +636,15 @@ class RobotModel(Data):
         for link in self.links:
             for element in itertools.chain(link.collision, link.visual):
                 shape = element.geometry.shape
-                needs_reload = force or not shape.geometry
+                needs_reload = force or not shape.meshes
                 if 'filename' in dir(shape) and needs_reload:
                     for loader in loaders:
                         if loader.can_load_mesh(shape.filename):
-                            shape.geometry = loader.load_mesh(shape.filename)
+                            shape.meshes = [loader.load_mesh(shape.filename)]
                             break
 
-                    if not shape.geometry:
-                        raise Exception('Unable to load geometry for {}'.format(shape.filename))
+                    if not shape.meshes:
+                        raise Exception('Unable to load meshes for {}'.format(shape.filename))
 
     def ensure_geometry(self):
         """Check if geometry has been loaded.
@@ -658,7 +658,7 @@ class RobotModel(Data):
         for link in self.links:
             for element in itertools.chain(link.collision, link.visual):
                 shape = element.geometry.shape
-                if not shape.geometry:
+                if not shape.meshes:
                     raise Exception(
                         'This method is only callable once the geometry has been loaded.')
 
@@ -953,7 +953,7 @@ class RobotModel(Data):
         for visual in visual_meshes:
             if isinstance(visual, Mesh):
                 v = Visual(Geometry(MeshDescriptor("")))
-                v.geometry.shape.geometry = visual
+                v.geometry.shape.meshes = [visual]
             else:
                 v = Visual.from_primitive(visual)
             v.material = Material(color=Color("%f %f %f 1" % visual_color))
@@ -962,7 +962,7 @@ class RobotModel(Data):
         for collision in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
             if isinstance(collision, Mesh):
                 c = Collision(Geometry(MeshDescriptor("")))
-                c.geometry.shape.geometry = collision
+                c.geometry.shape.meshes = [collision]
             else:
                 c = Collision.from_primitive(collision)
             collisions.append(c)
