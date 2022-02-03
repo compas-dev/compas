@@ -32,7 +32,12 @@ def _attr_from_data(data):
 
 
 class ProxyObject(object):
-    """Base proxy class to avoid duplication for the proxy pattern."""
+    """Base proxy class to create object proxies.
+
+    An object proxy wraps the proxied object and forwards all calls to it
+    unless a method/attribute/property is found first on the proxy itself.
+
+    The magic part is ``__getattr__`` ."""
 
     def __init__(self, obj):
         self._proxied_object = obj
@@ -42,7 +47,7 @@ class ProxyObject(object):
 
     @classmethod
     def create_proxy(cls, obj):
-        """Creates a proxy around an object, only if it's not already proxied."""
+        """Creates a proxy wrapping around an object, only if it's not already proxied."""
         if obj and not isinstance(obj, cls):
             return cls(obj)
         return obj
