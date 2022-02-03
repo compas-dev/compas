@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: compas-dev/compas-actions.docs@v1.2.1
+      - uses: compas-dev/compas-actions.docs@v1.3.0
         id: docs
         with:
           dest: deploy
@@ -47,7 +47,7 @@ jobs:
         with:
           ref: gh-pages
 
-      - uses: compas-dev/compas-actions.docversions@v1.2.1
+      - uses: compas-dev/compas-actions.docversions@v1.3.0
         with:
           current_version: ${{ needs.build.outputs.current_version }}
 

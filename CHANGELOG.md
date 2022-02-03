@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_plotters.plotter.Plotter` to normal class instead of singleton.
 * Moved functionality of `compas.utilities.coercion` to `compas.data`.
 * Fixed bug in `compas.geometry.NurbsSurface.to_triangles()`.
+* Renamed docs site folders `latest` to `stable` and `dev` to `latest`.
 * Fixed error message for unsupported joint types.
 * Fixed support for non-standard URDF attributes on limit and mesh geometry.
 * Fixed data serialization for URDF materials without color.
