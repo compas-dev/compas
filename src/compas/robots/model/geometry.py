@@ -72,12 +72,6 @@ class BoxProxy(ProxyObject):
     def size(self):
         return [self.xsize, self.ysize, self.zsize]
 
-    # @classmethod
-    # def from_data(cls, data):
-    #     box = cls('1 1 1')
-    #     box.data = data
-    #     return box
-
 
 class CylinderProxy(ProxyObject):
     """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Cylinder`.
@@ -105,12 +99,6 @@ class CylinderProxy(ProxyObject):
     def length(self):
         return self.height
 
-#     @classmethod
-#     def from_data(cls, data):
-#         cyl = cls(data['radius'], data['length'])
-#         cyl.data = data
-#         return cyl
-
 
 class SphereProxy(ProxyObject):
     """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Sphere`.
@@ -130,12 +118,6 @@ class SphereProxy(ProxyObject):
     @property
     def meshes(self):
         return [Mesh.from_shape(self)]
-
-    # @classmethod
-    # def from_data(cls, data):
-    #     sph = cls(data['radius'])
-    #     sph.data = data
-    #     return sph
 
 
 class CapsuleProxy(ProxyObject):
@@ -158,12 +140,6 @@ class CapsuleProxy(ProxyObject):
     @property
     def meshes(self):
         return [Mesh.from_shape(self)]
-
-    # @classmethod
-    # def from_data(cls, data):
-    #     cap = cls(data['radius'], data['length'])
-    #     cap.data = data
-    #     return cap
 
 
 class MeshDescriptor(Data):
