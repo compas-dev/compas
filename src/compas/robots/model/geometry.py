@@ -28,27 +28,6 @@ __all__ = [
 ]
 
 
-# Copied from https://github.com/ubernostrum/webcolors/blob/master/webcolors.py
-HTML4_NAMES_TO_HEX = {
-    u'aqua': u'#00ffff',
-    u'black': u'#000000',
-    u'blue': u'#0000ff',
-    u'fuchsia': u'#ff00ff',
-    u'green': u'#008000',
-    u'gray': u'#808080',
-    u'lime': u'#00ff00',
-    u'maroon': u'#800000',
-    u'navy': u'#000080',
-    u'olive': u'#808000',
-    u'purple': u'#800080',
-    u'red': u'#ff0000',
-    u'silver': u'#c0c0c0',
-    u'teal': u'#008080',
-    u'white': u'#ffffff',
-    u'yellow': u'#ffff00',
-}
-
-
 class BoxProxy(ProxyObject):
     """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Box`.
 
@@ -361,9 +340,8 @@ class Material(Data):
 
         """
         if self.name:
-            if self.name in HTML4_NAMES_TO_HEX:
-                color = compas.colors.Color.from_hex(HTML4_NAMES_TO_HEX[self.name])
-                return color.rgba
+            color = compas.colors.Color.from_html_name(self.name)
+            return color.rgba
         if self.color:
             return self.color.rgba
         return None
