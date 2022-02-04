@@ -384,7 +384,7 @@ class Material(Data):
         if self.name:
             if self.name in HTML4_NAMES_TO_HEX:
                 color = compas.colors.Color.from_hex(HTML4_NAMES_TO_HEX[self.name])
-                return color.r, color.g, color.b, color.a
+                return color.rgba
         if self.color:
             return self.color.rgba
         return None

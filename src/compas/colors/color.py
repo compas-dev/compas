@@ -177,6 +177,18 @@ class Color(Data):
         return r, g, b
 
     @property
+    def rgba(self):
+        r, g, b = self.rgb
+        a = self.a
+        return r, g, b, a
+
+    @property
+    def rgba255(self):
+        r, g, b = self.rgb255
+        a = int(self.b * 255)
+        return r, g, b, a
+
+    @property
     def hex(self):
         return '#{0:02x}{1:02x}{2:02x}'.format(* self.rgb255)
 
