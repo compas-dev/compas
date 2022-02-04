@@ -138,7 +138,7 @@ class Color(Data):
     def r(self, red):
         if red > 1.0 or red < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._r = red
+        self._r = float(red)
 
     @property
     def g(self):
@@ -148,7 +148,7 @@ class Color(Data):
     def g(self, green):
         if green > 1.0 or green < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._g = green
+        self._g = float(green)
 
     @property
     def b(self):
@@ -158,7 +158,7 @@ class Color(Data):
     def b(self, blue):
         if blue > 1.0 or blue < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._b = blue
+        self._b = float(blue)
 
     @property
     def a(self):
@@ -168,7 +168,7 @@ class Color(Data):
     def a(self, alpha):
         if alpha > 1.0 or alpha < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._a = alpha
+        self._a = float(alpha)
 
     @property
     def rgb(self):
