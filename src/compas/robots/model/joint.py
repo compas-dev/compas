@@ -5,15 +5,16 @@ from __future__ import print_function
 from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
+from compas.geometry import Frame
 from compas.geometry import Rotation
 from compas.geometry import Transformation
 from compas.geometry import Translation
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
-from compas.robots.model.geometry import Origin
-from compas.robots.model.geometry import _attr_from_data
-from compas.robots.model.geometry import _attr_to_data
-from compas.robots.model.geometry import _parse_floats
+from compas.robots.model.base import FrameProxy
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
+from compas.robots.model.base import _parse_floats
 
 __all__ = [
     'Joint',
@@ -165,12 +166,13 @@ class Limit(Data):
 
     """
 
-    def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
+    def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0, **kwargs):
         super(Limit, self).__init__()
         self.effort = float(effort)
         self.velocity = float(velocity)
         self.lower = float(lower)
         self.upper = float(upper)
+        self.attr = kwargs
 
     def get_urdf_element(self):
         attributes = {
@@ -180,6 +182,7 @@ class Limit(Data):
         attributes = dict(filter(lambda x: x[1], attributes.items()))
         attributes['effort'] = self.effort
         attributes['velocity'] = self.velocity
+        attributes.update(self.attr)
         return URDFElement('limit', attributes)
 
     @property
@@ -189,6 +192,7 @@ class Limit(Data):
             'velocity': self.velocity,
             'lower': self.lower,
             'upper': self.upper,
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
@@ -197,6 +201,7 @@ class Limit(Data):
         self.velocity = data['velocity']
         self.lower = data['lower']
         self.upper = data['upper']
+        self.attr = _attr_from_data(data['attr'])
 
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
@@ -405,8 +410,8 @@ class Joint(Data):
         Unique name for the joint.
     type : str | int
         Joint type either as a string or an index number. See class attributes for named constants and supported types.
-    origin : :class:`Origin`
-        Transformation from the parent link to the child link frame.
+    origin : :class:`Frame`
+        Frame defining the transformation from the parent link to the child link frame.
     parent : :class:`ParentLink` | str
         Parent link instance or parent link name.
     child : :class:`ChildLink` | str
@@ -468,7 +473,11 @@ class Joint(Data):
     def __init__(self, name, type, parent, child, origin=None, axis=None,
                  calibration=None, dynamics=None, limit=None,
                  safety_controller=None, mimic=None, **kwargs):
-        type_idx = Joint.SUPPORTED_TYPES.index(type) if isinstance(type, str) else type
+
+        type_idx = type
+
+        if isinstance(type_idx, str) and type_idx in Joint.SUPPORTED_TYPES:
+            type_idx = Joint.SUPPORTED_TYPES.index(type_idx)
 
         if type_idx not in range(len(Joint.SUPPORTED_TYPES)):
             raise ValueError('Unsupported joint type: %s' % type)
@@ -478,7 +487,7 @@ class Joint(Data):
         self.type = type_idx
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
         self.child = child if isinstance(child, ChildLink) else ChildLink(child)
-        self.origin = origin or Origin.from_euler_angles([0., 0., 0.])
+        self.origin = origin or Frame.from_euler_angles([0., 0., 0.])
         self.axis = axis or Axis()
         self.calibration = calibration
         self.dynamics = dynamics
@@ -492,6 +501,22 @@ class Joint(Data):
         # the joint state, while `origin` and `axis` above are parent-relative and static.
         self.current_origin = self.origin.copy()
         self.current_axis = self.axis.copy()
+
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
+
+    @property
+    def current_origin(self):
+        return self._current_origin
+
+    @current_origin.setter
+    def current_origin(self, value):
+        self._current_origin = FrameProxy.create_proxy(value)
 
     def get_urdf_element(self):
         attributes = {
@@ -527,7 +552,7 @@ class Joint(Data):
         self.type = Joint.SUPPORTED_TYPES.index(data['type'])
         self.parent = ParentLink.from_data(data['parent'])
         self.child = ChildLink.from_data(data['child'])
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.axis = Axis.from_data(data['axis']) if data['axis'] else None
         self.calibration = Calibration.from_data(data['calibration']) if data['calibration'] else None
         self.dynamics = Dynamics.from_data(data['dynamics']) if data['dynamics'] else None
@@ -739,4 +764,4 @@ URDFParser.install_parser(Axis, 'robot/joint/axis')
 URDFParser.install_parser(Mimic, 'robot/joint/mimic')
 URDFParser.install_parser(SafetyController, 'robot/joint/safety_controller')
 
-URDFParser.install_parser(Origin, 'robot/joint/origin')
+URDFParser.install_parser(Frame, 'robot/joint/origin', proxy_type=FrameProxy)

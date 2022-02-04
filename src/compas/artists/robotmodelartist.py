@@ -346,7 +346,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : dict or :class:`compas.robots.Configuration`
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
             A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
             If True, the visual geometry will also be updated.
@@ -385,7 +385,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : dict or :class:`compas.robots.Configuration`, optional
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float], optional
             A dictionary with joint names as keys and joint positions as values.
             Defaults to an empty dictionary.
         transformation : :class:`compas.geometry.Transformation`, optional

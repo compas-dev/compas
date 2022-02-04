@@ -13,14 +13,13 @@ from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots import Configuration
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
 from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
-from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Texture
-from compas.robots.model.geometry import _attr_from_data
-from compas.robots.model.geometry import _attr_to_data
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
 from compas.robots.model.joint import Limit
@@ -59,12 +58,12 @@ class RobotModel(Data):
 
     """
 
-    def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
+    def __init__(self, name=None, joints=(), links=(), materials=(), **kwargs):
         super(RobotModel, self).__init__()
-        self.name = name
-        self.joints = list(joints)
-        self.links = list(links)
-        self.materials = list(materials)
+        self.name = name or 'Robot'
+        self.joints = list(joints or [])
+        self.links = list(links or [])
+        self.materials = list(materials or [])
         self.attr = kwargs
         self.root = None
         self._rebuild_tree()
@@ -112,15 +111,6 @@ class RobotModel(Data):
         self._scale_factor = data.get('_scale_factor', 1.)
 
         self._rebuild_tree()
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct the :class:`compas.robots.RobotModel` from its data representation.
-        To be used in conjunction with :meth:`compas.robot.RobotModel.to_data()`.
-        """
-        robot_model = cls(data['name'])
-        robot_model.data = data
-        return robot_model
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -646,15 +636,27 @@ class RobotModel(Data):
         for link in self.links:
             for element in itertools.chain(link.collision, link.visual):
                 shape = element.geometry.shape
-                needs_reload = force or not shape.geometry
+                needs_reload = force or not shape.meshes
                 if 'filename' in dir(shape) and needs_reload:
                     for loader in loaders:
                         if loader.can_load_mesh(shape.filename):
-                            shape.geometry = loader.load_mesh(shape.filename)
+                            # NOTE: this part is annoying, but we keep it for backwards compatibility's sake.
+                            # Externally defined loaders (eg. COMPAS_FAB File Server loader)
+                            # might not be updated yet on the user's system, so we fallback
+                            # to the deprecated load_mesh method in that case.
+                            # However, to add to the confusion, some loaders were actually returning
+                            # meshes regardless of the misnaming. We handle that in _get_item_meshes
+                            # so, we don't force load_mesh into a list, otherwise it will turn into a
+                            # list of lists in those cases.
+                            # All of this ugly fallback should be removed in 2.0
+                            if hasattr(loader, 'load_meshes'):
+                                shape.meshes = loader.load_meshes(shape.filename)
+                            else:
+                                shape.meshes = loader.load_mesh(shape.filename)
                             break
 
-                    if not shape.geometry:
-                        raise Exception('Unable to load geometry for {}'.format(shape.filename))
+                    if not shape.meshes:
+                        raise Exception('Unable to load meshes for {}'.format(shape.filename))
 
     def ensure_geometry(self):
         """Check if geometry has been loaded.
@@ -668,7 +670,7 @@ class RobotModel(Data):
         for link in self.links:
             for element in itertools.chain(link.collision, link.visual):
                 shape = element.geometry.shape
-                if not shape.geometry:
+                if not shape.meshes:
                     raise Exception(
                         'This method is only callable once the geometry has been loaded.')
 
@@ -774,8 +776,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
         link : :class:`compas.robots.Link`
             Link instance to calculate the child joint's transformation.
@@ -821,8 +823,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
 
         Returns
@@ -847,8 +849,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
 
         Returns
@@ -872,8 +874,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        joint_state : dict[str, :class:`compas.robots.Configuration`]
-            A dictionary with the joint names as keys and values in radians and
+        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+            A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
         link_name : str, optional
             The name of the link we want to calculate the forward kinematics for.
@@ -930,6 +932,9 @@ class RobotModel(Data):
             Defaults to (0.8, 0.8, 0.8)
         collision_meshes : list[:class:`compas.datastructures.Mesh`], optional
             The link's collision mesh.
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
 
         Returns
         -------
@@ -963,7 +968,7 @@ class RobotModel(Data):
         for visual in visual_meshes:
             if isinstance(visual, Mesh):
                 v = Visual(Geometry(MeshDescriptor("")))
-                v.geometry.shape.geometry = visual
+                v.geometry.shape.meshes = [visual]
             else:
                 v = Visual.from_primitive(visual)
             v.material = Material(color=Color("%f %f %f 1" % visual_color))
@@ -972,7 +977,7 @@ class RobotModel(Data):
         for collision in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
             if isinstance(collision, Mesh):
                 c = Collision(Geometry(MeshDescriptor("")))
-                c.geometry.shape.geometry = collision
+                c.geometry.shape.meshes = [collision]
             else:
                 c = Collision.from_primitive(collision)
             collisions.append(c)
@@ -1019,6 +1024,9 @@ class RobotModel(Data):
             The joint's axis.
         limit : list of 2 float
             The lower and upper limits of the joint (used for joint types Joint.REVOLUTE or Joint.PRISMATIC)
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
 
         Returns
         -------
@@ -1046,7 +1054,7 @@ class RobotModel(Data):
             raise ValueError("Joint name '%s' already used in chain." % name)
 
         if origin:
-            origin = Origin(origin.point, origin.xaxis, origin.yaxis)
+            origin = Frame(origin.point, origin.xaxis, origin.yaxis)
         if axis:
             axis = Axis('{} {} {}'.format(*list(axis)))
         if limit:

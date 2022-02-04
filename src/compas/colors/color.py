@@ -9,6 +9,8 @@ except NameError:
 
 import colorsys
 import re
+
+from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
 
 BASE16 = '0123456789abcdef'
@@ -181,6 +183,18 @@ class Color(Data):
         g = int(self.g * 255)
         b = int(self.b * 255)
         return r, g, b
+
+    @property
+    def rgba(self):
+        r, g, b = self.rgb
+        a = self.a
+        return r, g, b, a
+
+    @property
+    def rgba255(self):
+        r, g, b = self.rgb255
+        a = int(self.a * 255)
+        return r, g, b, a
 
     @property
     def hex(self):
@@ -455,6 +469,28 @@ class Color(Data):
         g = HEX_DEC[value[2:4]]
         b = HEX_DEC[value[4:6]]
         return cls(r / 255.0, g / 255.0, b / 255.0)
+
+    @classmethod
+    def from_name(cls, name):
+        """Construct a color from a name in the extended color table of HTML/CSS/SVG.
+
+        Parameters
+        ----------
+        name : str
+            The color name. The name is case-insensitive.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        See Also
+        --------
+        https://www.w3.org/TR/css-color-3/#svg-color
+        """
+        rgb255 = HTML_TO_RGB255.get(name.lower())
+        if rgb255 is None:
+            raise ValueError("Color name not found.")
+        return cls.from_rgb255(*rgb255)
 
     # --------------------------------------------------------------------------
     # presets

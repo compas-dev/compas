@@ -30,7 +30,7 @@ elements connecting the links together.
 Geometric description
 =====================
 
-.. inheritance-diagram:: Origin Geometry Box Cylinder Sphere Capsule MeshDescriptor Material Texture Color
+.. inheritance-diagram:: Geometry MeshDescriptor Material Texture Color
     :parts: 1
 
 The robot itself as well as its links can be geometrically described
@@ -40,12 +40,7 @@ using the following classes.
     :toctree: generated/
     :nosignatures:
 
-    Origin
     Geometry
-    Box
-    Cylinder
-    Sphere
-    Capsule
     MeshDescriptor
     Material
     Texture
@@ -113,6 +108,24 @@ the processing of these resources.
     GithubPackageMeshLoader
     LocalPackageMeshLoader
 
+Deprecated
+==========
+
+.. deprecated:: 1.13.3
+    Use `compas.geometry` primitives instead
+
+The following classes are available for backwards compatibility but are deprecated.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Origin
+    Cylinder
+    Box
+    Sphere
+    Capsule
+
 """
 from __future__ import absolute_import
 
@@ -121,13 +134,10 @@ from .configuration import (
 )
 from .model import (
     Axis,
-    Box,
     Calibration,
-    Capsule,
     ChildLink,
     Collision,
     Color,
-    Cylinder,
     Dynamics,
     Geometry,
     Inertia,
@@ -139,11 +149,9 @@ from .model import (
     Material,
     MeshDescriptor,
     Mimic,
-    Origin,
     ParentLink,
     RobotModel,
     SafetyController,
-    Sphere,
     Texture,
     ToolModel,
     Visual
@@ -155,17 +163,21 @@ from .resources import (
     LocalPackageMeshLoader
 )
 
+# Deprecated aliases
+from .model import (
+    Origin,
+    Box,
+    Capsule,
+    Cylinder,
+    Sphere,
+)
+
 __all__ = [
     'Geometry',
-    'Box',
-    'Cylinder',
-    'Sphere',
-    'Capsule',
     'MeshDescriptor',
     'Color',
     'Texture',
     'Material',
-    'Origin',
 
     'Joint',
     'ParentLink',
@@ -192,5 +204,12 @@ __all__ = [
     'LocalPackageMeshLoader',
     'GithubPackageMeshLoader',
 
-    'Configuration'
+    'Configuration',
+
+    # Deprecated aliases
+    'Origin',
+    'Box',
+    'Capsule',
+    'Cylinder',
+    'Sphere',
 ]
