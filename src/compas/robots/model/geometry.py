@@ -185,7 +185,7 @@ class MeshDescriptor(Data):
         The mesh' filename.
     scale : [float, float, float]
         The scale factors of the mesh in the x-, y-, and z-direction.
-    meshes : list of :class:`compas.datastructures.Mesh`
+    meshes : list[:class:`~compas.datastructures.Mesh`]
         List of COMPAS geometric meshes.
 
     Examples
