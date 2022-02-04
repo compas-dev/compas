@@ -35,6 +35,7 @@ class ColorMap(object):
 
     Examples
     --------
+    >>> import random
     >>> cmap = ColorMap.from_palette('bamako')
     >>> for i in range(100):
     ...     color = cmap(random.random())
@@ -43,11 +44,11 @@ class ColorMap(object):
     >>> cmap = ColorMap.from_mpl('viridis')
     >>> n = 100
     >>> for i in range(n):
-    ...     color = cmap.get(i, 0, n - 1)
+    ...     color = cmap(i, 0, n - 1)
     ...
 
     >>> cmap = ColorMap.from_color(Color.red(), rangetype='light')
-    >>> cmap.plot()
+    >>> cmap.plot()    # doctest: +SKIP
 
     """
 
