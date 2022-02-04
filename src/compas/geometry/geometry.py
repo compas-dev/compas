@@ -41,6 +41,6 @@ class Geometry(Data):
             The transformed geometry.
 
         """
-        primitive = self.copy()
-        primitive.transform(transformation)
-        return primitive
+        geometry = self.copy()
+        geometry.transform(transformation)
+        return geometry

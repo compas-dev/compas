@@ -23,6 +23,7 @@ Primitive Artists
     CapsuleArtist
     CircleArtist
     ConeArtist
+    CurveArtist
     CylinderArtist
     FrameArtist
     LineArtist
@@ -31,6 +32,7 @@ Primitive Artists
     PolyhedronArtist
     PolylineArtist
     SphereArtist
+    SurfaceArtist
     TorusArtist
     VectorArtist
 
@@ -77,6 +79,7 @@ from compas.geometry import Box
 from compas.geometry import Capsule
 from compas.geometry import Circle
 from compas.geometry import Cone
+from compas.geometry import Curve
 from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -85,6 +88,7 @@ from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Polyline
 from compas.geometry import Sphere
+from compas.geometry import Surface
 from compas.geometry import Torus
 from compas.geometry import Vector
 
@@ -99,6 +103,7 @@ from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .circleartist import CircleArtist
 from .coneartist import ConeArtist
+from .curveartist import CurveArtist
 from .cylinderartist import CylinderArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
@@ -110,6 +115,7 @@ from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
 from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
+from .sphereartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
 from .volmeshartist import VolMeshArtist
@@ -138,6 +144,7 @@ def register_artists():
     Artist.register(Capsule, CapsuleArtist, context='Grasshopper')
     Artist.register(Circle, CircleArtist, context='Grasshopper')
     Artist.register(Cone, ConeArtist, context='Grasshopper')
+    Artist.register(Curve, CurveArtist, context='Grasshopper')
     Artist.register(Cylinder, CylinderArtist, context='Grasshopper')
     Artist.register(Frame, FrameArtist, context='Grasshopper')
     Artist.register(Line, LineArtist, context='Grasshopper')
@@ -149,6 +156,7 @@ def register_artists():
     Artist.register(Polyline, PolylineArtist, context='Grasshopper')
     Artist.register(RobotModel, RobotModelArtist, context='Grasshopper')
     Artist.register(Sphere, SphereArtist, context='Grasshopper')
+    Artist.register(Surface, SurfaceArtist, context='Grasshopper')
     Artist.register(Torus, TorusArtist, context='Grasshopper')
     Artist.register(Vector, VectorArtist, context='Grasshopper')
     Artist.register(VolMesh, VolMeshArtist, context='Grasshopper')
@@ -162,6 +170,7 @@ __all__ = [
     'CapsuleArtist',
     'CircleArtist',
     'ConeArtist',
+    'CurveArtist',
     'CylinderArtist',
     'FrameArtist',
     'LineArtist',
@@ -173,6 +182,7 @@ __all__ = [
     'PolylineArtist',
     'RobotModelArtist',
     'SphereArtist',
+    'SurfaceArtist',
     'TorusArtist',
     'VectorArtist',
     'VolMeshArtist',

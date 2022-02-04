@@ -154,7 +154,7 @@ class VolMeshArtist(Artist):
     @property
     def vertex_color(self):
         if not self._vertex_color:
-            self._vertex_color = {vertex: self.artist.default_vertexcolor for vertex in self.volmesh.vertices()}
+            self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.volmesh.vertices()}
         return self._vertex_color
 
     @vertex_color.setter
@@ -167,7 +167,7 @@ class VolMeshArtist(Artist):
     @property
     def edge_color(self):
         if not self._edge_color:
-            self._edge_color = {edge: self.artist.default_edgecolor for edge in self.volmesh.edges()}
+            self._edge_color = {edge: self.default_edgecolor for edge in self.volmesh.edges()}
         return self._edge_color
 
     @edge_color.setter
@@ -180,7 +180,7 @@ class VolMeshArtist(Artist):
     @property
     def face_color(self):
         if not self._face_color:
-            self._face_color = {face: self.artist.default_facecolor for face in self.volmesh.faces()}
+            self._face_color = {face: self.default_facecolor for face in self.volmesh.faces()}
         return self._face_color
 
     @face_color.setter
@@ -193,7 +193,7 @@ class VolMeshArtist(Artist):
     @property
     def cell_color(self):
         if not self._cell_color:
-            self._cell_color = {cell: self.artist.default_cellcolor for cell in self.volmesh.cells()}
+            self._cell_color = {cell: self.default_cellcolor for cell in self.volmesh.cells()}
         return self._cell_color
 
     @cell_color.setter
