@@ -417,7 +417,7 @@ class Geometry(Data):
 
     Attributes
     ----------
-    shape : obj
+    shape : object
         The shape of the geometry
     attr : keyword arguments
         Additional attributes
