@@ -453,12 +453,6 @@ class Geometry(Data):
         super(Geometry, self).__init__()
         self.shape = box or cylinder or sphere or capsule or mesh
         self.attr = kwargs
-        if not self.shape:
-            raise TypeError(
-                'Geometry must define at least one of: box, cylinder, sphere, capsule, mesh')
-
-        if 'meshes' not in dir(self.shape):
-            raise TypeError('Shape implementation does not define a meshes accessor')
 
     @property
     def shape(self):
@@ -476,6 +470,9 @@ class Geometry(Data):
             self._shape = CapsuleProxy.create_proxy(value)
         else:
             self._shape = value
+
+        if 'meshes' not in dir(self._shape):
+            raise TypeError('Shape implementation does not define a meshes accessor')
 
     def get_urdf_element(self):
         attributes = self.attr.copy()

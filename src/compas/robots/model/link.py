@@ -28,33 +28,6 @@ from compas.robots.model.geometry import Texture
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
 
-def _get_geometry_and_origin(primitive):
-    origin = None
-    geometry = None
-    if isinstance(primitive, Box):
-        shape = BoxProxy(primitive)
-        origin = Frame(*primitive.frame)
-        geometry = Geometry(box=shape)
-    if isinstance(primitive, Capsule):
-        shape = CapsuleProxy(primitive)
-        point = primitive.line.midpoint
-        normal = primitive.line.vector
-        plane = Plane(point, normal)
-        origin = Frame.from_plane(plane)
-        geometry = Geometry(capsule=shape)
-    if isinstance(primitive, Cylinder):
-        shape = CylinderProxy(primitive)
-        origin = Frame.from_plane(primitive.circle.plane)
-        geometry = Geometry(cylinder=shape)
-    if isinstance(primitive, Sphere):
-        shape = SphereProxy(primitive)
-        origin = Frame(primitive.point, [1, 0, 0], [0, 1, 0])
-        geometry = Geometry(sphere=shape)
-    if not geometry:
-        raise Exception('Unrecognized primitive type {}'.format(primitive.__class__))
-    return geometry, origin
-
-
 class Mass(Data):
     """Represents a value of mass usually related to a link."""
 
@@ -289,8 +262,21 @@ class Visual(LinkItem, Data):
 
     @classmethod
     def from_primitive(cls, primitive, **kwargs):
-        geometry, origin = _get_geometry_and_origin(primitive)
-        return cls(geometry, origin=origin, **kwargs)
+        """Create visual link from a primitive shape.
+
+        Parameters
+        ----------
+        primitive : :compas:`compas.geometry.Shape`
+            A primitive shape.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            A visual description object.
+        """
+        geometry = Geometry()
+        geometry.shape = primitive
+        return cls(geometry, **kwargs)
 
 
 class Collision(LinkItem, Data):
@@ -364,14 +350,27 @@ class Collision(LinkItem, Data):
 
     @classmethod
     def from_data(cls, data):
-        visual = cls(Geometry.from_data(data['geometry']))
-        visual.data = data
-        return visual
+        collision = cls(Geometry.from_data(data['geometry']))
+        collision.data = data
+        return collision
 
     @classmethod
     def from_primitive(cls, primitive, **kwargs):
-        geometry, origin = _get_geometry_and_origin(primitive)
-        return cls(geometry, origin=origin, **kwargs)
+        """Create collision link from a primitive shape.
+
+        Parameters
+        ----------
+        primitive : :compas:`compas.geometry.Shape`
+            A primitive shape.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            A collision description object.
+        """
+        geometry = Geometry()
+        geometry.shape = primitive
+        return cls(geometry, **kwargs)
 
 
 class Link(Data):
