@@ -477,7 +477,7 @@ class Color(Data):
         Parameters
         ----------
         name : str
-            The color name.
+            The color name. The name is case-insensitive.
 
         Returns
         -------
@@ -487,7 +487,7 @@ class Color(Data):
         --------
         https://www.w3.org/TR/css-color-3/#svg-color
         """
-        return cls.from_rgb255(*HTML_TO_RGB255[name])
+        return cls.from_rgb255(*HTML_TO_RGB255[name.lower()])
 
     # --------------------------------------------------------------------------
     # presets
