@@ -225,38 +225,33 @@ are locked.</p></li>
 one. This can be done with Blender, Rhino or Grasshopper using one of COMPAS’s
 artists.  The basic procedure is the same in
 any of the CAD software (aside from the import statement). Below you can find an example code for both Rhino and Blender.</p>
-<div class="card">
-    <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#visualise_robot_rhino">Rhino</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#visualise_robot_blender">Blender</a>
-            </li>
-        </ul>
-    </div>
-    <div class="card-body">
-        <div class="tab-content"><div class="tab-pane active" id="visualise_robot_rhino"><p>Be sure to first install COMPAS for Rhino.  While the following code is incomplete,
+<div class="compas-tabs docutils">
+<input checked="checked" id="56756694-d906-4160-bd73-9ddeb7fb332c" name="e74c79db-7f8a-4a5e-b069-f812fda15736" type="radio">
+</input><label class="compas-tab-item-label" for="56756694-d906-4160-bd73-9ddeb7fb332c">
+Rhino</label><div class="compas-tab-item-content docutils">
+<p>Be sure to first install COMPAS for Rhino.  While the following code is incomplete,
 it can be used as a scaffolding for code to be run in a Python script editor within Rhino.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="p">(</span><span class="s1">&#39;Robby&#39;</span><span class="p">)</span>
 
 <span class="c1"># Add some geometry to Robby here</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
-<div class="tab-pane" id="visualise_robot_blender"><div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<input id="15800782-f2af-4bc2-b619-21de63f1fbe5" name="e74c79db-7f8a-4a5e-b069-f812fda15736" type="radio">
+</input><label class="compas-tab-item-label" for="15800782-f2af-4bc2-b619-21de63f1fbe5">
+Blender</label><div class="compas-tab-item-content docutils">
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
 <span class="kn">import</span> <span class="nn">compas_blender</span>
-<span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
 
 <span class="n">compas_blender</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># Delete all objects in the Blender scene</span>
 
@@ -265,13 +260,12 @@ it can be used as a scaffolding for code to be run in a Python script editor wit
 <span class="c1"># Add some geometry to Robby here</span>
 
 <span class="c1"># Load the robot geometry into the blender scene</span>
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p>Note that the blender <code class="docutils literal notranslate"><span class="pre">RobotModelArtist</span></code> is not as developed as the one for Rhino.</p>
-</div></div>
 </div>
-</div><p>See below for a complete example of how to programmatically create a Robotmodel.</p>
+</div>
+<p>See below for a complete example of how to programmatically create a Robotmodel.</p>
 </section>
 <section id="building-robots-models">
 <h2>Building robots models</h2>
@@ -319,15 +313,15 @@ to visualize Boxy.  Throughout the rest of this tutorial, the code
 snippets will include the lines for visualization in Rhino, but be
 aware that the class <a class="reference internal" href="../api/generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> can be used,
 and is useful, outside of a CAD environment.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Boxy&#39;</span><span class="p">)</span>
 <span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;box_link&#39;</span><span class="p">,</span> <span class="n">visual_meshes</span><span class="o">=</span><span class="p">[</span><span class="n">box</span><span class="p">])</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
@@ -345,15 +339,15 @@ this tutorial uses only primitives.</p>
 origin, simply change the frame of the provided box. To move the box so that it sits
 above the XY plane, the origin must be shifted in the z-direction by half the height
 of the box.  The box is also shifted slightly forward in the y-direction:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Boxy&#39;</span><span class="p">)</span>
 <span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;box_link&#39;</span><span class="p">,</span> <span class="n">visual_meshes</span><span class="o">=</span><span class="p">[</span><span class="n">box</span><span class="p">])</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
@@ -363,16 +357,16 @@ of the box.  The box is also shifted slightly forward in the y-direction:</p>
 </figure>
 <p>A link may have more than one geometric element associated to it.  Now
 there is a stack of two boxes:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Boxy&#39;</span><span class="p">)</span>
 <span class="n">box_1</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
 <span class="n">box_2</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="mf">.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;box_link&#39;</span><span class="p">,</span> <span class="n">visual_meshes</span><span class="o">=</span><span class="p">[</span><span class="n">box_1</span><span class="p">,</span> <span class="n">box_2</span><span class="p">])</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>
@@ -386,9 +380,9 @@ So to stack the boxes, the center of <code class="docutils literal notranslate">
 <code class="docutils literal notranslate"><span class="pre">&lt;height</span> <span class="pre">of</span> <span class="pre">box_1&gt;</span> <span class="pre">+</span> <span class="pre">1/2</span> <span class="pre">*</span> <span class="pre">&lt;height</span> <span class="pre">of</span> <span class="pre">box_2&gt;</span> <span class="pre">=</span> <span class="pre">.5</span> <span class="pre">+</span> <span class="pre">.5</span> <span class="pre">*</span> <span class="pre">7</span> <span class="pre">=</span> <span class="pre">4</span></code>.</p>
 <p>One link does not an interesting robot make.  The following code snippet adds
 a cylindrical second link as well as a joint connecting the two.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Cylinder</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Plane</span><span class="p">,</span> <span class="n">Vector</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Cylinder</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Plane</span><span class="p">,</span> <span class="n">Vector</span>
 <span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">Joint</span><span class="p">,</span> <span class="n">RobotModel</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Jointy&#39;</span><span class="p">)</span>
 <span class="n">box_1</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
@@ -409,7 +403,7 @@ a cylindrical second link as well as a joint connecting the two.</p>
      <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::Example Robot&#39;</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
 </code></pre></div>

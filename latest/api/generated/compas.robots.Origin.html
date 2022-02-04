@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Origin.from_urdf" href="compas.robots.Origin.from_urdf.html" />
+  <link rel="next" title="Cylinder" href="compas.robots.Cylinder.html" />
   
 
   
-  <link rel="prev" title="Configuration.validate_json" href="compas.robots.Configuration.validate_json.html" />
+  <link rel="prev" title="LocalPackageMeshLoader.load_urdf" href="compas.robots.LocalPackageMeshLoader.load_urdf.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -106,136 +106,10 @@
         
         <section class="detail" id="origin">
 <h1>Origin</h1>
-<dl class="py class">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="compas.robots.Origin">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">Origin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/geometry.py#L68"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.primitives.frame.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a></p>
-<p>Reference frame represented by an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code>.</p>
-<p>An origin is defined by a base point and two orthonormal base vectors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – The origin of the origin.</p></li>
-<li><p><strong>xaxis</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The x-axis of the origin.</p></li>
-<li><p><strong>yaxis</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The y-axis of the origin.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">Origin</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">Origin</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</code></pre></div>
-</div>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_urdf.html#compas.robots.Origin.from_urdf" title="compas.robots.Origin.from_urdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_urdf</span></code></a></p></td>
-<td><p>Create origin instance from an URDF element.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.get_urdf_element.html#compas.robots.Origin.get_urdf_element" title="compas.robots.Origin.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.scale.html#compas.robots.Origin.scale" title="compas.robots.Origin.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
-<td><p>Scale the origin by a given factor.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.copy.html#compas.robots.Origin.copy" title="compas.robots.Origin.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
-<td><p>Make an independent copy of the data object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.euler_angles.html#compas.robots.Origin.euler_angles" title="compas.robots.Origin.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a></p></td>
-<td><p>The Euler angles from the rotation given by the frame.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_axis_angle_vector.html#compas.robots.Origin.from_axis_angle_vector" title="compas.robots.Origin.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a></p></td>
-<td><p>Construct a frame from an axis-angle vector representing the rotation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.from_data.html#compas.robots.Origin.from_data" title="compas.robots.Origin.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct a frame from its data representation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_euler_angles.html#compas.robots.Origin.from_euler_angles" title="compas.robots.Origin.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a></p></td>
-<td><p>Construct a frame from a rotation represented by Euler angles.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.from_json.html#compas.robots.Origin.from_json" title="compas.robots.Origin.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_jsonstring.html#compas.robots.Origin.from_jsonstring" title="compas.robots.Origin.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.from_list.html#compas.robots.Origin.from_list" title="compas.robots.Origin.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
-<td><p>Construct a frame from a list of 12 or 16 float values.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_matrix.html#compas.robots.Origin.from_matrix" title="compas.robots.Origin.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
-<td><p>Construct a frame from a matrix.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.from_plane.html#compas.robots.Origin.from_plane" title="compas.robots.Origin.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
-<td><p>Constructs a frame from a plane.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_points.html#compas.robots.Origin.from_points" title="compas.robots.Origin.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
-<td><p>Constructs a frame from 3 points.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.from_quaternion.html#compas.robots.Origin.from_quaternion" title="compas.robots.Origin.from_quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_quaternion</span></code></a></p></td>
-<td><p>Construct a frame from a rotation represented by quaternion coefficients.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.from_rotation.html#compas.robots.Origin.from_rotation" title="compas.robots.Origin.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
-<td><p>Constructs a frame from a Rotation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.from_transformation.html#compas.robots.Origin.from_transformation" title="compas.robots.Origin.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a></p></td>
-<td><p>Constructs a frame from a Transformation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.local_to_local_coordinates.html#compas.robots.Origin.local_to_local_coordinates" title="compas.robots.Origin.local_to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_to_local_coordinates</span></code></a></p></td>
-<td><p>Returns the object's coordinates in frame1 in the local coordinates of frame2.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.to_data.html#compas.robots.Origin.to_data" title="compas.robots.Origin.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.to_json.html#compas.robots.Origin.to_json" title="compas.robots.Origin.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.to_jsonstring.html#compas.robots.Origin.to_jsonstring" title="compas.robots.Origin.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.to_local_coordinates.html#compas.robots.Origin.to_local_coordinates" title="compas.robots.Origin.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a></p></td>
-<td><p>Returns the object's coordinates in the local coordinate system of the frame.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.to_world_coordinates.html#compas.robots.Origin.to_world_coordinates" title="compas.robots.Origin.to_world_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_world_coordinates</span></code></a></p></td>
-<td><p>Returns the object's coordinates in the global coordinate frame.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.transform.html#compas.robots.Origin.transform" title="compas.robots.Origin.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
-<td><p>Transform the frame.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.transformed.html#compas.robots.Origin.transformed" title="compas.robots.Origin.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
-<td><p>Returns a transformed copy of this geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.validate_data.html#compas.robots.Origin.validate_data" title="compas.robots.Origin.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
-<td><p>Validate the object's data against its data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.validate_json.html#compas.robots.Origin.validate_json" title="compas.robots.Origin.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the object's data against its json schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.worldXY.html#compas.robots.Origin.worldXY" title="compas.robots.Origin.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a></p></td>
-<td><p>Construct the world XY frame.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Origin.worldYZ.html#compas.robots.Origin.worldYZ" title="compas.robots.Origin.worldYZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldYZ</span></code></a></p></td>
-<td><p>Construct the world YZ frame.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Origin.worldZX.html#compas.robots.Origin.worldZX" title="compas.robots.Origin.worldZX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldZX</span></code></a></p></td>
-<td><p>Construct the world ZX frame.</p></td>
-</tr>
-</tbody>
-</table>
+<span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">Origin</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/frame.py#L26"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>alias of <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.primitives.frame.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a></p>
 </dd></dl>
 
 </section>
@@ -305,20 +179,20 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.robots.Configuration.validate_json.html" title="Configuration.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.robots.LocalPackageMeshLoader.load_urdf.html" title="LocalPackageMeshLoader.load_urdf" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Configuration.validate_json
+          LocalPackageMeshLoader.load_urdf
         </div>
       </a>
       
 
       
-      <a href="compas.robots.Origin.from_urdf.html" title="Origin.from_urdf" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.robots.Cylinder.html" title="Cylinder" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Origin.from_urdf
+          Cylinder
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

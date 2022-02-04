@@ -133,6 +133,8 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.utilities.draw_surfaces</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.utilities.draw_curves</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.utilities.draw_surfaces</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">rgba</span></code> and <code class="docutils literal notranslate"><span class="pre">rgba255</span></code> properties to <code class="docutils literal notranslate"><span class="pre">compas.colors.Color</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">from_name</span></code> method to <code class="docutils literal notranslate"><span class="pre">compas.colors.Color</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
@@ -148,6 +150,11 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface</span></code> on <code class="docutils literal notranslate"><span class="pre">compas.geometry.Surface</span></code>.</p></li>
 <li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoNurbsCurve</span></code> on <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCurve</span></code>.</p></li>
 <li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoNurbsSurface</span></code> on <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoSurface</span></code>.</p></li>
+<li><p>Fixed error message for unsupported joint types.</p></li>
+<li><p>Fixed support for non-standard URDF attributes on limit and mesh geometry.</p></li>
+<li><p>Fixed data serialization for URDF materials without color.</p></li>
+<li><p>Removed geometric primitives (<code class="docutils literal notranslate"><span class="pre">Origin</span></code>, <code class="docutils literal notranslate"><span class="pre">Box</span></code>, <code class="docutils literal notranslate"><span class="pre">Sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Cylinder</span></code> and <code class="docutils literal notranslate"><span class="pre">Capsule</span></code>) from <code class="docutils literal notranslate"><span class="pre">compas.robots</span></code> and replaced them with the core ones from <code class="docutils literal notranslate"><span class="pre">compas.geometry</span></code>. The old names are still available but deprecated.</p></li>
+<li><p>Deprecated the <code class="docutils literal notranslate"><span class="pre">load_mesh</span></code> method of <code class="docutils literal notranslate"><span class="pre">compas.robots.AbstractMeshLoader</span></code> and its sub-classes in favor of <code class="docutils literal notranslate"><span class="pre">load_meshes</span></code>.</p></li>
 </ul>
 </section>
 <section id="removed">

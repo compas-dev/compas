@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Origin.worldZX" href="compas.robots.Origin.worldZX.html" />
+  <link rel="prev" title="Configuration.validate_json" href="compas.robots.Configuration.validate_json.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,30 +108,30 @@
 <h1>Geometry</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.robots.Geometry">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cylinder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capsule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/geometry.py#L642"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cylinder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capsule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/geometry.py#L380"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Geometrical description of the shape of a link.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>box</strong> (<a class="reference internal" href="compas.robots.Box.html#compas.robots.Box" title="compas.robots.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Box</span></code></a>, optional) – A box shape primitive.</p></li>
-<li><p><strong>cylinder</strong> (<a class="reference internal" href="compas.robots.Cylinder.html#compas.robots.Cylinder" title="compas.robots.Cylinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Cylinder</span></code></a>, optional) – A cylinder shape primitive.</p></li>
-<li><p><strong>sphere</strong> (<a class="reference internal" href="compas.robots.Sphere.html#compas.robots.Sphere" title="compas.robots.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Sphere</span></code></a>, optional) – A sphere shape primitive.</p></li>
-<li><p><strong>capsule</strong> (<a class="reference internal" href="compas.robots.Capsule.html#compas.robots.Capsule" title="compas.robots.Capsule"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Capsule</span></code></a>, optional) – A capsule shape primitive.</p></li>
+<li><p><strong>box</strong> (<a class="reference internal" href="compas.geometry.Box.html#compas.geometry.Box" title="compas.geometry.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Box</span></code></a>, optional) – A box shape primitive.</p></li>
+<li><p><strong>cylinder</strong> (<a class="reference internal" href="compas.geometry.Cylinder.html#compas.geometry.Cylinder" title="compas.geometry.Cylinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Cylinder</span></code></a>, optional) – A cylinder shape primitive.</p></li>
+<li><p><strong>sphere</strong> (<a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a>, optional) – A sphere shape primitive.</p></li>
+<li><p><strong>capsule</strong> (<a class="reference internal" href="compas.geometry.Capsule.html#compas.geometry.Capsule" title="compas.geometry.Capsule"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Capsule</span></code></a>, optional) – A capsule shape primitive.</p></li>
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.robots.MeshDescriptor.html#compas.robots.MeshDescriptor" title="compas.robots.MeshDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.MeshDescriptor</span></code></a>, optional) – A descriptor of a mesh.</p></li>
-<li><p><strong>**kwargs</strong> (<em>keyword arguments</em>) – Additional attributes</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict[str, Any], optional</em>) – The keyword arguments (kwargs) collected in a dict.
+These allow using non-standard attributes absent in the URDF specification.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">BaseShape</span></code>) – The shape of the geometry</p></li>
+<li><p><strong>shape</strong> (<em>object</em>) – The shape of the geometry</p></li>
 <li><p><strong>attr</strong> (<em>keyword arguments</em>) – Additional attributes</p></li>
-<li><p><strong>geo</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> | <a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a> | None) – The native geometry object.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;1 1 1&#39;</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">geo</span> <span class="o">=</span> <span class="n">Geometry</span><span class="p">(</span><span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -252,11 +252,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.robots.Origin.worldZX.html" title="Origin.worldZX" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.robots.Configuration.validate_json.html" title="Configuration.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Origin.worldZX
+          Configuration.validate_json
         </div>
       </a>
       

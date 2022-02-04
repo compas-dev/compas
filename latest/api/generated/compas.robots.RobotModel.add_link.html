@@ -110,7 +110,7 @@
 <h1>RobotModel.add_link</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.RobotModel.add_link">
-<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">add_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_meshes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collision_meshes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L917"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">add_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_meshes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collision_meshes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L919"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Adds a link to the robot model.</p>
 <p>Provides an easy way to programmatically add a link to the robot model.</p>
 <dl class="field-list simple">
@@ -121,6 +121,8 @@
 <li><p><strong>visual_color</strong> (<em>[float, float, float], optional</em>) – The rgb color of the mesh.
 Defaults to (0.8, 0.8, 0.8)</p></li>
 <li><p><strong>collision_meshes</strong> (list[<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>], optional) – The link’s collision mesh.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict[str, Any], optional</em>) – The keyword arguments (kwargs) collected in a dict.
+These allow using non-standard attributes absent in the URDF specification.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

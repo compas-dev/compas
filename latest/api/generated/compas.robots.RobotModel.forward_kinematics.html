@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="RobotModel.from_data" href="compas.robots.RobotModel.from_data.html" />
+  <link rel="next" title="RobotModel.from_urdf_file" href="compas.robots.RobotModel.from_urdf_file.html" />
   
 
   
@@ -110,12 +110,12 @@
 <h1>RobotModel.forward_kinematics</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.RobotModel.forward_kinematics">
-<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">forward_kinematics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L870"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">forward_kinematics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L872"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculate the robot’s forward kinematic.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>joint_state</strong> (dict[str, <a class="reference internal" href="compas.robots.Configuration.html#compas.robots.Configuration" title="compas.robots.Configuration"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a>]) – A dictionary with the joint names as keys and values in radians and
+<li><p><strong>joint_state</strong> (<a class="reference internal" href="compas.robots.Configuration.html#compas.robots.Configuration" title="compas.robots.Configuration"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a> | dict[str, float]) – A configuration instance or a dictionary with joint names and joint values in radians and
 meters (depending on the joint type).</p></li>
 <li><p><strong>link_name</strong> (<em>str, optional</em>) – The name of the link we want to calculate the forward kinematics for.
 Defaults to the end-effector link name.</p></li>
@@ -209,10 +209,10 @@ Defaults to the end-effector link name.</p></li>
       
 
       
-      <a href="compas.robots.RobotModel.from_data.html" title="RobotModel.from_data" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.robots.RobotModel.from_urdf_file.html" title="RobotModel.from_urdf_file" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          RobotModel.from_data
+          RobotModel.from_urdf_file
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

@@ -1,0 +1,8 @@
+<map id="inheritance581be775a8" name="inheritance581be775a8">
+<area shape="rect" id="node1" href="generated/compas.robots.Color.html#compas.robots.Color" target="_top" title="Color represented in RGBA." alt="" coords="223,8,335,46"/>
+<area shape="rect" id="node2" href="generated/compas.data.Data.html#compas.data.Data" target="_top" title="Abstract base class for all COMPAS data objects." alt="" coords="8,158,121,196"/>
+<area shape="rect" id="node3" href="generated/compas.robots.Geometry.html#compas.robots.Geometry" target="_top" title="Geometrical description of the shape of a link." alt="" coords="221,83,337,121"/>
+<area shape="rect" id="node4" href="generated/compas.robots.Material.html#compas.robots.Material" target="_top" title="Material description." alt="" coords="223,158,335,196"/>
+<area shape="rect" id="node5" href="generated/compas.robots.MeshDescriptor.html#compas.robots.MeshDescriptor" target="_top" title="Description of a mesh." alt="" coords="196,233,362,271"/>
+<area shape="rect" id="node6" href="generated/compas.robots.Texture.html#compas.robots.Texture" target="_top" title="Texture description." alt="" coords="223,308,335,346"/>
+</map>
