@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.utilities.draw_curves`.
 * Added `compas_blender.utilities.draw_surfaces`.
 * Added `rgba` and `rgba255` properties to `compas.colors.Color`.
-* Added `from_html_name` method to `compas.colors.Color`.
+* Added `from_name` method to `compas.colors.Color`.
 
 ### Changed
 
@@ -45,14 +45,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved functionality of `compas.utilities.coercion` to `compas.data`.
 * Fixed bug in `compas.geometry.NurbsSurface.to_triangles()`.
 * Renamed docs site folders `latest` to `stable` and `dev` to `latest`.
-* Fixed error message for unsupported joint types.
-* Fixed support for non-standard URDF attributes on limit and mesh geometry.
-* Fixed data serialization for URDF materials without color.
-* Removed geometric primitives (`Origin`, `Box`, `Sphere`, `Cylinder` and `Capsule`) from `compas.robots` and replaced them with the core ones from `compas.geometry`. The old names are still available but deprecated.
 * Rebased `compas.geometry.NurbsCurve` on `compas.geometry.Curve`.
 * Rebased `compas.geometry.NurbsSurface` on `compas.geometry.Surface`.
 * Rebased `compas_rhino.geometry.RhinoNurbsCurve` on `compas.geometry.NurbsCurve` and `compas_rhino.geometry.RhinoCurve`.
 * Rebased `compas_rhino.geometry.RhinoNurbsSurface` on `compas.geometry.NurbsSurface` and `compas_rhino.geometry.RhinoSurface`.
+* Fixed error message for unsupported joint types.
+* Fixed support for non-standard URDF attributes on limit and mesh geometry.
+* Fixed data serialization for URDF materials without color.
+* Removed geometric primitives (`Origin`, `Box`, `Sphere`, `Cylinder` and `Capsule`) from `compas.robots` and replaced them with the core ones from `compas.geometry`. The old names are still available but deprecated.
 * Deprecated the `load_mesh` method of `compas.robots.AbstractMeshLoader` and its sub-classes in favor of `load_meshes`.
 
 ### Removed
