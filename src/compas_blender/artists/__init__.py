@@ -43,6 +43,17 @@ Shape Artists
     SphereArtist
 
 
+Curve and Surface Artists
+=========================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    CurveArtist
+    SurfaceArtist
+
+
 Datastructure Artists
 =====================
 
@@ -83,6 +94,7 @@ from compas.geometry import Box
 from compas.geometry import Capsule
 from compas.geometry import Circle
 from compas.geometry import Cone
+from compas.geometry import Curve
 from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -91,6 +103,7 @@ from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Polyline
 from compas.geometry import Sphere
+from compas.geometry import Surface
 from compas.geometry import Torus
 from compas.geometry import Vector
 from compas.datastructures import Mesh
@@ -102,6 +115,7 @@ from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .circleartist import CircleArtist
 from .coneartist import ConeArtist
+from .curveartist import CurveArtist
 from .cylinderartist import CylinderArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
@@ -113,6 +127,7 @@ from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
 from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
+from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
 
@@ -134,6 +149,7 @@ def register_artists():
     Artist.register(Capsule, CapsuleArtist, context='Blender')
     Artist.register(Circle, CircleArtist, context='Blender')
     Artist.register(Cone, ConeArtist, context='Blender')
+    Artist.register(Curve, CurveArtist, context='Blender')
     Artist.register(Cylinder, CylinderArtist, context='Blender')
     Artist.register(Frame, FrameArtist, context='Blender')
     Artist.register(Line, LineArtist, context='Blender')
@@ -145,6 +161,7 @@ def register_artists():
     Artist.register(Polyline, PolylineArtist, context='Blender')
     Artist.register(RobotModel, RobotModelArtist, context='Blender')
     Artist.register(Sphere, SphereArtist, context='Blender')
+    Artist.register(Surface, SurfaceArtist, context='Blender')
     Artist.register(Torus, TorusArtist, context='Blender')
     Artist.register(Vector, VectorArtist, context='Blender')
     print('Blender Artists registered.')
@@ -156,6 +173,7 @@ __all__ = [
     'CapsuleArtist',
     'CircleArtist',
     'ConeArtist',
+    'CurveArtist',
     'CylinderArtist',
     'FrameArtist',
     'LineArtist',
@@ -167,6 +185,7 @@ __all__ = [
     'PolylineArtist',
     'RobotModelArtist',
     'SphereArtist',
+    'SurfaceArtist',
     'TorusArtist',
     'VectorArtist',
 ]
