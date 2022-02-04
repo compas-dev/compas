@@ -70,16 +70,16 @@ class FrameProxy(ProxyObject):
         return URDFElement('origin', attributes)
 
     @classmethod
-    def from_urdf(cls, attributes, elements, text):
+    def from_urdf(cls, attributes, elements=None, text=None):
         """Create origin instance from an URDF element.
 
         Parameters
         ----------
         attributes : dict[str, Any]
             Attributes of the URDF element.
-        elements: list[object]
+        elements: list[object], optional
             Children elements of the URDF element.
-        text: str | None
+        text: str, optional
             Text content of the URDF element.
 
         Returns
