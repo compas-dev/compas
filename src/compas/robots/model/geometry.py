@@ -340,8 +340,11 @@ class Material(Data):
 
         """
         if self.name:
-            color = compas.colors.Color.from_html_name(self.name)
-            return color.rgba
+            try:
+                color = compas.colors.Color.from_html_name(self.name)
+                return color.rgba
+            except ValueError:
+                pass
         if self.color:
             return self.color.rgba
         return None

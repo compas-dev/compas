@@ -487,7 +487,10 @@ class Color(Data):
         --------
         https://www.w3.org/TR/css-color-3/#svg-color
         """
-        return cls.from_rgb255(*HTML_TO_RGB255[name.lower()])
+        rgb255 = HTML_TO_RGB255.get(name.lower())
+        if rgb255 is None:
+            raise ValueError("Color name not found.")
+        return cls.from_rgb255(*rgb255)
 
     # --------------------------------------------------------------------------
     # presets
