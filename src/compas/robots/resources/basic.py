@@ -73,6 +73,7 @@ class AbstractMeshLoader(object):
         """
         return NotImplementedError
 
+
 class DefaultMeshLoader(AbstractMeshLoader):
     """Handles basic mesh loader tasks, mostly from local files.
 
