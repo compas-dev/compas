@@ -15,7 +15,7 @@ from .surface import RhinoSurface
 import Rhino.Geometry
 
 
-class Points:
+class ControlPoints(object):
     def __init__(self, surface):
         self.rhino_surface = surface
 
@@ -191,7 +191,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     def points(self):
         if self.rhino_surface:
             if not self._points:
-                self._points = Points(self.rhino_surface)
+                self._points = ControlPoints(self.rhino_surface)
             return self._points
 
     @property
