@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Curve.copy" href="compas.geometry.Curve.copy.html" />
+  <link rel="next" title="Curve.aabb" href="compas.geometry.Curve.aabb.html" />
   
 
   
@@ -108,9 +108,105 @@
 <h1>Curve</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Curve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/curves/curve.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/curves/curve.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
-<p>Base class for curves.</p>
+<p>Class representing a general curve object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the curve.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>dimension</strong> (<em>int, read-only</em>) – The spatial dimension of the curve.</p></li>
+<li><p><strong>domain</strong> (<em>tuple[float, float], read-only</em>) – The domain of the parameter space of the curve.</p></li>
+<li><p><strong>start</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The start point of the curve.</p></li>
+<li><p><strong>end</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only) – The end point of the curve.</p></li>
+<li><p><strong>is_closed</strong> (<em>bool, read-only</em>) – True if the curve is closed.</p></li>
+<li><p><strong>is_periodic</strong> (<em>bool, read-only</em>) – True if the curve is periodic.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.aabb.html#compas.geometry.Curve.aabb" title="compas.geometry.Curve.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
+<td><p>Compute the axis aligned bounding box of the curve.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.closest_point.html#compas.geometry.Curve.closest_point" title="compas.geometry.Curve.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
+<td><p>Compute the closest point on the curve to a given point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.curvature_at.html#compas.geometry.Curve.curvature_at" title="compas.geometry.Curve.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
+<td><p>Compute the curvature of the curve at a parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.divide_by_count.html#compas.geometry.Curve.divide_by_count" title="compas.geometry.Curve.divide_by_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_count</span></code></a></p></td>
+<td><p>Divide the curve into a specific number of equal length segments.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.divide_by_length.html#compas.geometry.Curve.divide_by_length" title="compas.geometry.Curve.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
+<td><p>Divide the curve into segments of specified length.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.fair.html#compas.geometry.Curve.fair" title="compas.geometry.Curve.fair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fair</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.frame_at.html#compas.geometry.Curve.frame_at" title="compas.geometry.Curve.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
+<td><p>Compute the local frame of the curve at a parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.from_data.html#compas.geometry.Curve.from_data" title="compas.geometry.Curve.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct a curve from its data representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.from_obj.html#compas.geometry.Curve.from_obj" title="compas.geometry.Curve.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<td><p>Load a curve from an OBJ file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.from_step.html#compas.geometry.Curve.from_step" title="compas.geometry.Curve.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<td><p>Load a curve from a STP file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.length.html#compas.geometry.Curve.length" title="compas.geometry.Curve.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
+<td><p>Compute the length of the curve.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.locus.html#compas.geometry.Curve.locus" title="compas.geometry.Curve.locus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locus</span></code></a></p></td>
+<td><p>Compute the locus of points on the curve.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.offset.html#compas.geometry.Curve.offset" title="compas.geometry.Curve.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.point_at.html#compas.geometry.Curve.point_at" title="compas.geometry.Curve.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<td><p>Compute a point of the curve at a parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.reverse.html#compas.geometry.Curve.reverse" title="compas.geometry.Curve.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
+<td><p>Reverse the parametrisation of the curve.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.reversed.html#compas.geometry.Curve.reversed" title="compas.geometry.Curve.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
+<td><p>Reverse a copy of the curve.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.smooth.html#compas.geometry.Curve.smooth" title="compas.geometry.Curve.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.space.html#compas.geometry.Curve.space" title="compas.geometry.Curve.space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">space</span></code></a></p></td>
+<td><p>Compute evenly spaced parameters over the curve domain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.split.html#compas.geometry.Curve.split" title="compas.geometry.Curve.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.tangent_at.html#compas.geometry.Curve.tangent_at" title="compas.geometry.Curve.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
+<td><p>Compute the tangent vector of the curve at a parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.to_obj.html#compas.geometry.Curve.to_obj" title="compas.geometry.Curve.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<td><p>Write the curve geometry to an OBJ file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.to_step.html#compas.geometry.Curve.to_step" title="compas.geometry.Curve.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<td><p>Write the curve geometry to a STP file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.torsion_at.html#compas.geometry.Curve.torsion_at" title="compas.geometry.Curve.torsion_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torsion_at</span></code></a></p></td>
+<td><p>Compute the torsion of the curve at a parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.trim.html#compas.geometry.Curve.trim" title="compas.geometry.Curve.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Inherited Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -121,34 +217,31 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.copy.html#compas.geometry.Curve.copy" title="compas.geometry.Curve.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.from_data.html#compas.geometry.Curve.from_data" title="compas.geometry.Curve.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.from_json.html#compas.geometry.Curve.from_json" title="compas.geometry.Curve.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.from_json.html#compas.geometry.Curve.from_json" title="compas.geometry.Curve.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.from_jsonstring.html#compas.geometry.Curve.from_jsonstring" title="compas.geometry.Curve.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.from_jsonstring.html#compas.geometry.Curve.from_jsonstring" title="compas.geometry.Curve.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.to_data.html#compas.geometry.Curve.to_data" title="compas.geometry.Curve.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.to_data.html#compas.geometry.Curve.to_data" title="compas.geometry.Curve.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.to_json.html#compas.geometry.Curve.to_json" title="compas.geometry.Curve.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.to_json.html#compas.geometry.Curve.to_json" title="compas.geometry.Curve.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.to_jsonstring.html#compas.geometry.Curve.to_jsonstring" title="compas.geometry.Curve.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.to_jsonstring.html#compas.geometry.Curve.to_jsonstring" title="compas.geometry.Curve.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.transform.html#compas.geometry.Curve.transform" title="compas.geometry.Curve.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.transform.html#compas.geometry.Curve.transform" title="compas.geometry.Curve.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.transformed.html#compas.geometry.Curve.transformed" title="compas.geometry.Curve.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.transformed.html#compas.geometry.Curve.transformed" title="compas.geometry.Curve.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.validate_data.html#compas.geometry.Curve.validate_data" title="compas.geometry.Curve.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.validate_data.html#compas.geometry.Curve.validate_data" title="compas.geometry.Curve.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Curve.validate_json.html#compas.geometry.Curve.validate_json" title="compas.geometry.Curve.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Curve.validate_json.html#compas.geometry.Curve.validate_json" title="compas.geometry.Curve.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>
@@ -232,10 +325,10 @@
       
 
       
-      <a href="compas.geometry.Curve.copy.html" title="Curve.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.Curve.aabb.html" title="Curve.aabb" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Curve.copy
+          Curve.aabb
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

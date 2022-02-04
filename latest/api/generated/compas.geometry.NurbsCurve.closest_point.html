@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="NurbsCurve.copy" href="compas.geometry.NurbsCurve.copy.html" />
+  <link rel="next" title="NurbsCurve.curvature_at" href="compas.geometry.NurbsCurve.curvature_at.html" />
   
 
   
-  <link rel="prev" title="NurbsCurve" href="compas.geometry.NurbsCurve.html" />
+  <link rel="prev" title="NurbsCurve.aabb" href="compas.geometry.NurbsCurve.aabb.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -110,7 +110,7 @@
 <h1>NurbsCurve.closest_point</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.NurbsCurve.closest_point">
-<span class="sig-prename descclassname"><span class="pre">NurbsCurve.</span></span><span class="sig-name descname"><span class="pre">closest_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_parameter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/curves/nurbs.py#L630"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">NurbsCurve.</span></span><span class="sig-name descname"><span class="pre">closest_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_parameter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/curves/curve.py#L363"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the closest point on the curve to a given point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -120,8 +120,8 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a> | tuple[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, float] – If <cite>return_parameter</cite> is false, only the closest point is returned.
-If <cite>return_parameter</cite> is true, the closest point and the corresponding parameter are returned.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a> | tuple[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, float] – If <cite>return_parameter</cite> is False, only the closest point is returned.
+If <cite>return_parameter</cite> is True, the closest point and the corresponding parameter are returned.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -193,20 +193,20 @@ If <cite>return_parameter</cite> is true, the closest point and the correspondin
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.NurbsCurve.html" title="NurbsCurve" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.NurbsCurve.aabb.html" title="NurbsCurve.aabb" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          NurbsCurve
+          NurbsCurve.aabb
         </div>
       </a>
       
 
       
-      <a href="compas.geometry.NurbsCurve.copy.html" title="NurbsCurve.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.NurbsCurve.curvature_at.html" title="NurbsCurve.curvature_at" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          NurbsCurve.copy
+          NurbsCurve.curvature_at
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

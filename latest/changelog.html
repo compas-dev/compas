@@ -115,6 +115,24 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.conversions.BlenderMesh</span></code>.</p></li>
 <li><p>Added option to return strip faces from <code class="docutils literal notranslate"><span class="pre">compas.datastructure.Halfedge.edge_strip</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Bezier.transform</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Curve</span></code> as base class for curves.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Surface</span></code> as base class for surfaces.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCurve</span></code> as Rhino plugin for basic curves.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoSurface</span></code> as Rhino plugin for basic surfaces.</p></li>
+<li><p>Added pluggable <code class="docutils literal notranslate"><span class="pre">compas.geometry.curves.curve.new_curve</span></code>.</p></li>
+<li><p>Added pluggable <code class="docutils literal notranslate"><span class="pre">compas.geometry.surfaces.surface.new_surface</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artists.CurveArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artists.SurfaceArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.CurveArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.SurfaceArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.CurveArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.SurfaceArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.CurveArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.SurfaceArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.utilities.draw_curves</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.utilities.draw_surfaces</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.utilities.draw_curves</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_blender.utilities.draw_surfaces</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
@@ -126,6 +144,10 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Moved functionality of <code class="docutils literal notranslate"><span class="pre">compas.utilities.coercion</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.data</span></code>.</p></li>
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface.to_triangles()</span></code>.</p></li>
 <li><p>Renamed docs site folders <code class="docutils literal notranslate"><span class="pre">latest</span></code> to <code class="docutils literal notranslate"><span class="pre">stable</span></code> and <code class="docutils literal notranslate"><span class="pre">dev</span></code> to <code class="docutils literal notranslate"><span class="pre">latest</span></code>.</p></li>
+<li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve</span></code> on <code class="docutils literal notranslate"><span class="pre">compas.geometry.Curve</span></code>.</p></li>
+<li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface</span></code> on <code class="docutils literal notranslate"><span class="pre">compas.geometry.Surface</span></code>.</p></li>
+<li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoNurbsCurve</span></code> on <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoCurve</span></code>.</p></li>
+<li><p>Rebased <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoNurbsSurface</span></code> on <code class="docutils literal notranslate"><span class="pre">compas.geometry.NurbsSurface</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoSurface</span></code>.</p></li>
 </ul>
 </section>
 <section id="removed">

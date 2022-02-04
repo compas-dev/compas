@@ -107,8 +107,8 @@ of COMPAS objects based on matplotlib.</p>
 <p>The package contains four types of plotters:
 <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.GeometryPlotter</span></code>,
 <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.NetworkPlotter</span></code>,
-<code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.MeshPlotter</span></code>, and … <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.html#compas_plotters.Plotter" title="(in COMPAS v1.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.Plotter</span></code></a>.
-The first three are deprecated in favour of <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.html#compas_plotters.Plotter" title="(in COMPAS v1.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.Plotter</span></code></a>, which is therefore the only one that will be described in this tutorial.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.MeshPlotter</span></code>, and … <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.Plotter</span></code>.
+The first three are deprecated in favour of <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.Plotter</span></code>, which is therefore the only one that will be described in this tutorial.</p>
 <section id="example">
 <h2>Example</h2>
 <figure class="figure align-default">
@@ -142,7 +142,7 @@ The first three are deprecated in favour of <a class="reference external" href="
 </section>
 <section id="basic-usage">
 <h2>Basic Usage</h2>
-<p>Using <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.html#compas_plotters.Plotter" title="(in COMPAS v1.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.Plotter</span></code></a> is very simple.</p>
+<p>Using <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.Plotter</span></code> is very simple.</p>
 <ol class="arabic simple">
 <li><p>Create a plotter instance.</p></li>
 <li><p>Add Objects.</p></li>
@@ -157,18 +157,18 @@ The first three are deprecated in favour of <a class="reference external" href="
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 </div>
-<p>COMPAS geometry objects and data structures can be added using <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.add.html#compas_plotters.Plotter.add" title="(in COMPAS v1.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add()</span></code></a>.
+<p>COMPAS geometry objects and data structures can be added using <code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add()</span></code>.
 By adding an object, a corresponding “artist” is created automatically in the background,
 and the plotter will use the artist to visualize the object.</p>
 <p>The artists provide many configuration options to modify the display styles of the objects.
-The <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.add.html#compas_plotters.Plotter.add" title="(in COMPAS v1.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add()</span></code></a> method accepts additional keyword arguments corresponding to those configuration options.
+The <code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add()</span></code> method accepts additional keyword arguments corresponding to those configuration options.
 See the API reference of the individual artists for the available options per object type.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 </code></pre></div>
 </div>
-<p>Alternatively, multiple objects of the same type can also be added using <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.add_from_list.html#compas_plotters.Plotter.add_from_list" title="(in COMPAS v1.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add_from_list()</span></code></a>.
+<p>Alternatively, multiple objects of the same type can also be added using <code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.add_from_list()</span></code>.
 In this case all configurations options will be applied uniformly to all objects in the list.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="n">cloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
@@ -377,7 +377,7 @@ Also in this case, the <code class="docutils literal notranslate"><span class="p
 </section>
 <section id="dynamic-plots">
 <h2>Dynamic Plots</h2>
-<p>Dynamic plots, or animations, can be made with the “on” decorator <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas_plotters.Plotter.on.html#compas_plotters.Plotter.on" title="(in COMPAS v1.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.on()</span></code></a>.
+<p>Dynamic plots, or animations, can be made with the “on” decorator <code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_plotters.Plotter.on()</span></code>.
 Simply add the decorator to a callback functions that updates the geometry in the plot at a specified interval.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nd">@plotter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>

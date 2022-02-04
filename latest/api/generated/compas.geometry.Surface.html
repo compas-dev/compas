@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Surface.copy" href="compas.geometry.Surface.copy.html" />
+  <link rel="next" title="Surface.aabb" href="compas.geometry.Surface.aabb.html" />
   
 
   
@@ -108,9 +108,88 @@
 <h1>Surface</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Surface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/surfaces/surface.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/surfaces/surface.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
-<p>Base class for surfaces.</p>
+<p>Class representing a general surface object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the surface.</p>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>u_domain</strong> (<em>tuple[float, float], read-only</em>) – The parameter domain of the surface in the U direction.</p></li>
+<li><p><strong>v_domain</strong> (<em>tuple[float, float], read-only</em>) – The parameter domain of the surface in the V direction.</p></li>
+<li><p><strong>is_u_periodic</strong> (<em>bool, read-only</em>) – Flag indicating if the surface is periodic in the U direction.</p></li>
+<li><p><strong>is_v_periodic</strong> (<em>bool, read-only</em>) – Flag indicating if the surface is periodic in the V direction.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.aabb.html#compas.geometry.Surface.aabb" title="compas.geometry.Surface.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
+<td><p>Compute the axis aligned bounding box of the surface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.boundary.html#compas.geometry.Surface.boundary" title="compas.geometry.Surface.boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary</span></code></a></p></td>
+<td><p>Compute the boundary curves of the surface.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.closest_point.html#compas.geometry.Surface.closest_point" title="compas.geometry.Surface.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
+<td><p>Compute the closest point on the curve to a given point.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.curvature_at.html#compas.geometry.Surface.curvature_at" title="compas.geometry.Surface.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
+<td><p>Compute the curvature at a point on the surface.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.frame_at.html#compas.geometry.Surface.frame_at" title="compas.geometry.Surface.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
+<td><p>Compute the local frame at a point on the curve.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.from_obj.html#compas.geometry.Surface.from_obj" title="compas.geometry.Surface.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<td><p>Load a surface from an OBJ file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.from_step.html#compas.geometry.Surface.from_step" title="compas.geometry.Surface.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<td><p>Load a surface from a STP file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.intersections_with_line.html#compas.geometry.Surface.intersections_with_line" title="compas.geometry.Surface.intersections_with_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_line</span></code></a></p></td>
+<td><p>Compute the intersections with a line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.obb.html#compas.geometry.Surface.obb" title="compas.geometry.Surface.obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb</span></code></a></p></td>
+<td><p>Compute the oriented bounding box of the surface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.point_at.html#compas.geometry.Surface.point_at" title="compas.geometry.Surface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<td><p>Compute a point on the surface.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.to_mesh.html#compas.geometry.Surface.to_mesh" title="compas.geometry.Surface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<td><p>Convert the surface to a quad mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.to_step.html#compas.geometry.Surface.to_step" title="compas.geometry.Surface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<td><p>Write the surface geometry to a STP file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.to_tesselation.html#compas.geometry.Surface.to_tesselation" title="compas.geometry.Surface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<td><p>Convert the surface to a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.to_triangles.html#compas.geometry.Surface.to_triangles" title="compas.geometry.Surface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
+<td><p>Convert the surface to a list of triangles.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.u_isocurve.html#compas.geometry.Surface.u_isocurve" title="compas.geometry.Surface.u_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_isocurve</span></code></a></p></td>
+<td><p>Compute the isoparametric curve at parameter u.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.u_space.html#compas.geometry.Surface.u_space" title="compas.geometry.Surface.u_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_space</span></code></a></p></td>
+<td><p>Compute evenly spaced parameters over the surface domain in the U direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.v_isocurve.html#compas.geometry.Surface.v_isocurve" title="compas.geometry.Surface.v_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_isocurve</span></code></a></p></td>
+<td><p>Compute the isoparametric curve at parameter v.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Surface.v_space.html#compas.geometry.Surface.v_space" title="compas.geometry.Surface.v_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_space</span></code></a></p></td>
+<td><p>Compute evenly spaced parameters over the surface domain in the V direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Surface.xyz.html#compas.geometry.Surface.xyz" title="compas.geometry.Surface.xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xyz</span></code></a></p></td>
+<td><p>Compute point locations corresponding to evenly spaced parameters over the surface domain.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Inherited Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -232,10 +311,10 @@
       
 
       
-      <a href="compas.geometry.Surface.copy.html" title="Surface.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.geometry.Surface.aabb.html" title="Surface.aabb" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Surface.copy
+          Surface.aabb
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

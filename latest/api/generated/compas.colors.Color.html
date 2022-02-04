@@ -108,7 +108,7 @@
 <h1>Color</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.colors.Color">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.colors.</span></span><span class="sig-name descname"><span class="pre">Color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/colors/color.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.colors.</span></span><span class="sig-name descname"><span class="pre">Color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/colors/color.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Class for working with colors.</p>
 <dl class="field-list simple">
@@ -219,23 +219,35 @@ Making a color “brighter” is like shining a stronger light on it, or illumin
 <tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.from_i.html#compas.colors.Color.from_i" title="compas.colors.Color.from_i"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_i</span></code></a></p></td>
 <td><p>Construct a color from a single number in the range 0-1.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.from_yiq.html#compas.colors.Color.from_yiq" title="compas.colors.Color.from_yiq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_yiq</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.from_rgb255.html#compas.colors.Color.from_rgb255" title="compas.colors.Color.from_rgb255"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rgb255</span></code></a></p></td>
+<td><p>Construct a color from RGB255 components.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.from_yiq.html#compas.colors.Color.from_yiq" title="compas.colors.Color.from_yiq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_yiq</span></code></a></p></td>
 <td><p>Construct a color from components in the YIQ color space.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.from_yuv.html#compas.colors.Color.from_yuv" title="compas.colors.Color.from_yuv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_yuv</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.from_yuv.html#compas.colors.Color.from_yuv" title="compas.colors.Color.from_yuv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_yuv</span></code></a></p></td>
 <td><p>Construct a color from components in the YUV color space.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.green.html#compas.colors.Color.green" title="compas.colors.Color.green"><code class="xref py py-obj docutils literal notranslate"><span class="pre">green</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.green.html#compas.colors.Color.green" title="compas.colors.Color.green"><code class="xref py py-obj docutils literal notranslate"><span class="pre">green</span></code></a></p></td>
 <td><p>Construct the color green.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.grey.html#compas.colors.Color.grey" title="compas.colors.Color.grey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grey</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.grey.html#compas.colors.Color.grey" title="compas.colors.Color.grey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grey</span></code></a></p></td>
 <td><p>Construct the color grey.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.invert.html#compas.colors.Color.invert" title="compas.colors.Color.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.invert.html#compas.colors.Color.invert" title="compas.colors.Color.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
 <td><p>Invert the current color wrt to the RGB color circle.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.inverted.html#compas.colors.Color.inverted" title="compas.colors.Color.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.inverted.html#compas.colors.Color.inverted" title="compas.colors.Color.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
 <td><p>Return an inverted copy of the color.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.is_hex.html#compas.colors.Color.is_hex" title="compas.colors.Color.is_hex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_hex</span></code></a></p></td>
+<td><p>Verify that the color is in hexadecimal format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.is_rgb1.html#compas.colors.Color.is_rgb1" title="compas.colors.Color.is_rgb1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_rgb1</span></code></a></p></td>
+<td><p>Verify that the color is in the RGB 1 color space.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.is_rgb255.html#compas.colors.Color.is_rgb255" title="compas.colors.Color.is_rgb255"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_rgb255</span></code></a></p></td>
+<td><p>Verify that the color is in the RGB 255 color space.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.lighten.html#compas.colors.Color.lighten" title="compas.colors.Color.lighten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lighten</span></code></a></p></td>
 <td><p>Lighten the color.</p></td>

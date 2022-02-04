@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="RhinoNurbsCurve.frame_at" href="compas_rhino.geometry.RhinoNurbsCurve.frame_at.html" />
+  <link rel="next" title="RhinoNurbsCurve.fair" href="compas_rhino.geometry.RhinoNurbsCurve.fair.html" />
   
 
   
@@ -110,7 +110,7 @@
 <h1>RhinoNurbsCurve.divide_by_length</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoNurbsCurve.divide_by_length">
-<span class="sig-prename descclassname"><span class="pre">RhinoNurbsCurve.</span></span><span class="sig-name descname"><span class="pre">divide_by_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curves/nurbs.py#L611"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RhinoNurbsCurve.</span></span><span class="sig-name descname"><span class="pre">divide_by_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/curves/curve.py#L303"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Divide the curve into segments of specified length.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -122,8 +122,8 @@ If False, return only the list of parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list[float] or tuple of list[float] and list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>] – The parameters defining the discretisation,
-and potentially the points corresponding to those parameters.</p>
+<dd class="field-even"><p>list[float] | tuple[list[float], list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]] – If <cite>return_points</cite> is False, the parameters of the discretisation.
+If <cite>return_points</cite> is True, a list of points in addition to the parameters of the discretisation.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -199,10 +199,10 @@ and potentially the points corresponding to those parameters.</p>
       
 
       
-      <a href="compas_rhino.geometry.RhinoNurbsCurve.frame_at.html" title="RhinoNurbsCurve.frame_at" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_rhino.geometry.RhinoNurbsCurve.fair.html" title="RhinoNurbsCurve.fair" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          RhinoNurbsCurve.frame_at
+          RhinoNurbsCurve.fair
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
