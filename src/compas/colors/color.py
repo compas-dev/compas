@@ -193,7 +193,7 @@ class Color(Data):
     @property
     def rgba255(self):
         r, g, b = self.rgb255
-        a = int(self.b * 255)
+        a = int(self.a * 255)
         return r, g, b, a
 
     @property
