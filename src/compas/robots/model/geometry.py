@@ -175,6 +175,9 @@ class MeshDescriptor(Data):
         The mesh' filename.
     scale : str, optional
         The scale factors of the mesh in the x-, y-, and z-direction.
+    **kwargs : dict[str, Any], optional
+        The keyword arguments (kwargs) collected in a dict.
+        These allow using non-standard attributes absent in the URDF specification.
 
     Attributes
     ----------
@@ -432,8 +435,9 @@ class Geometry(Data):
         A capsule shape primitive.
     mesh : :class:`compas.robots.MeshDescriptor`, optional
         A descriptor of a mesh.
-    **kwargs : keyword arguments
-        Additional attributes
+    **kwargs : dict[str, Any], optional
+        The keyword arguments (kwargs) collected in a dict.
+        These allow using non-standard attributes absent in the URDF specification.
 
     Attributes
     ----------

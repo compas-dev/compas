@@ -920,6 +920,9 @@ class RobotModel(Data):
             Defaults to (0.8, 0.8, 0.8)
         collision_meshes : list[:class:`compas.datastructures.Mesh`], optional
             The link's collision mesh.
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
 
         Returns
         -------
@@ -1009,6 +1012,9 @@ class RobotModel(Data):
             The joint's axis.
         limit : list of 2 float
             The lower and upper limits of the joint (used for joint types Joint.REVOLUTE or Joint.PRISMATIC)
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
 
         Returns
         -------

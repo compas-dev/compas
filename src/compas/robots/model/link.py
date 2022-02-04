@@ -268,6 +268,9 @@ class Visual(LinkItem, Data):
         ----------
         primitive : :compas:`compas.geometry.Shape`
             A primitive shape.
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
 
         Returns
         -------
@@ -362,6 +365,9 @@ class Collision(LinkItem, Data):
         ----------
         primitive : :compas:`compas.geometry.Shape`
             A primitive shape.
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
 
         Returns
         -------
