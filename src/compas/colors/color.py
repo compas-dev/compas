@@ -471,7 +471,7 @@ class Color(Data):
         return cls(r / 255.0, g / 255.0, b / 255.0)
 
     @classmethod
-    def from_html_name(cls, name):
+    def from_name(cls, name):
         """Construct a color from a name in the extended color table of HTML/CSS/SVG.
 
         Parameters
