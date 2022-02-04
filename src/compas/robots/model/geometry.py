@@ -421,6 +421,10 @@ class Geometry(Data):
 
     @shape.setter
     def shape(self, value):
+        if value is None:
+            self._shape = None
+            return
+
         if isinstance(value, compas.geometry.Box):
             self._shape = BoxProxy.create_proxy(value)
         elif isinstance(value, compas.geometry.Cylinder):
