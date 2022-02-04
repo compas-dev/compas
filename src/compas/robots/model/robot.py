@@ -640,7 +640,19 @@ class RobotModel(Data):
                 if 'filename' in dir(shape) and needs_reload:
                     for loader in loaders:
                         if loader.can_load_mesh(shape.filename):
-                            shape.meshes = [loader.load_mesh(shape.filename)]
+                            # NOTE: this part is annoying, but we keep it for backwards compatibility's sake.
+                            # Externally defined loaders (eg. COMPAS_FAB File Server loader)
+                            # might not be updated yet on the user's system, so we fallback
+                            # to the deprecated load_mesh method in that case.
+                            # However, to add to the confusion, some loaders were actually returning
+                            # meshes regardless of the misnaming. We handle that in _get_item_meshes
+                            # so, we don't force load_mesh into a list, otherwise it will turn into a
+                            # list of lists in those cases.
+                            # All of this ugly fallback should be removed in 2.0
+                            if hasattr(loader, 'load_meshes'):
+                                shape.meshes = loader.load_meshes(shape.filename)
+                            else:
+                                shape.meshes = loader.load_mesh(shape.filename)
                             break
 
                     if not shape.meshes:
