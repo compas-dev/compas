@@ -39,6 +39,17 @@ Shape Artists
     TorusArtist
 
 
+Curve and Surface Artists
+=========================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    CurveArtist
+    SurfaceArtist
+
+
 Datastructure Artists
 =====================
 
@@ -94,6 +105,9 @@ from compas.geometry import Polyhedron
 from compas.geometry import Sphere
 from compas.geometry import Torus
 
+from compas.geometry import Curve
+from compas.geometry import Surface
+
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
@@ -121,6 +135,9 @@ from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
 from .robotmodelartist import RobotModelArtist
+
+from .curveartist import CurveArtist
+from .surfaceartist import SurfaceArtist
 
 BaseArtist = RhinoArtist
 
@@ -172,6 +189,8 @@ def register_artists():
     Artist.register(Network, NetworkArtist, context='Rhino')
     Artist.register(VolMesh, VolMeshArtist, context='Rhino')
     Artist.register(RobotModel, RobotModelArtist, context='Rhino')
+    Artist.register(Curve, CurveArtist, context='Rhino')
+    Artist.register(Surface, SurfaceArtist, context='Rhino')
     print('Rhino Artists registered.')
 
 
@@ -197,4 +216,6 @@ __all__ = [
     'NetworkArtist',
     'VolMeshArtist',
     'RobotModelArtist',
+    'CurveArtist',
+    'SurfaceArtist',
 ]

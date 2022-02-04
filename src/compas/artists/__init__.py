@@ -21,11 +21,13 @@ Classes
     :nosignatures:
 
     Artist
+    CurveArtist
     RobotModelArtist
     MeshArtist
     NetworkArtist
     PrimitiveArtist
     ShapeArtist
+    SurfaceArtist
     VolMeshArtist
 
 
@@ -57,11 +59,13 @@ from __future__ import division
 
 from .exceptions import DataArtistNotRegistered
 from .artist import Artist
+from .curveartist import CurveArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .primitiveartist import PrimitiveArtist
 from .robotmodelartist import RobotModelArtist
 from .shapeartist import ShapeArtist
+from .surfaceartist import SurfaceArtist
 from .volmeshartist import VolMeshArtist
 
 from .artist import clear  # noqa: F401
@@ -74,10 +78,12 @@ BaseRobotModelArtist = RobotModelArtist
 __all__ = [
     'DataArtistNotRegistered',
     'Artist',
+    'CurveArtist',
     'MeshArtist',
     'NetworkArtist',
     'PrimitiveArtist',
     'RobotModelArtist',
     'ShapeArtist',
+    'SurfaceArtist',
     'VolMeshArtist',
 ]

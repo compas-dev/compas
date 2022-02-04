@@ -2,7 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 import colorsys
+import re
 from compas.data import Data
 
 BASE16 = '0123456789abcdef'
@@ -273,6 +279,26 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
+    def from_rgb255(cls, r, g, b):
+        """Construct a color from RGB255 components.
+
+        Parameters
+        ----------
+        r : int & valuerange[0, 255]
+            Red component.
+        g : int & valuerange[0, 255]
+            Green component.
+        b : int & valuerange[0, 255]
+            Blue component.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        """
+        return cls(r/255, g/255, b/255)
+
+    @classmethod
     def from_hls(cls, h, l, s):  # noqa: E741
         """Construct a color from Hue, Luminance, and Saturation.
 
@@ -291,7 +317,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information, see https://en.wikipedia.org/wiki/HSL_and_HSV
+        https://en.wikipedia.org/wiki/HSL_and_HSV
 
         """
         r, g, b = colorsys.hls_to_rgb(h, l, s)
@@ -316,7 +342,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information, see https://en.wikipedia.org/wiki/HSL_and_HSV
+        https://en.wikipedia.org/wiki/HSL_and_HSV
 
         """
         r, g, b = colorsys.hsv_to_rgb(h, s, v)
@@ -341,7 +367,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information see https://en.wikipedia.org/wiki/YIQ
+        https://en.wikipedia.org/wiki/YIQ
 
         """
         r, g, b = colorsys.yiq_to_rgb(y, i, q)
@@ -366,7 +392,7 @@ class Color(Data):
 
         See Also
         --------
-        For more information see https://en.wikipedia.org/wiki/YUV
+        https://en.wikipedia.org/wiki/YUV
 
         """
         r = y + 1.140 * v
@@ -692,7 +718,40 @@ class Color(Data):
     # methods
     # --------------------------------------------------------------------------
 
-    # desaturate
+    def is_rgb1(self):
+        """Verify that the color is in the RGB 1 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in self)
+
+    def is_rgb255(self):
+        """Verify that the color is in the RGB 255 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in self)
+
+    def is_hex(self):
+        """Verify that the color is in hexadecimal format.
+
+        Returns
+        -------
+        bool
+
+        """
+        if isinstance(self, basestring):
+            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', self)
+            if match:
+                return True
+            return False
+        return False
 
     def lighten(self, factor=10):
         """Lighten the color.

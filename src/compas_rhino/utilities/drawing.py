@@ -58,6 +58,7 @@ add_brep = sc.doc.Objects.AddBrep
 add_sphere = sc.doc.Objects.AddSphere
 add_mesh = sc.doc.Objects.AddMesh
 add_circle = sc.doc.Objects.AddCircle
+add_surface = sc.doc.Objects.AddSurface
 
 TOL = sc.doc.ModelAbsoluteTolerance
 
@@ -80,6 +81,7 @@ __all__ = [
     'draw_spheres',
     'draw_mesh',
     'draw_circles',
+    'draw_surfaces',
 ]
 
 
@@ -968,6 +970,118 @@ def draw_circles(circles, **kwargs):
                 attr.LayerIndex = index
         attr.Name = name
         attr.WireDensity = -1
+        obj.CommitChanges()
+        guids.append(guid)
+    return guids
+
+
+@wrap_drawfunc
+def draw_curves(curves, **kwargs):
+    """Draw curves and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    curves : list[dict]
+        A list of curve dictionaries.
+        See Notes, for more information about the structure of the dict.
+
+    Returns
+    -------
+    list[System.Guid]
+
+    Notes
+    -----
+    A curve dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'curve': compas.geometry.Curve,
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
+    """
+    guids = []
+    for data in iter(curves):
+        curve = data['curve']
+        name = data.get('name', '')
+        color = data.get('color')
+        layer = data.get('layer')
+        guid = add_curve(curve.rhino_curve)
+        if not guid:
+            continue
+        obj = find_object(guid)
+        if not obj:
+            continue
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
+        attr.Name = name
+        obj.CommitChanges()
+        guids.append(guid)
+    return guids
+
+
+@wrap_drawfunc
+def draw_surfaces(surfaces, **kwargs):
+    """Draw surfaces and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    surfaces : list[dict]
+        A list of surface dictionaries.
+        See Notes, for more information about the structure of the dict.
+
+    Returns
+    -------
+    list[System.Guid]
+
+    Notes
+    -----
+    A surface dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'surface': compas.geometry.Surface,
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
+    """
+    guids = []
+    for data in iter(surfaces):
+        surface = data['surface']
+        name = data.get('name', '')
+        color = data.get('color')
+        layer = data.get('layer')
+        guid = add_surface(surface.rhino_surface)
+        if not guid:
+            continue
+        obj = find_object(guid)
+        if not obj:
+            continue
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
+        attr.Name = name
         obj.CommitChanges()
         guids.append(guid)
     return guids

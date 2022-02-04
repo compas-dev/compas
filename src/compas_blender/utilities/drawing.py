@@ -247,10 +247,10 @@ def draw_lines(lines: List[Dict],
         spline.order_u = 1
         obj = bpy.data.objects.new(name, curve)
         obj.location = origin
-        obj.data.fill_mode = 'FULL'
-        obj.data.bevel_depth = data.get('width', 0.05)
-        obj.data.bevel_resolution = 0
-        obj.data.resolution_u = 20
+        # obj.data.fill_mode = 'FULL'
+        # obj.data.bevel_depth = data.get('width', 0.05)
+        # obj.data.bevel_resolution = 0
+        # obj.data.resolution_u = 20
         rgb = data.get('color', [1.0, 1.0, 1.0])
         _set_object_color(obj, rgb)
         objects[index] = obj
@@ -297,10 +297,10 @@ def draw_polylines(polylines: List[Dict],
         spline.order_u = 1
         obj = bpy.data.objects.new(name, curve)
         obj.location = origin
-        obj.data.fill_mode = 'FULL'
-        obj.data.bevel_depth = data.get('width', 0.05)
-        obj.data.bevel_resolution = 0
-        obj.data.resolution_u = 20
+        # obj.data.fill_mode = 'FULL'
+        # obj.data.bevel_depth = data.get('width', 0.05)
+        # obj.data.bevel_resolution = 0
+        # obj.data.resolution_u = 20
         rgb = data.get('color', [1.0, 1.0, 1.0])
         _set_object_color(obj, rgb)
         objects[index] = obj
@@ -321,29 +321,6 @@ def draw_polygons(polygons: List[Dict],
         The Blender scene collection that should contain the objects created by this function.
     centroid : bool, optional
         If True, use the centroids of the polygons as the relative base for their coordinates,
-        instead of the origin of the world coordinates system.
-
-    Returns
-    -------
-    list[:blender:`bpy.types.Object`]
-
-    """
-    raise NotImplementedError
-
-
-def draw_curves(curves: List[Dict],
-                collection: Union[Text, bpy.types.Collection] = None,
-                centroid: bool = True) -> List[bpy.types.Object]:
-    """Draw curve objects.
-
-    Parameters
-    ----------
-    curves : list[dict]
-        A list of dicts describing the curves.
-    collection : str or :blender:`bpy.types.Collection`, optional
-        The Blender scene collection that should contain the objects created by this function.
-    centroid : bool, optional
-        If True, use the centroids of the curves as the relative base for their coordinates,
         instead of the origin of the world coordinates system.
 
     Returns
@@ -679,3 +656,115 @@ def draw_mesh(vertices: List[List[float]],
     _set_object_color(obj, color)
     _link_objects([obj], collection=collection)
     return obj
+
+
+# ==============================================================================
+# Curves and Surfaces
+# ==============================================================================
+
+
+def draw_curves(curves: List[Dict],
+                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw curve objects.
+
+    Parameters
+    ----------
+    curves : list[dict]
+        A list of dicts describing the curves.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
+    P = len(curves)
+    N = len(str(P))
+    objects = [None] * P
+    for index, props in enumerate(curves):
+        origin = [0, 0, 0]
+        curve = props['curve']
+        name = props.get('name', f'CURVE.{index:0{N}d}')
+        rgb = props.get('color', [1.0, 1.0, 1.0])
+        # create a curve data block
+        bcurve = bpy.data.curves.new(name, type='CURVE')
+        bcurve.dimensions = '3D'
+        # add a spline segment to the data block
+        spline = bcurve.splines.new('NURBS')
+        spline.points.add(len(curve.points) - 1)
+        for i, (point, weight) in enumerate(zip(curve.points, curve.weights)):
+            spline.points[i].co = [point[0], point[1], point[2], weight]
+            spline.points[i].weight = weight
+        spline.order_u = curve.order
+        spline.use_cyclic_u = curve.is_periodic
+        spline.use_endpoint_u = True
+        # create a scene object from the data block
+        obj = bpy.data.objects.new(name, bcurve)
+        obj.location = origin
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    return objects
+
+
+def draw_surfaces(surfaces: List[Dict],
+                  collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw surface objects.
+
+    Parameters
+    ----------
+    surfaces : list[dict]
+        A list of dicts describing the surfaces.
+    collection : str or :blender:`bpy.types.Collection`, optional
+        The Blender scene collection that should contain the objects created by this function.
+
+    Returns
+    -------
+    list[:blender:`bpy.types.Object`]
+
+    """
+    P = len(surfaces)
+    N = len(str(P))
+    objects = [None] * P
+    for index, props in enumerate(surfaces):
+        origin = [0, 0, 0]
+        surface = props['surface']
+        name = props.get('name', f'SURFACE.{index:0{N}d}')
+        rgb = props.get('color', [1.0, 1.0, 1.0])
+        # create a surface data block
+        surfdata = bpy.data.curves.new(name, type='SURFACE')
+        surfdata.dimensions = '3D'
+        surfdata.resolution_u = 32
+        surfdata.resolution_v = 32
+        # add the U(V) splines
+        for points, weights in zip(surface.points, surface.weights):
+            spline = surfdata.splines.new('NURBS')
+            spline.points.add(len(points) - 1)
+            for i, (point, weight) in enumerate(zip(points, weights)):
+                spline.points[i].co = [point[0], point[1], point[2], 1.0]
+                spline.points[i].weight = weight
+            spline.use_endpoint_u = True
+            spline.use_endpoint_v = True
+            spline.order_u = surface.u_degree + 1
+            spline.order_v = surface.v_degree + 1
+        # create a scene object from the data block
+        obj = bpy.data.objects.new(name, surfdata)
+        obj.location = origin
+        # colors and stuff
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    for obj in objects:
+        # select the control points
+        for s in obj.data.splines:
+            for p in s.points:
+                p.select = True
+        # switch to edit mode
+        # connect the spline points with segments
+        bpy.context.view_layer.objects.active = obj
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.curve.make_segment()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.select_all(action='DESELECT')
+    return objects

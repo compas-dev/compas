@@ -16,6 +16,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.conversions.BlenderMesh`.
 * Added option to return strip faces from `compas.datastructure.Halfedge.edge_strip`.
 * Added `compas.geometry.Bezier.transform`.
+* Added `compas.geometry.Curve` as base class for curves.
+* Added `compas.geometry.Surface` as base class for surfaces.
+* Added `compas_rhino.geometry.RhinoCurve` as Rhino plugin for basic curves.
+* Added `compas_rhino.geometry.RhinoSurface` as Rhino plugin for basic surfaces.
+* Added pluggable `compas.geometry.curves.curve.new_curve`.
+* Added pluggable `compas.geometry.surfaces.surface.new_surface`.
+* Added `compas.artists.CurveArtist`.
+* Added `compas.artists.SurfaceArtist`.
+* Added `compas_rhino.artists.CurveArtist`.
+* Added `compas_rhino.artists.SurfaceArtist`.
+* Added `compas_ghpython.artists.CurveArtist`.
+* Added `compas_ghpython.artists.SurfaceArtist`.
+* Added `compas_blender.artists.CurveArtist`.
+* Added `compas_blender.artists.SurfaceArtist`.
+* Added `compas_rhino.utilities.draw_curves`.
+* Added `compas_rhino.utilities.draw_surfaces`.
+* Added `compas_blender.utilities.draw_curves`.
+* Added `compas_blender.utilities.draw_surfaces`.
 
 ### Changed
 
@@ -25,6 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved functionality of `compas.utilities.coercion` to `compas.data`.
 * Fixed bug in `compas.geometry.NurbsSurface.to_triangles()`.
 * Renamed docs site folders `latest` to `stable` and `dev` to `latest`.
+* Rebased `compas.geometry.NurbsCurve` on `compas.geometry.Curve`.
+* Rebased `compas.geometry.NurbsSurface` on `compas.geometry.Surface`.
+* Rebased `compas_rhino.geometry.RhinoNurbsCurve` on `compas.geometry.NurbsCurve` and `compas_rhino.geometry.RhinoCurve`.
+* Rebased `compas_rhino.geometry.RhinoNurbsSurface` on `compas.geometry.NurbsSurface` and `compas_rhino.geometry.RhinoSurface`.
 
 ### Removed
 
