@@ -8,7 +8,7 @@ This is the documentation of the main library of COMPAS,
 an open source framework for research and collaboration
 in Architecture, Engineering, Fabrication, and Construction.
 
-.. figure:: /_images/COMPAS.png
+.. figure:: /docs/_images/COMPAS.png
      :figclass: figure
      :class: figure-img img-fluid
 
