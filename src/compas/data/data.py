@@ -83,20 +83,20 @@ class Data(object):
     ...         self.y = data['y']
     ...         self.z = data['z']
     ...
-    >>> a = Point(1, 0, 0)
-    >>> a.guid
+    >>> a = Point(1.0, 0.0, 0.0)
+    >>> a.guid                 # doctest: +SKIP
     UUID('1ddad2fe-6716-4e30-a5ae-8ed7cad892c4')
     >>> a.name
     'Point'
     >>> a.data
     {'x': 1.0, 'y': 0.0, 'z': 0.0}
 
-    >>> from compas.data import json_dumps, json_loads
-    >>> s = json_dumps(a)
-    >>> b = json_loads(s)
-    >>> a is b
+    >>> from compas.data import json_dumps, json_loads        # doctest: +SKIP
+    >>> s = json_dumps(a)                                     # doctest: +SKIP
+    >>> b = json_loads(s)                                     # doctest: +SKIP
+    >>> a is b                                                # doctest: +SKIP
     False
-    >>> a == b
+    >>> a == b                                                # doctest: +SKIP
     True
 
     """
