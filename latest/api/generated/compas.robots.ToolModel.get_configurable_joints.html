@@ -110,17 +110,19 @@
 <h1>ToolModel.get_configurable_joints</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.get_configurable_joints">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">get_configurable_joints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L443"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">get_configurable_joints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L480"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the configurable joints.</p>
+<p>Configurable joints are those that are not FIXED or MIMIC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="compas.robots.Joint.html#compas.robots.Joint" title="compas.robots.Joint"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Joint</span></code></a>]</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="compas.robots.Joint.html#compas.robots.Joint" title="compas.robots.Joint"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Joint</span></code></a>] – List of configurable joints.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">joints</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_configurable_joints</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">joints</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_configurable_joints</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">joints</span><span class="p">]</span>
-<span class="go">[&#39;joint1&#39;, &#39;joint2&#39;]</span>
+<span class="go">[&#39;shoulder_pan_joint&#39;, &#39;shoulder_lift_joint&#39;, &#39;elbow_joint&#39;, &#39;wrist_1_joint&#39;, &#39;wrist_2_joint&#39;, &#39;wrist_3_joint&#39;]</span>
 </code></pre></div>
 </div>
 </dd></dl>

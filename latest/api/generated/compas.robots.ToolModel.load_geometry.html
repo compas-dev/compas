@@ -110,7 +110,7 @@
 <h1>ToolModel.load_geometry</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.load_geometry">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">load_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">resource_loaders</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L609"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">load_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">resource_loaders</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L662"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Load external geometry resources, such as meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -124,10 +124,10 @@ has been loaded already, otherwise False.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">GithubPackageMeshLoader</span><span class="p">(</span><span class="s1">&#39;ros-industrial/abb&#39;</span><span class="p">,</span> <span class="s1">&#39;abb_irb6600_support&#39;</span><span class="p">,</span> <span class="s1">&#39;kinetic-devel&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">urdf</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_urdf</span><span class="p">(</span><span class="s1">&#39;irb6640.urdf&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">from_urdf_file</span><span class="p">(</span><span class="n">urdf</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">(</span><span class="n">loader</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">(</span><span class="n">LocalPackageMeshLoader</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">DATA</span><span class="p">,</span> <span class="s1">&#39;ur_description&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+<span class="go">Robot name=ur5, Links=11, Joints=10 (6 configurable)</span>
 </code></pre></div>
 </div>
 </dd></dl>

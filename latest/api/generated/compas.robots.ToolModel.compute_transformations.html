@@ -110,15 +110,16 @@
 <h1>ToolModel.compute_transformations</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.compute_transformations">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">compute_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L774"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">compute_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L831"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Recursive function to calculate the transformations of each joint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>joint_state</strong> (<a class="reference internal" href="compas.robots.Configuration.html#compas.robots.Configuration" title="compas.robots.Configuration"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Configuration</span></code></a> | dict[str, float]) – A configuration instance or a dictionary with joint names and joint values in radians and
 meters (depending on the joint type).</p></li>
-<li><p><strong>link</strong> (<a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a>) – Link instance to calculate the child joint’s transformation.</p></li>
-<li><p><strong>parent_transformation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code>) – The transfomation of the parent joint.</p></li>
+<li><p><strong>link</strong> (<a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a>, optional) – Link instance to calculate the child joint’s transformation.</p></li>
+<li><p><strong>parent_transformation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code>, optional) – The transfomation of the parent joint.
+Defaults to the identity matrix.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -126,7 +127,8 @@ meters (depending on the joint type).</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">random_configuration</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">random_configuration</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transformations</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">compute_transformations</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </code></pre></div>
 </div>

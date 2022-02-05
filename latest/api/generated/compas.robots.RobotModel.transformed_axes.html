@@ -110,7 +110,7 @@
 <h1>RobotModel.transformed_axes</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.RobotModel.transformed_axes">
-<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">transformed_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L847"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">transformed_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L907"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the transformed axes based on the joint_state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -122,11 +122,13 @@ meters (depending on the joint type).</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">joint_names</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_configurable_joint_names</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">joint_state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">joint_names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">transformed_axes</span><span class="p">(</span><span class="n">joint_state</span><span class="p">)</span>
-<span class="go">[Vector(0.000, 0.000, 1.000), Vector(0.000, 0.000, 1.000)]</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">zero_configuration</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;shoulder_pan_joint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;wrist_2_joint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">at</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">transformed_axes</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">at</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">Vector(-0.932, 0.362, 0.000)</span>
 </code></pre></div>
 </div>
 </dd></dl>

@@ -110,12 +110,13 @@
 <h1>ToolModel.zero_configuration</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.zero_configuration">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">zero_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L561"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">zero_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L612"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get the zero joint configuration.</p>
 <p>If zero is out of joint limits <code class="docutils literal notranslate"><span class="pre">(upper,</span> <span class="pre">lower)</span></code> then
 <code class="docutils literal notranslate"><span class="pre">(upper</span> <span class="pre">+</span> <span class="pre">lower)</span> <span class="pre">/</span> <span class="pre">2</span></code> is used as joint value.</p>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">zero_configuration</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">zero_configuration</span><span class="p">()</span>
 <span class="go">Configuration((0.000, 0.000, 0.000, 0.000, 0.000, 0.000), (0, 0, 0, 0, 0, 0),             (&#39;shoulder_pan_joint&#39;, &#39;shoulder_lift_joint&#39;, &#39;elbow_joint&#39;, &#39;wrist_1_joint&#39;, &#39;wrist_2_joint&#39;, &#39;wrist_3_joint&#39;))</span>
 </code></pre></div>
 </div>

@@ -108,7 +108,7 @@
 <h1>RobotModel</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.robots.RobotModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">RobotModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L35"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.robots.</span></span><span class="sig-name descname"><span class="pre">RobotModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L37"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>RobotModel is the root element of the model.</p>
 <p>Instances of this class represent an entire robot as defined in an URDF
@@ -118,12 +118,12 @@ this model, ruling out all parallel robots.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – Unique name of the robot.</p></li>
-<li><p><strong>joints</strong> – List of joint elements.</p></li>
-<li><p><strong>links</strong> – List of links of the robot.</p></li>
-<li><p><strong>materials</strong> – List of global materials.</p></li>
-<li><p><strong>root</strong> – Root link of the model.</p></li>
-<li><p><strong>attr</strong> – Non-standard attributes.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Unique name of the robot.</p></li>
+<li><p><strong>joints</strong> (list[<a class="reference internal" href="compas.robots.Joint.html#compas.robots.Joint" title="compas.robots.Joint"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Joint</span></code></a>]) – List of joint elements.</p></li>
+<li><p><strong>links</strong> (list[<a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a>]) – List of links of the robot.</p></li>
+<li><p><strong>materials</strong> (list[<a class="reference internal" href="compas.robots.Material.html#compas.robots.Material" title="compas.robots.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Material</span></code></a>]) – List of global materials.</p></li>
+<li><p><strong>root</strong> (<a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a>) – Root link of the model.</p></li>
+<li><p><strong>attr</strong> (<em>dict</em>) – Non-standard attributes.</p></li>
 </ul>
 </dd>
 </dl>
@@ -233,7 +233,10 @@ this model, ruling out all parallel robots.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_frames.html#compas.robots.RobotModel.transformed_frames" title="compas.robots.RobotModel.transformed_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_frames</span></code></a></p></td>
 <td><p>Returns the transformed frames based on the joint_state.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.zero_configuration.html#compas.robots.RobotModel.zero_configuration" title="compas.robots.RobotModel.zero_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_configuration</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.ur5.html#compas.robots.RobotModel.ur5" title="compas.robots.RobotModel.ur5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ur5</span></code></a></p></td>
+<td><p>&quot;Construct a UR5 robot model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.zero_configuration.html#compas.robots.RobotModel.zero_configuration" title="compas.robots.RobotModel.zero_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_configuration</span></code></a></p></td>
 <td><p>Get the zero joint configuration.</p></td>
 </tr>
 </tbody>

@@ -110,15 +110,16 @@
 <h1>RobotModel.get_joint_types</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.RobotModel.get_joint_types">
-<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">get_joint_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L460"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">get_joint_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L501"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the joint types of the configurable joints.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>list[int]</em></p>
+<dd class="field-odd"><p><em>list[int]</em> – List of joint types in the robot model.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">get_joint_types</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="n">Joint</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">,</span> <span class="n">Joint</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">]</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">get_joint_types</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="n">Joint</span><span class="o">.</span><span class="n">REVOLUTE</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
 <span class="go">True</span>
 </code></pre></div>
 </div>

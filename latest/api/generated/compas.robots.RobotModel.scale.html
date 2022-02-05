@@ -110,18 +110,23 @@
 <h1>RobotModel.scale</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.RobotModel.scale">
-<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L744"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L797"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Scales the robot by factor (absolute).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>factor</strong> (<em>float</em>) – The factor to scale the robot with.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>factor</strong> (<em>float</em>) – The factor to scale the robot with.</p></li>
+<li><p><strong>link</strong> (<a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a>, optional) – Starting link from which to start scaling.
+Defaults to root.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>None</em></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </dd></dl>

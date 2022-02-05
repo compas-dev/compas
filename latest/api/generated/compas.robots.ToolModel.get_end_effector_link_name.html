@@ -110,16 +110,17 @@
 <h1>ToolModel.get_end_effector_link_name</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.get_end_effector_link_name">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">get_end_effector_link_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L529"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">get_end_effector_link_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L576"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the name of the end effector link.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>str</em></p>
+<dd class="field-odd"><p><em>str</em> – Name of the end effector link</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">get_end_effector_link_name</span><span class="p">()</span>
-<span class="go">&#39;link2&#39;</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">get_end_effector_link_name</span><span class="p">()</span>
+<span class="go">&#39;ee_link&#39;</span>
 </code></pre></div>
 </div>
 </dd></dl>

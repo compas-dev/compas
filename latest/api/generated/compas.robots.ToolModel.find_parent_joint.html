@@ -110,7 +110,7 @@
 <h1>ToolModel.find_parent_joint</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.ToolModel.find_parent_joint">
-<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">find_parent_joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L224"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ToolModel.</span></span><span class="sig-name descname"><span class="pre">find_parent_joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L250"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the parent joint of the link or None if not found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -121,9 +121,10 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">find_parent_joint</span><span class="p">(</span><span class="n">link1</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">find_parent_joint</span><span class="p">(</span><span class="n">Link</span><span class="p">(</span><span class="s1">&#39;shoulder_link&#39;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">j</span><span class="o">.</span><span class="n">name</span>
-<span class="go">&#39;joint1&#39;</span>
+<span class="go">&#39;shoulder_pan_joint&#39;</span>
 </code></pre></div>
 </div>
 </dd></dl>

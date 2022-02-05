@@ -110,17 +110,18 @@
 <h1>RobotModel.get_end_effector_link</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.RobotModel.get_end_effector_link">
-<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">get_end_effector_link</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L508"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">get_end_effector_link</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L553"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the end effector link.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.Link</span></code></a> – Instance of the end effector link.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ee_link</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_end_effector_link</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ee_link</span><span class="o">.</span><span class="n">name</span>
-<span class="go">&#39;link2&#39;</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">link</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_end_effector_link</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">link</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;ee_link&#39;</span>
 </code></pre></div>
 </div>
 </dd></dl>

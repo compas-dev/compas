@@ -114,15 +114,15 @@
 <dd><p>Construct a robot model from a URDF file model description.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> – file name or file object.</p>
+<dd class="field-odd"><p><strong>file</strong> (<em>str | file</em>) – File path or file-like object.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>A robot model instance.</em></p>
+<dd class="field-even"><p><a class="reference internal" href="compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> – A robot model instance.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">from_urdf_file</span><span class="p">(</span><span class="n">ur5_urdf_file</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
 <span class="go">Robot name=ur5, Links=11, Joints=10 (6 configurable)</span>
 </code></pre></div>
 </div>

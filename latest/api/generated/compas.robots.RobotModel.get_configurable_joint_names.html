@@ -110,16 +110,17 @@
 <h1>RobotModel.get_configurable_joint_names</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.robots.RobotModel.get_configurable_joint_names">
-<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">get_configurable_joint_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L492"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">get_configurable_joint_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L535"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the configurable joint names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>list[str]</em></p>
+<dd class="field-odd"><p><em>list[str]</em> – List of configurable joint names.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">get_configurable_joint_names</span><span class="p">()</span>
-<span class="go">[&#39;joint1&#39;, &#39;joint2&#39;]</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">ur5</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">robot</span><span class="o">.</span><span class="n">get_configurable_joint_names</span><span class="p">()</span>
+<span class="go">[&#39;shoulder_pan_joint&#39;, &#39;shoulder_lift_joint&#39;, &#39;elbow_joint&#39;, &#39;wrist_1_joint&#39;, &#39;wrist_2_joint&#39;, &#39;wrist_3_joint&#39;]</span>
 </code></pre></div>
 </div>
 </dd></dl>
