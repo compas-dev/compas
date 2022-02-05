@@ -7,7 +7,7 @@ Installation
 COMPAS can be easily installed on multiple platforms,
 using popular package managers such as conda or pip.
 
-.. figure:: /_images/installation.gif
+.. figure:: /docs/_images/installation.gif
      :figclass: figure
      :class: figure-img img-fluid mx-auto
 
