@@ -181,4 +181,3 @@ class RhinoGeometry(object):
         self.geometry.Transform(M)
         if self.object:
             self.object.CommitChanges()
-        compas_rhino.rs.Redraw()
