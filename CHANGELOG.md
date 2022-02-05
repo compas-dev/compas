@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_blender.utilities.draw_surfaces`.
 * Added `rgba` and `rgba255` properties to `compas.colors.Color`.
 * Added `from_name` method to `compas.colors.Color`.
+* Added Python 3.10 support.
 * Added `RobotModel.ur5` for the sake of example.
 
 ### Changed
