@@ -104,7 +104,7 @@ class URDF(object):
 
         Examples
         --------
-        >>> urdf = URDF.from_file(compas.get("ur5.xacro"))
+        >>> urdf = URDF.from_file(compas.get("ur_description/urdf/ur5.urdf"))
 
         """
         return cls(XML.from_file(source))

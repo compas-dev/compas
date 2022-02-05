@@ -5,6 +5,7 @@ from __future__ import print_function
 import itertools
 import random
 
+import compas
 from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files import URDF
@@ -27,6 +28,7 @@ from compas.robots.model.link import Collision
 from compas.robots.model.link import Link
 from compas.robots.model.link import Visual
 from compas.robots.resources import DefaultMeshLoader
+from compas.robots.resources import LocalPackageMeshLoader
 from compas.topology import shortest_path
 
 __all__ = ['RobotModel']
@@ -43,17 +45,17 @@ class RobotModel(Data):
 
     Attributes
     ----------
-    name
+    name : str
         Unique name of the robot.
-    joints
+    joints : list[:class:`compas.robots.Joint`]
         List of joint elements.
-    links
+    links : list[:class:`compas.robots.Link`]
         List of links of the robot.
-    materials
+    materials : list[:class:`compas.robots.Material`]
         List of global materials.
-    root
+    root : :class:`compas.robots.Link`
         Root link of the model.
-    attr
+    attr : dict
         Non-standard attributes.
 
     """
@@ -141,17 +143,18 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        file
-            file name or file object.
+        file : str | file
+            File path or file-like object.
 
         Returns
         -------
-        A robot model instance.
+        :class:`compas.robots.RobotModel`
+            A robot model instance.
 
         Examples
         --------
-        >>> model = RobotModel.from_urdf_file(ur5_urdf_file)
-        >>> print(model)
+        >>> robot = RobotModel.ur5()
+        >>> print(robot)
         Robot name=ur5, Links=11, Joints=10 (6 configurable)
 
         """
@@ -163,8 +166,8 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        file
-            file name or file object.
+        file : str | file
+            File path or file-like object.
 
         Returns
         -------
@@ -180,33 +183,56 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        text
+        text : str
             String containing the XML URDF model.
 
         Returns
         -------
-        A robot model instance.
+        :class:`compas.robots.RobotModel`
+            A robot model instance.
 
         Examples
         --------
         >>> urdf_string = '<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>'
-        >>> model = RobotModel.from_urdf_string(urdf_string)
+        >>> robot = RobotModel.from_urdf_string(urdf_string)
 
         """
         urdf = URDF.from_string(text)
         return urdf.robot
+
+    @classmethod
+    def ur5(cls, load_geometry=False):
+        """"Construct a UR5 robot model.
+
+        Parameters
+        ----------
+        load_geometry : bool, optional
+            Indicate whether to load the geometry of the robot or not.
+
+        Returns
+        -------
+        :class:`compas.robots.RobotModel`
+            A robot model instance.
+
+        """
+        model = cls.from_urdf_file(compas.get('ur_description/urdf/ur5.urdf'))
+        if load_geometry:
+            loader = LocalPackageMeshLoader(compas.DATA, 'ur_description')
+            model.load_geometry(loader)
+        return model
 
     def to_urdf_string(self, prettify=False):
         """Construct a URDF string model description from a robot model.
 
         Parameters
         ----------
-        prettify
-            If True, the string will be pretty printed.
+        prettify : bool, optional
+            If True, the string will be pretty-printed.
 
         Returns
         -------
         str
+            URDF string.
 
         """
         urdf = URDF.from_robot(self)
@@ -236,9 +262,10 @@ class RobotModel(Data):
 
         Examples
         --------
-        >>> j = robot.find_parent_joint(link1)
+        >>> robot = RobotModel.ur5()
+        >>> j = robot.find_parent_joint(Link('shoulder_link'))
         >>> j.name
-        'joint1'
+        'shoulder_pan_joint'
 
         """
         for joint in self.joints:
@@ -251,15 +278,17 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        name:
-            link name.
+        name : str
+            Link name.
 
         Returns
         -------
-        A link instance.
+        :class:`compas.robots.Link`
+            A link instance.
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> l = robot.get_link_by_name('world')
         >>> l.name
         'world'
@@ -272,18 +301,20 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        name:
-            joint name.
+        name : str
+            Joint name.
 
         Returns
         -------
-        A joint instance.
+        :class:`Joint`
+            A joint instance.
 
         Examples
         --------
-        >>> j = robot.get_joint_by_name('joint1')
+        >>> robot = RobotModel.ur5()
+        >>> j = robot.get_joint_by_name('shoulder_lift_joint')
         >>> j.name
-        'joint1'
+        'shoulder_lift_joint'
 
         """
         return self._joints.get(name, None)
@@ -297,8 +328,9 @@ class RobotModel(Data):
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> [l.name for l in robot.iter_links()]
-        ['world', 'link1', 'link2']
+        ['world', 'base_link', 'shoulder_link', 'upper_arm_link', 'forearm_link', 'wrist_1_link', 'wrist_2_link', 'wrist_3_link', 'ee_link', 'tool0', 'base']
 
         """
 
@@ -320,8 +352,10 @@ class RobotModel(Data):
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> [j.name for j in robot.iter_joints()]
-        ['joint1', 'joint2']
+        ['world_joint', 'shoulder_pan_joint', 'base_link-base_fixed_joint', 'shoulder_lift_joint', \
+        'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint', 'ee_fixed_joint', 'wrist_3_link-tool0_fixed_joint']
 
         """
 
@@ -339,9 +373,9 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        link_start_name : str | None
+        link_start_name : str, optional
             Name of the starting link of the chain. Defaults to the root link name.
-        link_end_name : str | None
+        link_end_name : str, optional
             Name of the final link of the chain. Defaults to the last link's name.
 
         Returns
@@ -356,8 +390,9 @@ class RobotModel(Data):
 
         Examples
         --------
-        >>> [l.name for l in robot.iter_link_chain('world', 'link2')]
-        ['world', 'link1', 'link2']
+        >>> robot = RobotModel.ur5()
+        >>> [l.name for l in robot.iter_link_chain('world', 'forearm_link')]
+        ['world', 'base_link', 'shoulder_link', 'upper_arm_link', 'forearm_link']
 
         """
         chain = self.iter_chain(link_start_name, link_end_name)
@@ -371,9 +406,9 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        link_start_name : str | None
+        link_start_name : str, optional
             Name of the starting link of the chain. Defaults to the root link name.
-        link_end_name : str | None
+        link_end_name : str, optional
             Name of the final link of the chain. Defaults to the last link's name.
 
         Returns
@@ -389,8 +424,9 @@ class RobotModel(Data):
 
         Examples
         --------
-        >>> [j.name for j in robot.iter_joint_chain('world', 'link2')]
-        ['joint1', 'joint2']
+        >>> robot = RobotModel.ur5()
+        >>> [j.name for j in robot.iter_joint_chain('world', 'forearm_link')]
+        ['world_joint', 'shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint']
 
         """
         chain = self.iter_chain(link_start_name, link_end_name)
@@ -404,9 +440,9 @@ class RobotModel(Data):
 
         Parameters
         ----------
-        start : str | None
+        start : str, optional
             Name of the starting element of the chain. Defaults to the root link name.
-        end : str | None
+        end : str, optional
             Name of the final element of the chain. Defaults to the name of the last element.
 
         Returns
@@ -415,8 +451,9 @@ class RobotModel(Data):
 
         Examples
         --------
-        >>> list(robot.iter_chain('world', 'link2'))
-        ['world', 'joint1', 'link1', 'joint2', 'link2']
+        >>> robot = RobotModel.ur5()
+        >>> list(robot.iter_chain('world', 'forearm_link'))
+        ['world', 'world_joint', 'base_link', 'shoulder_pan_joint', 'shoulder_link', 'shoulder_lift_joint', 'upper_arm_link', 'elbow_joint', 'forearm_link']
 
         """
         if not start:
@@ -443,15 +480,19 @@ class RobotModel(Data):
     def get_configurable_joints(self):
         """Returns the configurable joints.
 
+        Configurable joints are those that are not FIXED or MIMIC.
+
         Returns
         -------
         list[:class:`compas.robots.Joint`]
+            List of configurable joints.
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> joints = robot.get_configurable_joints()
         >>> [j.name for j in joints]
-        ['joint1', 'joint2']
+        ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
 
         """
         joints = self.iter_joints()
@@ -463,10 +504,12 @@ class RobotModel(Data):
         Returns
         -------
         list[int]
+            List of joint types in the robot model.
 
         Examples
         --------
-        >>> robot.get_joint_types() == [Joint.CONTINUOUS, Joint.CONTINUOUS]
+        >>> robot = RobotModel.ur5()
+        >>> robot.get_joint_types() == [Joint.REVOLUTE] * 6
         True
 
         """
@@ -495,11 +538,13 @@ class RobotModel(Data):
         Returns
         -------
         list[str]
+            List of configurable joint names.
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> robot.get_configurable_joint_names()
-        ['joint1', 'joint2']
+        ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
 
         """
         joints = self.get_configurable_joints()
@@ -511,12 +556,14 @@ class RobotModel(Data):
         Returns
         -------
         :class:`compas.robots.Link`
+            Instance of the end effector link.
 
         Examples
         --------
-        >>> ee_link = robot.get_end_effector_link()
-        >>> ee_link.name
-        'link2'
+        >>> robot = RobotModel.ur5()
+        >>> link = robot.get_end_effector_link()
+        >>> link.name
+        'ee_link'
 
         """
         joints = self.get_configurable_joints()
@@ -532,11 +579,13 @@ class RobotModel(Data):
         Returns
         -------
         str
+            Name of the end effector link
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> robot.get_end_effector_link_name()
-        'link2'
+        'ee_link'
 
         """
         link = self.get_end_effector_link()
@@ -548,11 +597,13 @@ class RobotModel(Data):
         Returns
         -------
         str
+            Name of the base link
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> robot.get_base_link_name()
-        'world'
+        'base_link'
 
         """
         joints = self.get_configurable_joints()
@@ -566,6 +617,7 @@ class RobotModel(Data):
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> robot.zero_configuration()
         Configuration((0.000, 0.000, 0.000, 0.000, 0.000, 0.000), (0, 0, 0, 0, 0, 0), \
             ('shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint'))
@@ -589,6 +641,7 @@ class RobotModel(Data):
         Returns
         -------
         :class:`compas.robots.Configuration`
+            Instance of a configuration with randomized joint values.
 
         Note
         ----
@@ -622,10 +675,10 @@ class RobotModel(Data):
 
         Examples
         --------
-        >>> loader = GithubPackageMeshLoader('ros-industrial/abb', 'abb_irb6600_support', 'kinetic-devel')
-        >>> urdf = loader.load_urdf('irb6640.urdf')
-        >>> model = RobotModel.from_urdf_file(urdf)
-        >>> model.load_geometry(loader)
+        >>> robot = RobotModel.ur5()
+        >>> robot.load_geometry(LocalPackageMeshLoader(compas.DATA, 'ur_description'))
+        >>> print(robot)
+        Robot name=ur5, Links=11, Joints=10 (6 configurable)
 
         """
         force = kwargs.get('force', False)
@@ -696,7 +749,7 @@ class RobotModel(Data):
 
         Returns
         -------
-        list
+        list[:class:`Vector`]
             Axis vectors of all joints.
 
         """
@@ -748,6 +801,9 @@ class RobotModel(Data):
         ----------
         factor : float
             The factor to scale the robot with.
+        link : :class:`compas.robots.Link`, optional
+            Starting link from which to start scaling.
+            Defaults to root.
 
         Returns
         -------
@@ -755,6 +811,7 @@ class RobotModel(Data):
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> robot.scale(100)
 
         """
@@ -779,10 +836,11 @@ class RobotModel(Data):
         joint_state : :class:`compas.robots.Configuration` | dict[str, float]
             A configuration instance or a dictionary with joint names and joint values in radians and
             meters (depending on the joint type).
-        link : :class:`compas.robots.Link`
+        link : :class:`compas.robots.Link`, optional
             Link instance to calculate the child joint's transformation.
-        parent_transformation : :class:`Transformation`
+        parent_transformation : :class:`Transformation`, optional
             The transfomation of the parent joint.
+            Defaults to the identity matrix.
 
         Returns
         -------
@@ -791,6 +849,7 @@ class RobotModel(Data):
 
         Examples
         --------
+        >>> robot = RobotModel.ur5()
         >>> config = robot.random_configuration()
         >>> transformations = robot.compute_transformations(config)
 
@@ -833,12 +892,13 @@ class RobotModel(Data):
 
         Examples
         --------
-        >>> joint_names = robot.get_configurable_joint_names()
-        >>> values = [1.2, 0.5]
-        >>> joint_state = dict(zip(joint_names, values))
-        >>> frames_transformed = robot.transformed_frames(joint_state)
-        >>> frames_transformed[0]
-        Frame(Point(0.000, 0.000, 0.000), Vector(0.362, 0.932, 0.000), Vector(-0.932, 0.362, 0.000))
+        >>> robot = RobotModel.ur5()
+        >>> config = robot.zero_configuration()
+        >>> config['shoulder_pan_joint'] = 1.2
+        >>> config['wrist_2_joint'] = 0.5
+        >>> ft = robot.transformed_frames(config)
+        >>> ft[1]
+        Frame(Point(0.000, 0.000, 0.089), Vector(0.362, 0.932, 0.000), Vector(-0.932, 0.362, 0.000))
 
         """
         transformations = self.compute_transformations(joint_state)
@@ -859,11 +919,13 @@ class RobotModel(Data):
 
         Examples
         --------
-        >>> joint_names = robot.get_configurable_joint_names()
-        >>> values = [1.2, 0.5]
-        >>> joint_state = dict(zip(joint_names, values))
-        >>> robot.transformed_axes(joint_state)
-        [Vector(0.000, 0.000, 1.000), Vector(0.000, 0.000, 1.000)]
+        >>> robot = RobotModel.ur5()
+        >>> config = robot.zero_configuration()
+        >>> config['shoulder_pan_joint'] = 1.2
+        >>> config['wrist_2_joint'] = 0.5
+        >>> at = robot.transformed_axes(config)
+        >>> at[3]
+        Vector(-0.932, 0.362, 0.000)
 
         """
         transformations = self.compute_transformations(joint_state)
@@ -884,12 +946,15 @@ class RobotModel(Data):
         Returns
         -------
         :class:`Frame`
-            The (ee) link's frame in the world coordinate system.
+            The frame at the end-effector link in the world coordinate system.
 
         Examples
         --------
-        >>> config = robot.random_configuration()
-        >>> frame_WCF = robot.forward_kinematics(config)
+        >>> robot = RobotModel.ur5()
+        >>> config = robot.zero_configuration()
+        >>> robot.forward_kinematics(config)
+        Frame(Point(0.817, 0.191, -0.005), Vector(-0.000, 1.000, 0.000), Vector(1.000, 0.000, 0.000))
+
         """
         if link_name is None:
             ee_link = self.get_end_effector_link()
@@ -1095,6 +1160,10 @@ class RobotModel(Data):
         ----------
         name : str
             The name of the joint
+
+        Returns
+        -------
+        None
 
         """
         joint = self.get_joint_by_name(name)
