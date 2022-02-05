@@ -91,8 +91,8 @@ class Data(object):
     >>> a.data
     {'x': 1.0, 'y': 0.0, 'z': 0.0}
 
-    >>> from compas.data import json_dumps, json_loads        # doctest: +SKIP
-    >>> s = json_dumps(a)                                     # doctest: +SKIP
+    >>> from compas.data import json_dumps, json_loads
+    >>> s = json_dumps(a)
     >>> b = json_loads(s)                                     # doctest: +SKIP
     >>> a is b                                                # doctest: +SKIP
     False
