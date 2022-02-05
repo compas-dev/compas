@@ -609,7 +609,7 @@ def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True
     >>> points = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
     >>> cloud = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
     >>> closest_points_in_cloud_numpy(points, cloud, distances=True)
-    (array([0, 1, 2, 3]), array([[0.        , 1.        , 1.41421356, 1.        ],
+    (array([0, 1, 2, 3], dtype=int64), array([[0.        , 1.        , 1.41421356, 1.        ],
            [1.        , 0.        , 1.        , 1.41421356],
            [1.41421356, 1.        , 0.        , 1.        ],
            [1.        , 1.41421356, 1.        , 0.        ]]))
