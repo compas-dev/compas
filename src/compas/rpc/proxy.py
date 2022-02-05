@@ -93,7 +93,9 @@ class Proxy(object):
     >>> with Proxy('compas.numerical') as numerical:
     ...     pass
     ...
-
+    Starting a new proxy server...
+    New proxy server started.
+    Stopping the server proxy.
     """
 
     def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, max_conn_attempts=100, autoreload=True, capture_output=True):

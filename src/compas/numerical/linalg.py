@@ -657,16 +657,6 @@ def solve_with_known(A, b, x, known):
 
         \mathbf{A} \mathbf{x} = \mathbf{b}
 
-    Examples
-    --------
-    >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
-    >>> b = array([[1], [3], [5]])
-    >>> x = array([[0.3], [0], [0]])
-    >>> solve_with_known(A, b, x, [0])
-    array([[ 3.00000000e-01],
-           [ 4.00000000e-01],
-           [-6.05576195e-17]])
-
     """
     eps = 1 / sys.float_info.epsilon
     unknown = list(set(range(x.shape[0])) - set(known))
@@ -719,7 +709,7 @@ def spsolve_with_known(A, b, x, known):
     >>> solve_with_known(A, b, x, [0])
     array([[ 3.00000000e-01],
            [ 4.00000000e-01],
-           [-6.05576195e-17]])
+           [-6.66247443e-17]])
 
     """
     unknown = list(set(range(x.shape[0])) - set(known))

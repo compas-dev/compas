@@ -283,9 +283,9 @@ class Material(Data):
     ----------
     name : str
         The name of the material.
-    color : :class:`compas.robots.Color` | None
+    color : :class:`compas.robots.Color`, optional
         The color of the material.
-    texture : :class:`compas.robots.Texture` | None
+    texture : :class:`compas.robots.Texture`, optional
         The filename of the texture.
 
     Examples
@@ -295,7 +295,7 @@ class Material(Data):
 
     >>> material = Material('aqua')
     >>> material.get_color()
-    [0.0, 1.0, 1.0, 1.0]
+    (0.0, 1.0, 1.0, 1.0)
 
     """
 
@@ -336,7 +336,7 @@ class Material(Data):
         --------
         >>> material = Material('aqua')
         >>> material.get_color()
-        [0.0, 1.0, 1.0, 1.0]
+        (0.0, 1.0, 1.0, 1.0)
 
         """
         if self.name:

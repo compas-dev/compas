@@ -191,13 +191,13 @@ def mesh_split_face(mesh, fkey, u, v):
     >>> import compas
     >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
-    >>> fkey = mesh.get_any_face()
+    >>> face = mesh.face_sample(size=1)[0]
     >>> # u and v defines the new edge after splitting
-    >>> u = mesh.get_any_face_vertex(fkey)
-    >>> v = mesh.face_vertex_descendant(fkey, u, n=2)
+    >>> u = mesh.face_vertices(face)[0]
+    >>> v = mesh.face_vertex_descendant(face, u, n=2)
     >>> mesh.number_of_faces()  # faces before split
     25
-    >>> mesh_split_face(mesh, fkey, u, v)
+    >>> mesh_split_face(mesh, face, u, v)
     (25, 26)
     >>> mesh.number_of_faces()  # faces after split
     26
