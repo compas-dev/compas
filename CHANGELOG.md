@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed data serialization for URDF materials without color.
 * Removed geometric primitives (`Origin`, `Box`, `Sphere`, `Cylinder` and `Capsule`) from `compas.robots` and replaced them with the core ones from `compas.geometry`. The old names are still available but deprecated.
 * Deprecated the `load_mesh` method of `compas.robots.AbstractMeshLoader` and its sub-classes in favor of `load_meshes`.
+* Fixed bug in `compas_rhino.conversions.RhinoGeometry.transform`.
 
 ### Removed
 
