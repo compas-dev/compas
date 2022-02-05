@@ -48,6 +48,9 @@ class ProxyObject(object):
     def __str__(self):
         return str(self._proxied_object)
 
+    def __repr__(self):
+        return repr(self._proxied_object)
+
     @classmethod
     def create_proxy(cls, obj):
         """Creates a proxy wrapping around an object, only if it's not already proxied."""
@@ -91,7 +94,7 @@ class FrameProxy(ProxyObject):
         --------
         >>> attributes = {'rpy': '0.0 1.57 0.0', 'xyz': '0.0 0.13 0.0'}
         >>> f = FrameProxy.from_urdf(attributes, [], None)
-        >>> print(f)
+        >>> f
         Frame(Point(0.000, 0.130, 0.000), Vector(0.001, 0.000, -1.000), Vector(0.000, 1.000, 0.000))
 
         """
