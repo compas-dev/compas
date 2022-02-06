@@ -179,3 +179,5 @@ class RhinoGeometry(object):
         else:
             M = T
         self.geometry.Transform(M)
+        if self.object:
+            self.object.CommitChanges()
