@@ -56,8 +56,6 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
     <class 'numpy.ndarray'>
 
     >>> A = mesh_adjacency_matrix(mesh, rtype='csr')
-    >>> type(A)
-    <class 'scipy.sparse.csr.csr_matrix'>
 
     """
     key_index = mesh.key_index()
@@ -89,8 +87,6 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
     <class 'numpy.ndarray'>
 
     >>> C = mesh_connectivity_matrix(mesh, rtype='csr')
-    >>> type(C)
-    <class 'scipy.sparse.csr.csr_matrix'>
 
     >>> xyz = asarray(mesh.vertices_attributes('xyz'))
     >>> C = mesh_connectivity_matrix(mesh, rtype='csr')
@@ -126,8 +122,6 @@ def mesh_degree_matrix(mesh, rtype='array'):
     <class 'numpy.ndarray'>
 
     >>> D = mesh_degree_matrix(mesh, rtype='csr')
-    >>> type(D)
-    <class 'scipy.sparse.csr.csr_matrix'>
 
     >>> D = mesh_degree_matrix(mesh)
     >>> D.diagonal()
@@ -181,8 +175,6 @@ def mesh_face_matrix(mesh, rtype='array'):
     <class 'numpy.ndarray'>
 
     >>> F = mesh_face_matrix(mesh, rtype='csr')
-    >>> type(F)
-    <class 'scipy.sparse.csr.csr_matrix'>
 
     >>> from numpy import allclose
     >>> xyz = asarray(mesh.vertices_attributes('xyz'))
@@ -247,8 +239,6 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     <class 'numpy.ndarray'>
 
     >>> L = mesh_face_matrix(mesh, rtype='csr')
-    >>> type(L)
-    <class 'scipy.sparse.csr.csr_matrix'>
 
     >>> xyz = asarray(mesh.vertices_attributes('xyz'))
     >>> L = mesh_laplacian_matrix(mesh)
