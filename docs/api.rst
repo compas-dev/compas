@@ -120,6 +120,8 @@ Therefore, in addition to the above conventions, we define the following type al
 Note the use of ``a | b`` instead of ``Union[a, b]``.
 Type aliases can also be nested to further improve legibility of more complex types.
 
+.. rst-class:: table table-bordered
+
 .. list-table:: Nested Type Aliases
     :widths: auto
     :header-rows: 1
