@@ -166,8 +166,10 @@ def dof(A, tol=0.001, condition=False):
 
     Examples
     --------
-    >>> dof([[2, -1, 3], [1, 0, 1], [0, 2, -1], [1, 1, 4]], condition=True)
-    (0, 1, 5.073596551276727)
+    >>> from numpy import allclose
+    >>> d = dof([[2, -1, 3], [1, 0, 1], [0, 2, -1], [1, 1, 4]], condition=True)
+    >>> allclose(d, (0, 1, 5.073596551))
+    True
 
     """
     A = atleast_2d(asarray(A, dtype=float))
