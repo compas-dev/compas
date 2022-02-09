@@ -46,7 +46,7 @@ __version__ = '1.14.0'
 version = LooseVersion(compas.__version__)
 versionstring = version.vstring.split('-')[0]
 
-HERE = compas._os.realpath(os.path.dirname(__file__))
+HERE = os.path.dirname(__file__)
 """str: Path to the location of the compas package."""
 
 HOME = compas._os.absjoin(HERE, '../..')
