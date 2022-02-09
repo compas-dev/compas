@@ -31,7 +31,7 @@ class Shape(Geometry):
         >>> from compas.geometry import Box, Sphere
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
-        >>> C = A + B
+        >>> C = A + B                                   # doctest: +SKIP
 
         """
         from compas.geometry import boolean_union_mesh_mesh
@@ -59,7 +59,7 @@ class Shape(Geometry):
         >>> from compas.geometry import Box, Sphere
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
-        >>> C = A - B
+        >>> C = A - B                                   # doctest: +SKIP
 
         """
         from compas.geometry import boolean_difference_mesh_mesh
@@ -87,7 +87,7 @@ class Shape(Geometry):
         >>> from compas.geometry import Box, Sphere
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
-        >>> C = A & B
+        >>> C = A & B                                   # doctest: +SKIP
 
         """
         from compas.geometry import boolean_intersection_mesh_mesh
@@ -115,7 +115,7 @@ class Shape(Geometry):
         >>> from compas.geometry import Box, Sphere
         >>> A = Box.from_width_height_depth(2, 2, 2)
         >>> B = Sphere([1, 1, 1], 1.0)
-        >>> C = A | B
+        >>> C = A | B                                   # doctest: +SKIP
 
         """
         return self.__add__(other)

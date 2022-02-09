@@ -115,7 +115,7 @@ from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
 from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
-from .sphereartist import SurfaceArtist
+from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
 from .volmeshartist import VolMeshArtist

@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added doc test step in CI/CD.
+
+### Changed
+
+### Removed
+
+
+## [1.14.0] 2022-02-06
+
+### Added
+
 * Added `compas.colors.Color`.
 * Added `compas.colors.ColorMap`.
 * Added `compas_blender.conversions.BlenderGeometry`.
@@ -34,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.utilities.draw_surfaces`.
 * Added `compas_blender.utilities.draw_curves`.
 * Added `compas_blender.utilities.draw_surfaces`.
+* Added `rgba` and `rgba255` properties to `compas.colors.Color`.
+* Added `from_name` method to `compas.colors.Color`.
+* Added Python 3.10 support.
+* Added `RobotModel.ur5` for the sake of example.
 * Added descriptor support to `compas.colors.Color`.
 * Added descriptor protocol metaclass to `compas.artists.Artist`.
 * Added `compas.xxx.ColorDict` descriptor.
@@ -50,6 +65,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Rebased `compas.geometry.NurbsSurface` on `compas.geometry.Surface`.
 * Rebased `compas_rhino.geometry.RhinoNurbsCurve` on `compas.geometry.NurbsCurve` and `compas_rhino.geometry.RhinoCurve`.
 * Rebased `compas_rhino.geometry.RhinoNurbsSurface` on `compas.geometry.NurbsSurface` and `compas_rhino.geometry.RhinoSurface`.
+* Fixed error message for unsupported joint types.
+* Fixed support for non-standard URDF attributes on limit and mesh geometry.
+* Fixed data serialization for URDF materials without color.
+* Removed geometric primitives (`Origin`, `Box`, `Sphere`, `Cylinder` and `Capsule`) from `compas.robots` and replaced them with the core ones from `compas.geometry`. The old names are still available but deprecated.
+* Deprecated the `load_mesh` method of `compas.robots.AbstractMeshLoader` and its sub-classes in favor of `load_meshes`.
+* Fixed bug in `compas_rhino.conversions.RhinoGeometry.transform`.
 * Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
 * Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
 * Changed `compas_rhino.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.

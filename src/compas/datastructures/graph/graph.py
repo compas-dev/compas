@@ -436,7 +436,9 @@ class Graph(Datastructure):
         Examples
         --------
         >>> graph = Graph()
-        >>> graph.add_node()
+        >>> node = graph.add_node()
+        >>> node
+        0
 
         """
         if key is None:

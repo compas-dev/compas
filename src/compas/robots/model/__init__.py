@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from .base import *  # noqa: F401 F403
 from .geometry import *  # noqa: F401 F403
 from .joint import *  # noqa: F401 F403
 from .link import *  # noqa: F401 F403

@@ -1,3 +1,4 @@
+from compas.artists import Artist
 from compas.robots import Joint
 from compas.robots import RobotModel
 from compas.geometry import Box
@@ -7,7 +8,6 @@ from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Sphere
 from compas.geometry import Vector
-from compas_rhino.artists import RobotModelArtist
 
 model = RobotModel('drinking_bird')
 
@@ -49,6 +49,6 @@ hat_link = model.add_link('hat', visual_meshes=[hat, brim])
 hat_joint_origin = Frame([0, 0, 1 - .3 + 1.5/2], [1, 0, 0], [0, 1, 0])
 model.add_joint('hat_joint', Joint.FIXED, head_link, hat_link, origin=hat_joint_origin)
 
-artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
+artist = Artist(model, layer='COMPAS::Example Robot')
 artist.clear_layer()
 artist.draw_visual()

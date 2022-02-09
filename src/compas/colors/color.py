@@ -9,6 +9,8 @@ except NameError:
 
 import colorsys
 import re
+
+from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
 
 BASE16 = '0123456789abcdef'
@@ -136,7 +138,7 @@ class Color(Data):
     def r(self, red):
         if red > 1.0 or red < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._r = red
+        self._r = float(red)
 
     @property
     def g(self):
@@ -146,7 +148,7 @@ class Color(Data):
     def g(self, green):
         if green > 1.0 or green < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._g = green
+        self._g = float(green)
 
     @property
     def b(self):
@@ -156,7 +158,7 @@ class Color(Data):
     def b(self, blue):
         if blue > 1.0 or blue < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._b = blue
+        self._b = float(blue)
 
     @property
     def a(self):
@@ -166,7 +168,7 @@ class Color(Data):
     def a(self, alpha):
         if alpha > 1.0 or alpha < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._a = alpha
+        self._a = float(alpha)
 
     @property
     def rgb(self):
@@ -181,6 +183,18 @@ class Color(Data):
         g = int(self.g * 255)
         b = int(self.b * 255)
         return r, g, b
+
+    @property
+    def rgba(self):
+        r, g, b = self.rgb
+        a = self.a
+        return r, g, b, a
+
+    @property
+    def rgba255(self):
+        r, g, b = self.rgb255
+        a = int(self.a * 255)
+        return r, g, b, a
 
     @property
     def hex(self):
@@ -478,6 +492,28 @@ class Color(Data):
         g = HEX_DEC[value[2:4]]
         b = HEX_DEC[value[4:6]]
         return cls(r / 255.0, g / 255.0, b / 255.0)
+
+    @classmethod
+    def from_name(cls, name):
+        """Construct a color from a name in the extended color table of HTML/CSS/SVG.
+
+        Parameters
+        ----------
+        name : str
+            The color name. The name is case-insensitive.
+
+        Returns
+        -------
+        :class:`compas.colors.Color`
+
+        See Also
+        --------
+        https://www.w3.org/TR/css-color-3/#svg-color
+        """
+        rgb255 = HTML_TO_RGB255.get(name.lower())
+        if rgb255 is None:
+            raise ValueError("Color name not found.")
+        return cls.from_rgb255(*rgb255)
 
     # --------------------------------------------------------------------------
     # presets

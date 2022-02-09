@@ -3,412 +3,125 @@ from __future__ import division
 from __future__ import print_function
 
 import compas
+import compas.colors
 import compas.geometry
 from compas.data import Data
 from compas.datastructures import Mesh
 from compas.files.urdf import URDFElement
-from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
-from compas.geometry import Shape
-from compas.utilities import hex_to_rgb
+from compas.robots.model.base import ProxyObject
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
+from compas.robots.model.base import _parse_floats
 
 __all__ = [
     'Geometry',
-    'Box',
-    'Cylinder',
-    'Sphere',
-    'Capsule',
     'MeshDescriptor',
     'Color',
     'Texture',
     'Material',
-    'Origin'
+    'Origin',
+    'Cylinder',
+    'Box',
+    'Sphere',
+    'Capsule',
 ]
 
-# Copied from https://github.com/ubernostrum/webcolors/blob/master/webcolors.py
-HTML4_NAMES_TO_HEX = {
-    u'aqua': u'#00ffff',
-    u'black': u'#000000',
-    u'blue': u'#0000ff',
-    u'fuchsia': u'#ff00ff',
-    u'green': u'#008000',
-    u'gray': u'#808080',
-    u'lime': u'#00ff00',
-    u'maroon': u'#800000',
-    u'navy': u'#000080',
-    u'olive': u'#808000',
-    u'purple': u'#800080',
-    u'red': u'#ff0000',
-    u'silver': u'#c0c0c0',
-    u'teal': u'#008080',
-    u'white': u'#ffffff',
-    u'yellow': u'#ffff00',
-}
 
+class BoxProxy(ProxyObject):
+    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Box`.
 
-def _parse_floats(values):
-    return [float(i) for i in values.split()]
-
-
-def _attr_to_data(attr):
-    return {k: v.data if hasattr(v, 'data') else v for k, v in attr.items()}
-
-
-def _generic_from_data_or_data(data):
-    try:
-        data = URDFGenericElement.from_data(data)
-    finally:
-        return data
-
-
-def _attr_from_data(data):
-    return {k: _generic_from_data_or_data(d) for k, d in data.items()}
-
-
-class Origin(Frame):
-    """Reference frame represented by an instance of :class:`Frame`.
-
-    An origin is defined by a base point and two orthonormal base vectors.
-
-    Parameters
-    ----------
-    point : [float, float, float] or :class:`compas.geometry.Point`
-        The origin of the origin.
-    xaxis : [float, float, float] or :class:`compas.geometry.Vector`
-        The x-axis of the origin.
-    yaxis : [float, float, float] or :class:`compas.geometry.Vector`
-        The y-axis of the origin.
-
-    Examples
-    --------
-    >>> from compas.geometry import Point
-    >>> from compas.geometry import Vector
-    >>> o = Origin([0, 0, 0], [1, 0, 0], [0, 1, 0])
-    >>> o = Origin(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
-
+    This class is internal and not intended to be referenced externally.
     """
-
-    def __init__(self, point, xaxis, yaxis):
-        super(Origin, self).__init__(point, xaxis, yaxis)
-
-    def get_urdf_element(self):
-        attributes = {
-            'xyz': "{} {} {}".format(self.point.x, self.point.y, self.point.z),
-            'rpy': "{} {} {}".format(*self.euler_angles())
-        }
-        return URDFElement('origin', attributes)
-
-    @classmethod
-    def from_urdf(cls, attributes, elements, text):
-        """Create origin instance from an URDF element.
-
-        Parameters
-        ----------
-        attributes : dict[str, Any]
-            Attributes of the URDF element.
-        elements: list[object]
-            Children elements of the URDF element.
-        text: str | None
-            Text content of the URDF element.
-
-        Returns
-        -------
-        :class:`Origin`
-            Origin instance.
-
-        Examples
-        --------
-        >>> attributes = {'rpy': '0.0 1.57 0.0', 'xyz': '0.0 0.13 0.0'}
-        >>> Origin.from_urdf(attributes, [], None)
-        Frame(Point(0.000, 0.130, 0.000), Vector(0.001, 0.000, -1.000), Vector(0.000, 1.000, 0.000))
-
-        """
-        xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
-        rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
-        return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
-
-    def scale(self, factor):
-        """Scale the origin by a given factor.
-
-        Parameters
-        ----------
-        factor : float
-            Scale factor.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        >>> o = Origin([0, 0, 0], [1, 0, 0], [0, 1, 0])
-        >>> o.scale(10)
-
-        """
-        self.point = self.point * factor
-
-
-class BaseShape(Data):
-    """Base class for all 3D shapes.
-
-    Attributes
-    ----------
-    geometry : :class:`compas.geometry.Shape`
-        The COMPAS geometry of this shape.
-
-    """
-
-    def __init__(self):
-        super(BaseShape, self).__init__()
-        self.geometry = None
-
-    @property
-    def data(self):
-        raise NotImplementedError
-
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
-
-    @classmethod
-    def from_data(cls, data):
-        raise NotImplementedError
-
-
-class Box(BaseShape):
-    """3D shape primitive representing a box.
-
-    Parameters
-    ----------
-    size : str
-        The dimensions of the box in x-, y-, and z-axis, like '1 1 1'.
-
-    Attributes
-    ----------
-    size : [float, float, float]
-        The dimensions of the box.
-    geometry : :class:`compas.geometry.Box`
-        The COMPAS geometry of this box.
-
-    Examples
-    --------
-    >>> box = Box('1 1 1')
-    >>> box.geometry
-    Box(Frame(Point(0.000, 0.000, 0.000), Vector(1.000, 0.000, 0.000), Vector(0.000, 1.000, 0.000)), 1.0, 1.0, 1.0)
-
-    """
-
-    def __init__(self, size):
-        super(Box, self).__init__()
-        self.size = _parse_floats(size)
-        self.geometry = compas.geometry.Box(Frame.worldXY(), *self.size)
 
     def get_urdf_element(self):
         attributes = {'size': '{} {} {}'.format(*self.size)}
         return URDFElement('box', attributes)
 
+    @classmethod
+    def from_urdf(cls, attributes, elements=None, text=None):
+        size = _parse_floats(attributes['size'])
+        return cls(compas.geometry.Box(Frame.worldXY(), *size))
+
     @property
-    def data(self):
-        return {
-            'type': 'box',
-            'size': self.size,
-            'geometry': self.geometry.data,
-        }
+    def meshes(self):
+        return [Mesh.from_shape(self)]
 
-    @data.setter
-    def data(self, data):
-        self.size = data['size']
-        self.geometry = compas.geometry.Box.from_data(data['geometry'])
-
-    @classmethod
-    def from_data(cls, data):
-        box = cls('1 1 1')
-        box.data = data
-        return box
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        return cls(' '.join([str(geometry.xsize), str(geometry.ysize), str(geometry.zsize)]))
+    @property
+    def size(self):
+        return [self.xsize, self.ysize, self.zsize]
 
 
-class Cylinder(BaseShape):
-    """3D shape primitive representing a cylinder.
+class CylinderProxy(ProxyObject):
+    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Cylinder`.
 
-    Parameters
-    ----------
-    radius : str | float
-        The cylinder's radius.
-    length : str | float
-        The cylinder's length.
-
-    Attributes
-    ----------
-    radius : float
-        The cylinder's radius.
-    length : float
-        The cylinder's length.
-    geometry : :class:`compas.geometry.Cylinder`
-        The COMPAS geometry of this cylinder.
-
-    Examples
-    --------
-    >>> c = Cylinder(1, 4)
-    >>> c.geometry
-    Cylinder(Circle(Plane(Point(0.000, 0.000, 0.000), Vector(0.000, 0.000, 1.000)), 1.0), 4.0)
-
+    This class is internal and not intended to be referenced externally.
     """
-
-    def __init__(self, radius, length):
-        super(Cylinder, self).__init__()
-        self.radius = float(radius)
-        self.length = float(length)
-        plane = compas.geometry.Plane([0, 0, 0], [0, 0, 1])
-        circle = compas.geometry.Circle(plane, self.radius)
-        self.geometry = compas.geometry.Cylinder(circle, self.length)
 
     def get_urdf_element(self):
         attributes = {'radius': self.radius, 'length': self.length}
         return URDFElement('cylinder', attributes)
 
+    @classmethod
+    def from_urdf(cls, attributes, elements=None, text=None):
+        radius = float(attributes['radius'])
+        length = float(attributes['length'])
+        plane = compas.geometry.Plane([0, 0, 0], [0, 0, 1])
+        circle = compas.geometry.Circle(plane, radius)
+        return cls(compas.geometry.Cylinder(circle, length))
+
     @property
-    def data(self):
-        return {
-            'type': 'cylinder',
-            'radius': self.radius,
-            'length': self.length,
-            'geometry': self.geometry.data,
-        }
+    def meshes(self):
+        return [Mesh.from_shape(self)]
 
-    @data.setter
-    def data(self, data):
-        self.radius = data['radius']
-        self.length = data['length']
-        self.geometry = compas.geometry.Cylinder.from_data(data['geometry'])
-
-    @classmethod
-    def from_data(cls, data):
-        cyl = cls(data['radius'], data['length'])
-        cyl.data = data
-        return cyl
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        return cls(geometry.radius, geometry.height)
+    @property
+    def length(self):
+        return self.height
 
 
-class Sphere(BaseShape):
-    """3D shape primitive representing a sphere.
+class SphereProxy(ProxyObject):
+    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Sphere`.
 
-    Parameters
-    ----------
-    radius : str | float
-        The sphere's radius.
-
-    Attributes
-    ----------
-    radius : float
-        The sphere's radius.
-    geometry : :class:`compas.geometry.Sphere`
-        The COMPAS geometry of this sphere.
-
-    Examples
-    --------
-    >>> s = Sphere(1)
-    >>> s.geometry
-    Sphere(Point(0.000, 0.000, 0.000), 1.0)
-
+    This class is internal and not intended to be referenced externally.
     """
-
-    def __init__(self, radius):
-        super(Sphere, self).__init__()
-        self.radius = float(radius)
-        self.geometry = compas.geometry.Sphere((0, 0, 0), radius)
 
     def get_urdf_element(self):
         attributes = {'radius': self.radius}
         return URDFElement('sphere', attributes)
 
+    @classmethod
+    def from_urdf(cls, attributes, elements=None, text=None):
+        radius = float(attributes['radius'])
+        return cls(compas.geometry.Sphere((0, 0, 0), radius))
+
     @property
-    def data(self):
-        return {
-            'type': 'sphere',
-            'radius': self.radius,
-            'geometry': self.geometry.data,
-        }
-
-    @data.setter
-    def data(self, data):
-        self.radius = data['radius']
-        self.geometry = compas.geometry.Sphere.from_data(data['geometry'])
-
-    @classmethod
-    def from_data(cls, data):
-        sph = cls(data['radius'])
-        sph.data = data
-        return sph
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        return cls(geometry.radius)
+    def meshes(self):
+        return [Mesh.from_shape(self)]
 
 
-class Capsule(BaseShape):
-    """3D shape primitive representing a capsule.
+class CapsuleProxy(ProxyObject):
+    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Capsule`.
 
-    Parameters
-    ----------
-    radius : str | float
-        The sphere's radius.
-    length : str | float
-        The sphere's length.
-
-    Attributes
-    ----------
-    radius : float
-        The sphere's radius.
-    length : float
-        The sphere's length.
-
-    Examples
-    --------
-    >>> c = Capsule(1, 4)
-
+    This class is internal and not intended to be referenced externally.
     """
-
-    def __init__(self, radius, length):
-        super(Capsule, self).__init__()
-        self.radius = float(radius)
-        self.length = float(length)
 
     def get_urdf_element(self):
         attributes = {'radius': self.radius, 'length': self.length}
         return URDFElement('capsule', attributes)
 
+    @classmethod
+    def from_urdf(cls, attributes, elements=None, text=None):
+        radius = float(attributes['radius'])
+        length = float(attributes['length'])
+        line = ((0, 0, length / -2), (0, 0, length / 2))
+        return cls(compas.geometry.Capsule(line, radius))
+
     @property
-    def data(self):
-        return {
-            'type': 'capsule',
-            'radius': self.radius,
-            'length': self.length,
-        }
-
-    @data.setter
-    def data(self, data):
-        self.radius = data['radius']
-        self.length = data['length']
-
-    @classmethod
-    def from_data(cls, data):
-        cap = cls(data['radius'], data['length'])
-        cap.data = data
-        return cap
-
-    @classmethod
-    def from_geometry(cls, geometry):
-        return cls(geometry.radius, geometry.length)
+    def meshes(self):
+        return [Mesh.from_shape(self)]
 
 
-class MeshDescriptor(BaseShape):
+class MeshDescriptor(Data):
     """Description of a mesh.
 
     Parameters
@@ -417,6 +130,9 @@ class MeshDescriptor(BaseShape):
         The mesh' filename.
     scale : str, optional
         The scale factors of the mesh in the x-, y-, and z-direction.
+    **kwargs : dict[str, Any], optional
+        The keyword arguments (kwargs) collected in a dict.
+        These allow using non-standard attributes absent in the URDF specification.
 
     Attributes
     ----------
@@ -424,8 +140,8 @@ class MeshDescriptor(BaseShape):
         The mesh' filename.
     scale : [float, float, float]
         The scale factors of the mesh in the x-, y-, and z-direction.
-    geometry : :class:`compas.datastructures.Mesh`
-        The COMPAS geometry of this mesh.
+    meshes : list[:class:`~compas.datastructures.Mesh`]
+        List of COMPAS geometric meshes.
 
     Examples
     --------
@@ -433,10 +149,12 @@ class MeshDescriptor(BaseShape):
 
     """
 
-    def __init__(self, filename, scale='1.0 1.0 1.0'):
+    def __init__(self, filename, scale='1.0 1.0 1.0', **kwargs):
         super(MeshDescriptor, self).__init__()
         self.filename = filename
         self.scale = _parse_floats(scale)
+        self.meshes = []
+        self.attr = kwargs or {}
 
     def get_urdf_element(self):
         attributes = {'filename': self.filename}
@@ -446,22 +164,22 @@ class MeshDescriptor(BaseShape):
         # but here we must be explicit.
         if self.scale != [1.0, 1.0, 1.0]:
             attributes['scale'] = "{} {} {}".format(*self.scale)
+        attributes.update(self.attr)
         return URDFElement('mesh', attributes)
 
     @property
     def data(self):
         return {
-            'type': 'mesh',
             'filename': self.filename,
             'scale': self.scale,
-            'geometry': self.geometry.data if self.geometry else None,
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
         self.filename = data['filename']
         self.scale = data['scale']
-        self.geometry = Mesh.from_data(data['geometry']) if data['geometry'] else None
+        self.attr = _attr_from_data(data['attr']) if 'attr' in data else {}
 
     @classmethod
     def from_data(cls, data):
@@ -565,9 +283,9 @@ class Material(Data):
     ----------
     name : str
         The name of the material.
-    color : :class:`compas.robots.Color` | None
+    color : :class:`compas.robots.Color`, optional
         The color of the material.
-    texture : :class:`compas.robots.Texture` | None
+    texture : :class:`compas.robots.Texture`, optional
         The filename of the texture.
 
     Examples
@@ -577,7 +295,7 @@ class Material(Data):
 
     >>> material = Material('aqua')
     >>> material.get_color()
-    [0.0, 1.0, 1.0, 1.0]
+    (0.0, 1.0, 1.0, 1.0)
 
     """
 
@@ -596,14 +314,14 @@ class Material(Data):
     def data(self):
         return {
             'name': self.name,
-            'color': self.color.data,
+            'color': self.color.data if self.color else None,
             'texture': self.texture.data if self.texture else None,
         }
 
     @data.setter
     def data(self, data):
         self.name = data['name']
-        self.color = Color.from_data(data['color'])
+        self.color = Color.from_data(data['color']) if data['color'] else None
         self.texture = Texture.from_data(data['texture']) if data['texture'] else None
 
     def get_color(self):
@@ -618,25 +336,45 @@ class Material(Data):
         --------
         >>> material = Material('aqua')
         >>> material.get_color()
-        [0.0, 1.0, 1.0, 1.0]
+        (0.0, 1.0, 1.0, 1.0)
 
         """
         if self.name:
-            if self.name in HTML4_NAMES_TO_HEX:
-                r, g, b = hex_to_rgb(HTML4_NAMES_TO_HEX[self.name])
-                return [r / 255., g / 255., b / 255., 1.]
+            try:
+                color = compas.colors.Color.from_name(self.name)
+                return color.rgba
+            except ValueError:
+                pass
         if self.color:
             return self.color.rgba
         return None
 
 
 TYPE_CLASS_ENUM = {
-    'box': Box,
-    'cylinder': Cylinder,
-    'sphere': Sphere,
-    'capsule': Capsule,
+    'box': compas.geometry.Box,
+    'cylinder': compas.geometry.Cylinder,
+    'sphere': compas.geometry.Sphere,
+    'capsule': compas.geometry.Capsule,
     'mesh': MeshDescriptor,
 }
+
+TYPE_CLASS_ENUM_BY_DATA = {
+    ('frame', 'xsize', 'ysize', 'zsize'): compas.geometry.Box,
+    ('circle', 'height'): compas.geometry.Cylinder,
+    ('point', 'radius'): compas.geometry.Sphere,
+    ('line', 'radius'): compas.geometry.Capsule,
+    ('attr', 'filename', 'scale'): MeshDescriptor,
+}
+
+
+def _get_type_from_shape_data(data):
+    # This is here only to support models serialized with older versions of COMPAS
+    if 'type' in data:
+        return TYPE_CLASS_ENUM[data['type']]
+
+    # The current scenario is that we need to figure out the object type based on the DATASCHEMA
+    keys = tuple(sorted(data.keys()))
+    return TYPE_CLASS_ENUM_BY_DATA[keys]
 
 
 class Geometry(Data):
@@ -644,31 +382,30 @@ class Geometry(Data):
 
     Parameters
     ----------
-    box : :class:`compas.robots.Box`, optional
+    box : :class:`compas.geometry.Box`, optional
         A box shape primitive.
-    cylinder : :class:`compas.robots.Cylinder`, optional
+    cylinder : :class:`compas.geometry.Cylinder`, optional
         A cylinder shape primitive.
-    sphere : :class:`compas.robots.Sphere`, optional
+    sphere : :class:`compas.geometry.Sphere`, optional
         A sphere shape primitive.
-    capsule : :class:`compas.robots.Capsule`, optional
+    capsule : :class:`compas.geometry.Capsule`, optional
         A capsule shape primitive.
     mesh : :class:`compas.robots.MeshDescriptor`, optional
         A descriptor of a mesh.
-    **kwargs : keyword arguments
-        Additional attributes
+    **kwargs : dict[str, Any], optional
+        The keyword arguments (kwargs) collected in a dict.
+        These allow using non-standard attributes absent in the URDF specification.
 
     Attributes
     ----------
-    shape : :class:`BaseShape`
+    shape : object
         The shape of the geometry
     attr : keyword arguments
         Additional attributes
-    geo : :class:`compas.datastructures.Mesh` | :class:`compas.geometry.Shape` | None
-        The native geometry object.
 
     Examples
     --------
-    >>> box = Box('1 1 1')
+    >>> box = compas.geometry.Box(Frame.worldXY(), 1, 1, 1)
     >>> geo = Geometry(box=box)
 
     """
@@ -677,12 +414,30 @@ class Geometry(Data):
         super(Geometry, self).__init__()
         self.shape = box or cylinder or sphere or capsule or mesh
         self.attr = kwargs
-        if not self.shape:
-            raise TypeError(
-                'Geometry must define at least one of: box, cylinder, sphere, capsule, mesh')
 
-        if 'geometry' not in dir(self.shape):
-            raise TypeError('Shape implementation does not define a geometry accessor')
+    @property
+    def shape(self):
+        return self._shape
+
+    @shape.setter
+    def shape(self, value):
+        if value is None:
+            self._shape = None
+            return
+
+        if isinstance(value, compas.geometry.Box):
+            self._shape = BoxProxy.create_proxy(value)
+        elif isinstance(value, compas.geometry.Cylinder):
+            self._shape = CylinderProxy.create_proxy(value)
+        elif isinstance(value, compas.geometry.Sphere):
+            self._shape = SphereProxy.create_proxy(value)
+        elif isinstance(value, compas.geometry.Capsule):
+            self._shape = CapsuleProxy.create_proxy(value)
+        else:
+            self._shape = value
+
+        if 'meshes' not in dir(self._shape):
+            raise TypeError('Shape implementation does not define a meshes accessor')
 
     def get_urdf_element(self):
         attributes = self.attr.copy()
@@ -698,42 +453,20 @@ class Geometry(Data):
 
     @data.setter
     def data(self, data):
-        class_ = TYPE_CLASS_ENUM[data['shape']['type']]
+        class_ = _get_type_from_shape_data(data['shape'])
         self.shape = class_.from_data(data['shape'])
         self.attr = _attr_from_data(data['attr'])
 
     @classmethod
     def from_data(cls, data):
-        class_ = TYPE_CLASS_ENUM[data['shape']['type']]
+        class_ = _get_type_from_shape_data(data['shape'])
         geo = cls(box=class_.from_data(data['shape']))
         geo.data = data
         return geo
 
-    @property
-    def geo(self):
-        """Get geometry associated to this shape.
-
-        Returns
-        -------
-        object
-            Shape's geometry, usually a mesh implementation.
-
-        """
-        return self.shape.geometry
-
     @staticmethod
     def _get_item_meshes(item):
-        # NOTE: Currently, shapes assign their meshes to an
-        # attribute called `geometry`, but this will change soon to `meshes`.
-        # This code handles the situation in a forward-compatible
-        # manner. Eventually, this can be simplified to use only `meshes` attr
-        if hasattr(item.geometry.shape, 'meshes'):
-            meshes = item.geometry.shape.meshes
-        else:
-            meshes = item.geometry.shape.geometry
-
-        if isinstance(meshes, Shape):
-            meshes = [Mesh.from_shape(meshes)]
+        meshes = item.geometry.shape.meshes
 
         if meshes:
             # Coerce meshes into an iterable (a tuple if not natively iterable)
@@ -741,3 +474,11 @@ class Geometry(Data):
                 meshes = (meshes,)
 
         return meshes
+
+
+# Deprecated: this are aliases for backwards compatibility, but need to be removed on 2.x
+Origin = Frame
+Cylinder = CylinderProxy
+Box = BoxProxy
+Sphere = SphereProxy
+Capsule = CapsuleProxy

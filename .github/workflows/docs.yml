@@ -17,11 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: compas-dev/compas-actions.docs@v1.3.0
+      - uses: compas-dev/compas-actions.docs@v1.4.1
         id: docs
         with:
           dest: deploy
           build_to_subfolder: true
+          test_docs: true
 
       - name: Deploy docs
         if: success() && steps.docs.outputs.commit_type != 'pull'

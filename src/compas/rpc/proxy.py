@@ -89,11 +89,13 @@ class Proxy(object):
     Minimal example showing connection to the proxy server, and ensuring the
     server is disposed after using it:
 
-    >>> from compas.rpc import Proxy
-    >>> with Proxy('compas.numerical') as numerical:
-    ...     pass
-    ...
-
+    >>> from compas.rpc import Proxy                        # doctest: +SKIP
+    >>> with Proxy('compas.numerical') as numerical:        # doctest: +SKIP
+    ...     pass                                            # doctest: +SKIP
+    ...                                                     # doctest: +SKIP
+    Starting a new proxy server...                          # doctest: +SKIP
+    New proxy server started.                               # doctest: +SKIP
+    Stopping the server proxy.                              # doctest: +SKIP
     """
 
     def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, max_conn_attempts=100, autoreload=True, capture_output=True):

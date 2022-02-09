@@ -95,10 +95,10 @@ class Plotter:
 
     Add COMPAS objects.
 
-    >>> plotter.add(Point(0, 0, 0))
-    <compas_plotters.artists.pointartist.PointArtist object at 0x17880eb80>
-    >>> plotter.add(Circle(Plane.worldXY(), 1.0))
-    <compas_plotters.artists.circleartist.CircleArtist object at 0x10d136e80>
+    >>> plotter.add(Point(0, 0, 0))                                                 # doctest: +SKIP
+    <compas_plotters.artists.pointartist.PointArtist object at 0x17880eb80>         # doctest: +SKIP
+    >>> plotter.add(Circle(Plane.worldXY(), 1.0))                                   # doctest: +SKIP
+    <compas_plotters.artists.circleartist.CircleArtist object at 0x10d136e80>       # doctest: +SKIP
 
     """
 
