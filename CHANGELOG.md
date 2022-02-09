@@ -10,8 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added doc test step in CI/CD.
+* Added descriptor support to `compas.colors.Color`.
+* Added descriptor protocol metaclass to `compas.artists.Artist`.
+* Added `compas.xxx.ColorDict` descriptor.
 
 ### Changed
+
+* Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_rhino.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
 
 ### Removed
 
@@ -49,9 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `from_name` method to `compas.colors.Color`.
 * Added Python 3.10 support.
 * Added `RobotModel.ur5` for the sake of example.
-* Added descriptor support to `compas.colors.Color`.
-* Added descriptor protocol metaclass to `compas.artists.Artist`.
-* Added `compas.xxx.ColorDict` descriptor.
 
 ### Changed
 
@@ -71,14 +80,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed geometric primitives (`Origin`, `Box`, `Sphere`, `Cylinder` and `Capsule`) from `compas.robots` and replaced them with the core ones from `compas.geometry`. The old names are still available but deprecated.
 * Deprecated the `load_mesh` method of `compas.robots.AbstractMeshLoader` and its sub-classes in favor of `load_meshes`.
 * Fixed bug in `compas_rhino.conversions.RhinoGeometry.transform`.
-* Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
-* Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
-* Changed `compas_rhino.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
-* Changed `compas_rhino.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
-* Changed `compas_rhino.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
-* Changed `compas_blender.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
-* Changed `compas_blender.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
-* Changed `compas_blender.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
 
 ### Removed
 
