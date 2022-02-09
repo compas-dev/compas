@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import pytest
 
@@ -167,13 +168,15 @@ def test_from_ploygons():
 # --------------------------------------------------------------------------
 
 def test_to_obj():
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-    mesh.to_obj('data/temp.obj')
-    mesh = Mesh.from_obj(compas.get('temp.obj'))
-    assert mesh.number_of_faces() == 25
-    assert mesh.number_of_vertices() == 36
-    assert mesh.number_of_edges() == 60
-    os.remove(compas.get('temp.obj'))
+    with tempfile.TemporaryDirectory() as tempdir:
+        fname = os.path.join(tempdir, 'temp.obj')
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+        mesh.to_obj(fname)
+        mesh = Mesh.from_obj(fname)
+        assert mesh.number_of_faces() == 25
+        assert mesh.number_of_vertices() == 36
+        assert mesh.number_of_edges() == 60
+        os.remove(fname)
 
 
 def test_to_vertices_and_faces():
