@@ -50,13 +50,13 @@ HERE = compas._os.realpath(os.path.dirname(__file__))
 """str: Path to the location of the compas package."""
 
 HOME = compas._os.absjoin(HERE, '../..')
-"""str: Path to the root of the local repo."""
+"""str: Path to the root of the local installation."""
 
-DATA = compas._os.absjoin(HERE, '../../data')
-"""str: Path to the data folder of the local repo."""
+DATA = compas._os.absjoin(HERE, 'data', 'samples')
+"""str: Path to the data folder of the local installation."""
 
 TEMP = compas._os.absjoin(HERE, '../../temp')
-"""str: Path to the temp folder of the local repo."""
+"""str: Path to the temp folder of the local installation."""
 
 APPDATA = compas._os.user_data_dir('COMPAS', 'compas-dev', roaming=True)
 """str: Path to the COMPAS directory in APPDATA."""
