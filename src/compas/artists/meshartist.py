@@ -32,17 +32,16 @@ class MeshArtist(Artist):
         Defaults to all faces.
     color : tuple[float, float, float]
         The base RGB color of the mesh.
-        Defaults to :attr:`default_color`.
     vertex_xyz : dict[int, list[float]]
         View coordinates of the vertices.
         Defaults to the real coordinates.
-    vertex_color : dict[int, tuple[float, float, float]]
+    vertex_color : dict[int, :class:`compas.colors.Color`]
         Vertex colors.
         Missing vertices get the default vertex color :attr:`default_vertexcolor`.
-    edge_color : dict[tuple[int, int], tuple[float, float, float]]
+    edge_color : dict[tuple[int, int], :class:`compas.colors.Color`]
         Edge colors.
         Missing edges get the default edge color :attr:`default_edgecolor`.
-    face_color : dict[int, tuple[float, float, float]]
+    face_color : dict[int, :class:`compas.colors.Color`]
         Face colors.
         Missing faces get the default face color :attr:`default_facecolor`.
     vertex_text : dict[int, str]
@@ -65,11 +64,11 @@ class MeshArtist(Artist):
 
     Class Attributes
     ----------------
-    default_vertexcolor : tuple[float, float, float]
+    default_vertexcolor : :class:`compas.colors.Color`
         The default color of the vertices of the mesh.
-    default_edgecolor : tuple[float, float, float]
+    default_edgecolor : :class:`compas.colors.Color`
         The default color of the edges of the mesh.
-    default_facecolor : tuple[float, float, float]
+    default_facecolor : :class:`compas.colors.Color`
         The default color of the faces of the mesh.
     default_vertexsize : float
         The default size of the vertices of the mesh.

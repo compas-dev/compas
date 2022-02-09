@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added doc test step in CI/CD.
 * Added descriptor support to `compas.colors.Color`.
 * Added descriptor protocol metaclass to `compas.artists.Artist`.
-* Added `compas.xxx.ColorDict` descriptor.
+* Added `compas.artists.colordict.ColorDict` descriptor.
 
 ### Changed
 

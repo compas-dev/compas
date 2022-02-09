@@ -242,8 +242,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
                 'name': "{}.vertex.{}".format(self.mesh.name, vertex),
                 'color': self.vertex_color[vertex].rgb255
             })
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        return guids
+        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
