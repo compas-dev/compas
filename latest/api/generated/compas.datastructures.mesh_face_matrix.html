@@ -108,7 +108,7 @@
 <h1>mesh_face_matrix</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.mesh_face_matrix">
-<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_face_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/matrices.py#L142"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_face_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/matrices.py#L136"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct the face matrix from a Mesh datastructure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -143,8 +143,6 @@ faces of a mesh.</p>
 </code></pre></div>
 </div>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">mesh_face_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;csr&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
-<span class="go">&lt;class &#39;scipy.sparse.csr.csr_matrix&#39;&gt;</span>
 </code></pre></div>
 </div>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">allclose</span>
