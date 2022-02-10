@@ -256,12 +256,13 @@ def absjoin(*parts):
 
 
 def realpath(path):
-    """Return the canonical path of the specified filename, eliminating any symbolic links encountered in the path.
+    """Return the canonical path of the specified filename, resolving any symbolic links encountered in the path.
 
     This function uses Python's stdlib `os.path.realpath` in most cases,
     except when inside IronPython because (guess what?) it is broken and
     doesn't really eliminate sym links, so, we fallback to a different
-    way to identifying symlinks in that situation."""
+    way to identifying symlinks in that situation.
+    """
     if not PY3 and is_ironpython():
         if is_windows():
             return _realpath_ipy_win(path)
