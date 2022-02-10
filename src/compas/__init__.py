@@ -172,27 +172,19 @@ def get(filename):
     ----------
     filename : str
         The name of the data file.
-        The following are available.
-
-        * boxes.obj
-        * faces.obj
-        * fink.obj
-        * hypar.obj
-        * lines.obj
-        * saddle.obj
 
     Returns
     -------
     str
         The full path to the specified file.
+        The path can be local or remote depending on availability.
 
     Notes
     -----
     The file name should be specified relative to the **COMPAS** sample data folder.
-    This folder is only locally available if you installed **COMPAS** from source,
-    or if you are working directly with the source.
-    In all other cases, the function will get the corresponding files directly from
-    the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/main/data
+    If the requested file is not locally available in the sample data folder,
+    the function will get the corresponding file path from
+    the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/main/samples
 
     Examples
     --------
@@ -217,7 +209,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://github.com/compas-dev/compas/raw/main/data/{}".format(filename)
+        return "https://github.com/compas-dev/compas/raw/main/samples/{}".format(filename)
 
 
 def get_bunny(localstorage=None):
