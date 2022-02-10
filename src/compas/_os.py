@@ -287,7 +287,7 @@ def _realpath_ipy_win(path):
         if match_name == dirname:
             return match_link
 
-    return ValueError('path not found: {}'.format(path))
+    return path
 
 
 def _realpath_ipy_posix(path):
