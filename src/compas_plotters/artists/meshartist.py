@@ -200,6 +200,9 @@ class MeshArtist(PlotterArtist, MeshArtist):
     # clear and draw
     # ==============================================================================
 
+    def clear(self) -> None:
+        pass
+
     def clear_vertices(self) -> None:
         """Clear the current vertices from the canvas.
 

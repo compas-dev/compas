@@ -275,6 +275,9 @@ class Color(Data):
         return getattr(obj, self.private_name) or self
 
     def __set__(self, obj, value):
+        if not obj:
+            return
+
         if not value:
             return
 
@@ -284,6 +287,7 @@ class Color(Data):
             value = Color.from_hex(value)
         else:
             value = Color(value[0], value[1], value[2])
+
         setattr(obj, self.private_name, value)
 
     # --------------------------------------------------------------------------

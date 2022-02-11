@@ -318,7 +318,6 @@ class MeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_mesh(self, *args, **kwargs):
         """Draw the mesh of the mesh.
 
@@ -329,6 +328,17 @@ class MeshArtist(Artist):
 
         """
         return self.draw(*args, **kwargs)
+
+    @abstractmethod
+    def clear(self):
+        """Clear the mesh.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def clear_vertices(self):
