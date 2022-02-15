@@ -3,12 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import json
-import sys
+import platform
 
 from compas.data.exceptions import DecoderError
 
 # We don't do this from `compas.IPY` to avoid circular imports
-if 'ironpython' in sys.version.lower():
+if 'ironpython' == platform.python_implementation().lower():
     try:
         from System.Collections.Generic import IDictionary
     except:  # noqa: E722

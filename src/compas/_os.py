@@ -4,11 +4,12 @@ These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
 import os
+import platform
 import re
-import tempfile
 import shutil
 import subprocess
 import sys
+import tempfile
 
 try:
     NotADirectoryError
@@ -96,7 +97,7 @@ def is_ironpython():
         True if the implementation is IronPython. False otherwise
 
     """
-    return 'ironpython' in sys.version.lower()
+    return 'ironpython' == platform.python_implementation().lower()
 
 
 def is_rhino():
