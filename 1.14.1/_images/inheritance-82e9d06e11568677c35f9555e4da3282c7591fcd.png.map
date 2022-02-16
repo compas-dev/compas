@@ -1,0 +1,30 @@
+<map id="inheritanceb98dadb427" name="inheritanceb98dadb427">
+<area shape="rect" id="node1" href="../api/generated/compas.geometry.Bezier.html#compas.geometry.Bezier" target="_top" title="A Bezier curve is defined by control points and a degree." alt="" coords="646,8,758,46"/>
+<area shape="rect" id="node2" href="../api/generated/compas.geometry.Primitive.html#compas.geometry.Primitive" target="_top" title="Base class for geometric primitives." alt="" coords="442,421,554,458"/>
+<area shape="rect" id="node6" href="../api/generated/compas.geometry.Circle.html#compas.geometry.Circle" target="_top" title="A circle is defined by a plane and a radius." alt="" coords="646,83,758,121"/>
+<area shape="rect" id="node10" href="../api/generated/compas.geometry.Ellipse.html#compas.geometry.Ellipse" target="_top" title="A ellipse is defined by a plane and a major and minor axis." alt="" coords="646,158,758,196"/>
+<area shape="rect" id="node11" href="../api/generated/compas.geometry.Frame.html#compas.geometry.Frame" target="_top" title="A frame is defined by a base point and two orthonormal base vectors." alt="" coords="646,233,758,271"/>
+<area shape="rect" id="node13" href="../api/generated/compas.geometry.Line.html#compas.geometry.Line" target="_top" title="A line is defined by two points." alt="" coords="646,308,758,346"/>
+<area shape="rect" id="node14" href="../api/generated/compas.geometry.Plane.html#compas.geometry.Plane" target="_top" title="A plane is defined by a base point and a normal vector." alt="" coords="646,383,758,421"/>
+<area shape="rect" id="node15" href="../api/generated/compas.geometry.Point.html#compas.geometry.Point" target="_top" title="A point is defined by XYZ coordinates." alt="" coords="646,458,758,496"/>
+<area shape="rect" id="node16" href="../api/generated/compas.geometry.Polygon.html#compas.geometry.Polygon" target="_top" title="A polygon is defined by a sequence of points forming a closed loop." alt="" coords="646,533,758,571"/>
+<area shape="rect" id="node18" href="../api/generated/compas.geometry.Polyline.html#compas.geometry.Polyline" target="_top" title="A polyline is defined by a sequence of points connected by line segments." alt="" coords="646,608,758,646"/>
+<area shape="rect" id="node21" href="../api/generated/compas.geometry.Quaternion.html#compas.geometry.Quaternion" target="_top" title="A quaternion is defined by 4 components, X, Y, Z, and W." alt="" coords="637,683,767,721"/>
+<area shape="rect" id="node28" href="../api/generated/compas.geometry.Vector.html#compas.geometry.Vector" target="_top" title="A vector is defined by XYZ components and a homogenisation factor." alt="" coords="646,758,758,796"/>
+<area shape="rect" id="node3" href="../api/generated/compas.geometry.Box.html#compas.geometry.Box" target="_top" title="A box is defined by a frame and its dimensions along the frame&#39;s x&#45;, y&#45; and z&#45;axes." alt="" coords="646,833,758,871"/>
+<area shape="rect" id="node4" href="../api/generated/compas.geometry.Shape.html#compas.geometry.Shape" target="_top" title="Base class for geometric shapes." alt="" coords="442,1021,554,1058"/>
+<area shape="rect" id="node5" href="../api/generated/compas.geometry.Capsule.html#compas.geometry.Capsule" target="_top" title="A capsule is defined by a line segment and a radius." alt="" coords="646,908,758,946"/>
+<area shape="rect" id="node7" href="../api/generated/compas.geometry.Cone.html#compas.geometry.Cone" target="_top" title="A cone is defined by a circle and a height." alt="" coords="646,983,758,1021"/>
+<area shape="rect" id="node8" href="../api/generated/compas.geometry.Cylinder.html#compas.geometry.Cylinder" target="_top" title="A cylinder is defined by a circle and a height." alt="" coords="646,1058,758,1096"/>
+<area shape="rect" id="node17" href="../api/generated/compas.geometry.Polyhedron.html#compas.geometry.Polyhedron" target="_top" title="A polyhedron is defined by its vertices and faces." alt="" coords="637,1133,767,1171"/>
+<area shape="rect" id="node25" href="../api/generated/compas.geometry.Sphere.html#compas.geometry.Sphere" target="_top" title="A sphere is defined by a point and a radius." alt="" coords="646,1208,758,1246"/>
+<area shape="rect" id="node26" href="../api/generated/compas.geometry.Torus.html#compas.geometry.Torus" target="_top" title="A torus is defined by a plane and two radii." alt="" coords="646,1283,758,1321"/>
+<area shape="rect" id="node9" href="../api/generated/compas.data.Data.html#compas.data.Data" target="_top" title="Abstract base class for all COMPAS data objects." alt="" coords="8,1133,121,1171"/>
+<area shape="rect" id="node12" href="../api/generated/compas.geometry.Geometry.html#compas.geometry.Geometry" target="_top" title="Base class for all geometric objects." alt="" coords="219,1021,335,1058"/>
+<area shape="rect" id="node20" href="../api/generated/compas.geometry.Transformation.html#compas.geometry.Transformation" target="_top" title="Class representing a general 4x4 transformation matrix." alt="" coords="196,1208,358,1246"/>
+<area shape="rect" id="node19" href="../api/generated/compas.geometry.Projection.html#compas.geometry.Projection" target="_top" title="Class representing a projection transformation." alt="" coords="439,1096,557,1133"/>
+<area shape="rect" id="node22" href="../api/generated/compas.geometry.Reflection.html#compas.geometry.Reflection" target="_top" title="Class representing a reflection transformation." alt="" coords="437,1171,558,1208"/>
+<area shape="rect" id="node23" href="../api/generated/compas.geometry.Rotation.html#compas.geometry.Rotation" target="_top" title="Class representing a rotation transformation." alt="" coords="442,1246,554,1283"/>
+<area shape="rect" id="node24" href="../api/generated/compas.geometry.Shear.html#compas.geometry.Shear" target="_top" title="Class representing a shear transformation." alt="" coords="442,1321,554,1358"/>
+<area shape="rect" id="node27" href="../api/generated/compas.geometry.Translation.html#compas.geometry.Translation" target="_top" title="Class representing a translation transformation." alt="" coords="433,1396,562,1433"/>
+</map>
