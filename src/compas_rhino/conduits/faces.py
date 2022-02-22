@@ -16,7 +16,7 @@ class FacesConduit(BaseConduit):
 
     Parameters
     ----------
-    vertices : list[[float, float, float] or :class:`~compas.geometry.Point`]
+    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
         The coordinates of the vertices of the faces.
     faces : list[list[int]]
         The faces defined as lists of indices in `vertices`.

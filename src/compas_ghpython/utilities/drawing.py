@@ -353,7 +353,7 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
 
     Other Parameters
     ----------------
-    color : tuple, list or :class:`System.Drawing.Color`, optional
+    color : tuple, list | :class:`System.Drawing.Color`, optional
     vertex_normals : bool, optional
     texture_coordinates
 

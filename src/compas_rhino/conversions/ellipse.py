@@ -23,7 +23,7 @@ class RhinoEllipse(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Ellipse` or :class:`~compas.geometry.Ellipse`
+        geometry : :rhino:`Rhino_Geometry_Ellipse` | :class:`~compas.geometry.Ellipse`
             The geometry object defining an ellipse.
 
         Raises

@@ -323,7 +323,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        item: :class:`~compas.robots.Visual` or :class:`~compas.robots.Collision`
+        item: :class:`~compas.robots.Visual` | :class:`~compas.robots.Collision`
             The visual or collidable object of a link.
         transformation: :class:`~compas.geometry.Transformation`
             The (absolute) transformation to apply onto the link's geometry.

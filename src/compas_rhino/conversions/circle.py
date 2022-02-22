@@ -23,7 +23,7 @@ class RhinoCircle(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Circle` or :class:`~compas.geometry.Circle`
+        geometry : :rhino:`Rhino_Geometry_Circle` | :class:`~compas.geometry.Circle`
             The geometry object defining a circle.
 
         Raises

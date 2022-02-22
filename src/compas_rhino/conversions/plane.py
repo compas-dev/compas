@@ -26,7 +26,7 @@ class RhinoPlane(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Plane` or :class:`~compas.geometry.Plane` or :class:`~compas.geometry.Frame`
+        geometry : :rhino:`Rhino_Geometry_Plane` | :class:`~compas.geometry.Plane` | :class:`~compas.geometry.Frame`
             The geometry object defining a plane.
 
         Raises

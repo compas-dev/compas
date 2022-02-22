@@ -20,9 +20,9 @@ def boolean_union_mesh_mesh(A, B, remesh=False):
 
     Parameters
     ----------
-    A : tuple[sequence[[float, float, float] or :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    A : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple[sequence[[float, float, float] or :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    B : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
         If True, remesh the result.
@@ -44,9 +44,9 @@ def boolean_difference_mesh_mesh(A, B, remesh=False):
 
     Parameters
     ----------
-    A : tuple[sequence[[float, float, float] or :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    A : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple[sequence[[float, float, float] or :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    B : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
         If True, remesh the result.
@@ -68,9 +68,9 @@ def boolean_intersection_mesh_mesh(A, B, remesh=False):
 
     Parameters
     ----------
-    A : tuple[sequence[[float, float, float] or :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    A : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple[sequence[[float, float, float] or :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    B : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
         If True, remesh the result.

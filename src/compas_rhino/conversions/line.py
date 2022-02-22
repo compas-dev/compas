@@ -25,7 +25,7 @@ class RhinoLine(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Line` or :class:`~compas.geometry.Line`
+        geometry : :rhino:`Rhino_Geometry_Line` | :class:`~compas.geometry.Line`
             The input geometry.
 
         Raises

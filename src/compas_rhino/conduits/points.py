@@ -18,7 +18,7 @@ class PointsConduit(BaseConduit):
 
     Parameters
     ----------
-    points : list[[float, float, float] or :class:`~compas.geometry.Point`]
+    points : list[[float, float, float] | :class:`~compas.geometry.Point`]
         The coordinates of the points.
     size : list[int], optional
         The size of the points.

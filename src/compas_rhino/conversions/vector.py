@@ -23,7 +23,7 @@ class RhinoVector(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Vector3d` or :class:`~compas.geometry.Vector` or list of float
+        geometry : :rhino:`Rhino_Geometry_Vector3d` | :class:`~compas.geometry.Vector` or list of float
             The input geometry.
 
         Raises

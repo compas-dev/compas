@@ -28,7 +28,7 @@ class FrameArtist(GHArtist, PrimitiveArtist):
     color_origin : :class:`~compas.colors.Color`
         Default is ``Color.black()``.
     color_xaxis : :class:`~compas.colors.Color`
-        Default is ``Color.white()``.
+        Default is ``Color.red()``.
     color_yaxis : :class:`~compas.colors.Color`
         Default is ``Color.green()``.
     color_zaxis : :class:`~compas.colors.Color`

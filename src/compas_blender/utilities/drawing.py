@@ -628,7 +628,7 @@ def draw_mesh(vertices: List[List[float]],
 
     Parameters
     ----------
-    vertices : list[[float, float, float] or :class:`~compas.geometry.Point`]
+    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
         The vertices of the mesh.
     faces : list[list[int]]
         The faces of the mesh.

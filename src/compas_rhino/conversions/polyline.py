@@ -23,7 +23,7 @@ class RhinoPolyline(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Polyline` or :class:`~compas.geometry.Polyline` or list of points
+        geometry : :rhino:`Rhino_Geometry_Polyline` | :class:`~compas.geometry.Polyline` or list of points
             The input geometry.
 
         Raises

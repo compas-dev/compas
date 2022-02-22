@@ -27,7 +27,7 @@ class RhinoSphere(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Sphere` or :class:`~compas.geometry.Sphere`
+        geometry : :rhino:`Rhino_Geometry_Sphere` | :class:`~compas.geometry.Sphere`
             The geometry object defining a sphere.
 
         Raises

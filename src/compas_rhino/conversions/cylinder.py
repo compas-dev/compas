@@ -27,7 +27,7 @@ class RhinoCylinder(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Cylinder` or :class:`~compas.geometry.Cylinder`
+        geometry : :rhino:`Rhino_Geometry_Cylinder` | :class:`~compas.geometry.Cylinder`
             The geometry object defining a cylinder.
 
         Raises

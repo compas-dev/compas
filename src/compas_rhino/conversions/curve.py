@@ -34,7 +34,7 @@ class RhinoCurve(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Curve` or :class:`~compas.geometry.Line` or :class:`~compas.geometry.Circle` or :class:`~compas.geometry.Ellipse`
+        geometry : :rhino:`Rhino_Geometry_Curve` | :class:`~compas.geometry.Line` | :class:`~compas.geometry.Circle` | :class:`~compas.geometry.Ellipse`
             The geometry object defining a curve.
 
         Raises

@@ -15,7 +15,7 @@ class LabelsConduit(BaseConduit):
 
     Parameters
     ----------
-    labels : list[tuple[[float, float, float] or :class:`~compas.geometry.Point`, str]]
+    labels : list[tuple[[float, float, float] | :class:`~compas.geometry.Point`, str]]
         A list of label tuples.
         Each tuple contains a position and text for the label.
     color : list[tuple[tuple[int, int, int], tuple[int, int, int]]], optional
@@ -28,7 +28,7 @@ class LabelsConduit(BaseConduit):
     ----------
     color : list[tuple[System.Drawing.Color, System.Drawing.Color]]
         A color specification per label.
-    labels : list[tuple[[float, float, float] or :class:`~compas.geometry.Point`, str]]
+    labels : list[tuple[[float, float, float] | :class:`~compas.geometry.Point`, str]]
         A list of label tuples.
         Each tuple contains a position and text for the label.
 
