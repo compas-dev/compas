@@ -9,16 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-### Changed
-
-### Removed
-
-
-## [1.14.1] 2022-02-16
-
-### Added
-
-* Added doc test step in CI/CD.
 * Added descriptor support to `compas.colors.Color`.
 * Added descriptor protocol metaclass to `compas.artists.Artist`.
 * Added `compas.artists.colordict.ColorDict` descriptor.
@@ -33,6 +23,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_blender.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
 * Changed `compas_blender.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
 * Changed `compas_blender.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+
+### Removed
+
+
+## [1.14.1] 2022-02-16
+
+### Added
+
+* Added doc test step in CI/CD.
+
+### Changed
 
 * Fixed symlink expansion for directories relative to the COMPAS installation folder, eg. `compas.DATA` when used from IronPython.
 * Fixed the result of `compas.__version__` on dev installs to properly include git hash.
