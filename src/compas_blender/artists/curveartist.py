@@ -19,7 +19,7 @@ class CurveArtist(BlenderArtist, CurveArtist):
     ----------
     curve : :class:`~compas.geometry.Curve`
         A COMPAS curve.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.

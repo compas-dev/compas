@@ -19,7 +19,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
     ----------
     torus : :class:`~compas.geometry.Torus`
         A COMPAS torus.
-    collection: str or :blender:`bpy.types.Collection`
+    collection: str | :blender:`bpy.types.Collection`
         The name of the collection the object belongs to.
     **kwargs : dict, optional
         Additional keyword arguments.

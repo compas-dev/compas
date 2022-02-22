@@ -20,7 +20,7 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
     ----------
     frame: :class:`~compas.geometry.Frame`
         A COMPAS frame.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     scale: float, optional
         Scale factor that controls the length of the axes.
@@ -34,15 +34,15 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
     scale : float
         Scale factor that controls the length of the axes.
         Default is ``1.0``.
-    color_origin : tuple of 3 int between 0 and 255
+    color_origin : :class:`~compas.colors.Color`
         Color for the point at the frame origin.
-        Default is ``(0, 0, 0)``.
-    color_xaxis : tuple of 3 int between 0 and 255
-        Default is ``(255, 0, 0)``.
-    color_yaxis : tuple of 3 int between 0 and 255
-        Default is ``(0, 255, 0)``.
-    color_zaxis : tuple of 3 int between 0 and 255
-        Default is ``(0, 0, 255)``.
+        Default is ``Color.black()``.
+    color_xaxis : :class:`~compas.colors.Color`
+        Default is ``Color.red()``.
+    color_yaxis : :class:`~compas.colors.Color`
+        Default is ``Color.green()``.
+    color_zaxis : :class:`~compas.colors.Color`
+        Default is ``Color.blue()``.
 
     """
 

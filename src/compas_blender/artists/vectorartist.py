@@ -20,7 +20,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
     ----------
     primitive : :class:`~compas.geometry.Vector`
         A COMPAS vector.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.

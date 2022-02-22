@@ -18,7 +18,7 @@ class BoxArtist(BlenderArtist, ShapeArtist):
     ----------
     box : :class:`~compas.geometry.Box`
         A COMPAS box.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.

@@ -27,13 +27,13 @@ class MeshArtist(RhinoArtist, MeshArtist):
         Selection of edges to draw.
     faces : list[int], optional
         Selection of faces to draw.
-    vertexcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+    vertexcolor : tuple[int, int, int] | dict[int, tuple[int, int, int]], optional
         Color of the vertices.
         Default color is :attr:`MeshArtists.default_vertexcolor`.
-    edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+    edgecolor : tuple[int, int, int] | dict[tuple[int, int], tuple[int, int, int]], optional
         Color of the edges.
         Default color is :attr:`MeshArtists.default_edgecolor`.
-    facecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+    facecolor : tuple[int, int, int] | dict[int, tuple[int, int, int]], optional
         Color of the faces.
         Default color is :attr:`MeshArtists.default_facecolor`.
     show_vertices : bool, optional

@@ -26,7 +26,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
     ----------
     network : :class:`~compas.datastructures.Network`
         A COMPAS network.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The name of the collection the object belongs to.
     nodes : list[hashable], optional
         A list of node identifiers.
@@ -34,9 +34,9 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
     edges : list[tuple[hashable, hashable]], optional
         A list of edge keys (as uv pairs) identifying which edges to draw.
         The default is None, in which case all edges are drawn.
-    nodecolor : :class:`~compas.colors.Color` or dict[hashable, :class:`~compas.colors.Color`], optional
+    nodecolor : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
         The color specification for the nodes.
-    edgecolor : :class:`~compas.colors.Color` or dict[tuple[hashable, hashable]], :class:`~compas.colors.Color`], optional
+    edgecolor : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable]], :class:`~compas.colors.Color`], optional
         The color specification for the edges.
     show_nodes : bool, optional
         If True, draw the nodes of the network.
@@ -192,9 +192,9 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         edges : list[tuple[hashable, hashable]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        nodecolor : :class:`~compas.colors.Color` or dict[hashable, :class:`~compas.colors.Color`], optional
+        nodecolor : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
             The color specification for the nodes.
-        edgecolor : :class:`~compas.colors.Color` or dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+        edgecolor : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
 
         Returns
@@ -219,7 +219,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         nodes : list[hashable], optional
             A list of node identifiers.
             Default is None, in which case all nodes are drawn.
-        color : :class:`~compas.colors.Color` or dict[hashable, :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
             The color specification for the nodes.
             The default color of nodes is :attr:`default_nodecolor`.
 
@@ -251,7 +251,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         edges : list[tuple[hashable, hashable]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` or dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
             The default color of edges is :attr:`default_edgecolor`.
 

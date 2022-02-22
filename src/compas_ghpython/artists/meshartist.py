@@ -89,7 +89,7 @@ class MeshArtist(GHArtist, MeshArtist):
         vertices : list[int], optional
             A selection of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` or dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the vertices.
             The default is the value of :attr:`MeshArtist.default_vertexcolor`.
 
@@ -118,7 +118,7 @@ class MeshArtist(GHArtist, MeshArtist):
         faces : list[int], optional
             A selection of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` or dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the faces.
             The default color is the value of :attr:`MeshArtist.default_facecolor`.
         join_faces : bool, optional
@@ -155,7 +155,7 @@ class MeshArtist(GHArtist, MeshArtist):
         edges : list[tuple[int, int]], optional
             A selection of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` or dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
             The default color is the value of :attr:`MeshArtist.default_edgecolor`.
 

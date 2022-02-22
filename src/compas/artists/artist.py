@@ -70,7 +70,7 @@ class Artist(object):
     ----------------
     AVAILABLE_CONTEXTS : list[str]
         The available visualization contexts.
-    CONTEXT : str or None
+    CONTEXT : str | None
         The current visualization context is one of :attr:`AVAILABLE_CONTEXTS`.
     ITEM_ARTIST : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.artists.Artist`]]]
         Dictionary mapping data types to the corresponding artists types per visualization context.

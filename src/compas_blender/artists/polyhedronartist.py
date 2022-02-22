@@ -18,7 +18,7 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
     ----------
     polyhedron : :class:`~compas.geometry.Polyhedron`
         A COMPAS polyhedron.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.

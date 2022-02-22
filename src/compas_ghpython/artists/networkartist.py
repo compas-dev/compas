@@ -73,7 +73,7 @@ class NetworkArtist(GHArtist, NetworkArtist):
         edges : list[tuple[hashable, hashable]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` or dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
             The default color is the value of :attr:`NetworkArtist.default_edgecolor`.
 

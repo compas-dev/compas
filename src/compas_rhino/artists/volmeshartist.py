@@ -116,7 +116,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertices : list[int], optional
             A list of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` or dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the vertices.
             The default color of the vertices is :attr:`VolMeshArtist.default_vertexcolor`.
 
@@ -146,7 +146,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` or dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
             The default color is :attr:`VolMeshArtist.default_edgecolor`.
 
@@ -177,7 +177,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         faces : list[int], optional
             A list of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` or dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the faces.
             The default color is :attr:`VolMeshArtist.default_facecolor`.
 
@@ -207,7 +207,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` or dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the cells.
             The default color is :attr:`VolMeshArtist.default_cellcolor`.
 

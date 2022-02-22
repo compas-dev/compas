@@ -19,7 +19,7 @@ class SphereArtist(BlenderArtist, ShapeArtist):
     ----------
     sphere : :class:`~compas.geometry.Sphere`
         A COMPAS sphere.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.

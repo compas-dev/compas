@@ -97,7 +97,7 @@ def draw_texts(texts: List[Dict],
     ----------
     texts : list[dict]
         A list of dicts describing the text objects.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
     color : tuple[int, int, int] or tuple[float, float, float], optional
         The text color.
@@ -141,7 +141,7 @@ def draw_points(points: List[Dict],
     ----------
     points : list[dict]
         A list of dicts describing the points.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -180,7 +180,7 @@ def draw_pointcloud(points: List[Dict],
     ----------
     points : list[dict]
         A list of dicts describing the points of the pointcloud.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -219,7 +219,7 @@ def draw_lines(lines: List[Dict],
     ----------
     lines : list[dict]
         A list of dicts describing the lines.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
     centroid : bool, optional
         If True, use the centroids of the lines as the relative base for their coordinates,
@@ -270,7 +270,7 @@ def draw_polylines(polylines: List[Dict],
     ----------
     polylines : list[dict]
         A list of dicts describing the polylines.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
     centroid : bool, optional
         If True, use the centroids of the polylines as the relative base for their coordinates,
@@ -317,7 +317,7 @@ def draw_polygons(polygons: List[Dict],
     ----------
     polygons : list[dict]
         A list of dicts describing the polygons.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
     centroid : bool, optional
         If True, use the centroids of the polygons as the relative base for their coordinates,
@@ -339,7 +339,7 @@ def draw_faces(faces: List[Dict],
     ----------
     faces : list[dict]
         A list of dicts describing the faces.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -368,7 +368,7 @@ def draw_circles(circles: List[Dict],
     ----------
     circles : list[dict]
         A list of dicts describing the circles.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -407,7 +407,7 @@ def draw_planes(planes: List[Dict],
     ----------
     planes : list[dict]
         A list of dicts describing the planes.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -450,7 +450,7 @@ def draw_cylinders(cylinders: List[Dict],
     ----------
     cylinders : list[dict]
         A list of dicts describing the cylinders.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -496,7 +496,7 @@ def draw_spheres(spheres: List[Dict],
     ----------
     spheres : list[dict]
         A list of dicts describing the spheres.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -531,7 +531,7 @@ def draw_cubes(cubes: List[Dict],
     ----------
     cubes : list[dict]
         A list of dicts describing the cubes.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -569,7 +569,7 @@ def draw_pipes(pipes: List[Dict],
     ----------
     pipes : list[dict]
         A list of dicts describing the pipes.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
     centroid : bool, optional
         If True, use the centroids of the pipes as the relative base for their coordinates,
@@ -637,7 +637,7 @@ def draw_mesh(vertices: List[List[float]],
     centroid : bool, optional
         If True, use the centroid of the mesh as the relative base for the vertex coordinates,
         instead of the origin of the world coordinates system.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -671,7 +671,7 @@ def draw_curves(curves: List[Dict],
     ----------
     curves : list[dict]
         A list of dicts describing the curves.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns
@@ -716,7 +716,7 @@ def draw_surfaces(surfaces: List[Dict],
     ----------
     surfaces : list[dict]
         A list of dicts describing the surfaces.
-    collection : str or :blender:`bpy.types.Collection`, optional
+    collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection that should contain the objects created by this function.
 
     Returns

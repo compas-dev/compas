@@ -214,6 +214,12 @@ class MeshArtist(BlenderArtist, MeshArtist):
     def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
         """Draw the mesh.
 
+        Parameters
+        ----------
+        color : :class:`~compas.colors.Color`, optional
+            The color of the mesh.
+            The default value is :attr:`color`.
+
         Returns
         -------
         list[:blender:`bpy.types.Object`]

@@ -23,9 +23,9 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
     edges : list[tuple[int, int]], optional
         A list of edge identifiers.
         The default is None, in which case all edges are drawn.
-    nodecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+    nodecolor : tuple[int, int, int] | dict[int, tuple[int, int, int]], optional
         The color of the nodes.
-    edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+    edgecolor : tuple[int, int, int] | dict[tuple[int, int], tuple[int, int, int]], optional
         The color of the edges.
     show_nodes : bool, optional
         If True, draw the nodes of the network.
@@ -187,7 +187,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` or dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             Color of the edges.
             The default color is :attr:`NetworkArtist.default_edgecolor`.
 

@@ -624,7 +624,7 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
 
     Parameters
     ----------
-    color : str or [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]
+    color : str | [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]
         The base color specification.
         This can be a single color (as HEX or RGB), a list of colors, or a dict of colors.
     keys : sequence[hashable]
