@@ -75,7 +75,7 @@ class VolMeshArtist(Artist):
     default_vertexcolor = Color.from_hex('#0092D2')
     default_edgecolor = Color.from_hex('#0092D2')
     default_facecolor = Color.from_hex('#0092D2').lightened(50)
-    default_cellcolor = Color.pink()
+    default_cellcolor = Color.from_hex('#0092D2').lightened(50)
 
     vertex_color = ColorDict()
     edge_color = ColorDict()
