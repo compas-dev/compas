@@ -14,17 +14,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.artists.colordict.ColorDict` descriptor.
 * Added `allclose` to doctest fixtures.
 * Added `compas.colors.Color.coerce` to construct a color out og hex, RGB1, and RGB255 inputs.
+* Added `compas.datastructures.Network.from_pointcloud`.
+* Added `compas.datastructures.VolMesh.from_meshgrid`.
 
 ### Changed
 
 * Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
 * Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_ghpython.artists.MeshArtist.draw` to draw the mesh only.
 * Changed `compas_rhino.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
 * Changed `compas_rhino.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
 * Changed `compas_rhino.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
 * Changed `compas_blender.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
 * Changed `compas_blender.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
 * Changed `compas_blender.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
 
 ### Removed
 
