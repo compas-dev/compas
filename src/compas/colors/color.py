@@ -21,6 +21,10 @@ except Exception:
     HEX_DEC = {v: int(v, 16) for v in [x + y for x in BASE16 for y in BASE16]}
 
 
+class ColorError(Exception):
+    """Raise if color input is not a color."""
+
+
 class Color(Data):
     """Class for working with colors.
 
@@ -694,8 +698,9 @@ class Color(Data):
 
     @classmethod
     def maroon(cls):
-        """Construct the color maroon.
+        raise 
 
+        """Construct the color maroon.
         Returns
         -------
         :class:`compas.colors.Color`
@@ -780,6 +785,34 @@ class Color(Data):
     # --------------------------------------------------------------------------
     # methods
     # --------------------------------------------------------------------------
+
+    @staticmethod
+    def coerce(color):
+        """Coerce a color input into a color.
+        
+        Parameters
+        ----------
+        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+            The color input.
+        
+        Returns
+        -------
+        :class:`compas.colors.Color` | None
+
+        Raises
+        ------
+        ColorError
+
+        """
+        if not color:
+            return
+        if Color.is_rgb255(color):
+            return Color.from_rgb255(* list(color))
+        if Color.is_hex(color):
+            return Color.from_hex(color)
+        if Color.is_rgb1(color):
+            return Color(* list(color))
+        raise ColorError
 
     @staticmethod
     def is_rgb1(color):
