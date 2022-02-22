@@ -37,23 +37,12 @@ class ColorDict(object):
         if isinstance(value, dict):
             default = getattr(obj, self.default_name)
             item_color = defaultdict(lambda: default)
-
             for item in value:
-                color = value[item]
-                if Color.is_rgb255(color):
-                    color = Color.from_rgb255(color[0], color[1], color[2])
-                elif Color.is_hex(color):
-                    color = Color.from_hex(color)
-                else:
-                    color = Color(color[0], color[1], color[2])
-                item_color[item] = color
+                color = Color.coerce(value[item])
+                if color:
+                    item_color[item] = color
             setattr(obj, self.private_name, item_color)
 
         else:
-            if Color.is_rgb255(value):
-                color = Color.from_rgb255(value[0], value[1], value[2])
-            elif Color.is_hex(value):
-                color = Color.from_hex(value)
-            else:
-                color = Color(value[0], value[1], value[2])
+            color = Color.coerce(value)
             setattr(obj, self.private_name, defaultdict(lambda: color))
