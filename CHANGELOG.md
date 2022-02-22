@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added descriptor support to `compas.colors.Color`.
 * Added descriptor protocol metaclass to `compas.artists.Artist`.
 * Added `compas.artists.colordict.ColorDict` descriptor.
+* Added `allclose` to doctest fixtures.
+* Added `compas.colors.Color.coerce` to construct a color out og hex, RGB1, and RGB255 inputs.
 
 ### Changed
 
