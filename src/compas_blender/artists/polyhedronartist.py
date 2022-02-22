@@ -5,9 +5,9 @@ from typing import Union
 
 import bpy
 import compas_blender
-from compas_blender.utilities import RGBColor
 from compas.geometry import Polyhedron
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import BlenderArtist
 
 
@@ -60,12 +60,12 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=polyhedron, collection=collection or polyhedron.name, **kwargs)
 
-    def draw(self, color: Optional[RGBColor] = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
         """Draw the polyhedron associated with the artist.
 
         Parameters
         ----------
-        color : tuple[float, float, float] or tuple[int, int, int], optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the polyhedron.
             The default color is :attr:`compas.artists.ShapeArtist.color`.
 
@@ -75,7 +75,7 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
             The objects created in Blender.
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         vertices, faces = self.shape.to_vertices_and_faces()
         obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
         return [obj]

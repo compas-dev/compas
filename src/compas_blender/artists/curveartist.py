@@ -66,7 +66,7 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the curve.
             The default color is :attr:`compas.artists.CurveArtist.color`.
 
@@ -75,6 +75,6 @@ class CurveArtist(BlenderArtist, CurveArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         curves = [{'curve': self.curve, 'color': color, 'name': self.curve.name}]
         return compas_blender.draw_curves(curves, collection=self.collection)

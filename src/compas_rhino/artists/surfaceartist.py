@@ -41,8 +41,6 @@ class SurfaceArtist(RhinoArtist, SurfaceArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        color = color or self.color
-        if not Color.is_rgb255(color):
-            color = Color(* list(color)).rgb255
-        surfaces = [{'surface': self.surface, 'color': color, 'name': self.surface.name}]
+        color = Color.coerce(color) or self.color
+        surfaces = [{'surface': self.surface, 'color': color.rgb255, 'name': self.surface.name}]
         return compas_rhino.draw_surfaces(surfaces, layer=self.layer, clear=False, redraw=False)

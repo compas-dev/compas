@@ -6,9 +6,9 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas_blender.utilities import RGBColor
 from compas.geometry import Cylinder
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import BlenderArtist
 
 
@@ -61,12 +61,12 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
 
         super().__init__(shape=cylinder, collection=collection or cylinder.name, **kwargs)
 
-    def draw(self, color: Optional[RGBColor] = None, u: int = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, u: int = None) -> List[bpy.types.Object]:
         """Draw the cylinder associated with the artist.
 
         Parameters
         ----------
-        color : tuple[float, float, float] or tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the cylinder.
         u : int, optional
             Number of faces in the "u" direction.
@@ -79,7 +79,7 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
 
         """
         u = u or self.u
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         vertices, faces = self.shape.to_vertices_and_faces(u=u)
         obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
         return [obj]

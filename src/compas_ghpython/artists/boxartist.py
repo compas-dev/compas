@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_ghpython
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import GHArtist
 
 
@@ -28,18 +29,17 @@ class BoxArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
+            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
         :rhino:`Rhino.Geometry.Mesh`
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]
         faces = self.shape.faces
-        mesh = compas_ghpython.draw_mesh(vertices,
-                                         faces,
-                                         color=color)
+        mesh = compas_ghpython.draw_mesh(vertices, faces, color=color.rgb255)
         return mesh

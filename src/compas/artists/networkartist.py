@@ -5,7 +5,6 @@ from __future__ import division
 from abc import abstractmethod
 
 from compas.colors import Color
-# from compas.utilities import is_color_rgb
 from .artist import Artist
 from .colordict import ColorDict
 
@@ -131,19 +130,6 @@ class NetworkArtist(Artist):
     def node_xyz(self, node_xyz):
         self._node_xyz = node_xyz
 
-    # @property
-    # def node_color(self):
-    #     if not self._node_color:
-    #         self._node_color = {node: self.default_nodecolor for node in self.network.nodes()}
-    #     return self._node_color
-
-    # @node_color.setter
-    # def node_color(self, node_color):
-    #     if isinstance(node_color, dict):
-    #         self._node_color = node_color
-    #     elif is_color_rgb(node_color):
-    #         self._node_color = {node: node_color for node in self.network.nodes()}
-
     @property
     def node_size(self):
         if not self._node_size:
@@ -156,19 +142,6 @@ class NetworkArtist(Artist):
             self._node_size = nodesize
         elif isinstance(nodesize, (int, float)):
             self._node_size = {node: nodesize for node in self.network.nodes()}
-
-    # @property
-    # def edge_color(self):
-    #     if not self._edge_color:
-    #         self._edge_color = {edge: self.default_edgecolor for edge in self.network.edges()}
-    #     return self._edge_color
-
-    # @edge_color.setter
-    # def edge_color(self, edge_color):
-    #     if isinstance(edge_color, dict):
-    #         self._edge_color = edge_color
-    #     elif is_color_rgb(edge_color):
-    #         self._edge_color = {edge: edge_color for edge in self.network.edges()}
 
     @property
     def node_text(self):

@@ -34,14 +34,17 @@ class ShapeArtist(Artist):
 
     """
 
-    default_color = Color.from_hex('#0092D2').rgb
+    default_color = Color.from_hex('#0092D2')
 
     def __init__(self, shape, color=None, **kwargs):
         super(ShapeArtist, self).__init__()
+        self._default_color = None
+
         self._u = None
         self._v = None
         self._shape = None
         self._color = None
+
         self.shape = shape
         self.color = color
         self.u = kwargs.get('u')
@@ -62,15 +65,8 @@ class ShapeArtist(Artist):
         return self._color
 
     @color.setter
-    def color(self, c):
-        if not c:
-            return
-        if Color.is_rgb255(c):
-            self._color = Color.from_rgb255(c[0], c[1], c[2])
-        elif Color.is_hex(c):
-            self._color = Color.from_hex(c)
-        else:
-            self._color = Color(c[0], c[1], c[2])
+    def color(self, value):
+        self._color = Color.coerce(value)
 
     @property
     def u(self):

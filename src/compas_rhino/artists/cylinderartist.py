@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import RhinoArtist
 
 
@@ -30,8 +31,9 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the cylinder.
+            Default is :attr:`compas.artists.ShapeArtist.color`.
         u : int, optional
             Number of faces in the "u" direction.
             Default is :attr:`CylinderArtist.u`.
@@ -42,7 +44,7 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
             The GUIDs of the objects created in Rhino.
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         u = u or self.u
         vertices, faces = self.shape.to_vertices_and_faces(u=u)
         vertices = [list(vertex) for vertex in vertices]
@@ -50,6 +52,6 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
                                       faces,
                                       layer=self.layer,
                                       name=self.shape.name,
-                                      color=color,
+                                      color=color.rgb255,
                                       disjoint=True)
         return [guid]

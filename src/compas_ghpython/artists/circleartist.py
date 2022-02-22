@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_ghpython
 from compas.artists import PrimitiveArtist
+from compas.colors import Color
 from .artist import GHArtist
 
 
@@ -23,20 +24,23 @@ class CircleArtist(GHArtist, PrimitiveArtist):
     def __init__(self, circle, **kwargs):
         super(CircleArtist, self).__init__(primitive=circle, **kwargs)
 
-    def draw(self):
+    def draw(self, color=None):
         """Draw the circle.
+
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The color of the circle.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
         :rhino:`Rhino.Geometry.Circle`
 
         """
-        circles = [self._get_args(self.primitive, self.color)]
+        color = Color.coerce(color) or self.color
+        point = list(self.primitive.plane.point)
+        normal = list(self.primitive.plane.normal)
+        radius = self.primitive.radius
+        circles = [{'plane': [point, normal], 'radius': radius, 'color': color.rgb255, 'name': self.primitive.name}]
         return compas_ghpython.draw_circles(circles)[0]
-
-    @staticmethod
-    def _get_args(primitive, color=None):
-        point = list(primitive.plane.point)
-        normal = list(primitive.plane.normal)
-        radius = primitive.radius
-        return {'plane': [point, normal], 'radius': radius, 'color': color, 'name': primitive.name}

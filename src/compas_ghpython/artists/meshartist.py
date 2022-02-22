@@ -3,15 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino
-from functools import partial
-
-from compas.utilities import color_to_colordict
-
 import compas_ghpython
 from compas.artists import MeshArtist
 from .artist import GHArtist
-
-colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 class MeshArtist(GHArtist, MeshArtist):
@@ -46,50 +40,23 @@ class MeshArtist(GHArtist, MeshArtist):
         self.show_edges = show_edges
         self.show_faces = show_faces
 
-    def draw(self, vertices=None, edges=None, faces=None, vertexcolor=None, edgecolor=None, facecolor=None, color=None, join_faces=False):
-        """Draw the mesh using the chosen visualization settings.
+    def draw(self, color=None):
+        """Draw the mesh.
 
         Parameters
         ----------
-        vertices : list[int], optional
-            A list of vertices to draw.
-            Default is None, in which case all vertices are drawn.
-        edges : list[tuple[int, int]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
-        faces : list[int], optional
-            A selection of faces to draw.
-            The default is None, in which case all faces are drawn.
-        vertexcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
-            The color specification for the vertices.
-            The default color is the value of :attr:`MeshArtist.default_vertexcolor`.
-        edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
-            The color specification for the edges.
-            The default color is the value of :attr:`MeshArtist.default_edgecolor`.
-        facecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
-            The color specification for the faces.
-            The default color is the value of :attr:`MeshArtist.default_facecolor`.
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The color of the mesh.
             Default is the value of :attr:`MeshArtist.default_color`.
-        join_faces : bool, optional
-            If True, join the individual faces into one mesh.
 
         Returns
         -------
-        list[:rhino:`Rhino.Geometry.Mesh`, :rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
+        :rhino:`Rhino.Geometry.Mesh`
 
         """
-        geometry = []
-        if self.show_mesh:
-            geometry.append(self.draw_mesh(color=color))
-        if self.show_vertices:
-            geometry.extend(self.draw_vertices(vertices=vertices, color=vertexcolor))
-        if self.show_edges:
-            geometry.extend(self.draw_edges(edges=edges, color=edgecolor))
-        if self.show_faces:
-            geometry.extend(self.draw_faces(faces=faces, color=facecolor, join_faces=join_faces))
-        return geometry
+        self.color = color
+        vertices, faces = self.mesh.to_vertices_and_faces()
+        return compas_ghpython.draw_mesh(vertices, faces, self.color.rgb255)
 
     def draw_mesh(self, color=None):
         """Draw the mesh as a RhinoMesh.
@@ -98,7 +65,7 @@ class MeshArtist(GHArtist, MeshArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The color of the mesh.
             Default is the value of :attr:`MeshArtist.default_color`.
 
@@ -112,9 +79,7 @@ class MeshArtist(GHArtist, MeshArtist):
         Faces with more than 4 vertices will be triangulated on-the-fly.
 
         """
-        color = color or self.default_color
-        vertices, faces = self.mesh.to_vertices_and_faces()
-        return compas_ghpython.draw_mesh(vertices, faces, color)
+        return self.draw(color=color)
 
     def draw_vertices(self, vertices=None, color=None):
         """Draw a selection of vertices.
@@ -124,7 +89,7 @@ class MeshArtist(GHArtist, MeshArtist):
         vertices : list[int], optional
             A selection of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` or dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the vertices.
             The default is the value of :attr:`MeshArtist.default_vertexcolor`.
 
@@ -141,7 +106,7 @@ class MeshArtist(GHArtist, MeshArtist):
             points.append({
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.mesh.name, vertex),
-                'color': self.vertex_color.get(vertex, self.default_vertexcolor)
+                'color': self.vertex_color[vertex].rgb255
             })
         return compas_ghpython.draw_points(points)
 
@@ -153,7 +118,7 @@ class MeshArtist(GHArtist, MeshArtist):
         faces : list[int], optional
             A selection of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` or dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the faces.
             The default color is the value of :attr:`MeshArtist.default_facecolor`.
         join_faces : bool, optional
@@ -172,7 +137,7 @@ class MeshArtist(GHArtist, MeshArtist):
             facets.append({
                 'points': [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                 'name': "{}.face.{}".format(self.mesh.name, face),
-                'color': self.face_color.get(face, self.default_facecolor)
+                'color': self.face_color[face].rgb255
             })
         meshes = compas_ghpython.draw_faces(facets)
         if not join_faces:
@@ -190,7 +155,7 @@ class MeshArtist(GHArtist, MeshArtist):
         edges : list[tuple[int, int]], optional
             A selection of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` or dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
             The default color is the value of :attr:`MeshArtist.default_edgecolor`.
 
@@ -204,11 +169,12 @@ class MeshArtist(GHArtist, MeshArtist):
         vertex_xyz = self.vertex_xyz
         lines = []
         for edge in edges:
+            u, v = edge
             lines.append({
-                'start': vertex_xyz[edge[0]],
-                'end': vertex_xyz[edge[1]],
-                'color': self.edge_color.get(edge, self.default_edgecolor),
-                'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)
+                'start': vertex_xyz[u],
+                'end': vertex_xyz[v],
+                'color': self.edge_color[edge].rgb255,
+                'name': "{}.edge.{}-{}".format(self.mesh.name, u, v)
             })
         return compas_ghpython.draw_lines(lines)
 

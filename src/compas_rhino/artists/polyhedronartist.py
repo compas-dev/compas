@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import RhinoArtist
 
 
@@ -30,8 +31,9 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the polyhedron.
+            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
@@ -39,13 +41,13 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
             The GUIDs of the objects created in Rhino.
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]
         faces = self.shape.faces
         guid = compas_rhino.draw_mesh(vertices,
                                       faces,
                                       layer=self.layer,
                                       name=self.shape.name,
-                                      color=color,
+                                      color=color.rgb255,
                                       disjoint=True)
         return [guid]

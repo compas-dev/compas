@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_ghpython
 from compas.artists import PrimitiveArtist
+from compas.colors import Color
 from .artist import GHArtist
 
 
@@ -23,17 +24,20 @@ class PolylineArtist(GHArtist, PrimitiveArtist):
     def __init__(self, polyline, **kwargs):
         super(PolylineArtist, self).__init__(primitive=polyline, **kwargs)
 
-    def draw(self):
+    def draw(self, color=None):
         """Draw the polyline.
+
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The RGB color of the polyline.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
         :rhino:`Rhino.Geometry.Polyline`.
 
         """
-        polylines = [self._get_args(self.primitive)]
+        color = Color.coerce(color) or self.color
+        polylines = [{'points': map(list, self.primitive.points), 'color': color.rgb255}]
         return compas_ghpython.draw_polylines(polylines)[0]
-
-    @staticmethod
-    def _get_args(primitive):
-        return {'points': map(list, primitive.points)}

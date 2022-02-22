@@ -9,6 +9,7 @@ from compas.geometry import Frame
 
 import compas_blender
 from compas.artists import PrimitiveArtist
+from compas.colors import Color
 from .artist import BlenderArtist
 
 
@@ -54,10 +55,10 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         super().__init__(primitive=frame, collection=collection or frame.name, **kwargs)
 
         self.scale = scale or 1.0
-        self.color_origin = (0, 0, 0)
-        self.color_xaxis = (255, 0, 0)
-        self.color_yaxis = (0, 255, 0)
-        self.color_zaxis = (0, 0, 255)
+        self.color_origin = Color.black()
+        self.color_xaxis = Color.red()
+        self.color_yaxis = Color.green()
+        self.color_zaxis = Color.blue()
 
     def draw(self) -> List[bpy.types.Object]:
         """Draw the frame.

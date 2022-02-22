@@ -8,6 +8,7 @@ from compas.geometry import centroid_points
 
 import compas_rhino
 from compas.artists import MeshArtist
+from compas.colors import Color
 from .artist import RhinoArtist
 
 
@@ -222,7 +223,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         vertices : list[int], optional
             A selection of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the vertices.
             The default is the value of :attr:`MeshArtist.default_vertexcolor`.
 
@@ -252,7 +253,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         edges : list[tuple[int, int]], optional
             A selection of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
             The default color is the value of :attr:`MeshArtist.default_edgecolor`.
 
@@ -284,7 +285,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         faces : list[int], optional
             A selection of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the faces.
             The default color is the value of :attr:`MeshArtist.default_facecolor`.
         join_faces : bool, optional
@@ -327,7 +328,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         vertices : list[int], optional
             A selection of vertex normals to draw.
             Default is to draw all vertex normals.
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the vertex normals.
@@ -338,6 +339,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        color = Color.coerce(color).rgb255
         vertex_xyz = self.vertex_xyz
         vertices = vertices or self.vertices
         lines = []
@@ -362,7 +364,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         faces : list[int], optional
             A selection of face normals to draw.
             Default is to draw all face normals.
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the face normals.
@@ -373,6 +375,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        color = Color.coerce(color).rgb255
         vertex_xyz = self.vertex_xyz
         faces = faces or self.faces
         lines = []

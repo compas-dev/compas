@@ -6,10 +6,10 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas_blender.utilities import RGBColor
 from compas.artists import PrimitiveArtist
 from compas.geometry import Polyline
-from compas_blender.artists import BlenderArtist
+from compas.colors import Color
+from .artist import BlenderArtist
 
 
 class PolylineArtist(BlenderArtist, PrimitiveArtist):
@@ -61,12 +61,12 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
                  ):
         super().__init__(primitive=polyline, collection=collection or polyline.name, **kwargs)
 
-    def draw(self, color: Optional[RGBColor] = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the line.
 
         Parameters
         ----------
-        color : tuple[float, float, float] or tuple[int, int, int], optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the polyline.
             The default color is :attr:`compas.artists.PrimitiveArtist.color`.
         show_points : bool, optional
@@ -77,8 +77,7 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        color = color or self.color
-        _points = map(list, self.primitive.points)
+        color = Color.coerce(color) or self.color
 
         lines = [
             {'start': start, 'end': end, 'color': self.color, 'name': f"{self.primitive.name}"}
@@ -89,7 +88,7 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
         if show_points:
             points = [
                 {'pos': point, 'name': f"{self.primitive.name}.point", 'color': color, 'radius': 0.01}
-                for point in _points
+                for point in self.primitive.points
             ]
             objects += compas_blender.draw_points(points, collection=self.collection)
         return objects

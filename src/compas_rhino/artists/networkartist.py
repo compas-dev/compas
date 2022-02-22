@@ -3,10 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-
 from compas.geometry import centroid_points
-
 from compas.artists import NetworkArtist
+from compas.colors import Color
 from .artist import RhinoArtist
 
 
@@ -133,10 +132,10 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        nodecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        nodecolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the nodes.
             The default color is :attr:`NetworkArtist.default_nodecolor`.
-        edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        edgecolor : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
             The default color is :attr:`NetworkArtist.default_edgecolor`.
 
@@ -159,7 +158,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         nodes : list[int], optional
             A list of nodes to draw.
             Default is None, in which case all nodes are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             Color of the nodes.
             The default color is :attr:`NetworkArtist.default_nodecolor`.
 
@@ -189,7 +188,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` or dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             Color of the edges.
             The default color is :attr:`NetworkArtist.default_edgecolor`.
 
@@ -204,11 +203,12 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         node_xyz = self.node_xyz
         lines = []
         for edge in edges:
+            u, v = edge
             lines.append({
-                'start': node_xyz[edge[0]],
-                'end': node_xyz[edge[1]],
+                'start': node_xyz[u],
+                'end': node_xyz[v],
                 'color': self.edge_color[edge].rgb255,
-                'name': "{}.edge.{}-{}".format(self.network.name, *edge)
+                'name': "{}.edge.{}-{}".format(self.network.name, u, v)
             })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
@@ -262,9 +262,10 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         node_xyz = self.node_xyz
         labels = []
         for edge in self.edge_text:
+            u, v = edge
             labels.append({
-                'pos': centroid_points([node_xyz[edge[0]], node_xyz[edge[1]]]),
-                'name': "{}.edgelabel.{}-{}".format(self.network.name, *edge),
+                'pos': centroid_points([node_xyz[u], node_xyz[v]]),
+                'name': "{}.edgelabel.{}-{}".format(self.network.name, u, v),
                 'color': self.edge_color[edge].rgb255,
                 'text': self.edge_text[edge]
             })

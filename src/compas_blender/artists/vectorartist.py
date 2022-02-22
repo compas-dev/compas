@@ -6,11 +6,11 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas_blender.artists import BlenderArtist
-from compas_blender.utilities import RGBColor
 from compas.artists import PrimitiveArtist
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.colors import Color
+from .artist import BlenderArtist
 
 
 class VectorArtist(BlenderArtist, PrimitiveArtist):
@@ -62,17 +62,17 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         super().__init__(primitive=vector, collection=collection or vector.name, **kwargs)
 
     def draw(self,
-             color: Optional[RGBColor] = None,
+             color: Optional[Color] = None,
              point: Optional[Point] = None,
              show_point: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the vector.
 
         Parameters
         ----------
-        color : tuple[float, float, float] or tuple[int, int, int], optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the vector.
             The default color is :attr:`compas.artists.PrimitiveArtist.color`.
-        point : [float, float, float] or :class:`compas.geometry.Point`, optional
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
         show_point : bool, optional
@@ -83,9 +83,10 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        start = point or (0., 0., 0.)
-        end = tuple(map(sum, zip(start, self.primitive)))
-        color = color or self. color
+        point = point or (0., 0., 0.)
+        start = Point(*point)
+        end = start + self.primitive
+        color = Color.coerce(color) or self.color
         lines = [
             {'start': start, 'end': end, 'color': color, 'name': f"{self.primitive.name}"},
         ]
