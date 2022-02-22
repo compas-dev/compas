@@ -13,11 +13,11 @@ class SphereArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    sphere : :class:`compas.geometry.Sphere`
+    sphere : :class:`~compas.geometry.Sphere`
         A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 

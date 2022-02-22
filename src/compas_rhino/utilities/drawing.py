@@ -760,7 +760,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
 
     Parameters
     ----------
-    vertices : list[[float, float, float] or :class:`compas.geometry.Point`]
+    vertices : list[[float, float, float] or :class:`~compas.geometry.Point`]
         A list of point locations.
     faces : list[list[int]]
         A list of faces as lists of indices into `vertices`.

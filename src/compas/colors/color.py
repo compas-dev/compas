@@ -338,7 +338,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(r/255, g/255, b/255)
@@ -358,7 +358,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         See Also
         --------
@@ -383,7 +383,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         See Also
         --------
@@ -408,7 +408,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         See Also
         --------
@@ -433,7 +433,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         See Also
         --------
@@ -456,7 +456,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         if i == 0.0:
@@ -492,7 +492,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         value = value.lstrip('#').lower()
@@ -512,7 +512,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         See Also
         --------
@@ -533,7 +533,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(1.0, 1.0, 1.0)
@@ -544,7 +544,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 0.0, 0.0)
@@ -555,7 +555,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.5, 0.5, 0.5)
@@ -566,7 +566,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(1.0, 0.0, 0.0)
@@ -577,7 +577,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(1.0, 0.5, 0.0)
@@ -588,7 +588,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(1.0, 1.0, 0.0)
@@ -599,7 +599,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.5, 1.0, 0.0)
@@ -610,7 +610,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 1.0, 0.0)
@@ -621,7 +621,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 1.0, 0.5)
@@ -632,7 +632,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 1.0, 1.0)
@@ -643,7 +643,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 0.5, 1.0)
@@ -654,7 +654,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 0.0, 1.0)
@@ -665,7 +665,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.5, 0.0, 1.0)
@@ -676,7 +676,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(1.0, 0.0, 1.0)
@@ -687,7 +687,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(1.0, 0.0, 0.5)
@@ -701,7 +701,7 @@ class Color(Data):
         """Construct the color maroon.
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.5, 0.0, 0.0)
@@ -712,7 +712,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.5, 0.25, 0.0)
@@ -723,7 +723,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.5, 0.5, 0.0)
@@ -734,7 +734,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 0.5, 0.5)
@@ -745,7 +745,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.0, 0.0, 0.5)
@@ -756,7 +756,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.5, 0.0, 0.5)
@@ -767,7 +767,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         return cls(0.75, 0.75, 0.75)
@@ -790,12 +790,12 @@ class Color(Data):
 
         Parameters
         ----------
-        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`
             The color input.
 
         Returns
         -------
-        :class:`compas.colors.Color` | None
+        :class:`~compas.colors.Color` | None
 
         Raises
         ------
@@ -889,7 +889,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         Raises
         ------
@@ -940,7 +940,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         Raises
         ------
@@ -969,7 +969,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         color = self.copy()
@@ -1015,7 +1015,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         Raises
         ------
@@ -1066,7 +1066,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         Raises
         ------

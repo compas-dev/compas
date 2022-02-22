@@ -17,7 +17,7 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         A COMPAS point.
     size : int, optional
         The size of the point.
@@ -32,7 +32,7 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
 
     Attributes
     ----------
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         The point associated with the artist.
     size : float
         Size of the point, relative to the resolution of the plotter.

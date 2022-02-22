@@ -16,11 +16,11 @@ class RobotModelArtist(GHArtist, RobotModelArtist):
 
     Parameters
     ----------
-    model : :class:`compas.robots.RobotModel`
+    model : :class:`~compas.robots.RobotModel`
         Robot model.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.RobotModelArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.RobotModelArtist` for more info.
 
     """
 

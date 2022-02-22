@@ -27,7 +27,7 @@ class RhinoCone(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Cone` or :class:`compas.geometry.Cone`
+        geometry : :rhino:`Rhino_Geometry_Cone` or :class:`~compas.geometry.Cone`
             The geometry object defining a cone.
 
         Raises
@@ -59,7 +59,7 @@ class RhinoCone(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Cone`
+        :class:`~compas.geometry.Cone`
             A COMPAS cone.
         """
         return cone_to_compas(self.geometry)

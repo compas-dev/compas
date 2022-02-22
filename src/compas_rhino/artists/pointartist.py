@@ -13,7 +13,7 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         A COMPAS point.
     layer : str, optional
         The layer that should contain the drawing.

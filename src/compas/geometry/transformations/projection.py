@@ -57,12 +57,12 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        plane : [point, normal] | :class:`compas.geometry.Plane`
+        plane : [point, normal] | :class:`~compas.geometry.Plane`
             The plane to project onto.
 
         Returns
         -------
-        :class:`compas.geometry.Projection`
+        :class:`~compas.geometry.Projection`
             An orthogonal projection transformation.
 
         Examples
@@ -84,14 +84,14 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        plane : [point, normal] | :class:`compas.geometry.Plane`
+        plane : [point, normal] | :class:`~compas.geometry.Plane`
             The plane to project onto.
-        direction : [float, float, float] | :class:`compas.geometry.Vector`
+        direction : [float, float, float] | :class:`~compas.geometry.Vector`
             The direction of projection direction.
 
         Returns
         -------
-        :class:`compas.geometry.Projection`
+        :class:`~compas.geometry.Projection`
             A parallel projection transformation.
 
         Examples
@@ -114,14 +114,14 @@ class Projection(Transformation):
 
         Parameters
         ----------
-        plane : [point, normal] | :class:`compas.geometry.Plane`
+        plane : [point, normal] | :class:`~compas.geometry.Plane`
             The plane to project onto.
-        center_of_projection : [float, float, float] | :class:`compas.geometry.Point`
+        center_of_projection : [float, float, float] | :class:`~compas.geometry.Point`
             The camera view point.
 
         Returns
         -------
-        :class:`compas.geometry.Projection`
+        :class:`~compas.geometry.Projection`
             A perspective projection transformation.
 
         Examples
@@ -150,7 +150,7 @@ class Projection(Transformation):
 
         Returns
         -------
-        :class:`compas.geometry.Projection`
+        :class:`~compas.geometry.Projection`
             A projection transformation.
 
         """

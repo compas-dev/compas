@@ -13,11 +13,11 @@ class PolylineArtist(GHArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    polyline : :class:`~compas.geometry.Polyline`
         A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 

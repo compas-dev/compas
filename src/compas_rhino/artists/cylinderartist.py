@@ -13,7 +13,7 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    cylinder : :class:`compas.geometry.Cylinder`
+    cylinder : :class:`~compas.geometry.Cylinder`
         A COMPAS cylinder.
     layer : str, optional
         The layer that should contain the drawing.

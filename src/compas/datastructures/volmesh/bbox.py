@@ -16,7 +16,7 @@ def volmesh_bounding_box(volmesh):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
+    volmesh : :class:`~compas.datastructures.VolMesh`
         The volmesh data structure.
 
     Returns

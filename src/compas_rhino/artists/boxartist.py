@@ -13,7 +13,7 @@ class BoxArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    box : :class:`compas.geometry.Box`
+    box : :class:`~compas.geometry.Box`
         A COMPAS box.
     layer : str, optional
         The layer that should contain the drawing.

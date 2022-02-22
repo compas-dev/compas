@@ -16,18 +16,18 @@ class Sphere(Shape):
 
     Parameters
     ----------
-    point: [float, float, float] | :class:`compas.geometry.Point`
+    point: [float, float, float] | :class:`~compas.geometry.Point`
         The center of the sphere.
     radius: float
         The radius of the sphere.
 
     Attributes
     ----------
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         The center of the sphere.
     radius : float
         The radius of the sphere.
-    center : :class:`compas.geometry.Point`, read-only
+    center : :class:`~compas.geometry.Point`, read-only
         The center of the sphere.
     area : float, read-only
         The surface area of the sphere.
@@ -101,7 +101,7 @@ class Sphere(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Sphere`
+        :class:`~compas.geometry.Sphere`
             The constructed sphere.
 
         Examples
@@ -264,7 +264,7 @@ class Sphere(Shape):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the Sphere.
             Note that non-similarity preserving transformations will not change
             the sphere into an ellipsoid. In such case, the radius of the sphere

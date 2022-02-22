@@ -412,7 +412,7 @@ def draw_network(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
 
     Returns
     -------

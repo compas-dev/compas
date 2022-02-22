@@ -13,7 +13,7 @@ class SphereArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    sphere : :class:`compas.geometry.Sphere`
+    sphere : :class:`~compas.geometry.Sphere`
         A COMPAS sphere.
     layer : str, optional
         The layer that should contain the drawing.

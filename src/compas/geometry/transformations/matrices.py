@@ -464,7 +464,7 @@ def matrix_from_frame(frame):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         A frame describing the targeted Cartesian coordinate system
 
     Returns
@@ -497,9 +497,9 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
 
     Parameters
     ----------
-    frame_from : :class:`compas.geometry.Frame`
+    frame_from : :class:`~compas.geometry.Frame`
         A frame defining the original Cartesian coordinate system
-    frame_to : :class:`compas.geometry.Frame`
+    frame_to : :class:`~compas.geometry.Frame`
         A frame defining the targeted Cartesian coordinate system
 
     Returns
@@ -528,9 +528,9 @@ def matrix_from_change_of_basis(frame_from, frame_to):
 
     Parameters
     ----------
-    frame_from : :class:`compas.geometry.Frame`
+    frame_from : :class:`~compas.geometry.Frame`
         A frame defining the original Cartesian coordinate system
-    frame_to : :class:`compas.geometry.Frame`
+    frame_to : :class:`~compas.geometry.Frame`
         A frame defining the targeted Cartesian coordinate system
 
     Returns
@@ -720,7 +720,7 @@ def matrix_from_axis_and_angle(axis, angle, point=None):
         Three numbers that represent the axis of rotation.
     angle : float
         The rotation angle in radians.
-    point : [float, float, float] | :class:`compas.geometry.Point`, optional
+    point : [float, float, float] | :class:`~compas.geometry.Point`, optional
         A point to perform a rotation around an origin other than [0, 0, 0].
 
     Returns
@@ -789,7 +789,7 @@ def matrix_from_axis_angle_vector(axis_angle_vector, point=[0, 0, 0]):
     axis_angle_vector : [float, float, float]
         Three numbers that represent the axis of rotation and angle of rotation
         through the vector's magnitude.
-    point : [float, float, float] | :class:`compas.geometry.Point`, optional
+    point : [float, float, float] | :class:`~compas.geometry.Point`, optional
         A point to perform a rotation around an origin other than [0, 0, 0].
 
     Returns
@@ -1015,9 +1015,9 @@ def matrix_from_basis_vectors(xaxis, yaxis):
 
     Parameters
     ----------
-    xaxis : [float, float, float] | :class:`compas.geometry.Vector`
+    xaxis : [float, float, float] | :class:`~compas.geometry.Vector`
         The x-axis of the frame.
-    yaxis : [float, float, float] | :class:`compas.geometry.Vector`
+    yaxis : [float, float, float] | :class:`~compas.geometry.Vector`
         The y-axis of the frame.
 
     Returns
@@ -1148,7 +1148,7 @@ def matrix_from_orthogonal_projection(plane):
 
     Parameters
     ----------
-    plane : [point, normal] | :class:`compas.geometry.Plane`
+    plane : [point, normal] | :class:`~compas.geometry.Plane`
         The plane to project onto.
 
     Returns
@@ -1181,9 +1181,9 @@ def matrix_from_parallel_projection(plane, direction):
 
     Parameters
     ----------
-    plane : [point, normal] | :class:`compas.geometry.Plane`
+    plane : [point, normal] | :class:`~compas.geometry.Plane`
         The plane to project onto.
-    direction : [float, float, float] | :class:`compas.geometry.Vector`
+    direction : [float, float, float] | :class:`~compas.geometry.Vector`
         Direction of the projection.
 
     Returns
@@ -1218,9 +1218,9 @@ def matrix_from_perspective_projection(plane, center_of_projection):
 
     Parameters
     ----------
-    plane : [point, normal] | :class:`compas.geometry.Plane`
+    plane : [point, normal] | :class:`~compas.geometry.Plane`
         The plane to project onto.
-    center_of_projection : [float, float, float] | :class:`compas.geometry.Point`
+    center_of_projection : [float, float, float] | :class:`~compas.geometry.Point`
         The camera view point.
 
     Returns
@@ -1330,12 +1330,12 @@ def matrix_from_shear(angle, direction, point, normal):
     ----------
     angle : float
         The angle in radians.
-    direction : [float, float, float] | :class:`compas.geometry.Vector`
+    direction : [float, float, float] | :class:`~compas.geometry.Vector`
         The direction vector as list of 3 numbers.
         It must be orthogonal to the normal vector.
-    point : [float, float, float] | :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         The point of the shear plane as list of 3 numbers.
-    normal : [float, float, float] | :class:`compas.geometry.Vector`
+    normal : [float, float, float] | :class:`~compas.geometry.Vector`
         The normal of the shear plane as list of 3 numbers.
 
     Returns
@@ -1472,7 +1472,7 @@ def quaternion_from_axis_angle(axis, angle):
 
     Parameters
     ----------
-    axis : [float, float, float] | :class:`compas.geometry.Vector`
+    axis : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ coordinates of the rotation axis vector.
     angle : float
         Angle of rotation in radians.

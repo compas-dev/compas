@@ -236,7 +236,7 @@ class GLTFNode(object):
         return matrix
 
     def add_child(self, child_name=None, child_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
+        """Creates a :class:`~compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
         (default `None`), and adds this node to the children of this node.
 
         Parameters
@@ -246,7 +246,7 @@ class GLTFNode(object):
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        :class:`~compas.files.GLTFNode`
         """
         return self.context.add_child_to_node(self, child_name, child_extras)
 
@@ -306,17 +306,17 @@ class GLTFNode(object):
 
     @classmethod
     def from_data(cls, node, context):
-        """Creates a :class:`compas.files.GLTFNode` from a glTF node dictionary
+        """Creates a :class:`~compas.files.GLTFNode` from a glTF node dictionary
         and inserts it in the provided context.
 
         Parameters
         ----------
         node : dict
-        context : :class:`compas.files.GLTFContent`
+        context : :class:`~compas.files.GLTFContent`
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        :class:`~compas.files.GLTFNode`
         """
         if node is None:
             return None

@@ -15,7 +15,7 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     precision : str, optional
         Precision for point comparison in the form of a string formatting specifier.

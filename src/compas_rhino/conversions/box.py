@@ -27,7 +27,7 @@ class RhinoBox(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Box` or :class:`compas.geometry.Box`
+        geometry : :rhino:`Rhino_Geometry_Box` or :class:`~compas.geometry.Box`
             The geometry object defining a box.
 
         Raises
@@ -52,7 +52,7 @@ class RhinoBox(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
             A COMPAS box.
         """
         return box_to_compas(self.geometry)

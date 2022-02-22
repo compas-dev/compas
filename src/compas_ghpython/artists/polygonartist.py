@@ -13,11 +13,11 @@ class PolygonArtist(GHArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon`
+    polygon : :class:`~compas.geometry.Polygon`
         A COMPAS polygon.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 

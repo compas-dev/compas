@@ -78,11 +78,11 @@ class URDF(object):
 
         Parameters
         ----------
-        robot : :class:`compas.robots.RobotModel`
+        robot : :class:`~compas.robots.RobotModel`
 
         Returns
         -------
-        :class:`compas.files.URDF`
+        :class:`~compas.files.URDF`
 
         """
         urdf = cls()
@@ -100,7 +100,7 @@ class URDF(object):
 
         Returns
         -------
-        :class:`compas.files.URDF`
+        :class:`~compas.files.URDF`
 
         Examples
         --------
@@ -122,7 +122,7 @@ class URDF(object):
 
         Returns
         -------
-        :class:`compas.files.URDF`
+        :class:`~compas.files.URDF`
 
         Examples
         --------
@@ -237,7 +237,7 @@ class URDFParser(object):
 
         Parameters
         ----------
-        element : :class:`compas.files.XMLElement`
+        element : :class:`~compas.files.XMLElement`
             XML Element node.
         path : str, optional
             Full path to the element.

@@ -18,14 +18,14 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Vector`
+    primitive : :class:`~compas.geometry.Vector`
         A COMPAS vector.
     collection : str or :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------
@@ -72,7 +72,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the vector.
             The default color is :attr:`compas.artists.PrimitiveArtist.color`.
-        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+        point : [float, float, float] | :class:`~compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
         show_point : bool, optional

@@ -20,24 +20,24 @@ class Cylinder(Shape):
 
     Parameters
     ----------
-    circle: [plane, radius] | :class:`compas.geometry.Circle`
+    circle: [plane, radius] | :class:`~compas.geometry.Circle`
         The circle of the cylinder.
     height: float
         The height of the cylinder.
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         The plane of the cylinder.
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         The circle of the cylinder.
-    center : :class:`compas.geometry.Point`
+    center : :class:`~compas.geometry.Point`
         The center of the cylinder.
     radius : float
         The radius of the cylinder.
     height : float
         The height of the cylinder.
-    normal : :class:`compas.geometry.Vector`, read-only
+    normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the cylinder.
     diameter : float, read-only
         The diameter of the cylinder.
@@ -108,7 +108,7 @@ class Cylinder(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Cylinder`
+        :class:`~compas.geometry.Cylinder`
             The constructed cylinder.
 
         Examples
@@ -287,7 +287,7 @@ class Cylinder(Shape):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the cylinder.
 
         Returns

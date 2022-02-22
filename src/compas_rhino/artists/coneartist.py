@@ -13,7 +13,7 @@ class ConeArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    shape : :class:`compas.geometry.Cone`
+    shape : :class:`~compas.geometry.Cone`
         A COMPAS cone.
     layer : str, optional
         The layer that should contain the drawing.

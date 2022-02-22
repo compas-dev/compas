@@ -13,20 +13,20 @@ class Circle(Primitive):
 
     Parameters
     ----------
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
         The plane of the circle.
     radius : float
         The radius of the circle.
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         The plane of the circle.
     radius : float
         The radius of the circle.
-    center : :class:`compas.geometry.Point`
+    center : :class:`~compas.geometry.Point`
         The center of the circle.
-    normal : :class:`compas.geometry.Vector`, read-only
+    normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the circle.
     diameter : float, read-only
         The diameter of the circle.
@@ -92,7 +92,7 @@ class Circle(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Circle`
+        :class:`~compas.geometry.Circle`
             The constructed circle.
 
         Examples
@@ -198,7 +198,7 @@ class Circle(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

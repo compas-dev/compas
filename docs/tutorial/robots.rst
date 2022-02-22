@@ -21,7 +21,7 @@ Coordinate frames
 .. currentmodule:: compas.geometry
 
 One of the most basic concepts related to robotics that COMPAS provides are
-coordinate frames, which are described using the :class:`compas.geometry.Frame` class.
+coordinate frames, which are described using the :class:`~compas.geometry.Frame` class.
 
 In any robotic setup, there exist multiple coordinate frames, and each one is defined
 in relation to the next. Examples of typical coordinate frames are:
@@ -71,7 +71,7 @@ from alternative representations such as::
     >>> f6 = Frame.from_quaternion([1, 0, 0, 0], point=[0, 0, 0])
 
 The relationship between coordinate frames is expressed as a
-:class:`compas.geometry.Transformation` between the two, for example:
+:class:`~compas.geometry.Transformation` between the two, for example:
 
 ::
 
@@ -198,7 +198,7 @@ See below for a complete example of how to programmatically create a Robotmodel.
 Building robots models
 ======================
 
-Robot models are represented by the :class:`compas.robots.RobotModel` class.
+Robot models are represented by the :class:`~compas.robots.RobotModel` class.
 There are various ways to construct a robot model. The following snippet
 shows how to construct one programmatically:
 
@@ -228,7 +228,7 @@ shows how to construct one programmatically:
     ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5', 'joint_6']
 
 This approach can end up being very verbose, so the methods ``add_link``
-and ``add_joint`` of :class:`compas.robots.RobotModel` offer an alternative that
+and ``add_joint`` of :class:`~compas.robots.RobotModel` offer an alternative that
 significantly reduces the amount of code required.  Starting with an empty
 robot model, adding a link in the shape of a box is as easy as:
 
@@ -246,7 +246,7 @@ robot model, adding a link in the shape of a box is as easy as:
 This code snippet can be modified and run in a Rhino python editor
 to visualize Boxy.  Throughout the rest of this tutorial, the code
 snippets will include the lines for visualization in Rhino, but be
-aware that the class :class:`compas.robots.RobotModel` can be used,
+aware that the class :class:`~compas.robots.RobotModel` can be used,
 and is useful, outside of a CAD environment.
 
 .. code-block:: python
@@ -271,8 +271,8 @@ and is useful, outside of a CAD environment.
 As can be seen, this has added a box of dimensions ``1`` x ``2`` x ``.5``
 whose geometric center and orientation coincides with the world XY frame.
 The ``visual_meshes`` argument can be given a list containing COMPAS
-primitives such as :class:`compas.geometry.Box` or the more complex
-COMPAS meshes :class:`compas.geometry.Mesh`. For simplicity,
+primitives such as :class:`~compas.geometry.Box` or the more complex
+COMPAS meshes :class:`~compas.geometry.Mesh`. For simplicity,
 this tutorial uses only primitives.
 
 To reposition the box relative to the link's

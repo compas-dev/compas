@@ -13,7 +13,7 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    frame: :class:`compas.geometry.Frame`
+    frame: :class:`~compas.geometry.Frame`
         A COMPAS frame.
     scale: float, optional
         Scale factor that controls the length of the axes.

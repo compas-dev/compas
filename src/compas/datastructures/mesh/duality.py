@@ -16,15 +16,15 @@ def mesh_dual(mesh, cls=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    cls : Type[:class:`compas.datastructures.Mesh`], optional
+    cls : Type[:class:`~compas.datastructures.Mesh`], optional
         The type of the dual mesh.
         Defaults to the type of the provided mesh object.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         The dual mesh object.
 
     """

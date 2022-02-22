@@ -13,11 +13,11 @@ class TorusArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    torus : :class:`compas.geometry.Torus`
+    torus : :class:`~compas.geometry.Torus`
         A COMPAS torus.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 

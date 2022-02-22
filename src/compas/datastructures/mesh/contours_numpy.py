@@ -26,7 +26,7 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     attr_name : str
         The name of the vertex attribute.
@@ -53,7 +53,7 @@ def mesh_contours_numpy(mesh, levels=50, density=100):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object.
     levels : int, optional
         The number of contours.

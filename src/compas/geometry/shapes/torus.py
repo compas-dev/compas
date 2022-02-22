@@ -19,7 +19,7 @@ class Torus(Shape):
 
     Parameters
     ----------
-    plane : [point, normal] | :class:`compas.geometry.Plane`
+    plane : [point, normal] | :class:`~compas.geometry.Plane`
         The plane of the torus.
     radius_axis: float
         The radius of the axis.
@@ -28,13 +28,13 @@ class Torus(Shape):
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         The torus' plane.
     radius_axis : float
         The radius of the axis.
     radius_pipe : float
         The radius of the pipe.
-    center : :class:`compas.geometry.Point`, read-only
+    center : :class:`~compas.geometry.Point`, read-only
         The centre of the torus.
     area : float, read-only
         The surface area of the torus.
@@ -111,7 +111,7 @@ class Torus(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Torus`
+        :class:`~compas.geometry.Torus`
             The constructed torus.
 
         Examples
@@ -274,7 +274,7 @@ class Torus(Shape):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the Torus.
 
         Returns

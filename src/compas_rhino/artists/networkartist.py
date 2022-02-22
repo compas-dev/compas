@@ -13,7 +13,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
     layer : str, optional
         The parent layer of the network.

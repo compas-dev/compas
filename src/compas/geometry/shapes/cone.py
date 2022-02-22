@@ -23,24 +23,24 @@ class Cone(Shape):
 
     Parameters
     ----------
-    circle : [plane, radius] | :class:`compas.geometry.Circle`
+    circle : [plane, radius] | :class:`~compas.geometry.Circle`
         The base circle of the cone.
     height : float
         The height of the cone.
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         The plane of the cone.
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         The circle of the cone.
-    center : :class:`compas.geometry.Point`
+    center : :class:`~compas.geometry.Point`
         The center of the cone.
     radius : float
         The radius of the cone.
     height : float
         The height of the cone.
-    normal : :class:`compas.geometry.Vector`, read-only
+    normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the cone.
     diameter : float, read-only
         The diameter of the cone.
@@ -111,7 +111,7 @@ class Cone(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Cone`
+        :class:`~compas.geometry.Cone`
             The constructed cone.
 
         Examples
@@ -285,7 +285,7 @@ class Cone(Shape):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the cone.
 
         Returns

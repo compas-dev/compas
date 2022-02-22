@@ -13,7 +13,7 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    polyhedron : :class:`compas.geometry.Polyhedron`
+    polyhedron : :class:`~compas.geometry.Polyhedron`
         A COMPAS polyhedron.
     layer : str, optional
         The layer that should contain the drawing.

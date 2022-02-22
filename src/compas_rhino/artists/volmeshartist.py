@@ -13,7 +13,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
+    volmesh : :class:`~compas.datastructures.VolMesh`
         A COMPAS volmesh.
     layer : str, optional
         The name of the layer that will contain the volmesh.

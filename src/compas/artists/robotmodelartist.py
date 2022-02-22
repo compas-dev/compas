@@ -22,7 +22,7 @@ class AbstractRobotModelArtist(object):
         ----------
         geometry : object
             A CAD-specific (i.e. native) geometry object as returned by :meth:`create_geometry`.
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             Transformation to update the geometry object.
 
         """
@@ -37,7 +37,7 @@ class AbstractRobotModelArtist(object):
 
         Parameters
         ----------
-        geometry : :class:`compas.datastructures.Mesh`
+        geometry : :class:`~compas.datastructures.Mesh`
             Instance of a mesh data structure
         name : str, optional
             The name of the mesh to draw.
@@ -66,7 +66,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
     Attributes
     ----------
-    model : :class:`compas.robots.RobotModel`
+    model : :class:`~compas.robots.RobotModel`
         Instance of a robot model.
 
     """
@@ -84,7 +84,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        tool_model : :class:`compas.robots.ToolModel`
+        tool_model : :class:`~compas.robots.ToolModel`
             The tool that should be attached to the robot's flange.
 
         """
@@ -123,14 +123,14 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : :class:`~compas.datastructures.Mesh`
             The mesh to attach to the robot model.
         name : str
             The identifier of the mesh.
-        link : :class:`compas.robots.Link`
+        link : :class:`~compas.robots.Link`
             The link within the robot model or tool model to attach the mesh to. Optional.
             Defaults to the model's end effector link.
-        frame : :class:`compas.geometry.Frame`
+        frame : :class:`~compas.geometry.Frame`
             The frame of the mesh. Defaults to :meth:`compas.geometry.Frame.worldXY`.
 
         Returns
@@ -184,7 +184,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        link : :class:`compas.robots.Link`, optional
+        link : :class:`~compas.robots.Link`, optional
             Link instance to create. Defaults to the robot model's root.
         context : str, optional
             Subdomain identifier to insert in the mesh names.
@@ -229,7 +229,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        link : :class:`compas.robots.Link`, optional
+        link : :class:`~compas.robots.Link`, optional
             Base link instance.
             Defaults to the robot model's root.
         visual : bool, optional
@@ -241,7 +241,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Returns
         -------
-        list[:class:`compas.datastructures.Mesh`]
+        list[:class:`~compas.datastructures.Mesh`]
 
         """
         if link is None:
@@ -289,9 +289,9 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        link : :class:`compas.robots.Link`
+        link : :class:`~compas.robots.Link`
             A link.
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             A transformation to apply to th link's geometry.
 
         Returns
@@ -323,9 +323,9 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        item: :class:`compas.robots.Visual` or :class:`compas.robots.Collision`
+        item: :class:`~compas.robots.Visual` or :class:`~compas.robots.Collision`
             The visual or collidable object of a link.
-        transformation: :class:`compas.geometry.Transformation`
+        transformation: :class:`~compas.geometry.Transformation`
             The (absolute) transformation to apply onto the link's geometry.
 
         Returns
@@ -346,7 +346,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : :class:`compas.robots.Configuration` | dict[str, float]
+        joint_state : :class:`~compas.robots.Configuration` | dict[str, float]
             A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
             If True, the visual geometry will also be updated.
@@ -385,10 +385,10 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         Parameters
         ----------
-        joint_state : :class:`compas.robots.Configuration` | dict[str, float], optional
+        joint_state : :class:`~compas.robots.Configuration` | dict[str, float], optional
             A dictionary with joint names as keys and joint positions as values.
             Defaults to an empty dictionary.
-        transformation : :class:`compas.geometry.Transformation`, optional
+        transformation : :class:`~compas.geometry.Transformation`, optional
             The (absolute) transformation to apply to the entire tool's geometry.
             If None is given, no additional transformation will be applied.
             Defaults to None.

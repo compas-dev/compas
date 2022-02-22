@@ -94,7 +94,7 @@ def mesh_face_adjacency(mesh):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
 
     Returns
@@ -161,7 +161,7 @@ def mesh_unify_cycles(mesh, root=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     root : str, optional
         The key of the root face.
@@ -213,7 +213,7 @@ def mesh_flip_cycles(mesh):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
 
     Returns

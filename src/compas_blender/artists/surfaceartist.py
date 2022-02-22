@@ -17,14 +17,14 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
 
     Parameters
     ----------
-    surface : :class:`compas.geometry.Surface`
+    surface : :class:`~compas.geometry.Surface`
         A COMPAS surface.
     collection : str or :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------

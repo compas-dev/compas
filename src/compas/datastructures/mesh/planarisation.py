@@ -22,7 +22,7 @@ def mesh_flatness(mesh, maxdev=1.0):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     maxdev : float, optional
         A maximum value for the allowed deviation from flatness.
@@ -66,7 +66,7 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     fixed : list[int], optional
         A list of fixed vertices.

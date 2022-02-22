@@ -2,6 +2,15 @@ from collections import defaultdict
 from compas.colors import Color
 
 
+class DescriptorProtocol(type):
+    """Meta class to provide support for the descriptor protocol in Python versions lower than 3.6"""
+
+    def __init__(cls, name, bases, attrs):
+        for k, v in iter(attrs.items()):
+            if hasattr(v, '__set_name__'):
+                v.__set_name__(cls, k)
+
+
 class ColorDict(object):
     """Descriptor for color dictionaries.
 
@@ -23,14 +32,65 @@ class ColorDict(object):
     """
 
     def __set_name__(self, owner, name):
+        """Record the name of the attribute this descriptor is assigned to.
+        The attribute name is then used to identify the corresponding private attribute, and the attribute containing a default value.
+
+        Parameters
+        ----------
+        owner : object
+            The class owning the attribute.
+        name : str
+            The name of the attribute.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        In Python 3.6+ this method is called automatically.
+        For earlier versions it needs to be used with a custom metaclass (``DescriptorProtocol``).
+
+        """
         self.public_name = name
         self.private_name = '_' + name
         self.default_name = 'default_' + ''.join(name.split('_'))
 
     def __get__(self, obj, otype=None):
-        return getattr(obj, self.private_name) or defaultdict(lambda: getattr(obj, self.default_name))
+        """Get the color dict stored in the private attribute corresponding to the public attribute name of the descriptor.
+
+        Parameters
+        ----------
+        obj : object
+            The object owning the instance of the descriptor.
+        otype : ???, optional
+            ???
+
+        Returns
+        -------
+        defaultdict
+            A defaultdict with the value stored in the default attribute corresponding to the descriptor as a default value.
+
+        """
+        default = getattr(obj, self.default_name)
+        return getattr(obj, self.private_name) or defaultdict(lambda: default)
 
     def __set__(self, obj, value):
+        """Set a new value for the descriptor.
+
+        Parameters
+        ----------
+        obj : object
+            The owner of the descriptor.
+        value : dict[Any, :class:`~compas.colors.Color`] | :class:`~compas.colors.Color`
+            The new value for the descriptor.
+            This value is stored in the corresponding private attribute in the form of a defaultdict.
+
+        Returns
+        -------
+        None
+
+        """
         if not value:
             return
 

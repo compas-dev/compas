@@ -14,7 +14,7 @@ class CircleArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         A COMPAS circle.
     layer : str, optional
         The layer that should contain the drawing.

@@ -21,7 +21,7 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
     nodes : list[int], optional
         Selection of node identifiers.

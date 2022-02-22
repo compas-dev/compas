@@ -13,7 +13,7 @@ class SurfaceArtist(RhinoArtist, SurfaceArtist):
 
     Parameters
     ----------
-    surface : :class:`compas.geometry.Surface`
+    surface : :class:`~compas.geometry.Surface`
         A COMPAS surface.
     layer : str, optional
         The layer that should contain the drawing.

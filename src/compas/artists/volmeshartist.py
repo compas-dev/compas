@@ -14,12 +14,12 @@ class VolMeshArtist(Artist):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
+    volmesh : :class:`~compas.datastructures.VolMesh`
         A COMPAS volmesh.
 
     Attributes
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
+    volmesh : :class:`~compas.datastructures.VolMesh`
         The COMPAS volmesh associated with the artist.
     vertices : list[int]
         The list of vertices to draw.
@@ -36,16 +36,16 @@ class VolMeshArtist(Artist):
     vertex_xyz : dict[int, list[float]]
         The view coordinates of the vertices.
         By default, the actual vertex coordinates are used.
-    vertex_color : dict[int, tuple[float, float, float]]
+    vertex_color : dict[int, :class:`~compas.colors.Color`]
         Mapping between vertices and colors.
         Missing vertices get the default vertex color: :attr:`default_vertexcolor`.
-    edge_color : dict[tuple[int, int], tuple[float, float, float]]
+    edge_color : dict[tuple[int, int], :class:`~compas.colors.Color`]
         Mapping between edges and colors.
         Missing edges get the default edge color: :attr:`default_edgecolor`.
-    face_color : dict[int, tuple[float, float, float]]
+    face_color : dict[int, :class:`~compas.colors.Color`]
         Mapping between faces and colors.
         Missing faces get the default face color: :attr:`default_facecolor`.
-    cell_color : dict[int, tuple[float, float, float]]
+    cell_color : dict[int, :class:`~compas.colors.Color`]
         Mapping between cells and colors.
         Missing cells get the default cell color: :attr:`default_facecolor`.
     vertex_text : dict[int, str]
@@ -59,13 +59,13 @@ class VolMeshArtist(Artist):
 
     Class Attributes
     ----------------
-    default_vertexcolor : :class:`compas.colors.Color`
+    default_vertexcolor : :class:`~compas.colors.Color`
         The default color of the vertices of the mesh that don't have a specified color.
-    default_edgecolor : :class:`compas.colors.Color`
+    default_edgecolor : :class:`~compas.colors.Color`
         The default color of the edges of the mesh that don't have a specified color.
-    default_facecolor : :class:`compas.colors.Color`
+    default_facecolor : :class:`~compas.colors.Color`
         The default color of the faces of the mesh that don't have a specified color.
-    default_cellcolor : :class:`compas.colors.Color`
+    default_cellcolor : :class:`~compas.colors.Color`
         The default color of the cells of the mesh that don't have a specified color.
 
     """
@@ -235,7 +235,7 @@ class VolMeshArtist(Artist):
         vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
@@ -260,7 +260,7 @@ class VolMeshArtist(Artist):
         edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
@@ -285,7 +285,7 @@ class VolMeshArtist(Artist):
         faces : list[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.
@@ -310,7 +310,7 @@ class VolMeshArtist(Artist):
         cells : list[int], optional
             The cells to include in the drawing.
             Default is all cells.
-        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the cells,
             as either a single color to be applied to all cells,
             or a color dict, mapping specific cells to specific colors.

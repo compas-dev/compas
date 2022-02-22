@@ -15,11 +15,11 @@ class VectorArtist(GHArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    vector : :class:`compas.geometry.Vector`
+    vector : :class:`~compas.geometry.Vector`
         A COMPAS vector.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 
@@ -34,7 +34,7 @@ class VectorArtist(GHArtist, PrimitiveArtist):
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the vector.
             Default is :attr:`compas.artists.PrimitiveArtist.color`.
-        point : [float, float, float] or :class:`compas.geometry.Point`, optional
+        point : [float, float, float] or :class:`~compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
         show_point : bool, optional

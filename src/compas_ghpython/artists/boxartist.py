@@ -13,11 +13,11 @@ class BoxArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    box : :class:`compas.geometry.Box`
+    box : :class:`~compas.geometry.Box`
         A COMPAS box.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 

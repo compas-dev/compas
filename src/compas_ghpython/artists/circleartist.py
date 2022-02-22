@@ -13,11 +13,11 @@ class CircleArtist(GHArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         A COMPAS circle.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 

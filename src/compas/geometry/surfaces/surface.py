@@ -86,7 +86,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Surface`
+        :class:`~compas.geometry.Surface`
 
         """
         raise NotImplementedError
@@ -102,7 +102,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Surface`
+        :class:`~compas.geometry.Surface`
 
         """
         raise NotImplementedError
@@ -148,7 +148,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
 
         """
         from compas.datastructures import Mesh
@@ -178,7 +178,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        list[list[:class:`compas.geometry.Point`]]
+        list[list[:class:`~compas.geometry.Point`]]
 
         """
         nv = nv or nu

@@ -13,11 +13,11 @@ class PolyhedronArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    polyhedron : :class:`compas.geometry.Polyhedron`
+    polyhedron : :class:`~compas.geometry.Polyhedron`
         A COMPAS polyhedron.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 

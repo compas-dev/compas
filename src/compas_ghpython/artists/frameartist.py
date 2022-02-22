@@ -13,13 +13,13 @@ class FrameArtist(GHArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         A COMPAS frame.
     scale : float, optional
         The scale of the vectors representing the axes of the frame.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------

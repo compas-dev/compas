@@ -12,11 +12,11 @@ class ToolModel(RobotModel):
 
     Attributes
     ----------
-    visual : :class:`compas.datastructures.Mesh`
+    visual : :class:`~compas.datastructures.Mesh`
         The visual mesh of the tool.
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         The frame of the tool in tool0 frame.
-    collision : :class:`compas.datastructures.Mesh`
+    collision : :class:`~compas.datastructures.Mesh`
         The collision mesh representation of the tool.
     name : str
         The name of the `ToolModel`. Defaults to 'attached_tool'.
@@ -47,11 +47,11 @@ class ToolModel(RobotModel):
 
     @classmethod
     def from_robot_model(cls, robot, frame_in_tool0_frame, link_name=None):
-        """Creates a ``ToolModel`` from a :class:`compas.robots.RobotModel` instance.
+        """Creates a ``ToolModel`` from a :class:`~compas.robots.RobotModel` instance.
 
         Parameters
         ----------
-        robot : :class:`compas.robots.RobotModel`
+        robot : :class:`~compas.robots.RobotModel`
         frame_in_tool0_frame : str
             The frame of the tool in tool0 frame.
         link_name : str
@@ -118,12 +118,12 @@ class ToolModel(RobotModel):
 
         Parameters
         ----------
-        frames_tcf : list[:class:`compas.geometry.Frame`]
+        frames_tcf : list[:class:`~compas.geometry.Frame`]
             Frames (in WCF) at the robot's tool tip (tcf).
 
         Returns
         -------
-        list[:class:`compas.geometry.Frame`]
+        list[:class:`~compas.geometry.Frame`]
             Frames (in WCF) at the robot's flange (tool0).
 
         Examples
@@ -147,12 +147,12 @@ class ToolModel(RobotModel):
 
         Parameters
         ----------
-        frames_t0cf : list[:class:`compas.geometry.Frame`]
+        frames_t0cf : list[:class:`~compas.geometry.Frame`]
             Frames (in WCF) at the robot's flange (tool0).
 
         Returns
         -------
-        list[:class:`compas.geometry.Frame`]
+        list[:class:`~compas.geometry.Frame`]
             Frames (in WCF) at the robot's tool tip (tcf).
 
         Examples

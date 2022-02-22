@@ -13,7 +13,7 @@ class CurveArtist(RhinoArtist, CurveArtist):
 
     Parameters
     ----------
-    curve : :class:`compas.geometry.Curve`
+    curve : :class:`~compas.geometry.Curve`
         A COMPAS curve.
     layer : str, optional
         The layer that should contain the drawing.

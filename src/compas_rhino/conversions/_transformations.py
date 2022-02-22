@@ -10,7 +10,7 @@ def xform_from_transformation(transformation):
 
     Parameters
     ----------
-    transformation : :class:`compas.geometry.Transformation`
+    transformation : :class:`~compas.geometry.Transformation`
         COMPAS transformation.
 
     Returns
@@ -58,7 +58,7 @@ def xtransform(geometry, transformation):
     ----------
     geometry : :rhino:`Rhino.Geometry.GeometryBase`
         Rhino Geometry object.
-    transformation : :class:`compas.geometry.Transformation`
+    transformation : :class:`~compas.geometry.Transformation`
         COMPAS transformation.
 
     Returns
@@ -77,7 +77,7 @@ def xtransformed(geometry, transformation):
     ----------
     geometry : :rhino:`Rhino.Geometry.GeometryBase`
         Rhino Geometry object.
-    transformation : :class:`compas.geometry.Transformation`
+    transformation : :class:`~compas.geometry.Transformation`
         COMPAS transformation.
 
     Returns

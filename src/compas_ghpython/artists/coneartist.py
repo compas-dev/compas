@@ -13,11 +13,11 @@ class ConeArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    shape : :class:`compas.geometry.Cone`
+    shape : :class:`~compas.geometry.Cone`
         A COMPAS cone.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 

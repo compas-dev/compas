@@ -13,7 +13,7 @@ class PolylineArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    polyline : :class:`~compas.geometry.Polyline`
         A COMPAS polyline.
     layer : str, optional
         The layer that should contain the drawing.

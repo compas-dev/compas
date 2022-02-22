@@ -16,7 +16,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh data structure.
     check_angles : bool, optional
         Flag indicating that the angles of the quads should be checked to choose the best diagonal.

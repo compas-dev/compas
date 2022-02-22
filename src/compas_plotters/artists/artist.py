@@ -8,7 +8,7 @@ class PlotterArtist(Artist):
 
     Attributes
     ----------
-    plotter : :class:`compas_plotters.plotter.Plotter`, read-only
+    plotter : :class:`~compas_plotters.plotter.Plotter`, read-only
         A plotter instance.
     data : list[[float, float]]
         The geometrical data points visualized with the plotter.

@@ -364,7 +364,7 @@ class Axis(Data):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the axis.
 
         """
@@ -379,7 +379,7 @@ class Axis(Data):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the axis.
 
         Returns
@@ -583,7 +583,7 @@ class Joint(Data):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the joint.
 
         Returns
@@ -599,7 +599,7 @@ class Joint(Data):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the joint.
 
         Returns

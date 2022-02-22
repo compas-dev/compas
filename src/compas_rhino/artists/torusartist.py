@@ -13,7 +13,7 @@ class TorusArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    torus : :class:`compas.geometry.Torus`
+    torus : :class:`~compas.geometry.Torus`
         A COMPAS torus.
     layer : str, optional
         The layer that should contain the drawing.

@@ -49,19 +49,19 @@ class Transformation(Data):
 
     Attributes
     ----------
-    scale : :class:`compas.geometry.Scale`, read-only
+    scale : :class:`~compas.geometry.Scale`, read-only
         The scale component of the transformation matrix.
-    shear : :class:`compas.geometry.Shear`, read-only
+    shear : :class:`~compas.geometry.Shear`, read-only
         The shear component of the transformation matrix.
-    rotation : :class:`compas.geometry.Rotation`, read-only
+    rotation : :class:`~compas.geometry.Rotation`, read-only
         The rotation component of the transformation matrix.
-    translation : :class:`compas.geometry.Translation`, read-only
+    translation : :class:`~compas.geometry.Translation`, read-only
         The translation component of the transformation matrix.
-    projection : :class:`compas.geometry.Projection`, read-only
+    projection : :class:`~compas.geometry.Projection`, read-only
         The projection component of the transformation matrix.
-    translation_vector : :class:`compas.geometry.Vector`, read-only
+    translation_vector : :class:`~compas.geometry.Vector`, read-only
         The translation component of the transformation matrix as a translation vector.
-    basis_vectors : tuple[:class:`compas.geometry.Vector`, :class:`compas.geometry.Vector`], read-only
+    basis_vectors : tuple[:class:`~compas.geometry.Vector`, :class:`~compas.geometry.Vector`], read-only
         The basis vectors from the rotation component of the transformation matrix.
     list : list[float], read-only
         Flattens the 4x4 transformation matrix into a list of 16 numbers.
@@ -216,7 +216,7 @@ class Transformation(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The transformation.
 
         """
@@ -233,7 +233,7 @@ class Transformation(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The transformation.
 
         Notes
@@ -271,7 +271,7 @@ class Transformation(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The transformation.
 
         """
@@ -287,12 +287,12 @@ class Transformation(Data):
 
         Parameters
         ----------
-        frame : :class:`compas.geometry.Frame`
+        frame : :class:`~compas.geometry.Frame`
             A frame describing the targeted Cartesian coordinate system.
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The transformation.
 
         Notes
@@ -321,14 +321,14 @@ class Transformation(Data):
 
         Parameters
         ----------
-        frame_from : :class:`compas.geometry.Frame`
+        frame_from : :class:`~compas.geometry.Frame`
             A frame defining the original Cartesian coordinate system.
-        frame_to : :class:`compas.geometry.Frame`
+        frame_to : :class:`~compas.geometry.Frame`
             A frame defining the targeted Cartesian coordinate system.
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The transformation.
 
         Examples
@@ -355,14 +355,14 @@ class Transformation(Data):
 
         Parameters
         ----------
-        frame_from : :class:`compas.geometry.Frame`
+        frame_from : :class:`~compas.geometry.Frame`
             A frame defining the original Cartesian coordinate system.
-        frame_to : :class:`compas.geometry.Frame`
+        frame_to : :class:`~compas.geometry.Frame`
             A frame defining the targeted Cartesian coordinate system.
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The transformation representing a change of basis.
 
         Examples
@@ -391,7 +391,7 @@ class Transformation(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             An independent copy of the transformation.
 
         """
@@ -419,7 +419,7 @@ class Transformation(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The transposed transformation object.
 
         """
@@ -443,7 +443,7 @@ class Transformation(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The inverse transformation.
 
         Examples
@@ -467,15 +467,15 @@ class Transformation(Data):
 
         Returns
         -------
-        :class:`compas.geometry.Scale`
+        :class:`~compas.geometry.Scale`
             The scale component of the current transformation.
-        :class:`compas.geometry.Shear`
+        :class:`~compas.geometry.Shear`
             The shear component of the current transformation.
-        :class:`compas.geometry.Rotation`
+        :class:`~compas.geometry.Rotation`
             The rotation component of the current transformation.
-        :class:`compas.geometry.Translation`
+        :class:`~compas.geometry.Translation`
             The translation component of the current transformation.
-        :class:`compas.geometry.Projection`
+        :class:`~compas.geometry.Projection`
             The projection component of the current transformation.
 
         Examples
@@ -515,7 +515,7 @@ class Transformation(Data):
 
         Parameters
         ----------
-        other: :class:`compas.geometry.Transformation`
+        other: :class:`~compas.geometry.Transformation`
             The transformation object to concatenate.
 
         Returns
@@ -535,12 +535,12 @@ class Transformation(Data):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Transformation`
+        other : :class:`~compas.geometry.Transformation`
             The transformation object to concatenate.
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        :class:`~compas.geometry.Transformation`
             The new transformation that is the concatenation of this one and the other.
 
         Notes

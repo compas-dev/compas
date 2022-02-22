@@ -13,11 +13,11 @@ class CylinderArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    cylinder : :class:`compas.geometry.Cylinder`
+    cylinder : :class:`~compas.geometry.Cylinder`
         A COMPAS cylinder.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 

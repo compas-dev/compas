@@ -17,7 +17,7 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    polyline : :class:`~compas.geometry.Polyline`
         A COMPAS polyline.
     linewidth : float, optional
         Width of the polyline edge lines.
@@ -31,11 +31,11 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
         Stacking order of the polyline on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    polyline : :class:`~compas.geometry.Polyline`
         The line associated with the artist.
 
     """

@@ -24,7 +24,7 @@ class Box(Shape):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         The frame of the box.
     xsize : float
         The size of the box in the box frame's x direction.
@@ -35,7 +35,7 @@ class Box(Shape):
 
     Attributes
     ----------
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         The box's frame.
     xsize : float
         The size of the box in the box frame's x direction.
@@ -61,7 +61,7 @@ class Box(Shape):
         The depth of the box in Y direction.
     height : float, read-only
         The height of the box in Z direction.
-    diagonal : :class:`compas.geometry.Line`, read-only
+    diagonal : :class:`~compas.geometry.Line`, read-only
         Diagonal of the box.
     dimensions : list[float], read-only
         The dimensions of the box in the local frame.
@@ -69,9 +69,9 @@ class Box(Shape):
         The surface area of the box.
     volume : float, read-only
         The volume of the box.
-    points : list[:class:`compas.geometry.Point`], read-only
+    points : list[:class:`~compas.geometry.Point`], read-only
         The XYZ coordinates of the corners of the box.
-    vertices : list[:class:`compas.geometry.Point`], read-only
+    vertices : list[:class:`~compas.geometry.Point`], read-only
         The XYZ coordinates of the vertices of the box.
     faces : list[list[int]], read-only
         The faces of the box defined as lists of vertex indices.
@@ -154,7 +154,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
             The constructed box.
 
         Examples
@@ -375,7 +375,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
             The resulting box.
 
         Notes
@@ -408,7 +408,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        bbox : list[[float, float, float] | :class:`compas.geometry.Point`]
+        bbox : list[[float, float, float] | :class:`~compas.geometry.Point`]
             A list of 8 point locations, representing the corners of the bounding box.
             Positions 0, 1, 2, 3 are the bottom corners.
             Positions 4, 5, 6, 7 are the top corners.
@@ -416,7 +416,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
             The box shape.
 
         Examples
@@ -451,16 +451,16 @@ class Box(Shape):
 
         Parameters
         ----------
-        corner1 : [float, float, float] | :class:`compas.geometry.Point`
+        corner1 : [float, float, float] | :class:`~compas.geometry.Point`
             The XYZ coordinates of the bottom left corner of the base of the box.
-        corner2 : [float, float, float] | :class:`compas.geometry.Point`
+        corner2 : [float, float, float] | :class:`~compas.geometry.Point`
             The XYZ coordinates of the top right corner of the base of the box.
         height : float
             The height of the box.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
             The resulting box.
 
         Examples
@@ -492,12 +492,12 @@ class Box(Shape):
 
         Parameters
         ----------
-        diagonal : [point, point] | :class:`compas.geometry.Line`
+        diagonal : [point, point] | :class:`~compas.geometry.Line`
             The diagonal of the box, represented by a pair of points in space.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
             The resulting box.
 
         Examples
@@ -562,7 +562,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point : [float, float, float] | :class:`~compas.geometry.Point`
 
         Returns
         -------

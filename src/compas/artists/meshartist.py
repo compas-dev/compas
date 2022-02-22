@@ -14,12 +14,12 @@ class MeshArtist(Artist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
 
     Attributes
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
     vertices : list[int]
         The selection of vertices that should be included in the drawing.
@@ -30,18 +30,18 @@ class MeshArtist(Artist):
     faces : list[int]
         The selection of faces that should be included in the drawing.
         Defaults to all faces.
-    color : tuple[float, float, float]
+    color : :class:`~compas.colors.Color`
         The base RGB color of the mesh.
     vertex_xyz : dict[int, list[float]]
         View coordinates of the vertices.
         Defaults to the real coordinates.
-    vertex_color : dict[int, :class:`compas.colors.Color`]
+    vertex_color : dict[int, :class:`~compas.colors.Color`]
         Vertex colors.
         Missing vertices get the default vertex color :attr:`default_vertexcolor`.
-    edge_color : dict[tuple[int, int], :class:`compas.colors.Color`]
+    edge_color : dict[tuple[int, int], :class:`~compas.colors.Color`]
         Edge colors.
         Missing edges get the default edge color :attr:`default_edgecolor`.
-    face_color : dict[int, :class:`compas.colors.Color`]
+    face_color : dict[int, :class:`~compas.colors.Color`]
         Face colors.
         Missing faces get the default face color :attr:`default_facecolor`.
     vertex_text : dict[int, str]
@@ -50,7 +50,7 @@ class MeshArtist(Artist):
     edge_text : dict[tuple[int, int], str]
         Edge labels.
         Defaults to the edge identifiers.
-    face_text : dict[int, tuple[float, float, float]]
+    face_text : dict[int, str]
         Face labels.
         Defaults to the face identifiers.
     vertex_size : dict[int, float]
@@ -64,11 +64,11 @@ class MeshArtist(Artist):
 
     Class Attributes
     ----------------
-    default_vertexcolor : :class:`compas.colors.Color`
+    default_vertexcolor : :class:`~compas.colors.Color`
         The default color of the vertices of the mesh.
-    default_edgecolor : :class:`compas.colors.Color`
+    default_edgecolor : :class:`~compas.colors.Color`
         The default color of the edges of the mesh.
-    default_facecolor : :class:`compas.colors.Color`
+    default_facecolor : :class:`~compas.colors.Color`
         The default color of the faces of the mesh.
     default_vertexsize : float
         The default size of the vertices of the mesh.
@@ -252,7 +252,7 @@ class MeshArtist(Artist):
         vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : Union[tuple[float, float, float], dict[int, tuple[float, float, float]]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
@@ -277,7 +277,7 @@ class MeshArtist(Artist):
         edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
@@ -302,7 +302,7 @@ class MeshArtist(Artist):
         faces : list[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.
@@ -321,6 +321,9 @@ class MeshArtist(Artist):
     def draw_mesh(self, *args, **kwargs):
         """Draw the mesh of the mesh.
 
+        .. deprecated:: 1.14.1
+            Use :meth:`~MeshArtist.draw` instead.
+
         Returns
         -------
         list
@@ -331,7 +334,7 @@ class MeshArtist(Artist):
 
     @abstractmethod
     def clear(self):
-        """Clear the mesh.
+        """Clear all components of the mesh.
 
         Returns
         -------

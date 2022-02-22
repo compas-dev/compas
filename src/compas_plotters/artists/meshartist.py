@@ -31,7 +31,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
     vertices : list[int], optional
         Selection of vertex identifiers.
@@ -70,7 +70,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         The base stacking order of the components of the mesh on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.MeshArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.MeshArtist` for more info.
 
     Attributes
     ----------

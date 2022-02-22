@@ -17,14 +17,14 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon`
+    polygon : :class:`~compas.geometry.Polygon`
         A COMPAS polygon.
     collection : str or :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------

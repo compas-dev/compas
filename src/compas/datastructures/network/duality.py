@@ -22,7 +22,7 @@ def network_find_cycles(network, breakpoints=None):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         The network object.
     breakpoints : list, optional
         The vertices at which to break the found faces.

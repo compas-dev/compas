@@ -24,7 +24,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
     collection : str or :blender:`bpy.types.Collection`
         The name of the collection the object belongs to.

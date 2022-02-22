@@ -18,12 +18,12 @@ def network_complement(network, cls=None):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network.
 
     Returns
     -------
-    :class:`compas.datastructures.Network`
+    :class:`~compas.datastructures.Network`
         The complement network.
 
     References

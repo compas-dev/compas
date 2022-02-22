@@ -22,12 +22,12 @@ class GLTFParser(object):
 
     Parameters
     ----------
-    reader : :class:`compas.files.GLTFReader`
+    reader : :class:`~compas.files.GLTFReader`
 
     Attributes
     ----------
-    reader : :class:`compas.files.GLTFReader`
-    content : :class:`compas.files.GLTFContent`
+    reader : :class:`~compas.files.GLTFReader`
+    content : :class:`~compas.files.GLTFContent`
     """
 
     def __init__(self, reader):

@@ -66,7 +66,7 @@ class STL(object):
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : :class:`~compas.datastructures.Mesh`
             The mesh.
         binary : bool, optional
             Flag indicating that the file should be written in binary format.
@@ -332,7 +332,7 @@ class STLWriter(object):
     ----------
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh.
     binary : bool, optional
         Flag indicating that the file should be written in binary format.

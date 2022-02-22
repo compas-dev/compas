@@ -4,7 +4,7 @@ Data
 
 .. rst-class:: lead
 
-    The data package provides a base class (:class:`compas.data.Data`) for all data objects in the COMPAS framework (see :ref:`Inheritance Diagrams`),
+    The data package provides a base class (:class:`~compas.data.Data`) for all data objects in the COMPAS framework (see :ref:`Inheritance Diagrams`),
     the mechanism for serialization of data to JSON format,
     and the base infrastructure for validation of the data of COMPAS objects in both the original Python and serialized JSON formats.
 

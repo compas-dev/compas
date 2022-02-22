@@ -51,7 +51,7 @@ class AbstractMeshLoader(object):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
         """
         return NotImplementedError
@@ -68,7 +68,7 @@ class AbstractMeshLoader(object):
 
         Returns
         -------
-        list[:class:`compas.datastructures.Mesh`]
+        list[:class:`~compas.datastructures.Mesh`]
             List of meshes.
         """
         return NotImplementedError
@@ -132,7 +132,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
         """
         return self.load_meshes(url)[0]
@@ -149,7 +149,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        list[:class:`compas.datastructures.Mesh`]
+        list[:class:`~compas.datastructures.Mesh`]
             List of meshes.
         """
         url = self._get_mesh_url(url)
@@ -268,7 +268,7 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
         """
         return self.load_meshes(url)[0]
@@ -285,7 +285,7 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        list[:class:`compas.datastructures.Mesh`]
+        list[:class:`~compas.datastructures.Mesh`]
             List of meshes.
         """
         local_file = self._get_local_path(url)

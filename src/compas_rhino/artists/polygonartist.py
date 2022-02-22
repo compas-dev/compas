@@ -13,7 +13,7 @@ class PolygonArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon`
+    polygon : :class:`~compas.geometry.Polygon`
         A COMPAS polygon.
     layer : str, optional
         The name of the layer that will contain the mesh.

@@ -17,14 +17,14 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
 
     Parameters
     ----------
-    cylinder : :class:`compas.geometry.Cylinder`
+    cylinder : :class:`~compas.geometry.Cylinder`
         A COMPAS cylinder.
     collection : str or :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.ShapeArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.ShapeArtist`.
 
     Examples
     --------

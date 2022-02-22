@@ -13,7 +13,7 @@ class MeshArtist(GHArtist, MeshArtist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
     show_vertices : bool, optional
         If True, draw the vertices of the mesh.
@@ -23,7 +23,7 @@ class MeshArtist(GHArtist, MeshArtist):
         If True, draw the faces of the mesh.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.MeshArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.MeshArtist` for more info.
 
     """
 

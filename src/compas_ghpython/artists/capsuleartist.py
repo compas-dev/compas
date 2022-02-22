@@ -13,11 +13,11 @@ class CapsuleArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    capsule : :class:`compas.geometry.Capsule`
+    capsule : :class:`~compas.geometry.Capsule`
         A COMPAS capsule.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 

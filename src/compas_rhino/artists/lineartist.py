@@ -13,7 +13,7 @@ class LineArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    line : :class:`compas.geometry.Line`
+    line : :class:`~compas.geometry.Line`
         A COMPAS line.
     layer : str, optional
         The layer that should contain the drawing.

@@ -11,7 +11,7 @@ class PlaneArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         A COMPAS plane.
     layer : str, optional
         The layer that should contain the drawing.

@@ -121,7 +121,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -149,7 +149,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -186,7 +186,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -215,14 +215,14 @@ class Network(Graph):
 
         Parameters
         ----------
-        cloud : :class:`compas.geometry.Pointcloud`
+        cloud : :class:`~compas.geometry.Pointcloud`
             A pointcloud object.
         degree : int, optional
             The number of connections per node.
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
 
         """
         network = cls()

@@ -17,7 +17,7 @@ class BlenderArtist(Artist):
         The Blender scene collection the object(s) created by the artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas.artists.Artist` for more info.
+        See :class:`~compas.artists.Artist` for more info.
 
     Attributes
     ----------

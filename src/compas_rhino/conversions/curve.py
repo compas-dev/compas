@@ -34,7 +34,7 @@ class RhinoCurve(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Curve` or :class:`compas.geometry.Line` or :class:`compas.geometry.Circle` or :class:`compas.geometry.Ellipse`
+        geometry : :rhino:`Rhino_Geometry_Curve` or :class:`~compas.geometry.Line` or :class:`~compas.geometry.Circle` or :class:`~compas.geometry.Ellipse`
             The geometry object defining a curve.
 
         Raises
@@ -58,7 +58,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        :class:`~compas_rhino.geometry.RhinoNurbsCurve`
         """
         from compas.geometry import NurbsCurve
         curve = NurbsCurve()
@@ -70,7 +70,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Circle`
+        :class:`~compas.geometry.Circle`
         """
         return curve_to_compas_circle(self.geometry)
 
@@ -79,7 +79,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Ellipse`
+        :class:`~compas.geometry.Ellipse`
         """
         return curve_to_compas_ellipse(self.geometry)
 
@@ -88,7 +88,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Line`
+        :class:`~compas.geometry.Line`
         """
         return curve_to_compas_line(self.geometry)
 
@@ -97,7 +97,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Polyline`
+        :class:`~compas.geometry.Polyline`
         """
         return curve_to_compas_polyline(self.geometry)
 

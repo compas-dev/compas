@@ -29,7 +29,7 @@ class BlenderCurve(BlenderGeometry):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        :class:`~compas_rhino.geometry.RhinoNurbsCurve`
         """
         from compas.geometry import NurbsCurve
         curve = NurbsCurve()

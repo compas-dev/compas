@@ -12,7 +12,7 @@ In COMPAS colors are defined in RGB color space, with components in the range of
 The RGB Color Circle
 ====================
 
-The color class (:class:`compas.colors.Color`) provides constructor methods
+The color class (:class:`~compas.colors.Color`) provides constructor methods
 for the primary, secondary, and tertiary colors of the RGB color wheel or color circle.
 
 **Primary**
@@ -84,7 +84,7 @@ for the primary, secondary, and tertiary colors of the RGB color wheel or color 
 Lighter and Darker Colors
 =========================
 
-The color class (:class:`compas.colors.Color`) provides methods to generate lighter and darker variations of a given color.
+The color class (:class:`~compas.colors.Color`) provides methods to generate lighter and darker variations of a given color.
 The methods can be used to modify the colors in-place (:meth:`compas.colors.Color.lighten` and :meth:`compas.colors.Color.darken`),
 or to generate new colors (:meth:`compas.colors.Color.lightened` and :meth:`compas.colors.Color.darkened`).
 
@@ -363,7 +363,7 @@ Similar to generating lighter and darker colors, the color class provides method
 Color Maps
 ==========
 
-Using :class:`compas.colors.ColorMap`, color maps can be constructed from various color inputs.
+Using :class:`~compas.colors.ColorMap`, color maps can be constructed from various color inputs.
 
 * :meth:`compas.colors.ColorMap.from_rgb`
 * :meth:`compas.colors.ColorMap.from_color`

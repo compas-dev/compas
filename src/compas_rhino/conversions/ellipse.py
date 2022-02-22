@@ -23,7 +23,7 @@ class RhinoEllipse(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Ellipse` or :class:`compas.geometry.Ellipse`
+        geometry : :rhino:`Rhino_Geometry_Ellipse` or :class:`~compas.geometry.Ellipse`
             The geometry object defining an ellipse.
 
         Raises
@@ -40,7 +40,7 @@ class RhinoEllipse(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Ellipse`
+        :class:`~compas.geometry.Ellipse`
             A COMPAS ellipse.
         """
         return ellipse_to_compas(self.geometry)

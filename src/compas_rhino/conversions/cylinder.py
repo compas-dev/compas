@@ -27,7 +27,7 @@ class RhinoCylinder(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Cylinder` or :class:`compas.geometry.Cylinder`
+        geometry : :rhino:`Rhino_Geometry_Cylinder` or :class:`~compas.geometry.Cylinder`
             The geometry object defining a cylinder.
 
         Raises
@@ -61,7 +61,7 @@ class RhinoCylinder(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Cylinder`
+        :class:`~compas.geometry.Cylinder`
             A COMPAS cylinder.
         """
         return cylinder_to_compas(self.geometry)

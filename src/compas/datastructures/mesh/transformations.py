@@ -16,9 +16,9 @@ def mesh_transform(mesh, transformation):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh.
-    transformation : :class:`compas.geometry.Transformation`
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
 
     Returns
@@ -48,14 +48,14 @@ def mesh_transformed(mesh, transformation):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh.
-    transformation : :class:`compas.geometry.Transformation`
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A transformed independent copy of `mesh`.
 
     Examples

@@ -17,7 +17,7 @@ class CircleArtist(PlotterArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         A COMPAS circle.
     linewidth : float, optional
         Width of the circle boundary.
@@ -35,11 +35,11 @@ class CircleArtist(PlotterArtist, PrimitiveArtist):
         Stacking order of the circle on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         The circle associated with the artist.
 
     """

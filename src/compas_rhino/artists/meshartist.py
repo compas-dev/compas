@@ -17,7 +17,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
     layer : str, optional
         The name of the layer that will contain the mesh.

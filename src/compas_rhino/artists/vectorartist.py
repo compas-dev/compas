@@ -14,7 +14,7 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    vector : :class:`compas.geometry.Vector`
+    vector : :class:`~compas.geometry.Vector`
         A COMPAS vector.
     layer : str, optional
         The layer that should contain the drawing.
@@ -35,7 +35,7 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the vector.
             Default is :attr:`compas.artists.PrimitiveArtist.color`.
-        point : [float, float, float] or :class:`compas.geometry.Point`, optional
+        point : [float, float, float] or :class:`~compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
         show_point : bool, optional

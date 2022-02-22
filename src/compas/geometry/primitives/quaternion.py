@@ -162,7 +162,7 @@ class Quaternion(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
             The constructed quaternion.
 
         Examples
@@ -274,12 +274,12 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        other : [float, float, float, float] | :class:`compas.geometry.Quaternion`
+        other : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
             A Quaternion.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
             The product :math:`P = R * Q` of this quaternion (R) multiplied by other quaternion (Q).
 
         Notes
@@ -311,11 +311,11 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        frame : :class:`compas.geometry.Frame`
+        frame : :class:`~compas.geometry.Frame`
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
             The new quaternion.
 
         Examples
@@ -342,7 +342,7 @@ class Quaternion(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
             The new quaternion.
 
         Example
@@ -362,11 +362,11 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        R : :class:`compas.geometry.Rotation`
+        R : :class:`~compas.geometry.Rotation`
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
             The new quaternion.
 
         Example
@@ -408,7 +408,7 @@ class Quaternion(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
 
         Examples
         --------
@@ -449,7 +449,7 @@ class Quaternion(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
             A quaternion in canonic form.
 
         Examples
@@ -489,7 +489,7 @@ class Quaternion(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        :class:`~compas.geometry.Quaternion`
             The conjugated quaternion.
 
         Examples

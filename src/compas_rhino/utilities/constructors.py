@@ -16,7 +16,7 @@ def volmesh_from_polysurfaces(cls, guids, precision=None):
 
     Parameters
     ----------
-    cls : :class:`compas.datastructures.VolMesh`
+    cls : :class:`~compas.datastructures.VolMesh`
         The class of volmesh.
     guids : sequence[str or System.Guid]
         The *globally unique identifiers* of the polysurfaces.
@@ -25,7 +25,7 @@ def volmesh_from_polysurfaces(cls, guids, precision=None):
 
     Returns
     -------
-    :class:`compas.datastructures.Volmesh`
+    :class:`~compas.datastructures.Volmesh`
         The volumetric mesh object.
 
     Notes

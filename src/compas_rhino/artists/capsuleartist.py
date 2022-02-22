@@ -13,7 +13,7 @@ class CapsuleArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    capsule : :class:`compas.geometry.Capsule`
+    capsule : :class:`~compas.geometry.Capsule`
         A COMPAS capsule.
     layer : str, optional
         The layer that should contain the drawing.
