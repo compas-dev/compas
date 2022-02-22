@@ -4,7 +4,6 @@ from __future__ import division
 
 import compas_ghpython
 from compas.artists import NetworkArtist
-from compas.colors import Color
 from .artist import GHArtist
 
 

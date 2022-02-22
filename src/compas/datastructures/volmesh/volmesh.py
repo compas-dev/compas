@@ -95,7 +95,7 @@ class VolMesh(HalfFace):
     @classmethod
     def from_meshgrid(cls, dx=10, dy=None, dz=None, nx=10, ny=None, nz=None):
         """Construct a volmesh from a 3D meshgrid.
-        
+
         Parameters
         ----------
         dx : float, optional
@@ -110,11 +110,11 @@ class VolMesh(HalfFace):
             The number of elements in the x direction.
         ny : int, optional
             The number of elements in the y direction.
-            Defaults to the value of `nx`. 
+            Defaults to the value of `nx`.
         nz : int, optional
             The number of elements in the z direction.
-            Defaults to the value of `nx`. 
-        
+            Defaults to the value of `nx`.
+
         Returns
         -------
         :class:`compas.datastructures.VolMesh`

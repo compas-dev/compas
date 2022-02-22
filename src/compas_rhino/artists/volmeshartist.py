@@ -5,7 +5,6 @@ from __future__ import division
 import compas_rhino
 from compas.geometry import centroid_points
 from compas.artists import VolMeshArtist
-from compas.colors import Color
 from .artist import RhinoArtist
 
 

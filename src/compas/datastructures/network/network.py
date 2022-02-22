@@ -212,7 +212,7 @@ class Network(Graph):
     @classmethod
     def from_pointcloud(cls, cloud, degree=3):
         """Construct a network from random connections between the points of a pointcloud.
-        
+
         Parameters
         ----------
         cloud : :class:`compas.geometry.Pointcloud`
@@ -223,7 +223,7 @@ class Network(Graph):
         Returns
         -------
         :class:`compas.datastructures.Network`
-        
+
         """
         network = cls()
         for x, y, z in cloud:

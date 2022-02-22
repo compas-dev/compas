@@ -698,8 +698,6 @@ class Color(Data):
 
     @classmethod
     def maroon(cls):
-        raise 
-
         """Construct the color maroon.
         Returns
         -------
@@ -789,12 +787,12 @@ class Color(Data):
     @staticmethod
     def coerce(color):
         """Coerce a color input into a color.
-        
+
         Parameters
         ----------
         color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
             The color input.
-        
+
         Returns
         -------
         :class:`compas.colors.Color` | None
