@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from itertools import product
+
 from compas.datastructures import HalfFace
 from compas.datastructures import Mesh
 
@@ -21,13 +23,11 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
 from compas.utilities import geometric_key
+from compas.utilities import linspace
 
 from .bbox import volmesh_bounding_box
 from .transformations import volmesh_transform
 from .transformations import volmesh_transformed
-
-
-__all__ = ['VolMesh']
 
 
 class VolMesh(HalfFace):
@@ -91,6 +91,60 @@ class VolMesh(HalfFace):
     # --------------------------------------------------------------------------
     # from/to
     # --------------------------------------------------------------------------
+
+    @classmethod
+    def from_meshgrid(cls, dx=10, dy=None, dz=None, nx=10, ny=None, nz=None):
+        """Construct a volmesh from a 3D meshgrid.
+        
+        Parameters
+        ----------
+        dx : float, optional
+            The size of the grid in the x direction.
+        dy : float, optional
+            The size of the grid in the y direction.
+            Defaults to the value of `dx`.
+        dz : float, optional
+            The size of the grid in the z direction.
+            Defaults to the value of `dx`.
+        nx : int, optional
+            The number of elements in the x direction.
+        ny : int, optional
+            The number of elements in the y direction.
+            Defaults to the value of `nx`. 
+        nz : int, optional
+            The number of elements in the z direction.
+            Defaults to the value of `nx`. 
+        
+        Returns
+        -------
+        :class:`compas.datastructures.VolMesh`
+
+        """
+        dy = dy or dx
+        dz = dz or dx
+        ny = ny or nx
+        nz = nz or nx
+
+        vertices = [[x, y, z] for z, x, y in product(linspace(0, dz, nz + 1), linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))]
+        cells = []
+        for k, i, j in product(range(nz), range(nx), range(ny)):
+            a = k * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j
+            b = k * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j
+            c = k * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j + 1
+            d = k * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j + 1
+            aa = (k + 1) * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j
+            bb = (k + 1) * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j
+            cc = (k + 1) * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j + 1
+            dd = (k + 1) * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j + 1
+            bottom = [d, c, b, a]
+            front = [a, b, bb, aa]
+            right = [b, c, cc, bb]
+            left = [a, aa, dd, d]
+            back = [c, d, dd, cc]
+            top = [aa, bb, cc, dd]
+            cells.append([bottom, front, left, back, right, top])
+
+        return cls.from_vertices_and_cells(vertices, cells)
 
     @classmethod
     def from_obj(cls, filepath, precision=None):
