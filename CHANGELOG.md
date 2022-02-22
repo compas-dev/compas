@@ -497,7 +497,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Allow str | int as joint type in `compas.robots.Joint` constructor.
+* Allow str or int as joint type in `compas.robots.Joint` constructor.
 * Moved json schemas to `compas.data`.
 * Nested json schemas.
 * `compas_ghpython.artists.FrameArtist.draw` now draws a Rhino Plane.

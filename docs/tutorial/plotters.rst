@@ -6,10 +6,10 @@ The COMPAS plotters (:mod:`compas_plotters`) provide an easy-to-use inteface for
 of COMPAS objects based on matplotlib.
 
 The package contains four types of plotters:
-:class:`~compas_plotters.GeometryPlotter`,
-:class:`~compas_plotters.NetworkPlotter`,
-:class:`~compas_plotters.MeshPlotter`, and ... :class:`~compas_plotters.Plotter`.
-The first three are deprecated in favour of :class:`~compas_plotters.Plotter`, which is therefore the only one that will be described in this tutorial.
+:class:`compas_plotters.GeometryPlotter`,
+:class:`compas_plotters.NetworkPlotter`,
+:class:`compas_plotters.MeshPlotter`, and ... :class:`compas_plotters.Plotter`.
+The first three are deprecated in favour of :class:`compas_plotters.Plotter`, which is therefore the only one that will be described in this tutorial.
 
 
 Example
@@ -49,7 +49,7 @@ Example
 Basic Usage
 ===========
 
-Using :class:`~compas_plotters.Plotter` is very simple.
+Using :class:`compas_plotters.Plotter` is very simple.
 
 1. Create a plotter instance.
 2. Add Objects.
@@ -95,13 +95,13 @@ Geometry Objects
 Most of the geometry primitives are supported
 and can be added to a plotter instance as described above:
 
-* :class:`~compas.geometry.Point`
-* :class:`~compas.geometry.Vector`
-* :class:`~compas.geometry.Line`
-* :class:`~compas.geometry.Circle`
-* :class:`~compas.geometry.Ellipse`
-* :class:`~compas.geometry.Polyline`
-* :class:`~compas.geometry.Polygon`
+* :class:`compas.geometry.Point`
+* :class:`compas.geometry.Vector`
+* :class:`compas.geometry.Line`
+* :class:`compas.geometry.Circle`
+* :class:`compas.geometry.Ellipse`
+* :class:`compas.geometry.Polyline`
+* :class:`compas.geometry.Polygon`
 
 Bezier curves and pointclouds are currently not available yet, but will be added as well.
 Note that in all cases, the ``z`` coordinates of the objects are simply ignored, and only a 2D representation is depicted.
@@ -267,7 +267,7 @@ Vectors
       - Value
       - Default
     * - ``point``
-      - :class:`~compas.geometry.Point`
+      - :class:`compas.geometry.Point`
       - ``None``
     * - ``draw_point``
       - :obj:`bool`

@@ -39,11 +39,11 @@ Naming Conventions
 
 Class names are written in "CamelCase".
 
-* :class:`~compas.datastructures.Mesh`,
-* :class:`~compas.datastructures.VolMesh`,
-* :class:`~compas.geometry.Point`,
-* :class:`~compas_rhino.artists.BoxArtist`,
-* :class:`~compas_blender.artists.LineArtist`,
+* :class:`compas.datastructures.Mesh`,
+* :class:`compas.datastructures.VolMesh`,
+* :class:`compas.geometry.Point`,
+* :class:`compas_rhino.artists.BoxArtist`,
+* :class:`compas_blender.artists.LineArtist`,
 * ...
 
 All other names use the "snake_case" naming convention.
@@ -111,11 +111,11 @@ Therefore, in addition to the above conventions, we define the following type al
     * - Alias
       - Full Type Information
     * - ``point``
-      - ``[float, float, float]`` | :class:`~compas.geometry.Point`
+      - ``[float, float, float]`` | :class:`compas.geometry.Point`
     * - ``vector``
-      - ``[float, float, float]`` | :class:`~compas.geometry.Vector`
+      - ``[float, float, float]`` | :class:`compas.geometry.Vector`
     * - ``quaternion``
-      - ``[float, float, float, float]`` | :class:`~compas.geometry.Quaternion`
+      - ``[float, float, float, float]`` | :class:`compas.geometry.Quaternion`
 
 Note the use of ``a | b`` instead of ``Union[a, b]``.
 Type aliases can also be nested to further improve legibility of more complex types.
@@ -129,16 +129,16 @@ Type aliases can also be nested to further improve legibility of more complex ty
     * - Alias
       - Full Type Information
     * - ``line``
-      - ``[point, point]`` | :class:`~compas.geometry.Line`
+      - ``[point, point]`` | :class:`compas.geometry.Line`
     * - ``plane``
-      - ``[point, vector]`` | :class:`~compas.geometry.Plane`
+      - ``[point, vector]`` | :class:`compas.geometry.Plane`
     * - ``frame``
-      - ``[point, vector, vector]`` | :class:`~compas.geometry.Frame`
+      - ``[point, vector, vector]`` | :class:`compas.geometry.Frame`
     * - ``circle``
-      - ``[plane, float]``| :class:`~compas.geometry.Circle`
+      - ``[plane, float]``| :class:`compas.geometry.Circle`
     * - ``ellipse``
-      - ``[plane, float, float]`` | :class:`~compas.geometry.Ellipse`
+      - ``[plane, float, float]`` | :class:`compas.geometry.Ellipse`
     * - ``polyline``
-      - ``Sequence[point]`` | :class:`~compas.geometry.Polyline`
+      - ``Sequence[point]`` | :class:`compas.geometry.Polyline`
     * - ``polygon``
-      - ``Sequence[point]`` | :class:`~compas.geometry.Polygon`
+      - ``Sequence[point]`` | :class:`compas.geometry.Polygon`

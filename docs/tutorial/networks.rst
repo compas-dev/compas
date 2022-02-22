@@ -20,4 +20,4 @@ Discrete Element Assembly, or to represent the elements of a cable net.
 .. themseleves.
 
 .. Check out the docs for detailed information about the network and the available
-.. functionality: :class:`~compas.datastructures.Network`.
+.. functionality: :class:`compas.datastructures.Network`.
