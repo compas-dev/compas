@@ -180,7 +180,8 @@ class HalfFace(Datastructure):
             attr = cell_data.get(c) or {}
             faces = []
             for u in cell[c]:
-                faces.append(cell[c][u][v])
+                for v in cell[c][u]:
+                    faces.append(cell[c][u][v])
             self.add_cell(faces, ckey=int(c), attr_dict=attr)
 
         for e in edge_data:
@@ -329,7 +330,7 @@ class HalfFace(Datastructure):
 
     def index_vertex(self):
         """Returns a dictionary that maps the indices of a vertex list to
-        keys in a vertex dictionary.
+        keys in the vertex dictionary.
 
         Returns
         -------
@@ -729,10 +730,9 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        key: hashable
-            The next vertex that matches the condition.
-        2-tuple
-            The next vertex and its attributes, if ``data=True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next vertex that matches the condition.
+            If `data` is True, the next vertex and its attributes.
 
         """
         for key, attr in self.vertices(True):
@@ -801,14 +801,10 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        key: hashable
-            The next vertex that matches the condition.
-        2-tuple
-            The next vertex and its attributes, if ``data=True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next vertex that matches the condition.
+            If `data` is True, the next vertex and its attributes.
 
-        Examples
-        --------
-        >>>
         """
         for key, attr in self.vertices(True):
             if predicate(key, attr):
@@ -832,10 +828,10 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data=False``.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a (u, v, data) tuple.
+
         """
         for key in self.edges():
             is_match = True
@@ -887,14 +883,10 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data=False``.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data=True``.
+        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a (u, v, data) tuple.
 
-        Examples
-        --------
-        >>>
         """
         for key, attr in self.edges(True):
             if predicate(key, attr):
@@ -918,10 +910,9 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        key: hashable
-            The next face that matches the condition.
-        2-tuple
-            The next face and its attributes, if ``data=True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next face that matches the condition.
+            If `data` is True, the next face and its attributes.
 
         """
         for fkey in self.faces():
@@ -974,14 +965,10 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        key: hashable
-            The next face that matches the condition.
-        2-tuple
-            The next face and its attributes, if ``data=True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next face that matches the condition.
+            If `data` is True, the next face and its attributes.
 
-        Examples
-        --------
-        >>>
         """
         for fkey, attr in self.faces(True):
             if predicate(fkey, attr):
@@ -1005,10 +992,9 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        key: hashable
-            The next cell that matches the condition.
-        2-tuple
-            The next cell and its attributes, if ``data=True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next cell that matches the condition.
+            If `data` is True, the next cell and its attributes.
 
         """
         for ckey in self.cells():
@@ -1061,14 +1047,10 @@ class HalfFace(Datastructure):
 
         Yields
         ------
-        key: hashable
-            The next cell that matches the condition.
-        2-tuple
-            The next cell and its attributes, if ``data=True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next cell that matches the condition.
+            If `data` is True, the next cell and its attributes.
 
-        Examples
-        --------
-        >>>
         """
         for ckey, attr in self.cells(True):
             if predicate(ckey, attr):
