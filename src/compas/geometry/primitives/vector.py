@@ -30,20 +30,17 @@ class Vector(Primitive):
 
     Attributes
     ----------
-    data : dict
-        The data representation of the vector.
     x : float
-        The component along the X axis of the vector.
+        The X coordinate of the point.
     y : float
-        The component along the Y axis of the vector.
+        The Y coordinate of the point.
     z : float
-        The component along the Z axis of the vector.
+        The Z coordinate of the point.
     length : float, read-only
-        The length of the vector.
+        The length of this vector.
 
     Examples
     --------
-
     >>> u = Vector(1, 0, 0)
     >>> v = Vector(0, 1, 0)
     >>> u
@@ -69,16 +66,6 @@ class Vector(Primitive):
 
     """
 
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        return Schema(is_float3)
-
-    @property
-    def JSONSCHEMANAME(self):
-        return 'vector'
-
     __slots__ = ['_x', '_y', '_z']
 
     def __init__(self, x, y, z=0.0, **kwargs):
@@ -89,6 +76,22 @@ class Vector(Primitive):
         self.x = x
         self.y = y
         self.z = z
+
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : Schema of the data representation."""
+        from schema import Schema
+        from compas.data import is_float3
+        return Schema(is_float3)
+
+    @property
+    def JSONSCHEMANAME(self):
+        """str : Name of the schema of the data representation in JSON format."""
+        return 'vector'
 
     @property
     def data(self):
@@ -101,9 +104,33 @@ class Vector(Primitive):
         self.y = data[1]
         self.z = data[2]
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a vector from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The vector constructed from the provided data.
+
+        Examples
+        --------
+        >>> Vector.from_data([0.0, 0.0, 1.0])
+        Vector(0.000, 0.000, 1.000)
+        """
+        return cls(*data)
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
     @property
     def x(self):
-        """float : The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -112,7 +139,6 @@ class Vector(Primitive):
 
     @property
     def y(self):
-        """float : The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -121,7 +147,6 @@ class Vector(Primitive):
 
     @property
     def z(self):
-        """float : The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -130,7 +155,6 @@ class Vector(Primitive):
 
     @property
     def length(self):
-        """float: The length of this vector."""
         return length_vector(self)
 
     # ==========================================================================
@@ -178,7 +202,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to compare.
 
         Returns
@@ -186,6 +210,7 @@ class Vector(Primitive):
         bool
             True if the vectors are equal.
             False otherwise.
+
         """
         return self.x == other[0] and self.y == other[1] and self.z == other[2]
 
@@ -194,13 +219,14 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to add.
 
         Returns
         -------
         :class:`compas.geometry.Vector`
             The resulting vector.
+
         """
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
 
@@ -209,13 +235,14 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to subtract.
 
         Returns
         -------
         :class:`compas.geometry.Vector`
             The resulting new vector.
+
         """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
@@ -231,6 +258,7 @@ class Vector(Primitive):
         -------
         :class:`compas.geometry.Vector`
             The resulting new vector.
+
         """
         return Vector(self.x * n, self.y * n, self.z * n)
 
@@ -246,6 +274,7 @@ class Vector(Primitive):
         -------
         :class:`compas.geometry.Vector`
             The resulting new vector.
+
         """
         return Vector(self.x / n, self.y / n, self.z / n)
 
@@ -262,6 +291,7 @@ class Vector(Primitive):
         -------
         :class:`compas.geometry.Vector`
             A new point with raised coordinates.
+
         """
         return Vector(self.x ** n, self.y ** n, self.z ** n)
 
@@ -273,8 +303,13 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to add.
+
+        Returns
+        -------
+        None
+
         """
         self.x += other[0]
         self.y += other[1]
@@ -286,8 +321,13 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The vector to subtract.
+
+        Returns
+        -------
+        None
+
         """
         self.x -= other[0]
         self.y -= other[1]
@@ -301,6 +341,11 @@ class Vector(Primitive):
         ----------
         n : float
             The multiplication factor.
+
+        Returns
+        -------
+        None
+
         """
         self.x *= n
         self.y *= n
@@ -314,6 +359,11 @@ class Vector(Primitive):
         ----------
         n : float
             The multiplication factor.
+
+        Returns
+        -------
+        None
+
         """
         self.x /= n
         self.y /= n
@@ -327,6 +377,11 @@ class Vector(Primitive):
         ----------
         n : float
             The power.
+
+        Returns
+        -------
+        None
+
         """
         self.x **= n
         self.y **= n
@@ -350,6 +405,7 @@ class Vector(Primitive):
         --------
         >>> Vector.Xaxis()
         Vector(1.000, 0.000, 0.000)
+
         """
         return cls(1.0, 0.0, 0.0)
 
@@ -366,6 +422,7 @@ class Vector(Primitive):
         --------
         >>> Vector.Yaxis()
         Vector(0.000, 1.000, 0.000)
+
         """
         return cls(0.0, 1.0, 0.0)
 
@@ -382,6 +439,7 @@ class Vector(Primitive):
         --------
         >>> Vector.Zaxis()
         Vector(0.000, 0.000, 1.000)
+
         """
         return cls(0.0, 0.0, 1.0)
 
@@ -391,9 +449,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        start : :class:`compas.geometry.Point` or list
+        start : [float, float, float] | :class:`compas.geometry.Point`
             The start point.
-        end : :class:`compas.geometry.Point` or list
+        end : [float, float, float] | :class:`compas.geometry.Point`
             The end point.
 
         Returns
@@ -405,30 +463,10 @@ class Vector(Primitive):
         --------
         >>> Vector.from_start_end([1.0, 0.0, 0.0], [1.0, 1.0, 0.0])
         Vector(0.000, 1.000, 0.000)
+
         """
         v = subtract_vectors(end, start)
         return cls(*v)
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a vector from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The vector constructed from the provided data.
-
-        Examples
-        --------
-        >>> Vector.from_data([0.0, 0.0, 1.0])
-        Vector(0.000, 0.000, 1.000)
-        """
-        return cls(*data)
 
     # ==========================================================================
     # static
@@ -440,8 +478,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        collection : list of :class:`compas.geometry.Vector`
+        collection : list[[float, float, float] | :class:`compas.geometry.Vector`]
             The collection of vectors.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -455,6 +497,7 @@ class Vector(Primitive):
         Vector(0.000, 1.000, 0.000)
         >>> u is v
         True
+
         """
         data = transform_vectors(collection, X)
         for vector, xyz in zip(collection, data):
@@ -468,12 +511,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        collection : list of :class:`compas.geometry.Vector`
+        collection : list[[float, float, float] | :class:`compas.geometry.Vector`]
             The collection of vectors.
 
         Returns
         -------
-        list of :class:`compas.geometry.Vector`
+        list[:class:`compas.geometry.Vector`]
             The transformed vectors.
 
         Examples
@@ -488,6 +531,7 @@ class Vector(Primitive):
         Vector(0.000, 1.000, 0.000)
         >>> u is v
         False
+
         """
         vectors = [vector.copy() for vector in collection]
         Vector.transform_collection(vectors, X)
@@ -499,18 +543,19 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        vectors : list
+        vectors : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of lengths.
 
         Examples
         --------
         >>> Vector.length_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
         [1.0, 2.0]
+
         """
         return [length_vector(vector) for vector in vectors]
 
@@ -520,7 +565,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        vectors : list
+        vectors : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -532,6 +577,7 @@ class Vector(Primitive):
         --------
         >>> Vector.sum_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
         Vector(3.000, 0.000, 0.000)
+
         """
         return Vector(* [sum(axis) for axis in zip(* vectors)])
 
@@ -541,20 +587,21 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of dot products.
 
         Examples
         --------
         >>> Vector.dot_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
         [1.0, 4.0]
+
         """
         return [Vector.dot(u, v) for u, v in zip(left, right)]
 
@@ -564,20 +611,21 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[:class:`compas.geometry.Vector`]
             A list of cross products.
 
         Examples
         --------
         >>> Vector.cross_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
         [Vector(0.000, 0.000, 1.000), Vector(0.000, -4.000, 0.000)]
+
         """
         return [Vector.cross(u, v) for u, v in zip(left, right)]
 
@@ -587,20 +635,21 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of angle pairs.
 
         Examples
         --------
         >>> Vector.angles_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
         [(1.5707963267948966, 4.71238898038469), (1.5707963267948966, 4.71238898038469)]
+
         """
         return [angles_vectors(u, v) for u, v in zip(left, right)]
 
@@ -610,20 +659,21 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        left : list
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
         -------
-        list
+        list[float]
             A list of angles.
 
         Examples
         --------
         >>> Vector.angle_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
         [1.5707963267948966, 1.5707963267948966]
+
         """
         return [angle_vectors(u, v) for u, v in zip(left, right)]
 
@@ -647,6 +697,7 @@ class Vector(Primitive):
         True
         >>> u is v
         False
+
         """
         cls = type(self)
         return cls(self.x, self.y, self.z)
@@ -658,12 +709,17 @@ class Vector(Primitive):
     def unitize(self):
         """Scale this vector to unit length.
 
+        Returns
+        -------
+        None
+
         Examples
         --------
         >>> u = Vector(1.0, 2.0, 3.0)
         >>> u.unitize()
         >>> u.length
         1.0
+
         """
         length = self.length
         self.x = self.x / length
@@ -686,6 +742,7 @@ class Vector(Primitive):
         False
         >>> v.length == 1.0
         True
+
         """
         v = self.copy()
         v.unitize()
@@ -694,8 +751,12 @@ class Vector(Primitive):
     def invert(self):
         """Invert the direction of this vector
 
-        Note
-        ____
+        Returns
+        -------
+        None
+
+        Notes
+        -----
         a negation of a vector is similar to inverting a vector
 
         Examples
@@ -710,11 +771,16 @@ class Vector(Primitive):
         True
         >>> v == --v
         True
+
         """
         self.scale(-1.)
 
     def inverted(self):
         """Returns a inverted copy of this vector
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
 
         Examples
         --------
@@ -723,6 +789,7 @@ class Vector(Primitive):
         >>> w = u + v
         >>> w.length
         0.0
+
         """
         return self.scaled(-1.)
 
@@ -734,12 +801,17 @@ class Vector(Primitive):
         n : float
             The scaling factor.
 
+        Returns
+        -------
+        None
+
         Examples
         --------
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> u.scale(3.0)
         >>> u.length
         3.0
+
         """
         self.x *= n
         self.y *= n
@@ -766,6 +838,7 @@ class Vector(Primitive):
         1.0
         >>> v.length
         3.0
+
         """
         v = self.copy()
         v.scale(n)
@@ -776,7 +849,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -790,6 +863,7 @@ class Vector(Primitive):
         >>> v = Vector(0.0, 1.0, 0.0)
         >>> u.dot(v)
         0.0
+
         """
         return dot_vectors(self, other)
 
@@ -798,7 +872,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -812,6 +886,7 @@ class Vector(Primitive):
         >>> v = Vector(0.0, 1.0, 0.0)
         >>> u.cross(v)
         Vector(0.000, 0.000, 1.000)
+
         """
         return Vector(* cross_vectors(self, other))
 
@@ -820,7 +895,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -834,6 +909,7 @@ class Vector(Primitive):
         >>> v = Vector(0.0, 1.0, 0.0)
         >>> u.angle(v) == 0.5 * math.pi
         True
+
         """
         return angle_vectors(self, other)
 
@@ -842,9 +918,9 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
-        normal : :class:`compas.geometry.Vector` or list
+        normal : [float, float, float] | :class:`compas.geometry.Vector`
             The plane's normal spanned by this and the other vector.
 
         Returns
@@ -860,6 +936,7 @@ class Vector(Primitive):
         True
         >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * math.pi
         True
+
         """
         return angle_vectors_signed(self, other, normal)
 
@@ -868,12 +945,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
         -------
-        tuple of float
+        tuple[float, float]
             The angles between the two vectors, with the smallest angle first.
 
         Examples
@@ -882,6 +959,7 @@ class Vector(Primitive):
         >>> v = Vector(0.0, 1.0, 0.0)
         >>> u.angles(v)[0] == 0.5 * math.pi
         True
+
         """
         return angles_vectors(self, other)
 
@@ -890,8 +968,12 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -901,6 +983,7 @@ class Vector(Primitive):
         >>> u.transform(R)
         >>> u
         Vector(0.000, 1.000, 0.000)
+
         """
         point = transform_vectors([self], T)[0]
         self.x = point[0]
@@ -912,7 +995,7 @@ class Vector(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
@@ -928,6 +1011,7 @@ class Vector(Primitive):
         >>> v = u.transformed(R)
         >>> v
         Vector(0.000, 1.000, 0.000)
+
         """
         vector = self.copy()
         vector.transform(T)

@@ -9,6 +9,7 @@ In Grasshopper, COMPAS is imported from within a GhPython component. Rhino for
 Mac and Rhino 6+ all come with their own GhPython interpreter, but if you use
 Rhino 5 on Windows, please download and install GhPython `here <https://www.food4rhino.com/app/ghpython>`_.
 
+
 Verify setup
 ============
 
@@ -29,6 +30,7 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
 .. figure:: /_images/gh_verify.jpg
      :figclass: figure
      :class: figure-img img-fluid
+
 
 Grasshopper components for COMPAS
 =================================

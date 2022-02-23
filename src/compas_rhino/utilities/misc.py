@@ -86,6 +86,7 @@ def screenshot_current_view(path,
     bool
         True if the command was successful.
         False otherwise.
+
     """
     properties = [draw_grid, draw_world_axes, draw_cplane_axes, background]
     properties = ["Yes" if item else "No" for item in properties]
@@ -106,6 +107,9 @@ def screenshot_current_view(path,
 
 
 def wait():
+    """Make Rhino wait to prevent the spinning wheel from appearing.
+
+    """
     return Rhino.RhinoApp.Wait()
 
 
@@ -116,6 +120,7 @@ def get_tolerance():
     -------
     float
         The tolerance.
+
     """
     return rs.UnitAbsoluteTolerance()
 

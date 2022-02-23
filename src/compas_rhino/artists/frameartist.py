@@ -3,13 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from .artist import RhinoArtist
 
 
-__all__ = ['FrameArtist']
-
-
-class FrameArtist(PrimitiveArtist):
+class FrameArtist(RhinoArtist, PrimitiveArtist):
     """Artist for drawing frames.
 
     Parameters
@@ -18,10 +16,11 @@ class FrameArtist(PrimitiveArtist):
         A COMPAS frame.
     scale: float, optional
         Scale factor that controls the length of the axes.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
+    layer : str, optional
+        The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
 
     Attributes
     ----------
@@ -37,31 +36,10 @@ class FrameArtist(PrimitiveArtist):
     color_zaxis : tuple of 3 int between 0 and 255
         Default is ``(0, 0, 255)``.
 
-    Examples
-    --------
-    .. code-block:: python
-
-        from compas.geometry import Pointcloud
-        from compas.geometry import Frame
-
-        import compas_rhino
-        from compas_rhino.artists import FrameArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-
-        compas_rhino.clear_layer("Test::FrameArtist")
-
-        for point in pcl.points:
-            frame = tpl.copy()
-            frame.point = point
-            artist = FrameArtist(frame, layer="Test::FrameArtist")
-            artist.draw()
-
     """
 
-    def __init__(self, frame, layer=None, scale=1.0):
-        super(FrameArtist, self).__init__(frame, layer=layer)
+    def __init__(self, frame, layer=None, scale=1.0, **kwargs):
+        super(FrameArtist, self).__init__(primitive=frame, layer=layer, **kwargs)
         self.scale = scale or 1.0
         self.color_origin = (0, 0, 0)
         self.color_xaxis = (255, 0, 0)
@@ -73,8 +51,9 @@ class FrameArtist(PrimitiveArtist):
 
         Returns
         -------
-        guids: list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
         points = []
         lines = []
@@ -89,5 +68,4 @@ class FrameArtist(PrimitiveArtist):
             {'start': origin, 'end': Z, 'color': self.color_zaxis, 'arrow': 'end'}]
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self._guids = guids
         return guids

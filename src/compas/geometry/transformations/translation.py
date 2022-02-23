@@ -18,12 +18,17 @@ from compas.geometry.transformations import Transformation
 
 
 class Translation(Transformation):
-    """Create a translation transformation.
+    """Class representing a translation transformation.
 
     Parameters
     ----------
-    matrix : 4x4 matrix-like, optional
+    matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a translation.
+
+    Attributes
+    ----------
+    translation_vector : :class:`compas.geometry.Vector`
+        The translation vector.
 
     Raises
     ------
@@ -57,6 +62,7 @@ class Translation(Transformation):
     True
     >>> T[2, 3] == 3
     True
+
     """
 
     def __init__(self, matrix=None, check=True):
@@ -67,6 +73,14 @@ class Translation(Transformation):
                     raise ValueError('This is not a proper translation matrix.')
         super(Translation, self).__init__(matrix=matrix)
 
+    @property
+    def translation_vector(self):
+        from compas.geometry import Vector
+        x = self.matrix[0][3]
+        y = self.matrix[1][3]
+        z = self.matrix[2][3]
+        return Vector(x, y, z)
+
     def __repr__(self):
         return "Translation({0!r}, check=False)".format(self.matrix)
 
@@ -76,21 +90,13 @@ class Translation(Transformation):
 
         Parameters
         ----------
-        vector : :obj:`list` or :class:`compas.geometry.Vector`
+        vector : [float, float, float] | :class:`compas.geometry.Vector`
             The translation vector.
 
         Returns
         -------
-        Translation
+        :class:`compas.geometry.Translation`
             The translation transformation.
+
         """
         return cls(matrix_from_translation(vector))
-
-    @property
-    def translation_vector(self):
-        """:class:`compas.geometry.Vector` : The translation vector."""
-        from compas.geometry import Vector
-        x = self.matrix[0][3]
-        y = self.matrix[1][3]
-        z = self.matrix[2][3]
-        return Vector(x, y, z)

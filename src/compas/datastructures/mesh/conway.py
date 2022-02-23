@@ -25,13 +25,22 @@ def mesh_conway_dual(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    Mesh
+    :class:`compas.datastructures.Mesh`
         The dual mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -45,14 +54,6 @@ def mesh_conway_dual(mesh):
     >>> dual.number_of_faces() == mesh.number_of_vertices()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     cls = type(mesh)
     vertices = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
@@ -68,13 +69,22 @@ def mesh_conway_join(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    Mesh
+    :class:`compas.datastructures.Mesh`
         The join mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -88,14 +98,6 @@ def mesh_conway_join(mesh):
     >>> join.number_of_faces() == mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     cls = type(mesh)
     vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
@@ -117,13 +119,22 @@ def mesh_conway_ambo(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The ambo mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -137,14 +148,6 @@ def mesh_conway_ambo(mesh):
     >>> ambo.number_of_faces() == mesh.number_of_vertices() + mesh.number_of_faces()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_dual(mesh_conway_join(mesh))
 
@@ -154,13 +157,22 @@ def mesh_conway_kis(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The kis mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -174,14 +186,6 @@ def mesh_conway_kis(mesh):
     >>> kis.number_of_faces() == 2 * mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     cls = type(mesh)
     vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
@@ -200,13 +204,22 @@ def mesh_conway_needle(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The needle mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -220,14 +233,6 @@ def mesh_conway_needle(mesh):
     >>> needle.number_of_faces() == 2 * mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_kis(mesh_conway_dual(mesh))
 
@@ -237,13 +242,22 @@ def mesh_conway_zip(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The zip mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -257,15 +271,6 @@ def mesh_conway_zip(mesh):
     >>> zipp.number_of_faces() == mesh.number_of_vertices() + mesh.number_of_faces()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
-
     """
     return mesh_conway_dual(mesh_conway_kis(mesh))
 
@@ -275,13 +280,22 @@ def mesh_conway_truncate(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The truncate mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -295,14 +309,6 @@ def mesh_conway_truncate(mesh):
     >>> trun.number_of_faces() == mesh.number_of_vertices() + mesh.number_of_faces()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     # same as conway_dual(conway_needle())?
     return mesh_conway_dual(mesh_conway_kis(mesh_conway_dual(mesh)))
@@ -313,13 +319,22 @@ def mesh_conway_ortho(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The ortho mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -333,14 +348,6 @@ def mesh_conway_ortho(mesh):
     >>> orth.number_of_faces() == 2 * mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_join(mesh_conway_join(mesh))
 
@@ -350,13 +357,22 @@ def mesh_conway_expand(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The expand mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -370,14 +386,6 @@ def mesh_conway_expand(mesh):
     >>> expa.number_of_faces() == mesh.number_of_vertices() + mesh.number_of_faces() + mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_ambo(mesh_conway_ambo(mesh))
 
@@ -387,13 +395,22 @@ def mesh_conway_gyro(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The gyro mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -407,14 +424,6 @@ def mesh_conway_gyro(mesh):
     >>> gyro.number_of_faces() == 2 * mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     cls = type(mesh)
     vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
@@ -442,13 +451,22 @@ def mesh_conway_snub(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The gyro mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -462,14 +480,6 @@ def mesh_conway_snub(mesh):
     >>> snub.number_of_faces() == mesh.number_of_vertices() + mesh.number_of_faces() + 2 * mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_dual(mesh_conway_gyro(mesh_conway_dual(mesh)))
 
@@ -479,13 +489,22 @@ def mesh_conway_meta(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The meta mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -499,14 +518,6 @@ def mesh_conway_meta(mesh):
     >>> meta.number_of_faces() == 4 * mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_kis(mesh_conway_join(mesh))
 
@@ -516,13 +527,22 @@ def mesh_conway_bevel(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    mesh
+    :class:`compas.datastructures.Mesh`
         The bevel mesh.
+
+    References
+    ----------
+    Based on [1]_ and [2]_.
+
+    .. [1] Wikipedia. *Conway polyhedron notation*.
+           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
+    .. [2] Hart, George. *Conway Notation for Polyhedron*.
+           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     Examples
     --------
@@ -536,13 +556,5 @@ def mesh_conway_bevel(mesh):
     >>> bevl.number_of_faces() == mesh.number_of_vertices() + mesh.number_of_faces() + mesh.number_of_edges()
     True
 
-    References
-    ----------
-    Based on [1]_ and [2]_.
-
-    .. [1] Wikipedia. *Conway polyhedron notation*.
-           Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
-    .. [2] Hart, George. *Conway Notation for Polyhedron*.
-           Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     return mesh_conway_truncate(mesh_conway_ambo(mesh))

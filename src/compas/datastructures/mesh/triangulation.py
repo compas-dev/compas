@@ -12,7 +12,21 @@ __all__ = [
 
 
 def mesh_quads_to_triangles(mesh, check_angles=False):
-    """"""
+    """Convert all quadrilateral faces of a mesh to triangles by adding a diagonal edge.
+
+    Parameters
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        A mesh data structure.
+    check_angles : bool, optional
+        Flag indicating that the angles of the quads should be checked to choose the best diagonal.
+
+    Returns
+    -------
+    None
+        The mesh is modified in place.
+
+    """
     for fkey in list(mesh.faces()):
         attr = mesh.face_attributes(fkey)
         attr.custom_only = True

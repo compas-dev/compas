@@ -14,14 +14,18 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh data structure.
-    key : hashable
+    key : int
         The identifier of the vertex.
-    fkey : hashable
+    fkey : int
         The identifier of the face.
-    v : hashable
+    v : int
         The identifier of the vertex before which the new vertex should be added.
+
+    Returns
+    -------
+    None
 
     Notes
     -----
@@ -77,17 +81,17 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
 
     Parameters
     ----------
-    u: hashable
+    u: int
         The first edge vertex.
-    v: hashable
+    v: int
         The second edge vertex.
-    vkey: hashable, optional
+    vkey: int, optional
         The vertex key to insert.
-        Default is add a new vertex at mid-edge.
+        Default is to auto-generate a new vertex identifier.
 
     Returns
     -------
-    vkey : hashable
+    int
         The new vertex key.
 
     Notes
@@ -100,10 +104,6 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
     yields the two new faces
     face_1 = [a, e, b, c] and
     face_2 = [b, e, a, d].
-
-    Examples
-    --------
-    >>>
 
     """
 

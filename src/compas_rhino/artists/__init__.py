@@ -5,24 +5,6 @@ artists
 
 .. currentmodule:: compas_rhino.artists
 
-.. rst-class:: lead
-
-Artists for visualising (painting) COMPAS objects in Rhino.
-Artists convert COMPAS objects to Rhino geometry and data.
-
-.. code-block:: python
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas_rhino.artists import MeshArtist
-
-    mesh = Mesh.from_off(compas.get('tubemesh.off'))
-
-    artist = MeshArtist(mesh, layer='COMPAS::tubemesh.off')
-
-    artist.clear_layer()
-    artist.draw()
-
 
 Primitive Artists
 =================
@@ -57,6 +39,17 @@ Shape Artists
     TorusArtist
 
 
+Curve and Surface Artists
+=========================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    CurveArtist
+    SurfaceArtist
+
+
 Datastructure Artists
 =====================
 
@@ -86,12 +79,14 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    BaseArtist
-    PrimitiveArtist
-    ShapeArtist
+    RhinoArtist
 
 """
 from __future__ import absolute_import
+
+from compas.plugins import plugin
+from compas.artists import Artist
+from compas.artists import ShapeArtist
 
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -110,16 +105,17 @@ from compas.geometry import Polyhedron
 from compas.geometry import Sphere
 from compas.geometry import Torus
 
+from compas.geometry import Curve
+from compas.geometry import Surface
+
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
 from compas.robots import RobotModel
+import compas_rhino
 
-from ._artist import BaseArtist  # noqa: F401 F403
-from ._primitiveartist import PrimitiveArtist  # noqa: F401 F403
-from ._shapeartist import ShapeArtist  # noqa: F401
-
+from .artist import RhinoArtist
 from .circleartist import CircleArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
@@ -128,7 +124,6 @@ from .pointartist import PointArtist
 from .polygonartist import PolygonArtist
 from .polylineartist import PolylineArtist
 from .vectorartist import VectorArtist
-
 from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .coneartist import ConeArtist
@@ -136,41 +131,72 @@ from .cylinderartist import CylinderArtist
 from .polyhedronartist import PolyhedronArtist
 from .sphereartist import SphereArtist
 from .torusartist import TorusArtist
-
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
-
 from .robotmodelartist import RobotModelArtist
 
-BaseArtist.register(Circle, CircleArtist)
-BaseArtist.register(Frame, FrameArtist)
-BaseArtist.register(Line, LineArtist)
-BaseArtist.register(Plane, PlaneArtist)
-BaseArtist.register(Point, PointArtist)
-BaseArtist.register(Polygon, PolygonArtist)
-BaseArtist.register(Polyline, PolylineArtist)
-BaseArtist.register(Vector, VectorArtist)
+from .curveartist import CurveArtist
+from .surfaceartist import SurfaceArtist
 
-BaseArtist.register(Box, BoxArtist)
-BaseArtist.register(Capsule, CapsuleArtist)
-BaseArtist.register(Cone, ConeArtist)
-BaseArtist.register(Cylinder, CylinderArtist)
-BaseArtist.register(Polyhedron, PolyhedronArtist)
-BaseArtist.register(Sphere, SphereArtist)
-BaseArtist.register(Torus, TorusArtist)
+BaseArtist = RhinoArtist
 
-BaseArtist.register(Mesh, MeshArtist)
-BaseArtist.register(Network, NetworkArtist)
-BaseArtist.register(VolMesh, VolMeshArtist)
+ShapeArtist.default_color = (255, 255, 255)
 
-BaseArtist.register(RobotModel, RobotModelArtist)
+MeshArtist.default_color = (0, 0, 0)
+MeshArtist.default_vertexcolor = (255, 255, 255)
+MeshArtist.default_edgecolor = (0, 0, 0)
+MeshArtist.default_facecolor = (255, 255, 255)
+
+NetworkArtist.default_nodecolor = (255, 255, 255)
+NetworkArtist.default_edgecolor = (0, 0, 0)
+
+VolMeshArtist.default_color = (0, 0, 0)
+VolMeshArtist.default_vertexcolor = (255, 255, 255)
+VolMeshArtist.default_edgecolor = (0, 0, 0)
+VolMeshArtist.default_facecolor = (255, 255, 255)
+VolMeshArtist.default_cellcolor = (255, 0, 0)
+
+
+@plugin(category='drawing-utils', pluggable_name='clear', requires=['Rhino'])
+def clear_rhino():
+    compas_rhino.clear()
+
+
+@plugin(category='drawing-utils', pluggable_name='redraw', requires=['Rhino'])
+def redraw_rhino():
+    compas_rhino.redraw()
+
+
+@plugin(category='factories', requires=['Rhino'])
+def register_artists():
+    Artist.register(Circle, CircleArtist, context='Rhino')
+    Artist.register(Frame, FrameArtist, context='Rhino')
+    Artist.register(Line, LineArtist, context='Rhino')
+    Artist.register(Plane, PlaneArtist, context='Rhino')
+    Artist.register(Point, PointArtist, context='Rhino')
+    Artist.register(Polygon, PolygonArtist, context='Rhino')
+    Artist.register(Polyline, PolylineArtist, context='Rhino')
+    Artist.register(Vector, VectorArtist, context='Rhino')
+    Artist.register(Box, BoxArtist, context='Rhino')
+    Artist.register(Capsule, CapsuleArtist, context='Rhino')
+    Artist.register(Cone, ConeArtist, context='Rhino')
+    Artist.register(Cylinder, CylinderArtist, context='Rhino')
+    Artist.register(Polyhedron, PolyhedronArtist, context='Rhino')
+    Artist.register(Sphere, SphereArtist, context='Rhino')
+    Artist.register(Torus, TorusArtist, context='Rhino')
+    Artist.register(Mesh, MeshArtist, context='Rhino')
+    Artist.register(Network, NetworkArtist, context='Rhino')
+    Artist.register(VolMesh, VolMeshArtist, context='Rhino')
+    Artist.register(RobotModel, RobotModelArtist, context='Rhino')
+    Artist.register(Curve, CurveArtist, context='Rhino')
+    Artist.register(Surface, SurfaceArtist, context='Rhino')
+    print('Rhino Artists registered.')
 
 
 __all__ = [
     'BaseArtist',
-    'PrimitiveArtist',
-    'ShapeArtist',
+    'RhinoArtist',
     'CircleArtist',
     'FrameArtist',
     'LineArtist',
@@ -189,5 +215,7 @@ __all__ = [
     'MeshArtist',
     'NetworkArtist',
     'VolMeshArtist',
-    'RobotModelArtist'
+    'RobotModelArtist',
+    'CurveArtist',
+    'SurfaceArtist',
 ]

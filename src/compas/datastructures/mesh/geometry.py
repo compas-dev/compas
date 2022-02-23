@@ -14,15 +14,14 @@ def trimesh_face_circle(mesh, fkey):
 
     Parameters
     ----------
-    fkey : Key
+    fkey : int
         The face key.
 
     Returns
     -------
-    list
-        The centre coordinates, the radius value and the normal vector of the circle.
-    None
-        If the face is not a triangle.
+    tuple[list[float], float, list[float]] | None
+        The centre coordinates, the radius value and the normal vector of the circle,
+        or None if the face is not a triangle.
 
     """
     vertices = mesh.face_vertices(fkey)

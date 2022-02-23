@@ -3,35 +3,36 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from .artist import GHArtist
 
 
-__all__ = ['PolylineArtist']
-
-
-class PolylineArtist(PrimitiveArtist):
+class PolylineArtist(GHArtist, PrimitiveArtist):
     """Artist for drawing polylines.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Polyline`
+    polyline : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
-
-    Other Parameters
-    ----------------
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
 
     """
+
+    def __init__(self, polyline, **kwargs):
+        super(PolylineArtist, self).__init__(primitive=polyline, **kwargs)
 
     def draw(self):
         """Draw the polyline.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Polyline`.
+        :rhino:`Rhino.Geometry.Polyline`.
+
         """
         polylines = [self._get_args(self.primitive)]
-        return compas_ghpython.draw_polylines(polylines)
+        return compas_ghpython.draw_polylines(polylines)[0]
 
     @staticmethod
     def _get_args(primitive):

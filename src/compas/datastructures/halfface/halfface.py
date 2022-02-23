@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from random import choice
+from random import choice, sample
 
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
@@ -13,9 +13,6 @@ from compas.datastructures.attributes import CellAttributeView
 from compas.utilities import pairwise
 
 
-__all__ = ['HalfFace']
-
-
 class HalfFace(Datastructure):
     """Base half-face data structure fore representing volumetric meshes.
 
@@ -23,56 +20,29 @@ class HalfFace(Datastructure):
     ----------
     name: str, optional
         The name of the graph.
-        Defaults to "Graph".
-    default_vertex_attributes: dict, optional
+    default_vertex_attributes: dict[str, Any], optional
         Default values for vertex attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes: dict[str, Any], optional
         Default values for edge attributes.
-    default_face_attributes: dict, optional
+    default_face_attributes: dict[str, Any], optional
         Default values for face attributes.
-    default_cell_attributes: dict, optional
+    default_cell_attributes: dict[str, Any], optional
         Default values for cell attributes.
 
     Attributes
     ----------
-    attributes : dict
-        Named attributes related to the data structure as a whole.
-    default_vertex_attributes : dict
-        Named attributes and default values of the vertices of the data structure.
-    default_edge_attributes : dict
-        Named attributes and default values of the edges of the data structure.
-    default_face_attributes : dict
-        Named attributes and default values of the faces of the data structure.
-    name : str
-        Name of the data structure.
-        Defaults to the value of `self.__class__.__name__`.
-    data : dict
-        The data representation of the data structure.
+    attributes : dict[str, Any]
+        General attributes of the data structure which will be included in the data representation.
+    default_vertex_attributes : dict[str, Any]
+        Default attributes of the vertices.
+    default_edge_attributes: dict[str, Any]
+        Default values for edge attributes.
+    default_face_attributes: dict[str, Any]
+        Default values for face attributes.
+    default_cell_attributes: dict[str, Any]
+        Default values for cell attributes.
 
     """
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            "attributes": dict,
-            "dva": dict,
-            "dea": dict,
-            "dfa": dict,
-            "dca": dict,
-            "vertex": dict,
-            "cell": dict,
-            "edge_data": dict,
-            "face_data": dict,
-            "cell_data": dict,
-            "max_vertex": schema.And(int, lambda x: x >= -1),
-            "max_face": schema.And(int, lambda x: x >= -1),
-            "max_cell": schema.And(int, lambda x: x >= -1),
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        return 'halfface'
 
     def __init__(self,
                  name=None,
@@ -115,11 +85,6 @@ class HalfFace(Datastructure):
 
     @property
     def name(self):
-        """str : The name of the data structure.
-
-        Any value assigned to this property will be stored in the attribute dict
-        of the data structure instance.
-        """
         return self.attributes.get('name') or self.__class__.__name__
 
     @name.setter
@@ -127,9 +92,30 @@ class HalfFace(Datastructure):
         self.attributes['name'] = value
 
     @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            "attributes": dict,
+            "dva": dict,
+            "dea": dict,
+            "dfa": dict,
+            "dca": dict,
+            "vertex": dict,
+            "cell": dict,
+            "edge_data": dict,
+            "face_data": dict,
+            "cell_data": dict,
+            "max_vertex": schema.And(int, lambda x: x >= -1),
+            "max_face": schema.And(int, lambda x: x >= -1),
+            "max_cell": schema.And(int, lambda x: x >= -1),
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'halfface'
+
+    @property
     def data(self):
-        """dict: A data dict representing the volmesh data structure for serialization.
-        """
         cell = {}
         for c in self._cell:
             cell[c] = {}
@@ -219,7 +205,13 @@ class HalfFace(Datastructure):
     # --------------------------------------------------------------------------
 
     def clear(self):
-        """Clear all the volmesh data."""
+        """Clear all the volmesh data.
+
+        Returns
+        -------
+        None
+
+        """
         del self._vertex
         del self._halfface
         del self._cell
@@ -241,6 +233,9 @@ class HalfFace(Datastructure):
     def get_any_vertex(self):
         """Get the identifier of a random vertex.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`vertex_sample` instead.
+
         Returns
         -------
         int
@@ -252,27 +247,80 @@ class HalfFace(Datastructure):
     def get_any_face(self):
         """Get the identifier of a random face.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`face_sample` instead.
+
         Returns
         -------
         int
             The identifier of the face.
+
         """
         return choice(list(self.faces()))
 
-    def get_any_face_vertex(self, face):
-        """Get the identifier of a random vertex of a specific face.
+    def vertex_sample(self, size=1):
+        """Get the identifiers of a set of random vertices.
 
         Parameters
         ----------
-        face : int
-            The identifier of the face.
+        size : int, optional
+            The size of the sample.
 
         Returns
         -------
-        int
-            The identifier of the vertex of the face.
+        list[int]
+            The identifiers of the vertices.
+
         """
-        return choice(self.halfface_vertices(face))
+        return sample(list(self.vertices()), size)
+
+    def edge_sample(self, size=1):
+        """Get the identifiers of a set of random edges.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list[tuple[int, int]]
+            The identifiers of the edges.
+
+        """
+        return sample(list(self.edges()), size)
+
+    def face_sample(self, size=1):
+        """Get the identifiers of a set of random faces.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list[int]
+            The identifiers of the faces.
+
+        """
+        return sample(list(self.faces()), size)
+
+    def cell_sample(self, size=1):
+        """Get the identifiers of a set of random cells.
+
+        Parameters
+        ----------
+        size : int, optional
+            The size of the sample.
+
+        Returns
+        -------
+        list[int]
+            The identifiers of the cells.
+
+        """
+        return sample(list(self.cells()), size)
 
     def key_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
@@ -280,7 +328,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        dict
+        dict[int, int]
             A dictionary of key-index pairs.
 
         """
@@ -294,7 +342,7 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        dict
+        dict[int, int]
             A dictionary of index-key pairs.
 
         """
@@ -313,12 +361,10 @@ class HalfFace(Datastructure):
         ----------
         key : int, optional
             The vertex identifier.
-        attr_dict : dict, optional
-            Vertex attributes.
-        kwattr : dict, optional
-            Additional named vertex attributes.
-            Named vertex attributes overwrite corresponding attributes in the
-            attribute dict (``attr_dict``).
+        attr_dict : dict[str, Any], optional
+            dictionary of vertex attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
         -------
@@ -334,9 +380,6 @@ class HalfFace(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
-        Examples
-        --------
-        >>>
         """
         if key is None:
             key = self._max_vertex = self._max_vertex + 1
@@ -356,17 +399,15 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        vertices : list
+        vertices : list[int]
             A list of ordered vertex keys representing the face.
             For every vertex that does not yet exist, a new vertex is created.
         fkey : int, optional
             The face identifier.
-        attr_dict : dict, optional
-            Halfface attributes.
-        kwattr : dict, optional
-            Additional named face attributes.
-            Named face attributes overwrite corresponding attributes in the
-            attribute dict (``attr_dict``).
+        attr_dict : dict[str, Any], optional
+            dictionary of halfface attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
         -------
@@ -382,9 +423,6 @@ class HalfFace(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
-        Examples
-        --------
-        >>>
         """
         if len(vertices) < 3:
             return
@@ -424,16 +462,14 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        faces : list of list of int
+        faces : list[list[int]]
             The faces of the cell defined as lists of vertices.
         ckey : int, optional
             The cell identifier.
-        attr_dict : dict, optional
-            cell attributes.
-        kwattr : dict, optional
-            Additional named cell attributes.
-            Named cell attributes overwrite corresponding attributes in the
-            attribute dict (``attr_dict``).
+        attr_dict : dict[str, Any], optional
+            A dictionary of cell attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
         -------
@@ -454,9 +490,6 @@ class HalfFace(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
-        Examples
-        --------
-        >>>
         """
         if ckey is None:
             ckey = self._max_cell = self._max_cell + 1
@@ -493,9 +526,10 @@ class HalfFace(Datastructure):
         vertex : int
             The identifier of the vertex.
 
-        Examples
-        --------
-        >>>
+        Returns
+        -------
+        None
+
         """
         for cell in self.vertex_cells(vertex):
             self.delete_cell(cell)
@@ -508,9 +542,10 @@ class HalfFace(Datastructure):
         cell : int
             The identifier of the cell.
 
-        Examples
-        --------
-        >>>
+        Returns
+        -------
+        None
+
         """
         cell_vertices = self.cell_vertices(cell)
         cell_faces = self.cell_faces(cell)
@@ -544,6 +579,11 @@ class HalfFace(Datastructure):
 
     def remove_unused_vertices(self):
         """Remove all unused vertices from the volmesh object.
+
+        Returns
+        -------
+        None
+
         """
         for vertex in list(self.vertices()):
             if vertex not in self._plane:
@@ -565,13 +605,14 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return the vertex data as well as the vertex identifiers if true.
+            If True, yield the vertex attributes in addition to the vertex identifiers.
 
         Yields
         ------
-        int or tuple
-            The next vertex identifier, if ``data`` is false.
-            The next vertex as a (vertex, attr) a tuple, if ``data`` is true.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next vertex identifier.
+            If `data` is True, the next vertex as a (vertex, attr) a tuple.
+
         """
         for vertex in self._vertex:
             if not data:
@@ -585,13 +626,14 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return the edge data as well as the edge identifiers if true.
+            If True, yield the edge attributes as well as the edge identifiers.
 
         Yields
         ------
-        tuple
-            The next edge as a (u, v) tuple, if ``data`` is false.
-            The next edge as a ((u, v), attr) tuple, if ``data`` is true.
+        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a ((u, v), attr) tuple.
+
         """
         seen = set()
         for face in self._halfface:
@@ -612,13 +654,13 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return half-face data as well as identifiers if true.
+            If True, yield the half-face attributes in addition to half-face identifiers.
 
         Yields
         ------
-        int or tuple
-            The next halfface identifier, if ``data`` is ``False``.
-            The next halfface as a (halfface, attr) tuple, if ``data`` is ``True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next halfface identifier.
+            If `data` is True, the next halfface as a (halfface, attr) tuple.
         """
         for hface in self._halfface:
             if not data:
@@ -632,13 +674,13 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return the face data as well as the face keys.
+            If True, yield the face attributes in addition to the face identifiers.
 
         Yields
         ------
-        int or tuple
-            The next face identifier, if ``data`` is ``False``.
-            The next face as a (face, attr) tuple, if ``data`` is ``True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next face identifier.
+            If `data` is True, the next face as a (face, attr) tuple.
 
         Notes
         -----
@@ -647,6 +689,7 @@ class HalfFace(Datastructure):
         Between the interface of two cells, there are two interior faces (one from each cell).
         Only one of these two interior faces are returned as a "face".
         The unique faces are found by comparing string versions of sorted vertex lists.
+
         """
         seen = set()
         faces = []
@@ -667,13 +710,14 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         data : bool, optional
-            Return the cell data as well as the cell keys.
+            If True, yield the cell attributes in addition to the cell identifiers.
 
         Yields
         ------
-        int or tuple
-            The next cell identifier, if ``data`` is ``False``.
-            The next cell as a (cell, attr) tuple, if ``data`` is ``True``.
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next cell identifier.
+            If `data` is True, the next cell as a (cell, attr) tuple.
+
         """
         for cell in self._cell:
             if not data:
@@ -1053,17 +1097,19 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        attr_dict : dict, optional
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-            Defaults to an empty ``dict``.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        None
 
         Notes
         -----
-        Named arguments overwrite correpsonding vertex-value pairs in the attribute dictionary,
-        if they exist.
+        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1079,20 +1125,20 @@ class HalfFace(Datastructure):
             The vertex identifier.
         name : str
             The name of the attribute
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
 
         Returns
         -------
-        object or None
+        object | None
             The value of the attribute,
-            or ``None`` if the vertex does not exist
-            or when the function is used as a "setter".
+            or None when the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the vertex does not exist.
+
         """
         if vertex not in self._vertex:
             raise KeyError(vertex)
@@ -1115,6 +1161,10 @@ class HalfFace(Datastructure):
         name : str
             The name of the attribute.
 
+        Returns
+        -------
+        None
+
         Raises
         ------
         KeyError
@@ -1124,6 +1174,7 @@ class HalfFace(Datastructure):
         -----
         Unsetting the value of a vertex attribute implicitly sets it back to the value
         stored in the default vertex attribute dict.
+
         """
         if name in self._vertex[vertex]:
             del self._vertex[vertex][name]
@@ -1135,24 +1186,25 @@ class HalfFace(Datastructure):
         ----------
         vertex : int
             The identifier of the vertex.
-        names : list, optional
+        names : list[str], optional
             A list of attribute names.
-        values : list, optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is empty,
+        dict[str, Any] | list[Any] | None
+            If the parameter `names` is empty,
             the function returns a dictionary of all attribute name-value pairs of the vertex.
-            If the parameter ``names`` is not empty,
+            If the parameter `names` is not empty,
             the function returns a list of the values corresponding to the requested attribute names.
-            The function returns ``None`` if it is used as a "setter".
+            The function returns None if it is used as a "setter".
 
         Raises
         ------
         KeyError
             If the vertex does not exist.
+
         """
         if vertex not in self._vertex:
             raise KeyError(vertex)
@@ -1182,22 +1234,23 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
-            Default is ``None``.
-        keys : list of int, optional
+            Default is None.
+        keys : list[int], optional
             A list of vertex identifiers.
 
         Returns
         -------
-        list or None
+        list[Any] | None
             The value of the attribute for each vertex,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the vertices does not exist.
+
         """
         vertices = keys or self.vertices()
         if value is not None:
@@ -1211,28 +1264,29 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        names : list of str, optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : list of obj, optional
+            Default is None.
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        keys : list of int, optional
+            Default is None.
+        key : list[Any], optional
             A list of vertex identifiers.
 
         Returns
         -------
-        list or None
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] | list[list[Any]] | None
+            If the parameter `names` is empty,
             the function returns a list containing an attribute dict per vertex.
-            If the parameter ``names`` is not ``None``,
+            If the parameter `names` is not empty,
             the function returns a list containing a list of attribute values per vertex corresponding to the provided attribute names.
-            The function returns ``None`` if it is used as a "setter".
+            The function returns None if it is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the vertices does not exist.
+
         """
         vertices = keys or self.vertices()
         if values:
@@ -1250,17 +1304,19 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        attr_dict : dict, optional
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-            Defaults to an empty ``dict``.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        None
 
         Notes
         -----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
-        if they exist.
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1272,23 +1328,23 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The edge identifier.
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
-            Default is ``None``.
 
         Returns
         -------
-        object or None
-            The value of the attribute, or ``None`` when the function is used as a "setter".
+        object | None
+            The value of the attribute, or None when the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
@@ -1309,7 +1365,7 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The edge identifier.
         name : str
             The name of the attribute.
@@ -1319,10 +1375,15 @@ class HalfFace(Datastructure):
         KeyError
             If the edge does not exist.
 
+        Returns
+        -------
+        None
+
         Notes
         -----
         Unsetting the value of an edge attribute implicitly sets it back to the value
         stored in the default edge attribute dict.
+
         """
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
@@ -1336,26 +1397,25 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        edge : 2-tuple of int
+        edge : tuple[int, int]
             The identifier of the edge.
-        names : list, optional
+        names : list[str], optional
             A list of attribute names.
-        values : list, optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is empty,
-            a dictionary of all attribute name-value pairs of the edge.
-            If the parameter ``names`` is not empty,
-            a list of the values corresponding to the provided names.
-            ``None`` if the function is used as a "setter".
+        dict[str, Any] | list[Any] | None
+            If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the edge.
+            If the parameter `names` is not empty, a list of the values corresponding to the provided names.
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
@@ -1384,22 +1444,23 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
-            Default is ``None``.
-        edges : list of 2-tuple of int, optional
+            Default is None.
+        edges : list[tuple[int, int]], optional
             A list of edge identifiers.
 
         Returns
         -------
-        list or None
+        list[Any] | None
             A list containing the value per edge of the requested attribute,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         edges = edges or self.edges()
         if value is not None:
@@ -1413,28 +1474,27 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        names : list of str, optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : list of obj, optional
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        edges : list of 2-tuple of int, optional
+        edges : list[tuple[int, int]], optional
             A list of edge identifiers.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] | list[list[Any]] | None
+            If the parameter `names` is empty,
             a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
-            If the parameter ``names`` is ``None``,
+            If the parameter `names` is not empty,
             a list containing per edge a list of attribute values corresponding to the requested names.
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         edges = edges or self.edges()
         if values:
@@ -1452,16 +1512,19 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        attr_dict : dict (None)
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        None
 
         Notes
         -----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
-        if they exist.
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1477,18 +1540,19 @@ class HalfFace(Datastructure):
             The face identifier.
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
 
         Returns
         -------
-        object or None
-            The value of the attribute, or ``None`` when the function is used as a "setter".
+        object | None
+            The value of the attribute, or None when the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the face does not exist.
+
         """
         if face not in self._halfface:
             raise KeyError(face)
@@ -1518,10 +1582,15 @@ class HalfFace(Datastructure):
         KeyError
             If the face does not exist.
 
+        Returns
+        -------
+        None
+
         Notes
         -----
         Unsetting the value of a face attribute implicitly sets it back to the value
         stored in the default face attribute dict.
+
         """
         if face not in self._halfface:
             raise KeyError(face)
@@ -1536,24 +1605,23 @@ class HalfFace(Datastructure):
         ----------
         face : int
             The identifier of the face.
-        names : list, optional
+        names : list[str], optional
             A list of attribute names.
-        values : list, optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is empty,
-            a dictionary of all attribute name-value pairs of the face.
-            If the parameter ``names`` is not empty,
-            a list of the values corresponding to the provided names.
-            ``None`` if the function is used as a "setter".
+        dict[str, Any] | list[Any] | None
+            If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the face.
+            If the parameter `names` is not empty, a list of the values corresponding to the provided names.
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the face does not exist.
+
         """
         if face not in self._halfface:
             raise KeyError(face)
@@ -1580,22 +1648,23 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
-            Default is ``None``.
-        faces : list of int, optional
+            Default is None.
+        faces : list[int], optional
             A list of face identifiers.
 
         Returns
         -------
-        list or None
+        list[Any] | None
             A list containing the value per face of the requested attribute,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the faces does not exist.
+
         """
         faces = faces or self.faces()
         if value is not None:
@@ -1609,28 +1678,29 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        names : list of str, optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : list of obj, optional
+            Default is None.
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        faces : list of int, optional
+            Default is None.
+        faces : list[int], optional
             A list of face identifiers.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] | list[list[Any]] | None
+            If the parameter `names` is empty,
             a list containing per face an attribute dict with all attributes (default + custom) of the face.
-            If the parameter ``names`` is ``None``,
+            If the parameter `names` is not empty,
             a list containing per face a list of attribute values corresponding to the requested names.
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the faces does not exist.
+
         """
         faces = faces or self.faces()
         if values:
@@ -1648,16 +1718,19 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        attr_dict : dict (None)
+        attr_dict : dict[str, Any], optional
             A dictionary of attributes with their default values.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        None
 
         Notes
         ----
-        Named arguments overwrite corresponding cell-value pairs in the attribute dictionary,
-        if they exist.
+        Named arguments overwrite corresponding cell-value pairs in the attribute dictionary.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1673,18 +1746,19 @@ class HalfFace(Datastructure):
             The cell identifier.
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
 
         Returns
         -------
-        object or None
-            The value of the attribute, or ``None`` when the function is used as a "setter".
+        object | None
+            The value of the attribute, or None when the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the cell does not exist.
+
         """
         if cell not in self._cell:
             raise KeyError(cell)
@@ -1708,6 +1782,10 @@ class HalfFace(Datastructure):
         name : str
             The name of the attribute.
 
+        Returns
+        -------
+        None
+
         Raises
         ------
         KeyError
@@ -1717,6 +1795,7 @@ class HalfFace(Datastructure):
         -----
         Unsetting the value of a cell attribute implicitly sets it back to the value
         stored in the default cell attribute dict.
+
         """
         if cell not in self._cell:
             raise KeyError(cell)
@@ -1731,24 +1810,23 @@ class HalfFace(Datastructure):
         ----------
         cell : int
             The identifier of the cell.
-        names : list, optional
+        names : list[str], optional
             A list of attribute names.
-        values : list, optional
+        values : list[Any], optional
             A list of attribute values.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is empty,
-            a dictionary of all attribute name-value pairs of the cell.
-            If the parameter ``names`` is not empty,
-            a list of the values corresponding to the provided names.
-            ``None`` if the function is used as a "setter".
+        dict[str, Any] | list[Any] | None
+            If the parameter `names` is empty, a dictionary of all attribute name-value pairs of the cell.
+            If the parameter `names` is not empty, a list of the values corresponding to the provided names.
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If the cell does not exist.
+
         """
         if cell not in self._cell:
             raise KeyError(cell)
@@ -1773,22 +1851,22 @@ class HalfFace(Datastructure):
         ----------
         name : str
             The name of the attribute.
-        value : obj, optional
+        value : object, optional
             The value of the attribute.
-            Default is ``None``.
-        cells : list of int, optional
+        cells : list[int], optional
             A list of cell identifiers.
 
         Returns
         -------
-        list or None
+        list[Any] | None
             A list containing the value per face of the requested attribute,
-            or ``None`` if the function is used as a "setter".
+            or None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the cells does not exist.
+
         """
         if not cells:
             cells = self.cells()
@@ -1803,28 +1881,29 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        names : list of str, optional
+        names : list[str], optional
             The names of the attribute.
-            Default is ``None``.
-        values : list of obj, optional
+            Default is None.
+        values : list[Any], optional
             The values of the attributes.
-            Default is ``None``.
-        cells : list of int, optional
+            Default is None.
+        cells : list[int], optional
             A list of cell identifiers.
 
         Returns
         -------
-        dict, list or None
-            If the parameter ``names`` is ``None``,
+        list[dict[str, Any]] | list[list[Any]] | None
+            If the parameter `names` is empty,
             a list containing per cell an attribute dict with all attributes (default + custom) of the cell.
-            If the parameter ``names`` is ``None``,
+            If the parameter `names` is empty,
             a list containing per cell a list of attribute values corresponding to the requested names.
-            ``None`` if the function is used as a "setter".
+            None if the function is used as a "setter".
 
         Raises
         ------
         KeyError
             If any of the faces does not exist.
+
         """
         if not cells:
             cells = self.cells()
@@ -1839,19 +1918,47 @@ class HalfFace(Datastructure):
     # --------------------------------------------------------------------------
 
     def number_of_vertices(self):
-        """Count the number of vertices in the volmesh."""
+        """Count the number of vertices in the volmesh.
+
+        Returns
+        -------
+        int
+            The number of vertices.
+
+        """
         return len(list(self.vertices()))
 
     def number_of_edges(self):
-        """Count the number of edges in the volmesh."""
+        """Count the number of edges in the volmesh.
+
+        Returns
+        -------
+        int
+            The number of edges.
+
+        """
         return len(list(self.edges()))
 
     def number_of_faces(self):
-        """Count the number of faces in the volmesh."""
+        """Count the number of faces in the volmesh.
+
+        Returns
+        -------
+        int
+            The number of faces.
+
+        """
         return len(list(self.faces()))
 
     def number_of_cells(self):
-        """Count the number of faces in the volmesh."""
+        """Count the number of faces in the volmesh.
+
+        Returns
+        -------
+        int
+            The number of cells.
+
+        """
         return len(list(self.cells()))
 
     def is_valid(self):
@@ -1874,6 +1981,7 @@ class HalfFace(Datastructure):
         bool
             True if the vertex is in the volmesh.
             False otherwise.
+
         """
         return vertex in self._vertex
 
@@ -1882,13 +1990,14 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        vertex : hashable
+        vertex : int
             The identifier of the vertex.
 
         Returns
         -------
-        list
+        list[int]
             The list of neighboring vertices.
+
         """
         return self._plane[vertex].keys()
 
@@ -1900,20 +2009,17 @@ class HalfFace(Datastructure):
         vertex : int
             The identifier of the vertex.
         ring : int, optional
-            The number of neighborhood rings to include. Default is ``1``.
+            The number of neighborhood rings to include.
 
         Returns
         -------
-        list
+        list[int]
             The vertices in the neighborhood.
 
         Notes
         -----
         The vertices in the neighborhood are unordered.
 
-        Examples
-        --------
-        >>>
         """
         nbrs = set(self.vertex_neighbors(vertex))
         i = 1
@@ -1939,6 +2045,7 @@ class HalfFace(Datastructure):
         -------
         int
             The degree of the vertex.
+
         """
         return len(self.vertex_neighbors(vertex))
 
@@ -1949,6 +2056,7 @@ class HalfFace(Datastructure):
         -------
         int
             The lowest degree of all vertices.
+
         """
         if not self._vertex:
             return 0
@@ -1961,6 +2069,7 @@ class HalfFace(Datastructure):
         -------
         int
             The highest degree of all vertices.
+
         """
         if not self._vertex:
             return 0
@@ -1976,8 +2085,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The list of halffaces connected to a vertex.
+
         """
         cells = self.vertex_cells(vertex)
         nbrs = self.vertex_neighbors(vertex)
@@ -1999,8 +2109,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The list of cells connected to a vertex.
+
         """
         cells = set()
         for nbr in self._plane[vertex]:
@@ -2022,6 +2133,7 @@ class HalfFace(Datastructure):
         bool
             True if the vertex is on the boundary.
             False otherwise.
+
         """
         halffaces = self.vertex_halffaces(vertex)
         for halfface in halffaces:
@@ -2038,7 +2150,7 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The identifier of the edge.
 
         Returns
@@ -2046,6 +2158,7 @@ class HalfFace(Datastructure):
         bool
             True if the edge exists.
             False otherwise.
+
         """
         return edge in set(self.edges())
 
@@ -2054,13 +2167,14 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The identifier of the edge.
 
         Returns
         -------
-        list
+        list[int]
             Ordered list of halfface identifiers.
+
         """
         u, v = edge
         cells = [cell for cell in self._plane[u][v].values() if cell is not None]
@@ -2083,13 +2197,14 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The identifier of the edge.
 
         Returns
         -------
-        list
+        list[int]
             Ordered list of keys identifying the ordered cells.
+
         """
         halffaces = self.edge_halffaces(edge)
         return [self.halfface_cell(halfface) for halfface in halffaces]
@@ -2099,7 +2214,7 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The identifier of the edge.
 
         Returns
@@ -2112,6 +2227,7 @@ class HalfFace(Datastructure):
         ----
         This method simply checks if u-v or v-u is on the edge of the volmesh.
         The direction u-v does not matter.
+
         """
         u, v = edge
         return None in self._plane[u][v].values()
@@ -2133,6 +2249,7 @@ class HalfFace(Datastructure):
         bool
             True if the face exists.
             False otherwise.
+
         """
         return halfface in self._halfface
 
@@ -2146,8 +2263,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             Ordered vertex identifiers.
+
         """
         return self._halfface[halfface]
 
@@ -2161,8 +2279,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[tuple[int, int]]
             The halfedges of a halfface.
+
         """
         vertices = self.halfface_vertices(halfface)
         return list(pairwise(vertices + vertices[0:1]))
@@ -2177,8 +2296,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        ckey
+        int
             Identifier of the cell.
+
         """
         u, v, w = self._halfface[halfface][0:3]
         return self._plane[u][v][w]
@@ -2193,8 +2313,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        ckey
+        int
             Identifier of the cell.
+
         """
         u, v, w = self._halfface[halfface][0:3]
         return self._plane[w][v][u]
@@ -2209,13 +2330,14 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        face
+        int
             Identifier of the opposite face.
 
         Notes
         -----
         A face and its opposite face share the same vertices, but in reverse order.
         For a boundary face, the opposite face is None.
+
         """
         u, v, w = self._halfface[halfface][0:3]
         nbr = self._plane[w][v][u]
@@ -2230,18 +2352,19 @@ class HalfFace(Datastructure):
         ----------
         halfface : int
             The identifier of the halfface.
-        halfedge : tuple of int
+        halfedge : tuple[int, int]
             The identifier of the halfedge.
 
         Returns
         -------
-        int or None
-            The identifier of the halfface.
+        int | None
+            The identifier of the adjacent half-face, or None if `halfedge` is on the boundary.
 
         Notes
         -----
         The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.
         A face and its adjacent face share two common vertices.
+
         """
         u, v = halfedge
         cell = self.halfface_cell(halfface)
@@ -2271,6 +2394,7 @@ class HalfFace(Datastructure):
         ------
         ValueError
             If the vertex is not part of the face.
+
         """
         i = self._halfface[halfface].index(vertex)
         return self._halfface[halfface][i - 1]
@@ -2294,6 +2418,7 @@ class HalfFace(Datastructure):
         ------
         ValueError
             If the vertex is not part of the face.
+
         """
         if self._halfface[halfface][-1] == vertex:
             return self._halfface[halfface][0]
@@ -2314,17 +2439,21 @@ class HalfFace(Datastructure):
 
     def halfface_manifold_neighborhood(self, hfkey, ring=1):
         """Return the halfface neighborhood of a halfface across their edges.
+
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the halfface.
+
         Returns
         -------
-        list
+        list[int]
             The list of neighboring halffaces.
+
         Notes
         -----
         Neighboring halffaces on the same cell are not included.
+
         """
         nbrs = set(self.halfface_manifold_neighbors(hfkey))
         i = 1
@@ -2351,6 +2480,7 @@ class HalfFace(Datastructure):
         bool
             True if the face is on the boundary.
             False otherwise.
+
         """
         u, v, w = self._halfface[halfface][0:3]
         return self._plane[w][v][u] is None
@@ -2369,8 +2499,14 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The vertex identifiers of a cell.
+
+        Notes
+        -----
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.vertices`,
+        but in the context of a cell of the `VolMesh`.
+
         """
         return list(set([vertex for face in self.cell_faces(cell) for vertex in self.halfface_vertices(face)]))
 
@@ -2384,8 +2520,14 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[tuple[int, int]]
             The halfedges of a cell.
+
+        Notes
+        -----
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.halfedges`,
+        but in the context of a cell of the `VolMesh`.
+
         """
         halfedges = []
         for face in self.cell_faces(cell):
@@ -2393,7 +2535,25 @@ class HalfFace(Datastructure):
         return halfedges
 
     def cell_edges(self, cell):
-        pass
+        """Return all edges of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            The cell identifier.
+
+        Returns
+        -------
+        list[tuple[int, int]]
+            The edges of the cell.
+
+        Notes
+        -----
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.edges`,
+        but in the context of a cell of the `VolMesh`.
+
+        """
+        raise NotImplementedError
 
     def cell_faces(self, cell):
         """The faces of a cell.
@@ -2405,8 +2565,14 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The faces of a cell.
+
+        Notes
+        -----
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.faces`,
+        but in the context of a cell of the `VolMesh`.
+
         """
         faces = set()
         for vertex in self._cell[cell]:
@@ -2425,12 +2591,16 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The list of neighboring vertices.
 
         Notes
         -----
-        All of the returned vertices should be part of the cell.
+        All of the returned vertices are part of the cell.
+
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.vertex_neighbors`,
+        but in the context of a cell of the `VolMesh`.
+
         """
         if vertex not in self.cell_vertices(cell):
             raise KeyError(vertex)
@@ -2455,12 +2625,16 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The ordered list of faces connected to a vertex of a cell.
 
         Notes
         -----
-        All of the returned faces should be part of the cell.
+        All of the returned faces should are part of the same cell.
+
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.vertex_faces`,
+        but in the context of a cell of the `VolMesh`.
+
         """
         nbr_vertices = self._cell[cell][vertex].keys()
         u = vertex
@@ -2473,14 +2647,69 @@ class HalfFace(Datastructure):
         return ordered_faces
 
     def cell_halfedge_face(self, cell, halfedge):
+        """Find the face corresponding to a specific halfedge of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+        halfedge : tuple[int, int]
+            The identifier of the halfedge.
+
+        Returns
+        -------
+        int
+            The identifier of the face.
+
+        Notes
+        -----
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.halfedge_face`,
+        but in the context of a cell of the `VolMesh`.
+
+        """
         u, v = halfedge
         return self._cell[cell][u][v]
 
     def cell_halfedge_opposite_face(self, cell, halfedge):
+        """Find the opposite face corresponding to a specific halfedge of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+        halfedge : tuple[int, int]
+            The identifier of the halfedge.
+
+        Returns
+        -------
+        int
+            The identifier of the face.
+
+        """
         u, v = halfedge
         return self._cell[cell][v][u]
 
     def cell_face_neighbors(self, cell, face):
+        """Find the faces adjacent to a given face of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+        face : int
+            The identifier of the face.
+
+        Returns
+        -------
+        int
+            The identifier of the face.
+
+        Notes
+        -----
+        This method is similar to :meth:`~compas.datastructures.HalfEdge.face_neighbors`,
+        but in the context of a cell of the `VolMesh`.
+
+        """
         nbrs = []
         for halfedge in self.halfface_halfedges(face):
             nbr = self.cell_halfedge_opposite_face(cell, halfedge)
@@ -2489,6 +2718,19 @@ class HalfFace(Datastructure):
         return nbrs
 
     def cell_neighbors(self, cell):
+        """Find the neighbors of a given cell.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+
+        Returns
+        -------
+        list[int]
+            The identifiers of the adjacent cells.
+
+        """
         nbrs = []
         for face in self.cell_faces(cell):
             nbr = self.halfface_opposite_cell(face)
@@ -2509,6 +2751,7 @@ class HalfFace(Datastructure):
         bool
             True if the face is on the boundary.
             False otherwise.
+
         """
         faces = self.cell_faces(cell)
         for face in faces:
@@ -2525,8 +2768,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The vertices of the boundary.
+
         """
         vertices = set()
         for face in self._halfface:
@@ -2539,8 +2783,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The faces of the boundary.
+
         """
         faces = set()
         for face in self._halfface:
@@ -2553,8 +2798,9 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        list
+        list[int]
             The cells of the boundary.
+
         """
         cells = set()
         for face in self.halffaces_on_boundaries():

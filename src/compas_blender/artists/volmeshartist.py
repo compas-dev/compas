@@ -1,21 +1,31 @@
-from compas_blender.artists.meshartist import MeshArtist
+from typing import Optional
+from typing import Union
+from typing import Any
+
+import bpy
+
+from compas.artists import MeshArtist
+from .artist import BlenderArtist
 
 
-__all__ = [
-    'VolMeshArtist',
-]
+class VolMeshArtist(BlenderArtist, MeshArtist):
+    """An artist for drawing volumetric mesh data structures in Blender.
 
+    Parameters
+    ----------
+    volmesh : :class:`compas.datastructures.VolMesh`
+        The volmesh data structure.
+    collection : str or :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.MeshArtist`.
 
-class VolMeshArtist(MeshArtist):
+    """
 
-    def __init__(self, volmesh):
-        super().__init__()
-        self.volmesh = volmesh
+    def __init__(self, volmesh,
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 **kwargs: Any):
 
-    @property
-    def volmesh(self):
-        return self.datastructure
-
-    @volmesh.setter
-    def volmesh(self, volmesh):
-        self.datastructure = volmesh
+        super().__init__(volmesh=volmesh, collection=collection or volmesh.name, **kwargs)

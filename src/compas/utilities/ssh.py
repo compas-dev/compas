@@ -36,7 +36,7 @@ class SSH(object):
 
         Returns
         -------
-        obj
+        SSHClient
             ssh client object.
 
         """
@@ -52,6 +52,10 @@ class SSH(object):
     def close(self):
         """Close the SSH object.
 
+        Returns
+        -------
+        None
+
         """
         self.client.close()
         print('\n***** SSH connection closed')
@@ -66,6 +70,10 @@ class SSH(object):
         local_file : str
             Path to save the local file to.
 
+        Returns
+        -------
+        None
+
         """
         command = 'scp {0}@{1}:{2} {3}'.format(self.username, self.server, remote_file, local_file)
         self.local_command(command)
@@ -78,6 +86,10 @@ class SSH(object):
         local_file : str
             Path of the local file to send.
 
+        Returns
+        -------
+        None
+
         """
         command = 'scp {0} {1}@{2}:'.format(local_file, self.username, self.server)
         self.local_command(command=command)
@@ -89,6 +101,10 @@ class SSH(object):
         ----------
         local_folder : str
             Path of the local folder to send.
+
+        Returns
+        -------
+        None
 
         """
         command = 'scp -r {0} {1}@{2}:'.format(local_folder, self.username, self.server)
@@ -103,6 +119,10 @@ class SSH(object):
             Path of the local folder to sync from.
         remote_folder : str
             Path of the remote folder to sync to.
+
+        Returns
+        -------
+        None
 
         """
         command = 'rsync -Pa {0} {1}@{2}:{3}'.format(local_folder, self.username, self.server, remote_folder)
@@ -119,6 +139,10 @@ class SSH(object):
         folder : str
             The local folder to execute the command from.
 
+        Returns
+        -------
+        None
+
         """
         print('\n***** Executing local command: {0}'.format(command))
         if folder:
@@ -133,6 +157,10 @@ class SSH(object):
         ----------
         command : str
             The command to run on the remote system.
+
+        Returns
+        -------
+        None
 
         """
         print('\n***** Executing server command: {0}\n'.format(command))

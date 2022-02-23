@@ -8,15 +8,10 @@ from math import pi
 
 from itertools import product
 
-import compas
-
 from compas.geometry import angle_vectors_xy
 from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
-
-if not compas.IPY:
-    import planarity
 
 
 __all__ = [
@@ -43,7 +38,7 @@ def network_is_crossed(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -87,7 +82,7 @@ def network_count_crossings(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -108,12 +103,12 @@ def network_find_crossings(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
     -------
-    list
+    list[tuple[tuple[hashable, hashable], tuple[hashable, hashable]]]
         A list of edge pairs, with each edge represented by two vertex keys.
 
     Notes
@@ -143,7 +138,7 @@ def network_is_xy(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -168,7 +163,7 @@ def network_is_planar(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -194,10 +189,13 @@ def network_is_planar(network):
     This function uses the python binding of the *edge addition planarity suite*.
     It is available on Anaconda: https://anaconda.org/conda-forge/python-planarity.
 
-    Examples
-    --------
-    >>>
     """
+    try:
+        import planarity
+    except ImportError:
+        print("Planarity is not installed.")
+        raise
+
     return planarity.is_planar(list(network.edges()))
 
 
@@ -206,7 +204,7 @@ def network_is_planar_embedding(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -226,12 +224,12 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`compas.datastructures.Network`
         A network object.
-    fixed : list (None)
+    fixed : [hashable, hashable], optional
         Two fixed points.
-    straightline : bool (True)
-        Embed using straight lines.
+    straightline : bool, optional
+        If True, embed using straight lines only.
 
     Returns
     -------
@@ -244,9 +242,6 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
     ImportError
         If NetworkX is not installed.
 
-    Examples
-    --------
-    >>>
     """
     try:
         import networkx as nx

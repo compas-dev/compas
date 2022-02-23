@@ -8,7 +8,7 @@ from compas.files.gltf.gltf_reader import GLTFReader
 
 
 class GLTF(object):
-    """Read and create files in glTF format.
+    """Class for working with files in glTF format.
 
     Caution: Extensions and most other application specific data are unsupported,
     and their data may be lost upon import.
@@ -27,6 +27,7 @@ class GLTF(object):
     .. [1] https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
 
     """
+
     def __init__(self, filepath=None):
         self.filepath = filepath
         self._content = None

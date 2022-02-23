@@ -3,41 +3,40 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from .artist import GHArtist
 
 
-__all__ = ['FrameArtist']
-
-
-class FrameArtist(PrimitiveArtist):
+class FrameArtist(GHArtist, PrimitiveArtist):
     """Artist for drawing frames.
 
     Parameters
     ----------
-    frame : compas.geometry.Frame
+    frame : :class:`compas.geometry.Frame`
         A COMPAS frame.
-    name : str, optional
-        The name of the frame.
     scale : float, optional
         The scale of the vectors representing the axes of the frame.
-        Default is ``1.0``.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
     scale : float
-    color_origin : tuple of 3 int between 0 abd 255
-    color_xaxis : tuple of 3 int between 0 abd 255
-    color_yaxis : tuple of 3 int between 0 abd 255
-    color_zaxis : tuple of 3 int between 0 abd 255
-
-    Examples
-    --------
-    >>>
+        Scale factor that controls the length of the axes.
+    color_origin : tuple[int, int, int]
+        Default is ``(0, 0, 0)``.
+    color_xaxis : tuple[int, int, int]
+        Default is ``(255, 0, 0)``.
+    color_yaxis : tuple[int, int, int]
+        Default is ``(0, 255, 0)``.
+    color_zaxis : tuple[int, int, int]
+        Default is ``(0, 0, 255)``.
 
     """
 
-    def __init__(self, frame, scale=1.0):
-        super(FrameArtist, self).__init__(frame)
+    def __init__(self, frame, scale=1.0, **kwargs):
+        super(FrameArtist, self).__init__(primitive=frame, **kwargs)
         self.scale = scale
         self.color_origin = (0, 0, 0)
         self.color_xaxis = (255, 0, 0)
@@ -49,7 +48,7 @@ class FrameArtist(PrimitiveArtist):
 
         Returns
         -------
-        :class:`Rhino.Geometry.Plane`
+        :rhino:`Rhino.Geometry.Plane`
 
         """
         return compas_ghpython.draw_frame(self.primitive)
@@ -59,7 +58,7 @@ class FrameArtist(PrimitiveArtist):
 
         Returns
         -------
-        :class:`Rhino.Geometry.Point`
+        :rhino:`Rhino.Geometry.Point`
 
         """
         point, _ = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
@@ -70,7 +69,7 @@ class FrameArtist(PrimitiveArtist):
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Line`
+        list[:rhino:`Rhino.Geometry.Line`]
 
         """
         _, lines = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)

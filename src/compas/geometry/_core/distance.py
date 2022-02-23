@@ -55,9 +55,9 @@ def distance_point_point(a, b):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point a.
-    b : sequence of float
+    b : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point b.
 
     Returns
@@ -84,9 +84,9 @@ def distance_point_point_xy(a, b):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    b : sequence of float
+    b : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
 
     Returns
@@ -115,14 +115,14 @@ def distance_point_point_sqrd(a, b):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point a.
-    b : sequence of float
+    b : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point b.
 
     Returns
     -------
-    d2 : float
+    float
         Squared distance bewteen a and b.
 
     Examples
@@ -144,9 +144,9 @@ def distance_point_point_sqrd_xy(a, b):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the first point.
-    b : sequence of float)
+    b : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the second point.
 
     Returns
@@ -175,9 +175,9 @@ def distance_point_line(point, line):
 
     Parameters
     ----------
-    point : list, tuple
+    point : [float, float, float] | :class:`compas.geometry.Point`
         Point location.
-    line : list, tuple
+    line : [point, point] | :class:`compas.geometry.Line`
         Line defined by two points.
 
     Returns
@@ -215,9 +215,9 @@ def distance_point_line_xy(point, line):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the point.
-    line : list, tuple
+    line : [point, point] | :class:`compas.geometry.Line`
         Line defined by two points.
 
     Returns
@@ -251,9 +251,9 @@ def distance_point_line_sqrd(point, line):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the point.
-    line : list, tuple
+    line : [point, point] | :class:`compas.geometry.Line`
         Line defined by two points.
 
     Returns
@@ -285,9 +285,9 @@ def distance_point_line_sqrd_xy(point, line):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    line : list, tuple
+    line : [point, point] | :class:`compas.geometry.Line`
         Line defined by two points.
 
     Returns
@@ -321,9 +321,9 @@ def distance_point_plane(point, plane):
 
     Parameters
     ----------
-    point : list
+    point : [float, float, float] | :class:`compas.geometry.Point`
         Point coordinates.
-    plane : tuple
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         A point and a vector defining a plane.
 
     Returns
@@ -376,9 +376,9 @@ def distance_point_plane_signed(point, plane):
 
     Parameters
     ----------
-    point : list
+    point : [float, float, float] | :class:`compas.geometry.Point`
         Point coordinates.
-    plane : tuple
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         A point and a vector defining a plane.
 
     Returns
@@ -433,9 +433,9 @@ def distance_line_line(l1, l2, tol=0.0):
 
     Parameters
     ----------
-    l1 : tuple
+    l1 : [point, point] | :class:`compas.geometry.Line`
         Two points defining a line.
-    l2 : tuple
+    l2 : [point, point] | :class:`compas.geometry.Line`
         Two points defining a line.
 
     Returns
@@ -487,14 +487,14 @@ def sort_points(point, cloud):
 
     Parameters
     ----------
-    point : tuple
+    point : [float, float, float] | :class:`compas.geometry.Point`
         The XYZ coordinates of the base point.
-    cloud : sequence
+    cloud : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A sequence locations in three-dimensional space.
 
     Returns
     -------
-    list
+    list[[float, [float, float, float], int]]
         A list containing the points of the cloud sorted by their squared distance to the base points.
         Each item in the list contains the squared distance to the base point, the XYZ coordinates
         of the point in the cloud, and the index of the point in the original cloud.
@@ -518,17 +518,17 @@ def sort_points_xy(point, cloud):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point.
-    cloud : sequence
+    cloud : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Point`]
         A list of points represented by their XY(Z) coordinates.
 
     Returns
     -------
-    list
+    list[[float, [float, float, 0.0], int]]
         A list containing the points of the cloud sorted by their squared distance to the base points.
         Each item in the list contains the squared distance to the base point, the XYZ coordinates
-        of the point in the cloud, and the index of the point in the original cloud.
+        of the point in the cloud in the XY plane, and the index of the point in the original cloud.
 
     Notes
     -----
@@ -548,21 +548,23 @@ def closest_point_in_cloud(point, cloud):
 
     Parameters
     ----------
-    point : tuple
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the base point.
-    cloud : sequence
+    cloud : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A sequence locations in three-dimensional space.
 
     Returns
     -------
-    tuple
+    float
         The distance to the closest point.
+    [float, float, float]
         XYZ coordinates of the closest point.
+    int
         The index of the closest point in the original list.
 
     Notes
     -----
-    Check kdTree class for an optimized implementation (MR).
+    Check kdTree class for an optimized implementation.
 
     Examples
     --------
@@ -579,21 +581,23 @@ def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True
 
     Parameters
     ----------
-    points : array, list
-        The sample points (n,).
-    cloud : array, list
-        The cloud points to compare to (n,).
-    threshold : float
-        Points are checked within this distance.
-    distances : bool
-        Return distance matrix.
+    points : array_like [n x 3]
+        The sample points.
+    cloud : array_like [n x 3]
+        The cloud points to compare to.
+    threshold : float, optional
+        Only points within this distance are checked.
+    distances : bool, optional
+        If True, return the distance matrix in addition to the indices of the closest points.
+    num_nbrs : int, optional
+        The number of nearest neighbors to include in the result.
 
     Returns
     -------
-    list
-        Indices of the closest points in the cloud per point in points.
-    array
-        Distances between points and closest points in cloud (n x n).
+    list or tuple[list, array]
+        If `distances` is False, indices of the closest points in the cloud per point in points.
+        If `distances` is True, indices of the closest points in the cloud per point in points
+        and distances between points and closest points in cloud (n x n).
 
     Notes
     -----
@@ -602,13 +606,12 @@ def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True
 
     Examples
     --------
+    >>> from numpy import allclose
     >>> points = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
     >>> cloud = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
-    >>> closest_points_in_cloud_numpy(points, cloud, distances=True)
-    (array([0, 1, 2, 3]), array([[0.        , 1.        , 1.41421356, 1.        ],
-           [1.        , 0.        , 1.        , 1.41421356],
-           [1.41421356, 1.        , 0.        , 1.        ],
-           [1.        , 1.41421356, 1.        , 0.        ]]))
+    >>> cp = closest_points_in_cloud_numpy(points, cloud, distances=True)
+    >>> allclose(cp[1], [[0, 1, 1.4142, 1], [1, 0, 1, 1.4142], [1.4142, 1, 0, 1], [1, 1.4142, 1, 0]])
+    True
 
     """
     from numpy import asarray
@@ -633,16 +636,18 @@ def closest_point_in_cloud_xy(point, cloud):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a the base point.
-    cloud : sequence
+    cloud : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Point`]
         A list of points forming the cloud, with each point represented by its XY(Z) coordinates.
 
     Returns
     -------
-    tuple
+    float
         The distance to the closest point.
-        The XYZ coordinates of the closest point (with Z = 0).
+    [float, float, 0.0]
+        The XYZ coordinates of the closest point in the XY plane.
+    int
         The index of the closest point in the cloud.
 
     Notes
@@ -660,14 +665,14 @@ def closest_point_on_line(point, line):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates.
-    line : tuple
+    line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the line.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of closest point.
 
     Examples
@@ -691,15 +696,15 @@ def closest_point_on_line_xy(point, line):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point.
-    line : tuple
+    line : [point, point] | :class:`compas.geometry.Line`
         Two XY(Z) points defining a line.
 
     Returns
     -------
-    list
-        XYZ coordinates of closest point (Z = 0.0).
+    [float, float, 0.0]
+        XYZ coordinates of the closest point in the XY plane.
 
     """
     a, b = line
@@ -714,14 +719,14 @@ def closest_point_on_segment(point, segment):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates.
-    saegment : tuple
+    segment : [point, point] | :class:`compas.geometry.Line`
         Two points defining the segment.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of closest point.
 
     Examples
@@ -746,15 +751,15 @@ def closest_point_on_segment_xy(point, segment):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point.
-    segment : tuple
+    segment : [point, point] | :class:`compas.geometry.Line`
         Two 2D or 3D points defining the line segment (Z components will be ignored).
 
     Returns
     -------
-    list
-        XYZ coordinates of closest point (Z = 0.0).
+    [float, float, 0.0]
+        XYZ coordinates of closest point in the XY plane.
 
     """
     a, b = segment
@@ -774,15 +779,15 @@ def closest_point_on_polyline(point, polyline):
 
     Parameters
     ----------
-    point : list
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of a 2D or 3D point (Z will be ignored).
-    polyline : list of points or :class:`compas.geometry.Polyline`
+    polyline : sequence[point] | :class:`compas.geometry.Polyline`
         A sequence of XYZ coordinates representing the locations of the corners of a polyline.
         The vertices are assumed to be in order.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of closest point.
 
     """
@@ -800,17 +805,17 @@ def closest_point_on_polyline_xy(point, polyline):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    polyline : list of points or :class:`compas.geometry.Polyline`
+    polyline : sequence[point] | :class:`compas.geometry.Polyline`
         A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored)
         representing the locations of the corners of a polyline.
         The vertices are assumed to be in order.
 
     Returns
     -------
-    list
-        XYZ coordinates of closest point (Z = 0.0).
+    [float, float, 0.0]
+        XYZ coordinates of closest point in the XY plane.
 
     """
     cloud = []
@@ -826,9 +831,9 @@ def closest_point_on_polygon_xy(point, polygon):
 
     Parameters
     ----------
-    point : sequence of float
+    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    polygon : sequence
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         A sequence of XY(Z) coordinates of 2D or 3D points
         (Z will be ignored) representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
@@ -836,8 +841,8 @@ def closest_point_on_polygon_xy(point, polygon):
 
     Returns
     -------
-    list
-        XYZ coordinates of closest point (Z = 0.0).
+    [float, float, 0.0]
+        XYZ coordinates of closest point in the XY plane.
 
     """
     points = []
@@ -853,14 +858,14 @@ def closest_point_on_plane(point, plane):
 
     Parameters
     ----------
-    point : sequenceof float
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point.
-    plane : tuple
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         The base point and normal defining the plane.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of the closest point.
 
     Notes
@@ -896,15 +901,15 @@ def closest_line_to_point(point, lines):
 
     Parameters
     ----------
-    point : sequenceof float
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point.
-    lines : sequence of lines (tuples of points).
+    lines : sequence[[point, point] | :class:`compas.geometry.Line`].
         The lines to be checked for distance.
 
     Returns
     -------
-    tuple
-        the closest line.
+    tuple[point, point]
+        The closest line.
     """
     cloud = []
 

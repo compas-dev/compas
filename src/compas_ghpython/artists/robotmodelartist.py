@@ -2,46 +2,53 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.robots.base_artist import BaseRobotModelArtist
+import compas_ghpython
 from compas.utilities import rgb_to_rgb
 
-from compas_ghpython.utilities import draw_mesh
-from compas_ghpython.artists import BaseArtist
 from compas_rhino.geometry.transformations import xtransform
 
-
-__all__ = [
-    'RobotModelArtist',
-]
+from compas.artists import RobotModelArtist
+from .artist import GHArtist
 
 
-class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
-    """Visualizer for robots inside a Grasshopper environment.
+class RobotModelArtist(GHArtist, RobotModelArtist):
+    """Artist for drawing robot models.
 
     Parameters
     ----------
     model : :class:`compas.robots.RobotModel`
         Robot model.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.RobotModelArtist` for more info.
+
     """
 
-    def __init__(self, model):
-        super(RobotModelArtist, self).__init__(model)
+    def __init__(self, model, **kwargs):
+        super(RobotModelArtist, self).__init__(model=model, **kwargs)
 
+    # again not really sure why this is here
     def transform(self, native_mesh, transformation):
         xtransform(native_mesh, transformation)
 
+    # same here
+    # there is no reference to self...
     def create_geometry(self, geometry, name=None, color=None):
         if color:
             color = rgb_to_rgb(color[0], color[1], color[2])
         vertices, faces = geometry.to_vertices_and_faces()
-
-        mesh = draw_mesh(vertices, faces, color=color)
-
+        mesh = compas_ghpython.draw_mesh(vertices, faces, color=color)
         # Try to fix invalid meshes
         if not mesh.IsValid:
             mesh.FillHoles()
-
         return mesh
 
     def draw(self):
-        self.draw_visual()
+        """Draw the visual meshes of the robot model.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Mesh`]
+
+        """
+        return self.draw_visual()

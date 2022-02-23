@@ -24,6 +24,26 @@ __all__ = [
 
 
 def trimesh_pull_points_numpy(mesh, points):
+    """Pull points onto a mesh by computing the closest point on the mesh for each of the points.
+
+    Parameters
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        A mesh data structure.
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
+        The input points.
+
+    Returns
+    -------
+    list[[float, float, float]]
+        The points on the mesh.
+
+    Notes
+    -----
+    It will not be verified that the input mesh is a triangle mesh.
+    It will just be treated as if it is...
+
+    """
     # preprocess
     i_k = mesh.index_key()
     fk_fi = {fkey: index for index, fkey in enumerate(mesh.faces())}

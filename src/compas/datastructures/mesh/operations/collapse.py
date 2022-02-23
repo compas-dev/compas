@@ -14,18 +14,20 @@ def is_collapse_legal(mesh, u, v, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh.
     u : str
         The vertex to collapse towards.
     v : str
         The vertex to collapse.
+    allow_boundary : bool, optional
+        If True, collapse is allowed even if `u` and/or `v` is on the boundary.
 
     Returns
     -------
     bool
-        `True` if the collapse is legal.
-        `False` otherwise.
+        True if the collapse is legal.
+        False otherwise.
 
     """
     u_on = mesh.is_vertex_on_boundary(u)
@@ -80,20 +82,20 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     u : str
         The first vertex of the (half-) edge.
     v : str
         The second vertex of the (half-) edge.
-    t : float (0.5)
+    t : float, optional
         Determines where to collapse to.
-        If `t == 0.0` collapse to `u`.
-        If `t == 1.0` collapse to `v`.
-        If `0.0 < t < 1.0`, collapse to a point between `u` and `v`.
-    allow_boundary : bool (False)
-        Allow collapses involving boundary vertices.
-    fixed : list (None)
+        If ``t == 0.0`` collapse to `u`.
+        If ``t == 1.0`` collapse to `v`.
+        If ``0.0 < t < 1.0``, collapse to a point between `u` and `v`.
+    allow_boundary : bool, optional
+        If True, allow collapses involving boundary vertices.
+    fixed : list[int], optional
         A list of identifiers of vertices that should stay fixed.
 
     Returns
@@ -223,36 +225,24 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
 
 def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
-    """Collapse an edge to its first or second vertex, or to an intermediate
-    point.
-
-    Notes
-    -----
-    An edge can only be collapsed if the collapse is `legal`. A collapse is
-    legal if it meets the following requirements:
-
-    * any vertex `w` that is a neighbor of both `u` and `v` is a face of the mesh
-    * `u` and `v` are not on the boundary
-    * ...
-
-    See [] for a detailed explanation of these requirements.
+    """Collapse an edge to its first or second vertex, or to an intermediate point.
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     u : str
         The first vertex of the (half-) edge.
     v : str
         The second vertex of the (half-) edge.
-    t : float (0.5)
+    t : float, optional
         Determines where to collapse to.
-        If `t == 0.0` collapse to `u`.
-        If `t == 1.0` collapse to `v`.
-        If `0.0 < t < 1.0`, collapse to a point between `u` and `v`.
-    allow_boundary : bool (False)
-        Allow collapses involving vertices on the boundary.
-    fixed : list (None)
+        If ``t == 0.0`` collapse to `u`.
+        If ``t == 1.0`` collapse to `v`.
+        If ``0.0 < t < 1.0``, collapse to a point between `u` and `v`.
+    allow_boundary : bool, optional
+        If True, allow collapses involving vertices on the boundary.
+    fixed : list, optional
         Identifiers of the vertices that should stay fixed.
 
     Returns
@@ -264,9 +254,20 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
     ValueError
         If `u` and `v` are not neighbors.
 
-    Examples
-    --------
-    >>>
+    Notes
+    -----
+    An edge can only be collapsed if the collapse is `legal`. A collapse is
+    legal if it meets the following requirements:
+
+    * any vertex `w` that is a neighbor of both `u` and `v` is a face of the mesh
+    * `u` and `v` are not on the boundary
+    * ...
+
+    See [1]_ for a detailed explanation of these requirements.
+
+    References
+    ----------
+    .. [1] ...
 
     """
     if t < 0.0:

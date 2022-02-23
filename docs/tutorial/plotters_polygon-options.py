@@ -11,4 +11,5 @@ plotter.add(poly1, linewidth=3.0, facecolor=(0.8, 1.0, 0.8), edgecolor=(0.0, 1.0
 plotter.add(poly2, linestyle='dashed', facecolor=(1.0, 0.8, 0.8), edgecolor=(1.0, 0.0, 0.0))
 plotter.add(poly3, alpha=0.5)
 plotter.zoom_extents()
-plotter.save('docs/_images/tutorial/plotters_polygon-options.png', dpi=300)
+plotter.show()
+# plotter.save('docs/_images/tutorial/plotters_polygon-options.png', dpi=300)

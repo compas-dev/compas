@@ -45,6 +45,7 @@ Exceptions
     :toctree: generated/
     :nosignatures:
 
+    IncompletePluginImplError
     PluginNotInstalledError
 """
 from __future__ import absolute_import
@@ -60,8 +61,10 @@ __all__ = [
     'pluggable',
     'plugin',
     'plugin_manager',
+    'IncompletePluginImplError',
     'PluginManager',
     'PluginNotInstalledError',
+    'PluginValidator',
 ]
 
 
@@ -79,6 +82,11 @@ def _get_extension_point_url_from_method(domain, category, plugin_method):
     """Get the extension point URL based on a method instance"""
     name = getattr(plugin_method, '__name__', None) or str(id(plugin_method))
     return '{}/{}/{}'.format(domain, category, name).replace('//', '/')
+
+
+class IncompletePluginImplError(Exception):
+    """Exception raised when a plugin does not have implementations for all abstract methods of its base class."""
+    pass
 
 
 class PluginImpl(object):
@@ -252,15 +260,15 @@ def pluggable(pluggable_method=None, category=None, selector='first_match', doma
     ----------
     pluggable_method : callable
         The method to decorate as ``pluggable``.
-    category : :obj:`str`, optional
+    category : str, optional
         An optional string to group or categorize extension points.
-    selector : :obj:`str`, optional
+    selector : str, optional
         String that determines the selection mode of extension points.
 
-        - ``"first_match"``: (:obj:`str`) Execute the first matching implementation.
-        - ``"collect_all"``: (:obj:`str`) Executes all matching implementations and return list of its return values.
+        - ``"first_match"``: (str) Execute the first matching implementation.
+        - ``"collect_all"``: (str) Executes all matching implementations and return list of its return values.
 
-    domain : :obj:`str`, optional
+    domain : str, optional
         Domain name that "owns" the pluggable extension point.
         This is useful to avoid name collisions between extension points
         of different packages.
@@ -321,9 +329,11 @@ def plugin(method=None, category=None, requires=None, tryfirst=False, trylast=Fa
         The method to decorate as ``plugin``.
     category : str, optional
         An optional string to group or categorize plugins.
-    requires : list of str, optional
-        Optionally defines a list of packages that should be importable
-        for this plugin to be used.
+    requires : list, optional
+        Optionally defines a list of requirements that should be fulfilled
+        for this plugin to be used. The requirement can either be a package
+        name (``str``) or a ``callable`` with a boolean return value,
+        in which any arbitrary check can be implemented.
     tryfirst : bool, optional
         Plugins can declare a preferred priority by setting this to ``True``.
         By default ``False``.
@@ -390,7 +400,11 @@ class Importer(object):
         try:
             module = __import__(module_name, fromlist=['__name__'], level=0)
             self._cache[module_name] = True
-        except ImportError:
+
+        # There are two types of possible failure modes:
+        # 1) cannot be imported, or
+        # 2) is a python 3 module and we're in IPY, which causes a SyntaxError
+        except (ImportError, SyntaxError):
             self._cache[module_name] = False
 
         return module
@@ -414,39 +428,56 @@ class Importer(object):
         return self._cache[module_name]
 
 
-def is_plugin_selectable(plugin, manager):
-    if plugin.opts['requires']:
-        importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
+class PluginValidator(object):
+    """Plugin Validator handles validation of plugins."""
 
-        if not all(importable_requirements):
-            if manager.DEBUG:
-                print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
-            return False
+    def __init__(self, manager):
+        self.manager = manager
 
-    return True
+    def verify_requirement(self, requirement):
+        if callable(requirement):
+            return requirement()
 
+        return self.manager.importer.check_importable(requirement)
 
-def select_plugin(extension_point_url, manager):
-    if manager.DEBUG:
-        print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
+    def is_plugin_selectable(self, plugin):
+        if plugin.opts['requires']:
+            importable_requirements = (self.verify_requirement(requirement) for requirement in plugin.opts['requires'])
 
-    plugins = manager.registry.get(extension_point_url) or []
-    for plugin in plugins:
-        if is_plugin_selectable(plugin, manager):
-            return plugin
+            if not all(importable_requirements):
+                if self.manager.DEBUG:
+                    print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
+                return False
 
-    # Nothing found, raise
-    raise PluginNotInstalledError('Plugin not found for extension point URL: {}'.format(extension_point_url))
+        return True
 
+    def select_plugin(self, extension_point_url):
+        if self.manager.DEBUG:
+            print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
 
-def collect_plugins(extension_point_url, manager):
-    if manager.DEBUG:
-        print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
+        plugins = self.manager.registry.get(extension_point_url) or []
+        for plugin in plugins:
+            if self.is_plugin_selectable(plugin):
+                return plugin
 
-    plugins = manager.registry.get(extension_point_url) or []
-    return [plugin for plugin in plugins if is_plugin_selectable(plugin, manager)]
+        # Nothing found, raise
+        raise PluginNotInstalledError('Plugin not found for extension point URL: {}'.format(extension_point_url))
+
+    def collect_plugins(self, extension_point_url):
+        if self.manager.DEBUG:
+            print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
+
+        plugins = self.manager.registry.get(extension_point_url) or []
+        return [plugin for plugin in plugins if self.is_plugin_selectable(plugin)]
+
+    @staticmethod
+    def ensure_implementations(cls):
+        for name, value in inspect.getmembers(cls):
+            if inspect.isfunction(value) or inspect.ismethod(value):
+                if hasattr(value, '__isabstractmethod__'):
+                    raise IncompletePluginImplError('Abstract method not implemented: {}'.format(value))
 
 
 plugin_manager = PluginManager()
-_select_plugin = functools.partial(select_plugin, manager=plugin_manager)
-_collect_plugins = functools.partial(collect_plugins, manager=plugin_manager)
+_select_plugin = PluginValidator(plugin_manager).select_plugin
+_collect_plugins = PluginValidator(plugin_manager).collect_plugins

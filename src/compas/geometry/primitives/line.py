@@ -11,27 +11,25 @@ class Line(Primitive):
 
     Parameters
     ----------
-    p1 : point
+    p1 : [float, float, float] | :class:`compas.geometry.Point`
         The first point.
-    p2 : point
+    p2 : [float, float, float] | :class:`compas.geometry.Point`
         The second point.
 
     Attributes
     ----------
-    data : dict
-        The data representation of the line.
     start : :class:`compas.geometry.Point`
-        The first point of the line.
+        The start point of the line.
     end : :class:`compas.geometry.Point`
-        The second point of the line.
-    vector : :class:`compas.geometry.Vector`
-        A vector pointing from ``start`` to ``end``.
-    direction : :class:`compas.geometry.Vector`
-        A unit vector pointing from ``start`` to ``end``.
-    midpoint : :class:`compas.geometry.Point`
-        A point half way between ``start`` and ``end``.
+        The end point of the line.
+    vector : :class:`compas.geometry.Vector`, read-only
+        A vector pointing from start to end.
     length : float, read-only
-        The length of the line segment between ``start`` and ``end``.
+        The length of the vector from start to end.
+    direction : :class:`compas.geometry.Vector`, read-only
+        A unit vector pointing from start and end.
+    midpoint : :class:`compas.geometry.Point`, read-only
+        The midpoint between start and end.
 
     Examples
     --------
@@ -49,18 +47,6 @@ class Line(Primitive):
 
     """
 
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        return Schema({
-            'start': Point.DATASCHEMA.fget(None),
-            'end': Point.DATASCHEMA.fget(None)
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        return 'line'
-
     __slots__ = ['_start', '_end']
 
     def __init__(self, p1, p2, **kwargs):
@@ -69,6 +55,24 @@ class Line(Primitive):
         self._end = None
         self.start = p1
         self.end = p2
+
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : Schema of the data representation."""
+        from schema import Schema
+        return Schema({
+            'start': Point.DATASCHEMA.fget(None),
+            'end': Point.DATASCHEMA.fget(None)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        """str : Name of the schema of the data representation in JSON format."""
+        return 'line'
 
     @property
     def data(self):
@@ -80,9 +84,30 @@ class Line(Primitive):
         self.start = Point.from_data(data['start'])
         self.end = Point.from_data(data['end'])
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a frame from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Examples
+        --------
+        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
+        >>> line.end
+        Point(1.000, 0.000, 0.000)
+
+        """
+        return cls(Point.from_data(data['start']), Point.from_data(data['end']))
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
     @property
     def start(self):
-        """:class:`compas.geometry.Point` : The start point of the line."""
         return self._start
 
     @start.setter
@@ -91,7 +116,6 @@ class Line(Primitive):
 
     @property
     def end(self):
-        """:class:`compas.geometry.Point` : The end point of the line."""
         return self._end
 
     @end.setter
@@ -100,22 +124,18 @@ class Line(Primitive):
 
     @property
     def vector(self):
-        """:class:`compas.geometry.Vector` : A vector pointing from start to end."""
         return self.end - self.start
 
     @property
     def length(self):
-        """float : The length of the vector from start to end."""
         return self.vector.length
 
     @property
     def direction(self):
-        """:class:`compas.geometry.Vector` : A unit vector pointing from start and end."""
         return self.vector * (1 / self.length)
 
     @property
     def midpoint(self):
-        """:class:`compas.geometry.Point` : The midpoint between start and end."""
         v = self.direction * (0.5 * self.length)
         return self.start + v
 
@@ -160,34 +180,17 @@ class Line(Primitive):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a frame from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Examples
-        --------
-        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
-        >>> line.end
-        Point(1.000, 0.000, 0.000)
-        """
-        return cls(Point.from_data(data['start']), Point.from_data(data['end']))
-
     # ==========================================================================
     # static
     # ==========================================================================
 
     @staticmethod
     def transform_collection(collection, X):
-        """Transform a collection of ``Line`` objects.
+        """Transform a collection of Line objects.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Line
+        collection : list[[point, point] | :class:`compas.geometry.Line`]
             The collection of lines.
 
         Returns
@@ -210,22 +213,23 @@ class Line(Primitive):
         Point(0.000, 1.000, 0.000)
         >>> a is b
         True
+
         """
         points = [line.start for line in collection] + [line.end for line in collection]
         Point.transform_collection(points, X)
 
     @staticmethod
     def transformed_collection(collection, X):
-        """Create a collection of transformed ``Line`` objects.
+        """Create a collection of transformed Line objects.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Line
+        collection : list[[point, point] | :class:`compas.geometry.Line`]
             The collection of lines.
 
         Returns
         -------
-        list of compas.geometry.Line
+        list[:class:`compas.geometry.Line`]
             The transformed lines.
 
         Examples
@@ -243,6 +247,7 @@ class Line(Primitive):
         Point(0.000, 1.000, 0.000)
         >>> a is b
         False
+
         """
         lines = [line.copy() for line in collection]
         Line.transform_collection(lines, X)
@@ -262,7 +267,7 @@ class Line(Primitive):
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             A point on the line.
 
         Examples
@@ -270,6 +275,7 @@ class Line(Primitive):
         >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
         >>> line.point(0.5)
         Point(0.500, 0.000, 0.000)
+
         """
         if t == 0:
             return self.start
@@ -283,8 +289,12 @@ class Line(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -295,6 +305,7 @@ class Line(Primitive):
         >>> line.transform(R)
         >>> line.end
         Point(0.000, 1.000, 0.000)
+
         """
         self.start.transform(T)
         self.end.transform(T)

@@ -35,6 +35,8 @@ def download_file_from_remote(source, target, overwrite=True):
         The url of the source file.
     target : str
         The path of the local destination.
+    overwrite : bool, optional
+        If True, overwrite `target` if it already exists.
 
     Examples
     --------

@@ -18,9 +18,9 @@ class ToolModel(RobotModel):
         The frame of the tool in tool0 frame.
     collision : :class:`compas.datastructures.Mesh`
         The collision mesh representation of the tool.
-    name : :obj:`str`
+    name : str
         The name of the `ToolModel`. Defaults to 'attached_tool'.
-    link_name : :obj:`str`
+    link_name : str
         The name of the `Link` to which the tool is attached.  Defaults to ``None``.
 
     Examples
@@ -34,8 +34,7 @@ class ToolModel(RobotModel):
 
     """
 
-    def __init__(self, visual, frame_in_tool0_frame, collision=None,
-                 name="attached_tool", link_name=None):
+    def __init__(self, visual, frame_in_tool0_frame, collision=None, name="attached_tool", link_name=None):
         collision = collision or visual
         super(ToolModel, self).__init__(name)
         self.add_link("attached_tool_link", visual_mesh=visual, collision_mesh=collision)
@@ -53,10 +52,12 @@ class ToolModel(RobotModel):
         Parameters
         ----------
         robot : :class:`compas.robots.RobotModel`
-        frame_in_tool0_frame : :obj:`str`
+        frame_in_tool0_frame : str
             The frame of the tool in tool0 frame.
-        link_name : :obj:`str`
-            The name of the `Link` to which the tool is attached.  Defaults to ``None``.
+        link_name : str
+            The name of the `Link` to which the tool is attached.
+            Defaults to ``None``.
+
         """
         data = robot.data
         data['frame'] = frame_in_tool0_frame.data
@@ -69,7 +70,7 @@ class ToolModel(RobotModel):
 
         Returns
         -------
-        :obj:`dict`
+        dict
             The tool data.
 
         """
@@ -93,12 +94,13 @@ class ToolModel(RobotModel):
 
     @classmethod
     def from_data(cls, data):
-        """Construct a `ToolModel` from its data representation.  To be used
-        in conjunction with the :meth:`to_data` method.
+        """Construct a `ToolModel` from its data representation.
+
+        To be used in conjunction with the :meth:`to_data` method.
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
@@ -116,12 +118,12 @@ class ToolModel(RobotModel):
 
         Parameters
         ----------
-        frames_tcf : :obj:`list` of :class:`compas.geometry.Frame`
+        frames_tcf : list[:class:`compas.geometry.Frame`]
             Frames (in WCF) at the robot's tool tip (tcf).
 
         Returns
         -------
-        :obj:`list` of :class:`compas.geometry.Frame`
+        list[:class:`compas.geometry.Frame`]
             Frames (in WCF) at the robot's flange (tool0).
 
         Examples
@@ -135,6 +137,7 @@ class ToolModel(RobotModel):
         >>> frames_tcf = [Frame((-0.309, -0.046, -0.266), (0.276, 0.926, -0.256), (0.879, -0.136, 0.456))]
         >>> tool.from_tcf_to_t0cf(frames_tcf)
         [Frame(Point(-0.363, 0.003, -0.147), Vector(0.388, -0.351, -0.852), Vector(0.276, 0.926, -0.256))]
+
         """
         Te = Transformation.from_frame_to_frame(self.frame, Frame.worldXY())
         return [Frame.from_transformation(Transformation.from_frame(f) * Te) for f in frames_tcf]
@@ -144,12 +147,12 @@ class ToolModel(RobotModel):
 
         Parameters
         ----------
-        frames_t0cf : :obj:`list` of :class:`compas.geometry.Frame`
+        frames_t0cf : list[:class:`compas.geometry.Frame`]
             Frames (in WCF) at the robot's flange (tool0).
 
         Returns
         -------
-        :obj:`list` of :class:`compas.geometry.Frame`
+        list[:class:`compas.geometry.Frame`]
             Frames (in WCF) at the robot's tool tip (tcf).
 
         Examples
@@ -163,6 +166,7 @@ class ToolModel(RobotModel):
         >>> frames_t0cf = [Frame((-0.363, 0.003, -0.147), (0.388, -0.351, -0.852), (0.276, 0.926, -0.256))]
         >>> tool.from_t0cf_to_tcf(frames_t0cf)
         [Frame(Point(-0.309, -0.046, -0.266), Vector(0.276, 0.926, -0.256), Vector(0.879, -0.136, 0.456))]
+
         """
         Te = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
         return [Frame.from_transformation(Transformation.from_frame(f) * Te) for f in frames_t0cf]

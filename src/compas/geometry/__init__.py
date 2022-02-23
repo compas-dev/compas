@@ -5,79 +5,78 @@ geometry
 
 .. currentmodule:: compas.geometry
 
-Base Class
+Primitives
 ==========
+
+Bases
+-----
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Geometry
+    Primitive
+    Shape
+    Curve
+    Surface
 
-Classes
-=======
-
-Primitives
-----------
+0-dimensional
+-------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    Primitive
+    Vector
+    Quaternion
+    Point
+    Pointcloud
+    Plane
+    Frame
+
+1-dimensional
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Line
+    Polyline
     Bezier
+    NurbsCurve
+
+2-dimensional
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     Circle
     Ellipse
-    Frame
-    Line
-    Plane
-    Point
     Polygon
-    Polyline
-    Pointcloud
-    Quaternion
-    Vector
+    NurbsSurface
 
-
-Shapes
-------
+3-dimensional
+-------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    Shape
     Box
-    Capsule
-    Cone
-    Cylinder
-    Polyhedron
     Sphere
+    Cylinder
+    Cone
+    Capsule
     Torus
-
-
-Collections
------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Collection
-    PointCollection
-
-**CPython**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    CollectionNumpy
-    PointCollectionNumpy
+    Polyhedron
 
 
 Transformations
----------------
+===============
 
 .. autosummary::
     :toctree: generated/
@@ -94,221 +93,6 @@ Transformations
 
 Functions
 =========
-
-Predicates 2D
--------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    is_ccw_xy
-    is_colinear_xy
-    is_intersection_line_line_xy
-    is_intersection_segment_segment_xy
-    is_point_in_circle_xy
-    is_point_in_convex_polygon_xy
-    is_point_in_polygon_xy
-    is_point_in_triangle_xy
-    is_point_on_line_xy
-    is_point_on_polyline_xy
-    is_point_on_segment_xy
-    is_polygon_convex_xy
-    is_polygon_in_polygon_xy
-
-
-Predicates 3D
--------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    is_colinear
-    is_colinear_line_line
-    is_coplanar
-    is_intersection_line_line
-    is_intersection_line_plane
-    is_intersection_line_triangle
-    is_intersection_plane_plane
-    is_intersection_segment_plane
-    is_intersection_segment_segment
-    is_polygon_convex
-    is_point_behind_plane
-    is_point_infront_plane
-    is_point_in_circle
-    is_point_in_halfspace
-    is_point_in_polyhedron
-    is_point_in_triangle
-    is_point_on_line
-    is_point_on_plane
-    is_point_on_polyline
-    is_point_on_segment
-
-
-Transformations
----------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mirror_point_plane
-    mirror_points_line
-    mirror_points_line_xy
-    mirror_points_plane
-    mirror_points_point
-    mirror_points_point_xy
-    mirror_vector_vector
-    orient_points
-    project_point_line
-    project_point_line_xy
-    project_point_plane
-    project_points_line
-    project_points_line_xy
-    project_points_plane
-    rotate_points
-    rotate_points_xy
-    reflect_line_plane
-    reflect_line_triangle
-    scale_points
-    scale_points_xy
-    translate_points
-    translate_points_xy
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    axis_angle_vector_from_matrix
-    axis_angle_from_quaternion
-    basis_vectors_from_matrix
-    compose_matrix
-    decompose_matrix
-    euler_angles_from_matrix
-    euler_angles_from_quaternion
-    axis_and_angle_from_matrix
-    identity_matrix
-    local_axes
-    local_to_world_coordinates
-    matrix_determinant
-    matrix_from_axis_and_angle
-    matrix_from_axis_angle_vector
-    matrix_from_basis_vectors
-    matrix_from_change_of_basis
-    matrix_from_euler_angles
-    matrix_from_frame
-    matrix_from_frame_to_frame
-    matrix_from_orthogonal_projection
-    matrix_from_parallel_projection
-    matrix_from_perspective_entries
-    matrix_from_perspective_projection
-    matrix_from_quaternion
-    matrix_from_scale_factors
-    matrix_from_shear
-    matrix_from_shear_entries
-    matrix_from_translation
-    matrix_inverse
-    orthonormalize_axes
-    quaternion_canonize
-    quaternion_conjugate
-    quaternion_from_axis_angle
-    quaternion_from_euler_angles
-    quaternion_from_matrix
-    quaternion_is_unit
-    quaternion_multiply
-    quaternion_norm
-    quaternion_unitize
-    transform_frames
-    transform_points
-    transform_vectors
-    translation_from_matrix
-    world_to_local_coordinates
-
-**CPython**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    dehomogenize_numpy
-    dehomogenize_and_unflatten_frames_numpy
-    homogenize_numpy
-    homogenize_and_flatten_frames_numpy
-    local_to_world_coordinates_numpy
-    transform_points_numpy
-    transform_vectors_numpy
-    world_to_local_coordinates_numpy
-
-
-Linear algebra
---------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    add_vectors
-    add_vectors_xy
-    allclose
-    argmax
-    argmin
-    close
-    cross_vectors
-    cross_vectors_xy
-    dehomogenize_vectors
-    divide_vectors
-    divide_vectors_xy
-    dot_vectors
-    dot_vectors_xy
-    homogenize_vectors
-    length_vector
-    length_vector_xy
-    length_vector_sqrd
-    length_vector_sqrd_xy
-    multiply_matrices
-    multiply_matrix_vector
-    multiply_vectors
-    multiply_vectors_xy
-    norm_vector
-    norm_vectors
-    normalize_vector
-    normalize_vector_xy
-    normalize_vectors
-    normalize_vectors_xy
-    orthonormalize_vectors
-    power_vector
-    power_vectors
-    scale_vector
-    scale_vector_xy
-    scale_vectors
-    scale_vectors_xy
-    square_vector
-    square_vectors
-    subtract_vectors
-    subtract_vectors_xy
-    sum_vectors
-    transpose_matrix
-    vector_average
-    vector_component
-    vector_component_xy
-    vector_standard_deviation
-    vector_variance
-
-
-Analytical
-----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    archimedean_spiral_evaluate
-    circle_evaluate
-    ellipse_evaluate,
-    helix_evaluate
-    logarithmic_spiral_evaluate
-
 
 Points, Vectors, Lines, Planes, Circles
 ---------------------------------------
@@ -370,31 +154,16 @@ Point Sets
     :toctree: generated/
     :nosignatures:
 
-    KDTree
-
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    bestfit_circle_numpy
+    bestfit_frame_numpy
     bestfit_plane
+    bestfit_plane_numpy
+    bestfit_sphere_numpy
     bounding_box
     bounding_box_xy
     convex_hull
-    convex_hull_xy
-
-
-**CPython**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    bestfit_circle_numpy
-    bestfit_frame_numpy
-    bestfit_plane_numpy
-    bestfit_sphere_numpy
     convex_hull_numpy
+    convex_hull_xy
     convex_hull_xy_numpy
     icp_numpy
     oabb_numpy
@@ -463,18 +232,6 @@ Intersections
     intersection_sphere_sphere
 
 
-Offsets
--------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    offset_line
-    offset_polyline
-    offset_polygon
-
-
 Interpolation
 -------------
 
@@ -522,15 +279,8 @@ Triangulation
     conforming_delaunay_triangulation
     constrained_delaunay_triangulation
     delaunay_from_points
-    delaunay_triangulation
-
-**CPython**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     delaunay_from_points_numpy
+    delaunay_triangulation
     voronoi_from_points_numpy
 
 
@@ -564,6 +314,205 @@ Quad meshes
 
     quadmesh_planarize
 
+
+Predicates
+----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    is_ccw_xy
+    is_colinear
+    is_colinear_line_line
+    is_colinear_xy
+    is_coplanar
+    is_intersection_line_line
+    is_intersection_line_line_xy
+    is_intersection_line_plane
+    is_intersection_line_triangle
+    is_intersection_plane_plane
+    is_intersection_segment_plane
+    is_intersection_segment_segment
+    is_intersection_segment_segment_xy
+    is_point_behind_plane
+    is_point_infront_plane
+    is_point_in_circle
+    is_point_in_circle_xy
+    is_point_in_convex_polygon_xy
+    is_point_in_halfspace
+    is_point_in_polygon_xy
+    is_point_in_polyhedron
+    is_point_in_triangle
+    is_point_in_triangle_xy
+    is_point_on_line
+    is_point_on_line_xy
+    is_point_on_plane
+    is_point_on_polyline
+    is_point_on_polyline_xy
+    is_point_on_segment
+    is_point_on_segment_xy
+    is_polygon_convex
+    is_polygon_convex_xy
+    is_polygon_in_polygon_xy
+
+
+Transformations
+---------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    axis_and_angle_from_matrix
+    axis_angle_vector_from_matrix
+    axis_angle_from_quaternion
+    basis_vectors_from_matrix
+    compose_matrix
+    decompose_matrix
+    dehomogenize_numpy
+    dehomogenize_and_unflatten_frames_numpy
+    euler_angles_from_matrix
+    euler_angles_from_quaternion
+    homogenize_numpy
+    homogenize_and_flatten_frames_numpy
+    identity_matrix
+    local_axes
+    local_to_world_coordinates
+    local_to_world_coordinates_numpy
+    matrix_determinant
+    matrix_from_axis_and_angle
+    matrix_from_axis_angle_vector
+    matrix_from_basis_vectors
+    matrix_from_change_of_basis
+    matrix_from_euler_angles
+    matrix_from_frame
+    matrix_from_frame_to_frame
+    matrix_from_orthogonal_projection
+    matrix_from_parallel_projection
+    matrix_from_perspective_entries
+    matrix_from_perspective_projection
+    matrix_from_quaternion
+    matrix_from_scale_factors
+    matrix_from_shear
+    matrix_from_shear_entries
+    matrix_from_translation
+    matrix_inverse
+    mirror_point_plane
+    mirror_points_line
+    mirror_points_line_xy
+    mirror_points_plane
+    mirror_points_point
+    mirror_points_point_xy
+    mirror_vector_vector
+    orient_points
+    orthonormalize_axes
+    project_point_line
+    project_point_line_xy
+    project_point_plane
+    project_points_line
+    project_points_line_xy
+    project_points_plane
+    quaternion_canonize
+    quaternion_conjugate
+    quaternion_from_axis_angle
+    quaternion_from_euler_angles
+    quaternion_from_matrix
+    quaternion_is_unit
+    quaternion_multiply
+    quaternion_norm
+    quaternion_unitize
+    reflect_line_plane
+    reflect_line_triangle
+    rotate_points
+    rotate_points_xy
+    scale_points
+    scale_points_xy
+    transform_frames
+    transform_points
+    transform_points_numpy
+    transform_vectors
+    transform_vectors_numpy
+    translate_points
+    translate_points_xy
+    translation_from_matrix
+    world_to_local_coordinates
+    world_to_local_coordinates_numpy
+
+
+Linear algebra
+--------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    add_vectors
+    add_vectors_xy
+    allclose
+    argmax
+    argmin
+    close
+    cross_vectors
+    cross_vectors_xy
+    dehomogenize_vectors
+    divide_vectors
+    divide_vectors_xy
+    dot_vectors
+    dot_vectors_xy
+    homogenize_vectors
+    length_vector
+    length_vector_xy
+    length_vector_sqrd
+    length_vector_sqrd_xy
+    multiply_matrices
+    multiply_matrix_vector
+    multiply_vectors
+    multiply_vectors_xy
+    norm_vector
+    norm_vectors
+    normalize_vector
+    normalize_vector_xy
+    normalize_vectors
+    normalize_vectors_xy
+    orthonormalize_vectors
+    power_vector
+    power_vectors
+    scale_vector
+    scale_vector_xy
+    scale_vectors
+    scale_vectors_xy
+    square_vector
+    square_vectors
+    subtract_vectors
+    subtract_vectors_xy
+    sum_vectors
+    transpose_matrix
+    vector_average
+    vector_component
+    vector_component_xy
+    vector_standard_deviation
+    vector_variance
+
+
+Misc
+----
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    KDTree
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    archimedean_spiral_evaluate
+    circle_evaluate
+    ellipse_evaluate,
+    helix_evaluate
+    logarithmic_spiral_evaluate
 
 """
 from __future__ import absolute_import
@@ -938,15 +887,15 @@ from .trimesh import (  # noqa: E402
 if not compas.IPY:
     from .icp import icp_numpy
 
-from .collections import (  # noqa: E402
-    Collection,
-    PointCollection,
+from .curves import (
+    Curve,
+    NurbsCurve
 )
-if not compas.IPY:
-    from .collections import (
-        CollectionNumpy,
-        PointCollectionNumpy
-    )
+
+from .surfaces import (
+    Surface,
+    NurbsSurface
+)
 
 __all__ = [
     'close',
@@ -1248,8 +1197,11 @@ __all__ = [
     'Transformation',
     'Translation',
 
-    'Collection',
-    'PointCollection',
+    'Curve',
+    'NurbsCurve',
+
+    'Surface',
+    'NurbsSurface'
 ]
 
 if not compas.IPY:
@@ -1274,6 +1226,4 @@ if not compas.IPY:
         'local_to_world_coordinates_numpy',
         'delaunay_from_points_numpy',
         'voronoi_from_points_numpy',
-        'CollectionNumpy',
-        'PointCollectionNumpy'
     ]

@@ -31,6 +31,7 @@ from compas._os import create_symlinks
 from compas._os import remove_symlinks
 from compas_ghpython import get_grasshopper_userobjects_path
 from compas_rhino import _check_rhino_version
+import compas_rhino
 
 
 def coerce_frame(plane):
@@ -46,7 +47,7 @@ def coerce_frame(plane):
 
 def get_version_from_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0')
+    parser.add_argument('-v', '--version', choices=compas_rhino.SUPPORTED_VERSIONS, default=compas_rhino.DEFAULT_VERSION)
     args = parser.parse_args()
     return _check_rhino_version(args.version)
 
@@ -66,6 +67,7 @@ def install_userobjects(source):
     """
     version = get_version_from_args()
 
+    # this dstdir potentially doesn't exist
     dstdir = get_grasshopper_userobjects_path(version)
     userobjects = glob.glob(os.path.join(source, '*.ghuser'))
 
@@ -102,10 +104,15 @@ def uninstall_userobjects(userobjects):
     version = get_version_from_args()
     dstdir = get_grasshopper_userobjects_path(version)
 
+    userobjects = []
+    for name in os.listdir(dstdir):
+        if name.lower().startswith('compas'):
+            userobjects.append(name)
+
     symlinks = []
-    for src in userobjects:
-        dst = os.path.join(dstdir, os.path.basename(src))
-        symlinks.append(dst)
+    for obj in userobjects:
+        path = os.path.join(dstdir, os.path.basename(obj))
+        symlinks.append(path)
 
     removed = remove_symlinks(symlinks)
 

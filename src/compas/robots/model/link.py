@@ -2,50 +2,29 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
 from compas.data import Data
 from compas.files import URDFElement
 from compas.files import URDFParser
-from compas.geometry import Plane
+from compas.geometry import Box
+from compas.geometry import Capsule
+from compas.geometry import Cylinder
+from compas.geometry import Frame
+from compas.geometry import Sphere
 from compas.geometry import Transformation
-from compas.robots.model.geometry import Box
-from compas.robots.model.geometry import Capsule
+from compas.robots.model.base import FrameProxy
+from compas.robots.model.base import _attr_from_data
+from compas.robots.model.base import _attr_to_data
+from compas.robots.model.geometry import BoxProxy
+from compas.robots.model.geometry import CapsuleProxy
 from compas.robots.model.geometry import Color
-from compas.robots.model.geometry import Cylinder
+from compas.robots.model.geometry import CylinderProxy
 from compas.robots.model.geometry import Geometry
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
-from compas.robots.model.geometry import Origin
-from compas.robots.model.geometry import Sphere
+from compas.robots.model.geometry import SphereProxy
 from compas.robots.model.geometry import Texture
-from compas.robots.model.geometry import _attr_from_data
-from compas.robots.model.geometry import _attr_to_data
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
-
-
-def _get_geometry_and_origin(primitive):
-    shape = None
-    origin = None
-    if isinstance(primitive, compas.geometry.Box):
-        shape = Box.from_geometry(primitive)
-        origin = Origin(*primitive.frame)
-    if isinstance(primitive, compas.geometry.Capsule):
-        shape = Capsule.from_geometry(primitive)
-        point = primitive.line.midpoint
-        normal = primitive.line.vector
-        plane = Plane(point, normal)
-        origin = Origin.from_plane(plane)
-    if isinstance(primitive, compas.geometry.Cylinder):
-        shape = Cylinder.from_geometry(primitive)
-        origin = Origin.from_plane(primitive.circle.plane)
-    if isinstance(primitive, compas.geometry.Sphere):
-        shape = Sphere.from_geometry(primitive)
-        origin = Origin(primitive.point, [1, 0, 0], [0, 1, 0])
-    if not shape:
-        raise Exception('Unrecognized primitive type {}'.format(primitive.__class__))
-    geometry = Geometry(shape)
-    return geometry, origin
 
 
 class Mass(Data):
@@ -81,6 +60,7 @@ class Inertia(Data):
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
     elements of this matrix are specified here, using the attributes
     ``ixx``, ``ixy``, ``ixz``, ``iyy``, ``iyz``, ``izz``.
+
     """
 
     def __init__(self, ixx=0., ixy=0., ixz=0., iyy=0., iyz=0., izz=0.):
@@ -133,12 +113,12 @@ class Inertial(Data):
 
     Attributes
     ----------
-    origin:
+    origin
         This is the pose of the inertial reference frame,
         relative to the link reference frame.
-    mass:
+    mass
         Mass of the link.
-    inertia:
+    inertia
         3x3 rotational inertia matrix, represented in the inertia frame.
 
     """
@@ -148,6 +128,14 @@ class Inertial(Data):
         self.origin = origin
         self.mass = mass
         self.inertia = inertia
+
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
 
     def get_urdf_element(self):
         elements = [self.origin, self.mass, self.inertia]
@@ -163,7 +151,7 @@ class Inertial(Data):
 
     @data.setter
     def data(self, data):
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.mass = Mass.from_data(data['mass']) if data['mass'] else None
         self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
 
@@ -180,16 +168,16 @@ class Visual(LinkItem, Data):
 
     Attributes
     ----------
-    geometry:
+    geometry
         Shape of the visual element.
-    origin:
+    origin
         Reference frame of the visual element with respect
         to the reference frame of the link.
-    name:
+    name
         Name of the visual element.
-    material:
+    material
         Material of the visual element.
-    attr:
+    attr
         Non-standard attributes.
 
     """
@@ -201,6 +189,14 @@ class Visual(LinkItem, Data):
         self.name = name
         self.material = material
         self.attr = kwargs
+
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
 
     def get_urdf_element(self):
         attributes = {}
@@ -234,7 +230,7 @@ class Visual(LinkItem, Data):
     @data.setter
     def data(self, data):
         self.geometry = Geometry.from_data(data['geometry'])
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.name = data['name']
         self.material = Material.from_data(data['material']) if data['material'] else None
         self.attr = _attr_from_data(data['attr'])
@@ -254,8 +250,9 @@ class Visual(LinkItem, Data):
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
+        list[float]
             List of 4 floats (``0.0-1.0``) indicating RGB colors and Alpha channel.
+
         """
         if self.material:
             return self.material.get_color()
@@ -264,8 +261,24 @@ class Visual(LinkItem, Data):
 
     @classmethod
     def from_primitive(cls, primitive, **kwargs):
-        geometry, origin = _get_geometry_and_origin(primitive)
-        return cls(geometry, origin=origin, **kwargs)
+        """Create visual link from a primitive shape.
+
+        Parameters
+        ----------
+        primitive : :compas:`compas.geometry.Shape`
+            A primitive shape.
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            A visual description object.
+        """
+        geometry = Geometry()
+        geometry.shape = primitive
+        return cls(geometry, **kwargs)
 
 
 class Collision(LinkItem, Data):
@@ -273,14 +286,14 @@ class Collision(LinkItem, Data):
 
     Attributes
     ----------
-    geometry:
+    geometry
         Shape of the collidable element.
-    origin:
+    origin
         Reference frame of the collidable element with respect
         to the reference frame of the link.
-    name:
+    name
         Name of the collidable element.
-    attr:
+    attr
         Non-standard attributes.
 
     """
@@ -291,6 +304,14 @@ class Collision(LinkItem, Data):
         self.origin = origin
         self.name = name
         self.attr = kwargs
+
+    @property
+    def origin(self):
+        return self._origin
+
+    @origin.setter
+    def origin(self, value):
+        self._origin = FrameProxy.create_proxy(value)
 
     def get_urdf_element(self):
         attributes = {}
@@ -323,7 +344,7 @@ class Collision(LinkItem, Data):
     @data.setter
     def data(self, data):
         self.geometry = Geometry.from_data(data['geometry'])
-        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
         self.name = data['name']
         self.attr = _attr_from_data(data['attr'])
         self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
@@ -331,14 +352,30 @@ class Collision(LinkItem, Data):
 
     @classmethod
     def from_data(cls, data):
-        visual = cls(Geometry.from_data(data['geometry']))
-        visual.data = data
-        return visual
+        collision = cls(Geometry.from_data(data['geometry']))
+        collision.data = data
+        return collision
 
     @classmethod
     def from_primitive(cls, primitive, **kwargs):
-        geometry, origin = _get_geometry_and_origin(primitive)
-        return cls(geometry, origin=origin, **kwargs)
+        """Create collision link from a primitive shape.
+
+        Parameters
+        ----------
+        primitive : :compas:`compas.geometry.Shape`
+            A primitive shape.
+        **kwargs : dict[str, Any], optional
+            The keyword arguments (kwargs) collected in a dict.
+            These allow using non-standard attributes absent in the URDF specification.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            A collision description object.
+        """
+        geometry = Geometry()
+        geometry.shape = primitive
+        return cls(geometry, **kwargs)
 
 
 class Link(Data):
@@ -346,32 +383,32 @@ class Link(Data):
 
     Attributes
     ----------
-    name:
+    name
         Name of the link itself.
-    type:
+    type
         Link type. Undocumented in URDF, but used by PR2.
-    visual:
+    visual
         Visual properties of the link.
-    collision:
+    collision
         Collision properties of the link. This can be different
         from the visual properties of a link.
-    inertial:
+    inertial
         Inertial properties of the link.
-    attr:
+    attr
         Non-standard attributes.
-    joints:
+    joints
         A list of joints that are the link's children
-    parent_joint:
+    parent_joint
         The reference to a parent joint if it exists
 
     """
 
-    def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
+    def __init__(self, name, type=None, visual=(), collision=(), inertial=None, **kwargs):
         super(Link, self).__init__()
         self.name = name
         self.type = type
-        self.visual = visual
-        self.collision = collision
+        self.visual = list(visual or [])
+        self.collision = list(collision or [])
         self.inertial = inertial
         self.attr = kwargs
         self.joints = []
@@ -423,13 +460,13 @@ URDFParser.install_parser(Inertia, 'robot/link/inertial/inertia')
 URDFParser.install_parser(Visual, 'robot/link/visual')
 URDFParser.install_parser(Collision, 'robot/link/collision')
 
-URDFParser.install_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
+URDFParser.install_parser(Frame, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin', proxy_type=FrameProxy)
 URDFParser.install_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
 URDFParser.install_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
-URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
-URDFParser.install_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
-URDFParser.install_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
-URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
+URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box', proxy_type=BoxProxy)
+URDFParser.install_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder', proxy_type=CylinderProxy)
+URDFParser.install_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere', proxy_type=SphereProxy)
+URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule', proxy_type=CapsuleProxy)
 
 URDFParser.install_parser(Material, 'robot/link/visual/material')
 URDFParser.install_parser(Color, 'robot/link/visual/material/color')

@@ -49,18 +49,19 @@ def icp_numpy(source, target, tol=1e-3):
 
     Parameters
     ----------
-    source : list of point
+    source : array_like[point]
         The source data.
-    target : list of point
+    target : array_like[point]
         The target data.
     tol : float, optional
         Tolerance for finding matches.
-        Default is ``1e-3``.
 
     Returns
     -------
-
-        The transformed points
+    ndarray[float](N, 3)
+        The transformed points.
+    ndarray[float](4, 4)
+        The bestfit transformation matrix.
 
     Notes
     -----

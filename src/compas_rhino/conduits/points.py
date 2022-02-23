@@ -2,22 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
-from System.Collections.Generic import List
 from System.Drawing.Color import FromArgb
 
 from Rhino.Geometry import Point3d
 from Rhino.Display.PointStyle import Simple
 
 from compas.utilities import color_to_rgb
-from compas_rhino.conduits.base import BaseConduit
-
-
-__all__ = ['PointsConduit']
+from compas.utilities import iterable_like
+from compas.utilities.coercing import is_sequence_of_iterable
+from .base import BaseConduit
 
 
 class PointsConduit(BaseConduit):
@@ -25,23 +18,28 @@ class PointsConduit(BaseConduit):
 
     Parameters
     ----------
-    points : list of list of float
+    points : list[[float, float, float] or :class:`compas.geometry.Point`]
         The coordinates of the points.
-    size : list of int, optional
+    size : list[int], optional
         The size of the points.
-        Default is ``3`` for all points.
-    color : list of str or 3-tuple
+        Default is :attr:`PointsConduit.default_size` for all points.
+    color : list[tuple[int, int, int]]
         The individual colors of the points.
-        Default is ``(255, 0, 0)`` for all points.
+        Default is :attr:`PointsConduit.default_color` for all points.
 
     Attributes
     ----------
-    size : list of float
+    size : list[float]
         The size specification per point.
-    color : list of RGB colors
-        The color specification per point.
-    points : list of point
-        The location of every point.
+    color : list[System.Drawing.Color]
+        The color per point.
+
+    Class Attributes
+    ----------------
+    default_size : float
+        The default size is ``3``.
+    default_color : System.Drawing.Color
+        The default color is ``FromArgb(255, 0, 0)``.
 
     Examples
     --------
@@ -60,10 +58,11 @@ class PointsConduit(BaseConduit):
 
     """
 
+    default_size = 3
+    default_color = FromArgb(255, 0, 0)
+
     def __init__(self, points, size=None, color=None, **kwargs):
         super(PointsConduit, self).__init__(**kwargs)
-        self._default_size = 3
-        self._default_color = FromArgb(255, 0, 0)
         self._size = None
         self._color = None
         self.points = points or []
@@ -76,18 +75,13 @@ class PointsConduit(BaseConduit):
 
     @size.setter
     def size(self, size):
-        if size:
-            p = len(self.points)
-            try:
-                len(size)
-            except TypeError:
-                size = [size]
-            s = len(size)
-            if s < p:
-                size += [self._default_size for i in range(p - s)]
-            elif s > p:
-                size[:] = size[:p]
-            self._size = size
+        size = size or self.default_size
+        try:
+            len(size)
+        except TypeError:
+            size = [size]
+        size = iterable_like(self.points, size, self.default_size)
+        self._size = list(size)
 
     @property
     def color(self):
@@ -95,40 +89,23 @@ class PointsConduit(BaseConduit):
 
     @color.setter
     def color(self, color):
-        if color:
-            p = len(self.points)
-            if isinstance(color, (basestring, tuple)):
-                color = [color for _ in range(p)]
-            color = [FromArgb(* color_to_rgb(c)) for c in color]
-            c = len(color)
-            if c < p:
-                color += [self._default_color for _ in range(p - c)]
-            elif c > p:
-                color[:] = color[:p]
-            self._color = color
+        color = color or self.default_color
+        if not is_sequence_of_iterable(color):
+            color = [color]
+        color = [FromArgb(* color_to_rgb(c)) for c in iterable_like(self.points, color, self.default_color)]
+        self._color = color
 
     def DrawForeground(self, e):
-        try:
-            if self.color:
-                draw = e.Display.DrawPoint
-                if self.size:
-                    for xyz, size, color in zip(self.points, self.size, self.color):
-                        draw(Point3d(*xyz), Simple, size, color)
-                else:
-                    for xyz, color in zip(self.points, self.color):
-                        draw(Point3d(*xyz), Simple, self._default_size, color)
-            elif self.size:
-                draw = e.Display.DrawPoint
-                if self.color:
-                    for xyz, size, color in zip(self.points, self.size, self.color):
-                        draw(Point3d(*xyz), Simple, size, color)
-                else:
-                    for xyz, size in zip(self.points, self.size):
-                        draw(Point3d(*xyz), Simple, size, self._default_color)
-            else:
-                points = List[Point3d](len(self.points))
-                for xyz in self.points:
-                    points.Add(Point3d(*xyz))
-                e.Display.DrawPoints(points, Simple, self._default_size, self._default_color)
-        except Exception as e:
-            print(e)
+        """Draw the points.
+
+        Parameters
+        ----------
+        e : Rhino.Display.DrawEventArgs
+
+        Returns
+        -------
+        None
+
+        """
+        for xyz, size, color in zip(self.points, self.size, self.color):
+            e.Display.DrawPoint(Point3d(*xyz), Simple, size, color)

@@ -16,17 +16,13 @@ def volmesh_bounding_box(volmesh):
 
     Parameters
     ----------
-    volmesh : compas.datastructures.VolMesh
-        The mesh data structure.
+    volmesh : :class:`compas.datastructures.VolMesh`
+        The volmesh data structure.
 
     Returns
     -------
-        float
-            The x dimension of the bounding box.
-        float
-            The y dimension of the bounding box.
-        float
-            The z dimensino of the bounding box.
+    list[[float, float, float]]
+        The 8 corner points of the bounding box.
 
     """
     xyz = volmesh.vertices_attributes('xyz', vertices=list(volmesh.vertices()))

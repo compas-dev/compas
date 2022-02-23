@@ -94,12 +94,12 @@ def mesh_face_adjacency(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
 
     Returns
     -------
-    dict
+    dict[int, list[int]]
         A dictionary mapping face identifiers (keys) to lists of neighboring faces.
 
     Notes
@@ -161,10 +161,20 @@ def mesh_unify_cycles(mesh, root=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    root : str, optional [None]
+    root : str, optional
         The key of the root face.
+
+    Returns
+    -------
+    None
+        The mesh is modified in place.
+
+    Raises
+    ------
+    AssertionError
+        If no all faces are included in the unnification process.
 
     """
     def unify(node, nbr):
@@ -203,8 +213,13 @@ def mesh_flip_cycles(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
+
+    Returns
+    -------
+    None
+        The mesh is modified in place.
 
     Notes
     -----

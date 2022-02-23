@@ -22,6 +22,7 @@ def get_document_basename():
     -------
     str or None
         The name of the document or None if the document is still "Untitled".
+
     """
     return rs.DocumentName()
 
@@ -33,6 +34,7 @@ def get_document_filename():
     -------
     str or None
         The name of the document or None if the document is still "Untitled".
+
     """
     basename = get_document_basename()
     if not basename:
@@ -47,6 +49,7 @@ def get_document_extension():
     -------
     str or None
         The extension of the document or None if the document is still "Untitled".
+
     """
     basename = get_document_basename()
     if not basename:
@@ -61,6 +64,7 @@ def get_document_filepath():
     -------
     str or None
         The path to the document or None if the document is still "Untitled".
+
     """
     return rs.DocumentPath()
 
@@ -72,6 +76,7 @@ def get_document_dirname():
     -------
     str or None
         The name of the directory or None if the document is still "Untitled".
+
     """
     filepath = get_document_filepath()
     if not filepath:

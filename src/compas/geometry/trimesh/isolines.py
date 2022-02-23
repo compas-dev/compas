@@ -15,25 +15,27 @@ def trimesh_isolines(M, S, N=50):
 
     Parameters
     ----------
-    M : tuple or :class:`compas.datastructures.Mesh`
-        A mesh represented by a list of vertices and a list of faces
-        or by a COMPAS mesh object.
-    S : list
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
+        A mesh represented by a list of vertices and a list of faces.
+    S : list[float]
         A list of scalars.
     N : int, optional
         The number of isolines.
-        Default is ``50``.
 
     Returns
     -------
-    (list, list)
-        The coordinates of the polyline points and the segments of the polylines defined as pairs of points.
+    list[[float, float, float]]
+        The coordinates of the polyline points.
+    list[[int, int]]
+        The segments of the polylines defined as pairs of points.
+
+    Notes
+    -----
+    To convert the vertices and edges to sets of isolines, use :func:`groupsort_isolines`
 
     Examples
     --------
     >>>
-
-    To convert the vertices and edges to sets of isolines, use :func:`groupsort_isolines`
 
     """
     raise NotImplementedError

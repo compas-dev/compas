@@ -3,32 +3,32 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from .artist import GHArtist
 
 
-__all__ = ['LineArtist']
-
-
-class LineArtist(PrimitiveArtist):
+class LineArtist(GHArtist, PrimitiveArtist):
     """Artist for drawing lines.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Line`
+    line : :class:`compas.geometry.Line`
         A COMPAS line.
-
-    Other Parameters
-    ----------------
-    See :class:`compas_ghpython.artists.PrimitiveArtist` for all other parameters.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
 
     """
+
+    def __init__(self, line, **kwargs):
+        super(LineArtist, self).__init__(primitive=line, **kwargs)
 
     def draw(self):
         """Draw the line.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Line`
+        :rhino:`Rhino.Geometry.Line`
 
         """
         lines = [self._get_args(self.primitive)]

@@ -6,22 +6,29 @@ from collections import deque
 from compas.topology import breadth_first_traverse
 
 
-__all__ = [
-    'vertex_coloring',
-    'connected_components',
-]
-
-
 def vertex_coloring(adjacency):
-    """Color the vertices of a network such that no two colors are adjacent.
+    """Color the vertices of a graph such that no two colors are adjacent.
 
     Parameters
     ----------
-    network : compas.datastructures.Network
-        The network object.
+    adjacency : dict[hashable, dict[hashable, None]] or dict[hashable, sequence[hashable]]
+        An adjacency dictionary representing the connectivity of the graph
+        by mapping nodes identifiers to neighbour identifiers.
+        Examples of valid adjacency dicts are
+
+        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
+        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+
+    Returns
+    -------
+    dict[hashable, int]
+        A dict mapping each node of the graph to a color number.
 
     Notes
     -----
+    This algorithms works on any data structure that can be interpreted as a graph, e.g.
+    networks, meshes, volmeshes, etc..
+
     For more info, see [1]_.
 
     References
@@ -43,6 +50,7 @@ def vertex_coloring(adjacency):
     >>> color = key_color[key]
     >>> any(key_color[nbr] == color for nbr in network.neighbors(key))
     False
+
     """
     key_to_color = {}
     key_to_degree = {key: len(adjacency[key]) for key in adjacency}
@@ -64,23 +72,30 @@ def vertex_coloring(adjacency):
 
 
 def connected_components(adjacency):
-    """Identify the vertices of connected components.
+    """Identify the connected components of a graph.
 
     Parameters
     ----------
-    adjacency : dict
-        An adjacency dictionary mapping vertex identifiers to neighbours.
+    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+        An adjacency dictionary representing the connectivity of the graph
+        by mapping nodes identifiers to neighbour identifiers.
+        Examples of valid adjacency dicts are
+
+        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
+        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
 
     Returns
     -------
-    list of list of hashable
-        A nested list of vertex identifiers.
+    list[list[hashable]]
+        A list of connected components,
+        with each component a list of connected nodes.
 
     Examples
     --------
     >>> adjacency = {0: [1, 2], 1: [0, 2], 2: [0, 1], 3: []}
     >>> connected_components(adjacency)
     [[0, 1, 2], [3]]
+
     """
     tovisit = set(adjacency)
     components = []
