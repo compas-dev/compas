@@ -14,7 +14,7 @@ from compas.utilities import pairwise
 
 
 class HalfFace(Datastructure):
-    """Base half-face data structure fore representing volumetric meshes.
+    """Base half-face data structure for representing volumetric meshes.
 
     Parameters
     ----------
