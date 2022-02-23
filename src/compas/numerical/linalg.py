@@ -708,6 +708,7 @@ def spsolve_with_known(A, b, x, known):
     >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
     >>> b = array([[1], [3], [5]])
     >>> x = array([[0.3], [0], [0]])
+    >>> x = solve_with_known(A, b, x, [0])
     >>> allclose(x, array([[0.3], [0.4], [0.0]]))
     True
 
