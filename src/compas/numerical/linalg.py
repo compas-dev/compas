@@ -708,10 +708,8 @@ def spsolve_with_known(A, b, x, known):
     >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
     >>> b = array([[1], [3], [5]])
     >>> x = array([[0.3], [0], [0]])
-    >>> solve_with_known(A, b, x, [0])
-    array([[ 3.00000000e-01],
-           [ 4.00000000e-01],
-           [-6.66247443e-17]])
+    >>> allclose(x, array([[0.3], [0.4], [0.0]]))
+    True
 
     """
     unknown = list(set(range(x.shape[0])) - set(known))
