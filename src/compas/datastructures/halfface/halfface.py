@@ -322,33 +322,29 @@ class HalfFace(Datastructure):
         """
         return sample(list(self.cells()), size)
 
-    def key_index(self):
+    def vertex_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
         corresponding index in a vertex list or array.
 
         Returns
         -------
         dict[int, int]
-            A dictionary of key-index pairs.
+            A dictionary of vertex-index pairs.
 
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
-    vertex_index = key_index
-
-    def index_key(self):
+    def index_vertex(self):
         """Returns a dictionary that maps the indices of a vertex list to
         keys in a vertex dictionary.
 
         Returns
         -------
         dict[int, int]
-            A dictionary of index-key pairs.
+            A dictionary of index-vertex pairs.
 
         """
         return dict(enumerate(self.vertices()))
-
-    index_vertex = index_key
 
     # --------------------------------------------------------------------------
     # builders
