@@ -147,7 +147,6 @@ class HalfFace(Datastructure):
         dfa = data.get('dfa') or {}
         dca = data.get('dca') or {}
         vertex = data.get('vertex') or {}
-        halfface = data.get('halfface') or {}
         cell = data.get('cell') or {}
         edge_data = data.get('edge_data') or {}
         face_data = data.get('face_data') or {}
@@ -177,17 +176,11 @@ class HalfFace(Datastructure):
             attr = vertex[v] or {}
             self.add_vertex(int(v), attr_dict=attr)
 
-        for f in halfface:
-            attr = face_data.get(f) or {}
-            self.add_halfface(halfface[f], fkey=int(f), attr_dict=attr)
-
         for c in cell:
             attr = cell_data.get(c) or {}
             faces = []
             for u in cell[c]:
-                for v in cell[c][u]:
-                    f = cell[c][u][v]
-                    faces.append(halfface[str(f)])
+                faces.append(cell[c][u][v])
             self.add_cell(faces, ckey=int(c), attr_dict=attr)
 
         for e in edge_data:
