@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `vertices_where`, `vertices_where_predicate`, `edges_where`, `edges_where_predicate` to `compas.datastructures.HalfFace`.
+* Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
+
 ### Changed
 
 ### Removed
