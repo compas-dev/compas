@@ -1,0 +1,10 @@
+<map id="inheritance97d392bc70" name="inheritance97d392bc70">
+<area shape="rect" id="node1" href="../api/generated/compas.data.Data.html#compas.data.Data" target="_top" title="Abstract base class for all COMPAS data objects." alt="" coords="8,83,121,121"/>
+<area shape="rect" id="node2" href="../api/generated/compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" target="_top" title="Base class for all data structures." alt="" coords="196,83,348,121"/>
+<area shape="rect" id="node3" href="../api/generated/compas.datastructures.Graph.html#compas.datastructures.Graph" target="_top" title="Base graph data structure for describing the topological relationships between nodes connected by edges." alt="" coords="423,8,535,46"/>
+<area shape="rect" id="node4" href="../api/generated/compas.datastructures.HalfEdge.html#compas.datastructures.HalfEdge" target="_top" title="Base half&#45;edge data structure for representing the topology of open oor closed surface meshes." alt="" coords="423,83,535,121"/>
+<area shape="rect" id="node5" href="../api/generated/compas.datastructures.HalfFace.html#compas.datastructures.HalfFace" target="_top" title="Base half&#45;face data structure for representing volumetric meshes." alt="" coords="423,158,535,196"/>
+<area shape="rect" id="node7" href="../api/generated/compas.datastructures.Network.html#compas.datastructures.Network" target="_top" title="Geometric implementation of an edge graph." alt="" coords="610,8,723,46"/>
+<area shape="rect" id="node6" href="../api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" target="_top" title="Geometric implementation of a half edge data structure for polygon meshses." alt="" coords="610,83,723,121"/>
+<area shape="rect" id="node8" href="../api/generated/compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" target="_top" title="Geometric implementation of a face data structure for volumetric meshes." alt="" coords="610,158,723,196"/>
+</map>

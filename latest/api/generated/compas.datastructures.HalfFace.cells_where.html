@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="HalfFace.clear" href="compas.datastructures.HalfFace.clear.html" />
+  <link rel="next" title="HalfFace.cells_where_predicate" href="compas.datastructures.HalfFace.cells_where_predicate.html" />
   
 
   
@@ -110,8 +110,24 @@
 <h1>HalfFace.cells_where</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfFace.cells_where">
-<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">cells_where</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L728"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">cells_where</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L980"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get cells for which a certain condition or set of conditions is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
+The keys should be attribute names. The values can be attribute
+values or ranges of attribute values in the form of min/max pairs.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the cells and their data attributes.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>int | tuple[int, dict[str, Any]]</em> – If <cite>data</cite> is False, the next cell that matches the condition.
+If <cite>data</cite> is True, the next cell and its attributes.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -190,10 +206,10 @@
       
 
       
-      <a href="compas.datastructures.HalfFace.clear.html" title="HalfFace.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.datastructures.HalfFace.cells_where_predicate.html" title="HalfFace.cells_where_predicate" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          HalfFace.clear
+          HalfFace.cells_where_predicate
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
