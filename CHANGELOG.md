@@ -496,6 +496,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `kwargs` to all child classes of `compas.data.Data`.
 * Added grasshopper component for drawing a frame.
 * Added `draw_origin` and `draw_axes`.
+* Added `compas.PY2`.
 
 ### Changed
 

@@ -17,6 +17,7 @@ except NameError:
     class NotADirectoryError(Exception):
         pass
 
+PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 SYMLINK_REGEX = re.compile(r"\n.*\<SYMLINKD\>\s(.*)\s\[(.*)\]\r")
 

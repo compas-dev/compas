@@ -76,6 +76,9 @@ for formatting numbers.
 Float formatting (``'<x>f'``) and integer formatting (``'d'``) specifiers are supported.
 """
 
+PY2 = compas._os.PY2
+"""bool: True if the current Python version is 2.x, False otherwise."""
+
 PY3 = compas._os.PY3
 """bool: True if the current Python version is 3.x, False otherwise."""
 
