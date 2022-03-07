@@ -108,12 +108,33 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <section id="added">
 <h3>Added</h3>
 <ul class="simple">
+<li><p>Added descriptor support to <code class="docutils literal notranslate"><span class="pre">compas.colors.Color</span></code>.</p></li>
+<li><p>Added descriptor protocol metaclass to <code class="docutils literal notranslate"><span class="pre">compas.artists.Artist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.artists.colordict.ColorDict</span></code> descriptor.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">allclose</span></code> to doctest fixtures.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.colors.Color.coerce</span></code> to construct a color out og hex, RGB1, and RGB255 inputs.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Network.from_pointcloud</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh.from_meshgrid</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">vertices_where</span></code>, <code class="docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code>, <code class="docutils literal notranslate"><span class="pre">edges_where</span></code>, <code class="docutils literal notranslate"><span class="pre">edges_where_predicate</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.datastructures.HalfFace</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">faces_where</span></code>, <code class="docutils literal notranslate"><span class="pre">faces_where_predicate</span></code>, <code class="docutils literal notranslate"><span class="pre">cells_where</span></code>, <code class="docutils literal notranslate"><span class="pre">cells_where_predicate</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.datastructures.HalfFace</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
 <h3>Changed</h3>
+<ul class="simple">
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist.draw</span></code> to draw the mesh only.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.MeshArtist.draw</span></code> to draw the mesh only.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.MeshArtist.draw</span></code> to draw the mesh only.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist.draw_vertexlabels</span></code> to use the colors of the vertex color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist.draw_edgelabels</span></code> to use the colors of the edge color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist.draw_facelabels</span></code> to use the colors of the face color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.MeshArtist.draw_vertexlabels</span></code> to use the colors of the vertex color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.MeshArtist.draw_edgelabels</span></code> to use the colors of the edge color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.MeshArtist.draw_facelabels</span></code> to use the colors of the face color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.MeshArtist.draw_vertexlabels</span></code> to use the colors of the vertex color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.MeshArtist.draw_edgelabels</span></code> to use the colors of the edge color dict.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas_ghpython.artists.MeshArtist.draw_facelabels</span></code> to use the colors of the face color dict.</p></li>
+</ul>
 </section>
 <section id="removed">
 <h3>Removed</h3>
@@ -200,14 +221,16 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <section id="id8">
 <h3>Removed</h3>
 <ul class="simple">
-<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Collection</span></code></p></li>
-<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.CollectionNumpy</span></code></p></li>
-<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.PointCollection</span></code></p></li>
-<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.PointCollectionNumpy</span></code></p></li>
-<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.interop</span></code></p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Collection</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.CollectionNumpy</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.PointCollection</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.PointCollectionNumpy</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.interop</span></code>.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">numba</span></code>; <code class="docutils literal notranslate"><span class="pre">compas.numerical.drx</span></code> will be moved to a dedicated extension package.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">ezdxf</span></code> (unused).</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">laspy</span></code> (unused).</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist.draw_mesh</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas_blender.artists.MeshArtist.draw_mesh</span></code>.</p></li>
 </ul>
 </section>
 </section>
@@ -678,6 +701,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> to all child classes of <code class="docutils literal notranslate"><span class="pre">compas.data.Data</span></code>.</p></li>
 <li><p>Added grasshopper component for drawing a frame.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">draw_origin</span></code> and <code class="docutils literal notranslate"><span class="pre">draw_axes</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.PY2</span></code>.</p></li>
 </ul>
 </section>
 <section id="id87">

@@ -108,20 +108,20 @@
 <h1>NetworkArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.artists.NetworkArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">NetworkArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/networkartist.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">NetworkArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/networkartist.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.artist.RhinoArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoArtist</span></code></a>, <a class="reference internal" href="compas.artists.NetworkArtist.html#compas.artists.NetworkArtist" title="compas.artists.networkartist.NetworkArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkArtist</span></code></a></p>
 <p>Artist for drawing network data structures.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – A COMPAS network.</p></li>
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – A COMPAS network.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – The parent layer of the network.</p></li>
 <li><p><strong>nodes</strong> (<em>list[int], optional</em>) – A list of node identifiers.
 Default is None, in which case all nodes are drawn.</p></li>
 <li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – A list of edge identifiers.
 The default is None, in which case all edges are drawn.</p></li>
-<li><p><strong>nodecolor</strong> (<em>tuple[int, int, int] or dict[int, tuple[int, int, int]], optional</em>) – The color of the nodes.</p></li>
-<li><p><strong>edgecolor</strong> (<em>tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional</em>) – The color of the edges.</p></li>
+<li><p><strong>nodecolor</strong> (<em>tuple[int, int, int] | dict[int, tuple[int, int, int]], optional</em>) – The color of the nodes.</p></li>
+<li><p><strong>edgecolor</strong> (<em>tuple[int, int, int] | dict[tuple[int, int], tuple[int, int, int]], optional</em>) – The color of the edges.</p></li>
 <li><p><strong>show_nodes</strong> (<em>bool, optional</em>) – If True, draw the nodes of the network.</p></li>
 <li><p><strong>show_edges</strong> (<em>bool, optional</em>) – If True, draw the edges of the network.</p></li>
 <li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – Additional keyword arguments.

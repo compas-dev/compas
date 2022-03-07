@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="MeshArtist.clear_edges" href="compas_plotters.artists.MeshArtist.clear_edges.html" />
+  <link rel="next" title="MeshArtist.clear" href="compas_plotters.artists.MeshArtist.clear.html" />
   
 
   
@@ -114,29 +114,29 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A COMPAS mesh.</p></li>
 <li><p><strong>vertices</strong> (<em>list[int], optional</em>) – Selection of vertex identifiers.
 Default is None, in which case all vertices are drawn.</p></li>
 <li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – Selection of edge identifiers.
 The default is None, in which case all edges are drawn.</p></li>
 <li><p><strong>faces</strong> (<em>list[int], optional</em>) – Selection of face identifiers.
 The default is None, in which case all faces are drawn.</p></li>
-<li><p><strong>vertexcolor</strong> (<em>tuple[float, float, float] or dict[int, tuple[float, float, float]], optional</em>) – Color specification for the vertices.</p></li>
-<li><p><strong>edgecolor</strong> (<em>tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional</em>) – Color specification for the edges.</p></li>
-<li><p><strong>facecolor</strong> (<em>tuple[float, float, float] or dict[int, tuple[float, float, float]], optional</em>) – Color specification for the faces.</p></li>
+<li><p><strong>vertexcolor</strong> (<em>tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</em>) – Color specification for the vertices.</p></li>
+<li><p><strong>edgecolor</strong> (<em>tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional</em>) – Color specification for the edges.</p></li>
+<li><p><strong>facecolor</strong> (<em>tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</em>) – Color specification for the faces.</p></li>
 <li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – If True, draw the vertices of the mesh.</p></li>
 <li><p><strong>show_edges</strong> (<em>bool, optional</em>) – If True, draw the edges of the mesh.</p></li>
 <li><p><strong>show_faces</strong> (<em>bool, optional</em>) – If True, draw the faces of the mesh.</p></li>
 <li><p><strong>vertexsize</strong> (<em>int, optional</em>) – Size of the vertices.</p></li>
-<li><p><strong>vertextext</strong> (<em>str or dict[int, str], optional</em>) – Labels for the vertices.</p></li>
-<li><p><strong>edgetext</strong> (<em>str or dict[tuple[int, int], str], optional</em>) – Labels for the edges.</p></li>
-<li><p><strong>facetext</strong> (<em>str or dict[int, str], optional</em>) – Labels for the faces.</p></li>
+<li><p><strong>vertextext</strong> (<em>str | dict[int, str], optional</em>) – Labels for the vertices.</p></li>
+<li><p><strong>edgetext</strong> (<em>str | dict[tuple[int, int], str], optional</em>) – Labels for the edges.</p></li>
+<li><p><strong>facetext</strong> (<em>str | dict[int, str], optional</em>) – Labels for the faces.</p></li>
 <li><p><strong>sizepolicy</strong> (<em>{‘relative’, ‘absolute’}, optional</em>) – The policy for sizing the vertices.
 If <code class="docutils literal notranslate"><span class="pre">'relative'</span></code>, the value of <cite>vertexsize</cite> is scaled by the number of vertices.
 If <code class="docutils literal notranslate"><span class="pre">'absolute'</span></code>, the value of <cite>vertexsize</cite> is scaled by the resolution of the plotter (:attr:MeshArtist.plotter.dpi).</p></li>
 <li><p><strong>zorder</strong> (<em>int, optional</em>) – The base stacking order of the components of the mesh on the canvas.</p></li>
 <li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – Additional keyword arguments.
-See <a class="reference internal" href="compas_plotters.artists.PlotterArtist.html#compas_plotters.artists.PlotterArtist" title="compas_plotters.artists.PlotterArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.artists.PlotterArtist</span></code></a> and <a class="reference internal" href="compas.artists.MeshArtist.html#compas.artists.MeshArtist" title="compas.artists.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.MeshArtist</span></code></a> for more info.</p></li>
+See <a class="reference internal" href="compas_plotters.artists.PlotterArtist.html#compas_plotters.artists.PlotterArtist" title="compas_plotters.artists.PlotterArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotterArtist</span></code></a> and <a class="reference internal" href="compas.artists.MeshArtist.html#compas.artists.MeshArtist" title="compas.artists.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshArtist</span></code></a> for more info.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
@@ -157,55 +157,58 @@ See <a class="reference internal" href="compas_plotters.artists.PlotterArtist.ht
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_edges.html#compas_plotters.artists.MeshArtist.clear_edges" title="compas_plotters.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear.html#compas_plotters.artists.MeshArtist.clear" title="compas_plotters.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<td><p>Clear all objects from the view.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_edges.html#compas_plotters.artists.MeshArtist.clear_edges" title="compas_plotters.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
 <td><p>Clear the current edges from the canvas.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_faces.html#compas_plotters.artists.MeshArtist.clear_faces" title="compas_plotters.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_faces.html#compas_plotters.artists.MeshArtist.clear_faces" title="compas_plotters.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
 <td><p>Clear the current faces from the canvas.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_halfedges.html#compas_plotters.artists.MeshArtist.clear_halfedges" title="compas_plotters.artists.MeshArtist.clear_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_halfedges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_halfedges.html#compas_plotters.artists.MeshArtist.clear_halfedges" title="compas_plotters.artists.MeshArtist.clear_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_halfedges</span></code></a></p></td>
 <td><p>Clear the current halfedges from the canvas.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_vertices.html#compas_plotters.artists.MeshArtist.clear_vertices" title="compas_plotters.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear_vertices.html#compas_plotters.artists.MeshArtist.clear_vertices" title="compas_plotters.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
 <td><p>Clear the current vertices from the canvas.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw.html#compas_plotters.artists.MeshArtist.draw" title="compas_plotters.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw.html#compas_plotters.artists.MeshArtist.draw" title="compas_plotters.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_edgelabels.html#compas_plotters.artists.MeshArtist.draw_edgelabels" title="compas_plotters.artists.MeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_edgelabels.html#compas_plotters.artists.MeshArtist.draw_edgelabels" title="compas_plotters.artists.MeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a></p></td>
 <td><p>Draw a selection of edge labels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_edges.html#compas_plotters.artists.MeshArtist.draw_edges" title="compas_plotters.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_edges.html#compas_plotters.artists.MeshArtist.draw_edges" title="compas_plotters.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_facelabels.html#compas_plotters.artists.MeshArtist.draw_facelabels" title="compas_plotters.artists.MeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_facelabels.html#compas_plotters.artists.MeshArtist.draw_facelabels" title="compas_plotters.artists.MeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a></p></td>
 <td><p>Draw a selection of face labels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_faces.html#compas_plotters.artists.MeshArtist.draw_faces" title="compas_plotters.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_faces.html#compas_plotters.artists.MeshArtist.draw_faces" title="compas_plotters.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_halfedges.html#compas_plotters.artists.MeshArtist.draw_halfedges" title="compas_plotters.artists.MeshArtist.draw_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_halfedges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_halfedges.html#compas_plotters.artists.MeshArtist.draw_halfedges" title="compas_plotters.artists.MeshArtist.draw_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_halfedges</span></code></a></p></td>
 <td><p>Draw a selection of halfedges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_mesh.html#compas_plotters.artists.MeshArtist.draw_mesh" title="compas_plotters.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_mesh.html#compas_plotters.artists.MeshArtist.draw_mesh" title="compas_plotters.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
 <td><p>Draw the mesh of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_vertexlabels.html#compas_plotters.artists.MeshArtist.draw_vertexlabels" title="compas_plotters.artists.MeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_vertexlabels.html#compas_plotters.artists.MeshArtist.draw_vertexlabels" title="compas_plotters.artists.MeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a></p></td>
 <td><p>Draw a selection of vertex labels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_vertices.html#compas_plotters.artists.MeshArtist.draw_vertices" title="compas_plotters.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_vertices.html#compas_plotters.artists.MeshArtist.draw_vertices" title="compas_plotters.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.redraw.html#compas_plotters.artists.MeshArtist.redraw" title="compas_plotters.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.redraw.html#compas_plotters.artists.MeshArtist.redraw" title="compas_plotters.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p>Redraw the mesh using the current geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_edgecolors.html#compas_plotters.artists.MeshArtist.update_edgecolors" title="compas_plotters.artists.MeshArtist.update_edgecolors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_edgecolors</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_edgecolors.html#compas_plotters.artists.MeshArtist.update_edgecolors" title="compas_plotters.artists.MeshArtist.update_edgecolors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_edgecolors</span></code></a></p></td>
 <td><p>Update the colors of the edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_edgewidths.html#compas_plotters.artists.MeshArtist.update_edgewidths" title="compas_plotters.artists.MeshArtist.update_edgewidths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_edgewidths</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_edgewidths.html#compas_plotters.artists.MeshArtist.update_edgewidths" title="compas_plotters.artists.MeshArtist.update_edgewidths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_edgewidths</span></code></a></p></td>
 <td><p>Update the widths of the edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_vertexcolors.html#compas_plotters.artists.MeshArtist.update_vertexcolors" title="compas_plotters.artists.MeshArtist.update_vertexcolors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_vertexcolors</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_vertexcolors.html#compas_plotters.artists.MeshArtist.update_vertexcolors" title="compas_plotters.artists.MeshArtist.update_vertexcolors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_vertexcolors</span></code></a></p></td>
 <td><p>Update the colors of the vertices.</p></td>
 </tr>
 </tbody>
@@ -223,19 +226,16 @@ See <a class="reference internal" href="compas_plotters.artists.PlotterArtist.ht
 <tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.build_as.html#compas_plotters.artists.MeshArtist.build_as" title="compas_plotters.artists.MeshArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
 <td><p>Build an artist with the given type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.clear.html#compas_plotters.artists.MeshArtist.clear" title="compas_plotters.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p>Clear all components of the mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_collection.html#compas_plotters.artists.MeshArtist.draw_collection" title="compas_plotters.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.draw_collection.html#compas_plotters.artists.MeshArtist.draw_collection" title="compas_plotters.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p>Drawing method for drawing an entire collection of objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.register.html#compas_plotters.artists.MeshArtist.register" title="compas_plotters.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.register.html#compas_plotters.artists.MeshArtist.register" title="compas_plotters.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
 <td><p>Register an artist type to a data type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_data.html#compas_plotters.artists.MeshArtist.update_data" title="compas_plotters.artists.MeshArtist.update_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.update_data.html#compas_plotters.artists.MeshArtist.update_data" title="compas_plotters.artists.MeshArtist.update_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data</span></code></a></p></td>
 <td><p>Update the data limits of the plotting axes using the visualization data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.viewbox.html#compas_plotters.artists.MeshArtist.viewbox" title="compas_plotters.artists.MeshArtist.viewbox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viewbox</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.artists.MeshArtist.viewbox.html#compas_plotters.artists.MeshArtist.viewbox" title="compas_plotters.artists.MeshArtist.viewbox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viewbox</span></code></a></p></td>
 <td><p>Compute the bounds of the current view.</p></td>
 </tr>
 </tbody>
@@ -309,10 +309,10 @@ See <a class="reference internal" href="compas_plotters.artists.PlotterArtist.ht
       
 
       
-      <a href="compas_plotters.artists.MeshArtist.clear_edges.html" title="MeshArtist.clear_edges" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_plotters.artists.MeshArtist.clear.html" title="MeshArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          MeshArtist.clear_edges
+          MeshArtist.clear
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

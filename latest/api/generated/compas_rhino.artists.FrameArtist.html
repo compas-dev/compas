@@ -108,13 +108,13 @@
 <h1>FrameArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.artists.FrameArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">FrameArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/frameartist.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.artists.</span></span><span class="sig-name descname"><span class="pre">FrameArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/frameartist.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.artist.RhinoArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoArtist</span></code></a>, <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrimitiveArtist</span></code></a></p>
 <p>Artist for drawing frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – A COMPAS frame.</p></li>
+<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>) – A COMPAS frame.</p></li>
 <li><p><strong>scale</strong> (<em>float, optional</em>) – Scale factor that controls the length of the axes.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – The layer that should contain the drawing.</p></li>
 <li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – Additional keyword arguments.
@@ -125,10 +125,10 @@ For more info, see <a class="reference internal" href="compas_rhino.artists.Rhin
 <dd class="field-even"><ul class="simple">
 <li><p><strong>scale</strong> (<em>float</em>) – Scale factor that controls the length of the axes.
 Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
-<li><p><strong>color_origin</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
-<li><p><strong>color_xaxis</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
-<li><p><strong>color_yaxis</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">255,</span> <span class="pre">0)</span></code>.</p></li>
-<li><p><strong>color_zaxis</strong> (<em>tuple of 3 int between 0 and 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></code>.</p></li>
+<li><p><strong>color_origin</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – Default is <code class="docutils literal notranslate"><span class="pre">Color.black()</span></code>.</p></li>
+<li><p><strong>color_xaxis</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – Default is <code class="docutils literal notranslate"><span class="pre">Color.red()</span></code>.</p></li>
+<li><p><strong>color_yaxis</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – Default is <code class="docutils literal notranslate"><span class="pre">Color.green()</span></code>.</p></li>
+<li><p><strong>color_zaxis</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – Default is <code class="docutils literal notranslate"><span class="pre">Color.blue()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>

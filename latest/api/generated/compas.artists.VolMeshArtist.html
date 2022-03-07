@@ -108,16 +108,16 @@
 <h1>VolMeshArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.artists.VolMeshArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">VolMeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/volmeshartist.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">VolMeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/volmeshartist.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.artist.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">Artist</span></code></a></p>
 <p>Artist for drawing volmesh data structures.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – A COMPAS volmesh.</p>
+<dd class="field-odd"><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">VolMesh</span></code></a>) – A COMPAS volmesh.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – The COMPAS volmesh associated with the artist.</p></li>
+<li><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">VolMesh</span></code></a>) – The COMPAS volmesh associated with the artist.</p></li>
 <li><p><strong>vertices</strong> (<em>list[int]</em>) – The list of vertices to draw.
 Default is a list of all vertices of the volmesh.</p></li>
 <li><p><strong>edges</strong> (<em>list[tuple[int, int]]</em>) – The list of edges to draw.
@@ -128,13 +128,13 @@ Default is a list of all faces of the volmesh.</p></li>
 Default is a list of all cells of the volmesh.</p></li>
 <li><p><strong>vertex_xyz</strong> (<em>dict[int, list[float]]</em>) – The view coordinates of the vertices.
 By default, the actual vertex coordinates are used.</p></li>
-<li><p><strong>vertex_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Mapping between vertices and colors.
+<li><p><strong>vertex_color</strong> (dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Mapping between vertices and colors.
 Missing vertices get the default vertex color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_vertexcolor</span></code>.</p></li>
-<li><p><strong>edge_color</strong> (<em>dict[tuple[int, int], tuple[float, float, float]]</em>) – Mapping between edges and colors.
+<li><p><strong>edge_color</strong> (dict[tuple[int, int], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Mapping between edges and colors.
 Missing edges get the default edge color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p></li>
-<li><p><strong>face_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Mapping between faces and colors.
+<li><p><strong>face_color</strong> (dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Mapping between faces and colors.
 Missing faces get the default face color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p></li>
-<li><p><strong>cell_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Mapping between cells and colors.
+<li><p><strong>cell_color</strong> (dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Mapping between cells and colors.
 Missing cells get the default cell color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p></li>
 <li><p><strong>vertex_text</strong> (<em>dict[int, str]</em>) – Mapping between vertices and text labels.</p></li>
 <li><p><strong>edge_text</strong> (<em>dict[tuple[int, int], str]</em>) – Mapping between edges and text labels.</p></li>
@@ -144,10 +144,10 @@ Missing cells get the default cell color: <code class="xref py py-attr docutils 
 </dd>
 <dt class="field-odd">Class Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>default_vertexcolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the vertices of the mesh that don’t have a specified color.</p></li>
-<li><p><strong>default_edgecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the edges of the mesh that don’t have a specified color.</p></li>
-<li><p><strong>default_facecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the faces of the mesh that don’t have a specified color.</p></li>
-<li><p><strong>default_cellcolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the cells of the mesh that don’t have a specified color.</p></li>
+<li><p><strong>default_vertexcolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color of the vertices of the mesh that don’t have a specified color.</p></li>
+<li><p><strong>default_edgecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color of the edges of the mesh that don’t have a specified color.</p></li>
+<li><p><strong>default_facecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color of the faces of the mesh that don’t have a specified color.</p></li>
+<li><p><strong>default_cellcolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color of the cells of the mesh that don’t have a specified color.</p></li>
 </ul>
 </dd>
 </dl>

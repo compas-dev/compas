@@ -111,12 +111,12 @@
 <span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">color_to_colordict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorformat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rgb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/colors.py#L619"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert a color specification to a dict of colors.</p>
 <div class="deprecated">
-<p><span class="versionmodified deprecated">Deprecated since version 1.14: </span>Use <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> instead.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 1.14: </span>Use <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> instead.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>str or [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]</em>) – The base color specification.
+<li><p><strong>color</strong> (<em>str | [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]</em>) – The base color specification.
 This can be a single color (as HEX or RGB), a list of colors, or a dict of colors.</p></li>
 <li><p><strong>keys</strong> (<em>sequence[hashable]</em>) – The keys of the color dict.</p></li>
 <li><p><strong>default</strong> (<em>str | tuple[int, int, int] | tuple[float, float, float], optional</em>) – A valid color specification (HEX or RGB).</p></li>
