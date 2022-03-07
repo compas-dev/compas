@@ -54,7 +54,7 @@ class BlenderGeometry:
 
     @property
     def location(self):
-        """:class:`compas.geometry.Point` - The location of the Blender object."""
+        """:class:`~compas.geometry.Point` - The location of the Blender object."""
         return Point(* self.object.location)
 
     @location.setter
@@ -72,7 +72,7 @@ class BlenderGeometry:
 
         Returns
         -------
-        :class:`compas_blender.conversions.BlenderGeometry`
+        :class:`~compas_blender.conversions.BlenderGeometry`
             The Blender object wrapper.
 
         Raises
@@ -95,7 +95,7 @@ class BlenderGeometry:
 
         Returns
         -------
-        :class:`compas_blender.conversions.BlenderGeometry`
+        :class:`~compas_blender.conversions.BlenderGeometry`
             The Blender object wrapper.
 
         Raises
@@ -118,7 +118,7 @@ class BlenderGeometry:
 
         Returns
         -------
-        :class:`compas_blender.conversions.BlenderGeometry`
+        :class:`~compas_blender.conversions.BlenderGeometry`
             The Blender object wrapper.
 
         Raises
@@ -138,7 +138,7 @@ class BlenderGeometry:
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        T : :class:`~compas.geometry.Transformation`
             The transformation matrix.
 
         Returns

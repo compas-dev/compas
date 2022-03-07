@@ -98,7 +98,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Scale of the X axis.
     yscale : {'linear', 'log'}
         Scale of the Y axis.
-    bgcolor : str or list, optional
+    bgcolor : str | list, optional
         Background color as hex string or rgb tuple.
         Default is white.
 
@@ -229,10 +229,10 @@ def draw_points_xy(points,
         XY(Z) coordinates of the points.
     axes : object
         Matplotlib axes.
-    facecolor : str or list, optional
+    facecolor : str | list, optional
         Color of the point face.
         Default is white.
-    edgecolor : str or list, optional
+    edgecolor : str | list, optional
         Color of the point edge.
         Default is black.
     linewidth : float or list, optional
@@ -358,10 +358,10 @@ def draw_points_3d(points,
         XYZ coordinates of the points.
     axes : object
         Matplotlib axes.
-    facecolor : str or list, optional
+    facecolor : str | list, optional
         Color of the face of the points.
         Default is white.
-    edgecolor : str or list, optional
+    edgecolor : str | list, optional
         Color of the edge of the points.
         Default is black.
 
@@ -406,10 +406,10 @@ def draw_lines_xy(lines,
     linewidth : float or list of float, optional
         Width of the lines.
         Default is ``1.0``.
-    linestyle : str or list of str, optional
+    linestyle : str | list of str, optional
         Matplotlib line style strings.
         Default is ``'-'``.
-    color : str or list of str, optional
+    color : str | list of str, optional
         Color of the lines.
         Default is black.
     alpha : float or list of float, optional
@@ -529,7 +529,7 @@ def draw_lines_3d(lines,
     linestyle : str, optional
         Matplotlib line style strings.
         Default is ``'solid'``.
-    color : str or list of str, optional
+    color : str | list of str, optional
         Color of the lines.
         Default is black.
 

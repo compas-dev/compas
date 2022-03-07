@@ -17,7 +17,7 @@ class Geometry(Data):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the geometry.
 
         Returns
@@ -32,7 +32,7 @@ class Geometry(Data):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the geometry.
 
         Returns

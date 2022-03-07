@@ -17,9 +17,9 @@ def network_transform(network, transformation):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         The network.
-    transformation : :class:`compas.geometry.Transformation`
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
 
     Returns
@@ -44,14 +44,14 @@ def network_transformed(network, transformation):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         The network.
-    transformation : :class:`compas.geometry.Transformation`
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
 
     Returns
     -------
-    :class:`compas.datastructures.Network`
+    :class:`~compas.datastructures.Network`
         A transformed independent copy of `network`.
 
     Notes

@@ -11,7 +11,7 @@ class Ellipse(Primitive):
 
     Parameters
     ----------
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
         The plane of the ellipse.
     major : float
         The major of the ellipse.
@@ -20,15 +20,15 @@ class Ellipse(Primitive):
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         The plane of the ellipse.
     major : float
         The major of the ellipse.
     minor : float
         The minor of the ellipse.
-    normal : :class:`compas.geometry.Vector`, read-only
+    normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the ellipse.
-    center : :class:`compas.geometry.Point`, read-only
+    center : :class:`~compas.geometry.Point`, read-only
         The center of the ellipse.
     area : float, read-only
         The area of the ellipse.
@@ -98,7 +98,7 @@ class Ellipse(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Ellipse`
+        :class:`~compas.geometry.Ellipse`
             The constructed ellipse.
 
         Examples
@@ -204,7 +204,7 @@ class Ellipse(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

@@ -28,7 +28,7 @@ def cls_from_dtype(dtype):
 
     Returns
     -------
-    :class:`compas.base.Base`
+    :class:`~compas.base.Base`
 
     Raises
     ------
@@ -52,7 +52,7 @@ class DataEncoder(json.JSONEncoder):
 
     * Numpy objects to their Python equivalents;
     * iterables to lists; and
-    * :class:`compas.data.Data` objects,
+    * :class:`~compas.data.Data` objects,
       such as geometric primitives and shapes, data structures, robots, ...,
       to a dict with the following structure: ``{'dtype': o.dtype, 'value': o.data}``
 
@@ -136,7 +136,7 @@ class DataDecoder(json.JSONDecoder):
     """Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.
 
     The decoder hooks into the JSON deserialisation process
-    to reconstruct :class:`compas.data.Data` objects,
+    to reconstruct :class:`~compas.data.Data` objects,
     such as geometric primitives and shapes, data structures, robots, ...,
     from the serialized data when possible.
 

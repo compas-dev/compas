@@ -11,7 +11,7 @@ def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
 
     Parameters
     ----------
-    trimesh : :class:`compas.datastructures.Mesh`
+    trimesh : :class:`~compas.datastructures.Mesh`
         A triangle mesh.
     fixed : list[int]
         A list of fixed vertices.

@@ -77,7 +77,7 @@ def network_connectivity_matrix(network, rtype='array'):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         Network data structure.
     rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
@@ -98,7 +98,7 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         Network data structure.
     normalize : bool, optional
         If True, normalize the entries such that the value on the diagonal is 1.

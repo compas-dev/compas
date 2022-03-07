@@ -11,24 +11,24 @@ class Line(Primitive):
 
     Parameters
     ----------
-    p1 : [float, float, float] | :class:`compas.geometry.Point`
+    p1 : [float, float, float] | :class:`~compas.geometry.Point`
         The first point.
-    p2 : [float, float, float] | :class:`compas.geometry.Point`
+    p2 : [float, float, float] | :class:`~compas.geometry.Point`
         The second point.
 
     Attributes
     ----------
-    start : :class:`compas.geometry.Point`
+    start : :class:`~compas.geometry.Point`
         The start point of the line.
-    end : :class:`compas.geometry.Point`
+    end : :class:`~compas.geometry.Point`
         The end point of the line.
-    vector : :class:`compas.geometry.Vector`, read-only
+    vector : :class:`~compas.geometry.Vector`, read-only
         A vector pointing from start to end.
     length : float, read-only
         The length of the vector from start to end.
-    direction : :class:`compas.geometry.Vector`, read-only
+    direction : :class:`~compas.geometry.Vector`, read-only
         A unit vector pointing from start and end.
-    midpoint : :class:`compas.geometry.Point`, read-only
+    midpoint : :class:`~compas.geometry.Point`, read-only
         The midpoint between start and end.
 
     Examples
@@ -190,7 +190,7 @@ class Line(Primitive):
 
         Parameters
         ----------
-        collection : list[[point, point] | :class:`compas.geometry.Line`]
+        collection : list[[point, point] | :class:`~compas.geometry.Line`]
             The collection of lines.
 
         Returns
@@ -224,12 +224,12 @@ class Line(Primitive):
 
         Parameters
         ----------
-        collection : list[[point, point] | :class:`compas.geometry.Line`]
+        collection : list[[point, point] | :class:`~compas.geometry.Line`]
             The collection of lines.
 
         Returns
         -------
-        list[:class:`compas.geometry.Line`]
+        list[:class:`~compas.geometry.Line`]
             The transformed lines.
 
         Examples
@@ -267,7 +267,7 @@ class Line(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        :class:`~compas.geometry.Point`
             A point on the line.
 
         Examples
@@ -289,7 +289,7 @@ class Line(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

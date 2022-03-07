@@ -179,7 +179,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        :class:`~compas.datastructures.Graph`
 
         """
         graph = cls()
@@ -201,7 +201,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        :class:`~compas.datastructures.Graph`
 
         """
         g = cls()

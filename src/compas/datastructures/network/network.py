@@ -121,7 +121,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -149,7 +149,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -186,7 +186,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -207,6 +207,30 @@ class Network(Graph):
         for u, v in edges:
             network.add_edge(u, v)
 
+        return network
+
+    @classmethod
+    def from_pointcloud(cls, cloud, degree=3):
+        """Construct a network from random connections between the points of a pointcloud.
+
+        Parameters
+        ----------
+        cloud : :class:`~compas.geometry.Pointcloud`
+            A pointcloud object.
+        degree : int, optional
+            The number of connections per node.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Network`
+
+        """
+        network = cls()
+        for x, y, z in cloud:
+            network.add_node(x=x, y=y, z=z)
+        for u in network.nodes():
+            for v in network.node_sample(size=degree):
+                network.add_edge(u, v)
         return network
 
     # --------------------------------------------------------------------------

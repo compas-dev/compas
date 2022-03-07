@@ -262,7 +262,7 @@ def validate_data(data, cls):
     ----------
     data : dict
         The data representation of an object.
-    cls : Type[:class:`compas.data.Data`]
+    cls : Type[:class:`~compas.data.Data`]
         The data object class.
 
     Returns

@@ -14,7 +14,7 @@ def unify_cycles(vertices, faces, root=0):
 
     Parameters
     ----------
-    vertices : sequence[[float, float, float] | :class:`compas.geometry.Point`]
+    vertices : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A list of vertex coordinates.
     faces : sequence[sequence[int]]
         A list of faces with each face defined by a list of indices into the list of vertices.
@@ -69,7 +69,7 @@ def face_adjacency(xyz, faces):
 
     Parameters
     ----------
-    xyz : sequence[[float, float, float] | :class:`compas.geometry.Point`]
+    xyz : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         The coordinates of the face vertices.
     faces : sequence[sequence[int]]
         A list of faces with each face defined by a list of indices into the list of xyz coordinates.

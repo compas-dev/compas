@@ -59,7 +59,7 @@ class OFF(object):
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : :class:`~compas.datastructures.Mesh`
             The mesh.
         author : str, optional
             The author name to include in the header.
@@ -234,7 +234,7 @@ class OFFWriter(object):
     ----------
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         Mesh to write to the file.
     author : str, optional
         The author name to include in the header.

@@ -2,16 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
 import compas_rhino
-
-from compas.utilities import color_to_colordict
 from compas.geometry import centroid_points
-
 from compas.artists import VolMeshArtist
 from .artist import RhinoArtist
-
-colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 class VolMeshArtist(RhinoArtist, VolMeshArtist):
@@ -19,7 +13,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
+    volmesh : :class:`~compas.datastructures.VolMesh`
         A COMPAS volmesh.
     layer : str, optional
         The name of the layer that will contain the volmesh.
@@ -89,16 +83,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         cells : list[int], optional
             A selection of cells to draw.
             The default is None, in which case all cells are drawn.
-        vertexcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        vertexcolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the vertices.
             The default color is the value of :attr:`VolMeshArtist.default_vertexcolor`.
-        edgecolor : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        edgecolor : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
             The default color is the value of :attr:`VolMeshArtist.default_edgecolor`.
-        facecolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        facecolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the faces.
             The default color is the value of :attr:`VolMeshArtist.default_facecolor`.
-        cellcolor : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        cellcolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the cells.
             The default color is the value of :attr:`VolMeshArtist.default_cellcolor`.
 
@@ -122,7 +116,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertices : list[int], optional
             A list of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the vertices.
             The default color of the vertices is :attr:`VolMeshArtist.default_vertexcolor`.
 
@@ -140,7 +134,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             points.append({
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.volmesh.name, vertex),
-                'color': self.vertex_color.get(vertex, self.default_vertexcolor)
+                'color': self.vertex_color[vertex].rgb255
             })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -152,7 +146,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
             The default color is :attr:`VolMeshArtist.default_edgecolor`.
 
@@ -170,7 +164,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             lines.append({
                 'start': vertex_xyz[edge[0]],
                 'end': vertex_xyz[edge[1]],
-                'color': self.edge_color.get(edge, self.default_edgecolor),
+                'color': self.edge_color[edge].rgb255,
                 'name': "{}.edge.{}-{}".format(self.volmesh.name, *edge)
             })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -183,7 +177,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         faces : list[int], optional
             A list of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the faces.
             The default color is :attr:`VolMeshArtist.default_facecolor`.
 
@@ -201,7 +195,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             facets.append({
                 'points': [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)],
                 'name': "{}.face.{}".format(self.volmesh.name, face),
-                'color': self.face_color.get(face, self.default_facecolor)
+                'color': self.face_color[face].rgb255
             })
         return compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
 
@@ -213,7 +207,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the cells.
             The default color is :attr:`VolMeshArtist.default_cellcolor`.
 
@@ -234,13 +228,13 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
                 cell_faces.append({
                     'points': [vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(fkey)],
                     'name': "{}.cell.{}.face.{}".format(self.volmesh.name, cell, fkey),
-                    'color': self.cell_color.get(cell, self.default_cellcolor)
+                    'color': self.cell_color[cell].rgb255
                 })
             guids = compas_rhino.draw_faces(cell_faces, layer=self.layer, clear=False, redraw=False)
             guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
             compas_rhino.rs.ObjectLayer(guid, self.layer)
             compas_rhino.rs.ObjectName(guid, '{}.cell.{}'.format(self.volmesh.name, cell))
-            compas_rhino.rs.ObjectColor(guid, self.cell_color.get(cell, self.default_cellcolor))
+            compas_rhino.rs.ObjectColor(guid, self.cell_color[cell].rgb255)
             meshes.append(guid)
         return meshes
 
@@ -248,7 +242,7 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
     # draw labels
     # ==========================================================================
 
-    def draw_vertexlabels(self, text=None, color=None):
+    def draw_vertexlabels(self, text=None):
         """Draw labels for a selection vertices.
 
         Parameters
@@ -256,9 +250,6 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         text : dict[int, str], optional
             A dictionary of vertex labels as vertex-text pairs.
             The default value is None, in which case every vertex will be labelled with its key.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
-            Color of the labels.
-            The default color is the same as the color of the vertices.
 
         Returns
         -------
@@ -266,27 +257,19 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if not text or text == 'key':
-            vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}
-        elif text == 'index':
-            vertex_text = {vertex: str(index) for index, vertex in enumerate(self.volmesh.vertices())}
-        elif isinstance(text, dict):
-            vertex_text = text
-        else:
-            raise NotImplementedError
+        self.vertex_text = text
         vertex_xyz = self.vertex_xyz
-        vertex_color = colordict(color, vertex_text.keys(), default=self.color_vertices)
         labels = []
-        for vertex in vertex_text:
+        for vertex in self.vertex_text:
             labels.append({
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertexlabel.{}".format(self.volmesh.name, vertex),
-                'color': vertex_color[vertex],
-                'text': vertex_text[vertex]
+                'color': self.vertex_color[vertex].rgb255,
+                'text': self.vertex_text[vertex]
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
-    def draw_edgelabels(self, text=None, color=None):
+    def draw_edgelabels(self, text=None):
         """Draw labels for a selection of edges.
 
         Parameters
@@ -294,9 +277,6 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         text : dict[tuple[int, int], str], optional
             A dictionary of edge labels as edge-text pairs.
             The default value is None, in which case every edge will be labelled with its key.
-        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
-            Color of the labels.
-            The default color is tha same as the color of the edges.
 
         Returns
         -------
@@ -304,25 +284,19 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if text is None:
-            edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}
-        elif isinstance(text, dict):
-            edge_text = text
-        else:
-            raise NotImplementedError
+        self.edge_text = text
         vertex_xyz = self.vertex_xyz
-        edge_color = colordict(color, edge_text.keys(), default=self.color_edges)
         labels = []
-        for edge in edge_text:
+        for edge in self.edge_text:
             labels.append({
                 'pos': centroid_points([vertex_xyz[edge[0]], vertex_xyz[edge[1]]]),
                 'name': "{}.edgelabel.{}-{}".format(self.volmesh.name, *edge),
-                'color': edge_color[edge],
-                'text': edge_text[edge]
+                'color': self.edge_color[edge].rgb255,
+                'text': self.edge_text[edge]
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
-    def draw_facelabels(self, text=None, color=None):
+    def draw_facelabels(self, text=None):
         """Draw labels for a selection of faces.
 
         Parameters
@@ -330,9 +304,6 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         text : dict[int, str], optional
             A dictionary of face labels as face-text pairs.
             The default value is None, in which case every face will be labelled with its key.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
-            Color of the labels.
-            The default color is the same as the color of the faces.
 
         Returns
         -------
@@ -340,27 +311,19 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if not text or text == 'key':
-            face_text = {face: str(face) for face in self.volmesh.faces()}
-        elif text == 'index':
-            face_text = {face: str(index) for index, face in enumerate(self.volmesh.faces())}
-        elif isinstance(text, dict):
-            face_text = text
-        else:
-            raise NotImplementedError
+        self.face_text = text
         vertex_xyz = self.vertex_xyz
-        face_color = colordict(color, face_text.keys(), default=self.color_faces)
         labels = []
-        for face in face_text:
+        for face in self.face_text:
             labels.append({
                 'pos': centroid_points([vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]),
                 'name': "{}.facelabel.{}".format(self.volmesh.name, face),
-                'color': face_color[face],
-                'text': face_text[face]
+                'color': self.face_color[face].rgb255,
+                'text': self.face_text[face]
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
-    def draw_celllabels(self, text=None, color=None):
+    def draw_celllabels(self, text=None):
         """Draw labels for cells.
 
         Parameters
@@ -368,9 +331,6 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         text : dict[int, str], optional
             A dictionary of cell labels as cell-text pairs.
             The default value is None, in which case every cell will be labelled with its key.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
-            Color of the labels.
-            The default color is the same as the color of the cells.
 
         Returns
         -------
@@ -378,22 +338,14 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if not text or text == 'key':
-            cell_text = {cell: str(cell) for cell in self.volmesh.cells()}
-        elif text == 'index':
-            cell_text = {cell: str(index) for index, cell in enumerate(self.volmesh.cells())}
-        elif isinstance(text, dict):
-            cell_text = text
-        else:
-            raise NotImplementedError
+        self.cell_text = text
         vertex_xyz = self.vertex_xyz
-        cell_color = colordict(color, cell_text.keys(), default=self.color_cells)
         labels = []
-        for cell in cell_text:
+        for cell in self.cell_text:
             labels.append({
                 'pos': centroid_points([vertex_xyz[vertex] for vertex in self.volmesh.cell_vertices(cell)]),
                 'name': "{}.facelabel.{}".format(self.volmesh.name, cell),
-                'color': cell_color[cell],
-                'text': cell_text[cell]
+                'color': self.cell_color[cell].rgb255,
+                'text': self.cell_text[cell]
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

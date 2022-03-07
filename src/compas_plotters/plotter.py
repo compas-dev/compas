@@ -70,7 +70,7 @@ class Plotter:
         Background color of the figure.
     title : str
         Title of the plot.
-    artists : list[:class:`compas_plotters.artists.PlotterArtist`]
+    artists : list[:class:`~compas_plotters.artists.PlotterArtist`]
         Artists that should be included in the plot.
 
     Class Attributes

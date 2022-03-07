@@ -17,7 +17,7 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    line : :class:`compas.geometry.Line`
+    line : :class:`~compas.geometry.Line`
         A COMPAS line.
     draw_points : bool, optional
         If True, draw the start and end point of the line.
@@ -31,11 +31,11 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
         Stacking order of the line on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
-    line : :class:`compas.geometry.Line`
+    line : :class:`~compas.geometry.Line`
         The line associated with the artist.
 
     """

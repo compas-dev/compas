@@ -6,10 +6,10 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas_blender.utilities import RGBColor
 from compas.geometry import add_vectors
 from compas.geometry import Circle
 from compas.artists import PrimitiveArtist
+from compas.colors import Color
 from .artist import BlenderArtist
 
 
@@ -18,14 +18,14 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         A COMPAS circle.
-    collection :  str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------
@@ -61,12 +61,12 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
                  **kwargs: Any):
         super().__init__(primitive=circle, collection=collection or circle.name, **kwargs)
 
-    def draw(self,  color: Optional[RGBColor] = None, show_point=False, show_normal=False) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, show_point: bool = False, show_normal: bool = False) -> List[bpy.types.Object]:
         """Draw the circle.
 
         Parameters
         ----------
-        color : tuple[float, float, float] or tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the capsule.
             The default color is :attr:`compas.artists.PrimitiveArtist.color`.
         show_point : bool, optional
@@ -80,7 +80,7 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
             The objects created in Blender.
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         point = self.primitive.plane.point
         normal = self.primitive.plane.normal
         plane = point, normal

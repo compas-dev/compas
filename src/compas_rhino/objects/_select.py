@@ -25,7 +25,7 @@ def mesh_select_vertex(mesh, message="Select a vertex."):
 
     Parameters
     ----------
-    mesh: :class:`compas.datastructures.Mesh`
+    mesh: :class:`~compas.datastructures.Mesh`
     message: str, optional
 
     Returns
@@ -48,7 +48,7 @@ def mesh_select_vertices(mesh, message="Select vertices."):
 
     Parameters
     ----------
-    mesh: :class:`compas.datastructures.Mesh`
+    mesh: :class:`~compas.datastructures.Mesh`
     message: str, optional
 
     Returns
@@ -76,7 +76,7 @@ def mesh_select_face(mesh, message="Select a face."):
 
     Parameters
     ----------
-    mesh: :class:`compas.datastructures.Mesh`
+    mesh: :class:`~compas.datastructures.Mesh`
     message: str, optional
 
     Returns
@@ -100,7 +100,7 @@ def mesh_select_faces(mesh, message="Select faces."):
 
     Parameters
     ----------
-    mesh: :class:`compas.datastructures.Mesh`
+    mesh: :class:`~compas.datastructures.Mesh`
     message: str, optional
 
     Returns
@@ -128,7 +128,7 @@ def mesh_select_edge(mesh, message="Select an edge."):
 
     Parameters
     ----------
-    mesh: :class:`compas.datastructures.Mesh`
+    mesh: :class:`~compas.datastructures.Mesh`
     message: str, optional
 
     Returns
@@ -154,7 +154,7 @@ def mesh_select_edges(mesh, message="Select edges."):
 
     Parameters
     ----------
-    mesh: :class:`compas.datastructures.Mesh`
+    mesh: :class:`~compas.datastructures.Mesh`
     message: str, optional
 
     Returns
@@ -184,7 +184,7 @@ def network_select_node(network, message="Select a node."):
 
     Parameters
     ----------
-    network: :class:`compas.datastructures.Network`
+    network: :class:`~compas.datastructures.Network`
     message: str, optional
 
     Returns
@@ -207,7 +207,7 @@ def network_select_nodes(network, message="Select nodes."):
 
     Parameters
     ----------
-    network: :class:`compas.datastructures.Network`
+    network: :class:`~compas.datastructures.Network`
     message: str, optional
 
     Returns
@@ -235,7 +235,7 @@ def network_select_edge(network, message="Select an edge."):
 
     Parameters
     ----------
-    network: :class:`compas.datastructures.Network`
+    network: :class:`~compas.datastructures.Network`
     message: str, optional
 
     Returns
@@ -261,7 +261,7 @@ def network_select_edges(network, message="Select edges."):
 
     Parameters
     ----------
-    network: :class:`compas.datastructures.Network`
+    network: :class:`~compas.datastructures.Network`
     message: str, optional
 
     Returns

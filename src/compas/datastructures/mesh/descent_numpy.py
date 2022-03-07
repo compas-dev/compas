@@ -14,7 +14,7 @@ def trimesh_descent(trimesh):
 
     Parameters
     ----------
-    trimesh : :class:`compas.datastructures.Mesh`
+    trimesh : :class:`~compas.datastructures.Mesh`
         The triangle mesh.
 
     Returns

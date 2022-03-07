@@ -30,7 +30,7 @@ class ColorMap(object):
 
     Attributes
     ----------
-    colors : list[:class:`compas.colors.Color`]
+    colors : list[:class:`~compas.colors.Color`]
         The colors of the map.
 
     Examples
@@ -89,7 +89,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         key = (value - minval) / (maxval - minval)
@@ -113,7 +113,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        :class:`~compas.colors.ColorMap`
 
         Raises
         ------
@@ -153,7 +153,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        :class:`~compas.colors.ColorMap`
 
         Raises
         ------
@@ -176,7 +176,7 @@ class ColorMap(object):
 
         Parameters
         ----------
-        color : :class:`compas.colors.Color`
+        color : :class:`~compas.colors.Color`
             The base color.
         rangetype : Literal['full', 'light', 'dark'], optional
             If ``'full'``, use the full luminance range (0.0 - 1.0).
@@ -185,7 +185,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         n = 256
@@ -214,16 +214,16 @@ class ColorMap(object):
 
         Parameters
         ----------
-        c1 : :class:`compas.colors.Color`
+        c1 : :class:`~compas.colors.Color`
             The first color.
-        c2 : :class:`compas.colors.Color`
+        c2 : :class:`~compas.colors.Color`
             The second color.
         diverging : bool, optional
             If True, use white as transition color in the middle.
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        :class:`~compas.colors.ColorMap`
 
         """
         colors = []
@@ -252,16 +252,16 @@ class ColorMap(object):
 
         Parameters
         ----------
-        c1 : :class:`compas.colors.Color`
+        c1 : :class:`~compas.colors.Color`
             The first color.
-        c2 : :class:`compas.colors.Color`
+        c2 : :class:`~compas.colors.Color`
             The second color.
-        c3 : :class:`compas.colors.Color`
+        c3 : :class:`~compas.colors.Color`
             The third color.
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        :class:`~compas.colors.ColorMap`
 
         """
         colors = []
@@ -283,7 +283,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        :class:`~compas.colors.Color`
 
         """
         colors = []

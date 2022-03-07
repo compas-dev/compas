@@ -20,11 +20,11 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
+    volmesh : :class:`~compas.datastructures.VolMesh`
         A COMPAS volmesh.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.VolMeshArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.VolMeshArtist` for more info.
 
     """
 
@@ -42,7 +42,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         vertices : list
             A list of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]]
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`]
             The color specification for the vertices.
             The default color of the vertices is :attr:`VolMeshArtist.default_vertexcolor`.
 
@@ -59,7 +59,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
             points.append({
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.volmesh.name, vertex),
-                'color': self.vertex_color.get(vertex, self.default_vertexcolor)
+                'color': self.vertex_color[vertex].rgb255
             })
         return compas_ghpython.draw_points(points)
 
@@ -71,7 +71,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
             The default color is :attr:`VolMeshArtist.default_edgecolor`.
 
@@ -85,11 +85,12 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         lines = []
         for edge in edges:
+            u, v = edge
             lines.append({
-                'start': vertex_xyz[edge[0]],
-                'end': vertex_xyz[edge[1]],
-                'color': self.edge_color.get(edge, self.default_edgecolor),
-                'name': "{}.edge.{}-{}".format(self.volmesh.name, *edge)
+                'start': vertex_xyz[u],
+                'end': vertex_xyz[v],
+                'color': self.edge_color[edge].rgb255,
+                'name': "{}.edge.{}-{}".format(self.volmesh.name, u, v)
             })
         return compas_ghpython.draw_lines(lines)
 
@@ -101,7 +102,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         faces : list[list[int]], optional
             A list of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : tuple[int, int, int] or dict[int, tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the faces.
             The default color is :attr:`VolMeshArtist.default_facecolor`.
         join_faces : bool, optional
@@ -120,7 +121,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
             facets.append({
                 'points': [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)],
                 'name': "{}.face.{}".format(self.volmesh.name, face),
-                'color': self.face_color.get(face, self.default_facecolor)
+                'color': self.face_color[face].rgb255
             })
         meshes = compas_ghpython.draw_faces(facets)
         if not join_faces:

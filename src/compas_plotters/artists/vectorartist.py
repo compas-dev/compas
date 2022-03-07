@@ -18,9 +18,9 @@ class VectorArtist(PlotterArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    vector : :class:`compas.geometry.Vector`
+    vector : :class:`~compas.geometry.Vector`
         A COMPAS vector.
-    point : :class:`compas.geometry.Point`, optional
+    point : :class:`~compas.geometry.Point`, optional
         A COMPAS point as base point for the vector.
         Default is the origin of the world coordinate system.
     draw_point : bool, optional
@@ -31,11 +31,11 @@ class VectorArtist(PlotterArtist, PrimitiveArtist):
         Stacking order of the vector on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
-    vector : :class:`compas.geometry.Vector`
+    vector : :class:`~compas.geometry.Vector`
         The vector associated with the artist.
 
     """

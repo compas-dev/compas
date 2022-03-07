@@ -87,7 +87,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoSurface`
+        :class:`~compas_rhino.geometry.RhinoSurface`
 
         """
         curve = cls()
@@ -107,7 +107,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoSurface`
+        :class:`~compas_rhino.geometry.RhinoSurface`
 
         """
         cls = type(self)
@@ -120,7 +120,7 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        T : :class:`~compas.geometry.Transformation`
             A COMPAS transformation.
 
         Returns
@@ -139,7 +139,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoCurve`
+        :class:`~compas_rhino.geometry.RhinoCurve`
 
         """
         curve = self.rhino_surface.IsoCurve(1, u)
@@ -154,7 +154,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoCurve`
+        :class:`~compas_rhino.geometry.RhinoCurve`
 
         """
         curve = self.rhino_surface.IsoCurve(0, v)
@@ -170,7 +170,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        :class:`~compas.geometry.Point`
 
         """
         point = self.rhino_surface.PointAt(u, v)
@@ -186,7 +186,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        :class:`~compas.geometry.Vector`
 
         """
         vector = self.rhino_surface.CurvatureAt(u, v)
@@ -202,7 +202,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        :class:`~compas.geometry.Frame`
 
         """
         result, plane = self.rhino_surface.FrameAt(u, v)
@@ -218,16 +218,16 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point`
+        point : :class:`~compas.geometry.Point`
             The test point.
         return_parameters : bool, optional
             If True, return the UV parameters of the closest point as tuple in addition to the point location.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        :class:`~compas.geometry.Point`
             If `return_parameters` is False.
-        :class:`compas.geometry.Point`, (float, float)
+        :class:`~compas.geometry.Point`, (float, float)
             If `return_parameters` is True.
 
         """
@@ -250,7 +250,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
 
         """
         box = self.rhino_surface.GetBoundingBox(optimal)

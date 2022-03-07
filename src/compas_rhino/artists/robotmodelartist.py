@@ -25,7 +25,7 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
 
     Parameters
     ----------
-    model : :class:`compas.robots.RobotModel`
+    model : :class:`~compas.robots.RobotModel`
         Robot model.
     layer : str, optional
         The name of the layer that will contain the robot meshes.
@@ -47,7 +47,7 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
 
         Parameters
         ----------
-        geometry : :class:`compas.datastructures.Mesh`
+        geometry : :class:`~compas.datastructures.Mesh`
             A COMPAS mesh data structure.
         name : str, optional
             Name of the mesh object.

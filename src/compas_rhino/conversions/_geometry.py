@@ -93,7 +93,7 @@ class RhinoGeometry(object):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`~compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
 
         Raises
@@ -117,7 +117,7 @@ class RhinoGeometry(object):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`~compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
 
         Raises
@@ -141,7 +141,7 @@ class RhinoGeometry(object):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`~compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
 
         Raises
@@ -162,7 +162,7 @@ class RhinoGeometry(object):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or :rhino:`Rhino.Geometry.Transform`
+        T : :class:`~compas.geometry.Transformation` or :rhino:`Rhino.Geometry.Transform`
             The transformation matrix.
 
         Returns

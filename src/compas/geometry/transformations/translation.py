@@ -27,7 +27,7 @@ class Translation(Transformation):
 
     Attributes
     ----------
-    translation_vector : :class:`compas.geometry.Vector`
+    translation_vector : :class:`~compas.geometry.Vector`
         The translation vector.
 
     Raises
@@ -90,12 +90,12 @@ class Translation(Transformation):
 
         Parameters
         ----------
-        vector : [float, float, float] | :class:`compas.geometry.Vector`
+        vector : [float, float, float] | :class:`~compas.geometry.Vector`
             The translation vector.
 
         Returns
         -------
-        :class:`compas.geometry.Translation`
+        :class:`~compas.geometry.Translation`
             The translation transformation.
 
         """

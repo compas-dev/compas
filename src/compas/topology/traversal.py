@@ -448,7 +448,7 @@ def astar_shortest_path(graph, root, goal):
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Network` | :class:`compas.datastructures.Mesh`
+    graph : :class:`~compas.datastructures.Network` | :class:`~compas.datastructures.Mesh`
         A network or mesh data structure.
     root : hashable
         The identifier of the starting node.

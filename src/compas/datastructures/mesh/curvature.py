@@ -22,7 +22,7 @@ def trimesh_gaussian_curvature(mesh):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The triangle mesh data structure.
 
     Returns

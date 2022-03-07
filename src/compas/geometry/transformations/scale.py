@@ -73,12 +73,12 @@ class Scale(Transformation):
         ----------
         factors : [float, float, float]
             The scale factors along X, Y, Z.
-        frame : [point, vector, vector] | :class:`compas.geometry.Frame`, optional
+        frame : [point, vector, vector] | :class:`~compas.geometry.Frame`, optional
             The anchor frame for the scaling transformation.
 
         Returns
         -------
-        :class:`compas.geometry.Scale`
+        :class:`~compas.geometry.Scale`
             A scale transformation.
 
         Examples

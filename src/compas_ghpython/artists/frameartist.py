@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_ghpython
 from compas.artists import PrimitiveArtist
+from compas.colors import Color
 from .artist import GHArtist
 
 
@@ -12,36 +13,36 @@ class FrameArtist(GHArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         A COMPAS frame.
     scale : float, optional
         The scale of the vectors representing the axes of the frame.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
     scale : float
         Scale factor that controls the length of the axes.
-    color_origin : tuple[int, int, int]
-        Default is ``(0, 0, 0)``.
-    color_xaxis : tuple[int, int, int]
-        Default is ``(255, 0, 0)``.
-    color_yaxis : tuple[int, int, int]
-        Default is ``(0, 255, 0)``.
-    color_zaxis : tuple[int, int, int]
-        Default is ``(0, 0, 255)``.
+    color_origin : :class:`~compas.colors.Color`
+        Default is ``Color.black()``.
+    color_xaxis : :class:`~compas.colors.Color`
+        Default is ``Color.red()``.
+    color_yaxis : :class:`~compas.colors.Color`
+        Default is ``Color.green()``.
+    color_zaxis : :class:`~compas.colors.Color`
+        Default is ``Color.blue()``.
 
     """
 
     def __init__(self, frame, scale=1.0, **kwargs):
         super(FrameArtist, self).__init__(primitive=frame, **kwargs)
         self.scale = scale
-        self.color_origin = (0, 0, 0)
-        self.color_xaxis = (255, 0, 0)
-        self.color_yaxis = (0, 255, 0)
-        self.color_zaxis = (0, 0, 255)
+        self.color_origin = Color.black()
+        self.color_xaxis = Color.red()
+        self.color_yaxis = Color.green()
+        self.color_zaxis = Color.blue()
 
     def draw(self):
         """Draw the frame.
@@ -61,7 +62,7 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         :rhino:`Rhino.Geometry.Point`
 
         """
-        point, _ = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
+        point = {'pos': list(self.primitive.point), 'color': self.color_origin.rgb255}
         return compas_ghpython.draw_points([point])[0]
 
     def draw_axes(self):
@@ -72,18 +73,13 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         list[:rhino:`Rhino.Geometry.Line`]
 
         """
-        _, lines = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
-        return compas_ghpython.draw_lines(lines)
-
-    @staticmethod
-    def _get_args(primitive, scale=1.0, color_origin=(0, 0, 0), color_xaxis=(255, 0, 0), color_yaxis=(0, 255, 0), color_zaxis=(0, 0, 255)):
-        origin = list(primitive.point)
-        x = list(primitive.point + primitive.xaxis.scaled(scale))
-        y = list(primitive.point + primitive.yaxis.scaled(scale))
-        z = list(primitive.point + primitive.zaxis.scaled(scale))
-        point = {'pos': origin, 'color': color_origin}
+        origin = list(self.primitive.point)
+        x = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
+        y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
+        z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
         lines = [
-            {'start': origin, 'end': x, 'color': color_xaxis, 'arrow': 'end'},
-            {'start': origin, 'end': y, 'color': color_yaxis, 'arrow': 'end'},
-            {'start': origin, 'end': z, 'color': color_zaxis, 'arrow': 'end'}]
-        return point, lines
+            {'start': origin, 'end': x, 'color': self.color_xaxis.rgb255, 'arrow': 'end'},
+            {'start': origin, 'end': y, 'color': self.color_yaxis.rgb255, 'arrow': 'end'},
+            {'start': origin, 'end': z, 'color': self.color_zaxis.rgb255, 'arrow': 'end'}
+        ]
+        return compas_ghpython.draw_lines(lines)

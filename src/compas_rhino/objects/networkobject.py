@@ -25,9 +25,9 @@ class NetworkObject(BaseObject):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network data structure.
-    scene : :class:`compas.scenes.Scene`, optional
+    scene : :class:`~compas.scenes.Scene`, optional
         A scene object.
     name : str, optional
         The name of the object.
@@ -88,7 +88,7 @@ class NetworkObject(BaseObject):
 
     @property
     def location(self):
-        """:class:`compas.geometry.Point`:
+        """:class:`~compas.geometry.Point`:
         The location of the object.
         Default is the origin of the world coordinate system.
         The object transformation is applied relative to this location.

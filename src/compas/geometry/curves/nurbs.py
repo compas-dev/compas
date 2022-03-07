@@ -46,7 +46,7 @@ class NurbsCurve(Curve):
 
     Attributes
     ----------
-    points : list[:class:`compas.geometry.Point`], read-only
+    points : list[:class:`~compas.geometry.Point`], read-only
         The control points.
     weights : list[float], read-only
         The weights of the control points.
@@ -148,7 +148,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
             The constructed curve.
 
         """
@@ -215,7 +215,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
         """
         return new_nurbscurve_from_step(cls, filepath)
 
@@ -225,7 +225,7 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list[[float, float, float] | :class:`compas.geometry.Point`]
+        points : list[[float, float, float] | :class:`~compas.geometry.Point`]
             The control points.
         weights : list[float]
             The weights of the control points.
@@ -240,7 +240,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         return new_nurbscurve_from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False)
@@ -251,14 +251,14 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list[[float, float, float] | :class:`compas.geometry.Point`]
+        points : list[[float, float, float] | :class:`~compas.geometry.Point`]
             The control points.
         degree : int, optional
             The degree of the curve.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         return new_nurbscurve_from_points(cls, points, degree=degree)
@@ -269,14 +269,14 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        points : list[[float, float, float] | :class:`compas.geometry.Point`]
+        points : list[[float, float, float] | :class:`~compas.geometry.Point`]
             A list of interpolation points.
         precision : int, optional
             The desired precision of the interpolation.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         return new_nurbscurve_from_interpolation(cls, points, precision=1e-3)
@@ -287,11 +287,11 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        arc : :class:`compas.geometry.Arc`
+        arc : :class:`~compas.geometry.Arc`
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         raise NotImplementedError
@@ -302,11 +302,11 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        circle : :class:`compas.geometry.Circle`
+        circle : :class:`~compas.geometry.Circle`
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         frame = Frame.from_plane(circle.plane)
@@ -337,11 +337,11 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        ellipse : :class:`compas.geometry.Ellipse`
+        ellipse : :class:`~compas.geometry.Ellipse`
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         frame = Frame.from_plane(ellipse.plane)
@@ -373,11 +373,11 @@ class NurbsCurve(Curve):
 
         Parameters
         ----------
-        line : :class:`compas.geometry.Line`
+        line : :class:`~compas.geometry.Line`
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         return cls.from_parameters(
@@ -401,7 +401,7 @@ class NurbsCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsCurve`
+        :class:`~compas.geometry.NurbsCurve`
 
         """
         return NurbsCurve.from_parameters(

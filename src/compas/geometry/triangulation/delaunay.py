@@ -26,11 +26,11 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         XYZ coordinates of the original points.
-    boundary : sequence[[float, float, float] | :class:`compas.geometry.Point`] | :class:`compas.geometry.Polygon`, optional
+    boundary : sequence[[float, float, float] | :class:`~compas.geometry.Point`] | :class:`~compas.geometry.Polygon`, optional
         List of ordered points describing the outer boundary.
-    holes : sequence[sequence[[float, float, float] | :class:`compas.geometry.Point`] | :class:`compas.geometry.Polygon`], optional
+    holes : sequence[sequence[[float, float, float] | :class:`~compas.geometry.Point`] | :class:`~compas.geometry.Polygon`], optional
         List of polygons (ordered points describing internal holes.
 
     Returns

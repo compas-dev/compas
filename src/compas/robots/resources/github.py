@@ -107,7 +107,7 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
         """
         return self.load_meshes(url)[0]
@@ -124,7 +124,7 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        list[:class:`compas.datastructures.Mesh`]
+        list[:class:`~compas.datastructures.Mesh`]
             List of meshes.
         """
         _prefix, path = url.split(self.schema_prefix)

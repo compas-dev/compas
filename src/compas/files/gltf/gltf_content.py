@@ -18,27 +18,27 @@ class GLTFContent(object):
     Attributes
     ----------
     scenes : dict
-        Dictionary containing (int, :class:`compas.files.GLTFScene`) pairs.
+        Dictionary containing (int, :class:`~compas.files.GLTFScene`) pairs.
     default_scene_key : int or None
         Key of the scene to be displayed on loading the glTF.
     nodes : dict
-        Dictionary containing (int, :class:`compas.files.GLTFNode`) pairs.
+        Dictionary containing (int, :class:`~compas.files.GLTFNode`) pairs.
     meshes : dict
-        Dictionary containing (int, :class:`compas.files.GLTFMesh`) pairs.
+        Dictionary containing (int, :class:`~compas.files.GLTFMesh`) pairs.
     cameras : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.CameraData`) pairs.
+        Dictionary containing (int, :class:`~compas.files.data_classes.CameraData`) pairs.
     animations : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.AnimationData`) pairs.
+        Dictionary containing (int, :class:`~compas.files.data_classes.AnimationData`) pairs.
     skins : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.SkinData`) pairs.
+        Dictionary containing (int, :class:`~compas.files.data_classes.SkinData`) pairs.
     materials : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.MaterialData`) pairs.
+        Dictionary containing (int, :class:`~compas.files.data_classes.MaterialData`) pairs.
     textures : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.TextureData`) pairs.
+        Dictionary containing (int, :class:`~compas.files.data_classes.TextureData`) pairs.
     samplers : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.SamplerData`) pairs.
+        Dictionary containing (int, :class:`~compas.files.data_classes.SamplerData`) pairs.
     images : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.ImageData`) pairs.
+        Dictionary containing (int, :class:`~compas.files.data_classes.ImageData`) pairs.
     extras : object
     extensions : object
 
@@ -209,7 +209,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : :class:`~compas.files.GLTFScene`
 
         Returns
         -------
@@ -238,7 +238,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        node : :class:`compas.files.GLTFNode`
+        node : :class:`~compas.files.GLTFNode`
 
         Returns
         -------
@@ -254,7 +254,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        node : :class:`compas.files.GLTFNode`
+        node : :class:`~compas.files.GLTFNode`
 
         Returns
         -------
@@ -277,22 +277,22 @@ class GLTFContent(object):
 
         Returns
         -------
-        :class:`compas.files.GLTFScene`
+        :class:`~compas.files.GLTFScene`
         """
         return GLTFScene(self, name=name, extras=extras)
 
     def add_node_to_scene(self, scene, node_name=None, node_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of ``scene``.
+        """Creates a :class:`~compas.files.GLTFNode` and adds this node to the children of ``scene``.
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : :class:`~compas.files.GLTFScene`
         node_name : str
         node_extras : object
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        :class:`~compas.files.GLTFNode`
         """
         if scene not in self.scenes.values():
             raise Exception('Cannot find scene.')
@@ -301,33 +301,33 @@ class GLTFContent(object):
         return node
 
     def add_child_to_node(self, parent_node, child_name=None, child_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of ``parent_node``.
+        """Creates a :class:`~compas.files.GLTFNode` and adds this node to the children of ``parent_node``.
 
         Parameters
         ----------
-        parent_node : :class:`compas.files.GLTFNode`
+        parent_node : :class:`~compas.files.GLTFNode`
         child_name : str
         child_extras : object
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        :class:`~compas.files.GLTFNode`
         """
         child_node = GLTFNode(self, child_name, child_extras)
         parent_node.children.append(child_node.key)
         return child_node
 
     def add_mesh(self, mesh):
-        """Creates a :class:`compas.files.GLTFMesh` object from a compas mesh, and adds this
+        """Creates a :class:`~compas.files.GLTFMesh` object from a compas mesh, and adds this
         to the content.
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : :class:`~compas.datastructures.Mesh`
 
         Returns
         -------
-        :class:`compas.files.GLTFMesh`
+        :class:`~compas.files.GLTFMesh`
         """
         return GLTFMesh.from_mesh(self, mesh)
 
@@ -337,12 +337,12 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        node : :class:`compas.files.GLTFNode`
-        mesh : Union[:class:`compas.datastructures.Mesh`, int]
+        node : :class:`~compas.files.GLTFNode`
+        mesh : Union[:class:`~compas.datastructures.Mesh`, int]
 
         Returns
         -------
-        :class:`compas.files.GLTFMesh`
+        :class:`~compas.files.GLTFMesh`
         """
         if isinstance(mesh, int):
             mesh_data = self.meshes[mesh]
@@ -356,7 +356,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : :class:`~compas.files.GLTFScene`
 
         Returns
         -------
@@ -379,7 +379,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : :class:`~compas.files.GLTFScene`
 
         Returns
         -------

@@ -26,7 +26,7 @@ class XML(object):
 
     Attributes
     ----------
-    reader : :class:`compas.files.XMLReader`, read-only
+    reader : :class:`~compas.files.XMLReader`, read-only
         Reader used to process the XML file or string.
     writer : :class:`XMLWriter`, read-only
         Writer used to process the XML object to a file or string.
@@ -129,7 +129,7 @@ class XML(object):
 
         Returns
         -------
-        :class:`compas.files.XML`
+        :class:`~compas.files.XML`
 
         """
         xml = cls(source)
@@ -147,7 +147,7 @@ class XML(object):
 
         Returns
         -------
-        :class:`compas.files.XML`
+        :class:`~compas.files.XML`
 
         """
         xml = cls()
@@ -200,7 +200,7 @@ class XMLReader(object):
 
         Returns
         -------
-        :class:`compas.files.XMLReader`
+        :class:`~compas.files.XMLReader`
 
         """
         return cls(xml_impl.xml_from_file(source, tree_parser))
@@ -218,7 +218,7 @@ class XMLReader(object):
 
         Returns
         -------
-        :class:`compas.files.XMLReader`
+        :class:`~compas.files.XMLReader`
 
         """
         return cls(xml_impl.xml_from_string(text, tree_parser))
@@ -229,7 +229,7 @@ class XMLWriter(object):
 
     Parameters
     ----------
-    xml : :class:`compas.files.XML`
+    xml : :class:`~compas.files.XML`
         The XML tree to write.
 
     """
@@ -284,7 +284,7 @@ class XMLElement(object):
         The type of XML tag.
     attributes : dict[str, Any], optional
         The attributes of the tag as name-value pairs.
-    elements : list[:class:`compas.files.XMLElement`], optional
+    elements : list[:class:`~compas.files.XMLElement`], optional
         A list of elements contained by the current element.
     text : str, optional
         The text contained by the element.

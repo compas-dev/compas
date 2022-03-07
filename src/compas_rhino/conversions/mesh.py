@@ -81,12 +81,12 @@ class RhinoMesh(RhinoGeometry):
 
         Parameters
         ----------
-        cls: :class:`compas.datastructures.Mesh`, optional
+        cls: :class:`~compas.datastructures.Mesh`, optional
             The mesh type.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             The equivalent COMPAS mesh.
         """
         cls = cls or Mesh

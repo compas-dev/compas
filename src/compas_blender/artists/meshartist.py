@@ -7,20 +7,15 @@ from typing import Union
 
 import bpy
 
-from functools import partial
-
 import compas_blender
-from compas_blender.utilities import RGBColor
 from compas.datastructures import Mesh
 from compas.geometry import add_vectors
 from compas.geometry import centroid_points
 from compas.geometry import scale_vector
 
-from compas.utilities import color_to_colordict
+from compas.colors import Color
 from compas.artists import MeshArtist
 from .artist import BlenderArtist
-
-colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
 
 
 class MeshArtist(BlenderArtist, MeshArtist):
@@ -28,9 +23,9 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     vertices : list[int], optional
         A list of vertex identifiers.
@@ -41,11 +36,11 @@ class MeshArtist(BlenderArtist, MeshArtist):
     faces : list[int], optional
         A list of face identifiers.
         The default is None, in which case all faces are drawn.
-    vertexcolor : rgb-tuple or dict[int, rgb-tuple], optional
+    vertexcolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
         The color specification for the vertices.
-    edgecolor : rgb-tuple or dict[tuple[int, int], rgb-tuple], optional
+    edgecolor : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
         The color specification for the edges.
-    facecolor : rgb-tuple or dict[int, rgb-tuple], optional
+    facecolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
         The color specification for the faces.
     show_mesh : bool, optional
         If True, draw the mesh.
@@ -105,9 +100,9 @@ class MeshArtist(BlenderArtist, MeshArtist):
                  vertices: Optional[List[int]] = None,
                  edges: Optional[List[int]] = None,
                  faces: Optional[List[int]] = None,
-                 vertexcolor: Optional[RGBColor] = None,
-                 edgecolor: Optional[RGBColor] = None,
-                 facecolor: Optional[RGBColor] = None,
+                 vertexcolor: Optional[Color] = None,
+                 edgecolor: Optional[Color] = None,
+                 facecolor: Optional[Color] = None,
                  show_mesh: bool = False,
                  show_vertices: bool = True,
                  show_edges: bool = True,
@@ -179,6 +174,9 @@ class MeshArtist(BlenderArtist, MeshArtist):
     # clear
     # ==========================================================================
 
+    def clear(self):
+        compas_blender.delete_objects(self.collection.objects)
+
     def clear_vertices(self):
         """Clear the objects contained in the vertex collection (``self.vertexcollection``).
 
@@ -213,64 +211,28 @@ class MeshArtist(BlenderArtist, MeshArtist):
     # draw
     # ==========================================================================
 
-    def draw(self,
-             vertices: Optional[List[int]] = None,
-             edges: Optional[List[Tuple[int, int]]] = None,
-             faces: Optional[List[int]] = None,
-             vertexcolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None,
-             edgecolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None,
-             facecolor: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
-             ) -> None:
-        """Draw the mesh using the chosen visualization settings.
+    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
+        """Draw the mesh.
 
         Parameters
         ----------
-        vertices : list[int], optional
-            A list of vertex keys identifying which vertices to draw.
-            Default is None, in which case all vertices are drawn.
-        edges : list[tuple[int, int]]
-            A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is None, in which case all edges are drawn.
-        faces : list[int]
-            A list of face keys identifying which faces to draw.
-            The default is None, in which case all faces are drawn.
-        vertexcolor : rgb-tuple or dict[int, rgb-tuple]
-            The color specification for the vertices.
-        edgecolor : rgb-tuple or dict[tuple[int, int], rgb-tuple]
-            The color specification for the edges.
-        facecolor : rgb-tuple or dict[int, rgb-tuple]
-            The color specification for the faces.
-
-        Returns
-        -------
-        None
-
-        """
-        self.clear()
-        if self.show_mesh:
-            self.draw_mesh()
-        if self.show_vertices:
-            self.draw_vertices(vertices=vertices, color=vertexcolor)
-        if self.show_edges:
-            self.draw_edges(edges=edges, color=edgecolor)
-        if self.show_faces:
-            self.draw_faces(faces=faces, color=facecolor)
-
-    def draw_mesh(self) -> List[bpy.types.Object]:
-        """Draw the mesh.
+        color : :class:`~compas.colors.Color`, optional
+            The color of the mesh.
+            The default value is :attr:`color`.
 
         Returns
         -------
         list[:blender:`bpy.types.Object`]
 
         """
+        self.color = color
         vertices, faces = self.mesh.to_vertices_and_faces()
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.mesh.name, collection=self.collection)
+        obj = compas_blender.draw_mesh(vertices, faces, color=self.color, name=self.mesh.name, collection=self.collection)
         return [obj]
 
     def draw_vertices(self,
                       vertices: Optional[List[int]] = None,
-                      color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                      color: Optional[Union[Color, Dict[int, Color]]] = None
                       ) -> List[bpy.types.Object]:
         """Draw a selection of vertices.
 
@@ -279,7 +241,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
         vertices : list[int], optional
             A list of vertex keys identifying which vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the vertices.
             The default color of vertices is :attr:`default_vertexcolor`.
 
@@ -295,14 +257,14 @@ class MeshArtist(BlenderArtist, MeshArtist):
             points.append({
                 'pos': self.vertex_xyz[vertex],
                 'name': f"{self.mesh.name}.vertex.{vertex}",
-                'color': self.vertex_color.get(vertex, self.default_vertexcolor),
+                'color': self.vertex_color[vertex],
                 'radius': 0.01
             })
         return compas_blender.draw_points(points, self.vertexcollection)
 
     def draw_edges(self,
                    edges: Optional[List[Tuple[int, int]]] = None,
-                   color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                   color: Optional[Union[Color, Dict[int, Color]]] = None
                    ) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
@@ -311,7 +273,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
         edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        color : rgb-tuple or dict[tuple[int, int], rgb-tuple], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
             The default color of edges is :attr:`default_edgecolor`.
 
@@ -324,17 +286,18 @@ class MeshArtist(BlenderArtist, MeshArtist):
         edges = edges or self.edges
         lines = []
         for edge in edges:
+            u, v = edge
             lines.append({
-                'start': self.vertex_xyz[edge[0]],
-                'end': self.vertex_xyz[edge[1]],
-                'color': self.edge_color.get(edge, self.default_edgecolor),
-                'name': f"{self.mesh.name}.edge.{edge[0]}-{edge[1]}"
+                'start': self.vertex_xyz[u],
+                'end': self.vertex_xyz[v],
+                'color': self.edge_color[edge],
+                'name': f"{self.mesh.name}.edge.{u}-{v}"
             })
         return compas_blender.draw_lines(lines, self.edgecollection)
 
     def draw_faces(self,
                    faces: Optional[List[int]] = None,
-                   color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                   color: Optional[Union[Color, Dict[int, Color]]] = None
                    ) -> List[bpy.types.Object]:
         """Draw a selection of faces.
 
@@ -343,7 +306,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
         faces : list[int], optional
             A list of face keys identifying which faces to draw.
             The default is None, in which case all faces are drawn.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the faces.
             Th default color of faces is :attr:`default_facecolor`.
 
@@ -359,7 +322,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
             facets.append({
                 'points': [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                 'name': f"{self.mesh.name}.face.{face}",
-                'color': self.face_color.get(face, self.default_facecolor)
+                'color': self.face_color[face]
             })
         return compas_blender.draw_faces(facets, self.facecollection)
 
@@ -369,8 +332,9 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
     def draw_vertexnormals(self,
                            vertices: Optional[List[int]] = None,
-                           color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = (0.0, 1.0, 0.0),
-                           scale: float = 1.0) -> List[bpy.types.Object]:
+                           color: Color = Color.green(),
+                           scale: float = 1.0
+                           ) -> List[bpy.types.Object]:
         """Draw the normals at the vertices of the mesh.
 
         Parameters
@@ -378,7 +342,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
         vertices : list[int], optional
             A selection of vertex normals to draw.
             Default is to draw all vertex normals.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
+        color : :class:`~compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the vertex normals.
@@ -389,7 +353,6 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
         """
         vertices = vertices or self.vertices
-        vertex_color = colordict(color, vertices, default=color)
         lines = []
         for vertex in vertices:
             a = self.vertex_xyz[vertex]
@@ -398,14 +361,14 @@ class MeshArtist(BlenderArtist, MeshArtist):
             lines.append({
                 'start': a,
                 'end': b,
-                'color': vertex_color[vertex],
-                'name': "{}.vertexnormal.{}".format(self.mesh.name, vertex)
+                'color': color,
+                'name': f"{self.mesh.name}.vertexnormal.{vertex}"
             })
         return compas_blender.draw_lines(lines, collection=self.vertexnormalcollection)
 
     def draw_facenormals(self,
                          faces: Optional[List[List[int]]] = None,
-                         color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = (0.0, 1.0, 1.0),
+                         color: Color = Color.cyan(),
                          scale: float = 1.0) -> List[bpy.types.Object]:
         """Draw the normals of the faces.
 
@@ -414,7 +377,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
         faces : list[int], optional
             A selection of face normals to draw.
             Default is to draw all face normals.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
+        color : :class:`~compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the face normals.
@@ -425,7 +388,6 @@ class MeshArtist(BlenderArtist, MeshArtist):
 
         """
         faces = faces or self.faces
-        face_color = colordict(color, faces, default=color)
         lines = []
         for face in faces:
             a = centroid_points([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])
@@ -434,8 +396,8 @@ class MeshArtist(BlenderArtist, MeshArtist):
             lines.append({
                 'start': a,
                 'end': b,
-                'name': "{}.facenormal.{}".format(self.mesh.name, face),
-                'color': face_color[face]
+                'name': f"{self.mesh.name}.facenormal.{face}",
+                'color': color
             })
         return compas_blender.draw_lines(lines, collection=self.facenormalcollection)
 
@@ -444,8 +406,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
     # ==========================================================================
 
     def draw_vertexlabels(self,
-                          text: Optional[Dict[int, str]] = None,
-                          color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                          text: Optional[Dict[int, str]] = None
                           ) -> List[bpy.types.Object]:
         """Draw labels for a selection vertices.
 
@@ -454,37 +415,25 @@ class MeshArtist(BlenderArtist, MeshArtist):
         text : dict[int, str], optional
             A dictionary of vertex labels as vertex-text pairs.
             The default value is None, in which case every vertex will be labeled with its identifier.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
-            The color specification of the labels.
-            The default color is the same as the default vertex color, :attr:`default_vertexcolor`.
 
         Returns
         -------
         list[:blender:`bpy.types.Object`]
 
         """
-        if not text or text == 'key':
-            vertex_text = {vertex: str(vertex) for vertex in self.vertices}
-        elif text == 'index':
-            vertex_text = {vertex: str(index) for index, vertex in enumerate(self.vertices)}
-        elif isinstance(text, dict):
-            vertex_text = text
-        else:
-            raise NotImplementedError
-        vertex_color = colordict(color, vertex_text, default=self.default_vertexcolor)
+        self.vertex_text = text
         labels = []
-        for vertex in vertex_text:
+        for vertex in self.vertex_text:
             labels.append({
                 'pos': self.vertex_xyz[vertex],
-                'name': "{}.vertexlabel.{}".format(self.mesh.name, vertex),
-                'text': vertex_text[vertex],
-                'color': vertex_color[vertex]
+                'name': f"{self.mesh.name}.vertexlabel.{vertex}",
+                'text': self.vertex_text[vertex],
+                'color': self.vertex_color[vertex]
             })
         return compas_blender.draw_texts(labels, collection=self.vertexlabelcollection)
 
     def draw_edgelabels(self,
-                        text: Optional[Dict[Tuple[int, int], str]] = None,
-                        color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                        text: Optional[Dict[Tuple[int, int], str]] = None
                         ) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
@@ -493,34 +442,26 @@ class MeshArtist(BlenderArtist, MeshArtist):
         text : dict[tuple[int, int], str], optional
             A dictionary of edge labels as edge-text pairs.
             The default value is None, in which case every edge will be labeled with its identifier.
-        color : rgb-tuple or dict[tuple[int, int], rgb-tuple], optional
-            The color specification of the labels.
-            The default color is the same as the default color for edges, :attr:`default_edgecolor`.
 
         Returns
         -------
         list[:blender:`bpy.types.Object`]
 
         """
-        if text is None:
-            edge_text = {(u, v): "{}-{}".format(u, v) for u, v in self.edges}
-        elif isinstance(text, dict):
-            edge_text = text
-        else:
-            raise NotImplementedError
-        edge_color = colordict(color, edge_text, default=self.default_edgecolor)
+        self.edge_text = text
         labels = []
-        for edge in edge_text:
+        for edge in self.edge_text:
+            u, v = edge
             labels.append({
-                'pos': centroid_points([self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]]]),
-                'name': "{}.edgelabel.{}-{}".format(self.mesh.name, *edge),
-                'text': edge_text[edge]
+                'pos': centroid_points([self.vertex_xyz[u], self.vertex_xyz[v]]),
+                'name': f"{self.mesh.name}.edgelabel.{u}-{v}",
+                'text': self.edge_text[edge],
+                'color': self.edge_color[edge]
             })
-        return compas_blender.draw_texts(labels, collection=self.edgelabelcollection, color=edge_color)
+        return compas_blender.draw_texts(labels, collection=self.edgelabelcollection)
 
     def draw_facelabels(self,
-                        text: Optional[Dict[int, str]] = None,
-                        color: Optional[Union[str, RGBColor, List[RGBColor], Dict[int, RGBColor]]] = None
+                        text: Optional[Dict[int, str]] = None
                         ) -> List[bpy.types.Object]:
         """Draw labels for a selection of faces.
 
@@ -529,29 +470,19 @@ class MeshArtist(BlenderArtist, MeshArtist):
         text : dict[int, str], optional
             A dictionary of face labels as face-text pairs.
             The default value is None, in which case every face will be labeled with its identifier.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
-            The color specification of the labels.
-            The default color is the same as the default face color: :attr:`default_facecolor`.
 
         Returns
         -------
         list[:blender:`bpy.types.Object`]
 
         """
-        if not text or text == 'key':
-            face_text = {face: str(face) for face in self.faces}
-        elif text == 'index':
-            face_text = {face: str(index) for index, face in enumerate(self.faces)}
-        elif isinstance(text, dict):
-            face_text = text
-        else:
-            raise NotImplementedError
-        face_color = color or self.default_facecolor
+        self.face_text = text
         labels = []
-        for face in face_text:
+        for face in self.face_text:
             labels.append({
                 'pos': centroid_points([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]),
                 'name': "{}.facelabel.{}".format(self.mesh.name, face),
-                'text': face_text[face]
+                'text': self.face_text[face],
+                'color': self.face_color[face]
             })
-        return compas_blender.draw_texts(labels, collection=self.collection, color=face_color)
+        return compas_blender.draw_texts(labels, collection=self.collection)

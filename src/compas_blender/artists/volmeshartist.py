@@ -13,14 +13,14 @@ class VolMeshArtist(BlenderArtist, MeshArtist):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
+    volmesh : :class:`~compas.datastructures.VolMesh`
         The volmesh data structure.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.MeshArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.MeshArtist`.
 
     """
 

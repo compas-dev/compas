@@ -26,7 +26,7 @@ def curve_to_compas_line(curve):
 
     Returns
     -------
-    :class:`compas.geometry.Line`
+    :class:`~compas.geometry.Line`
 
     """
     return Line(point_to_compas(curve.PointAtStart),
@@ -38,7 +38,7 @@ def line_to_rhino_curve(line):
 
     Parameters
     ----------
-    line: :class:`compas.geometry.Line`
+    line: :class:`~compas.geometry.Line`
 
     Returns
     -------
@@ -57,7 +57,7 @@ def curve_to_compas_circle(curve):
 
     Returns
     -------
-    :class:`compas.geometry.Circle`
+    :class:`~compas.geometry.Circle`
 
     Raises
     ------
@@ -76,7 +76,7 @@ def circle_to_rhino_curve(circle):
 
     Parameters
     ----------
-    circle: :class:`compas.geometry.Circle`
+    circle: :class:`~compas.geometry.Circle`
 
     Returns
     -------
@@ -95,7 +95,7 @@ def curve_to_compas_ellipse(curve):
 
     Returns
     -------
-    :class:`compas.geometry.Ellipse`
+    :class:`~compas.geometry.Ellipse`
 
     Raises
     ------
@@ -114,7 +114,7 @@ def ellipse_to_rhino_curve(ellipse):
 
     Parameters
     ----------
-    ellipse: :class:`compas.geometry.Ellipse`
+    ellipse: :class:`~compas.geometry.Ellipse`
 
     Returns
     -------
@@ -133,7 +133,7 @@ def curve_to_compas_polyline(curve):
 
     Returns
     -------
-    :class:`compas.geometry.Polyline`
+    :class:`~compas.geometry.Polyline`
 
     Raises
     ------

@@ -16,7 +16,7 @@ class LinesConduit(BaseConduit):
 
     Parameters
     ----------
-    lines : list[[point, point] or :class:`compas.geometry.Line`]
+    lines : list[[point, point] | :class:`~compas.geometry.Line`]
         A list of start-end point pairs that define the lines.
     thickness : list[int], optional
         The thickness of the individual lines.

@@ -17,14 +17,14 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
 
     Parameters
     ----------
-    surface : :class:`compas.geometry.Surface`
+    surface : :class:`~compas.geometry.Surface`
         A COMPAS surface.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------
@@ -66,7 +66,7 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the surface.
             The default color is :attr:`compas.artists.SurfaceArtist.color`.
 
@@ -75,6 +75,6 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         surfaces = [{'surface': self.surface, 'color': color, 'name': self.surface.name}]
         return compas_blender.draw_surfaces(surfaces, collection=self.collection)

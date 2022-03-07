@@ -17,7 +17,7 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    ellipse : :class:`compas.geometry.Ellipse`
+    ellipse : :class:`~compas.geometry.Ellipse`
         A COMPAS ellipse.
     linewidth : float, optional
         Width of the ellipse boundary.
@@ -35,11 +35,11 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
         Stacking order of the ellipse on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
-    ellipse : :class:`compas.geometry.Ellipse`
+    ellipse : :class:`~compas.geometry.Ellipse`
         The ellipse associated with the artist.
 
     """

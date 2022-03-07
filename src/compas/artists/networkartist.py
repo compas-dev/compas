@@ -4,8 +4,9 @@ from __future__ import division
 
 from abc import abstractmethod
 
-from compas.utilities import is_color_rgb
+from compas.colors import Color
 from .artist import Artist
+from .colordict import ColorDict
 
 
 class NetworkArtist(Artist):
@@ -13,12 +14,12 @@ class NetworkArtist(Artist):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
 
     Attributes
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         The COMPAS network associated with the artist.
     nodes : list[hashable]
         The list of nodes to draw.
@@ -29,10 +30,10 @@ class NetworkArtist(Artist):
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.
-    node_color : dict[hashable, tuple[float, float, float]]
+    node_color : dict[hashable, :class:`~compas.colors.Color`]
         Mapping between nodes and RGB color values.
         Missing nodes get the default node color :attr:`default_nodecolor`.
-    edge_color : dict[tuple[hashable, hashable], tuple[float, float, float]]
+    edge_color : dict[tuple[hashable, hashable], :class:`~compas.colors.Color`]
         Mapping between edges and colors.
         Missing edges get the default edge color :attr:`default_edgecolor`.
     node_text : dict[hashable, str]
@@ -48,9 +49,9 @@ class NetworkArtist(Artist):
 
     Class Attributes
     ----------------
-    default_nodecolor : tuple[float, float, float]
+    default_nodecolor : :class:`~compas.colors.Color`
         The default color for nodes that do not have a specified color.
-    default_edgecolor : tuple[float, float, float]
+    default_edgecolor : :class:`~compas.colors.Color`
         The default color for edges that do not have a specified color.
     default_nodesize : float
         The default size for nodes that do not have a specified size.
@@ -59,13 +60,20 @@ class NetworkArtist(Artist):
 
     """
 
-    default_nodecolor = (1, 1, 1)
-    default_edgecolor = (0, 0, 0)
+    default_nodecolor = Color.from_hex('#0092D2')
+    default_edgecolor = Color.from_hex('#0092D2')
+
+    node_color = ColorDict()
+    edge_color = ColorDict()
+
     default_nodesize = 5
     default_edgewidth = 1.0
 
     def __init__(self, network, **kwargs):
         super(NetworkArtist, self).__init__()
+
+        self._default_nodecolor = None
+        self._default_edgecolor = None
 
         self._network = None
         self._nodes = None
@@ -123,19 +131,6 @@ class NetworkArtist(Artist):
         self._node_xyz = node_xyz
 
     @property
-    def node_color(self):
-        if not self._node_color:
-            self._node_color = {node: self.default_nodecolor for node in self.network.nodes()}
-        return self._node_color
-
-    @node_color.setter
-    def node_color(self, node_color):
-        if isinstance(node_color, dict):
-            self._node_color = node_color
-        elif is_color_rgb(node_color):
-            self._node_color = {node: node_color for node in self.network.nodes()}
-
-    @property
     def node_size(self):
         if not self._node_size:
             self._node_size = {node: self.default_nodesize for node in self.network.nodes()}
@@ -147,19 +142,6 @@ class NetworkArtist(Artist):
             self._node_size = nodesize
         elif isinstance(nodesize, (int, float)):
             self._node_size = {node: nodesize for node in self.network.nodes()}
-
-    @property
-    def edge_color(self):
-        if not self._edge_color:
-            self._edge_color = {edge: self.default_edgecolor for edge in self.network.edges()}
-        return self._edge_color
-
-    @edge_color.setter
-    def edge_color(self, edge_color):
-        if isinstance(edge_color, dict):
-            self._edge_color = edge_color
-        elif is_color_rgb(edge_color):
-            self._edge_color = {edge: edge_color for edge in self.network.edges()}
 
     @property
     def node_text(self):
@@ -213,7 +195,7 @@ class NetworkArtist(Artist):
         nodes : list[int], optional
             The nodes to include in the drawing.
             Default is all nodes.
-        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the nodes,
             as either a single color to be applied to all nodes,
             or a color dict, mapping specific nodes to specific colors.
@@ -238,7 +220,7 @@ class NetworkArtist(Artist):
         edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.

@@ -163,7 +163,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         Notes
@@ -226,7 +226,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -265,7 +265,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -314,7 +314,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -358,7 +358,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -404,7 +404,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -448,7 +448,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -502,7 +502,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -515,14 +515,14 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        shape : :class:`compas.geometry.Shape`
+        shape : :class:`~compas.geometry.Shape`
             The input shape to generate a mesh from.
         **kwargs : dict[str, Any], optional
             Optional keyword arguments to be passed on to :meth:`compas.geometry.Shape.to_vertices_and_faces`.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -543,7 +543,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -577,7 +577,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -625,7 +625,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -736,7 +736,7 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        other : :class:`compas.datastructures.Mesh`
+        other : :class:`~compas.datastructures.Mesh`
             The other mesh.
 
         Returns
