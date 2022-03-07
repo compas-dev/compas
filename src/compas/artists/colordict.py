@@ -1,4 +1,5 @@
 from collections import defaultdict
+from collections import Mapping
 from compas.colors import Color
 
 
@@ -62,9 +63,9 @@ class ColorDict(object):
         Parameters
         ----------
         obj : object
-            The object owning the instance of the descriptor.
-        otype : ???, optional
-            ???
+            The instance owning the instance of the descriptor.
+        otype : object, optional
+            The type owning the instance of the descriptor.
 
         Returns
         -------
@@ -94,7 +95,7 @@ class ColorDict(object):
         if not value:
             return
 
-        if isinstance(value, dict):
+        if isinstance(value, Mapping):
             default = getattr(obj, self.default_name)
             item_color = defaultdict(lambda: default)
             for item in value:
