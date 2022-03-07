@@ -2,9 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-import collections
 import compas
+
+if compas.PY2:
+    from collections import Mapping
+else:
+    from collections.abc import Mapping
 
 from compas.files import OBJ
 
@@ -192,12 +195,7 @@ class Network(Graph):
         """
         network = cls()
 
-        if sys.version_info[0] < 3:
-            mapping = collections.Mapping
-        else:
-            mapping = collections.abc.Mapping
-
-        if isinstance(nodes, mapping):
+        if isinstance(nodes, Mapping):
             for key, (x, y, z) in nodes.items():
                 network.add_node(key, x=x, y=y, z=z)
         else:

@@ -127,7 +127,7 @@ except Exception:
 
 
 __all__ = [
-    'WINDOWS', 'LINUX', 'OSX', 'MONO', 'IPY', 'RHINO', 'BLENDER',
+    'WINDOWS', 'LINUX', 'OSX', 'MONO', 'IPY', 'RHINO', 'BLENDER', 'PY2', 'PY3',
     'is_windows', 'is_linux', 'is_osx', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
     'set_precision',
     'get',

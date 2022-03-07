@@ -14,13 +14,10 @@ from __future__ import division
 from __future__ import print_function
 
 import compas
-
-__all__ = ['Mapping', 'MutableMapping']
-
-if compas.PY3:
-    import collections.abc as stdlib_collections
-else:
+if compas.PY2:
     import collections as stdlib_collections
+else:
+    import collections.abc as stdlib_collections
 
 
 class Mapping(object):
