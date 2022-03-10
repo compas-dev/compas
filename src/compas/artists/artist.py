@@ -99,12 +99,14 @@ class Artist(object):
         self.item = item
 
     def __copy__(self):
+        """Make a shallow copy of the object."""
         cls = self.__class__
         result = cls.__new__(cls, self.item)
         result.__dict__.update(self.__dict__)
         return result
 
     def __deepcopy__(self, memo):
+        """Make a deep copy of the object."""
         cls = self.__class__
         result = cls.__new__(cls, self.item)
         memo[id(self)] = result
