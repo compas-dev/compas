@@ -88,33 +88,6 @@ class NetworkArtist(Artist):
         self._nodelabelcollection = None
         self._edgelabelcollection = None
 
-    def __getstate__(self):
-        """Return a serializable state of the artist.
-
-        The conversion of the color dicts is necessary because of te lambda function in the default dicts
-        created by the color dict descriptors.
-
-        """
-        dictcopy = self.__dict__.copy()
-        if self.__dict__['_node_color']:
-            dictcopy['_node_color'] = dict(self.__dict__['_node_color'])
-        if self.__dict__['_edge_color']:
-            dictcopy['_edge_color'] = dict(self.__dict__['_edge_color'])
-        return {'__dict__': dictcopy}
-
-    def __setstate__(self, state):
-        """Assign a deserialized state to the artist and recreate the descriptors.
-
-        The creation of color dicts needs to be triggered manually such that the dicts are converted to default dicts.
-
-        """
-        dictcopy = state['__dict__'].copy()
-        dictcopy['_node_color'] = None
-        dictcopy['_edge_color'] = None
-        self.__dict__.update(dictcopy)
-        self.node_color = state['__dict__']['_node_color']
-        self.edge_color = state['__dict__']['_edge_color']
-
     @property
     def network(self):
         return self.item

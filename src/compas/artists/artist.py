@@ -5,7 +5,6 @@ from __future__ import print_function
 import inspect
 from abc import abstractmethod
 from collections import defaultdict
-from copy import deepcopy
 
 import compas
 from compas.artists import DataArtistNotRegistered
@@ -97,30 +96,6 @@ class Artist(object):
     def __init__(self, item, **kwargs):
         super(Artist, self).__init__()
         self.item = item
-
-    def __copy__(self):
-        """Make a shallow copy of the object."""
-        cls = self.__class__
-        result = cls.__new__(cls, self.item)
-        result.__dict__.update(self.__dict__)
-        return result
-
-    def __deepcopy__(self, memo):
-        """Make a deep copy of the object."""
-        cls = self.__class__
-        result = cls.__new__(cls, self.item)
-        memo[id(self)] = result
-        for k, v in self.__dict__.items():
-            setattr(result, k, deepcopy(v, memo))
-        return result
-
-    def __getstate__(self):
-        """Return a serializable state of the artist."""
-        return {'__dict__': self.__dict__}
-
-    def __setstate__(self, state):
-        """Update the artist from the unserialized state."""
-        self.__dict__.update(state['__dict__'])
 
     @staticmethod
     def build(item, **kwargs):

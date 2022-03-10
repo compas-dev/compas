@@ -120,37 +120,6 @@ class MeshArtist(Artist):
         self._edgelabelcollection = None
         self._facelabelcollection = None
 
-    def __getstate__(self):
-        """Return a serializable state of the artist.
-
-        The conversion of the color dicts is necessary because of te lambda function in the default dicts
-        created by the color dict descriptors.
-
-        """
-        dictcopy = self.__dict__.copy()
-        if self.__dict__['_vertex_color'] is not None:
-            dictcopy['_vertex_color'] = dict(self.__dict__['_vertex_color'])
-        if self.__dict__['_edge_color'] is not None:
-            dictcopy['_edge_color'] = dict(self.__dict__['_edge_color'])
-        if self.__dict__['_face_color'] is not None:
-            dictcopy['_face_color'] = dict(self.__dict__['_face_color'])
-        return {'__dict__': dictcopy}
-
-    def __setstate__(self, state):
-        """Assign a deserialized state to the artist and recreate the descriptors.
-
-        The creation of color dicts needs to be triggered manually such that the dicts are converted to default dicts.
-
-        """
-        dictcopy = state['__dict__'].copy()
-        dictcopy['_vertex_color'] = None
-        dictcopy['_edge_color'] = None
-        dictcopy['_face_color'] = None
-        self.__dict__.update(dictcopy)
-        self.vertex_color = state['__dict__']['_vertex_color']
-        self.edge_color = state['__dict__']['_edge_color']
-        self.face_color = state['__dict__']['_face_color']
-
     @property
     def mesh(self):
         return self.item
