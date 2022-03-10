@@ -83,7 +83,7 @@ class VolMeshArtist(Artist):
     cell_color = ColorDict()
 
     def __init__(self, volmesh, **kwargs):
-        super(VolMeshArtist, self).__init__()
+        super(VolMeshArtist, self).__init__(item=volmesh)
 
         self._default_vertexcolor = None
         self._default_edgecolor = None
@@ -105,15 +105,48 @@ class VolMeshArtist(Artist):
         self._face_text = None
         self._cell_text = None
 
-        self.volmesh = volmesh
+    def __getstate__(self):
+        """Return a serializable state of the artist.
+
+        The conversion of the color dicts is necessary because of te lambda function in the default dicts
+        created by the color dict descriptors.
+
+        """
+        dictcopy = self.__dict__.copy()
+        if self.__dict__['_vertex_color']:
+            dictcopy['_vertex_color'] = dict(self.__dict__['_vertex_color'])
+        if self.__dict__['_edge_color']:
+            dictcopy['_edge_color'] = dict(self.__dict__['_edge_color'])
+        if self.__dict__['_face_color']:
+            dictcopy['_face_color'] = dict(self.__dict__['_face_color'])
+        if self.__dict__['_cell_color']:
+            dictcopy['_cell_color'] = dict(self.__dict__['_cell_color'])
+        return {'__dict__': dictcopy}
+
+    def __setstate__(self, state):
+        """Assign a deserialized state to the artist and recreate the descriptors.
+
+        The creation of color dicts needs to be triggered manually such that the dicts are converted to default dicts.
+
+        """
+        dictcopy = state['__dict__'].copy()
+        dictcopy['_vertex_color'] = None
+        dictcopy['_edge_color'] = None
+        dictcopy['_face_color'] = None
+        dictcopy['_cell_color'] = None
+        self.__dict__.update(dictcopy)
+        self.vertex_color = state['__dict__']['_vertex_color']
+        self.edge_color = state['__dict__']['_edge_color']
+        self.face_color = state['__dict__']['_face_color']
+        self.cell_color = state['__dict__']['_cell_color']
 
     @property
     def volmesh(self):
-        return self._volmesh
+        return self.item
 
     @volmesh.setter
     def volmesh(self, volmesh):
-        self._volmesh = volmesh
+        self.item = volmesh
         self._vertex_xyz = None
 
     @property
