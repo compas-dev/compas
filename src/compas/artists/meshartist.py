@@ -128,11 +128,11 @@ class MeshArtist(Artist):
 
         """
         dictcopy = self.__dict__.copy()
-        if self.__dict__['_vertex_color']:
+        if self.__dict__['_vertex_color'] is not None:
             dictcopy['_vertex_color'] = dict(self.__dict__['_vertex_color'])
-        if self.__dict__['_edge_color']:
+        if self.__dict__['_edge_color'] is not None:
             dictcopy['_edge_color'] = dict(self.__dict__['_edge_color'])
-        if self.__dict__['_face_color']:
+        if self.__dict__['_face_color'] is not None:
             dictcopy['_face_color'] = dict(self.__dict__['_face_color'])
         return {'__dict__': dictcopy}
 
