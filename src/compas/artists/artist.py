@@ -5,6 +5,7 @@ from __future__ import print_function
 import inspect
 from abc import abstractmethod
 from collections import defaultdict
+from copy import deepcopy
 
 import compas
 from compas.artists import DataArtistNotRegistered
@@ -92,6 +93,34 @@ class Artist(object):
         cls = _get_artist_cls(args[0], **kwargs)
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
+
+    def __init__(self, item):
+        super(Artist, self).__init__()
+        self.item = item
+
+    def __copy__(self):
+        cls = self.__class__
+        result = cls.__new__(cls, self.item)
+        result.__dict__.update(self.__dict__)
+        return result
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls, self.item)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
+
+    def __getstate__(self):
+        """Return the object data for state serialization with older pickle protocols."""
+        return {'__dict__': self.__dict__, 'item': self.item, 'settings': self.settings}
+
+    def __setstate__(self, state):
+        """Assign a deserialized state to the object data to support older pickle protocols."""
+        self.__dict__.update(state['__dict__'])
+        self.item = state['item']
+        self.settings = state['settings']
 
     @staticmethod
     def build(item, **kwargs):

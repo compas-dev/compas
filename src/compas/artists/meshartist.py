@@ -91,13 +91,12 @@ class MeshArtist(Artist):
     default_edgewidth = 1.0
 
     def __init__(self, mesh, **kwargs):
-        super(MeshArtist, self).__init__()
+        super(MeshArtist, self).__init__(mesh)
 
         self._default_vertexcolor = None
         self._default_edgecolor = None
         self._default_facecolor = None
 
-        self._mesh = None
         self._vertices = None
         self._edges = None
         self._faces = None
@@ -121,15 +120,21 @@ class MeshArtist(Artist):
         self._edgelabelcollection = None
         self._facelabelcollection = None
 
-        self.mesh = mesh
+    @property
+    def settings(self):
+        return {}
+
+    @settings.setter
+    def settings(self, settings):
+        pass
 
     @property
     def mesh(self):
-        return self._mesh
+        return self.item
 
     @mesh.setter
     def mesh(self, mesh):
-        self._mesh = mesh
+        self.item = mesh
         self._vertex_xyz = None
 
     @property
