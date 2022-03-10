@@ -115,14 +115,12 @@ class Artist(object):
         return result
 
     def __getstate__(self):
-        """Return the object data for state serialization with older pickle protocols."""
-        return {'__dict__': self.__dict__, 'item': self.item, 'settings': self.settings}
+        """Return a serializable state of the artist."""
+        return {'__dict__': self.__dict__}
 
     def __setstate__(self, state):
-        """Assign a deserialized state to the object data to support older pickle protocols."""
+        """Update the artist from the unserialized state."""
         self.__dict__.update(state['__dict__'])
-        self.item = state['item']
-        self.settings = state['settings']
 
     @staticmethod
     def build(item, **kwargs):
