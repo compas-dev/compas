@@ -33,21 +33,18 @@ class SurfaceArtist(Artist):
     default_color = Color.from_hex('#0092D2')
 
     def __init__(self, surface, color=None, **kwargs):
-        super(SurfaceArtist, self).__init__()
+        super(SurfaceArtist, self).__init__(item=surface)
         self._default_color = None
-
-        self._surface = None
         self._color = None
-        self.surface = surface
         self.color = color
 
     @property
     def surface(self):
-        return self._surface
+        return self.item
 
     @surface.setter
     def surface(self, surface):
-        self._surface = surface
+        self.item = surface
 
     @property
     def color(self):

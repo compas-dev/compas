@@ -91,7 +91,7 @@ class MeshArtist(Artist):
     default_edgewidth = 1.0
 
     def __init__(self, mesh, **kwargs):
-        super(MeshArtist, self).__init__(mesh)
+        super(MeshArtist, self).__init__(item=mesh)
 
         self._default_vertexcolor = None
         self._default_edgecolor = None

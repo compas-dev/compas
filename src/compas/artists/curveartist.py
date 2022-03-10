@@ -33,7 +33,7 @@ class CurveArtist(Artist):
     default_color = Color.from_hex('#0092D2')
 
     def __init__(self, curve, color=None, **kwargs):
-        super(CurveArtist, self).__init__(curve)
+        super(CurveArtist, self).__init__(item=curve)
         self._default_color = None
         self._color = None
         self.color = color

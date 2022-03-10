@@ -72,12 +72,19 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
     """
 
     def __init__(self, model):
-        super(RobotModelArtist, self).__init__()
-        self.model = model
+        super(RobotModelArtist, self).__init__(item=model)
         self.create()
         self.scale_factor = 1.
         self.attached_tool_model = None
         self.attached_items = {}
+
+    @property
+    def model(self):
+        return self.item
+
+    @model.setter
+    def model(self, model):
+        self.item = model
 
     def attach_tool_model(self, tool_model):
         """Attach a tool to the robot artist for visualization.

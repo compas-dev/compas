@@ -33,22 +33,18 @@ class PrimitiveArtist(Artist):
     default_color = Color.from_hex('#0092D2')
 
     def __init__(self, primitive, color=None, **kwargs):
-        super(PrimitiveArtist, self).__init__()
+        super(PrimitiveArtist, self).__init__(item=primitive)
         self._default_color = None
-
-        self._primitive = None
         self._color = None
-
-        self.primitive = primitive
         self.color = color
 
     @property
     def primitive(self):
-        return self._primitive
+        return self.item
 
     @primitive.setter
     def primitive(self, primitive):
-        self._primitive = primitive
+        self.item = primitive
 
     @property
     def color(self):
