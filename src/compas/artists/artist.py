@@ -94,7 +94,7 @@ class Artist(object):
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
 
-    def __init__(self, item):
+    def __init__(self, item, **kwargs):
         super(Artist, self).__init__()
         self.item = item
 
