@@ -57,10 +57,6 @@ class MeshArtist(RhinoArtist, MeshArtist):
                  vertexcolor=None,
                  edgecolor=None,
                  facecolor=None,
-                 show_mesh=False,
-                 show_vertices=True,
-                 show_edges=True,
-                 show_faces=True,
                  **kwargs):
 
         super(MeshArtist, self).__init__(mesh=mesh, layer=layer, **kwargs)
@@ -71,10 +67,6 @@ class MeshArtist(RhinoArtist, MeshArtist):
         self.vertex_color = vertexcolor
         self.edge_color = edgecolor
         self.face_color = facecolor
-        self.show_mesh = show_mesh
-        self.show_vertices = show_vertices
-        self.show_edges = show_edges
-        self.show_faces = show_faces
 
     # ==========================================================================
     # clear
