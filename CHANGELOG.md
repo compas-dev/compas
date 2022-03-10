@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.VolMesh.from_meshgrid`.
 * Added `vertices_where`, `vertices_where_predicate`, `edges_where`, `edges_where_predicate` to `compas.datastructures.HalfFace`.
 * Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
+* Added `compas.artists.Artist.__init__` to set shared `item` attribute.
+* Added `compas.artists.Artist.__copy__` to support shallow copies.
+* Added `compas.artists.Artist.__deepcopy__` to support deep copies.
+* Added `compas.artists.Artist.__getstate__` and `compas.artists.Artist.__setstate__` for basic pickling support.
+* Added `compas.artists.MeshArtist.__getstate__` and `compas.artists.MeshArtist.__setstate__` to support `ColorDict` during pickling.
+* Added `compas.artists.NetworkArtist.__getstate__` and `compas.artists.NetworkArtist.__setstate__` to support `ColorDict` during pickling.
+* Added `compas.artists.VolMeshArtist.__getstate__` and `compas.artists.VolMeshArtist.__setstate__` to support `ColorDict` during pickling.
 
 ### Changed
 
