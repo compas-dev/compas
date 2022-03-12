@@ -74,7 +74,7 @@ extensions = [
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
-    "nbsphinx",
+    # "nbsphinx",
     "sphinx.ext.autodoc.typehints",
     "tabs"
 ]
