@@ -29,12 +29,18 @@ from Rhino.Geometry import Mesh
 from Rhino.Geometry import Vector3f
 from Rhino.Geometry import Point2f
 
+import Rhino.Display as RD
+
 try:
     from Rhino.Geometry import MeshNgon
 except ImportError:
     MeshNgon = False
 
 TOL = sc.doc.ModelAbsoluteTolerance
+
+if 'display' not in globals():
+    global display
+    display = RD.CustomDisplay(True)
 
 
 def draw_frame(frame):
@@ -70,7 +76,11 @@ def draw_points(points):
     rg_points = []
     for p in iter(points):
         pos = p['pos']
-        rg_points.append(Point3d(*pos))
+        point = Point3d(*pos)
+        rg_points.append(point)
+        if p['color']:
+            color = Color.FromArgb(* p['color'])
+            display.AddPoint(point, color)
     return rg_points
 
 
