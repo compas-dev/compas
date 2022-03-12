@@ -16,6 +16,21 @@ class MeshArtist(Artist):
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
+    vertices : list[int], optional
+        Selection of vertices to draw.
+    edges : list[tuple[int, int]], optional
+        Selection of edges to draw.
+    faces : list[int], optional
+        Selection of faces to draw.
+    vertexcolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        Color of the vertices.
+        Default color is :attr:`MeshArtists.default_vertexcolor`.
+    edgecolor : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
+        Color of the edges.
+        Default color is :attr:`MeshArtists.default_edgecolor`.
+    facecolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        Color of the faces.
+        Default color is :attr:`MeshArtists.default_facecolor`.
 
     Attributes
     ----------
@@ -90,7 +105,15 @@ class MeshArtist(Artist):
     default_vertexsize = 5
     default_edgewidth = 1.0
 
-    def __init__(self, mesh, **kwargs):
+    def __init__(self,
+                 mesh,
+                 vertices=None,
+                 edges=None,
+                 faces=None,
+                 vertexcolor=None,
+                 edgecolor=None,
+                 facecolor=None,
+                 **kwargs):
         super(MeshArtist, self).__init__()
 
         self._default_vertexcolor = None
@@ -122,6 +145,13 @@ class MeshArtist(Artist):
         self._facelabelcollection = None
 
         self.mesh = mesh
+
+        self.vertices = vertices
+        self.edges = edges
+        self.faces = faces
+        self.vertex_color = vertexcolor
+        self.edge_color = edgecolor
+        self.face_color = facecolor
 
     @property
     def mesh(self):

@@ -17,20 +17,6 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         A COMPAS network.
     layer : str, optional
         The parent layer of the network.
-    nodes : list[int], optional
-        A list of node identifiers.
-        Default is None, in which case all nodes are drawn.
-    edges : list[tuple[int, int]], optional
-        A list of edge identifiers.
-        The default is None, in which case all edges are drawn.
-    nodecolor : tuple[int, int, int] | dict[int, tuple[int, int, int]], optional
-        The color of the nodes.
-    edgecolor : tuple[int, int, int] | dict[tuple[int, int], tuple[int, int, int]], optional
-        The color of the edges.
-    show_nodes : bool, optional
-        If True, draw the nodes of the network.
-    show_edges : bool, optional
-        If True, draw the edges of the network.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info, see :class:`RhinoArtist` and :class:`NetworkArtist`.
@@ -40,22 +26,9 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
     def __init__(self,
                  network,
                  layer=None,
-                 nodes=None,
-                 edges=None,
-                 nodecolor=None,
-                 edgecolor=None,
-                 show_nodes=True,
-                 show_edges=True,
                  **kwargs):
 
         super(NetworkArtist, self).__init__(network=network, layer=layer, **kwargs)
-
-        self.nodes = nodes
-        self.edges = edges
-        self.node_color = nodecolor
-        self.edge_color = edgecolor
-        self.show_nodes = show_nodes
-        self.show_edges = show_edges
 
     # ==========================================================================
     # clear

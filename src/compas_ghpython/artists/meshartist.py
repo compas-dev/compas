@@ -15,12 +15,6 @@ class MeshArtist(GHArtist, MeshArtist):
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
-    show_vertices : bool, optional
-        If True, draw the vertices of the mesh.
-    show_edges : bool, optional
-        If True, draw the edges of the mesh.
-    show_faces : bool, optional
-        If True, draw the faces of the mesh.
     **kwargs : dict, optional
         Additional keyword arguments.
         See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.MeshArtist` for more info.
@@ -29,16 +23,8 @@ class MeshArtist(GHArtist, MeshArtist):
 
     def __init__(self,
                  mesh,
-                 show_mesh=False,
-                 show_vertices=True,
-                 show_edges=True,
-                 show_faces=True,
                  **kwargs):
         super(MeshArtist, self).__init__(mesh=mesh, **kwargs)
-        self.show_mesh = show_mesh
-        self.show_vertices = show_vertices
-        self.show_edges = show_edges
-        self.show_faces = show_faces
 
     def draw(self, color=None):
         """Draw the mesh.
