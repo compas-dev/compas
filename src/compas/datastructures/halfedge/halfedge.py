@@ -620,7 +620,7 @@ class HalfEdge(Datastructure):
                 else:
                     yield key, self.edge_attributes(key)
 
-    def vertices_where(self, conditions, data=False):
+    def vertices_where(self, conditions=None, data=False, **kwargs):
         """Get vertices for which a certain condition or set of conditions is true.
 
         Parameters
@@ -639,6 +639,9 @@ class HalfEdge(Datastructure):
             If `data` is True, the next vertex and its attributes.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for key, attr in self.vertices(True):
             is_match = True
 
