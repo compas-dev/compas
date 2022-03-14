@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.VolMesh.from_meshgrid`.
 * Added `vertices_where`, `vertices_where_predicate`, `edges_where`, `edges_where_predicate` to `compas.datastructures.HalfFace`.
 * Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
-* Added `VolMeshArtist` to regsitered Blender artists.
+* Added `VolMeshArtist` to registered Blender artists.
 
 ### Changed
 
