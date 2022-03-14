@@ -29,8 +29,6 @@ from Rhino.Geometry import Mesh
 from Rhino.Geometry import Vector3f
 from Rhino.Geometry import Point2f
 
-import Rhino.Display as RD
-
 try:
     from Rhino.Geometry import MeshNgon
 except ImportError:
@@ -38,13 +36,18 @@ except ImportError:
 
 TOL = sc.doc.ModelAbsoluteTolerance
 
-if 'display' not in globals():
-    global display
-    display = RD.CustomDisplay(True)
-
 
 def draw_frame(frame):
     """Draw a frame.
+
+    Parameters
+    ----------
+    frame : :class:`compas.geometry.Frame`
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Plane`
+
     """
     pt = Point3d(*iter(frame.point))
     xaxis = Vector3d(*iter(frame.xaxis))
@@ -52,13 +55,15 @@ def draw_frame(frame):
     return Plane(pt, xaxis, yaxis)
 
 
-def draw_points(points):
+def draw_points(points, display=None):
     """Draw points.
 
     Parameters
     ----------
     points : list of dict
         The point definitions.
+    display : :rhino:`Rhino.Display.CustomDisplay`, optional
+        A custom Rhino display for colors.
 
     Returns
     -------
@@ -74,23 +79,26 @@ def draw_points(points):
 
     """
     rg_points = []
-    for p in iter(points):
-        pos = p['pos']
-        point = Point3d(*pos)
-        rg_points.append(point)
-        if p['color']:
-            color = Color.FromArgb(* p['color'])
-            display.AddPoint(point, color)
+    for point in iter(points):
+        pos = point['pos']
+        geometry = Point3d(*pos)
+        rg_points.append(geometry)
+        if display is not None:
+            if 'color' in point:
+                color = Color.FromArgb(* point['color'])
+                display.AddPoint(geometry, color)
     return rg_points
 
 
-def draw_lines(lines):
+def draw_lines(lines, display=None):
     """Draw lines.
 
     Parameters
     ----------
     lines : list of dict
         The line definitions.
+    display : :rhino:`Rhino.Display.CustomDisplay`, optional
+        A custom Rhino display for colors.
 
     Returns
     -------
@@ -110,17 +118,24 @@ def draw_lines(lines):
     for line in iter(lines):
         sp = line['start']
         ep = line['end']
-        rg_lines.append(Line(Point3d(*sp), Point3d(*ep)))
+        geometry = Line(Point3d(*sp), Point3d(*ep))
+        rg_lines.append(geometry)
+        if display is not None:
+            if 'color' in line:
+                color = Color.FromArgb(* line['color'])
+                display.AddLine(geometry, color)
     return rg_lines
 
 
-def draw_geodesics(geodesics):
+def draw_geodesics(geodesics, display=None):
     """Draw geodesic lines on specified surfaces.
 
     Parameters
     ----------
     geodesics : list of dict
         The geodesic definitions.
+    display : :rhino:`Rhino.Display.CustomDisplay`, optional
+        A custom Rhino display for colors.
 
     Returns
     -------
@@ -142,18 +157,24 @@ def draw_geodesics(geodesics):
         sp = g['start']
         ep = g['end']
         srf = g['srf']
-        curve = srf.ShortPath(Point3d(*sp), Point3d(*ep), TOL)
-        rg_geodesics.append(curve)
+        geometry = srf.ShortPath(Point3d(*sp), Point3d(*ep), TOL)
+        rg_geodesics.append(geometry)
+        if display is not None:
+            if 'color' in g:
+                color = Color.FromArgb(* g['color'])
+                display.AddCurve(geometry, color)
     return rg_geodesics
 
 
-def draw_polylines(polylines):
+def draw_polylines(polylines, display=None):
     """Draw polylines.
 
     Parameters
     ----------
     polylines : list of dict
         The polyline definitions.
+    display : :rhino:`Rhino.Display.CustomDisplay`, optional
+        A custom Rhino display for colors.
 
     Returns
     -------
@@ -169,11 +190,15 @@ def draw_polylines(polylines):
 
     """
     rg_polylines = []
-    for p in iter(polylines):
-        points = p['points']
-        poly = Polyline([Point3d(*xyz) for xyz in points])
-        poly.DeleteShortSegments(TOL)
-        rg_polylines.append(poly)
+    for polyline in iter(polylines):
+        points = polyline['points']
+        geometry = Polyline([Point3d(*xyz) for xyz in points])
+        geometry.DeleteShortSegments(TOL)
+        rg_polylines.append(geometry)
+        if display is not None:
+            if 'color' in polyline:
+                color = Color.FromArgb(* polyline['color'])
+                display.AddCurve(geometry, color)
     return rg_polylines
 
 

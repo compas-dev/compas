@@ -108,7 +108,7 @@ class MeshArtist(GHArtist, MeshArtist):
                 'name': "{}.vertex.{}".format(self.mesh.name, vertex),
                 'color': self.vertex_color[vertex].rgb255
             })
-        return compas_ghpython.draw_points(points)
+        return compas_ghpython.draw_points(points, display=self.display("{}.vertices".format(self.mesh.name)))
 
     def draw_faces(self, faces=None, color=None, join_faces=False):
         """Draw a selection of faces.
@@ -176,7 +176,7 @@ class MeshArtist(GHArtist, MeshArtist):
                 'color': self.edge_color[edge].rgb255,
                 'name': "{}.edge.{}-{}".format(self.mesh.name, u, v)
             })
-        return compas_ghpython.draw_lines(lines)
+        return compas_ghpython.draw_lines(lines, display=self.display("{}.edges".format(self.mesh.name)))
 
     def clear_edges(self):
         """GH Artists are state-less. Therefore, clear does not have any effect.
