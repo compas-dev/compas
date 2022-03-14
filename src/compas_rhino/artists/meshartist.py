@@ -21,60 +21,14 @@ class MeshArtist(RhinoArtist, MeshArtist):
         A COMPAS mesh.
     layer : str, optional
         The name of the layer that will contain the mesh.
-    vertices : list[int], optional
-        Selection of vertices to draw.
-    edges : list[tuple[int, int]], optional
-        Selection of edges to draw.
-    faces : list[int], optional
-        Selection of faces to draw.
-    vertexcolor : tuple[int, int, int] | dict[int, tuple[int, int, int]], optional
-        Color of the vertices.
-        Default color is :attr:`MeshArtists.default_vertexcolor`.
-    edgecolor : tuple[int, int, int] | dict[tuple[int, int], tuple[int, int, int]], optional
-        Color of the edges.
-        Default color is :attr:`MeshArtists.default_edgecolor`.
-    facecolor : tuple[int, int, int] | dict[int, tuple[int, int, int]], optional
-        Color of the faces.
-        Default color is :attr:`MeshArtists.default_facecolor`.
-    show_vertices : bool, optional
-        If True, draw the vertices.
-    show_edges : bool, optional
-        If True, draw the edges.
-    show_faces : bool, optional
-        If True, draw the faces.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info, see :class:`RhinoArtist` and :class:`MeshArtist`.
 
     """
 
-    def __init__(self,
-                 mesh,
-                 layer=None,
-                 vertices=None,
-                 edges=None,
-                 faces=None,
-                 vertexcolor=None,
-                 edgecolor=None,
-                 facecolor=None,
-                 show_mesh=False,
-                 show_vertices=True,
-                 show_edges=True,
-                 show_faces=True,
-                 **kwargs):
-
+    def __init__(self, mesh, layer=None, **kwargs):
         super(MeshArtist, self).__init__(mesh=mesh, layer=layer, **kwargs)
-
-        self.vertices = vertices
-        self.edges = edges
-        self.faces = faces
-        self.vertex_color = vertexcolor
-        self.edge_color = edgecolor
-        self.face_color = facecolor
-        self.show_mesh = show_mesh
-        self.show_vertices = show_vertices
-        self.show_edges = show_edges
-        self.show_faces = show_faces
 
     # ==========================================================================
     # clear
@@ -312,7 +266,8 @@ class MeshArtist(RhinoArtist, MeshArtist):
             guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
             compas_rhino.rs.ObjectLayer(guid, self.layer)
             compas_rhino.rs.ObjectName(guid, '{}.mesh'.format(self.mesh.name))
-            compas_rhino.rs.ObjectColor(guid, color)
+            if color:
+                compas_rhino.rs.ObjectColor(guid, color)
             guids = [guid]
         return guids
 

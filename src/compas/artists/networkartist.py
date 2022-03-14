@@ -16,6 +16,16 @@ class NetworkArtist(Artist):
     ----------
     network : :class:`~compas.datastructures.Network`
         A COMPAS network.
+    nodes : list[hashable], optional
+        A list of node identifiers.
+        Default is None, in which case all nodes are drawn.
+    edges : list[tuple[hashable, hashable]], optional
+        A list of edge keys (as uv pairs) identifying which edges to draw.
+        The default is None, in which case all edges are drawn.
+    nodecolor : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
+        The color specification for the nodes.
+    edgecolor : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable]], :class:`~compas.colors.Color`], optional
+        The color specification for the edges.
 
     Attributes
     ----------
@@ -69,7 +79,13 @@ class NetworkArtist(Artist):
     default_nodesize = 5
     default_edgewidth = 1.0
 
-    def __init__(self, network, **kwargs):
+    def __init__(self,
+                 network,
+                 nodes=None,
+                 edges=None,
+                 nodecolor=None,
+                 edgecolor=None,
+                 **kwargs):
         super(NetworkArtist, self).__init__()
 
         self._default_nodecolor = None
@@ -83,6 +99,7 @@ class NetworkArtist(Artist):
         self._edge_color = None
         self._node_text = None
         self._edge_text = None
+        self._edge_width = None
 
         self._nodecollection = None
         self._edgecollection = None
@@ -90,6 +107,11 @@ class NetworkArtist(Artist):
         self._edgelabelcollection = None
 
         self.network = network
+
+        self.nodes = nodes
+        self.edges = edges
+        self.node_color = nodecolor
+        self.edge_color = edgecolor
 
     @property
     def network(self):

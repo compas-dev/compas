@@ -108,6 +108,7 @@ from compas.geometry import Torus
 from compas.geometry import Vector
 from compas.datastructures import Mesh
 from compas.datastructures import Network
+from compas.datastructures import VolMesh
 from compas.robots import RobotModel
 
 from .artist import BlenderArtist
@@ -130,6 +131,7 @@ from .sphereartist import SphereArtist
 from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
+from .volmeshartist import VolMeshArtist
 
 
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
@@ -164,6 +166,7 @@ def register_artists():
     Artist.register(Surface, SurfaceArtist, context='Blender')
     Artist.register(Torus, TorusArtist, context='Blender')
     Artist.register(Vector, VectorArtist, context='Blender')
+    Artist.register(VolMesh, VolMeshArtist, context='Blender')
     print('Blender Artists registered.')
 
 
@@ -188,4 +191,5 @@ __all__ = [
     'SurfaceArtist',
     'TorusArtist',
     'VectorArtist',
+    'VolMeshArtist',
 ]

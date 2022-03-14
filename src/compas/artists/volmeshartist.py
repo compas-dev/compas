@@ -82,7 +82,17 @@ class VolMeshArtist(Artist):
     face_color = ColorDict()
     cell_color = ColorDict()
 
-    def __init__(self, volmesh, **kwargs):
+    def __init__(self,
+                 volmesh,
+                 vertices=None,
+                 edges=None,
+                 faces=None,
+                 cells=None,
+                 vertexcolor=None,
+                 edgecolor=None,
+                 facecolor=None,
+                 cellcolor=None,
+                 **kwargs):
         super(VolMeshArtist, self).__init__()
 
         self._default_vertexcolor = None
@@ -105,7 +115,27 @@ class VolMeshArtist(Artist):
         self._face_text = None
         self._cell_text = None
 
+        self._vertexcollection = None
+        self._edgecollection = None
+        self._facecollection = None
+        self._cellcollection = None
+        self._vertexnormalcollection = None
+        self._facenormalcollection = None
+        self._vertexlabelcollection = None
+        self._edgelabelcollection = None
+        self._facelabelcollection = None
+        self._celllabelcollection = None
+
         self.volmesh = volmesh
+
+        self.vertices = vertices
+        self.edges = edges
+        self.faces = faces
+        self.cells = cells
+        self.vertex_color = vertexcolor
+        self.edge_color = edgecolor
+        self.face_color = facecolor
+        self.cell_color = cellcolor
 
     @property
     def volmesh(self):
