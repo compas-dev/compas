@@ -39,6 +39,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `planarity` to optional requirement on all platforms.
 * Changed `numba` to optional requirement on all platforms.
 * Changed raw github content path for `compas.get`.
+* Changed `compas.datastructures.Graph.nodes_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Graph.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.vertices_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.faces_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.vertices_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.faces_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.cells_where` to accept conditions as kwargs.
 * Fixed `compas_blender.artists.VolMeshArtist.draw` and `compas_blender.artists.VolMeshArtist.draw_cells`.
 * Fixed `compas_ghpython.artists.VolMeshArtist.draw` and `compas_ghpython.artists.VolMeshArtist.draw_cells`.
 * Fixed `compas_rhino.artists.VolMeshArtist.draw` and `compas_rhino.artists.VolMeshArtist.draw_cells`.

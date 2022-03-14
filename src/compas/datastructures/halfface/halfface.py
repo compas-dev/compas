@@ -715,18 +715,19 @@ class HalfFace(Datastructure):
             else:
                 yield cell, self.cell_attributes(cell)
 
-    def vertices_where(self, conditions, data=False):
+    def vertices_where(self, conditions=None, data=False, **kwargs):
         """Get vertices for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the vertices and their data attributes.
-            Default is ``False``.
+            If True, yield the vertex attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -735,6 +736,9 @@ class HalfFace(Datastructure):
             If `data` is True, the next vertex and its attributes.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for key, attr in self.vertices(True):
             is_match = True
 
@@ -793,11 +797,10 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters:
-            ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the vertex identifier and the vertex attributes, and should return True or False.
         data : bool, optional
-            Yield the vertices and their data attributes.
-            Default is ``False``.
+            If True, yield the vertex attributes in addition to the identifiers.
 
         Yields
         ------
@@ -813,18 +816,19 @@ class HalfFace(Datastructure):
                 else:
                     yield key
 
-    def edges_where(self, conditions, data=False):
+    def edges_where(self, conditions=None, data=False, **kwargs):
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the edges and their data attributes.
-            Default is ``False``.
+            If True, yield the edge attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -833,6 +837,9 @@ class HalfFace(Datastructure):
             If `data` is True, the next edge as a (u, v, data) tuple.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for key in self.edges():
             is_match = True
 
@@ -875,11 +882,10 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 3 parameters:
-            ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the edge identifier and the edge attributes, and should return True or False.
         data : bool, optional
-            Yield the vertices and their data attributes.
-            Default is ``False``.
+            If True, yield the edge attributes in addition to the identifiers.
 
         Yields
         ------
@@ -895,18 +901,19 @@ class HalfFace(Datastructure):
                 else:
                     yield key
 
-    def faces_where(self, conditions, data=False):
+    def faces_where(self, conditions=None, data=False, **kwargs):
         """Get faces for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the faces and their data attributes.
-            Default is ``False``.
+            If True, yield the face attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -915,6 +922,9 @@ class HalfFace(Datastructure):
             If `data` is True, the next face and its attributes.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for fkey in self.faces():
             is_match = True
 
@@ -957,11 +967,10 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters:
-            ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the face identifier and the the face attributes, and should return True or False.
         data : bool, optional
-            Yield the faces and their data attributes.
-            Default is ``False``.
+            If True, yield the face attributes in addition to the identifiers.
 
         Yields
         ------
@@ -977,18 +986,19 @@ class HalfFace(Datastructure):
                 else:
                     yield fkey
 
-    def cells_where(self, conditions, data=False):
+    def cells_where(self, conditions=None, data=False, **kwargs):
         """Get cells for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
-            Yield the cells and their data attributes.
-            Default is ``False``.
+            If True, yield the cell attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -997,6 +1007,9 @@ class HalfFace(Datastructure):
             If `data` is True, the next cell and its attributes.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for ckey in self.cells():
             is_match = True
 
@@ -1039,11 +1052,10 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         predicate : callable
-            The condition you want to evaluate. The callable takes 2 parameters:
-            ``key``, ``attr`` and should return ``True`` or ``False``.
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the cell identifier and the cell attributes, and should return True or False.
         data : bool, optional
-            Yield the cells and their data attributes.
-            Default is ``False``.
+            If True, yield the cell attributes in addition to the identifiers.
 
         Yields
         ------
