@@ -37,7 +37,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
         Returns
         -------
-        list[System.Guid]
+        list[:rhino:`Rhino.Geometry.Mesh`]
             The GUIDs of the created Rhino objects.
             Every cell is drawn as an individual mesh.
 
