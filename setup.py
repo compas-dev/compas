@@ -67,6 +67,7 @@ setup(
     python_requires='>=2.7',
     extras_require={
         'planarity': ['planarity'],
+        'numba': ['numba']
     },
     entry_points={
         'console_scripts': [
