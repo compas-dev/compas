@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.VolMesh.from_meshgrid`.
 * Added `vertices_where`, `vertices_where_predicate`, `edges_where`, `edges_where_predicate` to `compas.datastructures.HalfFace`.
 * Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
+* Added `3.1` to supported versions for Blender installer.
 
 ### Changed
 
@@ -33,9 +34,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_ghpython.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
 * Changed `compas_ghpython.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
 * Changed `compas_ghpython.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Fixed `compas_blender.uninstall`.
+* Changed `planarity` to optional requirement on all platforms.
+* Changed `numba` to optional requirement on all platforms.
 * Changed raw github content path for `compas.get`.
 
 ### Removed
+
+* Removed `compas.numerical.drx`.
 
 
 ## [1.14.1] 2022-02-16

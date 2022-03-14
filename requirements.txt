@@ -10,10 +10,10 @@ matplotlib >= 2.2, < 3.1; python_version >= '3.5' and python_version <= '3.7' an
 matplotlib >= 3.1; python_version >= '3.8' and sys_platform == 'win32'
 matplotlib >= 2.2; python_version >= '3.5' and sys_platform != 'win32'
 networkx
-numba
+# numba
 numpy >= 1.15.4
 pillow
-planarity ; sys_platform != 'win32'
+# planarity ; sys_platform != 'win32'
 pycollada
 schema
 scipy >= 1.1
