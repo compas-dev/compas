@@ -28,20 +28,6 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         A COMPAS network.
     collection : str | :blender:`bpy.types.Collection`
         The name of the collection the object belongs to.
-    nodes : list[hashable], optional
-        A list of node identifiers.
-        Default is None, in which case all nodes are drawn.
-    edges : list[tuple[hashable, hashable]], optional
-        A list of edge keys (as uv pairs) identifying which edges to draw.
-        The default is None, in which case all edges are drawn.
-    nodecolor : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
-        The color specification for the nodes.
-    edgecolor : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable]], :class:`~compas.colors.Color`], optional
-        The color specification for the edges.
-    show_nodes : bool, optional
-        If True, draw the nodes of the network.
-    show_edges : bool, optional
-        If True, draw the edges of the network.
 
     Attributes
     ----------
@@ -87,22 +73,9 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
     def __init__(self,
                  network: Network,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 nodes: Optional[List[int]] = None,
-                 edges: Optional[List[int]] = None,
-                 nodecolor: Color = None,
-                 edgecolor: Color = None,
-                 show_nodes: bool = True,
-                 show_edges: bool = True,
                  **kwargs: Any):
 
         super().__init__(network=network, collection=collection or network.name, **kwargs)
-
-        self.nodes = nodes
-        self.edges = edges
-        self.node_color = nodecolor
-        self.edge_color = edgecolor
-        self.show_nodes = show_nodes
-        self.show_edges = show_edges
 
     @property
     def nodecollection(self) -> bpy.types.Collection:

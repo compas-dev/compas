@@ -27,29 +27,6 @@ class MeshArtist(BlenderArtist, MeshArtist):
         A COMPAS mesh.
     collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
-    vertices : list[int], optional
-        A list of vertex identifiers.
-        Default is None, in which case all vertices are drawn.
-    edges : list[tuple[int, int]], optional
-        A list of edge keys (as uv pairs) identifying which edges to draw.
-        The default is None, in which case all edges are drawn.
-    faces : list[int], optional
-        A list of face identifiers.
-        The default is None, in which case all faces are drawn.
-    vertexcolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
-        The color specification for the vertices.
-    edgecolor : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
-        The color specification for the edges.
-    facecolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
-        The color specification for the faces.
-    show_mesh : bool, optional
-        If True, draw the mesh.
-    show_vertices : bool, optional
-        If True, draw the individual vertices.
-    show_edges : bool, optional
-        If True, draw the individual edges.
-    show_faces : bool, optional
-        If True, draw the individual faces.
 
     Attributes
     ----------
@@ -97,30 +74,9 @@ class MeshArtist(BlenderArtist, MeshArtist):
     def __init__(self,
                  mesh: Mesh,
                  collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 vertices: Optional[List[int]] = None,
-                 edges: Optional[List[int]] = None,
-                 faces: Optional[List[int]] = None,
-                 vertexcolor: Optional[Color] = None,
-                 edgecolor: Optional[Color] = None,
-                 facecolor: Optional[Color] = None,
-                 show_mesh: bool = False,
-                 show_vertices: bool = True,
-                 show_edges: bool = True,
-                 show_faces: bool = True,
                  **kwargs: Any):
 
         super().__init__(mesh=mesh, collection=collection or mesh.name, **kwargs)
-
-        self.vertices = vertices
-        self.edges = edges
-        self.faces = faces
-        self.vertex_color = vertexcolor
-        self.edge_color = edgecolor
-        self.face_color = facecolor
-        self.show_mesh = show_mesh
-        self.show_vertices = show_vertices
-        self.show_edges = show_edges
-        self.show_faces = show_faces
 
     @property
     def vertexcollection(self) -> bpy.types.Collection:

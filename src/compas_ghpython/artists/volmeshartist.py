@@ -2,17 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
-
-import Rhino
-
-from compas.utilities import color_to_colordict
-
 import compas_ghpython
 from compas.artists import VolMeshArtist
 from .artist import GHArtist
-
-colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 class VolMeshArtist(GHArtist, VolMeshArtist):
@@ -31,8 +23,26 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
     def __init__(self, volmesh, **kwargs):
         super(VolMeshArtist, self).__init__(volmesh=volmesh, **kwargs)
 
-    def draw(self):
-        raise NotImplementedError
+    def draw(self, cells=None, color=None):
+        """Draw a selection of cells.
+
+        Parameters
+        ----------
+        cells : list[int], optional
+            A list of cells to draw.
+            The default is None, in which case all cells are drawn.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the cells.
+            The default color is :attr:`VolMeshArtist.default_cellcolor`.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Mesh`]
+            The GUIDs of the created Rhino objects.
+            Every cell is drawn as an individual mesh.
+
+        """
+        return self.draw_cells(cells=cells, color=color)
 
     def draw_vertices(self, vertices=None, color=None):
         """Draw a selection of vertices.
@@ -52,7 +62,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
         """
         self.vertex_color = color
-        vertices = vertices or list(self.volmesh.vertices())
+        vertices = vertices or self.vertices
         vertex_xyz = self.vertex_xyz
         points = []
         for vertex in vertices:
@@ -81,7 +91,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
         """
         self.edge_color = color
-        edges = edges or list(self.volmesh.edges())
+        edges = edges or self.edges
         vertex_xyz = self.vertex_xyz
         lines = []
         for edge in edges:
@@ -114,7 +124,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
         """
         self.face_color = color
-        faces = faces or list(self.volmesh.faces())
+        faces = faces or self.faces
         vertex_xyz = self.vertex_xyz
         facets = []
         for face in faces:
@@ -123,10 +133,115 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
                 'name': "{}.face.{}".format(self.volmesh.name, face),
                 'color': self.face_color[face].rgb255
             })
-        meshes = compas_ghpython.draw_faces(facets)
-        if not join_faces:
-            return meshes
-        joined_mesh = Rhino.Geometry.Mesh()
-        for mesh in meshes:
-            joined_mesh.Append(mesh)
-        return [joined_mesh]
+        return compas_ghpython.draw_faces(facets)
+
+    def draw_cells(self, cells=None, color=None):
+        """Draw a selection of cells.
+
+        Parameters
+        ----------
+        cells : list[int], optional
+            A list of cells to draw.
+            The default is None, in which case all cells are drawn.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the cells.
+            The default color is :attr:`VolMeshArtist.default_cellcolor`.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Mesh`]
+
+        """
+        self.cell_color = color
+        cells = cells or self.cells
+        vertex_xyz = self.vertex_xyz
+        meshes = []
+        for cell in cells:
+            vertices = self.volmesh.cell_vertices(cell)
+            faces = self.volmesh.cell_faces(cell)
+            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
+            vertices = [vertex_xyz[vertex] for vertex in vertices]
+            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
+            mesh = compas_ghpython.draw_mesh(vertices, faces, color=self.cell_color[cell].rgb255)
+            meshes.append(mesh)
+        return meshes
+
+    def clear_vertices(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
+
+    def clear_edges(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
+
+    def clear_faces(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
+
+    def clear_cells(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
+
+    def clear_vertexlabels(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
+
+    def clear_edgelabels(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
+
+    def clear_facelabels(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
+
+    def clear_celllabels(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+
+        Returns
+        -------
+        None
+
+        """
+        pass
