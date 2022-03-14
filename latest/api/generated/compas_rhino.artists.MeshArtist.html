@@ -116,18 +116,6 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A COMPAS mesh.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – The name of the layer that will contain the mesh.</p></li>
-<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – Selection of vertices to draw.</p></li>
-<li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – Selection of edges to draw.</p></li>
-<li><p><strong>faces</strong> (<em>list[int], optional</em>) – Selection of faces to draw.</p></li>
-<li><p><strong>vertexcolor</strong> (<em>tuple[int, int, int] | dict[int, tuple[int, int, int]], optional</em>) – Color of the vertices.
-Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_vertexcolor</span></code>.</p></li>
-<li><p><strong>edgecolor</strong> (<em>tuple[int, int, int] | dict[tuple[int, int], tuple[int, int, int]], optional</em>) – Color of the edges.
-Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_edgecolor</span></code>.</p></li>
-<li><p><strong>facecolor</strong> (<em>tuple[int, int, int] | dict[int, tuple[int, int, int]], optional</em>) – Color of the faces.
-Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_facecolor</span></code>.</p></li>
-<li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – If True, draw the vertices.</p></li>
-<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – If True, draw the edges.</p></li>
-<li><p><strong>show_faces</strong> (<em>bool, optional</em>) – If True, draw the faces.</p></li>
 <li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – Additional keyword arguments.
 For more info, see <a class="reference internal" href="compas_rhino.artists.RhinoArtist.html#compas_rhino.artists.RhinoArtist" title="compas_rhino.artists.RhinoArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoArtist</span></code></a> and <a class="reference internal" href="#compas_rhino.artists.MeshArtist" title="compas_rhino.artists.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshArtist</span></code></a>.</p></li>
 </ul>

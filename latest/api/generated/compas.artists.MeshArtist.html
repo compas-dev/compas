@@ -113,7 +113,18 @@
 <p>Base class for all mesh artists.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A COMPAS mesh.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A COMPAS mesh.</p></li>
+<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – Selection of vertices to draw.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – Selection of edges to draw.</p></li>
+<li><p><strong>faces</strong> (<em>list[int], optional</em>) – Selection of faces to draw.</p></li>
+<li><p><strong>vertexcolor</strong> (<em>tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</em>) – Color of the vertices.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_vertexcolor</span></code>.</p></li>
+<li><p><strong>edgecolor</strong> (<em>tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional</em>) – Color of the edges.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_edgecolor</span></code>.</p></li>
+<li><p><strong>facecolor</strong> (<em>tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</em>) – Color of the faces.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_facecolor</span></code>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">

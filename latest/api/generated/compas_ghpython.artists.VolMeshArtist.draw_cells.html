@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="VolMeshArtist.draw_collection" href="compas_ghpython.artists.VolMeshArtist.draw_collection.html" />
+  <link rel="next" title="VolMeshArtist.draw_edges" href="compas_ghpython.artists.VolMeshArtist.draw_edges.html" />
   
 
   
-  <link rel="prev" title="VolMeshArtist.clear_vertices" href="compas_ghpython.artists.VolMeshArtist.clear_vertices.html" />
+  <link rel="prev" title="VolMeshArtist.draw" href="compas_ghpython.artists.VolMeshArtist.draw.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -110,22 +110,19 @@
 <h1>VolMeshArtist.draw_cells</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_ghpython.artists.VolMeshArtist.draw_cells">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/volmeshartist.py#L304"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Draw the cells of the mesh.</p>
+<span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/volmeshartist.py#L138"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Draw a selection of cells.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cells</strong> (<em>list[int], optional</em>) – The cells to include in the drawing.
-Default is all cells.</p></li>
-<li><p><strong>color</strong> (tuple[float, float, float] | <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[int, tuple[float, float, float] | <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color of the cells,
-as either a single color to be applied to all cells,
-or a color dict, mapping specific cells to specific colors.</p></li>
-<li><p><strong>text</strong> (<em>dict[int, str], optional</em>) – The text labels for the cells as a text dict,
-mapping specific cells to specific text labels.</p></li>
+<li><p><strong>cells</strong> (<em>list[int], optional</em>) – A list of cells to draw.
+The default is None, in which case all cells are drawn.</p></li>
+<li><p><strong>color</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color of the cells.
+The default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">VolMeshArtist.default_cellcolor</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The identifiers of the objects representing the cells in the visualization context.</p>
+<dd class="field-even"><p>list[<a class="reference external" href="https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino.Geometry.Mesh.htm">Rhino.Geometry.Mesh</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -187,20 +184,20 @@ mapping specific cells to specific text labels.</p></li>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas_ghpython.artists.VolMeshArtist.clear_vertices.html" title="VolMeshArtist.clear_vertices" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas_ghpython.artists.VolMeshArtist.draw.html" title="VolMeshArtist.draw" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          VolMeshArtist.clear_vertices
+          VolMeshArtist.draw
         </div>
       </a>
       
 
       
-      <a href="compas_ghpython.artists.VolMeshArtist.draw_collection.html" title="VolMeshArtist.draw_collection" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_ghpython.artists.VolMeshArtist.draw_edges.html" title="VolMeshArtist.draw_edges" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          VolMeshArtist.draw_collection
+          VolMeshArtist.draw_edges
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
