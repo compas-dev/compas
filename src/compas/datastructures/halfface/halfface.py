@@ -715,12 +715,12 @@ class HalfFace(Datastructure):
             else:
                 yield cell, self.cell_attributes(cell)
 
-    def vertices_where(self, conditions, data=False, **kwargs):
+    def vertices_where(self, conditions=None, data=False, **kwargs):
         """Get vertices for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
@@ -816,12 +816,12 @@ class HalfFace(Datastructure):
                 else:
                     yield key
 
-    def edges_where(self, conditions, data=False, **kwargs):
+    def edges_where(self, conditions=None, data=False, **kwargs):
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
@@ -901,12 +901,12 @@ class HalfFace(Datastructure):
                 else:
                     yield key
 
-    def faces_where(self, conditions, data=False, **kwargs):
+    def faces_where(self, conditions=None, data=False, **kwargs):
         """Get faces for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
@@ -986,12 +986,12 @@ class HalfFace(Datastructure):
                 else:
                     yield fkey
 
-    def cells_where(self, conditions, data=False, **kwargs):
+    def cells_where(self, conditions=None, data=False, **kwargs):
         """Get cells for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict
+        conditions : dict, optional
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
