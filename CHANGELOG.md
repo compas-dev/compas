@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `compas_blender.uninstall`.
 * Changed `planarity` to optional requirement on all platforms.
 * Changed `numba` to optional requirement on all platforms.
+* Changed raw github content path for `compas.get`.
 
 ### Removed
 
