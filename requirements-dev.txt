@@ -12,7 +12,7 @@ isort
 m2r2
 nbsphinx
 pydocstyle
-pytest <=7.1
+pytest <7.1
 sphinx_compas_theme >=0.15.18
 sphinx >=3.4
 twine
