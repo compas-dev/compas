@@ -631,6 +631,8 @@ class HalfEdge(Datastructure):
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
             If True, yield the vertex attributes in addition to the vertex identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -724,7 +726,7 @@ class HalfEdge(Datastructure):
                 else:
                     yield key
 
-    def edges_where(self, conditions, data=False):
+    def edges_where(self, conditions, data=False, **kwargs):
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
@@ -735,6 +737,8 @@ class HalfEdge(Datastructure):
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
             If True, yield the edge attributes in addition to the edge identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -743,6 +747,9 @@ class HalfEdge(Datastructure):
             If `data` is True, the next edge as a (u, v, data) tuple.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for key in self.edges():
             is_match = True
 
@@ -806,7 +813,7 @@ class HalfEdge(Datastructure):
                 else:
                     yield key
 
-    def faces_where(self, conditions, data=False):
+    def faces_where(self, conditions, data=False, **kwargs):
         """Get faces for which a certain condition or set of conditions is true.
 
         Parameters
@@ -817,6 +824,8 @@ class HalfEdge(Datastructure):
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
             If True, yield the face attributes in addition to face identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -825,6 +834,9 @@ class HalfEdge(Datastructure):
             If `data` is True, the next face and its attributes.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for fkey in self.faces():
             is_match = True
 

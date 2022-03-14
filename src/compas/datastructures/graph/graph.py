@@ -622,7 +622,7 @@ class Graph(Datastructure):
             else:
                 yield key, self.node_attributes(key)
 
-    def nodes_where(self, conditions, data=False):
+    def nodes_where(self, conditions, data=False, **kwargs):
         """Get nodes for which a certain condition or set of conditions is true.
 
         Parameters
@@ -641,6 +641,9 @@ class Graph(Datastructure):
             If `data` is True, the next node and its attributes.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for key, attr in self.nodes(True):
             is_match = True
 
@@ -740,7 +743,7 @@ class Graph(Datastructure):
                 else:
                     yield u, v
 
-    def edges_where(self, conditions, data=False):
+    def edges_where(self, conditions, data=False, **kwargs):
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
@@ -751,6 +754,8 @@ class Graph(Datastructure):
             values or ranges of attribute values in the form of min/max pairs.
         data : bool, optional
             If True, yield the edge attributes in addition to the edge identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
         Yields
         ------
@@ -759,6 +764,9 @@ class Graph(Datastructure):
             If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
 
         """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
         for key in self.edges():
             is_match = True
 
