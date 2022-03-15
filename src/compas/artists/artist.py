@@ -7,9 +7,10 @@ from abc import abstractmethod
 from collections import defaultdict
 
 import compas
-from compas.artists import DataArtistNotRegistered
-from compas.plugins import pluggable
+from compas.artists.exceptions import DataArtistNotRegistered
+from compas.artists.exceptions import NoArtistContextError
 from compas.plugins import PluginValidator
+from compas.plugins import pluggable
 
 from .colordict import DescriptorProtocol
 
@@ -46,11 +47,7 @@ def _get_artist_cls(data, **kwargs):
         Artist.CONTEXT = identify_context()
 
     if Artist.CONTEXT is None:
-        error_message = 'No context defined.'
-        error_message += '\n\nThis usually means that the script that you are running requires'
-        error_message += '\na CAD environment but it is being ran as a standalone script'
-        error_message += '\n(ie. from the command line or code editor).'
-        raise Exception(error_message)
+        raise NoArtistContextError()
 
     dtype = type(data)
     cls = None
