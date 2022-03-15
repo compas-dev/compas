@@ -6,6 +6,7 @@ from __future__ import division
 class DataArtistNotRegistered(Exception):
     """Exception that is raised when no artist is registered for a given data type."""
 
+
 class NoArtistContextError(Exception):
     """Exception that is raised when no artist context is assigned is registered for a given data type."""
     def __init__(self):
