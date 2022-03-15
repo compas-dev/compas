@@ -45,6 +45,13 @@ def _get_artist_cls(data, **kwargs):
     else:
         Artist.CONTEXT = identify_context()
 
+    if Artist.CONTEXT is None:
+        error_message = 'No context defined.'
+        error_message += '\n\nThis usually means that the script that you are running requires'
+        error_message += '\na CAD environment but it is being ran as a standalone script'
+        error_message += '\n(ie. from the command line or code editor).'
+        raise Exception(error_message)
+
     dtype = type(data)
     cls = None
 
@@ -89,6 +96,10 @@ class Artist(object):
         if not Artist.__ARTISTS_REGISTERED:
             register_artists()
             Artist.__ARTISTS_REGISTERED = True
+
+        if not args or len(args) < 1 or args[0] is None:
+            raise ValueError('Cannot create an artist for `None`. Please ensure you pass a instance of a supported class.')
+
         cls = _get_artist_cls(args[0], **kwargs)
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
