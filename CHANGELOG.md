@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-* Added `Polyline.extend` and `Polyline.shorten`.
+
 ### Added
 
 * Added descriptor support to `compas.colors.Color`.
@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
 * Added `VolMeshArtist` to registered Blender artists.
 * Added `3.1` to supported versions for Blender installer.
+* Added `Polyline.extend` and `Polyline.shorten`.
 
 ### Changed
 
