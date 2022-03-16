@@ -31,12 +31,12 @@ def trimesh_gaussian_curvature(M):
 
     Parameters
     ----------
-    M : (list, list)
+    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
     -------
-    list
+    list[float]
         The discrete Gaussian curvature per vertex.
 
     Notes
@@ -55,6 +55,10 @@ def trimesh_gaussian_curvature(M):
 
         K_{i} = 2\pi-\sum\\theta_{i}^{jk}
 
+    References
+    ----------
+    .. [1] Formula of Discrete Gaussian Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
+
     Examples
     --------
     Make a mesh from scratch
@@ -65,12 +69,7 @@ def trimesh_gaussian_curvature(M):
     >>> M = sphere.to_vertices_and_faces()
 
     Compute the discrete Gaussian curvature
-
     >>> K = trimesh_gaussian_curvature(M)
-
-    References
-    ----------
-    .. [1] Formula of Discrete Gaussian Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
 
     """
     # (0) see if input is already Rhino.Geometry.Mesh
@@ -121,12 +120,12 @@ def trimesh_mean_curvature(M):
 
     Parameters
     ----------
-    M : (list, list)
+    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
     -------
-    list
+    list[float]
         The discrete mean curvature per vertex.
 
     Notes
@@ -146,10 +145,14 @@ def trimesh_mean_curvature(M):
 
         H_{i} = \frac{1}{4}\sum_{ij\in E}l_{ij}\phi_{ij}
 
+    References
+    ----------
+    .. [1] Formula of Discrete Mean Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
+    .. [2] Formula of dihedral angle available at Keenan Crane's lecture, 04:20-05:43, at https://youtu.be/NlU1m-OfumE
+
     Examples
     --------
     Make a mesh from scratch
-
     >>> from compas.geometry import Sphere
     >>> sphere = Sphere([1, 1, 1], 1)
     >>> sphere = Mesh.from_shape(sphere, u=30, v=30)
@@ -157,13 +160,7 @@ def trimesh_mean_curvature(M):
     >>> M = sphere.to_vertices_and_faces()
 
     Compute the discrete mean curvature
-
     >>> H = trimesh_mean_curvature(M)
-
-    References
-    ----------
-    .. [1] Formula of Discrete Mean Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
-    .. [2] Formula of dihedral angle available at Keenan Crane's lecture, 04:20-05:43, at https://youtu.be/NlU1m-OfumE
 
     """
     # (0) see if input is already Rhino.Geometry.Mesh
@@ -227,13 +224,15 @@ def trimesh_principal_curvature(M):
     r"""Compute the principal curvature of a triangle mesh.
     Parameters
     ----------
-    M : (list, list)
+    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
+
     Returns
     -------
-    Curvature : (k1, k2)
-        k1_list, the max curvature per vertex.
-        k2_list, the min curvature per vertex.
+    list[float]
+        The max curvature per vertex.
+    list[float]
+        The min curvature per vertex.
 
     Notes
     -----
@@ -251,10 +250,13 @@ def trimesh_principal_curvature(M):
 
         \kappa^1_i, \kappa^2_i =  \frac{H_i}{A_i}\pm\sqrt{\left( \,\frac{H_i}{A_i}\right)\,^2-\frac{K_i}{A_i}}
 
+    References
+    ----------
+    .. [1] Formula of Discrete Principal Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
+
     Examples
     --------
     Make a mesh from scratch
-
     >>> from compas.geometry import Sphere
     >>> sphere = Sphere([1, 1, 1], 1)
     >>> sphere = Mesh.from_shape(sphere, u=30, v=30)
@@ -262,12 +264,7 @@ def trimesh_principal_curvature(M):
     >>> M = sphere.to_vertices_and_faces()
 
     Compute the discrete principal curvature
-
     >>> H = trimesh_principal_curvature(M)
-
-    References
-    ----------
-    .. [1] Formula of Discrete Principal Curvature available at Keenan Crane's lecture, 03:16-07:11, at https://youtu.be/sokeN5VxBB8
 
     """
     # (0) see if input is already Rhino.Geometry.Mesh

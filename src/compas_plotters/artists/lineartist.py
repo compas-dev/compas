@@ -1,16 +1,47 @@
-from typing import Literal, Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
+from typing_extensions import Literal
+
 from matplotlib.lines import Line2D
 from compas.geometry import Point, Line
 from compas.geometry import intersection_line_box_xy
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class LineArtist(Artist):
-    """Artist for COMPAS lines."""
+class LineArtist(PlotterArtist, PrimitiveArtist):
+    """Artist for COMPAS lines.
 
-    zorder: int = 1000
+    Parameters
+    ----------
+    line : :class:`~compas.geometry.Line`
+        A COMPAS line.
+    draw_points : bool, optional
+        If True, draw the start and end point of the line.
+    draw_as_segment : bool, optional
+        If True, draw only the segment between start and end, instead of the infinite line.
+    linewidth : float, optional
+        Width of the line.
+    linestyle : {'solid', 'dotted', 'dashed', 'dashdot'}, optional
+        Style of the line.
+    color : tuple[float, float, float], optional
+        Color of the line.
+    zorder : int, optional
+        Stacking order of the line on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
+
+    Attributes
+    ----------
+    line : :class:`~compas.geometry.Line`
+        The line associated with the artist.
+
+    """
 
     def __init__(self,
                  line: Line,
@@ -18,32 +49,58 @@ class LineArtist(Artist):
                  draw_as_segment: bool = False,
                  linewidth: float = 1.0,
                  linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 color: Color = (0, 0, 0)):
-        super(LineArtist, self).__init__(line)
+                 color: Color = (0, 0, 0),
+                 zorder: int = 1000,
+                 **kwargs: Any):
+
+        super().__init__(primitive=line, **kwargs)
+
         self._mpl_line = None
         self._start_artist = None
         self._end_artist = None
         self._segment_artist = None
         self.draw_points = draw_points
         self.draw_as_segment = draw_as_segment
-        self.line = line
         self.linewidth = linewidth
         self.linestyle = linestyle
         self.color = color
+        self.zorder = zorder
+
+    @property
+    def line(self):
+        return self.primitive
+
+    @line.setter
+    def line(self, line):
+        self.primitive = line
+
+    @property
+    def data(self) -> List[List[float]]:
+        return [self.line.start[:2], self.line.end[:2]]
 
     def clip(self) -> List[Point]:
-        """Compute the clipping points of the line for the current view box."""
+        """Compute the clipping points of the line for the current view box.
+
+        Returns
+        -------
+        list[[float, float, float]]
+            The intersection between the line and the viewbox.
+
+        """
         xlim, ylim = self.plotter.viewbox
         xmin, xmax = xlim
         ymin, ymax = ylim
         box = [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]]
         return intersection_line_box_xy(self.line, box)
 
-    @property
-    def data(self) -> List[List[float]]:
-        return [self.line.start[:2], self.line.end[:2]]
-
     def draw(self) -> None:
+        """Draw the line associated with the artist.
+
+        Returns
+        -------
+        None
+
+        """
         if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
@@ -73,7 +130,14 @@ class LineArtist(Artist):
                     self._end_artist = self.plotter.add(self.line.end, edgecolor=self.color)
 
     def redraw(self) -> None:
-        if self._draw_as_segment:
+        """Update the line using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
+        if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
             self._mpl_line.set_xdata([x0, x1])

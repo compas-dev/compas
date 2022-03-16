@@ -3,39 +3,43 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from compas.colors import Color
+from .artist import GHArtist
 
 
-__all__ = ['LineArtist']
-
-
-class LineArtist(PrimitiveArtist):
+class LineArtist(GHArtist, PrimitiveArtist):
     """Artist for drawing lines.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Line`
+    line : :class:`~compas.geometry.Line`
         A COMPAS line.
-
-    Other Parameters
-    ----------------
-    See :class:`compas_ghpython.artists.PrimitiveArtist` for all other parameters.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 
-    def draw(self):
+    def __init__(self, line, **kwargs):
+        super(LineArtist, self).__init__(primitive=line, **kwargs)
+
+    def draw(self, color=None):
         """Draw the line.
+
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The RGB color of the line.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Line`
+        :rhino:`Rhino.Geometry.Line`
 
         """
-        lines = [self._get_args(self.primitive)]
+        color = Color.coerce(color) or self.color
+        start = list(self.primitive.start)
+        end = list(self.primitive.end)
+        lines = [{'start': start, 'end': end, 'color': color.rgb255}]
         return compas_ghpython.draw_lines(lines)[0]
-
-    @staticmethod
-    def _get_args(primitive):
-        start = list(primitive.start)
-        end = list(primitive.end)
-        return {'start': start, 'end': end}

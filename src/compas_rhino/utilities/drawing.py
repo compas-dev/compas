@@ -7,12 +7,13 @@ from functools import wraps
 import compas_rhino
 
 from compas.geometry import centroid_polygon
-from compas.geometry import centroid_points
 from compas.utilities import pairwise
 
 from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
 from compas_rhino.utilities import clear_current_layer
+
+import System
 
 from System.Collections.Generic import List
 from System.Drawing.Color import FromArgb
@@ -57,6 +58,7 @@ add_brep = sc.doc.Objects.AddBrep
 add_sphere = sc.doc.Objects.AddSphere
 add_mesh = sc.doc.Objects.AddMesh
 add_circle = sc.doc.Objects.AddCircle
+add_surface = sc.doc.Objects.AddSurface
 
 TOL = sc.doc.ModelAbsoluteTolerance
 
@@ -79,6 +81,7 @@ __all__ = [
     'draw_spheres',
     'draw_mesh',
     'draw_circles',
+    'draw_surfaces',
 ]
 
 
@@ -88,7 +91,7 @@ def wrap_drawfunc(f):
     def wrapper(*args, **kwargs):
         layer = kwargs.get('layer', None)
         clear = kwargs.get('clear', False)
-        redraw = kwargs.get('redraw', True)
+        redraw = kwargs.get('redraw', False)
         if layer:
             if not rs.IsLayer(layer):
                 create_layers_from_path(layer)
@@ -110,16 +113,17 @@ def wrap_drawfunc(f):
 
 @wrap_drawfunc
 def draw_labels(labels, **kwargs):
-    """Draw labels as text dots and optionally set individual font, fontsize, name and color.
+    """Draw labels as text dots and optionally set individual font, fontsize, name, layer and color.
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of labels dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -132,6 +136,7 @@ def draw_labels(labels, **kwargs):
             'text': And(str, len),
             Optional('name', default=''): str,
             Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
             Optional('fontsize', default=10): Or(int, float),
             Optional('font', default="Arial Regular"): str
         })
@@ -143,6 +148,7 @@ def draw_labels(labels, **kwargs):
         text = label['text']
         name = label.get('name', '')
         color = label.get('color', None)
+        layer = label.get('layer')
         size = label.get('fontsize', 10)
         font = label.get('font', 'Arial Regular')
         dot = TextDot(str(text), Point3d(*pos))
@@ -160,6 +166,10 @@ def draw_labels(labels, **kwargs):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
         attr.Name = name
         obj.CommitChanges()
         guids.append(guid)
@@ -172,12 +182,13 @@ def draw_points(points, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of point dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -228,12 +239,13 @@ def draw_lines(lines, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of line dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -297,12 +309,13 @@ def draw_geodesics(geodesics, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of geodesic dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -364,12 +377,13 @@ def draw_polylines(polylines, **kwargs):
 
     Parameters
     ----------
-    labels : list of dict
+    labels : list[dict]
         A list of polyline dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -422,34 +436,25 @@ def draw_polylines(polylines, **kwargs):
 
 
 @wrap_drawfunc
-def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, join=False, **kwargs):
+def draw_breps(faces, u=10, v=10, join=False, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
 
     Parameters
     ----------
-    faces : list of dict
+    faces : list[dict]
         A list of brep dictionaries.
-    srf : GUID, optional
-        A target surface.
+        See Notes, for more information about the structure of the dict.
     u : int, optional
-        Default is 10.
+        Number of spans in the U direction.
     v : int, optional
-        Default is 10.
-
-    Other Parameters
-    ----------------
-    trim : bool, optional
-    tangency : bool, optional
-    spacing : float, optional
-    flex : float, optional
-    pull : float, optional
+        Number of spans in the V direction.
     join : bool, optional
-        Join the individual faces as polysurfaces. Default is False.
+        If True, join the individual faces as polysurfaces
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -545,13 +550,15 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
 
     Parameters
     ----------
-    cylinders : list of dict
+    cylinders : list[dict]
         A list of cylinder dictionaries.
+        See Notes, for more information about the structure of the dict.
     cap : bool, optional
+        If True, add caps.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -619,8 +626,9 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
     Parameters
     ----------
-    pipes : list of dict
+    pipes : list[dict]
         A list of pipe dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Other Parameters
     ----------------
@@ -629,7 +637,7 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -692,12 +700,13 @@ def draw_spheres(spheres, **kwargs):
 
     Parameters
     ----------
-    spheres : list of dict
+    spheres : list[dict]
         A list of sphere dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -751,19 +760,18 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
 
     Parameters
     ----------
-    vertices : :obj:`list` of point
+    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
         A list of point locations.
-    faces : :obj:`list` of :obj:`list` of :obj:`int`
-        A list of faces as lists of indices into ``vertices``.
-    name : :obj:`str`, optional
-    color : RGB :obj:`tuple`, optional
-    disjoint : :obj:`bool`, optional
-        Draw the mesh with disjoint faces.
-        Default is ``False``.
+    faces : list[list[int]]
+        A list of faces as lists of indices into `vertices`.
+    name : str, optional
+    color : tuple[[int, int, int]], optional
+    disjoint : bool, optional
+        If True, draw the mesh with disjoint faces.
 
     Returns
     -------
-    str or GUID
+    System.Guid
 
     """
     mesh = RhinoMesh()
@@ -786,7 +794,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
             else:
                 if MeshNgon:
                     points = [vertices[vertex] for vertex in face]
-                    centroid = centroid_points(points)
+                    centroid = centroid_polygon(points)
                     indices = []
                     for point in points:
                         indices.append(mesh.Vertices.Add(* point))
@@ -809,7 +817,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
                 mesh.Faces.AddFace(*face)
             else:
                 if MeshNgon:
-                    centroid = centroid_points([vertices[index] for index in face])
+                    centroid = centroid_polygon([vertices[index] for index in face])
                     c = mesh.Vertices.Add(* centroid)
                     facets = []
                     for i, j in pairwise(face + face[:1]):
@@ -819,19 +827,22 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
 
     mesh.Normals.ComputeNormals()
     mesh.Compact()
+
     guid = add_mesh(mesh)
-    if guid:
+
+    if guid != System.Guid.Empty:
         obj = find_object(guid)
-        attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
-        else:
-            attr.ColorSource = ColorFromLayer
-        if name:
-            attr.Name = name
-        obj.CommitChanges()
-    return guid
+        if obj:
+            attr = obj.Attributes
+            if color:
+                attr.ObjectColor = FromArgb(*color)
+                attr.ColorSource = ColorFromObject
+            else:
+                attr.ColorSource = ColorFromLayer
+            if name:
+                attr.Name = name
+            obj.CommitChanges()
+        return guid
 
 
 @wrap_drawfunc
@@ -840,12 +851,13 @@ def draw_faces(faces, **kwargs):
 
     Parameters
     ----------
-    faces : list of dict
+    faces : list[dict]
         A list of face dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -872,18 +884,12 @@ def draw_faces(faces, **kwargs):
 
         if v < 3:
             continue
-        if v == 3:
+        elif v == 3:
             mfaces = [[0, 1, 2, 2]]
+        elif v == 4:
+            mfaces = [[0, 1, 2, 3]]
         else:
             mfaces = [list(range(v))]
-        # else:
-        #     mfaces = _face_to_max_quad(points, range(v))
-        #     if vertexcolors:
-        #         r, g, b = [sum(component) / v for component in zip(*vertexcolors)]
-        #         r = int(min(max(0, r), 255))
-        #         g = int(min(max(0, g), 255))
-        #         b = int(min(max(0, b), 255))
-        #         vertexcolors.append((r, g, b))
 
         guid = draw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
 
@@ -915,12 +921,13 @@ def draw_circles(circles, **kwargs):
 
     Parameters
     ----------
-    circles : list of dict
+    circles : list[dict]
         A list of circle dictionaries.
+        See Notes, for more information about the structure of the dict.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
 
     Notes
     -----
@@ -963,6 +970,118 @@ def draw_circles(circles, **kwargs):
                 attr.LayerIndex = index
         attr.Name = name
         attr.WireDensity = -1
+        obj.CommitChanges()
+        guids.append(guid)
+    return guids
+
+
+@wrap_drawfunc
+def draw_curves(curves, **kwargs):
+    """Draw curves and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    curves : list[dict]
+        A list of curve dictionaries.
+        See Notes, for more information about the structure of the dict.
+
+    Returns
+    -------
+    list[System.Guid]
+
+    Notes
+    -----
+    A curve dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'curve': compas.geometry.Curve,
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
+    """
+    guids = []
+    for data in iter(curves):
+        curve = data['curve']
+        name = data.get('name', '')
+        color = data.get('color')
+        layer = data.get('layer')
+        guid = add_curve(curve.rhino_curve)
+        if not guid:
+            continue
+        obj = find_object(guid)
+        if not obj:
+            continue
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
+        attr.Name = name
+        obj.CommitChanges()
+        guids.append(guid)
+    return guids
+
+
+@wrap_drawfunc
+def draw_surfaces(surfaces, **kwargs):
+    """Draw surfaces and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    surfaces : list[dict]
+        A list of surface dictionaries.
+        See Notes, for more information about the structure of the dict.
+
+    Returns
+    -------
+    list[System.Guid]
+
+    Notes
+    -----
+    A surface dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'surface': compas.geometry.Surface,
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
+    """
+    guids = []
+    for data in iter(surfaces):
+        surface = data['surface']
+        name = data.get('name', '')
+        color = data.get('color')
+        layer = data.get('layer')
+        guid = add_surface(surface.rhino_surface)
+        if not guid:
+            continue
+        obj = find_object(guid)
+        if not obj:
+            continue
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
+        attr.Name = name
         obj.CommitChanges()
         guids.append(guid)
     return guids

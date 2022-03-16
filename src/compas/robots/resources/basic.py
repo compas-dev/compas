@@ -41,6 +41,9 @@ class AbstractMeshLoader(object):
     def load_mesh(self, url):
         """Load the mesh from the given URL.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`load_meshes` instead.
+
         Parameters
         ----------
         url : str
@@ -48,8 +51,25 @@ class AbstractMeshLoader(object):
 
         Returns
         -------
-        :class:`Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
+        """
+        return NotImplementedError
+
+    def load_meshes(self, url):
+        """Load meshes from the given URL.
+
+        A single mesh file can contain multiple meshes depending on the format.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+            List of meshes.
         """
         return NotImplementedError
 
@@ -102,6 +122,9 @@ class DefaultMeshLoader(AbstractMeshLoader):
     def load_mesh(self, url):
         """Loads a mesh from local storage.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`load_meshes` instead.
+
         Parameters
         ----------
         url : str
@@ -109,8 +132,25 @@ class DefaultMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        :class:`Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
+        """
+        return self.load_meshes(url)[0]
+
+    def load_meshes(self, url):
+        """Load meshes from the given URL.
+
+        A single mesh file can contain multiple meshes depending on the format.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+            List of meshes.
         """
         url = self._get_mesh_url(url)
         return _mesh_import(url, url)
@@ -218,6 +258,9 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
     def load_mesh(self, url):
         """Loads a mesh from local storage.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`load_meshes` instead.
+
         Parameters
         ----------
         url : str
@@ -225,8 +268,25 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        :class:`Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
+        """
+        return self.load_meshes(url)[0]
+
+    def load_meshes(self, url):
+        """Load meshes from the given URL.
+
+        A single mesh file can contain multiple meshes depending on the format.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+            List of meshes.
         """
         local_file = self._get_local_path(url)
         return _mesh_import(url, local_file)
@@ -247,10 +307,10 @@ def _mesh_import(name, file):
             'Mesh type not supported: {}'.format(file_extension))
 
     if file_extension == 'obj':
-        return Mesh.from_obj(file)
+        return [Mesh.from_obj(file)]
     elif file_extension == 'stl':
-        return Mesh.from_stl(file)
+        return [Mesh.from_stl(file)]
     elif file_extension == 'ply':
-        return Mesh.from_ply(file)
+        return [Mesh.from_ply(file)]
 
     raise Exception

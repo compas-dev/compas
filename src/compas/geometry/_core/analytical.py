@@ -21,20 +21,16 @@ def circle_evaluate(t, r, z=0):
     Parameters
     ----------
     t: float
-        Parameter
+        Parameter.
     r: float
-        Constant
+        Radius of the circle.
     z: float, optional
-        Height. Default is 0.
-
-    Notes
-    -----
-    The radius is r.
+        Elevation of the circle above the XY plane.
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     """
     return [r * cos(t), r * sin(t), z]
@@ -46,13 +42,13 @@ def ellipse_evaluate(t, a, b, z=0):
     Parameters
     ----------
     t: float
-        Parameter
+        Parameter.
     a: float
-        Constant
+        Ellipse major.
     b: float
-        Constant
+        Ellipse minor.
     z: float, optional
-        Height. Default is 0.
+        Elevation of the ellipse above the XY plane.
 
     Notes
     -----
@@ -60,69 +56,67 @@ def ellipse_evaluate(t, a, b, z=0):
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     """
     return [a * cos(t), b * sin(t), z]
 
 
 def archimedean_spiral_evaluate(t, a, b, z=0):
-    """Evalutes a spiral at a parameter. The analytical polar equation is r = a + b * theta.
+    """Evalutes a spiral at a parameter.
+
+    The analytical polar equation is r = a + b * theta.
 
     Parameters
     ----------
     t: float
-        Parameter
+        Parameter.
     a: float
-        Constant
+        The angle of the tangent at the beginning is equal to a.
     b: float
-        Constant
+        The radius between turns is equal to 2 * pi * b.
     z: float, optional
-        Height. Default is 0.
+        Elevation of the spiral segment above the XY plane.
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
-
-    Notes
-    -----
-    The radius between turns is equal to 2 * pi * b.
-    The angle of the tangent at the beginning is equal to a.
-    The length of an arc of the spiral from 0 t is equal to L(t) = b / 2 * t ** 2 [1]_.
+    [float, float, float]
+        The XYZ coordinates.
 
     References
     ----------
-    .. [1] GeoGebra. *Archimedean Spiral built by parametric equations*. Available at: https://www.geogebra.org/m/dZuH5hWa.
+    * GeoGebra. *Archimedean Spiral built by parametric equations*. Available at: https://www.geogebra.org/m/dZuH5hWa.
 
     """
     return [b * t * cos(t + a), b * t * sin(t + a), z]
 
 
 def logarithmic_spiral_evaluate(t, a, b, z=0):
-    """Evalutes a logarithmic spiral at a parameter. The analytical polar equation is r = a * exp(b * theta).
+    """Evalutes a logarithmic spiral at a parameter.
+
+    The analytical polar equation is r = a * exp(b * theta).
 
     Parameters
     ----------
     t: float
-        Parameter
+        Parameter.
     a: float
-        Constant
+        The angle of the tangent at the beginning is equal to a.
     b: float
-        Constant
+        The radius between turns is equal to 2 * pi * b.
     z: float, optional
-        Height. Default is 0.
+        Elevation of the spiral segment above the XY plane.
 
     Returns
     -------
-    list
-            The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     References
     ----------
-    .. [1] GeoGebra. *An equiangular spiral - parametric equation*.
-               Available at: https://www.geogebra.org/m/zsHgCvq7.
+    * GeoGebra. *An equiangular spiral - parametric equation*. Available at: https://www.geogebra.org/m/zsHgCvq7.
+
     """
     return [a * exp(b * t) * cos(t), a * exp(b * t) * sin(t), z]
 
@@ -133,18 +127,16 @@ def helix_evaluate(t, a, b):
     Parameters
     ----------
     t: float
-        Parameter
+        Parameter.
     a: float
-        Constant
+        The radius of the helix is a.
     b: float
-        Constant
-    c: float
-        Constant
+        The slope of the helix is b / a.
 
     Returns
     -------
-    list
-        The (x, y, z) coordinates.
+    [float, float, float]
+        The XYZ coordinates.
 
     Notes
     -----

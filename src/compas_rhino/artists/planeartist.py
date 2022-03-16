@@ -2,33 +2,34 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# import compas_rhino
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from .artist import RhinoArtist
 
 
-__all__ = ['PlaneArtist']
-
-
-class PlaneArtist(PrimitiveArtist):
+class PlaneArtist(RhinoArtist, PrimitiveArtist):
     """Artist for drawing planes.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         A COMPAS plane.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
+    layer : str, optional
+        The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
 
     """
+
+    def __init__(self, plane, layer=None, **kwargs):
+        super(PlaneArtist, self).__init__(primitive=plane, layer=layer, **kwargs)
 
     def draw(self):
         """Draw the plane.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """

@@ -28,14 +28,14 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback
     callback_args : list, optional
         A list of arguments to be passed to the callback.
 
+    Returns
+    -------
+    None
+
     Raises
     ------
     Exception
         If a callback is provided, but it is not callable.
-
-    Examples
-    --------
-    >>>
 
     """
     if callback:

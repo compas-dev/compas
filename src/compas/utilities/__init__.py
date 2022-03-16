@@ -5,6 +5,11 @@ utilities
 
 .. currentmodule:: compas.utilities
 
+.. rst-class:: lead
+
+This package collects miscellaneous functionality with the common characteristic
+that it simply did not really fit anywhere else.
+
 
 async
 =====
@@ -122,7 +127,7 @@ from .decorators import (
     abstractclassmethod,
     abstractstaticmethod,
     memoize,
-    print_profile
+    print_profile,
 )
 from .descriptors import (
     Float,

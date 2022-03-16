@@ -11,12 +11,6 @@ from compas.files.xml import XML
 from compas.files.xml import XMLElement
 from compas.utilities import memoize
 
-__all__ = [
-    'URDF',
-    'URDFElement',
-    'URDFParser',
-]
-
 
 def _tag_without_namespace(element, default_namespace):
     if not default_namespace:
@@ -31,7 +25,7 @@ def _tag_without_namespace(element, default_namespace):
 
 
 class URDF(object):
-    """Parse URDF files.
+    """Class for working with URDF files.
 
     This class abstracts away the underlying XML of the Unified Robot
     Description Format (`URDF`_) and represents its as an object graph.
@@ -80,54 +74,62 @@ class URDF(object):
 
     @classmethod
     def from_robot(cls, robot):
+        """Construct a URDF from a robot.
+
+        Parameters
+        ----------
+        robot : :class:`~compas.robots.RobotModel`
+
+        Returns
+        -------
+        :class:`~compas.files.URDF`
+
+        """
         urdf = cls()
         urdf.robot = robot
         return urdf
 
     @classmethod
     def from_file(cls, source):
-        """Parse a URDF file from a file path or file-like object.
+        """Construct a URDF from a file path or file-like object.
 
         Parameters
         ----------
-        source : str or file
+        source : str | file
             File path or file-like object.
+
+        Returns
+        -------
+        :class:`~compas.files.URDF`
 
         Examples
         --------
-        >>> urdf = URDF.from_file(compas.get("ur5.xacro"))
+        >>> urdf = URDF.from_file(compas.get("ur_description/urdf/ur5.urdf"))
+
         """
         return cls(XML.from_file(source))
 
+    read = from_file
+
     @classmethod
     def from_string(cls, text):
-        """Parse URDF from a string.
+        """Construct a URDF from a string.
 
         Parameters
         ----------
-        text : :obj:`str`
+        text : str
             XML string.
+
+        Returns
+        -------
+        :class:`~compas.files.URDF`
 
         Examples
         --------
         >>> urdf = URDF.from_string('<robot name="panda"/>')
+
         """
         return cls(XML.from_string(text))
-
-    @classmethod
-    def read(cls, source):
-        """Parse a URDF file from a file path or file-like object.
-
-        Parameters
-        ----------
-        source : str or file
-            File path or file-like object.
-
-        Examples
-        --------
-        >>> urdf = URDF.from_file(compas.get("ur5.xacro"))
-        """
-        return cls.from_file(source)
 
     def to_file(self, destination=None, prettify=False):
         """Writes the string representation of this URDF instance,
@@ -140,11 +142,10 @@ class URDF(object):
             the filepath of the associated XML object.
         prettify : bool, optional
             Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
 
         Returns
         -------
-        ``None``
+        None
 
         """
         if destination:
@@ -158,10 +159,9 @@ class URDF(object):
         Parameters
         ----------
         encoding : str, optional
-            Output encoding (the default is 'utf-8')
+            Output encoding.
         prettify : bool, optional
             Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
 
         Returns
         -------
@@ -178,40 +178,53 @@ class URDF(object):
         Parameters
         ----------
         destination : str, optional
-            Filepath where the URDF should be written.  Defaults to
-            the filepath of the associated XML object.
+            Filepath where the URDF should be written.
+            Defaults to the filepath of the associated XML object.
         prettify : bool, optional
             Whether the string should add whitespace for legibility.
-            Defaults to ``False``.
 
         Returns
         -------
-        ``None``
+        None
 
         """
         self.to_file(destination=destination, prettify=prettify)
 
 
 class URDFParser(object):
-    """Parse URDF elements into an object graph."""
+    """Class for parsing URDF elements into an object graph."""
     _parsers = dict()
 
     @classmethod
-    def install_parser(cls, parser_type, *tags):
+    def install_parser(cls, parser_type, *tags, **kwargs):
         """Installs an URDF parser type for a defined tag.
 
         Parameters
         ----------
         parser_type : type
             Python class handling URDF parsing of the tag.
-        tags : str
+        *tags : list[str]
             One or more URDF string tag that the parser can parse.
+        proxy_type : type, optional
+            In some cases, the parser type is a general class without
+            knowledge of URDF, and it requires a proxy class to add
+            URDF-related functions to it.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If `tags` is empty.
+
         """
         if len(tags) == 0:
             raise ValueError('Must define at least one tag')
 
         for tag in tags:
-            cls._parsers[tag] = parser_type
+            cls._parsers[tag] = {'type': parser_type, 'proxy': kwargs.get('proxy_type')}
 
     @classmethod
     def parse_element(cls, element, path='', element_default_namespace=None):
@@ -224,17 +237,22 @@ class URDFParser(object):
 
         Parameters
         ----------
-        element :
+        element : :class:`~compas.files.XMLElement`
             XML Element node.
-        path : str
+        path : str, optional
             Full path to the element.
-        element_default_namespace : str
+        element_default_namespace : str, optional
             Default namespace at the current level current document.
 
         Returns
         -------
         object
             An instance of the model object represented by the given element.
+
+        Raises
+        ------
+        TypeError
+            If the element instance cannot be created.
 
         """
         default_ns = element.attrib.get('xmlns') or element_default_namespace
@@ -246,7 +264,8 @@ class URDFParser(object):
             child_path = '/'.join([path, child_name])
             children.append(cls.parse_element(child, child_path, default_ns))
 
-        parser_type = cls._parsers.get(path, None) or URDFGenericElement
+        parser_type_info = cls._parsers.get(path, None) or {'type': URDFGenericElement}
+        parser_type = parser_type_info.get('proxy') or parser_type_info['type']
 
         metadata = get_metadata(parser_type)
 

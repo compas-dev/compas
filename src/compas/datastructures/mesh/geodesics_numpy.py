@@ -17,7 +17,7 @@ from scipy.sparse.linalg import splu
 from compas.numerical import normrow
 from compas.numerical import normalizerow
 
-from compas.datastructures.mesh.core import trimesh_cotangent_laplacian_matrix
+from .matrices import trimesh_cotangent_laplacian_matrix
 
 
 __all__ = ['mesh_geodesic_distances_numpy']
@@ -28,11 +28,11 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh instance.
-    sources : list
+    sources : list[int]
         A list of vertex identifiers from which the distances should be calculated.
-    m : float (1.0)
+    m : float, optional
         ?
 
     Returns

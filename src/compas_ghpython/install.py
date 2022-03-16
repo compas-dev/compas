@@ -9,7 +9,7 @@ from compas_ghpython.components import install_userobjects
 
 
 @compas.plugins.plugin(category='install')
-def installable_rhino_packages(category='install'):
+def installable_rhino_packages():
     return ['compas_ghpython']
 
 

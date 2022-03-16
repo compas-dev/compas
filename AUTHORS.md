@@ -31,3 +31,4 @@
 - Robin Godwyll <<rodwyll+github@gmail.com>> [@robin-gdwl](https://github.com/robin-gdwl)
 - Mattis Koh <<mattiskoh@gmail.com>> [@mattiskoh](https://github.com/mattiskoh)
 - Andrea Ghensi <<a.ghensi@swsglobal.com>> [@sanzoghenzo](https://github.com/sanzoghenzo)
+- Nizar Taha <<taha@arch.ethz.ch>> [@nizartaha](https://github.com/nizartaha)

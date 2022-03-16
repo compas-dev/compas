@@ -4,7 +4,10 @@ These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
 import os
+import platform
+import re
 import shutil
+import subprocess
 import sys
 import tempfile
 
@@ -14,11 +17,14 @@ except NameError:
     class NotADirectoryError(Exception):
         pass
 
+PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
+SYMLINK_REGEX = re.compile(r"\n.*\<SYMLINKD\>\s(.*)\s\[(.*)\]\r")
 
 
 __all__ = [
     'absjoin',
+    'realpath',
     'create_symlink',
     'create_symlinks',
     'remove_symlink',
@@ -36,7 +42,8 @@ __all__ = [
     'is_mono',
     'is_ironpython',
     'is_rhino',
-    'is_blender'
+    'is_blender',
+    'is_grasshopper'
 ]
 
 
@@ -91,7 +98,7 @@ def is_ironpython():
         True if the implementation is IronPython. False otherwise
 
     """
-    return 'ironpython' in sys.version.lower()
+    return 'ironpython' == platform.python_implementation().lower()
 
 
 def is_rhino():
@@ -99,8 +106,16 @@ def is_rhino():
         import Rhino  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
+
+
+def is_grasshopper():
+    try:
+        import Rhino
+        import scriptcontext
+    except ImportError:
+        return False
+    return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
 
 
 def is_blender():
@@ -108,12 +123,10 @@ def is_blender():
         import bpy  # noqa : F401
     except ImportError:
         return False
-    else:
-        return True
+    return True
 
 
 if is_windows():
-    import subprocess
     import ctypes
     import ctypes.wintypes
 
@@ -146,6 +159,9 @@ if is_windows():
     INFINITE = -1
 
 
+# seems a bit weird that this is done here, since it is only relevant for Rhino/GH
+# also, perhasps it makes more sense this is done at the top of the file
+# since it defines a few module-wide variables
 try:
     from compas_bootstrapper import PYTHON_DIRECTORY
 except:  # noqa: E722
@@ -239,6 +255,49 @@ def prepare_environment(env=None):
 
 def absjoin(*parts):
     return os.path.abspath(os.path.join(*parts))
+
+
+def realpath(path):
+    """Return the canonical path of the specified filename, resolving any symbolic links encountered in the path.
+
+    This function uses Python's stdlib `os.path.realpath` in most cases,
+    except when inside IronPython because (guess what?) it is broken and
+    doesn't really eliminate sym links, so, we fallback to a different
+    way to identifying symlinks in that situation.
+    """
+    if not PY3 and is_ironpython():
+        if is_windows():
+            return _realpath_ipy_win(path)
+        else:
+            return _realpath_ipy_posix(path)
+
+    return os.path.realpath(path)
+
+
+def _realpath_ipy_win(path):
+    dirname = os.path.basename(path)
+    parent_path = os.path.join(path, '..')
+
+    args = 'dir /c "{}" /Al'.format(parent_path)
+    process = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    output, _error = process.communicate()
+    matches = SYMLINK_REGEX.finditer(output)
+    for match in matches:
+        match_name = match.groups()[0].strip()
+        match_link = match.groups()[1]
+
+        if match_name == dirname:
+            return match_link
+
+    return path
+
+
+def _realpath_ipy_posix(path):
+    args = 'readlink -f "{}"'.format(path)
+    process = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, _error = process.communicate()
+    return output
 
 
 # Cache whatever symlink function works (native or polyfill)
@@ -336,7 +395,7 @@ def create_symlinks(symlinks, raise_on_error=False):
 
     Parameters
     ----------
-    symlinks: list of string tuples
+    symlinks: list[str]ing tuples
         List of ``source`` and ``link_name`` of the symlinks as tuples.
     """
     symlink, allow_polyfill_retry = _get_symlink_function()
@@ -356,7 +415,7 @@ def remove_symlink(symlink):
 
     Parameters
     ----------
-    symlink : :obj:`str`
+    symlink : str
         Symlink to remove.
     """
     # Broken links return False on .exists(), so we need to check .islink() as well
@@ -466,7 +525,7 @@ def _run_command_as_admin(command, arguments):
     ----------
     command : str
         Command name.
-    arguments : list of str
+    arguments : list[str]
         List of arguments.
     """
     _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
@@ -483,7 +542,7 @@ def _run_as_admin(command):
 
     Paramters
     ---------
-    command : :obj:`list` of :obj:`str`
+    command : list[str]
         List of strings of the command to run.
 
     Returns

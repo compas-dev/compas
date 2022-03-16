@@ -33,19 +33,17 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
 
     Parameters
     ----------
-    values : list of float
+    values : sequence[float]
         The data to be normalized.
     new_min : float, optional
         The new minimum of the data.
-        Default is `0.0`.
     new_max : float, optional
         The new maximum of the data.
-        Default is `1.0`.
 
     Returns
     -------
-    list of float
-        A list of floats mapped to the range `new_min`, `new_max`.
+    list[float]
+        A new list of floats mapped to the range `new_min`, `new_max`.
 
     Examples
     --------
@@ -55,6 +53,7 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
     0.0
     >>> max(data)
     1.0
+
     """
     old_max = max(values)
     old_min = min(values)
@@ -64,31 +63,26 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
 
 
 def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
-    """
-    Maps a list of numbers from one domain to another.
-    If you do not specify a target domain 0.0-1.0 will be used.
+    """Maps a list of numbers from one domain to another.
 
     Parameters
     ----------
-    values : list of int or float
+    values : sequence[int | float]
         The value to remap
-    original_min : int or float
-        The minimun value of the original domain
-    original_max : int or float
-        The maximum value of the original domain
-    target_min : int or float
-        The minimun value of the target domain. Default 0.0
-    target_max : int or float
-        The maximum value of the target domain. Default 1.0
+    target_min : int | float, optional
+        The minimun value of the target domain.
+    target_max : int | float, optional
+        The maximum value of the target domain.
+    original_min : int | float, optional
+        The minimun value of the original domain, other than the actual minimum value.
+    original_max : int | float, optional
+        The maximum value of the original domain, other than the actual maximum value.
 
     Returns
     -------
-    list
-        The remaped list of values
+    list[float]
+        The remaped list of values.
 
-    Examples
-    --------
-    >>>
     """
     if original_min is None:
         original_min = min(values)
@@ -103,19 +97,40 @@ def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, orig
 def meshgrid(x, y, indexing='xy'):
     """Construct coordinate matrices from two coordinate vectors.
 
-    This function mimicks the functionality of ``numpy.meshgrid`` [1]_, but in a simpler form.
-
     Parameters
     ----------
-    x : list of float
-    y : list of float
-    indexing : {'xy', 'ij'}, optional
-        Default is ``'xy'``.
+    x : list[float]
+        The values of the "x axis" of the grid.
+    y : list[float]
+        The values of the "y axis" of the grid.
+    indexing : Literal['xy', 'ij'], optional
+        The indexing strategy determines the structure of the output.
 
     Returns
     -------
-    (list of list, list of list)
-        The X and Y values of the coordinate grid.
+    list[list[float]]
+        The X values of the coordinate grid.
+    list[list[float]]
+        The Y values of the coordinate grid.
+
+    Notes
+    -----
+    The output of this function consists of two "matrices", `X` and `Y`.
+    The structure of the matrices is determined by the choice of `indexing`.
+    Assuming ``m = len(x)`` and ``n = len(y)``.
+    If `indexing` is ``'xy'``,
+    the shape of both matrices is ``(n, m)``,
+    with `X` containing the elements of `x` in its rows, and `Y` the elements of `y` in its columns.
+    If `indexing` is ``'ij'``,
+    the shape of both matrices is ``(m, n)``,
+    with `X` containing the elements of `x` in its columns, and `Y` the elements of `y` in its rows.
+
+    References
+    ----------
+    This function mimicks the functionality of ``numpy.meshgrid`` [1]_, but in a simpler form.
+
+    .. [1] `numpy.meshgrid`.
+           Available at https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html
 
     Examples
     --------
@@ -135,25 +150,20 @@ def meshgrid(x, y, indexing='xy'):
     >>> Y
     [[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]]
 
-    References
-    ----------
-    .. [1] ``numpy.meshgrid`` Available at https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html
     """
     x = list(x)
     y = list(y)
     if indexing == 'xy':
         X = [[x[j] for j in range(len(x))] for i in range(len(y))]
         Y = [[y[i] for j in range(len(x))] for i in range(len(y))]
-        return X, Y
-    X = [[x[i] for j in range(len(y))] for i in range(len(x))]
-    Y = [[y[j] for j in range(len(y))] for i in range(len(x))]
+    else:
+        X = [[x[i] for j in range(len(y))] for i in range(len(x))]
+        Y = [[y[j] for j in range(len(y))] for i in range(len(x))]
     return X, Y
 
 
 def linspace(start, stop, num=50):
     """Generate a sequence of evenly spaced numbers over a specified interval.
-
-    This function mimicks the functionality of ``numpy.linspace`` [1]_, but in a simpler form.
 
     Parameters
     ----------
@@ -169,15 +179,18 @@ def linspace(start, stop, num=50):
     float
         The next value in the sequence.
 
+    References
+    ----------
+    This function mimicks the functionality of ``numpy.linspace`` [1]_, but in a simpler form.
+
+    .. [1] ``numpy.linspace`` Available at https://numpy.org/doc/stable/reference/generated/numpy.linspace.html
+
     Examples
     --------
     >>> from compas.utilities import linspace
     >>> list(linspace(0, 1, 3))
     [0.0, 0.5, 1.0]
 
-    References
-    ----------
-    .. [1] ``numpy.linspace`` Available at https://numpy.org/doc/stable/reference/generated/numpy.linspace.html
     """
     step = (stop - start) / (num - 1)
     for i in range(num):
@@ -185,7 +198,19 @@ def linspace(start, stop, num=50):
 
 
 def flatten(list_of_lists):
-    """Flatten one level of nesting"""
+    """Flatten one level of nesting.
+
+    Parameters
+    ----------
+    list_of_lists : iterable[iterable[Any]]
+        An iterable object containing other iterable objects.
+
+    Returns
+    -------
+    iterable
+        An iterable containing the elements of the elements of the nested iterables.
+
+    """
     return chain.from_iterable(list_of_lists)
 
 
@@ -211,6 +236,7 @@ def pairwise(iterable):
     1 2
     2 3
     3 4
+
     """
     a, b = tee(iterable)
     next(b, None)
@@ -260,28 +286,25 @@ def window(seq, n=2):
 def iterable_like(target, reference, fillvalue=None):
     """Creates an iterator from a reference object with size equivalent to that of a target iterable.
 
-    Values will be yielded one at a time until the target iterable is exhausted.
-    If target and reference are of uneven size, fillvalue will be used to
-    substitute the missing values.
-
     Parameters
     ----------
     target : iterable
         An iterable to be matched in size.
     reference: iterable
-        Iterable taken as basis for pairing.
+        The iterable containing the original data.
     fillvalue : object, optional
-        Defaults to `None`.
+        A value to replace missing items.
 
-    Returns
-    -------
+    Yields
+    ------
     object
-        The next value in the iterator
+        The next value in the iterator.
 
     Notes
     -----
-    This function can also produce an iterable capped to the size of target
-    whenever the supplied reference is larger.
+    Values will be yielded one at a time until the reference iterable is exhausted.
+    If `target` contains more values than `reference`, `fillvalue` will be used to cover the difference.
+    Otherwise, only the same number of items from `reference` will be yielded as there would have been from `target`.
 
     Examples
     --------
@@ -291,6 +314,7 @@ def iterable_like(target, reference, fillvalue=None):
     [(255, 0, 0), (255, 0, 0), (255, 0, 0), (255, 0, 0)]
     >>> list(iterable_like(color, keys))
     [0, 1, 2]
+
     """
     target, counter = tee(target)
     zipped = zip_longest(target, reference, fillvalue=fillvalue)

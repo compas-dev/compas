@@ -8,7 +8,7 @@ from math import sin
 
 from compas.geometry import Point
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
 
 
 class Sphere(Shape):
@@ -16,22 +16,22 @@ class Sphere(Shape):
 
     Parameters
     ----------
-    point: :class:`compas.geometry.Point` list of float
+    point: [float, float, float] | :class:`~compas.geometry.Point`
         The center of the sphere.
     radius: float
         The radius of the sphere.
 
     Attributes
     ----------
-    point: :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         The center of the sphere.
-    radius: float
+    radius : float
         The radius of the sphere.
-    center (read-only): :class:`compas.geometry.Point`
+    center : :class:`~compas.geometry.Point`, read-only
         The center of the sphere.
-    area (read-only): float
+    area : float, read-only
         The surface area of the sphere.
-    volume (read-only): float
+    volume : float, read-only
         The volume of the sphere.
 
     Examples
@@ -41,20 +41,15 @@ class Sphere(Shape):
     >>> sphere1 = Sphere(Point(1, 1, 1), 5)
     >>> sphere2 = Sphere((2, 4, 1), 2)
     >>> sphere3 = Sphere([2, 4, 1], 2)
+
+    >>> from compas.geometry import Point
+    >>> from compas.geometry import Sphere
+    >>> sphere = Sphere(Point(1, 1, 1), 5)
+    >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
+    >>> sdict == sphere.data
+    True
+
     """
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        from compas.data import is_float3
-        return schema.Schema({
-            'point': is_float3,
-            'radius': schema.And(float, lambda x: x > 0)
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        return 'sphere'
 
     __slots__ = ['_point', '_radius']
 
@@ -65,24 +60,28 @@ class Sphere(Shape):
         self.point = point
         self.radius = radius
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : Schema of the data representation."""
+        import schema
+        from compas.data import is_float3
+        return schema.Schema({
+            'point': is_float3,
+            'radius': schema.And(float, lambda x: x > 0)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        """str : Name of the schema of the data representation in JSON format."""
+        return 'sphere'
+
     @property
     def data(self):
-        """Returns the data dictionary that represents the sphere.
-
-        Returns
-        -------
-        dict
-            The sphere data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Point
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
-        >>> sdict == sphere.data
-        True
-
+        """dict : Returns the data dictionary that represents the sphere.
         """
         return {'point': self.point.data, 'radius': self.radius}
 
@@ -91,9 +90,36 @@ class Sphere(Shape):
         self.point = Point.from_data(data['point'])
         self.radius = data['radius']
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a sphere from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Sphere`
+            The constructed sphere.
+
+        Examples
+        --------
+        >>> from compas.geometry import Sphere
+        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
+        >>> sphere = Sphere.from_data(data)
+
+        """
+        sphere = cls(Point.from_data(data['point']), data['radius'])
+        return sphere
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
     @property
     def point(self):
-        """Point: The center of the sphere."""
         return self._point
 
     @point.setter
@@ -102,7 +128,6 @@ class Sphere(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the sphere."""
         return self._radius
 
     @radius.setter
@@ -115,12 +140,10 @@ class Sphere(Shape):
 
     @property
     def area(self):
-        """float: The surface area of the sphere."""
         return 4 * pi * self.radius**2
 
     @property
     def volume(self):
-        """float: The volume of the sphere."""
         return 4./3. * pi * self.radius**3
 
     # ==========================================================================
@@ -156,51 +179,30 @@ class Sphere(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a sphere from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        Sphere
-            The constructed sphere.
-
-        Examples
-        --------
-        >>> from compas.geometry import Sphere
-        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
-        >>> sphere = Sphere.from_data(data)
-
-        """
-        sphere = cls(Point.from_data(data['point']), data['radius'])
-        return sphere
-
     # ==========================================================================
     # methods
     # ==========================================================================
 
-    def to_vertices_and_faces(self, u=10, v=10):
+    def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
         """Returns a list of vertices and faces
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``10``.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``10``.
+        triangulated: bool, optional
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
             raise ValueError('The value for u should be u > 3.')
@@ -245,6 +247,16 @@ class Sphere(Shape):
             nn = len(vertices) - 3 - (j + 1) % u
             faces.append([np, nn, nc])
 
+        if triangulated:
+            triangles = []
+            for face in faces:
+                if len(face) == 4:
+                    triangles.append(face[0:3])
+                    triangles.append([face[0], face[2], face[3]])
+                else:
+                    triangles.append(face)
+            faces = triangles
+
         return vertices, faces
 
     def transform(self, transformation):
@@ -252,11 +264,15 @@ class Sphere(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the Sphere.
             Note that non-similarity preserving transformations will not change
             the sphere into an ellipsoid. In such case, the radius of the sphere
             will be scaled by the largest scale factor of the threee axis.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

@@ -14,14 +14,12 @@ def quadmesh_planarize(M, kmax=500, maxdev=0.005):
 
     Parameters
     ----------
-    M : (list, list)
+    M : [sequence[[float, float, float]], sequence[[int, int, int, int]]]
         A quad mesh represented by a list of vertices and a list of faces.
     kmax : int, optional
         The maximum number of iterations.
-        Default is ``500``.
     maxdev : float, optional
         The maximum deviation from planar.
-        Default is ``0.005``.
 
     Returns
     -------

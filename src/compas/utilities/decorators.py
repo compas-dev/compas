@@ -25,7 +25,7 @@ __all__ = [
     'abstractstaticmethod',
     'abstractclassmethod',
     'memoize',
-    'print_profile'
+    'print_profile',
 ]
 
 
@@ -36,6 +36,7 @@ class abstractstaticmethod(staticmethod):
     ----------
     function : callable
         The method to declare abstract static.
+
     """
 
     __slots__ = ()
@@ -54,6 +55,7 @@ class abstractclassmethod(classmethod):
     ----------
     function : callable
         The class method to declare abstract.
+
     """
 
     __slots__ = ()
@@ -72,12 +74,17 @@ def memoize(func, *args, **kwargs):
     ----------
     func : callable
         The function that should be memoized.
+    *args : list
+        Positional arguments to be passed on to the wrapper function.
+    **kwargs : dict, optional
+        Optional keyword arguments to be passed on to the wrapper function.
 
     Returns
     -------
-    memoized_func : callable
+    callable
         A wrapper for the original function that returns a previously
         computed and cached result when possible.
+
     """
     cache = func.cache = {}
 

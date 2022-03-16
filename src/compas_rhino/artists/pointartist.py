@@ -3,55 +3,45 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from compas.colors import Color
+from .artist import RhinoArtist
 
 
-__all__ = ['PointArtist']
-
-
-class PointArtist(PrimitiveArtist):
+class PointArtist(RhinoArtist, PrimitiveArtist):
     """Artist for drawing points.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         A COMPAS point.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import random
-        from compas.geometry import Pointcloud
-        from compas.utilities import i_to_rgb
-
-        import compas_rhino
-        from compas_rhino.artists import PointArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-
-        compas_rhino.clear_layer("Test::PointArtist")
-
-        for point in pcl.points:
-            artist = PointArtist(point, color=i_to_rgb(random.random()), layer="Test::PointArtist")
-            artist.draw()
+    layer : str, optional
+        The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
 
     """
 
-    def draw(self):
+    def __init__(self, point, layer=None, **kwargs):
+        super(PointArtist, self).__init__(primitive=point, layer=layer, **kwargs)
+
+    def draw(self, color=None):
         """Draw the point.
+
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The RGB color of the point.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """
-        points = [{'pos': list(self.primitive), 'color': self.color, 'name': self.name}]
+        color = Color.coerce(color) or self.color
+        points = [{'pos': list(self.primitive), 'color': color.rgb255, 'name': self.primitive.name}]
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        self._guids = guids
         return guids

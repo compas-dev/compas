@@ -24,24 +24,55 @@ __all__ = [
 ]
 
 
+def intersect_lines(l1, l2, tol):
+    x1, x2 = intersection_line_line(l1, l2, tol)
+    if x1 and x2:
+        return centroid_points([x1, x2])
+
+
+def intersect_lines_colinear(l1, l2, tol):
+    def are_segments_colinear(l1, l2, tol):
+        a, b = l1
+        d, c = l2
+        return is_colinear(a, b, c, tol)
+    if are_segments_colinear(l1, l2, tol):
+        return centroid_points([l1[1], l2[0]])
+
+
+def intersect(l1, l2, tol):
+    supported_funcs = [intersect_lines, intersect_lines_colinear]
+    for func in supported_funcs:
+        point = func(l1, l2, tol)
+        if point:
+            return point
+    msg = "Intersection not found for line: {}, and line: {}".format(l1, l2)
+    raise ValueError(msg)
+
+
+def offset_segments(point_list, distances, normal):
+    segments = []
+    for line, distance in zip(pairwise(point_list), distances):
+        segments.append(offset_line(line, distance, normal))
+    return segments
+
+
 def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
     """Offset a line by a distance.
 
     Parameters
     ----------
-    line : tuple
-        Two points defining the line.
-    distances : float or list of floats
+    line : [point, point] | :class:`~compas.geometry.Line`
+        A line defined by two points.
+    distances : float or list[float]
         The offset distance as float.
-        A single value determines a constant offset. Alternatively, two
-        offset values for the start and end point of the line can be used to
-        a create variable offset.
-    normal : vector
+        A single value determines a constant offset.
+        A list of two offset values can be used to a create variable offset at the start and end.
+    normal : [float, float, float] | :class:`~compas.geometry.Vector`, optional
         The normal of the offset plane.
 
     Returns
     -------
-    offset line : tuple
+    tuple[[float, float, float], [float, float, float]]
         Two points defining the offset line.
 
     Notes
@@ -76,18 +107,19 @@ def offset_polygon(polygon, distance, tol=1e-6):
 
     Parameters
     ----------
-    polygon : list of point
+    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
         The XYZ coordinates of the corners of the polygon.
         The first and last coordinates must not be identical.
-    distance : float or list of float
+    distance : float | list[tuple[float, float]]
         The offset distance as float.
         A single value determines a constant offset globally.
-        Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
-        Distance > 0: offset to the outside, distance < 0: offset to the inside.
+        A list of pairs of local offset values per line segment can be used to create variable offsets.
+    tol : float, optional
+        A tolerance value for intersection calculations.
 
     Returns
     -------
-    offset polygon : list of point
+    list[[float, float, float]]
         The XYZ coordinates of the corners of the offset polygon.
         The first and last coordinates are identical.
 
@@ -127,20 +159,32 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
 
     Parameters
     ----------
-    polyline : list of point
+    polyline : sequence[point] | :class:`~compas.geometry.Polyline`
         The XYZ coordinates of the vertices of a polyline.
-    distance : float or list of tuples of floats
+    distance : float | list[tuple[float, float]]
         The offset distance as float.
         A single value determines a constant offset globally.
         Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
-        Distance > 0: offset to the "left", distance < 0: offset to the "right".
-    normal : vector
+    normal : [float, float, float] | :class:`~compas.geometry.Vector`, optional
         The normal of the offset plane.
+    tol : float, optional
+        A tolerance value for intersection calculations.
 
     Returns
     -------
-    offset polyline : list of point
+    list[[float, float, float]]
         The XYZ coordinates of the resulting polyline.
+
+    Notes
+    -----
+    The offset direction is determined by the provided normal vector.
+    If the polyline is in the XY plane and the normal is along the positive Z axis,
+    positive offset distances will result in counterclockwise offsets,
+    and negative values in clockwise direction.
+
+    Examples
+    --------
+    >>>
 
     """
 
@@ -156,46 +200,3 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
     offset.append(segments[-1][1])
 
     return offset
-
-
-def intersect_lines(l1, l2, tol):
-    """
-    """
-    x1, x2 = intersection_line_line(l1, l2, tol)
-    if x1 and x2:
-        return centroid_points([x1, x2])
-
-
-def intersect_lines_colinear(l1, l2, tol):
-    """
-    """
-    def are_segments_colinear(l1, l2, tol):
-        a, b = l1
-        d, c = l2
-        return is_colinear(a, b, c, tol)
-
-    if are_segments_colinear(l1, l2, tol):
-        return centroid_points([l1[1], l2[0]])
-
-
-def intersect(l1, l2, tol):
-    """
-    """
-    supported_funcs = [intersect_lines, intersect_lines_colinear]
-
-    for func in supported_funcs:
-        point = func(l1, l2, tol)
-        if point:
-            return point
-
-    msg = "Intersection not found for line: {}, and line: {}".format(l1, l2)
-    raise ValueError(msg)
-
-
-def offset_segments(point_list, distances, normal):
-    """
-    """
-    segments = []
-    for line, distance in zip(pairwise(point_list), distances):
-        segments.append(offset_line(line, distance, normal))
-    return segments

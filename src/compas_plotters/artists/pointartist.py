@@ -1,29 +1,69 @@
-from typing import Tuple, List
+from typing import Tuple
+from typing import List
+from typing import Any
+
 from matplotlib.patches import Circle
 from matplotlib.transforms import ScaledTranslation
 from compas.geometry import Point
-from compas_plotters.artists import Artist
+
+from compas.artists import PrimitiveArtist
+from .artist import PlotterArtist
 
 Color = Tuple[float, float, float]
 
 
-class PointArtist(Artist):
-    """Artist for COMPAS points."""
+class PointArtist(PlotterArtist, PrimitiveArtist):
+    """Artist for COMPAS points.
 
-    zorder: int = 9000
+    Parameters
+    ----------
+    point : :class:`~compas.geometry.Point`
+        A COMPAS point.
+    size : int, optional
+        The size of the point.
+    facecolor : Color, optional
+        Color of the interior of the point representing the point.
+    edgecolor : Color, optional
+        Color of the boundary of the point representing the point.
+    zorder : int, optional
+        Stacking order above the XY plane of the plotter canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments. See :class:`PlotterArtist` or :class:`PrimitiveArtist`.
+
+    Attributes
+    ----------
+    point : :class:`~compas.geometry.Point`
+        The point associated with the artist.
+    size : float
+        Size of the point, relative to the resolution of the plotter.
+        ``size = self._size / self.plotter.dpi``.
+
+    """
 
     def __init__(self,
                  point: Point,
                  size: int = 5,
                  facecolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0, 0, 0)):
-        super(PointArtist, self).__init__(point)
+                 edgecolor: Color = (0, 0, 0),
+                 zorder: int = 9000,
+                 **kwargs: Any):
+
+        super().__init__(primitive=point, **kwargs)
+
         self._mpl_circle = None
         self._size = None
-        self.point = point
         self.size = size
         self.facecolor = facecolor
         self.edgecolor = edgecolor
+        self.zorder = zorder
+
+    @property
+    def point(self) -> Point:
+        return self.primitive
+
+    @point.setter
+    def point(self, point: Point):
+        self.primitive = point
 
     @property
     def _T(self):
@@ -44,10 +84,14 @@ class PointArtist(Artist):
     def data(self) -> List[List[float]]:
         return [self.point[:2]]
 
-    def update_data(self) -> None:
-        self.plotter.axes.update_datalim(self.data)
-
     def draw(self) -> None:
+        """Draw the circle.
+
+        Returns
+        -------
+        None
+
+        """
         circle = Circle(
             [0, 0],
             radius=self.size,
@@ -60,6 +104,13 @@ class PointArtist(Artist):
         self.update_data()
 
     def redraw(self) -> None:
+        """Update the point using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         self._mpl_circle.set_radius(self.size)
         self._mpl_circle.set_edgecolor(self.edgecolor)
         self._mpl_circle.set_facecolor(self.facecolor)

@@ -16,10 +16,14 @@ def volmesh_transform(volmesh, transformation):
 
     Parameters
     ----------
-    volmesh : compas.datastructures.VolMesh
+    volmesh : :class:`~compas.datastructures.VolMesh`
         The volmesh.
-    transformation : compas.geometry.Transformation
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
+
+    Returns
+    -------
+    None
 
     Notes
     -----
@@ -42,19 +46,19 @@ def volmesh_transform(volmesh, transformation):
 
 
 def volmesh_transformed(volmesh, transformation):
-    """Transform a copy of ``volmesh``.
+    """Return a transformed copy of the volmesh.
 
     Parameters
     ----------
-    volmesh : compas.datastructures.VolMesh
+    volmesh : :class:`~compas.datastructures.VolMesh`
         The volmesh.
-    transformation : compas.geometry.Transformation
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
 
     Returns
     -------
-    VolMesh
-        A transformed independent copy of ``volmesh``.
+    :class:`~compas.datastructures.VolMesh`
+        A transformed independent copy of `volmesh`.
 
     Notes
     -----

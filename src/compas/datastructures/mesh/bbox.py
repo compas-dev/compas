@@ -18,12 +18,12 @@ def mesh_bounding_box(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    list of point
+    list[list[float]]
         The 8 corners of the bounding box of the mesh.
 
     Examples
@@ -43,12 +43,12 @@ def mesh_bounding_box_xy(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    list of point
+    list[list[float]]
         The 4 corners of the bounding polygon in the XY plane.
 
     Examples

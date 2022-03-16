@@ -11,6 +11,9 @@ from System.Drawing import Color
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
 
+from compas.geometry import centroid_points
+from compas.utilities import pairwise
+
 from Rhino.Geometry import Point3d
 from Rhino.Geometry import Vector3d
 from Rhino.Geometry import Line
@@ -26,23 +29,12 @@ from Rhino.Geometry import Mesh
 from Rhino.Geometry import Vector3f
 from Rhino.Geometry import Point2f
 
+try:
+    from Rhino.Geometry import MeshNgon
+except ImportError:
+    MeshNgon = False
+
 TOL = sc.doc.ModelAbsoluteTolerance
-
-
-__all__ = [
-    'draw_frame',
-    'draw_points',
-    'draw_lines',
-    'draw_geodesics',
-    'draw_polylines',
-    'draw_faces',
-    'draw_cylinders',
-    'draw_pipes',
-    'draw_spheres',
-    'draw_mesh',
-    'draw_network',
-    'draw_circles',
-]
 
 
 def draw_frame(frame):
@@ -64,7 +56,7 @@ def draw_points(points):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Point3d`
+    list[:rhino:`Rhino.Geometry.Point3d`]
 
     Notes
     -----
@@ -92,7 +84,7 @@ def draw_lines(lines):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Line`
+    list[:rhino:`Rhino.Geometry.Line`]
 
     Notes
     -----
@@ -122,7 +114,7 @@ def draw_geodesics(geodesics):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Curve`
+    list[:rhino:`Rhino.Geometry.Curve`]
 
     Notes
     -----
@@ -155,7 +147,7 @@ def draw_polylines(polylines):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Polyline`
+    list[:rhino:`Rhino.Geometry.Polyline`]
 
     Notes
     -----
@@ -185,7 +177,7 @@ def draw_faces(faces):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Mesh`
+    list[:rhino:`Rhino.Geometry.Mesh`]
 
     Notes
     -----
@@ -235,11 +227,11 @@ def draw_cylinders(cylinders, cap=False):
     Other Parameters
     ----------------
     cap : bool, optional
-        Default is ``False``.
+        Default is False.
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Cylinder`
+    list[:rhino:`Rhino.Geometry.Cylinder`]
 
     Notes
     -----
@@ -289,7 +281,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Brep`
+    list[:rhino:`Rhino.Geometry.Brep`]
 
     Notes
     -----
@@ -329,7 +321,7 @@ def draw_spheres(spheres):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Sphere`
+    list[:rhino:`Rhino.Geometry.Sphere`]
 
     Notes
     -----
@@ -361,23 +353,35 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
 
     Other Parameters
     ----------------
-    color : tuple, list or :class:`System.Drawing.Color`, optional
+    color : tuple, list | :class:`System.Drawing.Color`, optional
     vertex_normals : bool, optional
     texture_coordinates
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Mesh`
+    list[:rhino:`Rhino.Geometry.Mesh`]
 
     """
     mesh = Mesh()
     for a, b, c in vertices:
         mesh.Vertices.Add(a, b, c)
     for face in faces:
-        if len(face) < 4:
-            mesh.Faces.AddFace(face[0], face[1], face[2])
+        f = len(face)
+        if f < 3:
+            continue
+        if f == 3:
+            mesh.Faces.AddFace(*face)
+        elif f == 4:
+            mesh.Faces.AddFace(*face)
         else:
-            mesh.Faces.AddFace(face[0], face[1], face[2], face[3])
+            if MeshNgon:
+                centroid = centroid_points([vertices[index] for index in face])
+                c = mesh.Vertices.Add(*centroid)
+                facets = []
+                for i, j in pairwise(face + face[:1]):
+                    facets.append(mesh.Faces.AddFace(i, j, c))
+                ngon = MeshNgon.Create(face, facets)
+                mesh.Ngons.AddNgon(ngon)
 
     if vertex_normals:
         count = len(vertex_normals)
@@ -394,7 +398,7 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
     if color:
-        count = len(vertices)
+        count = len(mesh.Vertices)
         colors = CreateInstance(Color, count)
         for i in range(count):
             colors[i] = rs.coercecolor(color)
@@ -408,13 +412,13 @@ def draw_network(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
 
     Returns
     -------
     tuple
-        A list of :class:`Rhino.Geometry.Point3d`.
-        A list of :class:`Rhino.Geometry.Line`.
+        A list[:rhino:`Rhino.Geometry.Point3d`].
+        A list[:rhino:`Rhino.Geometry.Line`].
 
     """
     points = []
@@ -442,7 +446,7 @@ def draw_circles(circles):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Circle`
+    list[:rhino:`Rhino.Geometry.Circle`]
 
     Notes
     -----

@@ -2,6 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from functools import reduce
+from operator import mul
+
 import Rhino
 from Rhino.Geometry import Point3d
 
@@ -14,18 +17,15 @@ from compas.geometry import subtract_vectors
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
-from compas_rhino.objects._modify import mesh_update_attributes
-from compas_rhino.objects._modify import mesh_update_vertex_attributes
-from compas_rhino.objects._modify import mesh_update_face_attributes
-from compas_rhino.objects._modify import mesh_update_edge_attributes
-from compas_rhino.objects._modify import mesh_move_vertex
-from compas_rhino.objects._modify import mesh_move_vertices
-from compas_rhino.objects._modify import mesh_move_face
+from ._modify import mesh_update_attributes
+from ._modify import mesh_update_vertex_attributes
+from ._modify import mesh_update_face_attributes
+from ._modify import mesh_update_edge_attributes
+from ._modify import mesh_move_vertex
+from ._modify import mesh_move_vertices
+from ._modify import mesh_move_face
 
-from compas_rhino.objects._object import BaseObject
-
-
-__all__ = ['MeshObject']
+from ._object import BaseObject
 
 
 class MeshObject(BaseObject):
@@ -33,9 +33,9 @@ class MeshObject(BaseObject):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh data structure.
-    scene : :class:`compas.scenes.Scene`, optional
+    scene : :class:`~compas.scenes.Scene`, optional
         A scene object.
     name : str, optional
         The name of the object.
@@ -54,8 +54,8 @@ class MeshObject(BaseObject):
         'color.faces': (0, 0, 0),
         'color.mesh': (0, 0, 0),
         'show.mesh': True,
-        'show.vertices': True,
-        'show.edges': True,
+        'show.vertices': False,
+        'show.edges': False,
         'show.faces': False,
         'show.vertexlabels': False,
         'show.facelabels': False,
@@ -112,7 +112,7 @@ class MeshObject(BaseObject):
 
     @property
     def location(self):
-        """:class:`compas.geometry.Point`:
+        """:class:`~compas.geometry.Point`:
         The location of the object.
         Default is the origin of the world coordinate system.
         The object transformation is applied relative to this location.
@@ -135,7 +135,7 @@ class MeshObject(BaseObject):
         The scale is applied relative to the location of the object in the scene.
         """
         if not self._scale:
-            self._scale = 1.0
+            self._scale = 1
         return self._scale
 
     @scale.setter
@@ -158,22 +158,28 @@ class MeshObject(BaseObject):
 
     @property
     def vertex_xyz(self):
-        """dict : The view coordinates of the mesh object."""
+        """dict: The view coordinates of the mesh object."""
         origin = Point(0, 0, 0)
-        if self.anchor is not None:
-            xyz = self.mesh.vertex_attributes(self.anchor, 'xyz')
-            point = Point(* xyz)
-            T1 = Translation.from_vector(origin - point)
+        stack = []
+        if self.scale != 1:
             S = Scale.from_factors([self.scale] * 3)
+            stack.append(S)
+        if self.rotation != [0, 0, 0]:
             R = Rotation.from_euler_angles(self.rotation)
+            stack.append(R)
+        if self.location != origin:
+            if self.anchor is not None:
+                xyz = self.mesh.vertex_attributes(self.anchor, 'xyz')
+                point = Point(* xyz)
+                T1 = Translation.from_vector(origin - point)
+                stack.insert(0, T1)
             T2 = Translation.from_vector(self.location)
-            X = T2 * R * S * T1
+            stack.append(T2)
+        if stack:
+            X = reduce(mul, stack[::-1])
+            mesh = self.mesh.transformed(X)
         else:
-            S = Scale.from_factors([self.scale] * 3)
-            R = Rotation.from_euler_angles(self.rotation)
-            T = Translation.from_vector(self.location)
-            X = T * R * S
-        mesh = self.mesh.transformed(X)
+            mesh = self.mesh
         vertex_xyz = {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
         return vertex_xyz
 
@@ -392,8 +398,8 @@ class MeshObject(BaseObject):
         Returns
         -------
         bool
-            ``True`` if the update was successful.
-            ``False`` otherwise.
+            True if the update was successful.
+            False otherwise.
         """
         return mesh_update_attributes(self.mesh)
 
@@ -431,8 +437,8 @@ class MeshObject(BaseObject):
         Returns
         -------
         bool
-            ``True`` if the update was successful.
-            ``False`` otherwise.
+            True if the update was successful.
+            False otherwise.
 
         """
         return mesh_update_edge_attributes(self.mesh, edges, names=names)

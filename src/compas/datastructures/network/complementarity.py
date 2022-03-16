@@ -18,13 +18,18 @@ def network_complement(network, cls=None):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`~compas.datastructures.Network`
         A network.
 
     Returns
     -------
-    Network
+    :class:`~compas.datastructures.Network`
         The complement network.
+
+    References
+    ----------
+    .. [1] Wolfram MathWorld. *Graph complement*.
+           Available at: http://mathworld.wolfram.com/GraphComplement.html.
 
     Examples
     --------
@@ -36,10 +41,6 @@ def network_complement(network, cls=None):
     >>> any(complement.has_edge(u, v, directed=False) for u, v in network.edges())
     False
 
-    References
-    ----------
-    .. [1] Wolfram MathWorld. *Graph complement*.
-           Available at: http://mathworld.wolfram.com/GraphComplement.html.
     """
     if not cls:
         cls = type(network)

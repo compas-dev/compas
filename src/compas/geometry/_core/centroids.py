@@ -42,14 +42,14 @@ def midpoint_point_point(a, b):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates of the first point.
-    b : sequence of float
+    b : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates of the second point.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of the midpoint.
 
     """
@@ -63,16 +63,15 @@ def midpoint_point_point_xy(a, b):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of the first 2D or 3D point (Z will be ignored).
-    b : sequence of float
+    b : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of the second 2D or 3D point (Z will be ignored).
 
     Returns
     -------
-    list
-        XYZ coordinates of the midpoint (Z = 0.0).
-
+    [float, float, 0.0]
+        XYZ coordinates of the midpoint in the XY plane.
     """
     return [0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.0]
 
@@ -82,12 +81,12 @@ def midpoint_line(line):
 
     Parameters
     ----------
-    line : 2-tuple
+    line : [point, point] | :class:`~compas.geometry.Line`
         XYZ coordinates of the first point, and XYZ coordinates of the second point.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of the midpoint.
 
     Examples
@@ -103,13 +102,13 @@ def midpoint_line_xy(line):
 
     Parameters
     ----------
-    line : 2-tuple
+    line : [point, point] | :class:`~compas.geometry.Line`
         XYZ coordinates of the first point, and XYZ coordinates of the second point.
 
     Returns
     -------
-    list
-        XYZ coordinates of the midpoint.
+    [float, float, 0.0]
+        XYZ coordinates of the midpoint in the XY plane.
 
     Examples
     --------
@@ -122,20 +121,20 @@ def midpoint_line_xy(line):
 def centroid_points(points):
     """Compute the centroid of a set of points.
 
-    Warnings
-    --------
-    Duplicate points are **NOT** removed. If there are duplicates in the
-    sequence, they should be there intentionally.
-
     Parameters
     ----------
-    points : sequence
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A sequence of XYZ coordinates.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of the centroid.
+
+    Warnings
+    --------
+    Duplicate points are **NOT** removed. If there are duplicates in the
+    sequence, they should be there intentionally.
 
     Examples
     --------
@@ -153,14 +152,14 @@ def centroid_points_weighted(points, weights):
 
     Parameters
     ----------
-    points : list
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A list of point coordinates.
-    weights : list
+    weights : sequence[float]
         A list of weight floats.
 
     Returns
     -------
-    list
+    [float, float, float]
         The coordinates of the weighted centroid.
     """
     vectors = [scale_vector(point, weight) for point, weight in zip(points, weights)]
@@ -171,20 +170,20 @@ def centroid_points_weighted(points, weights):
 def centroid_points_xy(points):
     """Compute the centroid of a set of points lying in the XY-plane.
 
-    Warnings
-    --------
-    Duplicate points are **NOT** removed. If there are duplicates in the
-    sequence, they should be there intentionally.
-
     Parameters
     ----------
-    points : list of list
+    points : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
         A sequence of points represented by their XY(Z) coordinates.
 
     Returns
     -------
-    list
-        XYZ coordinates of the centroid (Z = 0.0).
+    [float, float, 0.0]
+        XYZ coordinates of the centroid in the XY plane.
+
+    Warnings
+    --------
+    Duplicate points are **NOT** removed. If there are duplicates in the
+    sequence, they should be there intentionally.
 
     Examples
     --------
@@ -202,12 +201,12 @@ def centroid_polygon(polygon):
 
     Parameters
     ----------
-    polygon : list of point
+    polygon : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
     -------
-    list
+    [float, float, float]
         The XYZ coordinates of the centroid.
 
     Notes
@@ -295,15 +294,14 @@ def centroid_polygon_xy(polygon):
 
     Parameters
     ----------
-    polygon : list of point
+    polygon : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
         A sequence of polygon point XY(Z) coordinates.
         The Z coordinates are ignored.
 
     Returns
     -------
-    list
-        The XYZ coordinates of the centroid.
-        The Z coodinate is zero.
+    [float, float, 0.0]
+        The XYZ coordinates of the centroid in the XY plane.
 
     Notes
     -----
@@ -382,18 +380,32 @@ def centroid_polygon_vertices(polygon):
 
     Parameters
     ----------
-    polygon : list of point
+    polygon : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
     -------
-    list
+    [float, float, float]
         The XYZ coordinates of the centroid.
     """
     return centroid_points(polygon)
 
 
 def centroid_polygon_vertices_xy(polygon):
+    """Compute the centroid of the vertices of a polygon projected to the XY plane.
+
+    Parameters
+    ----------
+    polygon : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
+        A sequence of polygon point coordinates.
+        The Z coordinates will be ignored.
+
+    Returns
+    -------
+    [float, float, 0.0]
+        The XYZ coordinates of the centroid in the XY plane.
+
+    """
     return centroid_points_xy(polygon)
 
 
@@ -402,12 +414,12 @@ def centroid_polygon_edges(polygon):
 
     Parameters
     ----------
-    polygon : list of point
+    polygon : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
     -------
-    list
+    [float, float, float]
         The XYZ coordinates of the centroid.
 
     Notes
@@ -433,7 +445,25 @@ def centroid_polygon_edges(polygon):
 
 
 def centroid_polygon_edges_xy(polygon):
-    """"""
+    """Compute the centroid of the edges of a polygon prohected to the XY plane.
+
+    Parameters
+    ----------
+    polygon : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
+        A sequence of polygon point coordinates.
+        The Z coordinates will be ignored.
+
+    Returns
+    -------
+    [float, float, 0.0]
+        The XYZ coordinates of the centroid in the XY plane.
+
+    Notes
+    -----
+    The centroid of the edges is the centroid of the midpoints of the edges, with
+    each midpoint weighted by the length of the corresponding edge proportional
+    to the total length of the boundary.
+    """
     L = 0
     cx = 0
     cy = 0
@@ -453,13 +483,13 @@ def centroid_polyhedron(polyhedron):
 
     Parameters
     ----------
-    polyhedron : tuple
+    polyhedron : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[sequence[int]]]
         The coordinates of the vertices,
         and the indices of the vertices forming the faces.
 
     Returns
     -------
-    list
+    [float, float, float]
         XYZ coordinates of the center of mass.
 
     Warnings

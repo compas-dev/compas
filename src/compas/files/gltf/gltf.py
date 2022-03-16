@@ -8,7 +8,7 @@ from compas.files.gltf.gltf_reader import GLTFReader
 
 
 class GLTF(object):
-    """Read and create files in glTF format.
+    """Class for working with files in glTF format.
 
     Caution: Extensions and most other application specific data are unsupported,
     and their data may be lost upon import.
@@ -17,16 +17,17 @@ class GLTF(object):
     ----------
     filepath : str
         Path to the location of the glTF file.
-    content : :class:`compas.files.GLTFContent`
-    reader : :class:`compas.files.GLTFReader`
-    parser : :class:`compas.files.GLTFParser`
-    exporter : :class:`compas.files.GLTFExporter`
+    content : :class:`~compas.files.GLTFContent`
+    reader : :class:`~compas.files.GLTFReader`
+    parser : :class:`~compas.files.GLTFParser`
+    exporter : :class:`~compas.files.GLTFExporter`
 
     References
     ----------
     .. [1] https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
 
     """
+
     def __init__(self, filepath=None):
         self.filepath = filepath
         self._content = None
@@ -74,7 +75,7 @@ class GLTF(object):
         return self._exporter
 
     def export(self, embed_data=False):
-        """Export the content of this :class:`compas.files.GLTF` to the location
+        """Export the content of this :class:`~compas.files.GLTF` to the location
         :attr:`compas.files.GLTF.filepath`, with file format determined by the given extension.
 
         Parameters

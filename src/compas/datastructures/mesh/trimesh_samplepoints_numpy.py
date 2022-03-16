@@ -1,7 +1,4 @@
-from typing import Tuple, Union
-
 from numpy import array
-from numpy import ndarray
 from numpy.random import choice
 from numpy.random import rand
 from numpy import sqrt
@@ -11,32 +8,34 @@ from numpy.linalg import norm
 from numpy import clip
 from numpy import finfo
 
-from compas.datastructures.mesh.core import BaseMesh
-
 
 __all__ = [
     'trimesh_samplepoints_numpy',
 ]
 
 
-def trimesh_samplepoints_numpy(mesh: BaseMesh, num_points: int = 1000, return_normals: bool = False) -> Union[ndarray, Tuple[ndarray, ndarray]]:
-    """Compute sample points on a triangle mesh surface
+def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
+    """Compute sample points on a triangle mesh surface.
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
-        Mesh is limited to triangle mesh
-    num_points : (int)
-        How many points sampled
-    return_normals : (bool)
-        if True, return the normals vector of sampled points
+    mesh : :class:`~compas.datastructures.Mesh`
+        A triangle mesh data structure.
+    num_points : int, optional
+        The number of sample points.
+    return_normals : bool, optional
+        If True, return the normals in addition to the sample points.
 
     Returns
     -------
-    samples_points(numpy.ndarray)
-        A numpy ndarray representing sampled points with dim = [num_points, 3]
-    (if True) samples_points_normals(numpy.ndarray)
-        A numpy ndarray representing the normal vector of sampled points  with dim = [num_points, 3]
+    ndarray | tuple[ndarray, ndarray]
+        If `return_normals` is False, a numpy ndarray representing sampled points with dim = [num_points, 3].
+        If `return_normals` is True, the sample points and the normals.
+
+    References
+    ----------
+    .. [1] Barycentric coordinate system, Available at https://en.wikipedia.org/wiki/Barycentric_coordinate_system
+    .. [2] Efficient barycentric point sampling on meshes, arXiv:1708.07559
 
     Examples
     --------
@@ -55,11 +54,6 @@ def trimesh_samplepoints_numpy(mesh: BaseMesh, num_points: int = 1000, return_no
     >>> x, y, z = samples_pts[:,0], samples_pts[:,1], samples_pts[:,2]
     >>> # the sample points added normal vector would be the following
     >>> X, Y, Z = x + pts_normals[:,0] , y + pts_normals[:,1] , z + pts_normals[:,2]
-
-    References
-    ----------
-    .. [1] Barycentric coordinate system, Available at https://en.wikipedia.org/wiki/Barycentric_coordinate_system
-    .. [2] Efficient barycentric point sampling on meshes, arXiv:1708.07559
 
     """
     if mesh.is_empty():

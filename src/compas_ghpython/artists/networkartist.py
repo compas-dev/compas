@@ -2,91 +2,67 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
 import compas_ghpython
-from compas_ghpython.artists._artist import BaseArtist
-from compas.utilities import color_to_colordict
+from compas.artists import NetworkArtist
+from .artist import GHArtist
 
 
-colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
-
-
-__all__ = ['NetworkArtist']
-
-
-class NetworkArtist(BaseArtist):
-    """A network artist defines functionality for visualising COMPAS networks in GhPython.
+class NetworkArtist(GHArtist, NetworkArtist):
+    """Artist for drawing network data structures.
 
     Parameters
     ----------
-    network : compas.datastructures.Network
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
-
-    Attributes
-    ----------
-    network : :class:`compas.datastructures.Network`
-        The COMPAS network associated with the artist.
-    color_nodes : 3-tuple
-        Default color of the nodes.
-    color_edges : 3-tuple
-        Default color of the edges.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.NetworkArtist` for more info.
 
     """
 
-    def __init__(self, network):
-        self._network = None
-        self.network = network
-        self.color_nodes = (255, 255, 255)
-        self.color_edges = (0, 0, 0)
-
-    @property
-    def network(self):
-        """compas.datastructures.Network: The network that should be painted."""
-        return self._network
-
-    @network.setter
-    def network(self, network):
-        self._network = network
+    def __init__(self, network, **kwargs):
+        super(NetworkArtist, self).__init__(network=network, **kwargs)
 
     def draw(self):
         """Draw the entire network with default color settings.
 
         Returns
         -------
-        tuple
-            list of :class:`Rhino.Geometry.Point3d` and list of :class:`Rhino.Geometry.Line`
-        """
-        return (self.draw_nodes(), self.draw_edges())
+        list[:rhino:`Rhino.Geometry.Point3d`]
+            The objects representing the nodes of the network.
+        list[:rhino:`Rhino.Geometry.Line`]
+            The objects representing the edges of the network.
 
-    # ==============================================================================
-    # components
-    # ==============================================================================
+        """
+        return self.draw_nodes(), self.draw_edges()
 
     def draw_nodes(self, nodes=None, color=None):
         """Draw a selection of nodes.
 
         Parameters
         ----------
-        nodes: list, optional
+        nodes: list[hashable], optional
             The selection of nodes that should be drawn.
-            Default is ``None``, in which case all nodes are drawn.
-        color: 3-tuple or dict of 3-tuple, optional
-            The color specififcation for the nodes.
-            The default color is ``(255, 255, 255)``.
+            Default is None, in which case all nodes are drawn.
+        color: :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
+            The color specification for the nodes.
+            The default color is :attr:`NetworkArtist.default_nodecolor`.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Point3d`
+        list[:rhino:`Rhino.Geometry.Point3d`]
 
         """
+        self.node_color = color
+        node_xyz = self.node_xyz
         nodes = nodes or list(self.network.nodes())
-        node_color = colordict(color, nodes, default=self.color_nodes)
         points = []
         for node in nodes:
             points.append({
-                'pos': self.network.node_coordinates(node),
+                'pos': node_xyz[node],
                 'name': "{}.node.{}".format(self.network.name, node),
-                'color': node_color[node]})
+                'color': self.node_color[node].rgb255
+            })
         return compas_ghpython.draw_points(points)
 
     def draw_edges(self, edges=None, color=None):
@@ -94,26 +70,28 @@ class NetworkArtist(BaseArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[hashable, hashable]], optional
             A list of edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : 3-tuple or dict of 3-tuple, optional
-            The color specififcation for the edges.
-            The default color is ``(0, 0, 0)``.
+            The default is None, in which case all edges are drawn.
+        color : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+            The color specification for the edges.
+            The default color is the value of :attr:`NetworkArtist.default_edgecolor`.
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Line`
+        list[:rhino:`Rhino.Geometry.Line`]
 
         """
+        self.edge_color = color
+        node_xyz = self.node_xyz
         edges = edges or list(self.network.edges())
-        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
-            start, end = self.network.edge_coordinates(*edge)
+            u, v = edge
             lines.append({
-                'start': start,
-                'end': end,
-                'color': edge_color[edge],
-                'name': "{}.edge.{}-{}".format(self.network.name, *edge)})
+                'start': node_xyz[u],
+                'end': node_xyz[v],
+                'color': self.edge_color[edge].rgb255,
+                'name': "{}.edge.{}-{}".format(self.network.name, u, v)
+            })
         return compas_ghpython.draw_lines(lines)

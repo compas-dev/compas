@@ -64,7 +64,7 @@ class GLTFScene(object):
         return self.context.get_scene_positions_and_edges(self)
 
     def add_child(self, node_name=None, node_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of `scene`.
+        """Creates a :class:`~compas.files.GLTFNode` and adds this node to the children of `scene`.
 
         Parameters
         ----------
@@ -73,7 +73,7 @@ class GLTFScene(object):
 
         Returns
         -------
-        :class:`compas.fikes.GLTFNode`
+        :class:`~compas.fikes.GLTFNode`
         """
         return self.context.add_node_to_scene(self, node_name, node_extras)
 
@@ -101,17 +101,17 @@ class GLTFScene(object):
 
     @classmethod
     def from_data(cls, scene, context):
-        """Creates a :class:`compas.files.GLTFScene` from a glTF scene dictionary
+        """Creates a :class:`~compas.files.GLTFScene` from a glTF scene dictionary
         and inserts it in the provided context.
 
         Parameters
         ----------
         scene : dict
-        context : :class:`compas.files.GLTFContent`
+        context : :class:`~compas.files.GLTFContent`
 
         Returns
         -------
-        :class:`compas.files.GLTFScene`
+        :class:`~compas.files.GLTFScene`
         """
         if scene is None:
             return None

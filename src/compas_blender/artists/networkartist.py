@@ -1,186 +1,303 @@
-# from __future__ import annotations
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Union
 
+import bpy
 from functools import partial
 
 import compas_blender
-
-from compas_blender.artists._artist import BaseArtist
+from compas.datastructures import Network
+from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict
+from compas.artists import NetworkArtist
+from compas.colors import Color
+from .artist import BlenderArtist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
 
 
-__all__ = [
-    'NetworkArtist',
-]
-
-
-class NetworkArtist(BaseArtist):
-    """Artist for COMPAS network objects.
+class NetworkArtist(BlenderArtist, NetworkArtist):
+    """Artist for drawing network data structures in Blender.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
-    settings : dict, optional
-        A dict with custom visualisation settings.
+    collection : str | :blender:`bpy.types.Collection`
+        The name of the collection the object belongs to.
 
     Attributes
     ----------
-    network : :class:`compas.datastructures.Network`
-        The COMPAS network associated with the artist.
-    settings : dict
-        Default settings for color, scale, tolerance, ...
+    nodecollection : :blender:`bpy.types.Collection`
+        The collection containing the nodes.
+    edgecollection : :blender:`bpy.types.Collection`
+        The collection containing the edges.
+    nodelabelcollection : :blender:`bpy.types.Collection`
+        The collection containing the node labels.
+    edgelabelcollection : :blender:`bpy.types.Collection`
+        The collection containing the edge labels.
+
+    Examples
+    --------
+    Use the Blender artist explicitly.
+
+    .. code-block:: python
+
+        import compas
+        from compas.datastructures import Network
+        from compas_blender.artists import NetworkArtist
+
+        network = Network.from_obj(compas.get('lines.obj'))
+
+        artist = NetworkArtist(network)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        import compas
+        from compas.datastructures import Network
+        from compas.artists import Artist
+
+        network = Network.from_obj(compas.get('lines.obj'))
+
+        artist = Artist(network)
+        artist.draw()
 
     """
 
-    def __init__(self, network):
-        super().__init__()
-        self._nodecollection = None
-        self._edgecollection = None
-        self._pathcollection = None
-        self._object_node = {}
-        self._object_edge = {}
-        self._object_path = {}
-        self.color_nodes = (1.0, 1.0, 1.0)
-        self.color_edges = (0.0, 0.0, 0.0)
-        self.show_nodes = True,
-        self.show_edges = True,
-        self.show_nodelabels = False,
-        self.show_edgelabels = False
-        self.network = network
+    def __init__(self,
+                 network: Network,
+                 collection: Optional[Union[str, bpy.types.Collection]] = None,
+                 **kwargs: Any):
+
+        super().__init__(network=network, collection=collection or network.name, **kwargs)
 
     @property
-    def nodecollection(self):
-        path = f"{self.network.name}::Nodes"
+    def nodecollection(self) -> bpy.types.Collection:
         if not self._nodecollection:
-            self._nodecollection = compas_blender.create_collections_from_path(path)[1]
+            self._nodecollection = compas_blender.create_collection('Nodes', parent=self.collection)
         return self._nodecollection
 
     @property
-    def edgecollection(self):
-        path = f"{self.network.name}::Edges"
+    def edgecollection(self) -> bpy.types.Collection:
         if not self._edgecollection:
-            self._edgecollection = compas_blender.create_collections_from_path(path)[1]
+            self._edgecollection = compas_blender.create_collection('Edges', parent=self.collection)
         return self._edgecollection
 
     @property
-    def pathcollection(self):
-        path = f"{self.network.name}::Paths"
-        if not self._pathcollection:
-            self._pathcollection = compas_blender.create_collections_from_path(path)[1]
-        return self._pathcollection
+    def nodelabelcollection(self) -> bpy.types.Collection:
+        if not self._nodelabelcollection:
+            self._nodelabelcollection = compas_blender.create_collection('NodeLabels', parent=self.collection)
+        return self._nodelabelcollection
 
     @property
-    def object_node(self):
-        if not self._object_node:
-            self._object_node = {}
-        return self._object_node
+    def edgelabelcollection(self) -> bpy.types.Collection:
+        if not self._edgelabelcollection:
+            self._edgelabelcollection = compas_blender.create_collection('EdgeLabels', parent=self.collection)
+        return self._edgelabelcollection
 
-    @object_node.setter
-    def object_node(self, values):
-        self._object_node = dict(values)
+    # ==========================================================================
+    # clear
+    # ==========================================================================
 
-    @property
-    def object_edge(self):
-        if not self._object_edge:
-            self._object_edge = {}
-        return self._object_edge
-
-    @object_edge.setter
-    def object_edge(self, values):
-        self._object_edge = dict(values)
-
-    @property
-    def object_path(self):
-        if not self._object_path:
-            self._object_path = {}
-        return self._object_path
-
-    @object_path.setter
-    def object_path(self, values):
-        self._object_path = dict(values)
-
-    def clear(self):
-        objects = list(self.object_node)
-        objects += list(self.object_edge)
-        objects += list(self.object_path)
-        compas_blender.delete_objects(objects, purge_data=True)
-        self._object_node = {}
-        self._object_edge = {}
-        self._object_path = {}
-
-    def draw(self):
-        """Draw the network.
+    def clear_nodes(self):
+        """Clear all objects contained in the node collection.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
-            The created Blender objects.
+        None
+
+        """
+        compas_blender.delete_objects(self.nodecollection.objects)
+
+    def clear_edges(self):
+        """Clear all objects contained in the edge collection.
+
+        Returns
+        -------
+        None
+
+        """
+        compas_blender.delete_objects(self.edgecollection.objects)
+
+    def clear_nodelabels(self):
+        """Clear all objects contained in the nodelabel collection.
+
+        Returns
+        -------
+        None
+
+        """
+        compas_blender.delete_objects(self.nodelabelcollection.objects)
+
+    def clear_edgelabels(self):
+        """Clear all objects contained in the edgelabel collection.
+
+        Returns
+        -------
+        None
+
+        """
+        compas_blender.delete_objects(self.edgelabelcollection.objects)
+
+    # ==========================================================================
+    # draw
+    # ==========================================================================
+
+    def draw(self,
+             nodes: Optional[List[int]] = None,
+             edges: Optional[Tuple[int, int]] = None,
+             nodecolor: Optional[Union[str, Color, Dict[int, Color]]] = None,
+             edgecolor: Optional[Union[str, Color, Dict[int, Color]]] = None
+             ) -> None:
+        """Draw the network.
+
+        Parameters
+        ----------
+        nodes : list[hashable], optional
+            A list of node identifiers.
+            Default is None, in which case all nodes are drawn.
+        edges : list[tuple[hashable, hashable]], optional
+            A list of edge keys (as uv pairs) identifying which edges to draw.
+            The default is None, in which case all edges are drawn.
+        nodecolor : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
+            The color specification for the nodes.
+        edgecolor : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+            The color specification for the edges.
+
+        Returns
+        -------
+        None
 
         """
         self.clear()
         if self.show_nodes:
-            self.draw_nodes()
+            self.draw_nodes(nodes=nodes, color=nodecolor)
         if self.show_edges:
-            self.draw_edges()
-        return self.objects
+            self.draw_edges(edges=edges, color=edgecolor)
 
-    def draw_nodes(self, nodes=None, color=None):
+    def draw_nodes(self,
+                   nodes: Optional[List[int]] = None,
+                   color: Optional[Union[Color, Dict[int, Color]]] = None
+                   ) -> List[bpy.types.Object]:
         """Draw a selection of nodes.
 
         Parameters
         ----------
-        nodes : list of int, optional
+        nodes : list[hashable], optional
             A list of node identifiers.
-            Default is ``None``, in which case all nodes are drawn.
-        color : rgb-tuple or dict of rgb-tuples
-            The color specififcation for the nodes.
+            Default is None, in which case all nodes are drawn.
+        color : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
+            The color specification for the nodes.
+            The default color of nodes is :attr:`default_nodecolor`.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
 
         """
-        nodes = nodes or list(self.network.nodes())
-        node_color = colordict(color, nodes, default=self.color_nodes)
+        self.node_color = color
+        nodes = nodes or self.nodes
         points = []
         for node in nodes:
             points.append({
-                'pos': self.network.node_coordinates(node),
+                'pos': self.node_xyz[node],
                 'name': f"{self.network.name}.node.{node}",
-                'color': node_color[node],
-                'radius': 0.05})
-        objects = compas_blender.draw_points(points, self.nodecollection)
-        self.object_node = zip(objects, nodes)
-        return objects
+                'color': self.node_color[node],
+                'radius': 0.05
+            })
+        return compas_blender.draw_points(points, self.nodecollection)
 
-    def draw_edges(self, edges=None, color=None):
+    def draw_edges(self,
+                   edges: Optional[Tuple[int, int]] = None,
+                   color: Optional[Union[Color, Dict[int, Color]]] = None
+                   ) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
         Parameters
         ----------
-        edges : list
+        edges : list[tuple[hashable, hashable]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : rgb-tuple or dict of rgb-tuples
-            The color specififcation for the edges.
+            The default is None, in which case all edges are drawn.
+        color : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+            The color specification for the edges.
+            The default color of edges is :attr:`default_edgecolor`.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
 
         """
-        edges = edges or list(self.network.edges())
-        edge_color = colordict(color, edges, default=self.color_edges)
+        self.edge_color = color
+        edges = edges or self.edges
         lines = []
         for edge in edges:
+            u, v = edge
             lines.append({
-                'start': self.network.node_coordinates(edge[0]),
-                'end': self.network.node_coordinates(edge[1]),
-                'color': edge_color[edge],
-                'name': f"{self.network.name}.edge.{edge[0]}-{edge[1]}",
-                'width': 0.02})
-        objects = compas_blender.draw_lines(lines, self.edgecollection)
-        self.object_edge = zip(objects, edges)
-        return objects
+                'start': self.node_xyz[u],
+                'end': self.node_xyz[v],
+                'color': self.edge_color[edge],
+                'name': f"{self.network.name}.edge.{u}-{v}",
+                'width': self.edge_width[edge]
+            })
+        return compas_blender.draw_lines(lines, self.edgecollection)
+
+    def draw_nodelabels(self,
+                        text: Optional[Dict[int, str]] = None
+                        ) -> List[bpy.types.Object]:
+        """Draw labels for a selection nodes.
+
+        Parameters
+        ----------
+        text : dict[hashable, str], optional
+            A dictionary of vertex labels as vertex-text pairs.
+            The default value is None, in which case every vertex will be labeled with its key.
+
+        Returns
+        -------
+        list[:blender:`bpy.types.Object`]
+
+        """
+        self.node_text = text
+        labels = []
+        for node in self.node_text:
+            labels.append({
+                'pos': self.node_xyz[node],
+                'name': f"{self.network.name}.nodelabel.{node}",
+                'text': self.node_text[node],
+                'color': self.node_color[node]
+            })
+        return compas_blender.draw_texts(labels, collection=self.nodelabelcollection)
+
+    def draw_edgelabels(self,
+                        text: Optional[Dict[Tuple[int, int], str]] = None
+                        ) -> List[bpy.types.Object]:
+        """Draw labels for a selection of edges.
+
+        Parameters
+        ----------
+        text : dict[tuple[hashable, hashable], str], optional
+            A dictionary of edge labels as edge-text pairs.
+            The default value is None, in which case every edge will be labeled with its key.
+
+        Returns
+        -------
+        list[:blender:`bpy.types.Object`]
+
+        """
+        self.edge_text = text
+        labels = []
+        for edge in self.edge_text:
+            u, v = edge
+            labels.append({
+                'pos': centroid_points([self.node_xyz[u], self.node_xyz[v]]),
+                'name': f"{self.network.name}.edgelabel.{u}-{v}",
+                'text': self.edge_text[edge],
+                'color': self.edge_color[edge]
+            })
+        return compas_blender.draw_texts(labels, collection=self.edgelabelcollection)

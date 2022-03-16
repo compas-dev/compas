@@ -3,40 +3,44 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from compas.colors import Color
+from .artist import GHArtist
 
 
-__all__ = ['CircleArtist']
-
-
-class CircleArtist(PrimitiveArtist):
+class CircleArtist(GHArtist, PrimitiveArtist):
     """Artist for drawing circles.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
         A COMPAS circle.
-
-    Other Parameters
-    ----------------
-    See :class:`compas_ghpython.artists.PrimitiveArtist` for all other parameters.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 
-    def draw(self):
+    def __init__(self, circle, **kwargs):
+        super(CircleArtist, self).__init__(primitive=circle, **kwargs)
+
+    def draw(self, color=None):
         """Draw the circle.
+
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The color of the circle.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Circle`
+        :rhino:`Rhino.Geometry.Circle`
 
         """
-        circles = [self._get_args(self.primitive)]
+        color = Color.coerce(color) or self.color
+        point = list(self.primitive.plane.point)
+        normal = list(self.primitive.plane.normal)
+        radius = self.primitive.radius
+        circles = [{'plane': [point, normal], 'radius': radius, 'color': color.rgb255, 'name': self.primitive.name}]
         return compas_ghpython.draw_circles(circles)[0]
-
-    @staticmethod
-    def _get_args(primitive):
-        point = list(primitive.plane.point)
-        normal = list(primitive.plane.normal)
-        radius = primitive.radius
-        return {'plane': [point, normal], 'radius': radius, 'color': None, 'name': primitive.name}

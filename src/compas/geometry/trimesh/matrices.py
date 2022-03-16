@@ -15,13 +15,12 @@ def trimesh_massmatrix(M):
 
     Parameters
     ----------
-    M : tuple or :class:`compas.datastructures.Mesh`
-        A mesh represented by a list of vertices and a list of faces
-        or by a COMPAS mesh object.
+    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+        A mesh represented by a list of vertices and a list of faces.
 
     Returns
     -------
-    array
+    list[float]
         The mass per vertex.
 
     Examples

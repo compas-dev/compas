@@ -22,12 +22,12 @@ def trimesh_gaussian_curvature(mesh):
 
     Parameters
     ----------
-    mesh : compas.oatastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The triangle mesh data structure.
 
     Returns
     -------
-    list of float
+    list[float]
         Per vertex curvature values.
 
     Warnings

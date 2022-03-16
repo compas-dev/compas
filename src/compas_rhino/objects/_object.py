@@ -3,10 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from uuid import uuid4
-from compas_rhino.artists import BaseArtist
-
-
-__all__ = ['BaseObject']
+from compas_rhino.artists import RhinoArtist
 
 
 _ITEM_OBJECT = {}
@@ -17,9 +14,9 @@ class BaseObject(object):
 
     Parameters
     ----------
-    item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}
+    item : {:class:`~compas.geometry.Geometry`, :class:`~compas.datastructures.Datastructure`}
         A COMPAS geometry object or data structure.
-    scene : :class:`compas.scenes.Scene`, optional
+    scene : :class:`~compas.scenes.Scene`, optional
         A scene object.
     name : str, optional
         The name of the object.
@@ -32,11 +29,11 @@ class BaseObject(object):
 
     Attributes
     ----------
-    item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}
+    item : {:class:`~compas.geometry.Geometry`, :class:`~compas.datastructures.Datastructure`}
         A COMPAS geometry object or data structure.
-    scene : :class:`compas.scenes.Scene`
+    scene : :class:`~compas.scenes.Scene`
         A scene object.
-    artist : :class:`compas_rhino.artists.Artist`
+    artist : :class:`~compas_rhino.artists.Artist`
         The artist matching the type of ``item``.
     name : str
         The name of the object.
@@ -84,7 +81,7 @@ class BaseObject(object):
     @item.setter
     def item(self, item):
         self._item = item
-        self._artist = BaseArtist.build(item)
+        self._artist = RhinoArtist(item)
 
     @property
     def artist(self):

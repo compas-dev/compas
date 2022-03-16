@@ -11,33 +11,33 @@ from compas.geometry import centroid_points
 from compas.topology import breadth_first_traverse
 
 
-__all__ = [
-    'face_adjacency_rhino',
-    'unify_cycles_rhino',
-]
-
-
 def unify_cycles_rhino(vertices, faces, root=0):
     """Unify the cycle directions of the given faces such that adjacent faces share opposite halfedges.
 
     Parameters
     ----------
-    vertices : list
+    vertices : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A list of vertex coordinates.
-    faces : list
-        A list of lists of face vertex indices.
+    faces : sequence[sequence[int]]
+        A list of faces with each face defined by a list of indices into the list of vertices.
     root : int, optional
         The starting face.
 
     Returns
     -------
-    list
+    list[list[int]]
         A list of faces with the same orientation as the root face.
 
     Raises
     ------
     AssertionError
         If not all faces were visited.
+
+    Notes
+    -----
+    The algorithm works by first building an adjacency dict of the faces, which can be traversed efficiently to unify all face cycles.
+    Although this process technically only requires the connectivity information contained in the faces,
+    the locations of the vertices can be used to speed up execution for very large collections of faces.
 
     Examples
     --------
@@ -46,9 +46,6 @@ def unify_cycles_rhino(vertices, faces, root=0):
     >>> unify_cycles_rhino(vertices, faces)  # doctest: +SKIP
     [[0, 1, 2], [2, 3, 0]]
 
-    Notes
-    -----
-    This function uses Rhino's RTree for constructing a face adjacency dict.
     """
     def unify(node, nbr):
         # find the common edge
@@ -74,15 +71,21 @@ def face_adjacency_rhino(xyz, faces):
 
     Parameters
     ----------
-    xyz : list
+    xyz : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         The coordinates of the face vertices.
-    faces : list
-        The indices of the face vertices in the coordinates list.
+    faces : sequence[sequence[int]]
+        A list of faces with each face defined by a list of indices into the list of xyz coordinates.
 
     Returns
     -------
-    dict
+    dict[int, list[int]]
         For every face a list of neighbouring faces.
+
+    Notes
+    -----
+    If the number of faces is larger than one hundred (100),
+    this function uses Rhino's RTree for limiting the search for neighbours
+    to the immediate surroundings of any given face.
 
     Examples
     --------
@@ -91,11 +94,6 @@ def face_adjacency_rhino(xyz, faces):
     >>> face_adjacency_rhino(vertices, faces)  # doctest: +SKIP
     {0: [1], 1: [0]}
 
-    Notes
-    -----
-    This function uses Rhino's RTree for limiting the search for neighbours
-    to the immediate surroundings of any given face
-    if the number of faces is greater than 100.
     """
     f = len(faces)
     if f > 100:

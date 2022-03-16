@@ -1,6 +1,6 @@
 from numpy import array
 
-from compas.datastructures.mesh.core import trimesh_cotangent_laplacian_matrix
+from .matrices import trimesh_cotangent_laplacian_matrix
 
 
 __all__ = ['trimesh_smooth_laplacian_cotangent']
@@ -11,12 +11,17 @@ def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
 
     Parameters
     ----------
-    trimesh : :class:`compas.datastructures.Mesh`
+    trimesh : :class:`~compas.datastructures.Mesh`
         A triangle mesh.
-    fixed : list
+    fixed : list[int]
         A list of fixed vertices.
-    kmax : int (optional, default is 10)
+    kmax : int, optional
         The maximum number of smoothing rounds.
+
+    Returns
+    -------
+    None
+        The mesh is modified in place.
 
     """
     for k in range(kmax):

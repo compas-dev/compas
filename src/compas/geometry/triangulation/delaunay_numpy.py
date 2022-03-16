@@ -18,16 +18,12 @@ def delaunay_from_points_numpy(points):
 
     Parameters
     ----------
-    points : sequence of tuple
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         XYZ coordinates of the original points.
-    boundary : sequence of tuples
-        list of ordered points describing the outer boundary (optional)
-    holes : list of sequences of tuples
-        list of polygons (ordered points describing internal holes (optional)
 
     Returns
     -------
-    list
+    list[[int, int, int]]
         The faces of the triangulation.
         Each face is a triplet of indices referring to the list of point coordinates.
 
@@ -46,7 +42,7 @@ def voronoi_from_points_numpy(points):
 
     Parameters
     ----------
-    points : list of list of float
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         XYZ coordinates of the voronoi sites.
 
     Returns

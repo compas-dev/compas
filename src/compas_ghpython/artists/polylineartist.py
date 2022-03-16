@@ -3,36 +3,41 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from compas.colors import Color
+from .artist import GHArtist
 
 
-__all__ = ['PolylineArtist']
-
-
-class PolylineArtist(PrimitiveArtist):
+class PolylineArtist(GHArtist, PrimitiveArtist):
     """Artist for drawing polylines.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Polyline`
+    polyline : :class:`~compas.geometry.Polyline`
         A COMPAS polyline.
-
-    Other Parameters
-    ----------------
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 
-    def draw(self):
+    def __init__(self, polyline, **kwargs):
+        super(PolylineArtist, self).__init__(primitive=polyline, **kwargs)
+
+    def draw(self, color=None):
         """Draw the polyline.
+
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The RGB color of the polyline.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Polyline`.
-        """
-        polylines = [self._get_args(self.primitive)]
-        return compas_ghpython.draw_polylines(polylines)
+        :rhino:`Rhino.Geometry.Polyline`.
 
-    @staticmethod
-    def _get_args(primitive):
-        return {'points': map(list, primitive.points)}
+        """
+        color = Color.coerce(color) or self.color
+        polylines = [{'points': map(list, self.primitive.points), 'color': color.rgb255}]
+        return compas_ghpython.draw_polylines(polylines)[0]

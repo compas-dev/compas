@@ -22,15 +22,14 @@ def network_find_cycles(network, breakpoints=None):
 
     Parameters
     ----------
-    network : compas.datastructures.Network
+    network : :class:`~compas.datastructures.Network`
         The network object.
     breakpoints : list, optional
         The vertices at which to break the found faces.
-        Default is ``None``.
 
     Notes
     -----
-    ``breakpoints`` are primarily used to break up the outside face in between
+    Breakpoints are primarily used to break up the outside face in between
     specific vertices. For example, in structural applications involving dual
     diagrams, any vertices where external forces are applied (loads or reactions)
     should be input as breakpoints.
@@ -42,10 +41,6 @@ def network_find_cycles(network, breakpoints=None):
     straight-line embedding. It determines an ordering of the neighboring vertices
     around each vertex, and then follows the *walls* of the network, always
     taking turns in the same direction.
-
-    Examples
-    --------
-    >>>
 
     """
     if not breakpoints:

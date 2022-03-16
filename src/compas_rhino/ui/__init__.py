@@ -25,6 +25,14 @@ from .command import (
 from .mouse import Mouse
 from .rui import Rui
 
+import warnings
+
+warnings.warn(
+    "The ui module in compas_rhino is deprecated. Use the equivalent functionality from compas_ui instead",
+    DeprecationWarning,
+    stacklevel=2
+)
+
 __all__ = [
     'CommandMenu',
     'CommandAction',

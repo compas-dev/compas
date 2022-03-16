@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import warnings
+
 import re
 
 try:
@@ -9,35 +11,11 @@ try:
 except NameError:
     basestring = str
 
-
-__all__ = [
-    'i_to_rgb',
-    'i_to_red',
-    'i_to_green',
-    'i_to_blue',
-    'i_to_white',
-    'i_to_black',
-    'is_color_rgb',
-    'is_color_hex',
-    'is_color_light',
-
-    'rgb_to_hex',
-    'rgb_to_rgb',
-    'hex_to_rgb',
-    'color_to_colordict',
-    'color_to_rgb',
-
-    'Colormap',
-
-    'red',
-    'green',
-    'blue',
-    'yellow',
-    'cyan',
-    'white',
-    'black',
-]
-
+warnings.warn(
+    "The colors module in utilities is deprecated. Use compas.colors instead",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 red = 255, 0, 0
 orange = 255, 125, 0
@@ -55,7 +33,6 @@ black = 0, 0, 0
 
 BASE16 = '0123456789abcdef'
 
-
 try:
     HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
 except Exception:
@@ -65,12 +42,15 @@ except Exception:
 def i_to_rgb(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to an equivalent RGB tuple.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
     i : float
-        A number between `0.0` and `1.0`.
+        A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -103,6 +83,7 @@ def i_to_rgb(i, normalize=False):
     (0.0, 1.0, 1.0)
     >>> i_to_rgb(0.0, True)
     (0.0, 0.0, 1.0)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -134,12 +115,15 @@ def i_to_rgb(i, normalize=False):
 def i_to_red(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of red.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -155,6 +139,7 @@ def i_to_red(i, normalize=False):
     (255, 0, 0)
     >>> i_to_red(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -167,12 +152,15 @@ def i_to_red(i, normalize=False):
 def i_to_green(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of green.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -188,6 +176,7 @@ def i_to_green(i, normalize=False):
     (0, 255, 0)
     >>> i_to_green(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -200,12 +189,15 @@ def i_to_green(i, normalize=False):
 def i_to_blue(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of blue.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -221,6 +213,7 @@ def i_to_blue(i, normalize=False):
     (0, 0, 255)
     >>> i_to_blue(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -233,12 +226,15 @@ def i_to_blue(i, normalize=False):
 def i_to_white(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of white.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -254,6 +250,7 @@ def i_to_white(i, normalize=False):
     (255, 255, 255)
     >>> i_to_white(0.0)
     (0, 0, 0)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -267,12 +264,15 @@ def i_to_white(i, normalize=False):
 def i_to_black(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of black.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
     i : float
         A number between 0.0 and 1.0.
     normalize : bool, optional
-        Normalize the resulting RGB values.
+        If True, normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
     Returns
@@ -288,6 +288,7 @@ def i_to_black(i, normalize=False):
     (0, 0, 0)
     >>> i_to_black(0.0)
     (255, 255, 255)
+
     """
     i = max(i, 0.0)
     i = min(i, 1.0)
@@ -301,12 +302,20 @@ def i_to_black(i, normalize=False):
 class Colormap(object):
     """Convenience class for converting a data range into a corresponding RGB color range.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.ColorMap` instead.
+
     Parameters
     ----------
     data : list
         A list of data points.
     spec : {'rgb', 'red', 'green', 'blue', 'white', 'black'}
         A color specification.
+
+    Class Attributes
+    ----------------
+    colorfuncs : dict[str, callable]
+        A dictionary mapping color specification names to corresponding converters.
 
     Examples
     --------
@@ -325,6 +334,7 @@ class Colormap(object):
     (255, 226, 0)
     (255, 113, 0)
     (255, 0, 0)
+
     """
 
     colorfuncs = {
@@ -351,9 +361,12 @@ class Colormap(object):
 def is_color_rgb(color):
     """Is a color in a valid RGB format.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
-    color : obj
+    color : [int, int, int] | [float, float, float]
         The color object.
 
     Returns
@@ -379,6 +392,7 @@ def is_color_rgb(color):
     >>> color = (256, 0, 0)
     >>> is_color_rgb(color)
     False
+
     """
     if isinstance(color, (tuple, list)):
         if len(color) == 3:
@@ -394,9 +408,12 @@ def is_color_rgb(color):
 def is_color_hex(color):
     """Is a color in a valid HEX format.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
-    color : obj
+    color : str
         The color object.
 
     Returns
@@ -415,6 +432,7 @@ def is_color_hex(color):
     False
     >>> is_color_hex("#ff000")
     False
+
     """
     if isinstance(color, basestring):
         match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
@@ -427,20 +445,23 @@ def is_color_hex(color):
 def rgb_to_rgb(rgb, g=None, b=None):
     """Convert an RGB color specification to an integer-based RGB color specification.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
-    rgb : int or float or tuple or list
+    rgb : int or float | [int, int, int] | [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
-    g : int or float, optional
+    g : int | float, optional
         The green component.
         This parameter is ignored if `rgb` is a full color specification.
-    b : int or float, optional
+    b : int | float, optional
         The blue component.
         This parameter is ignored if `rgb` is a full color specification.
 
     Returns
     -------
-    tuple
+    tuple[int, int, int]
         Three RGB color components in integer format, each in the range of 0-255.
 
     Examples
@@ -453,6 +474,7 @@ def rgb_to_rgb(rgb, g=None, b=None):
     (255, 0, 0)
     >>> rgb_to_rgb((1, 0, 0))
     (1, 0, 0)
+
     """
     if g is None and b is None:
         r, g, b = rgb
@@ -475,14 +497,17 @@ def rgb_to_rgb(rgb, g=None, b=None):
 def rgb_to_hex(rgb, g=None, b=None):
     """Convert an RGB color specification to HEX.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
-    rgb : int or float or tuple or list
+    rgb : int or float | [int, int, int] | [float, float, float]
         A full RGB color specification, or an integer or a float representing the value of the red component.
-    g : int or float, optional
+    g : int | float, optional
         The green component.
         This parameter is ignored if `rgb` is a full color specification.
-    b : int or float, optional
+    b : int | float, optional
         The blue component.
         This parameter is ignored if `rgb` is a full color specification.
 
@@ -501,6 +526,7 @@ def rgb_to_hex(rgb, g=None, b=None):
     '#ff0000'
     >>> rgb_to_hex((1, 0, 0))
     '#010000'
+
     """
     r, g, b = rgb_to_rgb(rgb, g=g, b=b)
     return '#{0:02x}{1:02x}{2:02x}'.format(r, g, b)
@@ -508,6 +534,9 @@ def rgb_to_hex(rgb, g=None, b=None):
 
 def hex_to_rgb(value, normalize=False):
     """Convert a HEX color to the corresponding RGB format.
+
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -518,8 +547,9 @@ def hex_to_rgb(value, normalize=False):
 
     Returns
     -------
-    tuple
-        The RGB color.
+    tuple[int, int, int] | tuple[float, float, float]
+        If `normalize` is True, the RGB color with 0-1 float components.
+        If `normalize` is False, the RGB color with 0-255 integer components.
 
     Examples
     --------
@@ -527,6 +557,7 @@ def hex_to_rgb(value, normalize=False):
     (255, 0, 0)
     >>> hex_to_rgb('#ff0000', normalize=True)
     (1.0, 0.0, 0.0)
+
     """
     value = value.lstrip('#').lower()
     r = HEX_DEC[value[0:2]]
@@ -540,17 +571,21 @@ def hex_to_rgb(value, normalize=False):
 def color_to_rgb(color, normalize=False):
     """Convert a HEX or RGB color to RGB.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
-    color : str or tuple or float
+    color : str | [int, int, int] | [float, float, float]
         The color.
     normalize : bool, optional
-        If true, normalize the resulting RGB color components.
+        If True, normalize the resulting RGB color components.
 
     Returns
     -------
-    tuple
-        The corresponding RGB color specification.
+    tuple[int, int, int] | tuple[float, float, float]
+        If `normalize` is True, the RGB color with 0-1 float components.
+        If `normalize` is False, the RGB color with 0-255 integer components.
 
     Examples
     --------
@@ -566,6 +601,7 @@ def color_to_rgb(color, normalize=False):
     (255, 0, 0)
     >>> color_to_rgb((255, 0, 0), normalize=True)
     (1.0, 0.0, 0.0)
+
     """
     if isinstance(color, basestring):
         r, g, b = hex_to_rgb(color)
@@ -583,24 +619,26 @@ def color_to_rgb(color, normalize=False):
 def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=False):
     """Convert a color specification to a dict of colors.
 
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
+
     Parameters
     ----------
-    color : str or tuple or list or dict
+    color : str | [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]
         The base color specification.
         This can be a single color (as HEX or RGB), a list of colors, or a dict of colors.
-    keys : list
+    keys : sequence[hashable]
         The keys of the color dict.
-    default : str or tuple, optional
+    default : str | tuple[int, int, int] | tuple[float, float, float], optional
         A valid color specification (HEX or RGB).
-    colorformat : {'hex', 'rgb'}, optional
+    colorformat : Literal['hex', 'rgb'], optional
         The format of the colors in the color dict.
-        Default is `'rgb'`.
     normalize : bool, optional
-        Normalize the color components, if true and `colorformat` is `'rgb'`.
+        If True and `colorformat` is ``'rgb'``, normalize the color components.
 
     Returns
     -------
-    dict
+    dict[hashable, tuple[int, int, int]] | dict[hashable, tuple[float, float, float]]
         A dictionary mapping the provided keys to the provided color(s).
 
     Raises
@@ -616,6 +654,7 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
     {0: '#ff0000', 1: '#ff0000', 2: '#ff0000'}
     >>> color_to_colordict('#ff0000', [0, 1, 2], colorformat='rgb', normalize=True)
     {0: (1.0, 0.0, 0.0), 1: (1.0, 0.0, 0.0), 2: (1.0, 0.0, 0.0)}
+
     """
     color = color or default
     if color is None:
@@ -655,11 +694,14 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
 
 
 def is_color_light(color):
-    r"""Is a color 'light'.
+    r"""Is a color "light".
+
+    .. deprecated:: 1.14
+        Use :class:`~compas.colors.Color` instead.
 
     Parameters
     ----------
-    color: str or tuple
+    color: str | tuple[float, float, float] | tuple[int, int, int]
         The color specification in HEX or RGB format.
 
     Returns
@@ -668,19 +710,16 @@ def is_color_light(color):
         True, if the color is light.
         False, otherwise.
 
-    Examples
-    --------
-    >>>
-
     Notes
     -----
-    A color is considered 'light' if the following is True for normalized RGB components:
+    A color is considered "light" if the following is True for normalized RGB components:
 
     .. math::
 
         0.2126   \frac{r + 0.055}{1.055}^2.4
         + 0.7152 \frac{g + 0.055}{1.055}^2.4
         + 0.0722 \frac{b + 0.055}{1.055}^2.4 > 0.179
+
     """
     if is_color_hex(color):
         rgb = hex_to_rgb(color)

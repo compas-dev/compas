@@ -13,6 +13,7 @@ collections
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     create_collection
     create_collections
@@ -26,6 +27,7 @@ data
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     delete_unused_data
 
@@ -35,6 +37,7 @@ drawing
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     draw_points
     draw_pointcloud
@@ -45,6 +48,8 @@ drawing
     draw_mesh
     draw_faces
     draw_texts
+    draw_curves
+    draw_surfaces
 
 
 objects
@@ -52,6 +57,7 @@ objects
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     delete_object
     delete_objects
@@ -79,17 +85,22 @@ from .collections import (
     clear_collections
 )
 from .drawing import (
-    draw_points,
-    draw_pointcloud,
-    draw_lines,
-    draw_polylines,
+    draw_circles,
     draw_cylinders,
-    draw_spheres,
     draw_cubes,
-    draw_pipes,
     draw_faces,
+    draw_lines,
+    draw_mesh,
+    draw_pipes,
+    draw_planes,
+    draw_pointcloud,
+    draw_points,
+    draw_polylines,
+    draw_spheres,
     draw_texts,
-    draw_mesh
+    draw_curves,
+    draw_surfaces,
+    RGBColor,
 )
 from .misc import unload_modules
 
@@ -108,16 +119,21 @@ __all__ = [
     'create_collections_from_path',
     'clear_collection',
     'clear_collections',
-    'draw_points',
-    'draw_pointcloud',
-    'draw_lines',
-    'draw_polylines',
+    'draw_circles',
     'draw_cylinders',
-    'draw_spheres',
     'draw_cubes',
-    'draw_pipes',
     'draw_faces',
-    'draw_texts',
+    'draw_lines',
     'draw_mesh',
+    'draw_pipes',
+    'draw_planes',
+    'draw_pointcloud',
+    'draw_points',
+    'draw_polylines',
+    'draw_spheres',
+    'draw_texts',
+    'draw_curves',
+    'draw_surfaces',
+    'RGBColor',
     'unload_modules'
 ]

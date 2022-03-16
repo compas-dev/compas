@@ -40,16 +40,18 @@ def oriented_bounding_box_numpy(points):
 
     Parameters
     ----------
-    points : array-like
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    array
+    list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
     Raises
     ------
+    AssertionError
+        If the input data is 2D.
     QhullError
         If the data is essentially 2D.
 
@@ -156,12 +158,12 @@ def oriented_bounding_box_xy_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XY(Z) coordinates of the points.
 
     Returns
     -------
-    list
+    list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
     Notes
@@ -247,6 +249,19 @@ def oriented_bounding_box_xy_numpy(points):
 
 
 def oabb_numpy(points):
+    """Oriented bounding box of a set of points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    list[[float, float, float]]
+        XYZ coordinates of 8 points defining a box.
+
+    """
     origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
     frame = Frame(origin, xaxis, yaxis)
     world = Frame.worldXY()

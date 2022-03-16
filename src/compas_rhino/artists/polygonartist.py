@@ -3,76 +3,61 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
+from compas.artists import PrimitiveArtist
+from compas.colors import Color
+from .artist import RhinoArtist
 
 
-__all__ = ['PolygonArtist']
-
-
-class PolygonArtist(PrimitiveArtist):
+class PolygonArtist(RhinoArtist, PrimitiveArtist):
     """Artist for drawing polygons.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Polygon`
+    polygon : :class:`~compas.geometry.Polygon`
         A COMPAS polygon.
-
-    Notes
-    -----
-    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import random
-        from compas.geometry import Pointcloud
-        from compas.geometry import Polygon
-        from compas.geometry import Translation
-        from compas.utilities import i_to_rgb
-
-        import compas_rhino
-        from compas_rhino.artists import PolygonArtist
-
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Polygon.from_sides_and_radius_xy(7, 0.8)
-
-        compas_rhino.clear_layer("Test::PolygonArtist")
-
-        for point in pcl.points:
-            polygon = tpl.transformed(Translation.from_vector(point))
-            artist = PolygonArtist(polygon, color=i_to_rgb(random.random()), layer="Test::PolygonArtist")
-            artist.draw()
+    layer : str, optional
+        The name of the layer that will contain the mesh.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
 
     """
 
-    def draw(self, show_points=False, show_edges=False, show_face=True):
+    def __init__(self, polygon, layer=None, **kwargs):
+        super(PolygonArtist, self).__init__(primitive=polygon, layer=layer, **kwargs)
+
+    def draw(self, color=None, show_points=False, show_edges=False, show_face=True):
         """Draw the polygon.
 
         Parameters
         ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The RGB color of the polygon.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
         show_points : bool, optional
-            Default is ``False``.
+            If True, draw the corner points of the polygon.
         show_edges : bool, optional
-            Default is ``False``.
+            If True, draw the boundary edges of the polygon.
         show_face : bool, optional
-            Default is ``True``.
+            If True, draw the face of the polygon.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
+
         """
+        color = Color.coerce(color) or self.color
+        color = color.rgb255
         _points = map(list, self.primitive.points)
         guids = []
         if show_points:
-            points = [{'pos': point, 'color': self.color, 'name': self.name} for point in _points]
+            points = [{'pos': point, 'color': color, 'name': self.primitive.name} for point in _points]
             guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         if show_edges:
-            lines = [{'start': list(a), 'end': list(b), 'color': self.color, 'name': self.name} for a, b in self.primitive.lines]
+            lines = [{'start': list(a), 'end': list(b), 'color': color, 'name': self.primitive.name} for a, b in self.primitive.lines]
             guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         if show_face:
-            polygons = [{'points': _points, 'color': self.color, 'name': self.name}]
+            polygons = [{'points': _points, 'color': color, 'name': self.primitive.name}]
             guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
-        self._guids = guids
         return guids

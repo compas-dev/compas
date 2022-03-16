@@ -2,12 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import Grasshopper as gh
-
-
-__all__ = [
-    'update_component'
-]
+try:
+    import Grasshopper as gh
+except ImportError:
+    pass
 
 
 def update_component(ghenv, delay):
