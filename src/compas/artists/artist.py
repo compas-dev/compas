@@ -95,7 +95,7 @@ class Artist(object):
             Artist.__ARTISTS_REGISTERED = True
 
         if item is None:
-            raise ValueError('Cannot create an artist for `None`. Please ensure you pass a instance of a supported class.')
+            raise ValueError('Cannot create an artist for None. Please ensure you pass a instance of a supported class.')
 
         cls = _get_artist_cls(item, **kwargs)
         PluginValidator.ensure_implementations(cls)
