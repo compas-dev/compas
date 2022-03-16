@@ -7,9 +7,10 @@ from abc import abstractmethod
 from collections import defaultdict
 
 import compas
-from compas.artists import DataArtistNotRegistered
-from compas.plugins import pluggable
+from compas.artists.exceptions import DataArtistNotRegistered
+from compas.artists.exceptions import NoArtistContextError
 from compas.plugins import PluginValidator
+from compas.plugins import pluggable
 
 from .colordict import DescriptorProtocol
 
@@ -44,6 +45,9 @@ def _get_artist_cls(data, **kwargs):
         Artist.CONTEXT = kwargs['context']
     else:
         Artist.CONTEXT = identify_context()
+
+    if Artist.CONTEXT is None:
+        raise NoArtistContextError()
 
     dtype = type(data)
     cls = None
@@ -85,11 +89,15 @@ class Artist(object):
     CONTEXT = None
     ITEM_ARTIST = defaultdict(dict)
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, item, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
             register_artists()
             Artist.__ARTISTS_REGISTERED = True
-        cls = _get_artist_cls(args[0], **kwargs)
+
+        if item is None:
+            raise ValueError('Cannot create an artist for None. Please ensure you pass a instance of a supported class.')
+
+        cls = _get_artist_cls(item, **kwargs)
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
 

@@ -39,6 +39,7 @@ Exceptions
     :nosignatures:
 
     DataArtistNotRegistered
+    NoArtistContextError
 
 
 Pluggables
@@ -58,6 +59,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from .exceptions import DataArtistNotRegistered
+from .exceptions import NoArtistContextError
 from .artist import Artist
 from .curveartist import CurveArtist
 from .meshartist import MeshArtist
@@ -77,6 +79,7 @@ BaseRobotModelArtist = RobotModelArtist
 
 __all__ = [
     'DataArtistNotRegistered',
+    'NoArtistContextError',
     'Artist',
     'CurveArtist',
     'MeshArtist',
