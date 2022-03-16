@@ -412,4 +412,74 @@ class Polyline(Primitive):
 
         return division_pts
 
+    def extend(self, length, both_ends=False):
+        """Extends a polyline from its start or end by a given length
+
+        Parameters:
+        -----------
+        length: list of float [start_offset, end_offset]
+
+        both_ends: bool
+            If True, both ends of Polyline will be extended
+
+        Returns
+        -------
+        Polyline
+        """
+        if not isinstance(length, list):
+            length = [length, length]
+
+        new_end_pt = self.points[-1] + self.lines[-1].vector.unitized().scaled(length[1])
+        self.points.append(new_end_pt)
+
+        if both_ends:
+            new_start_pt = self.points[0] + self.lines[0].vector.unitized().scaled(-length[0])
+            self.points.insert(0, new_start_pt)
+
+        return self
+
+    def shorten(self, length, both_ends=False):
+        """Shorten a polyline from start or end by a given length
+
+        Parameters:
+        -----------
+        length: float or list of float [start_offset, end_offset]
+
+        both_ends: bool
+            If True, both ends of Polyline will be shortened
+
+        Returns
+        -------
+        Polyline
+        """
+
+        if not isinstance(length, list):
+            length = [length, length]
+
+        total_length = [0, 0]
+
+        for line in reversed(self.lines):
+            total_length.append(total_length[-1] + line.length)
+            if total_length[-1] > length[1]:
+                amp = (length[1] - total_length[-2]) / line.length
+                new_pt = line.end + line.vector.scaled(-amp)
+                self.points[-1] = new_pt
+                break
+            else:
+                self.points.pop(-1)
+
+        if both_ends:
+            total_length = [0, 0]
+            for line in self.lines:
+                total_length.append(total_length[-1] + line.length)
+                if total_length[-1] > length[0]:
+                    amp = (length[0] - total_length[-2]) / line.length
+                    new_pt = line.start + line.vector.scaled(amp)
+                    self.points[0] = new_pt
+                    break
+                else:
+                    self.points.pop(0)
+
+        return self
+
     divide_by_length = divide_polyline_by_length

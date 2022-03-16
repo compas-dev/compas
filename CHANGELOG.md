@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
 * Added `VolMeshArtist` to registered Blender artists.
 * Added `3.1` to supported versions for Blender installer.
+* Added `Polyline.extend` and `Polyline.shorten`.
 
 ### Changed
 
