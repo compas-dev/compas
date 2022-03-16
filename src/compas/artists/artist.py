@@ -89,15 +89,15 @@ class Artist(object):
     CONTEXT = None
     ITEM_ARTIST = defaultdict(dict)
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, item, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
             register_artists()
             Artist.__ARTISTS_REGISTERED = True
 
-        if not args or len(args) < 1 or args[0] is None:
+        if item is None:
             raise ValueError('Cannot create an artist for `None`. Please ensure you pass a instance of a supported class.')
 
-        cls = _get_artist_cls(args[0], **kwargs)
+        cls = _get_artist_cls(item, **kwargs)
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
 
