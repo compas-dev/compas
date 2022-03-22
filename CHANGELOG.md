@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `compas_ghpython.artists.VolMeshArtist.draw` and `compas_ghpython.artists.VolMeshArtist.draw_cells`.
 * Fixed `compas_rhino.artists.VolMeshArtist.draw` and `compas_rhino.artists.VolMeshArtist.draw_cells`.
 * Improved error messages when artist instance cannot be created.
+* Fixed exception when calculating geometry of `compas.datastructures.Part` without features.
 * Fixed bug in `compas_rhino.conversions.RhinoCurve.to_compas`.
 * Fixed bug in `compas_rhino.conversions.RhinoSurface.to_compas`.
 
