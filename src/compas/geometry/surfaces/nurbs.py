@@ -320,20 +320,23 @@ class NurbsSurface(Surface):
         return new_nurbssurface_from_step(cls, filepath)
 
     @classmethod
-    def from_fill(cls, curve1, curve2):
-        """Construct a NURBS surface from the infill between two NURBS curves.
+    def from_fill(cls, curve1, curve2, curve3=None, curve4=None, scheme='stretch'):
+        """Construct a NURBS surface from the infill between two, three or four contiguous NURBS curves.
 
         Parameters
         ----------
-        curve1 : :class:`~compas.geometry.NurbsCurve`
-        curve2 : :class:`~compas.geometry.NurbsCurve`
+        curve1 : :class:`~compas_occ.geometry.OCCNurbsCurve`
+        curve2 : :class:`~compas_occ.geometry.OCCNurbsCurve`
+        curve3 : :class:`~compas_occ.geometry.OCCNurbsCurve`, optional.
+        curve4 : :class:`~compas_occ.geometry.OCCNurbsCurve`, optional.
+        scheme (Literal[’stretch’, ’coons’, ‘curved’], optional) – The scheme according to which the mesh should be subdivided.
 
         Returns
         -------
         :class:`~compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_fill(cls, curve1, curve2)
+        return new_nurbssurface_from_fill(cls, curve1, curve2, curve3, curve4, scheme)
 
     # ==============================================================================
     # Conversions
