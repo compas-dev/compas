@@ -51,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `compas_blender.artists.VolMeshArtist.draw` and `compas_blender.artists.VolMeshArtist.draw_cells`.
 * Fixed `compas_ghpython.artists.VolMeshArtist.draw` and `compas_ghpython.artists.VolMeshArtist.draw_cells`.
 * Fixed `compas_rhino.artists.VolMeshArtist.draw` and `compas_rhino.artists.VolMeshArtist.draw_cells`.
+* Fixed bug in `compas_rhino.conversions.RhinoCurve.to_compas`.
+* Fixed bug in `compas_rhino.conversions.RhinoSurface.to_compas`.
 
 ### Removed
 

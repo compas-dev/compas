@@ -35,6 +35,7 @@ class RhinoSurface(RhinoGeometry):
         ------
         :class:`ConversionError`
             If the geometry cannot be converted to a surface.
+
         """
         if not isinstance(geometry, Rhino.Geometry.Surface):
             if not isinstance(geometry, Rhino.Geometry.Brep):
@@ -52,17 +53,15 @@ class RhinoSurface(RhinoGeometry):
         ------
         :class:`ConversionError`
             If the surface BRep contains more than one face.
+
         """
-        from compas.geometry import NurbsSurface
+        from compas_rhino.geometry import RhinoNurbsSurface
 
         brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
-        surface = NurbsSurface()
         if brep.Surfaces.Count > 1:
             raise ConversionError('Conversion of a BRep with multiple underlying surface is currently not supported.')
         for geometry in brep.Surfaces:
-            surface.rhino_surface = geometry
-            break
-        return surface
+            return RhinoNurbsSurface.from_rhino(geometry)
 
     def to_compas_mesh(self, cls=None, facefilter=None, cleanup=False):
         """Convert the surface b-rep loops to a COMPAS mesh.

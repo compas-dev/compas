@@ -60,9 +60,8 @@ class RhinoCurve(RhinoGeometry):
         -------
         :class:`~compas_rhino.geometry.RhinoNurbsCurve`
         """
-        from compas.geometry import NurbsCurve
-        curve = NurbsCurve()
-        curve.rhino_curve = self.geometry
+        from compas_rhino.geometry import RhinoNurbsCurve
+        curve = RhinoNurbsCurve.from_rhino(self.geometry)
         return curve
 
     def to_compas_circle(self):
