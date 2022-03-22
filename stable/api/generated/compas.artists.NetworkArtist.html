@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -108,25 +108,33 @@
 <h1>NetworkArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.artists.NetworkArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">NetworkArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/networkartist.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">NetworkArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/networkartist.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.artist.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">Artist</span></code></a></p>
 <p>Artist for drawing network data structures.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – A COMPAS network.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – A COMPAS network.</p></li>
+<li><p><strong>nodes</strong> (<em>list[hashable], optional</em>) – A list of node identifiers.
+Default is None, in which case all nodes are drawn.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[hashable, hashable]], optional</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
+The default is None, in which case all edges are drawn.</p></li>
+<li><p><strong>nodecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[hashable, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color specification for the nodes.</p></li>
+<li><p><strong>edgecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[tuple[hashable, hashable]], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color specification for the edges.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – The COMPAS network associated with the artist.</p></li>
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – The COMPAS network associated with the artist.</p></li>
 <li><p><strong>nodes</strong> (<em>list[hashable]</em>) – The list of nodes to draw.
 Defaults to all nodes.</p></li>
 <li><p><strong>edges</strong> (<em>list[tuple[hashable, hashable]]</em>) – The list of edges to draw.
 Default is a list of all edges of the network.</p></li>
 <li><p><strong>node_xyz</strong> (<em>dict[hashable, list[float]]</em>) – Mapping between nodes and their view coordinates.
 The default view coordinates are the actual coordinates of the nodes of the network.</p></li>
-<li><p><strong>node_color</strong> (<em>dict[hashable, tuple[float, float, float]]</em>) – Mapping between nodes and RGB color values.
+<li><p><strong>node_color</strong> (dict[hashable, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Mapping between nodes and RGB color values.
 Missing nodes get the default node color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_nodecolor</span></code>.</p></li>
-<li><p><strong>edge_color</strong> (<em>dict[tuple[hashable, hashable], tuple[float, float, float]]</em>) – Mapping between edges and colors.
+<li><p><strong>edge_color</strong> (dict[tuple[hashable, hashable], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Mapping between edges and colors.
 Missing edges get the default edge color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p></li>
 <li><p><strong>node_text</strong> (<em>dict[hashable, str]</em>) – Mapping between nodes and text labels.</p></li>
 <li><p><strong>edge_text</strong> (<em>dict[tuple[hashable, hashable], str]</em>) – Mapping between edges and text labels.</p></li>
@@ -138,8 +146,8 @@ Missing edges get assigned the default edge width <code class="xref py py-attr d
 </dd>
 <dt class="field-odd">Class Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>default_nodecolor</strong> (<em>tuple[float, float, float]</em>) – The default color for nodes that do not have a specified color.</p></li>
-<li><p><strong>default_edgecolor</strong> (<em>tuple[float, float, float]</em>) – The default color for edges that do not have a specified color.</p></li>
+<li><p><strong>default_nodecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color for nodes that do not have a specified color.</p></li>
+<li><p><strong>default_edgecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color for edges that do not have a specified color.</p></li>
 <li><p><strong>default_nodesize</strong> (<em>float</em>) – The default size for nodes that do not have a specified size.</p></li>
 <li><p><strong>default_edgewidth</strong> (<em>float</em>) – The default width for edges that do not have a specified width.</p></li>
 </ul>
@@ -323,7 +331,7 @@ Missing edges get assigned the default edge width <code class="xref py py-attr d
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

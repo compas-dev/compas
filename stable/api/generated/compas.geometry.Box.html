@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -119,7 +119,7 @@ faces of a box are planar. Faces which do not share an edge are parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – The frame of the box.</p></li>
+<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>) – The frame of the box.</p></li>
 <li><p><strong>xsize</strong> (<em>float</em>) – The size of the box in the box frame’s x direction.</p></li>
 <li><p><strong>ysize</strong> (<em>float</em>) – The size of the box in the box frame’s y direction.</p></li>
 <li><p><strong>zsize</strong> (<em>float</em>) – The size of the box in the box frame’s z direction.</p></li>
@@ -127,7 +127,7 @@ faces of a box are planar. Faces which do not share an edge are parallel.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – The box’s frame.</p></li>
+<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>) – The box’s frame.</p></li>
 <li><p><strong>xsize</strong> (<em>float</em>) – The size of the box in the box frame’s x direction.</p></li>
 <li><p><strong>ysize</strong> (<em>float</em>) – The size of the box in the box frame’s y direction.</p></li>
 <li><p><strong>ysize</strong> (<em>float</em>) – The size of the box in the box frame’s z direction.</p></li>
@@ -140,12 +140,12 @@ faces of a box are planar. Faces which do not share an edge are parallel.</p>
 <li><p><strong>width</strong> (<em>float, read-only</em>) – The width of the box in X direction.</p></li>
 <li><p><strong>depth</strong> (<em>float, read-only</em>) – The depth of the box in Y direction.</p></li>
 <li><p><strong>height</strong> (<em>float, read-only</em>) – The height of the box in Z direction.</p></li>
-<li><p><strong>diagonal</strong> (<a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only) – Diagonal of the box.</p></li>
+<li><p><strong>diagonal</strong> (<a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a>, read-only) – Diagonal of the box.</p></li>
 <li><p><strong>dimensions</strong> (<em>list[float], read-only</em>) – The dimensions of the box in the local frame.</p></li>
 <li><p><strong>area</strong> (<em>float, read-only</em>) – The surface area of the box.</p></li>
 <li><p><strong>volume</strong> (<em>float, read-only</em>) – The volume of the box.</p></li>
-<li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], read-only) – The XYZ coordinates of the corners of the box.</p></li>
-<li><p><strong>vertices</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], read-only) – The XYZ coordinates of the vertices of the box.</p></li>
+<li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], read-only) – The XYZ coordinates of the corners of the box.</p></li>
+<li><p><strong>vertices</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], read-only) – The XYZ coordinates of the vertices of the box.</p></li>
 <li><p><strong>faces</strong> (<em>list[list[int]], read-only</em>) – The faces of the box defined as lists of vertex indices.</p></li>
 <li><p><strong>bottom</strong> (<em>list[int], read-only</em>) – The vertex indices of the bottom face.</p></li>
 <li><p><strong>front</strong> (<em>list[int], read-only</em>) – The vertex indices of the front face.</p></li>
@@ -357,7 +357,7 @@ faces of a box are planar. Faces which do not share an edge are parallel.</p>
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="MeshArtist.clear_edges" href="compas_blender.artists.MeshArtist.clear_edges.html" />
+  <link rel="next" title="MeshArtist.clear" href="compas_blender.artists.MeshArtist.clear.html" />
   
 
   
@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -108,27 +108,14 @@
 <h1>MeshArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_blender.artists.MeshArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/meshartist.py#L26"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/artists/meshartist.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.artist.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlenderArtist</span></code></a>, <a class="reference internal" href="compas.artists.MeshArtist.html#compas.artists.MeshArtist" title="compas.artists.meshartist.MeshArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshArtist</span></code></a></p>
 <p>Artist for drawing mesh data structures in Blender.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p></li>
-<li><p><strong>collection</strong> (str or <a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The Blender scene collection the object(s) created by this artist belong to.</p></li>
-<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – A list of vertex identifiers.
-Default is None, in which case all vertices are drawn.</p></li>
-<li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
-The default is None, in which case all edges are drawn.</p></li>
-<li><p><strong>faces</strong> (<em>list[int], optional</em>) – A list of face identifiers.
-The default is None, in which case all faces are drawn.</p></li>
-<li><p><strong>vertexcolor</strong> (<em>rgb-tuple or dict[int, rgb-tuple], optional</em>) – The color specification for the vertices.</p></li>
-<li><p><strong>edgecolor</strong> (<em>rgb-tuple or dict[tuple[int, int], rgb-tuple], optional</em>) – The color specification for the edges.</p></li>
-<li><p><strong>facecolor</strong> (<em>rgb-tuple or dict[int, rgb-tuple], optional</em>) – The color specification for the faces.</p></li>
-<li><p><strong>show_mesh</strong> (<em>bool, optional</em>) – If True, draw the mesh.</p></li>
-<li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – If True, draw the individual vertices.</p></li>
-<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – If True, draw the individual edges.</p></li>
-<li><p><strong>show_faces</strong> (<em>bool, optional</em>) – If True, draw the individual faces.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A COMPAS mesh.</p></li>
+<li><p><strong>collection</strong> (str | <a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a>) – The Blender scene collection the object(s) created by this artist belong to.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
@@ -170,35 +157,35 @@ The default is None, in which case all faces are drawn.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_edges.html#compas_blender.artists.MeshArtist.clear_edges" title="compas_blender.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear.html#compas_blender.artists.MeshArtist.clear" title="compas_blender.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<td><p>Clear all objects from the view.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_edges.html#compas_blender.artists.MeshArtist.clear_edges" title="compas_blender.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
 <td><p>Clear the objects contained in the edge collection (<code class="docutils literal notranslate"><span class="pre">self.edgecollection</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_faces.html#compas_blender.artists.MeshArtist.clear_faces" title="compas_blender.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_faces.html#compas_blender.artists.MeshArtist.clear_faces" title="compas_blender.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
 <td><p>Clear the objects contained in the face collection (<code class="docutils literal notranslate"><span class="pre">self.facecollection</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_vertices.html#compas_blender.artists.MeshArtist.clear_vertices" title="compas_blender.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_vertices.html#compas_blender.artists.MeshArtist.clear_vertices" title="compas_blender.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
 <td><p>Clear the objects contained in the vertex collection (<code class="docutils literal notranslate"><span class="pre">self.vertexcollection</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw.html#compas_blender.artists.MeshArtist.draw" title="compas_blender.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p>Draw the mesh using the chosen visualization settings.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw.html#compas_blender.artists.MeshArtist.draw" title="compas_blender.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
+<td><p>Draw the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edgelabels.html#compas_blender.artists.MeshArtist.draw_edgelabels" title="compas_blender.artists.MeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edgelabels.html#compas_blender.artists.MeshArtist.draw_edgelabels" title="compas_blender.artists.MeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a></p></td>
 <td><p>Draw labels for a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edges.html#compas_blender.artists.MeshArtist.draw_edges" title="compas_blender.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edges.html#compas_blender.artists.MeshArtist.draw_edges" title="compas_blender.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_facelabels.html#compas_blender.artists.MeshArtist.draw_facelabels" title="compas_blender.artists.MeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_facelabels.html#compas_blender.artists.MeshArtist.draw_facelabels" title="compas_blender.artists.MeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a></p></td>
 <td><p>Draw labels for a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_facenormals.html#compas_blender.artists.MeshArtist.draw_facenormals" title="compas_blender.artists.MeshArtist.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_facenormals.html#compas_blender.artists.MeshArtist.draw_facenormals" title="compas_blender.artists.MeshArtist.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a></p></td>
 <td><p>Draw the normals of the faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_faces.html#compas_blender.artists.MeshArtist.draw_faces" title="compas_blender.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_faces.html#compas_blender.artists.MeshArtist.draw_faces" title="compas_blender.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
 <td><p>Draw a selection of faces.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_mesh.html#compas_blender.artists.MeshArtist.draw_mesh" title="compas_blender.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
-<td><p>Draw the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_vertexlabels.html#compas_blender.artists.MeshArtist.draw_vertexlabels" title="compas_blender.artists.MeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a></p></td>
 <td><p>Draw labels for a selection vertices.</p></td>
@@ -224,11 +211,11 @@ The default is None, in which case all faces are drawn.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.build_as.html#compas_blender.artists.MeshArtist.build_as" title="compas_blender.artists.MeshArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
 <td><p>Build an artist with the given type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear.html#compas_blender.artists.MeshArtist.clear" title="compas_blender.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p>Clear all components of the mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_collection.html#compas_blender.artists.MeshArtist.draw_collection" title="compas_blender.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_collection.html#compas_blender.artists.MeshArtist.draw_collection" title="compas_blender.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p>Drawing method for drawing an entire collection of objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_mesh.html#compas_blender.artists.MeshArtist.draw_mesh" title="compas_blender.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
+<td><p>Draw the mesh of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.redraw.html#compas_blender.artists.MeshArtist.redraw" title="compas_blender.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p>Redraw the view.</p></td>
@@ -310,10 +297,10 @@ The default is None, in which case all faces are drawn.</p></li>
       
 
       
-      <a href="compas_blender.artists.MeshArtist.clear_edges.html" title="MeshArtist.clear_edges" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_blender.artists.MeshArtist.clear.html" title="MeshArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          MeshArtist.clear_edges
+          MeshArtist.clear
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
@@ -358,7 +345,7 @@ The default is None, in which case all faces are drawn.</p></li>
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

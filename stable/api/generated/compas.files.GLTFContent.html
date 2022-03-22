@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -114,17 +114,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scenes</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFScene</span></code>) pairs.</p></li>
+<li><p><strong>scenes</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFScene</span></code>) pairs.</p></li>
 <li><p><strong>default_scene_key</strong> (<em>int or None</em>) – Key of the scene to be displayed on loading the glTF.</p></li>
-<li><p><strong>nodes</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFNode</span></code>) pairs.</p></li>
-<li><p><strong>meshes</strong> (<em>dict</em>) – Dictionary containing (int, <a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a>) pairs.</p></li>
-<li><p><strong>cameras</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.data_classes.CameraData</span></code>) pairs.</p></li>
-<li><p><strong>animations</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.data_classes.AnimationData</span></code>) pairs.</p></li>
-<li><p><strong>skins</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.data_classes.SkinData</span></code>) pairs.</p></li>
-<li><p><strong>materials</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.data_classes.MaterialData</span></code>) pairs.</p></li>
-<li><p><strong>textures</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.data_classes.TextureData</span></code>) pairs.</p></li>
-<li><p><strong>samplers</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.data_classes.SamplerData</span></code>) pairs.</p></li>
-<li><p><strong>images</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.data_classes.ImageData</span></code>) pairs.</p></li>
+<li><p><strong>nodes</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFNode</span></code>) pairs.</p></li>
+<li><p><strong>meshes</strong> (<em>dict</em>) – Dictionary containing (int, <a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFMesh</span></code></a>) pairs.</p></li>
+<li><p><strong>cameras</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">CameraData</span></code>) pairs.</p></li>
+<li><p><strong>animations</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">AnimationData</span></code>) pairs.</p></li>
+<li><p><strong>skins</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">SkinData</span></code>) pairs.</p></li>
+<li><p><strong>materials</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">MaterialData</span></code>) pairs.</p></li>
+<li><p><strong>textures</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">TextureData</span></code>) pairs.</p></li>
+<li><p><strong>samplers</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">SamplerData</span></code>) pairs.</p></li>
+<li><p><strong>images</strong> (<em>dict</em>) – Dictionary containing (int, <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageData</span></code>) pairs.</p></li>
 <li><p><strong>extras</strong> (<em>object</em>)</p></li>
 <li><p><strong>extensions</strong> (<em>object</em>)</p></li>
 </ul>
@@ -138,16 +138,16 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_child_to_node.html#compas.files.GLTFContent.add_child_to_node" title="compas.files.GLTFContent.add_child_to_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_child_to_node</span></code></a></p></td>
-<td><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFNode</span></code> and adds this node to the children of <code class="docutils literal notranslate"><span class="pre">parent_node</span></code>.</p></td>
+<td><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFNode</span></code> and adds this node to the children of <code class="docutils literal notranslate"><span class="pre">parent_node</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_mesh.html#compas.files.GLTFContent.add_mesh" title="compas.files.GLTFContent.add_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mesh</span></code></a></p></td>
-<td><p>Creates a <a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from a compas mesh, and adds this to the content.</p></td>
+<td><p>Creates a <a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFMesh</span></code></a> object from a compas mesh, and adds this to the content.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_mesh_to_node.html#compas.files.GLTFContent.add_mesh_to_node" title="compas.files.GLTFContent.add_mesh_to_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mesh_to_node</span></code></a></p></td>
 <td><p>Adds an existing mesh to <code class="docutils literal notranslate"><span class="pre">node</span></code> if <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is a valid mesh key, or through <code class="docutils literal notranslate"><span class="pre">add_mesh</span></code> creates and adds a mesh to <code class="docutils literal notranslate"><span class="pre">node</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_node_to_scene.html#compas.files.GLTFContent.add_node_to_scene" title="compas.files.GLTFContent.add_node_to_scene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node_to_scene</span></code></a></p></td>
-<td><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFNode</span></code> and adds this node to the children of <code class="docutils literal notranslate"><span class="pre">scene</span></code>.</p></td>
+<td><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFNode</span></code> and adds this node to the children of <code class="docutils literal notranslate"><span class="pre">scene</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.files.GLTFContent.add_scene.html#compas.files.GLTFContent.add_scene" title="compas.files.GLTFContent.add_scene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_scene</span></code></a></p></td>
 <td><p>Adds a scene to the content.</p></td>
@@ -305,7 +305,7 @@
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

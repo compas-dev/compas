@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -110,15 +110,16 @@
 <h1>Mesh.vertices_where</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh.vertices_where">
-<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">vertices_where</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L623"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">vertices_where</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L623"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get vertices for which a certain condition or set of conditions is true.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
+<li><p><strong>conditions</strong> (<em>dict, optional</em>) – A set of conditions in the form of key-value pairs.
 The keys should be attribute names. The values can be attribute
 values or ranges of attribute values in the form of min/max pairs.</p></li>
 <li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the vertex attributes in addition to the vertex identifiers.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict[str, Any], optional</em>) – Additional conditions provided as named function arguments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields</dt>
@@ -253,7 +254,7 @@ If <cite>data</cite> is True, the next vertex and its attributes.</p>
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

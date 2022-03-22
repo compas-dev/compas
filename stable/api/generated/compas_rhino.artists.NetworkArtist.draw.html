@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -110,7 +110,7 @@
 <h1>NetworkArtist.draw</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.artists.NetworkArtist.draw">
-<span class="sig-prename descclassname"><span class="pre">NetworkArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/networkartist.py#L129"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">NetworkArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/networkartist.py#L96"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the network using the chosen visualisation settings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -119,9 +119,9 @@
 Default is None, in which case all nodes are drawn.</p></li>
 <li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – A list of edges to draw.
 The default is None, in which case all edges are drawn.</p></li>
-<li><p><strong>nodecolor</strong> (<em>tuple[int, int, int] or dict[int, tuple[int, int, int]], optional</em>) – The color of the nodes.
+<li><p><strong>nodecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color of the nodes.
 The default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">NetworkArtist.default_nodecolor</span></code>.</p></li>
-<li><p><strong>edgecolor</strong> (<em>tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional</em>) – The color of the edges.
+<li><p><strong>edgecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[tuple[int, int], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color of the edges.
 The default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">NetworkArtist.default_edgecolor</span></code>.</p></li>
 </ul>
 </dd>
@@ -250,7 +250,7 @@ The default color is <code class="xref py py-attr docutils literal notranslate">
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

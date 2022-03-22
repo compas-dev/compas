@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -110,14 +110,14 @@
 <h1>VolMeshArtist.draw_cells</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.artists.VolMeshArtist.draw_cells">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/volmeshartist.py#L341"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">VolMeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/volmeshartist.py#L334"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the cells of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cells</strong> (<em>list[int], optional</em>) – The cells to include in the drawing.
 Default is all cells.</p></li>
-<li><p><strong>color</strong> (<em>tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</em>) – The color of the cells,
+<li><p><strong>color</strong> (tuple[float, float, float] | <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[int, tuple[float, float, float] | <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color of the cells,
 as either a single color to be applied to all cells,
 or a color dict, mapping specific cells to specific colors.</p></li>
 <li><p><strong>text</strong> (<em>dict[int, str], optional</em>) – The text labels for the cells as a text dict,
@@ -255,7 +255,7 @@ mapping specific cells to specific text labels.</p></li>
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

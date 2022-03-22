@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -108,37 +108,47 @@
 <h1>MeshArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.artists.MeshArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/meshartist.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.artists.</span></span><span class="sig-name descname"><span class="pre">MeshArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/artists/meshartist.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.artist.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">Artist</span></code></a></p>
 <p>Base class for all mesh artists.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A COMPAS mesh.</p></li>
+<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – Selection of vertices to draw.</p></li>
+<li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – Selection of edges to draw.</p></li>
+<li><p><strong>faces</strong> (<em>list[int], optional</em>) – Selection of faces to draw.</p></li>
+<li><p><strong>vertexcolor</strong> (<em>tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</em>) – Color of the vertices.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_vertexcolor</span></code>.</p></li>
+<li><p><strong>edgecolor</strong> (<em>tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional</em>) – Color of the edges.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_edgecolor</span></code>.</p></li>
+<li><p><strong>facecolor</strong> (<em>tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</em>) – Color of the faces.
+Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_facecolor</span></code>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The mesh data structure.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – The mesh data structure.</p></li>
 <li><p><strong>vertices</strong> (<em>list[int]</em>) – The selection of vertices that should be included in the drawing.
 Defaults to all vertices.</p></li>
 <li><p><strong>edges</strong> (<em>list[tuple[int, int]]</em>) – The selection of edges that should be included in the drawing.
 Defaults to all edges.</p></li>
 <li><p><strong>faces</strong> (<em>list[int]</em>) – The selection of faces that should be included in the drawing.
 Defaults to all faces.</p></li>
-<li><p><strong>color</strong> (<em>tuple[float, float, float]</em>) – The base RGB color of the mesh.
-Defaults to <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_color</span></code>.</p></li>
+<li><p><strong>color</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The base RGB color of the mesh.</p></li>
 <li><p><strong>vertex_xyz</strong> (<em>dict[int, list[float]]</em>) – View coordinates of the vertices.
 Defaults to the real coordinates.</p></li>
-<li><p><strong>vertex_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Vertex colors.
+<li><p><strong>vertex_color</strong> (dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Vertex colors.
 Missing vertices get the default vertex color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_vertexcolor</span></code>.</p></li>
-<li><p><strong>edge_color</strong> (<em>dict[tuple[int, int], tuple[float, float, float]]</em>) – Edge colors.
+<li><p><strong>edge_color</strong> (dict[tuple[int, int], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Edge colors.
 Missing edges get the default edge color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p></li>
-<li><p><strong>face_color</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Face colors.
+<li><p><strong>face_color</strong> (dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]) – Face colors.
 Missing faces get the default face color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p></li>
 <li><p><strong>vertex_text</strong> (<em>dict[int, str]</em>) – Vertex labels.
 Defaults to the vertex identifiers.</p></li>
 <li><p><strong>edge_text</strong> (<em>dict[tuple[int, int], str]</em>) – Edge labels.
 Defaults to the edge identifiers.</p></li>
-<li><p><strong>face_text</strong> (<em>dict[int, tuple[float, float, float]]</em>) – Face labels.
+<li><p><strong>face_text</strong> (<em>dict[int, str]</em>) – Face labels.
 Defaults to the face identifiers.</p></li>
 <li><p><strong>vertex_size</strong> (<em>dict[int, float]</em>) – Vertex sizes.
 Defaults to 1.
@@ -150,10 +160,9 @@ Visualization of edges with variable width is not available for all visualizatio
 </dd>
 <dt class="field-odd">Class Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>default_color</strong> (<em>tuple[float, float, float]</em>) – The default base color of the mesh.</p></li>
-<li><p><strong>default_vertexcolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the vertices of the mesh.</p></li>
-<li><p><strong>default_edgecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the edges of the mesh.</p></li>
-<li><p><strong>default_facecolor</strong> (<em>tuple[float, float, float]</em>) – The default color of the faces of the mesh.</p></li>
+<li><p><strong>default_vertexcolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color of the vertices of the mesh.</p></li>
+<li><p><strong>default_edgecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color of the edges of the mesh.</p></li>
+<li><p><strong>default_facecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color of the faces of the mesh.</p></li>
 <li><p><strong>default_vertexsize</strong> (<em>float</em>) – The default size of the vertices of the mesh.</p></li>
 <li><p><strong>default_edgewidth</strong> (<em>float</em>) – The default width of the edges of the mesh.</p></li>
 </ul>
@@ -346,7 +355,7 @@ Visualization of edges with variable width is not available for all visualizatio
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

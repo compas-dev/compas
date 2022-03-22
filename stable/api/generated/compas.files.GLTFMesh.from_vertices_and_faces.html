@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -111,14 +111,14 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.files.GLTFMesh.from_vertices_and_faces">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GLTFMesh.</span></span><span class="sig-name descname"><span class="pre">from_vertices_and_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a <a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a> object from lists of vertices and faces.
+<dd><p>Construct a <a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFMesh</span></code></a> object from lists of vertices and faces.
 Vertices can be given as either a list of xyz-tuples or -lists, in which case
 the faces reference vertices by index, or vertices can be given as a dictionary of
 key-value pairs where the values are xyz-tuples or -lists and the faces reference the keys.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>context</strong> (<a class="reference internal" href="compas.files.GLTFContent.html#compas.files.GLTFContent" title="compas.files.GLTFContent"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFContent</span></code></a>)</p></li>
+<li><p><strong>context</strong> (<a class="reference internal" href="compas.files.GLTFContent.html#compas.files.GLTFContent" title="compas.files.GLTFContent"><code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFContent</span></code></a>)</p></li>
 <li><p><strong>vertices</strong> (<em>Union[list, dict]</em>)</p></li>
 <li><p><strong>faces</strong> (<em>list</em>)</p></li>
 <li><p><strong>mesh_name</strong> (<em>str</em>)</p></li>
@@ -126,7 +126,7 @@ key-value pairs where the values are xyz-tuples or -lists and the faces referenc
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.files.GLTFMesh</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="compas.files.GLTFMesh.html#compas.files.GLTFMesh" title="compas.files.GLTFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">GLTFMesh</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -256,7 +256,7 @@ key-value pairs where the values are xyz-tuples or -lists and the faces referenc
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

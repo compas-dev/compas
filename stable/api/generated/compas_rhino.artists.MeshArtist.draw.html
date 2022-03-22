@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -110,30 +110,23 @@
 <h1>MeshArtist.draw</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.artists.MeshArtist.draw">
-<span class="sig-prename descclassname"><span class="pre">MeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/meshartist.py#L217"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Draw the mesh using the chosen visualization settings.</p>
+<span class="sig-prename descclassname"><span class="pre">MeshArtist.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disjoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/artists/meshartist.py#L140"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Draw the mesh as a consolidated RhinoMesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list[int], optional</em>) – A list of vertices to draw.
-Default is None, in which case all vertices are drawn.</p></li>
-<li><p><strong>edges</strong> (<em>list[tuple[int, int]], optional</em>) – A list of edges to draw.
-The default is None, in which case all edges are drawn.</p></li>
-<li><p><strong>faces</strong> (<em>list[int], optional</em>) – A selection of faces to draw.
-The default is None, in which case all faces are drawn.</p></li>
-<li><p><strong>vertexcolor</strong> (<em>tuple[int, int, int] or dict[int, tuple[int, int, int]], optional</em>) – The color of the vertices.
-The default color is the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtist.default_vertexcolor</span></code>.</p></li>
-<li><p><strong>edgecolor</strong> (<em>tuple[int, int, int] or dict[tuple[int, int], tuple[int, int, int]], optional</em>) – The color of the edges.
-The default color is the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtist.default_edgecolor</span></code>.</p></li>
-<li><p><strong>facecolor</strong> (<em>tuple[int, int, int] or dict[int, tuple[int, int, int]], optional</em>) – The color of the faces.
-The default color is the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtist.default_facecolor</span></code>.</p></li>
-<li><p><strong>join_faces</strong> (<em>bool, optional</em>) – If True, join the faces into a single mesh.</p></li>
+<li><p><strong>color</strong> (<em>tuple[int, int, int], optional</em>) – The color of the mesh.
+Default is the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtist.default_color</span></code>.</p></li>
+<li><p><strong>disjoint</strong> (<em>bool, optional</em>) – If True, draw the faces of the mesh with disjoint vertices.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>None</em></p>
+<dd class="field-even"><p><em>list[System.Guid]</em> – The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
+Faces with more than 4 vertices will be triangulated on-the-fly.</p>
 </dd></dl>
 
 </section>
@@ -255,7 +248,7 @@ The default color is the value of <code class="xref py py-attr docutils literal 
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

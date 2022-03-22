@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -116,13 +116,13 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>angle</strong> (<em>float</em>) – The angle in radians.</p></li>
-<li><p><strong>direction</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – The direction vector as list of 3 numbers.
+<li><p><strong>direction</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>) – The direction vector as list of 3 numbers.
 It must be orthogonal to the normal vector (i.e. it must lie in the shear plane).</p></li>
-<li><p><strong>plane</strong> ([point, vector] | <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The shear plane defined by a point and normal.</p></li>
+<li><p><strong>plane</strong> ([point, vector] | <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a>) – The shear plane defined by a point and normal.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Shear.html#compas.geometry.Shear" title="compas.geometry.Shear"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shear</span></code></a> – The shear transformation object.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Shear.html#compas.geometry.Shear" title="compas.geometry.Shear"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shear</span></code></a> – The shear transformation object.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If the shear direction does not lie in the shear plane.</p>
@@ -264,7 +264,7 @@ It must be orthogonal to the normal vector (i.e. it must lie in the shear plane)
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="GHArtist.build" href="compas_ghpython.artists.GHArtist.build.html" />
+  <link rel="next" title="GHArtist.clear" href="compas_ghpython.artists.GHArtist.clear.html" />
   
 
   
@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.14.1
+            1.15.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -108,9 +108,21 @@
 <h1>GHArtist</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_ghpython.artists.GHArtist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">GHArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/artist.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.artists.</span></span><span class="sig-name descname"><span class="pre">GHArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_ghpython/artists/artist.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.artist.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">Artist</span></code></a></p>
 <p>Base class for all GH artists.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.clear.html#compas_ghpython.artists.GHArtist.clear" title="compas_ghpython.artists.GHArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<td><p>Clear all objects from the view.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Inherited Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -124,19 +136,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.build_as.html#compas_ghpython.artists.GHArtist.build_as" title="compas_ghpython.artists.GHArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
 <td><p>Build an artist with the given type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.clear.html#compas_ghpython.artists.GHArtist.clear" title="compas_ghpython.artists.GHArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p>Clear all objects from the view.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.draw.html#compas_ghpython.artists.GHArtist.draw" title="compas_ghpython.artists.GHArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.draw.html#compas_ghpython.artists.GHArtist.draw" title="compas_ghpython.artists.GHArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>The main drawing method.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.draw_collection.html#compas_ghpython.artists.GHArtist.draw_collection" title="compas_ghpython.artists.GHArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.draw_collection.html#compas_ghpython.artists.GHArtist.draw_collection" title="compas_ghpython.artists.GHArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p>Drawing method for drawing an entire collection of objects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.redraw.html#compas_ghpython.artists.GHArtist.redraw" title="compas_ghpython.artists.GHArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.redraw.html#compas_ghpython.artists.GHArtist.redraw" title="compas_ghpython.artists.GHArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p>Redraw the view.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.register.html#compas_ghpython.artists.GHArtist.register" title="compas_ghpython.artists.GHArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.GHArtist.register.html#compas_ghpython.artists.GHArtist.register" title="compas_ghpython.artists.GHArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
 <td><p>Register an artist type to a data type.</p></td>
 </tr>
 </tbody>
@@ -210,10 +219,10 @@
       
 
       
-      <a href="compas_ghpython.artists.GHArtist.build.html" title="GHArtist.build" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_ghpython.artists.GHArtist.clear.html" title="GHArtist.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          GHArtist.build
+          GHArtist.clear
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
@@ -258,7 +267,7 @@
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.14.1',
+      VERSION: '1.15.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',
