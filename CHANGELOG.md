@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed `compas.geometry.surfaces.nurbs.from_fill` to accept up to 4 curves as input.
 * Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
 * Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
 * Changed `compas_ghpython.artists.MeshArtist.draw` to draw the mesh only.

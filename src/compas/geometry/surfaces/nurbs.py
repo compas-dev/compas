@@ -320,20 +320,32 @@ class NurbsSurface(Surface):
         return new_nurbssurface_from_step(cls, filepath)
 
     @classmethod
-    def from_fill(cls, curve1, curve2):
-        """Construct a NURBS surface from the infill between two NURBS curves.
+    def from_fill(cls, curve1, curve2, curve3=None, curve4=None, style='stretch'):
+        """Construct a NURBS surface from the infill between two, three or four contiguous NURBS curves.
 
         Parameters
         ----------
-        curve1 : :class:`~compas.geometry.NurbsCurve`
-        curve2 : :class:`~compas.geometry.NurbsCurve`
+        curve1 : :class:`compas.geometry.NurbsCurve`
+        curve2 : :class:`compas.geometry.NurbsCurve`
+        curve3 : :class:`compas.geometry.NurbsCurve`, optional.
+        curve4 : :class:`compas.geometry.NurbsCurve`, optional.
+        style : Literal['stretch', 'coons', 'curved'], optional.
+
+            * ``'stretch'`` produces the flattest patch.
+            * ``'curved'`` produces a rounded patch.
+            * ``'coons'`` is between stretch and coons.
+
+        Raises
+        ------
+        ValueError
+            If the fill style is not supported.
 
         Returns
         -------
         :class:`~compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_fill(cls, curve1, curve2)
+        return new_nurbssurface_from_fill(cls, curve1, curve2, curve3, curve4, style)
 
     # ==============================================================================
     # Conversions
