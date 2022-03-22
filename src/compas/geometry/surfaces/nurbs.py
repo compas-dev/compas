@@ -325,15 +325,15 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        curve1 : :class:`~compas_occ.geometry.OCCNurbsCurve`
-        curve2 : :class:`~compas_occ.geometry.OCCNurbsCurve`
-        curve3 : :class:`~compas_occ.geometry.OCCNurbsCurve`, optional.
-        curve4 : :class:`~compas_occ.geometry.OCCNurbsCurve`, optional.
+        curve1 : :class:`compas.geometry.NurbsCurve`
+        curve2 : :class:`compas.geometry.NurbsCurve`
+        curve3 : :class:`compas.geometry.NurbsCurve`, optional.
+        curve4 : :class:`compas.geometry.NurbsCurve`, optional.
         style : Literal['stretch', 'coons', 'curved'], optional.
-            The fill style:
-            'stretch' gives the flattest patch.
-            'coons' gives a rounded patch with less depth than that of curved.
-            'curved' gives with the most rounded patch.
+
+            * ``'stretch'`` produces the flattest patch.
+            * ``'curved'`` produces a rounded patch.
+            * ``'coons'`` is between stretch and coons.
 
         Raises
         ------
