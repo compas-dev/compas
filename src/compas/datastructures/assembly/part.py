@@ -145,12 +145,10 @@ class Part(Datastructure):
         # TODO: this is a temp solution
         # TODO: add memoization or some other kind of caching
         if self.features:
-            A = Mesh.from_shape(self.shape)
+            A = self.shape.to_vertices_and_faces(triangulated=True)
             for shape, operation in self.features:
-                A.quads_to_triangles()
-                B = Mesh.from_shape(shape)
-                B.quads_to_triangles()
-                A = Part.operations[operation](A.to_vertices_and_faces(), B.to_vertices_and_faces())
+                B = shape.to_vertices_and_faces(triangulated=True)
+                A = Part.operations[operation](A, B)
             geometry = Shape(*A)
         else:
             geometry = Shape(*self.shape.to_vertices_and_faces())
