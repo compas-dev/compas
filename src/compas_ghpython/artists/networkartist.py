@@ -2,15 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
 import compas_ghpython
-
-from compas.utilities import color_to_colordict
-
 from compas.artists import NetworkArtist
 from .artist import GHArtist
-
-colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 class NetworkArtist(GHArtist, NetworkArtist):
@@ -18,11 +12,11 @@ class NetworkArtist(GHArtist, NetworkArtist):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.NetworkArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.NetworkArtist` for more info.
 
     """
 
@@ -50,7 +44,7 @@ class NetworkArtist(GHArtist, NetworkArtist):
         nodes: list[hashable], optional
             The selection of nodes that should be drawn.
             Default is None, in which case all nodes are drawn.
-        color: tuple[int, int, int] or dict[hashable, tuple[int, int, int]], optional
+        color: :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
             The color specification for the nodes.
             The default color is :attr:`NetworkArtist.default_nodecolor`.
 
@@ -67,7 +61,7 @@ class NetworkArtist(GHArtist, NetworkArtist):
             points.append({
                 'pos': node_xyz[node],
                 'name': "{}.node.{}".format(self.network.name, node),
-                'color': self.node_color.get(node, self.default_nodecolor)
+                'color': self.node_color[node].rgb255
             })
         return compas_ghpython.draw_points(points)
 
@@ -79,7 +73,7 @@ class NetworkArtist(GHArtist, NetworkArtist):
         edges : list[tuple[hashable, hashable]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : tuple[int, int, int] or dict[tuple[hashable, hashable], tuple[int, int, int]], optional
+        color : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
             The default color is the value of :attr:`NetworkArtist.default_edgecolor`.
 
@@ -93,10 +87,11 @@ class NetworkArtist(GHArtist, NetworkArtist):
         edges = edges or list(self.network.edges())
         lines = []
         for edge in edges:
+            u, v = edge
             lines.append({
-                'start': node_xyz[edge[0]],
-                'end': node_xyz[edge[1]],
-                'color': self.edge_color.get(edge, self.default_edgecolor),
-                'name': "{}.edge.{}-{}".format(self.network.name, *edge)
+                'start': node_xyz[u],
+                'end': node_xyz[v],
+                'color': self.edge_color[edge].rgb255,
+                'name': "{}.edge.{}-{}".format(self.network.name, u, v)
             })
         return compas_ghpython.draw_lines(lines)

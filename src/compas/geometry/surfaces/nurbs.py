@@ -45,7 +45,7 @@ class NurbsSurface(Surface):
 
     Attributes
     ----------
-    points : list[list[:class:`compas.geometry.Point`]], read-only
+    points : list[list[:class:`~compas.geometry.Point`]], read-only
         The control points as rows along the U direction.
     weights : list[list[float]], read-only
         The weights of the control points.
@@ -154,7 +154,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas.geometry.NurbsSurface`
             The constructed surface.
 
         """
@@ -223,7 +223,7 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : list[list[[float, float, float] | :class:`compas.geometry.Point`]]
+        points : list[list[[float, float, float] | :class:`~compas.geometry.Point`]]
             The control points.
         weights : list[list[float]]
             The weights of the control points.
@@ -242,7 +242,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas.geometry.NurbsSurface`
 
         """
         return new_nurbssurface_from_parameters(
@@ -265,7 +265,7 @@ class NurbsSurface(Surface):
 
         Parameters
         ----------
-        points : list[list[[float, float, float] | :class:`compas.geometry.Point`]]
+        points : list[list[[float, float, float] | :class:`~compas.geometry.Point`]]
             The control points.
         u_degree : int
             Degree in the U direction.
@@ -274,7 +274,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas.geometry.NurbsSurface`
 
         """
         return new_nurbssurface_from_points(cls, points, u_degree=u_degree, v_degree=v_degree)
@@ -292,7 +292,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas.geometry.NurbsSurface`
 
         """
         UU, VV = meshgrid(linspace(0, nu, nu + 1), linspace(0, nv, nv + 1))
@@ -314,26 +314,38 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas.geometry.NurbsSurface`
 
         """
         return new_nurbssurface_from_step(cls, filepath)
 
     @classmethod
-    def from_fill(cls, curve1, curve2):
-        """Construct a NURBS surface from the infill between two NURBS curves.
+    def from_fill(cls, curve1, curve2, curve3=None, curve4=None, style='stretch'):
+        """Construct a NURBS surface from the infill between two, three or four contiguous NURBS curves.
 
         Parameters
         ----------
         curve1 : :class:`compas.geometry.NurbsCurve`
         curve2 : :class:`compas.geometry.NurbsCurve`
+        curve3 : :class:`compas.geometry.NurbsCurve`, optional.
+        curve4 : :class:`compas.geometry.NurbsCurve`, optional.
+        style : Literal['stretch', 'coons', 'curved'], optional.
+
+            * ``'stretch'`` produces the flattest patch.
+            * ``'curved'`` produces a rounded patch.
+            * ``'coons'`` is between stretch and coons.
+
+        Raises
+        ------
+        ValueError
+            If the fill style is not supported.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_fill(cls, curve1, curve2)
+        return new_nurbssurface_from_fill(cls, curve1, curve2, curve3, curve4, style)
 
     # ==============================================================================
     # Conversions
@@ -348,7 +360,7 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        :class:`~compas.geometry.NurbsSurface`
 
         """
         return NurbsSurface.from_parameters(

@@ -19,7 +19,7 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A triangle mesh data structure.
     num_points : int, optional
         The number of sample points.

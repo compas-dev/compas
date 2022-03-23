@@ -45,7 +45,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     Attributes
     ----------
-    points : list[:class:`compas.geometry.Point`], read-only
+    points : list[:class:`~compas.geometry.Point`], read-only
         The control points of the curve.
     weights : list[float], read-only
         The weights of the control points.
@@ -167,7 +167,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         Parameters
         ----------
-        points : list[:class:`compas.geometry.Point`]
+        points : list[:class:`~compas.geometry.Point`]
             The control points.
         weights : list[float]
             The control point weights.
@@ -183,7 +183,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        :class:`~compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         curve = cls()
@@ -196,7 +196,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         Parameters
         ----------
-        points : list[:class:`compas.geometry.Point`]
+        points : list[:class:`~compas.geometry.Point`]
             The control points.
         degree : int, optional
             The degree of the curve.
@@ -205,7 +205,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        :class:`~compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         points[:] = [point_to_rhino(point) for point in points]
@@ -219,7 +219,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         Parameters
         ----------
-        points : list[:class:`compas.geometry.Point`]
+        points : list[:class:`~compas.geometry.Point`]
             The control points.
         precision : float, optional
             The required precision of the interpolation.
@@ -227,7 +227,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        :class:`~compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         curve = cls()
@@ -240,12 +240,12 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     #     Parameters
     #     ----------
-    #     circle : :class:`compas.geometry.Circle`
+    #     circle : :class:`~compas.geometry.Circle`
     #         A circle geometry.
 
     #     Returns
     #     -------
-    #     :class:`compas_rhino.geometry.RhinoNurbsCurve`
+    #     :class:`~compas_rhino.geometry.RhinoNurbsCurve`
 
     #     """
     #     curve = cls()
@@ -258,12 +258,12 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     #     Parameters
     #     ----------
-    #     ellipse : :class:`compas.geometry.Ellipse`
+    #     ellipse : :class:`~compas.geometry.Ellipse`
     #         An ellipse geometry.
 
     #     Returns
     #     -------
-    #     :class:`compas_rhino.geometry.RhinoNurbsCurve`
+    #     :class:`~compas_rhino.geometry.RhinoNurbsCurve`
 
     #     """
     #     curve = cls()
@@ -276,12 +276,12 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         Parameters
         ----------
-        line : :class:`compas.geometry.Line`
+        line : :class:`~compas.geometry.Line`
             A line geometry.
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        :class:`~compas_rhino.geometry.RhinoNurbsCurve`
 
         """
         curve = cls()

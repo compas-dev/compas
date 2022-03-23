@@ -7,9 +7,12 @@ from abc import abstractmethod
 from collections import defaultdict
 
 import compas
-from compas.artists import DataArtistNotRegistered
-from compas.plugins import pluggable
+from compas.artists.exceptions import DataArtistNotRegistered
+from compas.artists.exceptions import NoArtistContextError
 from compas.plugins import PluginValidator
+from compas.plugins import pluggable
+
+from .colordict import DescriptorProtocol
 
 
 @pluggable(category='drawing-utils')
@@ -43,6 +46,9 @@ def _get_artist_cls(data, **kwargs):
     else:
         Artist.CONTEXT = identify_context()
 
+    if Artist.CONTEXT is None:
+        raise NoArtistContextError()
+
     dtype = type(data)
     cls = None
 
@@ -68,12 +74,14 @@ class Artist(object):
     ----------------
     AVAILABLE_CONTEXTS : list[str]
         The available visualization contexts.
-    CONTEXT : str or None
+    CONTEXT : str | None
         The current visualization context is one of :attr:`AVAILABLE_CONTEXTS`.
-    ITEM_ARTIST : dict[str, dict[Type[:class:`compas.data.Data`], Type[:class:`compas.artists.Artist`]]]
+    ITEM_ARTIST : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.artists.Artist`]]]
         Dictionary mapping data types to the corresponding artists types per visualization context.
 
     """
+
+    __metaclass__ = DescriptorProtocol
 
     __ARTISTS_REGISTERED = False
 
@@ -81,11 +89,15 @@ class Artist(object):
     CONTEXT = None
     ITEM_ARTIST = defaultdict(dict)
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, item, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
             register_artists()
             Artist.__ARTISTS_REGISTERED = True
-        cls = _get_artist_cls(args[0], **kwargs)
+
+        if item is None:
+            raise ValueError('Cannot create an artist for None. Please ensure you pass a instance of a supported class.')
+
+        cls = _get_artist_cls(item, **kwargs)
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
 
@@ -101,7 +113,7 @@ class Artist(object):
 
         Returns
         -------
-        :class:`compas.artists.Artist`
+        :class:`~compas.artists.Artist`
             An artist of the type matching the provided item according to the item-artist map :attr:`~Artist.ITEM_ARTIST`.
             The map is created by registering item-artist type pairs using :meth:`~Artist.register`.
 
@@ -116,14 +128,14 @@ class Artist(object):
 
         Parameters
         ----------
-        artist_type : :class:`compas.artists.Artist`
+        artist_type : :class:`~compas.artists.Artist`
         **kwargs : dict[str, Any], optional
             The keyword arguments (kwargs) collected in a dict.
             For relevant options, see the parameter lists of the matching artist type.
 
         Returns
         -------
-        :class:`compas.artists.Artist`
+        :class:`~compas.artists.Artist`
             An artist of the given type.
 
         """
@@ -158,9 +170,9 @@ class Artist(object):
 
         Parameters
         ----------
-        item_type : :class:`compas.data.Data`
+        item_type : :class:`~compas.data.Data`
             The type of data item.
-        artist_type : :class:`compas.artists.Artist`
+        artist_type : :class:`~compas.artists.Artist`
             The type of the corresponding/compatible artist.
         context : Literal['Rhino', 'Grasshopper', 'Blender', 'Plotter'], optional
             The visualization context in which the pair should be registered.

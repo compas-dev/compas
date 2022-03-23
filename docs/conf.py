@@ -40,7 +40,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "1.14.1"
+release = "1.15.0"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -74,7 +74,7 @@ extensions = [
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
-    "nbsphinx",
+    # "nbsphinx",
     "sphinx.ext.autodoc.typehints",
     "tabs"
 ]

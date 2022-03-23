@@ -9,7 +9,7 @@ artists
 
 Artists for visualizing (painting) COMPAS geometry, robots, and data structures in Blender.
 The artists in this package provide plugins for the pluggable methods of the base artists defined in :mod:`compas.artists`.
-They can be used directly from here (:mod:`compas_blender.artists`), or through the base artist :class:`compas.artists.Artist`.
+They can be used directly from here (:mod:`compas_blender.artists`), or through the base artist :class:`~compas.artists.Artist`.
 
 
 Primitive Artists
@@ -108,6 +108,7 @@ from compas.geometry import Torus
 from compas.geometry import Vector
 from compas.datastructures import Mesh
 from compas.datastructures import Network
+from compas.datastructures import VolMesh
 from compas.robots import RobotModel
 
 from .artist import BlenderArtist
@@ -130,6 +131,7 @@ from .sphereartist import SphereArtist
 from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
+from .volmeshartist import VolMeshArtist
 
 
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
@@ -164,6 +166,7 @@ def register_artists():
     Artist.register(Surface, SurfaceArtist, context='Blender')
     Artist.register(Torus, TorusArtist, context='Blender')
     Artist.register(Vector, VectorArtist, context='Blender')
+    Artist.register(VolMesh, VolMeshArtist, context='Blender')
     print('Blender Artists registered.')
 
 
@@ -188,4 +191,5 @@ __all__ = [
     'SurfaceArtist',
     'TorusArtist',
     'VectorArtist',
+    'VolMeshArtist',
 ]

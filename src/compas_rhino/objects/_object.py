@@ -14,9 +14,9 @@ class BaseObject(object):
 
     Parameters
     ----------
-    item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}
+    item : {:class:`~compas.geometry.Geometry`, :class:`~compas.datastructures.Datastructure`}
         A COMPAS geometry object or data structure.
-    scene : :class:`compas.scenes.Scene`, optional
+    scene : :class:`~compas.scenes.Scene`, optional
         A scene object.
     name : str, optional
         The name of the object.
@@ -29,11 +29,11 @@ class BaseObject(object):
 
     Attributes
     ----------
-    item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}
+    item : {:class:`~compas.geometry.Geometry`, :class:`~compas.datastructures.Datastructure`}
         A COMPAS geometry object or data structure.
-    scene : :class:`compas.scenes.Scene`
+    scene : :class:`~compas.scenes.Scene`
         A scene object.
-    artist : :class:`compas_rhino.artists.Artist`
+    artist : :class:`~compas_rhino.artists.Artist`
         The artist matching the type of ``item``.
     name : str
         The name of the object.

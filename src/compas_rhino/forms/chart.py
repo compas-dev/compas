@@ -14,8 +14,11 @@ from System.Drawing import Size
 from System.Drawing import Point
 from System.Drawing import Color
 
-clr.AddReference("System.Windows.Forms.DataVisualization")
-from System.Windows.Forms.DataVisualization import Charting  # noqa: E402
+try:
+    clr.AddReference("System.Windows.Forms.DataVisualization")
+    from System.Windows.Forms.DataVisualization import Charting  # noqa: E402
+except Exception:
+    pass
 
 
 class Series(object):

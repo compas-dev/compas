@@ -17,10 +17,10 @@ class GLTF(object):
     ----------
     filepath : str
         Path to the location of the glTF file.
-    content : :class:`compas.files.GLTFContent`
-    reader : :class:`compas.files.GLTFReader`
-    parser : :class:`compas.files.GLTFParser`
-    exporter : :class:`compas.files.GLTFExporter`
+    content : :class:`~compas.files.GLTFContent`
+    reader : :class:`~compas.files.GLTFReader`
+    parser : :class:`~compas.files.GLTFParser`
+    exporter : :class:`~compas.files.GLTFExporter`
 
     References
     ----------
@@ -75,7 +75,7 @@ class GLTF(object):
         return self._exporter
 
     def export(self, embed_data=False):
-        """Export the content of this :class:`compas.files.GLTF` to the location
+        """Export the content of this :class:`~compas.files.GLTF` to the location
         :attr:`compas.files.GLTF.filepath`, with file format determined by the given extension.
 
         Parameters

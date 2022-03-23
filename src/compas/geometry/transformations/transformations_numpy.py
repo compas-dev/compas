@@ -33,9 +33,9 @@ def transform_points_numpy(points, T):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         A list of points to be transformed.
-    T : :class:`compas.geometry.Transformation` | list[list[float]]
+    T : :class:`~compas.geometry.Transformation` | list[list[float]]
         The transformation to apply.
 
     Returns
@@ -61,9 +61,9 @@ def transform_vectors_numpy(vectors, T):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
         A list of vectors to be transformed.
-    T : :class:`compas.geometry.Transformation`
+    T : :class:`~compas.geometry.Transformation`
         The transformation to apply.
 
     Returns
@@ -89,9 +89,9 @@ def transform_frames_numpy(frames, T):
 
     Parameters
     ----------
-    frames : sequence[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : sequence[[point, vector, vector] | :class:`~compas.geometry.Frame`]
         A list of frames to be transformed.
-    T : :class:`compas.geometry.Transformation`
+    T : :class:`~compas.geometry.Transformation`
         The transformation to apply on the frames.
 
     Returns
@@ -117,9 +117,9 @@ def world_to_local_coordinates_numpy(frame, xyz):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector] | :class:`~compas.geometry.Frame`
         The local coordinate system.
-    xyz : array-like[[float, float, float] | :class:`compas.geometry.Point`]
+    xyz : array-like[[float, float, float] | :class:`~compas.geometry.Point`]
         The global coordinates of the points to convert.
 
     Returns
@@ -150,9 +150,9 @@ def local_to_world_coordinates_numpy(frame, rst):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector] | :class:`~compas.geometry.Frame`
         The local coordinate system.
-    rst : array-like[[float, float, float] | :class:`compas.geometry.Point`]
+    rst : array-like[[float, float, float] | :class:`~compas.geometry.Point`]
         The coordinates of the points wrt the local coordinate system.
 
     Returns
@@ -193,7 +193,7 @@ def homogenize_numpy(data, w=1.0):
 
     Parameters
     ----------
-    data : array_like[[float, float, float] | :class:`compas.geometry.Point`] | array_like[[float, float, float] | :class:`compas.geometry.Vector`]
+    data : array_like[[float, float, float] | :class:`~compas.geometry.Point`] | array_like[[float, float, float] | :class:`~compas.geometry.Vector`]
         The input data.
     w : float, optional
         The homogenization factor.
@@ -249,7 +249,7 @@ def homogenize_and_flatten_frames_numpy(frames):
 
     Parameters
     ----------
-    frames : array_like[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : array_like[[point, vector, vector] | :class:`~compas.geometry.Frame`]
         The input frames.
 
     Returns

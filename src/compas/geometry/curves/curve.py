@@ -26,9 +26,9 @@ class Curve(Geometry):
         The spatial dimension of the curve.
     domain : tuple[float, float], read-only
         The domain of the parameter space of the curve.
-    start : :class:`compas.geometry.Point`, read-only
+    start : :class:`~compas.geometry.Point`, read-only
         The start point of the curve.
-    end : :class:`compas.geometry.Point`, read-only
+    end : :class:`~compas.geometry.Point`, read-only
         The end point of the curve.
     is_closed : bool, read-only
         True if the curve is closed.
@@ -88,7 +88,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Curve`
+        :class:`~compas.geometry.Curve`
             The constructed curve.
 
         """
@@ -137,7 +137,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Curve`
+        :class:`~compas.geometry.Curve`
 
         """
         raise NotImplementedError
@@ -153,7 +153,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Curve`
+        :class:`~compas.geometry.Curve`
 
         """
         raise NotImplementedError
@@ -211,7 +211,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Curve`
+        :class:`~compas.geometry.Curve`
 
         """
         copy = self.copy()
@@ -228,7 +228,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        :class:`~compas.geometry.Point`
             the corresponding point on the curve.
 
         Raises
@@ -249,7 +249,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        :class:`~compas.geometry.Vector`
             The corresponding tangent vector.
 
         Raises
@@ -270,7 +270,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        :class:`~compas.geometry.Vector`
             The corresponding curvature vector.
 
         Raises
@@ -291,7 +291,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        :class:`~compas.geometry.Frame`
             The corresponding local frame.
 
         Raises
@@ -354,7 +354,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[:class:`compas.geometry.Point`]
+        list[:class:`~compas.geometry.Point`]
             Points along the curve.
 
         """
@@ -365,14 +365,14 @@ class Curve(Geometry):
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point`
+        point : :class:`~compas.geometry.Point`
             The test point.
         return_parameter : bool, optional
             If True, the parameter corresponding to the closest point should be returned in addition to the point.
 
         Returns
         -------
-        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, float]
+        :class:`~compas.geometry.Point` | tuple[:class:`~compas.geometry.Point`, float]
             If `return_parameter` is False, only the closest point is returned.
             If `return_parameter` is True, the closest point and the corresponding parameter are returned.
 
@@ -393,7 +393,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[:class:`compas.geometry.Point`]]
+        list[float] | tuple[list[float], list[:class:`~compas.geometry.Point`]]
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
@@ -414,7 +414,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[:class:`compas.geometry.Point`]]
+        list[float] | tuple[list[float], list[:class:`~compas.geometry.Point`]]
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
@@ -426,7 +426,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
 
         """
         raise NotImplementedError

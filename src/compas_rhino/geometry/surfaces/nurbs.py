@@ -87,7 +87,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
     Attributes
     ----------
-    points: list[list[:class:`compas.geometry.Point`]]
+    points: list[list[:class:`~compas.geometry.Point`]]
         The control points of the surface.
     weights: list[list[float]]
         The weights of the control points.
@@ -255,7 +255,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Parameters
         ----------
-        points : list[list[:class:`compas.geometry.Point`]]
+        points : list[list[:class:`~compas.geometry.Point`]]
             The control points.
         weights : list[list[float]]
             The weights of the control points.
@@ -287,7 +287,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Parameters
         ----------
-        points : list[list[:class:`compas.geometry.Point`]]
+        points : list[list[:class:`~compas.geometry.Point`]]
             The control points.
         u_degree : int
             Degree in the U direction.
@@ -313,8 +313,8 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Parameters
         ----------
-        curve1 : :class:`compas.geometry.NurbsCurve`
-        curve2 : :class:`compas.geometry.NurbsCurve`
+        curve1 : :class:`~compas.geometry.NurbsCurve`
+        curve2 : :class:`~compas.geometry.NurbsCurve`
 
         Returns
         -------

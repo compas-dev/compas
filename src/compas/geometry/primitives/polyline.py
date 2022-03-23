@@ -18,15 +18,15 @@ class Polyline(Primitive):
 
     Parameters
     ----------
-    points : list[[float, float, float] | :class:`compas.geometry.Point`]
+    points : list[[float, float, float] | :class:`~compas.geometry.Point`]
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
     Attributes
     ----------
-    points : list[:class:`compas.geometry.Point`]
+    points : list[:class:`~compas.geometry.Point`]
         The points of the polyline.
-    lines : list[:class:`compas.geometry.Line`], read-only
+    lines : list[:class:`~compas.geometry.Line`], read-only
         The lines of the polyline.
     length : float, read-only
         The length of the polyline.
@@ -103,7 +103,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Polyline`
+        :class:`~compas.geometry.Polyline`
             The constructed polyline.
 
         Examples
@@ -184,7 +184,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        :class:`~compas.geometry.Point`
             The point on the polyline.
 
         Examples
@@ -262,7 +262,7 @@ class Polyline(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Examples
@@ -289,7 +289,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        list[:class:`compas.geometry.Polyline`]
+        list[:class:`~compas.geometry.Polyline`]
 
         """
         corner_ids = []
@@ -328,11 +328,11 @@ class Polyline(Primitive):
 
         Parameters
         ----------
-        point: [float, float, float] | :class:`compas.geometry.Point`
+        point: [float, float, float] | :class:`~compas.geometry.Point`
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        :class:`~compas.geometry.Vector`
 
         """
         for line in self.lines:
@@ -352,7 +352,7 @@ class Polyline(Primitive):
         Returns
         -------
         list
-            list[:class:`compas.geometry.Point`]
+            list[:class:`~compas.geometry.Point`]
 
         """
         segment_length = self.length/num_segments
@@ -374,7 +374,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        list[:class:`compas.geometry.Point`]
+        list[:class:`~compas.geometry.Point`]
 
         Notes
         -----

@@ -16,6 +16,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 
+## [1.15.0] 2022-03-22
+
+### Added
+
+* Added descriptor support to `compas.colors.Color`.
+* Added descriptor protocol metaclass to `compas.artists.Artist`.
+* Added `compas.artists.colordict.ColorDict` descriptor.
+* Added `allclose` to doctest fixtures.
+* Added `compas.colors.Color.coerce` to construct a color out og hex, RGB1, and RGB255 inputs.
+* Added `compas.datastructures.Network.from_pointcloud`.
+* Added `compas.datastructures.VolMesh.from_meshgrid`.
+* Added `vertices_where`, `vertices_where_predicate`, `edges_where`, `edges_where_predicate` to `compas.datastructures.HalfFace`.
+* Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
+* Added `VolMeshArtist` to registered Blender artists.
+* Added `3.1` to supported versions for Blender installer.
+* Added `compas.artist.NoArtistContextError`.
+
+### Changed
+
+* Changed `compas.geometry.surfaces.nurbs.from_fill` to accept up to 4 curves as input.
+* Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_ghpython.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_rhino.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Fixed `compas_blender.uninstall`.
+* Changed `planarity` to optional requirement on all platforms.
+* Changed `numba` to optional requirement on all platforms.
+* Changed raw github content path for `compas.get`.
+* Changed `compas.datastructures.Graph.nodes_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Graph.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.vertices_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.faces_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.vertices_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.faces_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.cells_where` to accept conditions as kwargs.
+* Fixed `compas_blender.artists.VolMeshArtist.draw` and `compas_blender.artists.VolMeshArtist.draw_cells`.
+* Fixed `compas_ghpython.artists.VolMeshArtist.draw` and `compas_ghpython.artists.VolMeshArtist.draw_cells`.
+* Fixed `compas_rhino.artists.VolMeshArtist.draw` and `compas_rhino.artists.VolMeshArtist.draw_cells`.
+* Improved error messages when artist instance cannot be created.
+* Fixed exception when calculating geometry of `compas.datastructures.Part` without features.
+* Fixed bug in `compas_rhino.conversions.RhinoCurve.to_compas`.
+* Fixed bug in `compas_rhino.conversions.RhinoSurface.to_compas`.
+
+### Removed
+
+* Removed `compas.numerical.drx`.
+
+
 ## [1.14.1] 2022-02-16
 
 ### Added
@@ -87,14 +145,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-* Removed `compas.geometry.Collection`
-* Removed `compas.geometry.CollectionNumpy`
-* Removed `compas.geometry.PointCollection`
-* Removed `compas.geometry.PointCollectionNumpy`
-* Removed `compas.interop`
+* Removed `compas.geometry.Collection`.
+* Removed `compas.geometry.CollectionNumpy`.
+* Removed `compas.geometry.PointCollection`.
+* Removed `compas.geometry.PointCollectionNumpy`.
+* Removed `compas.interop`.
 * Removed `numba`; `compas.numerical.drx` will be moved to a dedicated extension package.
 * Removed `ezdxf` (unused).
 * Removed `laspy` (unused).
+* Removed `compas_rhino.artists.MeshArtist.draw_mesh`.
+* Removed `compas_blender.artists.MeshArtist.draw_mesh`.
 
 ## [1.13.3] 2021-12-17
 
@@ -473,6 +533,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `kwargs` to all child classes of `compas.data.Data`.
 * Added grasshopper component for drawing a frame.
 * Added `draw_origin` and `draw_axes`.
+* Added `compas.PY2`.
 
 ### Changed
 

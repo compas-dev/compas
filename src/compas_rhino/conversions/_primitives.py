@@ -30,7 +30,7 @@ def point_to_compas(point):
 
     Returns
     -------
-    :class:`compas.geometry.Point`
+    :class:`~compas.geometry.Point`
 
     """
     return Point(point.X, point.Y, point.Z)
@@ -41,7 +41,7 @@ def point_to_rhino(point):
 
     Parameters
     ----------
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
 
     Returns
     -------
@@ -60,7 +60,7 @@ def vector_to_compas(vector):
 
     Returns
     -------
-    :class:`compas.geometry.Vector`
+    :class:`~compas.geometry.Vector`
 
     """
     return Vector(vector.X, vector.Y, vector.Z)
@@ -71,7 +71,7 @@ def vector_to_rhino(vector):
 
     Parameters
     ----------
-    vector : :class:`compas.geometry.Vector`
+    vector : :class:`~compas.geometry.Vector`
 
     Returns
     -------
@@ -90,7 +90,7 @@ def line_to_compas(line):
 
     Returns
     -------
-    :class:`compas.geometry.Line`
+    :class:`~compas.geometry.Line`
 
     """
     return Line(point_to_compas(line.From), point_to_compas(line.To))
@@ -101,7 +101,7 @@ def line_to_rhino(line):
 
     Parameters
     ----------
-    line : :class:`compas.geometry.Line`
+    line : :class:`~compas.geometry.Line`
 
     Returns
     -------
@@ -120,7 +120,7 @@ def plane_to_compas(plane):
 
     Returns
     -------
-    :class:`compas.geometry.Plane`
+    :class:`~compas.geometry.Plane`
 
     """
     return Plane(point_to_compas(plane.Origin), vector_to_compas(plane.Normal))
@@ -131,7 +131,7 @@ def plane_to_rhino(plane):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
 
     Returns
     -------
@@ -150,7 +150,7 @@ def plane_to_compas_frame(plane):
 
     Returns
     -------
-    :class:`compas.geometry.Frame`
+    :class:`~compas.geometry.Frame`
 
     """
     return Frame(point_to_compas(plane.Origin), vector_to_compas(plane.XAxis), vector_to_compas(plane.YAxis))
@@ -161,7 +161,7 @@ def frame_to_rhino(frame):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
 
     Returns
     -------
@@ -180,7 +180,7 @@ def circle_to_compas(circle):
 
     Returns
     -------
-    :class:`compas.geometry.Circle`
+    :class:`~compas.geometry.Circle`
 
     """
     return Circle(plane_to_compas(circle.Plane), circle.Radius)
@@ -191,7 +191,7 @@ def circle_to_rhino(circle):
 
     Parameters
     ----------
-    circle : :class:`compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`
 
     Returns
     -------
@@ -210,7 +210,7 @@ def ellipse_to_compas(ellipse):
 
     Returns
     -------
-    :class:`compas.geometry.Ellipse`
+    :class:`~compas.geometry.Ellipse`
 
     """
     return Ellipse(plane_to_compas(ellipse.Plane), ellipse.Major, ellipse.Minor)
@@ -221,7 +221,7 @@ def ellipse_to_rhino(ellipse):
 
     Parameters
     ----------
-    ellipse : :class:`compas.geometry.Ellipse`
+    ellipse : :class:`~compas.geometry.Ellipse`
 
     Returns
     -------
@@ -240,7 +240,7 @@ def polyline_to_compas(polyline):
 
     Returns
     -------
-    :class:`compas.geometry.Polyline`
+    :class:`~compas.geometry.Polyline`
 
     """
     return Polyline([point_to_compas(point) for point in polyline])
@@ -251,7 +251,7 @@ def polyline_to_rhino(polyline):
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    polyline : :class:`~compas.geometry.Polyline`
 
     Returns
     -------
@@ -270,7 +270,7 @@ def polygon_to_compas(polygon):
 
     Returns
     -------
-    :class:`compas.geometry.Polygon`
+    :class:`~compas.geometry.Polygon`
 
     """
     return Polygon([point_to_compas(point) for point in polygon])
@@ -281,7 +281,7 @@ def polygon_to_rhino(polygon):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon`
+    polygon : :class:`~compas.geometry.Polygon`
 
     Returns
     -------

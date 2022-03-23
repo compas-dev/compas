@@ -37,7 +37,7 @@ class GLTFExporter(object):
         Location where the glTF or glb is to be written. The extension of the filepath
         determines which format will be used. If there will be an accompanying binary file,
         it will be written in the same directory.
-    content : :class:`compas.files.GLTFContent`
+    content : :class:`~compas.files.GLTFContent`
     embed_data : bool
         When ``True``, all mesh and other data will be embedded as data uri's in the glTF json,
         with the exception of external image data.

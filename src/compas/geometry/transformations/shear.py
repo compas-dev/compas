@@ -62,15 +62,15 @@ class Shear(Transformation):
         ----------
         angle : float
             The angle in radians.
-        direction : [float, float, float] | :class:`compas.geometry.Vector`
+        direction : [float, float, float] | :class:`~compas.geometry.Vector`
             The direction vector as list of 3 numbers.
             It must be orthogonal to the normal vector (i.e. it must lie in the shear plane).
-        plane : [point, vector] | :class:`compas.geometry.Plane`
+        plane : [point, vector] | :class:`~compas.geometry.Plane`
             The shear plane defined by a point and normal.
 
         Returns
         -------
-        :class:`compas.geometry.Shear`
+        :class:`~compas.geometry.Shear`
             The shear transformation object.
 
         Raises
@@ -102,7 +102,7 @@ class Shear(Transformation):
 
         Returns
         -------
-        :class:`compas.geometry.Shear`
+        :class:`~compas.geometry.Shear`
             The shear transformation object.
 
         Examples

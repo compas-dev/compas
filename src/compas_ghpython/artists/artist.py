@@ -11,3 +11,6 @@ class GHArtist(Artist):
 
     def __init__(self, **kwargs):
         super(GHArtist, self).__init__(**kwargs)
+
+    def clear(self):
+        pass

@@ -56,7 +56,7 @@ def network_update_attributes(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
 
     Returns
@@ -83,7 +83,7 @@ def network_update_node_attributes(network, nodes, names=None):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
     nodes : list
         The identifiers of the nodes to update.
@@ -127,7 +127,7 @@ def network_update_edge_attributes(network, edges, names=None):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
     edges : list
         The identifiers of the edges to update.
@@ -173,7 +173,7 @@ def network_move_node(network, node, constraint=None, allow_off=False):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
     node : hashable
         The identifier of the node to move.
@@ -213,7 +213,7 @@ def mesh_update_attributes(mesh):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
 
     Returns
@@ -286,7 +286,7 @@ def mesh_update_face_attributes(mesh, faces, names=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
     faces : list of int
     names : list, optional
         The names of the atrtibutes to update.
@@ -328,7 +328,7 @@ def mesh_update_edge_attributes(mesh, edges, names=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     edges : list
         The edges to update.
@@ -415,7 +415,7 @@ def mesh_move_vertex(mesh, vertex, constraint=None, allow_off=True):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
     vertex : int
     constraint : :rhino:`Rhino.Geometry`, optional
         A Rhino geometry object to constrain the movement to.
@@ -521,7 +521,7 @@ def mesh_move_face(mesh, face, constraint=None, allow_off=True):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
     face : int
 
     Returns

@@ -25,7 +25,7 @@ class Pointcloud(Primitive):
 
     Attributes
     ----------
-    points : list[:class:`compas.geometry.Point`]
+    points : list[:class:`~compas.geometry.Point`]
         The points of the cloud.
 
     Examples
@@ -114,7 +114,7 @@ class Pointcloud(Primitive):
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Pointcloud` | list[[float, float, float] | :class:`compas.geometry.Point`]
+        other : :class:`~compas.geometry.Pointcloud` | list[[float, float, float] | :class:`~compas.geometry.Point`]
             The pointcloud to compare.
 
         Returns
@@ -145,7 +145,7 @@ class Pointcloud(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Pointcloud`
+        :class:`~compas.geometry.Pointcloud`
 
         """
         pass
@@ -161,7 +161,7 @@ class Pointcloud(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Pointcloud`
+        :class:`~compas.geometry.Pointcloud`
 
         """
         pass
@@ -189,7 +189,7 @@ class Pointcloud(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Pointcloud`
+        :class:`~compas.geometry.Pointcloud`
 
         Notes
         -----
@@ -233,14 +233,14 @@ class Pointcloud(Primitive):
 
         Parameters
         ----------
-        box: :class:`compas.geometry.Box`
+        box: :class:`~compas.geometry.Box`
             The axis aligned bounding box of the cloud.
         n: int
             The number of points in the cloud.
 
         Returns
         -------
-        :class:`compas.geometry.Pointcloud`
+        :class:`~compas.geometry.Pointcloud`
 
         Examples
         --------
@@ -269,7 +269,7 @@ class Pointcloud(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        T : :class:`~compas.geometry.Transformation`
             The transformation.
 
         Returns

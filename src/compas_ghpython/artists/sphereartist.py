@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_ghpython
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import GHArtist
 
 
@@ -12,11 +13,11 @@ class SphereArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    sphere : :class:`compas.geometry.Sphere`
+    sphere : :class:`~compas.geometry.Sphere`
         A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 
@@ -28,8 +29,9 @@ class SphereArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[flot, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the sphere.
+            Default is :attr:`compas.artists.ShapeArtist.color`.
         u : int, optional
             Number of faces in the "u" direction.
             Default is :attr:`SphereArtist.u`
@@ -42,12 +44,10 @@ class SphereArtist(GHArtist, ShapeArtist):
         :rhino:`Rhino.Geometry.Mesh`
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         u = u or self.u
         v = v or self.v
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
         vertices = [list(vertex) for vertex in vertices]
-        mesh = compas_ghpython.draw_mesh(vertices,
-                                         faces,
-                                         color=color)
+        mesh = compas_ghpython.draw_mesh(vertices, faces, color=color.rgb255)
         return mesh

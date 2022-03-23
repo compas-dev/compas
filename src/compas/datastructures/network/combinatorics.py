@@ -15,7 +15,7 @@ def network_is_connected(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network data structure.
 
     Returns

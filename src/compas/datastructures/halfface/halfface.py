@@ -14,7 +14,7 @@ from compas.utilities import pairwise
 
 
 class HalfFace(Datastructure):
-    """Base half-face data structure fore representing volumetric meshes.
+    """Base half-face data structure for representing volumetric meshes.
 
     Parameters
     ----------
@@ -326,7 +326,7 @@ class HalfFace(Datastructure):
             A dictionary of vertex-index pairs.
 
         """
-        return {vertex: index for index, vertex in enumerate(self.vertices())}
+        return {key: index for index, key in enumerate(self.vertices())}
 
     def index_vertex(self):
         """Returns a dictionary that maps the indices of a vertex list to
@@ -649,15 +649,14 @@ class HalfFace(Datastructure):
         Yields
         ------
         int | tuple[int, dict[str, Any]]
-            If `data` is False, the next face identifier.
-            If `data` is True, the next face as a (face, attr) tuple.
-
+            If `data` is False, the next halfface identifier.
+            If `data` is True, the next halfface as a (halfface, attr) tuple.
         """
-        for face in self._halfface:
+        for hface in self._halfface:
             if not data:
-                yield face
+                yield hface
             else:
-                yield face, self.face_attributes(face)
+                yield hface, self.face_attributes(hface)
 
     def faces(self, data=False):
         """"Iterate over the halffaces of the volmesh and yield faces.
@@ -716,17 +715,361 @@ class HalfFace(Datastructure):
             else:
                 yield cell, self.cell_attributes(cell)
 
-    def vertices_where(self):
-        raise NotImplementedError
+    def vertices_where(self, conditions=None, data=False, **kwargs):
+        """Get vertices for which a certain condition or set of conditions is true.
 
-    def edges_where(self):
-        raise NotImplementedError
+        Parameters
+        ----------
+        conditions : dict, optional
+            A set of conditions in the form of key-value pairs.
+            The keys should be attribute names. The values can be attribute
+            values or ranges of attribute values in the form of min/max pairs.
+        data : bool, optional
+            If True, yield the vertex attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
 
-    def faces_where(self):
-        raise NotImplementedError
+        Yields
+        ------
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next vertex that matches the condition.
+            If `data` is True, the next vertex and its attributes.
 
-    def cells_where(self):
-        raise NotImplementedError
+        """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
+        for key, attr in self.vertices(True):
+            is_match = True
+
+            for name, value in conditions.items():
+                method = getattr(self, name, None)
+
+                if callable(method):
+                    val = method(key)
+
+                    if isinstance(val, list):
+                        if value not in val:
+                            is_match = False
+                            break
+                        break
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+                        if val < minval or val > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != val:
+                            is_match = False
+                            break
+
+                else:
+                    if name not in attr:
+                        is_match = False
+                        break
+
+                    if isinstance(attr[name], list):
+                        if value not in attr[name]:
+                            is_match = False
+                            break
+                        break
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+                        if attr[name] < minval or attr[name] > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != attr[name]:
+                            is_match = False
+                            break
+
+            if is_match:
+                if data:
+                    yield key, attr
+                else:
+                    yield key
+
+    def vertices_where_predicate(self, predicate, data=False):
+        """Get vertices for which a certain condition or set of conditions is true using a lambda function.
+
+        Parameters
+        ----------
+        predicate : callable
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the vertex identifier and the vertex attributes, and should return True or False.
+        data : bool, optional
+            If True, yield the vertex attributes in addition to the identifiers.
+
+        Yields
+        ------
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next vertex that matches the condition.
+            If `data` is True, the next vertex and its attributes.
+
+        """
+        for key, attr in self.vertices(True):
+            if predicate(key, attr):
+                if data:
+                    yield key, attr
+                else:
+                    yield key
+
+    def edges_where(self, conditions=None, data=False, **kwargs):
+        """Get edges for which a certain condition or set of conditions is true.
+
+        Parameters
+        ----------
+        conditions : dict, optional
+            A set of conditions in the form of key-value pairs.
+            The keys should be attribute names. The values can be attribute
+            values or ranges of attribute values in the form of min/max pairs.
+        data : bool, optional
+            If True, yield the edge attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
+
+        Yields
+        ------
+        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a (u, v, data) tuple.
+
+        """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
+        for key in self.edges():
+            is_match = True
+
+            attr = self.edge_attributes(key)
+
+            for name, value in conditions.items():
+                method = getattr(self, name, None)
+
+                if method and callable(method):
+                    val = method(key)
+                elif name in attr:
+                    val = attr[name]
+                else:
+                    is_match = False
+                    break
+
+                if isinstance(val, list):
+                    if value not in val:
+                        is_match = False
+                        break
+                elif isinstance(value, (tuple, list)):
+                    minval, maxval = value
+                    if val < minval or val > maxval:
+                        is_match = False
+                        break
+                else:
+                    if value != val:
+                        is_match = False
+                        break
+
+            if is_match:
+                if data:
+                    yield key, attr
+                else:
+                    yield key
+
+    def edges_where_predicate(self, predicate, data=False):
+        """Get edges for which a certain condition or set of conditions is true using a lambda function.
+
+        Parameters
+        ----------
+        predicate : callable
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the edge identifier and the edge attributes, and should return True or False.
+        data : bool, optional
+            If True, yield the edge attributes in addition to the identifiers.
+
+        Yields
+        ------
+        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
+            If `data` is False, the next edge as a (u, v) tuple.
+            If `data` is True, the next edge as a (u, v, data) tuple.
+
+        """
+        for key, attr in self.edges(True):
+            if predicate(key, attr):
+                if data:
+                    yield key, attr
+                else:
+                    yield key
+
+    def faces_where(self, conditions=None, data=False, **kwargs):
+        """Get faces for which a certain condition or set of conditions is true.
+
+        Parameters
+        ----------
+        conditions : dict, optional
+            A set of conditions in the form of key-value pairs.
+            The keys should be attribute names. The values can be attribute
+            values or ranges of attribute values in the form of min/max pairs.
+        data : bool, optional
+            If True, yield the face attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
+
+        Yields
+        ------
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next face that matches the condition.
+            If `data` is True, the next face and its attributes.
+
+        """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
+        for fkey in self.faces():
+            is_match = True
+
+            attr = self.face_attributes(fkey)
+
+            for name, value in conditions.items():
+                method = getattr(self, name, None)
+
+                if method and callable(method):
+                    val = method(fkey)
+                elif name in attr:
+                    val = attr[name]
+                else:
+                    is_match = False
+                    break
+
+                if isinstance(val, list):
+                    if value not in val:
+                        is_match = False
+                        break
+                elif isinstance(value, (tuple, list)):
+                    minval, maxval = value
+                    if val < minval or val > maxval:
+                        is_match = False
+                        break
+                else:
+                    if value != val:
+                        is_match = False
+                        break
+
+            if is_match:
+                if data:
+                    yield fkey, attr
+                else:
+                    yield fkey
+
+    def faces_where_predicate(self, predicate, data=False):
+        """Get faces for which a certain condition or set of conditions is true using a lambda function.
+
+        Parameters
+        ----------
+        predicate : callable
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the face identifier and the the face attributes, and should return True or False.
+        data : bool, optional
+            If True, yield the face attributes in addition to the identifiers.
+
+        Yields
+        ------
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next face that matches the condition.
+            If `data` is True, the next face and its attributes.
+
+        """
+        for fkey, attr in self.faces(True):
+            if predicate(fkey, attr):
+                if data:
+                    yield fkey, attr
+                else:
+                    yield fkey
+
+    def cells_where(self, conditions=None, data=False, **kwargs):
+        """Get cells for which a certain condition or set of conditions is true.
+
+        Parameters
+        ----------
+        conditions : dict, optional
+            A set of conditions in the form of key-value pairs.
+            The keys should be attribute names. The values can be attribute
+            values or ranges of attribute values in the form of min/max pairs.
+        data : bool, optional
+            If True, yield the cell attributes in addition to the identifiers.
+        **kwargs : dict[str, Any], optional
+            Additional conditions provided as named function arguments.
+
+        Yields
+        ------
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next cell that matches the condition.
+            If `data` is True, the next cell and its attributes.
+
+        """
+        conditions = conditions or {}
+        conditions.update(kwargs)
+
+        for ckey in self.cells():
+            is_match = True
+
+            attr = self.cell_attributes(ckey)
+
+            for name, value in conditions.items():
+                method = getattr(self, name, None)
+
+                if method and callable(method):
+                    val = method(ckey)
+                elif name in attr:
+                    val = attr[name]
+                else:
+                    is_match = False
+                    break
+
+                if isinstance(val, list):
+                    if value not in val:
+                        is_match = False
+                        break
+                elif isinstance(value, (tuple, list)):
+                    minval, maxval = value
+                    if val < minval or val > maxval:
+                        is_match = False
+                        break
+                else:
+                    if value != val:
+                        is_match = False
+                        break
+
+            if is_match:
+                if data:
+                    yield ckey, attr
+                else:
+                    yield ckey
+
+    def cells_where_predicate(self, predicate, data=False):
+        """Get cells for which a certain condition or set of conditions is true using a lambda function.
+
+        Parameters
+        ----------
+        predicate : callable
+            The condition you want to evaluate.
+            The callable takes 2 parameters: the cell identifier and the cell attributes, and should return True or False.
+        data : bool, optional
+            If True, yield the cell attributes in addition to the identifiers.
+
+        Yields
+        ------
+        int | tuple[int, dict[str, Any]]
+            If `data` is False, the next cell that matches the condition.
+            If `data` is True, the next cell and its attributes.
+
+        """
+        for ckey, attr in self.cells(True):
+            if predicate(ckey, attr):
+                if data:
+                    yield ckey, attr
+                else:
+                    yield ckey
 
     # --------------------------------------------------------------------------
     # attributes - vertices
@@ -848,11 +1191,14 @@ class HalfFace(Datastructure):
         """
         if vertex not in self._vertex:
             raise KeyError(vertex)
-        if values:
+        if values is not None:
+            # use it as a setter
             for name, value in zip(names, values):
                 self._vertex[vertex][name] = value
             return
+        # use it as a getter
         if not names:
+            # return all vertex attributes as a dict
             return VertexAttributeView(self.default_vertex_attributes, self._vertex[vertex])
         values = []
         for name in names:
@@ -864,7 +1210,7 @@ class HalfFace(Datastructure):
                 values.append(None)
         return values
 
-    def vertices_attribute(self, name, value=None, vertices=None):
+    def vertices_attribute(self, name, value=None, keys=None):
         """Get or set an attribute of multiple vertices.
 
         Parameters
@@ -874,7 +1220,7 @@ class HalfFace(Datastructure):
         value : object, optional
             The value of the attribute.
             Default is None.
-        vertices : list[int], optional
+        keys : list[int], optional
             A list of vertex identifiers.
 
         Returns
@@ -889,14 +1235,14 @@ class HalfFace(Datastructure):
             If any of the vertices does not exist.
 
         """
-        vertices = vertices or self.vertices()
+        vertices = keys or self.vertices()
         if value is not None:
             for vertex in vertices:
                 self.vertex_attribute(vertex, name, value)
             return
         return [self.vertex_attribute(vertex, name) for vertex in vertices]
 
-    def vertices_attributes(self, names=None, values=None, vertices=None):
+    def vertices_attributes(self, names=None, values=None, keys=None):
         """Get or set multiple attributes of multiple vertices.
 
         Parameters
@@ -907,7 +1253,7 @@ class HalfFace(Datastructure):
         values : list[Any], optional
             The values of the attributes.
             Default is None.
-        vertices : list[Any], optional
+        key : list[Any], optional
             A list of vertex identifiers.
 
         Returns
@@ -925,7 +1271,7 @@ class HalfFace(Datastructure):
             If any of the vertices does not exist.
 
         """
-        vertices = vertices or self.vertices()
+        vertices = keys or self.vertices()
         if values:
             for vertex in vertices:
                 self.vertex_attributes(vertex, names, values)
@@ -1065,7 +1411,9 @@ class HalfFace(Datastructure):
                 self._edge_data[key][name] = value
             return
         if not names:
-            return EdgeAttributeView(self.default_edge_attributes, self._edge_data, key)
+            key = str(tuple(sorted(edge)))
+            return EdgeAttributeView(self.default_edge_attributes,
+                                     self._edge_data.setdefault(key, {}))
         values = []
         for name in names:
             value = self.edge_attribute(edge, name)
@@ -1268,7 +1616,8 @@ class HalfFace(Datastructure):
                 self._face_data[key][name] = value
             return
         if not names:
-            return FaceAttributeView(self.default_face_attributes, self._face_data, key)
+            return FaceAttributeView(self.default_face_attributes,
+                                     self._face_data.setdefault(key, {}))
         values = []
         for name in names:
             value = self.face_attribute(face, name)

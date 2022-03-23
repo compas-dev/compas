@@ -74,7 +74,7 @@ class ImageForm(BaseForm):
 
     Parameters
     ----------
-    image : str or Image
+    image : str | Image
         The image that should be displayed.
         This can be a url of a remote image file,
         or a local file path,

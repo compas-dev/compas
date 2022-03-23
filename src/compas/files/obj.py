@@ -120,7 +120,7 @@ class OBJ(object):
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : :class:`~compas.datastructures.Mesh`
             The mesh.
         unweld : bool, optional
             Flag indicating that the vertices of the faces should be unwelded.
@@ -556,7 +556,7 @@ class OBJWriter(object):
     ----------
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
-    meshes : list[:class:`compas.datastructures.Mesh`]
+    meshes : list[:class:`~compas.datastructures.Mesh`]
         list of meshes to write to the file.
     precision : str, optional
         COMPAS precision specification for parsing geometric data.

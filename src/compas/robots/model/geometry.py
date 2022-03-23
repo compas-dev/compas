@@ -29,7 +29,7 @@ __all__ = [
 
 
 class BoxProxy(ProxyObject):
-    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Box`.
+    """Proxy class that adds URDF functionality to an instance of :class:`~compas.geometry.Box`.
 
     This class is internal and not intended to be referenced externally.
     """
@@ -53,7 +53,7 @@ class BoxProxy(ProxyObject):
 
 
 class CylinderProxy(ProxyObject):
-    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Cylinder`.
+    """Proxy class that adds URDF functionality to an instance of :class:`~compas.geometry.Cylinder`.
 
     This class is internal and not intended to be referenced externally.
     """
@@ -80,7 +80,7 @@ class CylinderProxy(ProxyObject):
 
 
 class SphereProxy(ProxyObject):
-    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Sphere`.
+    """Proxy class that adds URDF functionality to an instance of :class:`~compas.geometry.Sphere`.
 
     This class is internal and not intended to be referenced externally.
     """
@@ -100,7 +100,7 @@ class SphereProxy(ProxyObject):
 
 
 class CapsuleProxy(ProxyObject):
-    """Proxy class that adds URDF functionality to an instance of :class:`compas.geometry.Capsule`.
+    """Proxy class that adds URDF functionality to an instance of :class:`~compas.geometry.Capsule`.
 
     This class is internal and not intended to be referenced externally.
     """
@@ -283,9 +283,9 @@ class Material(Data):
     ----------
     name : str
         The name of the material.
-    color : :class:`compas.robots.Color`, optional
+    color : :class:`~compas.robots.Color`, optional
         The color of the material.
-    texture : :class:`compas.robots.Texture`, optional
+    texture : :class:`~compas.robots.Texture`, optional
         The filename of the texture.
 
     Examples
@@ -382,15 +382,15 @@ class Geometry(Data):
 
     Parameters
     ----------
-    box : :class:`compas.geometry.Box`, optional
+    box : :class:`~compas.geometry.Box`, optional
         A box shape primitive.
-    cylinder : :class:`compas.geometry.Cylinder`, optional
+    cylinder : :class:`~compas.geometry.Cylinder`, optional
         A cylinder shape primitive.
-    sphere : :class:`compas.geometry.Sphere`, optional
+    sphere : :class:`~compas.geometry.Sphere`, optional
         A sphere shape primitive.
-    capsule : :class:`compas.geometry.Capsule`, optional
+    capsule : :class:`~compas.geometry.Capsule`, optional
         A capsule shape primitive.
-    mesh : :class:`compas.robots.MeshDescriptor`, optional
+    mesh : :class:`~compas.robots.MeshDescriptor`, optional
         A descriptor of a mesh.
     **kwargs : dict[str, Any], optional
         The keyword arguments (kwargs) collected in a dict.

@@ -13,16 +13,16 @@ class Plane(Primitive):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         The base point of the plane.
-    normal : [float, float, float] | :class:`compas.geometry.Vector`
+    normal : [float, float, float] | :class:`~compas.geometry.Vector`
         The normal vector of the plane.
 
     Attributes
     ----------
-    point : :class:`compas.geometry.Plane`
+    point : :class:`~compas.geometry.Plane`
         The base point of the plane.
-    normal : :class:`compas.geometry.Vector`
+    normal : :class:`~compas.geometry.Vector`
         The normal vector of the plane.
     d : float, read-only
         The *d* parameter of the linear equation describing the plane.
@@ -88,7 +88,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
             The constructed plane.
 
         Examples
@@ -177,16 +177,16 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        a : [float, float, float] | :class:`compas.geometry.Point`
+        a : [float, float, float] | :class:`~compas.geometry.Point`
             The first point.
-        b : [float, float, float] | :class:`compas.geometry.Point`
+        b : [float, float, float] | :class:`~compas.geometry.Point`
             The second point.
-        c : [float, float, float] | :class:`compas.geometry.Point`
+        c : [float, float, float] | :class:`~compas.geometry.Point`
             The second point.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
             A plane with base point `a` and normal vector defined as the unitized
             cross product of the vectors `ab` and `ac`.
 
@@ -211,16 +211,16 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point : [float, float, float] | :class:`~compas.geometry.Point`
             The base point.
-        u : [float, float, float] | :class:`compas.geometry.Vector`
+        u : [float, float, float] | :class:`~compas.geometry.Vector`
             The first vector.
-        v : [float, float, float] | :class:`compas.geometry.Vector`
+        v : [float, float, float] | :class:`~compas.geometry.Vector`
             The second vector.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
             A plane with base point `point` and normal vector defined as the unitized
             cross product of vectors `u` and `v`.
 
@@ -246,7 +246,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
 
         """
         a, b, c, d = abcd
@@ -261,7 +261,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
             The world XY plane.
 
         """
@@ -273,7 +273,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
             A plane with the frame's `point` and the frame's `normal`.
 
         Examples
@@ -295,7 +295,7 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
@@ -327,7 +327,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
             The offset plane.
 
         """

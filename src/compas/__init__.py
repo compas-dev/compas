@@ -41,7 +41,7 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '1.14.1'
+__version__ = '1.15.0'
 
 version = LooseVersion(compas.__version__)
 versionstring = version.vstring.split('-')[0]
@@ -75,6 +75,9 @@ The string is in the format used by the Python string formating mini language
 for formatting numbers.
 Float formatting (``'<x>f'``) and integer formatting (``'d'``) specifiers are supported.
 """
+
+PY2 = compas._os.PY2
+"""bool: True if the current Python version is 2.x, False otherwise."""
 
 PY3 = compas._os.PY3
 """bool: True if the current Python version is 3.x, False otherwise."""
@@ -124,7 +127,7 @@ except Exception:
 
 
 __all__ = [
-    'WINDOWS', 'LINUX', 'OSX', 'MONO', 'IPY', 'RHINO', 'BLENDER',
+    'WINDOWS', 'LINUX', 'OSX', 'MONO', 'IPY', 'RHINO', 'BLENDER', 'PY2', 'PY3',
     'is_windows', 'is_linux', 'is_osx', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
     'set_precision',
     'get',
@@ -209,7 +212,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://github.com/compas-dev/compas/raw/main/samples/{}".format(filename)
+        return "https://raw.githubusercontent.com/compas-dev/compas/main/src/compas/data/samples/{}".format(filename)
 
 
 def get_bunny(localstorage=None):

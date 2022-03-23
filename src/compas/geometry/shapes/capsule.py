@@ -20,20 +20,20 @@ class Capsule(Shape):
 
     Parameters
     ----------
-    line : [point, point] | :class:`compas.geometry.Line`
+    line : [point, point] | :class:`~compas.geometry.Line`
         The axis line of the capsule.
     radius : float
         The radius of the capsule.
 
     Attributes
     ----------
-    line : :class:`compas.geometry.Line`
+    line : :class:`~compas.geometry.Line`
         The centre line of the capsule.
     radius : float
         The radius of the capsule.
-    start : :class:`compas.geometry.Point`, read-only
+    start : :class:`~compas.geometry.Point`, read-only
         The start point of the centre line.
-    end : :class:`compas.geometry.Point`, read-only
+    end : :class:`~compas.geometry.Point`, read-only
         The end point of the centre line.
     length : float, read-only
         The length of the centre line of the capsule.
@@ -98,7 +98,7 @@ class Capsule(Shape):
 
         Returns
         -------
-        :class:`compas.geometry.Capsule`
+        :class:`~compas.geometry.Capsule`
             The constructed capsule.
 
         """
@@ -285,7 +285,7 @@ class Capsule(Shape):
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the capsule.
 
         Returns

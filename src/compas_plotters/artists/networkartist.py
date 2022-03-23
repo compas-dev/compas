@@ -21,7 +21,7 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A COMPAS network.
     nodes : list[int], optional
         Selection of node identifiers.
@@ -29,9 +29,9 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
     edges : list[tuple[int, int]], optional
         Selection of edge identifiers.
         The default is None, in which case all edges are drawn.
-    nodecolor : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+    nodecolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
         Color specification for the nodes.
-    edgecolor : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
+    edgecolor : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
         Color specification for the edges.
     show_nodes : bool, optional
         If True, draw the nodes of the network.
@@ -162,9 +162,9 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
         edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        nodecolor : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+        nodecolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
             The color specification for the nodes.
-        edgecolor : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
+        edgecolor : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
             The color specification for the edges.
 
         Returns
@@ -188,7 +188,7 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
         nodes : list[int], optional
             A list of node identifiers.
             Default is None, in which case all nodes are drawn.
-        color : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+        color : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
             The color specification for the nodes.
 
         Returns
@@ -233,7 +233,7 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
         edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        color : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
+        color : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
             The color specification for the edges.
 
         Returns

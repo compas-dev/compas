@@ -2,12 +2,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import collections
-import sys
 from math import pi
 from itertools import product
 
 import compas
+
+if compas.PY2:
+    from collections import Mapping
+else:
+    from collections.abc import Mapping
 
 from compas.files import OBJ
 from compas.files import OFF
@@ -163,7 +166,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         Notes
@@ -226,7 +229,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -265,7 +268,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -314,7 +317,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -358,7 +361,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -404,7 +407,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -448,25 +451,20 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
         mesh = cls()
 
-        if sys.version_info[0] < 3:
-            mapping = collections.Mapping
-        else:
-            mapping = collections.abc.Mapping
-
-        if isinstance(vertices, mapping):
+        if isinstance(vertices, Mapping):
             for key, xyz in vertices.items():
                 mesh.add_vertex(key=key, attr_dict=dict(zip(('x', 'y', 'z'), xyz)))
         else:
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)
 
-        if isinstance(faces, mapping):
+        if isinstance(faces, Mapping):
             for fkey, vertices in faces.items():
                 mesh.add_face(vertices, fkey)
         else:
@@ -502,7 +500,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -515,14 +513,14 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        shape : :class:`compas.geometry.Shape`
+        shape : :class:`~compas.geometry.Shape`
             The input shape to generate a mesh from.
         **kwargs : dict[str, Any], optional
             Optional keyword arguments to be passed on to :meth:`compas.geometry.Shape.to_vertices_and_faces`.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -543,7 +541,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -577,7 +575,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -625,7 +623,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -736,7 +734,7 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        other : :class:`compas.datastructures.Mesh`
+        other : :class:`~compas.datastructures.Mesh`
             The other mesh.
 
         Returns

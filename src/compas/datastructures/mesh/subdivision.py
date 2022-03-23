@@ -91,7 +91,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     scheme : Literal['tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'], optional
         The scheme according to which the mesh should be subdivided.
@@ -100,7 +100,7 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         The subdivided mesh.
 
     Raises
@@ -132,14 +132,14 @@ def mesh_subdivide_tri(mesh, k=1):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -172,14 +172,14 @@ def mesh_subdivide_quad(mesh, k=1):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -228,14 +228,14 @@ def mesh_subdivide_corner(mesh, k=1):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Notes
@@ -271,7 +271,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
@@ -280,7 +280,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Notes
@@ -455,7 +455,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
@@ -464,7 +464,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -570,7 +570,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object to be subdivided.
     offset : float | dict[int, float]
         The offset distance to create the frames.
@@ -581,7 +581,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     """
@@ -637,7 +637,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
     k : int, optional
         The number of levels of subdivision.
@@ -646,7 +646,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples

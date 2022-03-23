@@ -20,7 +20,7 @@ def get_document_basename():
 
     Returns
     -------
-    str or None
+    str | None
         The name of the document or None if the document is still "Untitled".
 
     """
@@ -32,7 +32,7 @@ def get_document_filename():
 
     Returns
     -------
-    str or None
+    str | None
         The name of the document or None if the document is still "Untitled".
 
     """
@@ -47,7 +47,7 @@ def get_document_extension():
 
     Returns
     -------
-    str or None
+    str | None
         The extension of the document or None if the document is still "Untitled".
 
     """
@@ -62,7 +62,7 @@ def get_document_filepath():
 
     Returns
     -------
-    str or None
+    str | None
         The path to the document or None if the document is still "Untitled".
 
     """
@@ -74,7 +74,7 @@ def get_document_dirname():
 
     Returns
     -------
-    str or None
+    str | None
         The name of the directory or None if the document is still "Untitled".
 
     """

@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_ghpython
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import GHArtist
 
 
@@ -12,11 +13,11 @@ class ConeArtist(GHArtist, ShapeArtist):
 
     Parameters
     ----------
-    shape : :class:`compas.geometry.Cone`
+    shape : :class:`~compas.geometry.Cone`
         A COMPAS cone.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_ghpython.artists.GHArtist` and :class:`compas.artists.ShapeArtist` for more info.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 
@@ -28,8 +29,9 @@ class ConeArtist(GHArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the cone.
+            Default is :attr:`compas.artists.ShapeArtist.color`.
         u : int, optional
             Number of faces in the "u" direction.
             Default is :attr:`ConeArtist.u`
@@ -39,11 +41,9 @@ class ConeArtist(GHArtist, ShapeArtist):
         :rhino:`Rhino.Geometry.Mesh`
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         u = u or self.u
         vertices, faces = self.shape.to_vertices_and_faces(u=u)
         vertices = [list(vertex) for vertex in vertices]
-        mesh = compas_ghpython.draw_mesh(vertices,
-                                         faces,
-                                         color=color)
+        mesh = compas_ghpython.draw_mesh(vertices, faces, color=color.rgb255)
         return mesh

@@ -17,14 +17,14 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
     Parameters
     ----------
-    curve : :class:`compas.geometry.Curve`
+    curve : :class:`~compas.geometry.Curve`
         A COMPAS curve.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------
@@ -66,7 +66,7 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the curve.
             The default color is :attr:`compas.artists.CurveArtist.color`.
 
@@ -75,6 +75,6 @@ class CurveArtist(BlenderArtist, CurveArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         curves = [{'curve': self.curve, 'color': color, 'name': self.curve.name}]
         return compas_blender.draw_curves(curves, collection=self.collection)

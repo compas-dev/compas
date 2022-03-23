@@ -31,7 +31,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
     vertices : list[int], optional
         Selection of vertex identifiers.
@@ -42,11 +42,11 @@ class MeshArtist(PlotterArtist, MeshArtist):
     faces : list[int], optional
         Selection of face identifiers.
         The default is None, in which case all faces are drawn.
-    vertexcolor : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+    vertexcolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
         Color specification for the vertices.
-    edgecolor : tuple[float, float, float] or dict[tuple[int, int], tuple[float, float, float]], optional
+    edgecolor : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
         Color specification for the edges.
-    facecolor : tuple[float, float, float] or dict[int, tuple[float, float, float]], optional
+    facecolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
         Color specification for the faces.
     show_vertices : bool, optional
         If True, draw the vertices of the mesh.
@@ -56,11 +56,11 @@ class MeshArtist(PlotterArtist, MeshArtist):
         If True, draw the faces of the mesh.
     vertexsize : int, optional
         Size of the vertices.
-    vertextext : str or dict[int, str], optional
+    vertextext : str | dict[int, str], optional
         Labels for the vertices.
-    edgetext : str or dict[tuple[int, int], str], optional
+    edgetext : str | dict[tuple[int, int], str], optional
         Labels for the edges.
-    facetext : str or dict[int, str], optional
+    facetext : str | dict[int, str], optional
         Labels for the faces.
     sizepolicy : {'relative', 'absolute'}, optional
         The policy for sizing the vertices.
@@ -70,7 +70,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         The base stacking order of the components of the mesh on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.MeshArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.MeshArtist` for more info.
 
     Attributes
     ----------
@@ -200,6 +200,9 @@ class MeshArtist(PlotterArtist, MeshArtist):
     # clear and draw
     # ==============================================================================
 
+    def clear(self) -> None:
+        pass
+
     def clear_vertices(self) -> None:
         """Clear the current vertices from the canvas.
 
@@ -270,11 +273,11 @@ class MeshArtist(PlotterArtist, MeshArtist):
         faces : list[int], optional
             A list of face identifiers.
             The default is None, in which case all faces are drawn.
-        vertexcolor : rgb-tuple or dict[int, rgb-tuple], optional
+        vertexcolor : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the vertices.
-        edgecolor : rgb-tuple or dict[tuple[int, int], rgb-tuple], optional
+        edgecolor : rgb-tuple | dict[tuple[int, int], rgb-tuple], optional
             The color specification for the edges.
-        facecolor : rgb-tuple or dict[int, rgb-tuple], optional
+        facecolor : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the faces.
 
         Returns
@@ -304,7 +307,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         vertices : list[int], optional
             A list of vertex identifiers.
             Default is None, in which case all vertices are drawn.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
+        color : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the vertices.
 
         Returns
@@ -352,7 +355,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        color : rgb-tuple or dict[tuple[int, int], rgb-tuple], optional
+        color : rgb-tuple | dict[tuple[int, int], rgb-tuple], optional
             The color specification for the edges.
 
         Returns
@@ -400,7 +403,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         edges : list[tuple[int, int]], optional
             A list of halfedges to draw.
             The default is None, in which case all halfedges are drawn.
-        color : rgb-tuple or dict[tuple[int, int], rgb-tuple], optional
+        color : rgb-tuple | dict[tuple[int, int], rgb-tuple], optional
             The color specification for the halfedges.
 
         Returns
@@ -455,7 +458,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         faces : list[int], optional
             A list of face identifiers.
             The default is None, in which case all faces are drawn.
-        color : rgb-tuple or dict[int, rgb-tuple], optional
+        color : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the faces.
 
         Returns

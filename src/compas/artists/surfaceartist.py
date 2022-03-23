@@ -30,10 +30,12 @@ class SurfaceArtist(Artist):
 
     """
 
-    default_color = Color(0, 0, 0)
+    default_color = Color.from_hex('#0092D2')
 
     def __init__(self, surface, color=None, **kwargs):
         super(SurfaceArtist, self).__init__()
+        self._default_color = None
+
         self._surface = None
         self._color = None
         self.surface = surface
@@ -54,12 +56,5 @@ class SurfaceArtist(Artist):
         return self._color
 
     @color.setter
-    def color(self, color):
-        if not color:
-            return
-        if Color.is_rgb255(color):
-            self._color = Color.from_rgb255(* list(color))
-        elif Color.is_hex(color):
-            self._color = Color.from_hex(color)
-        else:
-            self._color = Color(* list(color))
+    def color(self, value):
+        self._color = Color.coerce(value)

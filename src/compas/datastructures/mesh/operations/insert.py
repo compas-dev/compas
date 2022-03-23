@@ -14,7 +14,7 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
     key : int
         The identifier of the vertex.

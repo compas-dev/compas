@@ -45,12 +45,12 @@ class BlenderMesh(BlenderGeometry):
 
     @property
     def location(self):
-        """:class:`compas.geometry.Point` - The location of the object in the scene."""
+        """:class:`~compas.geometry.Point` - The location of the object in the scene."""
         return Point(self.geometry.location)
 
     @property
     def vertices(self):
-        """List[:class:`compas.geometry.Point`] - The mesh vertex locations."""
+        """List[:class:`~compas.geometry.Point`] - The mesh vertex locations."""
         point = self.location
         return [point + list(vertex.co) for vertex in self.geometry.vertices]
 
@@ -74,7 +74,7 @@ class BlenderMesh(BlenderGeometry):
 
         Returns
         -------
-        :class:`compas_blender.conversions.BlenderMesh`
+        :class:`~compas_blender.conversions.BlenderMesh`
         """
         data = bpy.data.meshes.new(name or 'Mesh')
         bm.to_mesh(data)
@@ -95,7 +95,7 @@ class BlenderMesh(BlenderGeometry):
 
         Returns
         -------
-        :class:`compas_blender.conversions.BlenderMesh`
+        :class:`~compas_blender.conversions.BlenderMesh`
         """
         bm = bmesh.new()
         bmesh.ops.create_monkey(bm)
@@ -111,12 +111,12 @@ class BlenderMesh(BlenderGeometry):
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
+        cls : :class:`~compas.datastructures.Mesh`, optional
             The type of COMPAS mesh.
 
         Returns
         -------
-        :class:`compas.datastructure.Mesh`
+        :class:`~compas.datastructure.Mesh`
         """
         cls = cls or Mesh
         return cls.from_vertices_and_faces(self.vertices, self.faces)

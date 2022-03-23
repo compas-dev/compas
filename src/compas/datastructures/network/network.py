@@ -2,9 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-import collections
 import compas
+
+if compas.PY2:
+    from collections import Mapping
+else:
+    from collections.abc import Mapping
 
 from compas.files import OBJ
 
@@ -121,7 +124,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -149,7 +152,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
@@ -186,18 +189,13 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
+        :class:`~compas.datastructures.Network`
             A network object.
 
         """
         network = cls()
 
-        if sys.version_info[0] < 3:
-            mapping = collections.Mapping
-        else:
-            mapping = collections.abc.Mapping
-
-        if isinstance(nodes, mapping):
+        if isinstance(nodes, Mapping):
             for key, (x, y, z) in nodes.items():
                 network.add_node(key, x=x, y=y, z=z)
         else:
@@ -207,6 +205,30 @@ class Network(Graph):
         for u, v in edges:
             network.add_edge(u, v)
 
+        return network
+
+    @classmethod
+    def from_pointcloud(cls, cloud, degree=3):
+        """Construct a network from random connections between the points of a pointcloud.
+
+        Parameters
+        ----------
+        cloud : :class:`~compas.geometry.Pointcloud`
+            A pointcloud object.
+        degree : int, optional
+            The number of connections per node.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Network`
+
+        """
+        network = cls()
+        for x, y, z in cloud:
+            network.add_node(x=x, y=y, z=z)
+        for u in network.nodes():
+            for v in network.node_sample(size=degree):
+                network.add_edge(u, v)
         return network
 
     # --------------------------------------------------------------------------

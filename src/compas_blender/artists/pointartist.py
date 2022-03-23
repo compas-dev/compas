@@ -6,10 +6,10 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas_blender.utilities import RGBColor
 from compas.artists import PrimitiveArtist
 from compas.geometry import Point
-from compas_blender.artists import BlenderArtist
+from compas.colors import Color
+from .artist import BlenderArtist
 
 
 class PointArtist(BlenderArtist, PrimitiveArtist):
@@ -17,14 +17,14 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         A COMPAS point.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------
@@ -60,12 +60,12 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
                  **kwargs: Any):
         super().__init__(primitive=point, collection=collection or point.name, **kwargs)
 
-    def draw(self, color: Optional[RGBColor] = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
         """Draw the point.
 
         Parameters
         ----------
-        color : tuple[float, float, float] or tuple[int, int, int], optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             Color of the point object.
             The default color is :attr:`compas.artists.PrimitiveArtist.color`.
 
@@ -74,7 +74,7 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         points = [{
             'pos': self.primitive,
             'name': f"{self.primitive.name}",

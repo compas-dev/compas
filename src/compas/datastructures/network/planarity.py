@@ -38,7 +38,7 @@ def network_is_crossed(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
 
     Returns
@@ -82,7 +82,7 @@ def network_count_crossings(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
 
     Returns
@@ -103,7 +103,7 @@ def network_find_crossings(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
 
     Returns
@@ -138,7 +138,7 @@ def network_is_xy(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
 
     Returns
@@ -163,7 +163,7 @@ def network_is_planar(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
 
     Returns
@@ -204,7 +204,7 @@ def network_is_planar_embedding(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
 
     Returns
@@ -224,7 +224,7 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network object.
     fixed : [hashable, hashable], optional
         Two fixed points.

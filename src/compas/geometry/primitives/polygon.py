@@ -25,20 +25,20 @@ class Polygon(Primitive):
 
     Parameters
     ----------
-    points : list[[float, float, float] | :class:`compas.geometry.Point`]
+    points : list[[float, float, float] | :class:`~compas.geometry.Point`]
         An ordered list of points.
 
     Attributes
     ----------
-    points : list of :class:`compas.geometry.Point`
+    points : list of :class:`~compas.geometry.Point`
         The points of the polygon.
-    lines : list of :class:`compas.geometry.Line`, read-only
+    lines : list of :class:`~compas.geometry.Line`, read-only
         The lines of the polygon.
     length : float, read-only
         The length of the boundary.
-    centroid : :class:`compas.geometry.Point`, read-only
+    centroid : :class:`~compas.geometry.Point`, read-only
         The centroid of the polygon.
-    normal : :class:`compas.geometry.Vector`, read-only
+    normal : :class:`~compas.geometry.Vector`, read-only
         The (average) normal of the polygon.
     area : float, read-only
         The area of the polygon.
@@ -110,7 +110,7 @@ class Polygon(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Polygon`
+        :class:`~compas.geometry.Polygon`
             The constructed polygon.
 
         Examples
@@ -219,7 +219,7 @@ class Polygon(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Polygon`
+        :class:`~compas.geometry.Polygon`
             The constructed polygon.
 
         Notes
@@ -298,7 +298,7 @@ class Polygon(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns

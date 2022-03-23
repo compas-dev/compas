@@ -17,7 +17,7 @@ class PolygonArtist(PlotterArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon`
+    polygon : :class:`~compas.geometry.Polygon`
         A COMPAS polygon.
     linewidth : float, optional
         Width of the polygon edge lines.
@@ -31,11 +31,11 @@ class PolygonArtist(PlotterArtist, PrimitiveArtist):
         Stacking order of the polygon on the canvas.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`compas_plotters.artists.PlotterArtist` and :class:`compas.artists.PrimitiveArtist` for more info.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
-    polygon : :class:`compas.geometry.Polygon`
+    polygon : :class:`~compas.geometry.Polygon`
         The polygon associated with the artist.
 
     """

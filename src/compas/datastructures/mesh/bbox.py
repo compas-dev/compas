@@ -18,7 +18,7 @@ def mesh_bounding_box(mesh):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
@@ -43,7 +43,7 @@ def mesh_bounding_box_xy(mesh):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns

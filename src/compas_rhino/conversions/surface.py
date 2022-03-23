@@ -35,6 +35,7 @@ class RhinoSurface(RhinoGeometry):
         ------
         :class:`ConversionError`
             If the geometry cannot be converted to a surface.
+
         """
         if not isinstance(geometry, Rhino.Geometry.Surface):
             if not isinstance(geometry, Rhino.Geometry.Brep):
@@ -46,30 +47,28 @@ class RhinoSurface(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         Raises
         ------
         :class:`ConversionError`
             If the surface BRep contains more than one face.
+
         """
-        from compas.geometry import NurbsSurface
+        from compas_rhino.geometry import RhinoNurbsSurface
 
         brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
-        surface = NurbsSurface()
         if brep.Surfaces.Count > 1:
             raise ConversionError('Conversion of a BRep with multiple underlying surface is currently not supported.')
         for geometry in brep.Surfaces:
-            surface.rhino_surface = geometry
-            break
-        return surface
+            return RhinoNurbsSurface.from_rhino(geometry)
 
     def to_compas_mesh(self, cls=None, facefilter=None, cleanup=False):
         """Convert the surface b-rep loops to a COMPAS mesh.
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
+        cls : :class:`~compas.datastructures.Mesh`, optional
             The type of COMPAS mesh.
         facefilter : callable, optional
             A filter for selection which Brep faces to include.
@@ -83,7 +82,7 @@ class RhinoSurface(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             The resulting mesh.
 
         Examples
@@ -180,12 +179,12 @@ class RhinoSurface(RhinoGeometry):
             If provided, the filter should return True or False per face.
             A very simple filter that includes all faces is ``def facefilter(face): return True``.
             Default parameter value is None in which case all faces are included.
-        cls: :class:`compas.geometry.Mesh`, optional
+        cls: :class:`~compas.geometry.Mesh`, optional
             The type of COMPAS mesh.
 
         Returns
         -------
-        :class:`compas.geometry.Mesh`
+        :class:`~compas.geometry.Mesh`
         """
         nv = nv or nu
         cls = cls or Mesh

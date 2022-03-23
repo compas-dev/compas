@@ -26,9 +26,9 @@ class RhinoCurve(Curve):
         The spatial dimension of the curve.
     domain : tuple[float, float], read-only
         The parameter domain.
-    start : :class:`compas.geometry.Point`, read-only
+    start : :class:`~compas.geometry.Point`, read-only
         The point corresponding to the start of the parameter domain.
-    end : :class:`compas.geometry.Point`, read-only
+    end : :class:`~compas.geometry.Point`, read-only
         The point corresponding to the end of the parameter domain.
     is_closed : bool, read-only
         True if the curve is closed.
@@ -109,7 +109,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoCurve`
+        :class:`~compas_rhino.geometry.RhinoCurve`
 
         """
         curve = cls()
@@ -129,7 +129,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoCurve`
+        :class:`~compas_rhino.geometry.RhinoCurve`
 
         """
         cls = type(self)
@@ -142,7 +142,7 @@ class RhinoCurve(Curve):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        T : :class:`~compas.geometry.Transformation`
             A COMPAS transformation.
 
         Returns
@@ -172,7 +172,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        :class:`~compas.geometry.Point`
             the corresponding point on the curve.
 
         """
@@ -189,7 +189,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        :class:`~compas.geometry.Vector`
             The corresponding tangent vector.
 
         """
@@ -206,7 +206,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        :class:`~compas.geometry.Vector`
             The corresponding curvature vector.
 
         """
@@ -223,7 +223,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        :class:`~compas.geometry.Frame`
             The corresponding local frame.
 
         """
@@ -255,14 +255,14 @@ class RhinoCurve(Curve):
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point`
+        point : :class:`~compas.geometry.Point`
             The test point.
         return_parameter : bool, optional
             If True, the parameter corresponding to the closest point should be returned in addition to the point.
 
         Returns
         -------
-        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, float]
+        :class:`~compas.geometry.Point` | tuple[:class:`~compas.geometry.Point`, float]
             If `return_parameter` is False, only the closest point is returned.
             If `return_parameter` is True, the closest point and the corresponding parameter are returned.
 
@@ -289,7 +289,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[:class:`compas.geometry.Point`]]
+        list[float] | tuple[list[float], list[:class:`~compas.geometry.Point`]]
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
@@ -314,7 +314,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[:class:`compas.geometry.Point`]]
+        list[float] | tuple[list[float], list[:class:`~compas.geometry.Point`]]
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
@@ -330,7 +330,7 @@ class RhinoCurve(Curve):
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        :class:`~compas.geometry.Box`
 
         """
         box = self.rhino_curve.getBoundingBox(True)

@@ -91,7 +91,7 @@ class Bezier(Primitive):
 
     Attributes
     ----------
-    points : list[:class:`compas.geometry.Point`]
+    points : list[:class:`~compas.geometry.Point`]
         The control points.
     degree : int, read-only
         The degree of the curve.
@@ -135,7 +135,7 @@ class Bezier(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Bezier`
+        :class:`~compas.geometry.Bezier`
             The constructed bezier curve.
 
         Examples
@@ -177,7 +177,7 @@ class Bezier(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        T : :class:`~compas.geometry.Transformation`
             The transformation.
 
         Returns
@@ -198,7 +198,7 @@ class Bezier(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        :class:`~compas.geometry.Point`
             the corresponding point on the curve.
 
         Examples
@@ -227,7 +227,7 @@ class Bezier(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        :class:`~compas.geometry.Vector`
             The corresponding tangent vector.
 
         Examples
@@ -257,7 +257,7 @@ class Bezier(Primitive):
 
         Returns
         -------
-        list[:class:`compas.geometry.Point`]
+        list[:class:`~compas.geometry.Point`]
             Points along the curve.
 
         Examples

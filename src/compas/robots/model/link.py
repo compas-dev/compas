@@ -273,7 +273,7 @@ class Visual(LinkItem, Data):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A visual description object.
         """
         geometry = Geometry()
@@ -370,7 +370,7 @@ class Collision(LinkItem, Data):
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             A collision description object.
         """
         geometry = Geometry()

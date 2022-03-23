@@ -200,7 +200,7 @@ class Data(object):
 
         Returns
         -------
-        :class:`compas.data.Data`
+        :class:`~compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
@@ -230,7 +230,7 @@ class Data(object):
 
         Returns
         -------
-        :class:`compas.data.Data`
+        :class:`~compas.data.Data`
             An instance of this object type if the data contained in the JSON file has the correct schema.
 
         """
@@ -265,7 +265,7 @@ class Data(object):
 
         Returns
         -------
-        :class:`compas.data.Data`
+        :class:`~compas.data.Data`
             An instance of this object type if the data contained in the JSON file has the correct schema.
 
         """
@@ -293,13 +293,13 @@ class Data(object):
 
         Parameters
         ----------
-        cls : Type[:class:`compas.data.Data`], optional
+        cls : Type[:class:`~compas.data.Data`], optional
             The type of data object to return.
             Defaults to the type of the current data object.
 
         Returns
         -------
-        :class:`compas.data.Data`
+        :class:`~compas.data.Data`
             An independent copy of this object.
 
         """

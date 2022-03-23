@@ -27,11 +27,11 @@ class Part(Datastructure):
     name : str, optional
         The name of the part.
         The name will be stored in :attr:`Part.attributes`.
-    frame : :class:`compas.geometry.Frame`, optional
+    frame : :class:`~compas.geometry.Frame`, optional
         The local coordinate system of the part.
-    shape : :class:`compas.geometry.Shape`, optional
+    shape : :class:`~compas.geometry.Shape`, optional
         The base shape of the part geometry.
-    features : sequence[tuple[:class:`compas.geometry.Shape`, str]], optional
+    features : sequence[tuple[:class:`~compas.geometry.Shape`, str]], optional
         The features to be added to the base shape of the part geometry.
 
     Attributes
@@ -40,17 +40,17 @@ class Part(Datastructure):
         General data structure attributes that will be included in the data dict and serialization.
     key : int or str
         The identifier of the part in the connectivity graph of the parent assembly.
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         The local coordinate system of the part.
-    shape : :class:`compas.geometry.Shape`
+    shape : :class:`~compas.geometry.Shape`
         The base shape of the part geometry.
-    features : list[tuple[:class:`compas.geometry.Shape`, str]]
+    features : list[tuple[:class:`~compas.geometry.Shape`, str]]
         The features added to the base shape of the part geometry.
-    transformations : Deque[:class:`compas.geometry.Transformation`]
+    transformations : Deque[:class:`~compas.geometry.Transformation`]
         The stack of transformations applied to the part geometry.
         The most recent transformation is on the left of the stack.
         All transformations are with respect to the local coordinate system.
-    geometry : :class:`compas.geometry.Polyhedron`, read-only
+    geometry : :class:`~compas.geometry.Polyhedron`, read-only
         The geometry of the part after combining the base shape and features through the specified operations.
 
     Class Attributes
@@ -144,13 +144,15 @@ class Part(Datastructure):
     def geometry(self):
         # TODO: this is a temp solution
         # TODO: add memoization or some other kind of caching
-        A = Mesh.from_shape(self.shape)
-        for shape, operation in self.features:
-            A.quads_to_triangles()
-            B = Mesh.from_shape(shape)
-            B.quads_to_triangles()
-            A = Part.operations[operation](A.to_vertices_and_faces(), B.to_vertices_and_faces())
-        geometry = Shape(*A)
+        if self.features:
+            A = self.shape.to_vertices_and_faces(triangulated=True)
+            for shape, operation in self.features:
+                B = shape.to_vertices_and_faces(triangulated=True)
+                A = Part.operations[operation](A, B)
+            geometry = Shape(*A)
+        else:
+            geometry = Shape(*self.shape.to_vertices_and_faces())
+
         T = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
         geometry.transform(T)
         return geometry
@@ -176,7 +178,7 @@ class Part(Datastructure):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        T : :class:`~compas.geometry.Transformation`
 
         Returns
         -------
@@ -193,7 +195,7 @@ class Part(Datastructure):
 
         Parameters
         ----------
-        shape : :class:`compas.geometry.Shape`
+        shape : :class:`~compas.geometry.Shape`
             The shape of the feature.
         operation : Literal['union', 'difference', 'intersection']
             The boolean operation through which the feature should be integrated in the base shape.
@@ -220,12 +222,12 @@ class Part(Datastructure):
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
+        cls : :class:`~compas.datastructures.Mesh`, optional
             The type of mesh to be used for the conversion.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             The resulting mesh.
 
         """

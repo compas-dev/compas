@@ -21,14 +21,14 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
 
     Parameters
     ----------
-    model : :class:`compas.robots.RobotModel`
+    model : :class:`~compas.robots.RobotModel`
         Robot model.
-    collection : str or :blender:`bpy.types.Collection`
+    collection : str | :blender:`bpy.types.Collection`
         The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.RobotModelArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.RobotModelArtist`.
 
     """
 
@@ -47,7 +47,7 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
         ----------
         native_mesh : bpy.types.Object
             A mesh scene object.
-        transformation : :class:`compas.geometry.Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             A transformation matrix.
 
         Returns
@@ -69,7 +69,7 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
 
         Parameters
         ----------
-        geometry : :class:`compas.datastructures.Mesh`
+        geometry : :class:`~compas.datastructures.Mesh`
             The geometry representing the robot.
         name : str, optional
             A name for the scene object.

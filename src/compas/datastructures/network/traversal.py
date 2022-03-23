@@ -15,7 +15,7 @@ def network_shortest_path(network, start, end):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
         A network data structure.
     start : hashable
         The identifier of the start node.

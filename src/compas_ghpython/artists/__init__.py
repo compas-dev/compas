@@ -9,7 +9,7 @@ artists
 
 Artists for visualizing (painting) COMPAS geometry, robots, and data structures in Grasshopper using the GH Python component.
 The artists in this package provide plugins for the pluggable methods of the base artists in :mod:`compas.artists`.
-Therefore, they can be used directly, from here, or through the base artists :class:`compas.artists.Artist`.
+Therefore, they can be used directly, from here, or through the base artists :class:`~compas.artists.Artist`.
 
 
 Primitive Artists
@@ -123,10 +123,10 @@ from .volmeshartist import VolMeshArtist
 
 ShapeArtist.default_color = (255, 255, 255)
 
-MeshArtist.default_color = (0, 0, 0)
-MeshArtist.default_vertexcolor = (255, 255, 255)
-MeshArtist.default_edgecolor = (0, 0, 0)
-MeshArtist.default_facecolor = (255, 255, 255)
+# MeshArtist.default_color = (0, 0, 0)
+# MeshArtist.default_vertexcolor = (255, 255, 255)
+# MeshArtist.default_edgecolor = (0, 0, 0)
+# MeshArtist.default_facecolor = (255, 255, 255)
 
 NetworkArtist.default_nodecolor = (255, 255, 255)
 NetworkArtist.default_edgecolor = (0, 0, 0)

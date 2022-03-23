@@ -51,11 +51,11 @@ def redraw():
     bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
-__version__ = '1.14.1'
+__version__ = '1.15.0'
 
 
 def _check_blender_version(version):
-    supported_versions = ['2.83', '2.93']
+    supported_versions = ['2.83', '2.93', '3.1']
 
     if not version:
         return '2.93'
