@@ -125,9 +125,6 @@ def install_plugin(plugin, version=None):
     if not __plugin__.title:
         raise Exception('Plugin title is not set.')
 
-    if not __plugin__.packages:
-        raise Exception('Plugin packages is not set.')
-
     plugin_fullname = "{}{}".format(__plugin__.title, __plugin__.id)
 
     python_plugins_path = compas_rhino._get_rhino_pythonplugins_path(version)
@@ -140,7 +137,8 @@ def install_plugin(plugin, version=None):
 
     # Stat the installation process
 
-    install_packages(version=version, packages=__plugin__.packages)
+    if hasattr(__plugin__, 'packages'):
+        install_packages(version=version, packages=__plugin__.packages)
 
     print('\nInstalling PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
 

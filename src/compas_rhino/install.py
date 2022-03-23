@@ -187,7 +187,7 @@ def install(version=None, packages=None, clean=False):
 
     # output the outcome of the installation process
     # perhaps we should more info here
-    print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
+    print('\nInstalling COMPAS packages to Rhino {0} scripts folder:'.format(version))
     print('{}\n'.format(scripts_path))
 
     for package, status in results:
