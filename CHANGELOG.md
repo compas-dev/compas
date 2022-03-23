@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in Blender mesh conversion.
+* Changed Rhino plugin installer to check for and install required plugin packages.
 
 ### Removed
 
