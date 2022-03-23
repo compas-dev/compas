@@ -63,9 +63,9 @@ def normal_polygon(polygon, unitized=True):
         n = cross_vectors(oa, ob)
         oa = ob
 
-        nx += n[0]
-        ny += n[1]
-        nz += n[2]
+        nx += n[0] * 0.5
+        ny += n[1] * 0.5
+        nz += n[2] * 0.5
 
     if not unitized:
         return [nx, ny, nz]
