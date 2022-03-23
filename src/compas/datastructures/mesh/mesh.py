@@ -473,8 +473,13 @@ class Mesh(HalfEdge):
 
         return mesh
 
-    def to_vertices_and_faces(self):
+    def to_vertices_and_faces(self, triangulated=False):
         """Return the vertices and faces of a mesh.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            If True, triangulate the faces.
 
         Returns
         -------
@@ -486,7 +491,36 @@ class Mesh(HalfEdge):
         """
         key_index = self.key_index()
         vertices = [self.vertex_coordinates(key) for key in self.vertices()]
-        faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
+
+        if not triangulated:
+            faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
+            return vertices, faces
+
+        faces = []
+
+        for fkey in self.faces():
+            face_vertices = self.face_vertices(fkey)
+
+            if len(face_vertices) == 3:
+                a, b, c = face_vertices
+                faces.append([key_index[a], key_index[b], key_index[c]])
+            elif len(face_vertices) == 4:
+                a, b, c, d = face_vertices
+                faces.append([key_index[a], key_index[b], key_index[c]])
+                faces.append([key_index[a], key_index[c], key_index[d]])
+            else:
+                centroid = centroid_polygon([self.vertex_coordinates(key) for key in face_vertices])
+                vertices.append(centroid)
+                vcount = len(vertices)
+
+                for i in range(len(face_vertices) - 1):
+                    a, b, c = face_vertices[i], face_vertices[i + 1], vcount - 1
+                    faces.append([key_index[a], key_index[b], c])
+
+                # last face between first, last and centroid
+                a, b, c = face_vertices[0], face_vertices[-1], vcount - 1
+                faces.append([key_index[b], key_index[a], c])
+
         return vertices, faces
 
     @classmethod
