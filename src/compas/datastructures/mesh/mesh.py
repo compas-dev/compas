@@ -509,7 +509,7 @@ class Mesh(HalfEdge):
                 faces.append([key_index[a], key_index[b], key_index[c]])
                 faces.append([key_index[a], key_index[c], key_index[d]])
             else:
-                centroid = centroid_polygon([self.vertex_coordinates(key) for key in face_vertices])
+                centroid = centroid_polygon([vertices[key_index[key]] for key in face_vertices])
                 ckey = len(vertices)
                 vertices.append(centroid)
 
