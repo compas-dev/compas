@@ -5,6 +5,7 @@ import compas_rhino
 
 from compas._os import create_symlinks
 from compas._os import remove_symlinks
+from .install import install as install_packages
 
 
 __all__ = ['install_plugin']
@@ -124,6 +125,9 @@ def install_plugin(plugin, version=None):
     if not __plugin__.title:
         raise Exception('Plugin title is not set.')
 
+    if not __plugin__.packages:
+        raise Exception('Plugin packages is not set.')
+
     plugin_fullname = "{}{}".format(__plugin__.title, __plugin__.id)
 
     python_plugins_path = compas_rhino._get_rhino_pythonplugins_path(version)
@@ -133,6 +137,10 @@ def install_plugin(plugin, version=None):
 
     source = plugin_dir
     destination = os.path.join(python_plugins_path, plugin_fullname)
+
+    # Stat the installation process
+
+    install_packages(version=version, packages=__plugin__.packages)
 
     print('\nInstalling PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
 
