@@ -10,7 +10,7 @@ class Shape(Geometry):
     """Base class for geometric shapes."""
 
     @abc.abstractmethod
-    def to_vertices_and_faces(self):
+    def to_vertices_and_faces(self, triangulated=False):
         pass
 
     def __add__(self, other):

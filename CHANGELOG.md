@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added optional `triangulated` flag to `Mesh.to_vertices_and_faces`.
+
 ### Changed
 
 * Fixed bug in Blender mesh conversion.
