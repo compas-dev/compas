@@ -413,3 +413,66 @@ class Polyline(Primitive):
         return division_pts
 
     divide_by_length = divide_polyline_by_length
+
+    def extend(self, length):
+        """Extends a polyline by a given length, by moving the first and/or last point tangentially.
+
+        Parameters:
+        -----------
+        length: float or tuple[float, float]
+            end_extension or tuple[start_extension, end_extension]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyline`
+        """
+        try:
+            start, end = length
+            self.points[0] = self.points[0] + self.lines[0].vector.unitized().scaled(-start)
+        except TypeError:
+            start = end = length
+        self.points[-1] = self.points[-1] + self.lines[-1].vector.unitized().scaled(end)
+
+        return self
+
+    def shorten(self, length):
+        """Shortens a polyline by a given length.
+
+        Parameters:
+        -----------
+        length: float or tuple[float, float]
+            end_shorten or tuple[start_shorten, end_shorten]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyline`
+        """
+        try:
+            start, end = length
+            total_length = 0
+            for line in self.lines:
+                total_length += line.length
+                if total_length < start:
+                    self.points.pop(0)
+                elif total_length == start:
+                    self.points.pop(0)
+                    break
+                else:
+                    self.points[0] = line.end + line.vector.unitized().scaled(-(total_length-start))
+                    break
+        except TypeError:
+            start = end = length
+
+        total_length = 0
+        for line in reversed(self.lines):
+            total_length += line.length
+            if total_length < end:
+                self.points.pop(-1)
+            elif total_length == end:
+                self.points.pop(-1)
+                break
+            else:
+                self.points[-1] = line.start + line.vector.unitized().scaled(total_length-end)
+                break
+
+        return self
