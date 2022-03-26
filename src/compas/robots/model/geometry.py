@@ -173,6 +173,7 @@ class MeshDescriptor(Data):
             'filename': self.filename,
             'scale': self.scale,
             'attr': _attr_to_data(self.attr),
+            'meshes': [m.data for m in self.meshes],
         }
 
     @data.setter
@@ -180,6 +181,7 @@ class MeshDescriptor(Data):
         self.filename = data['filename']
         self.scale = data['scale']
         self.attr = _attr_from_data(data['attr']) if 'attr' in data else {}
+        self.meshes = [Mesh.from_data(md) for md in data['meshes']] if 'meshes' in data else []
 
     @classmethod
     def from_data(cls, data):
