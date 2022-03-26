@@ -366,6 +366,7 @@ TYPE_CLASS_ENUM_BY_DATA = {
     ('point', 'radius'): compas.geometry.Sphere,
     ('line', 'radius'): compas.geometry.Capsule,
     ('attr', 'filename', 'scale'): MeshDescriptor,
+    ('attr', 'filename', 'meshes', 'scale'): MeshDescriptor,
 }
 
 
