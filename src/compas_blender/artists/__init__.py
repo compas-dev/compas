@@ -136,7 +136,6 @@ from .volmeshartist import VolMeshArtist
 
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
 def clear_blender():
-    print('doing it')
     compas_blender.clear()
 
 
