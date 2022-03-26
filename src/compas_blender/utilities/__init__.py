@@ -66,6 +66,14 @@ objects
     get_object_by_name
     get_objects_by_names
 
+misc
+====
+
+.. autosummary::
+    :toctree: generated/
+
+    unload_modules
+
 """
 from .data import delete_unused_data
 from .objects import (
