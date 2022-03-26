@@ -36,7 +36,9 @@ class RobotModelArtist(GHArtist, RobotModelArtist):
     def create_geometry(self, geometry, name=None, color=None):
         if color:
             color = rgb_to_rgb(color[0], color[1], color[2])
-        vertices, faces = geometry.to_vertices_and_faces()
+
+        vertices, faces = geometry.to_vertices_and_faces(triangulated=False)
+
         mesh = compas_ghpython.draw_mesh(vertices, faces, color=color)
         # Try to fix invalid meshes
         if not mesh.IsValid:

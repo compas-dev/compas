@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug in Blender mesh conversion.
 * Changed Rhino plugin installer to check for and install required plugin packages.
+* Refactor robot model artists to use the same `Mesh.to_vertices_and_faces` everywhere.
+* Fix debug print on Blender artist.
 
 ### Removed
 

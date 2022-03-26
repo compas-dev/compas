@@ -91,7 +91,8 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
         else:
             color = (1., 1., 1.)
 
-        v, f = geometry.to_vertices_and_faces()
+        v, f = geometry.to_vertices_and_faces(triangulated=False)
+
         native_mesh = compas_blender.draw_mesh(
             vertices=v, faces=f, name=name, color=color, centroid=False, collection=self.collection
         )
