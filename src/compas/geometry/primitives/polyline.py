@@ -446,6 +446,13 @@ class Polyline(Primitive):
         Returns
         -------
         :class:`~compas.geometry.Polyline`
+
+        Examples
+        --------
+        >>> polyline = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]])
+        >>> polyline.point(0.5)
+        Polyline([Point(1.000, 0.000, 0.000), Point(2.000, 0.000, 0.000), Point(2.000, 1.500, 0.000)])
+
         """
         try:
             start, end = length
