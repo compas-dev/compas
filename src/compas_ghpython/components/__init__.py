@@ -34,17 +34,6 @@ from compas_rhino import _check_rhino_version
 import compas_rhino
 
 
-def coerce_frame(plane):
-    import Rhino
-    from compas.geometry import Frame
-    if isinstance(plane, Rhino.Geometry.Plane):
-        return Frame(plane.Origin, plane.XAxis, plane.YAxis)
-    elif isinstance(plane, Frame):
-        return plane
-    else:
-        return Frame(*plane)
-
-
 def get_version_from_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--version', choices=compas_rhino.SUPPORTED_VERSIONS, default=compas_rhino.DEFAULT_VERSION)

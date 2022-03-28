@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added optional `triangulated` flag to `Mesh.to_vertices_and_faces`.
+* Added Grasshopper component to draw any COMPAS object.
+* Added new icons to Grasshopper components and default to icon style.
 
 ### Changed
 
