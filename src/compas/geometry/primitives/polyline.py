@@ -425,7 +425,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyline`
+        None
 
         """
         try:
@@ -436,8 +436,7 @@ class Polyline(Primitive):
         self.points[-1] = self.points[-1] + self.lines[-1].vector.unitized().scaled(end)
 
     def extended(self, length):
-        """Extends a polyline by a given length, by modifying the first and/or last point tangentially.
-        Returns a copy of the original polyline.
+        """Returns a copy of this polyline extended by a given length.
 
         Parameters:
         -----------
@@ -465,7 +464,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyline`
+        None
 
         """
         try:
@@ -498,7 +497,7 @@ class Polyline(Primitive):
                 break
 
     def shortened(self, length):
-        """Shortens a polyline by a given length. Returns a copy of the original Polyline.
+        """Returns a copy of this polyline shortened by a given length.
 
         Parameters:
         -----------
