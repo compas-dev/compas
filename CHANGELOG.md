@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `Polyline.extend` and `Polyline.shorten`.
+* Added `Polyline.extend`, `Polyline.extended`, `Polyline.shorten`,  `Polyline.shortened`.
 * Added optional `triangulated` flag to `Mesh.to_vertices_and_faces`.
 
 ### Changed

@@ -415,12 +415,13 @@ class Polyline(Primitive):
     divide_by_length = divide_polyline_by_length
 
     def extend(self, length):
-        """Extends a polyline by a given length, by moving the first and/or last point tangentially.
+        """Extends a polyline by a given length, by modifying the first and/or last point tangentially.
 
         Parameters:
         -----------
         length: float or tuple[float, float]
-            end_extension or tuple[start_extension, end_extension]
+            A single length value to extend the polyline only at the end,
+            or two length values to extend at both ends.
 
         Returns
         -------
@@ -434,7 +435,24 @@ class Polyline(Primitive):
             start = end = length
         self.points[-1] = self.points[-1] + self.lines[-1].vector.unitized().scaled(end)
 
-        return self
+    def extended(self, length):
+        """Extends a polyline by a given length, by modifying the first and/or last point tangentially.
+        Returns a copy of the original polyline.
+
+        Parameters:
+        -----------
+        length: float or tuple[float, float]
+            A single length value to extend the polyline only at the end,
+            or two length values to extend at both ends.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyline`
+
+        """
+        crv = self.copy()
+        crv.extend(length)
+        return crv
 
     def shorten(self, length):
         """Shortens a polyline by a given length.
@@ -442,7 +460,8 @@ class Polyline(Primitive):
         Parameters:
         -----------
         length: float or tuple[float, float]
-            end_shorten or tuple[start_shorten, end_shorten]
+            A single length value to shorten the polyline only at the end,
+            or two length values to shorten at both ends.
 
         Returns
         -------
@@ -455,9 +474,9 @@ class Polyline(Primitive):
             for line in self.lines:
                 total_length += line.length
                 if total_length < start:
-                    self.points.pop(0)
+                    del self.points[0]
                 elif total_length == start:
-                    self.points.pop(0)
+                    del self.points[0]
                     break
                 else:
                     self.points[0] = line.end + line.vector.unitized().scaled(-(total_length-start))
@@ -466,15 +485,32 @@ class Polyline(Primitive):
             start = end = length
 
         total_length = 0
-        for line in reversed(self.lines):
+        for i in range(len(self.lines)):
+            line = self.lines[-(i+1)]
             total_length += line.length
             if total_length < end:
-                self.points.pop(-1)
+                del self.points[-1]
             elif total_length == end:
-                self.points.pop(-1)
+                del self.points[-1]
                 break
             else:
                 self.points[-1] = line.start + line.vector.unitized().scaled(total_length-end)
                 break
 
-        return self
+    def shortened(self, length):
+        """Shortens a polyline by a given length. Returns a copy of the original Polyline.
+
+        Parameters:
+        -----------
+        length: float or tuple[float, float]
+            A single length value to shorten the polyline only at the end,
+            or two length values to shorten at both ends.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyline`
+
+        """
+        crv = self.copy()
+        crv.shorten(length)
+        return crv
