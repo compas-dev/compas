@@ -113,3 +113,24 @@ def test_polyline_split_at_corners(coords, input, expected):
 ])
 def test_polyline_tangent_at_point(coords, input, expected):
     assert expected == Polyline(coords).tangent_at_point_on_polyline(input)
+
+
+@pytest.mark.parametrize('coords,input,expected', [
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], 1.5, [[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 3.5, 0]]),
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], -2.5, [[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, -0.5, 0]]),
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], (2, 2), [[-2, 0, 0], [1, 0, 0], [2, 0, 0], [2, 4, 0]]),
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], (2, 0), [[-2, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]]),
+])
+def test_polyline_extend(coords, input, expected):
+    assert expected == Polyline(coords).extended(input)
+
+
+@pytest.mark.parametrize('coords,input,expected', [
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], 0.5, [[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 1.5, 0]]),
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], 2, [[0, 0, 0], [1, 0, 0], [2, 0, 0]]),
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], (0.5, 2.5), [[0.5, 0, 0], [1, 0, 0], [1.5, 0, 0]]),
+    ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], (1, 2), [[1, 0, 0], [2, 0, 0]]),
+])
+def test_polyline_extend(coords, input, expected):
+    assert expected == Polyline(coords).shortened(input)
+
