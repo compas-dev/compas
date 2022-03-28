@@ -85,6 +85,14 @@ constructors
 
     volmesh_from_polysurfaces
 
+misc
+====
+
+.. autosummary::
+    :toctree: generated/
+
+    unload_modules
+
 """
 from __future__ import absolute_import
 

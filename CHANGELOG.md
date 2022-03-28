@@ -9,14 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Added
-
 * Added `Polyline.extend`, `Polyline.extended`, `Polyline.shorten`,  `Polyline.shortened`.
+
+### Changed
+
+### Removed
+
+
+## [1.15.1] 2022-03-28
+
+### Added
+
 * Added optional `triangulated` flag to `Mesh.to_vertices_and_faces`.
+* Added geometry information of active meshes to the serialization/deserialization of robot model's `MeshDescriptor`.
+* Added Grasshopper component to draw any COMPAS object.
+* Added new icons to Grasshopper components and default to icon style.
 
 ### Changed
 
 * Fixed bug in Blender mesh conversion.
 * Changed Rhino plugin installer to check for and install required plugin packages.
+* Refactor robot model artists to use the same `Mesh.to_vertices_and_faces` everywhere.
+* Fix debug print on Blender artist.
 
 ### Removed
 
