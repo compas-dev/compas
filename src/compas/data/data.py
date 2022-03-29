@@ -373,6 +373,18 @@ class Data(object):
         -------
         bytes | str
 
+        Examples
+        --------
+        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        >>> v1 = mesh.hash()
+        >>> v2 = mesh.hash()
+        >>> mesh.vertex_attribute(mesh.vertex_sample(1)[0], 'z', 1)
+        >>> v3 = mesh.hash()
+        >>> v1 == v2
+        True
+        >>> v2 == v3
+        False
+
         """
         h = hashlib.sha256()
         h.update(self.jsonstring.encode())
