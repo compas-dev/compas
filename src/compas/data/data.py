@@ -4,6 +4,7 @@ from __future__ import division
 
 import os
 import json
+import hashlib
 from uuid import uuid4
 from copy import deepcopy
 
@@ -112,12 +113,12 @@ class Data(object):
 
     def __getstate__(self):
         """Return the object data for state serialization with older pickle protocols."""
-        return {'__dict__': self.__dict__, 'dtype': self.dtype, 'data': self.data}
+        return {"__dict__": self.__dict__, "dtype": self.dtype, "data": self.data}
 
     def __setstate__(self, state):
         """Assign a deserialized state to the object data to support older pickle protocols."""
-        self.__dict__.update(state['__dict__'])
-        self.data = state['data']
+        self.__dict__.update(state["__dict__"])
+        self.data = state["data"]
 
     @property
     def DATASCHEMA(self):
@@ -133,9 +134,11 @@ class Data(object):
     def JSONSCHEMA(self):
         """dict : The schema of the JSON representation of the data of this object."""
         if not self._JSONSCHEMA:
-            schema_filename = '{}.json'.format(self.JSONSCHEMANAME.lower())
-            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_filename)
-            with open(schema_path, 'r') as fp:
+            schema_filename = "{}.json".format(self.JSONSCHEMANAME.lower())
+            schema_path = os.path.join(
+                os.path.dirname(__file__), "schemas", schema_filename
+            )
+            with open(schema_path, "r") as fp:
                 self._JSONSCHEMA = json.load(fp)
         return self._JSONSCHEMA
 
@@ -143,8 +146,10 @@ class Data(object):
     def jsondefinitions(self):
         """dict : Reusable schema definitions."""
         if not self._jsondefinitions:
-            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', 'compas.json')
-            with open(schema_path, 'r') as fp:
+            schema_path = os.path.join(
+                os.path.dirname(__file__), "schemas", "compas.json"
+            )
+            with open(schema_path, "r") as fp:
                 self._jsondefinitions = json.load(fp)
         return self._jsondefinitions
 
@@ -153,13 +158,16 @@ class Data(object):
         """jsonschema.Draft7Validator : JSON schema validator for draft 7."""
         if not self._jsonvalidator:
             from jsonschema import RefResolver, Draft7Validator
+
             resolver = RefResolver.from_schema(self.jsondefinitions)
             self._jsonvalidator = Draft7Validator(self.JSONSCHEMA, resolver=resolver)
         return self._jsonvalidator
 
     @property
     def dtype(self):
-        return '{}/{}'.format('.'.join(self.__class__.__module__.split('.')[:2]), self.__class__.__name__)
+        return "{}/{}".format(
+            ".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__
+        )
 
     @property
     def data(self):
@@ -321,6 +329,7 @@ class Data(object):
 
         """
         import schema
+
         try:
             data = self.DATASCHEMA.validate(self.data)
         except schema.SchemaError as e:
@@ -342,6 +351,7 @@ class Data(object):
 
         """
         import jsonschema
+
         jsonstring = json.dumps(self.data, cls=DataEncoder)
         jsondata = json.loads(jsonstring, cls=DataDecoder)
         try:
@@ -350,3 +360,22 @@ class Data(object):
             print("Validation against the JSON schema of this object failed.")
             raise e
         return jsonstring
+
+    def hash(self, as_string=False):
+        """Compute a hash of the data for comparison during version control.
+
+        Parameters
+        ----------
+        as_string : bool, optional
+            If True, return the digest in hexadecimal format rather than as bytes.
+
+        Returns
+        -------
+        bytes | str
+
+        """
+        h = hashlib.sha256()
+        h.update(self.jsonstring.encode())
+        if as_string:
+            return h.hexdigest()
+        return h.digest()
