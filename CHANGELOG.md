@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Set `jinja >= 3.0` to dev dependencies to fix docs build error.
+
 ### Removed
 
 
