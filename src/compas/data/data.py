@@ -361,8 +361,8 @@ class Data(object):
             raise e
         return jsonstring
 
-    def hash(self, as_string=False):
-        """Compute a hash of the data for comparison during version control.
+    def sha256(self, as_string=False):
+        """Compute a hash of the data for comparison during version control using the sha256 algorithm.
 
         Parameters
         ----------
@@ -375,11 +375,12 @@ class Data(object):
 
         Examples
         --------
+        >>> from compas.datastructures import Mesh
         >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
-        >>> v1 = mesh.hash()
-        >>> v2 = mesh.hash()
+        >>> v1 = mesh.sha256()
+        >>> v2 = mesh.sha256()
         >>> mesh.vertex_attribute(mesh.vertex_sample(1)[0], 'z', 1)
-        >>> v3 = mesh.hash()
+        >>> v3 = mesh.sha256()
         >>> v1 == v2
         True
         >>> v2 == v3
