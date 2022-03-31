@@ -409,7 +409,7 @@ class Proxy(object):
         # this counts as output
         # it should be sent as part of RPC communication
         try:
-            ostring = self._function(istring, self._path)
+            ostring = self._function(istring, self._path or '')
         except Exception:
             # not clear what the point of this is
             # self.stop_server()
