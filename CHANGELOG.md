@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed unused `compas_rhino.objects` (moved to `compas_ui`).
+* Removed unused `compas_rhino.ui` (moved to `compas_ui`).
+
 
 ## [1.15.1] 2022-03-28
 
