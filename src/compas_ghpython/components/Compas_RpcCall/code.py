@@ -21,7 +21,7 @@ class CompasRpcCall(component):
 
         try:
             result = fn(*parameters)
-        except Exception as e:
+        except Exception:
             self.Message = "Error! Check details in stacktrace"
             raise
 
