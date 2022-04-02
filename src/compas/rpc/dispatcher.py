@@ -86,13 +86,13 @@ class Dispatcher(object):
             * `'profile'` : A profile of the function execution.
 
         """
-        odict = {
-            'data': None,
-            'error': None,
-            'profile': None
-        }
+        odict = {"data": None, "error": None, "profile": None}
 
-        parts = name.split('.')
+        if len(args) > 1:
+            if args[1] not in sys.path:
+                sys.path.insert(0, args[1])
+
+        parts = name.split(".")
 
         functionname = parts[-1]
 
@@ -110,21 +110,24 @@ class Dispatcher(object):
             else:
                 module = self
         except Exception:
-            odict['error'] = traceback.format_exc()
+            odict["error"] = traceback.format_exc()
 
         else:
             try:
                 function = getattr(module, functionname)
             except AttributeError:
-                odict['error'] = "This function is not part of the API: {0}".format(functionname)
+                odict["error"] = "This function is not part of the API: {0}".format(
+                    functionname
+                )
 
             else:
                 try:
                     idict = json.loads(args[0], cls=DataDecoder)
                 except (IndexError, TypeError):
-                    odict['error'] = (
+                    odict["error"] = (
                         "API methods require a single JSON encoded dictionary as input.\n"
-                        "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
+                        "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})"
+                    )
 
                 else:
                     self._call(function, idict, odict)
@@ -148,21 +151,20 @@ class Dispatcher(object):
         The output dictionary will be modified in place.
 
         """
-        args = idict['args']
-        kwargs = idict['kwargs']
+        args = idict["args"]
+        kwargs = idict["kwargs"]
 
         try:
             data = function(*args, **kwargs)
         except Exception:
-            odict['error'] = traceback.format_exc()
+            odict["error"] = traceback.format_exc()
         else:
-            odict['data'] = data
+            odict["data"] = data
 
     def _call_wrapped(self, function, idict, odict):
-        """Does the same as _call, but with profiling enabled.
-        """
-        args = idict['args']
-        kwargs = idict['kwargs']
+        """Does the same as _call, but with profiling enabled."""
+        args = idict["args"]
+        kwargs = idict["kwargs"]
 
         try:
             profile = Profile()
@@ -178,7 +180,7 @@ class Dispatcher(object):
             stats.print_stats(20)
 
         except Exception:
-            odict['error'] = traceback.format_exc()
+            odict["error"] = traceback.format_exc()
         else:
-            odict['data'] = data
-            odict['profile'] = stream.getvalue()
+            odict["data"] = data
+            odict["profile"] = stream.getvalue()
