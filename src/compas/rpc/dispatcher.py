@@ -89,7 +89,8 @@ class Dispatcher(object):
         odict = {"data": None, "error": None, "profile": None}
 
         if len(args) > 1:
-            sys.path.insert(0, args[1])
+            if args[1] not in sys.path:
+                sys.path.insert(0, args[1])
 
         parts = name.split(".")
 
