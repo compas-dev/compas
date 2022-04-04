@@ -30,7 +30,7 @@ def unregister():
 """
 
 
-def install_windows(blender_path, version=None):
+def install_windows(blender_path, version=None, force_reinstall=False, no_deps=False):
     """Install COMPAS for Blender on Windows.
 
     Parameters
@@ -123,7 +123,13 @@ def install_windows(blender_path, version=None):
         sys.exit(-1)
 
     try:
-        subprocess.run([blenderpython, "-m", "pip", "install", "compas"], check=True)
+        args = [blenderpython, "-m", "pip", "install", "compas"]
+        if force_reinstall:
+            args.append("--force-reinstall")
+        if no_deps:
+            args.append("--no-deps")
+        
+        subprocess.run(args, check=True)
     except subprocess.CalledProcessError:
         print("Could not install compas")
         sys.exit(-1)
@@ -170,7 +176,9 @@ if __name__ == "__main__":
         choices=["2.83", "2.93", "3.1"],
         help="The version of Blender to install COMPAS in.",
     )
+    parser.add_argument("--force-reinstall", dest="force_reinstall", default=False, action="store_true")
+    parser.add_argument("--no-deps", dest="no_deps", default=False, action="store_true")
 
     args = parser.parse_args()
 
-    install_windows(args.blenderpath, version=args.version)
+    install_windows(args.blenderpath, version=args.version, force_reinstall=args.force_reinstall, no_deps=args.no_deps)
