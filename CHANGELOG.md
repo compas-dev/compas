@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Data.sha256` for computing a hash value of data objects, for example for comparisons during version control.
 * Added optional `path` parameter to `compas.rpc.Proxy` to allow for non-package calls.
 * Added Grasshopper component to call RPC functions.
+* Added alternative installation procedure for Blender on Windows.
 
 ### Changed
 
