@@ -181,4 +181,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    install_windows(args.blenderpath, version=args.version, force_reinstall=args.force_reinstall, no_deps=args.no_deps)
+    install_windows(
+        args.blenderpath,
+        version=args.version,
+        force_reinstall=args.force_reinstall,
+        no_deps=args.no_deps
+    )
