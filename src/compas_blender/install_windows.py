@@ -1,12 +1,10 @@
 import os
 import sys
-import tempfile
 import subprocess
 
 import compas
 import compas_blender
 
-from compas._os import copy
 from compas._os import remove
 from compas._os import remove_symlink
 from compas._os import rename
@@ -30,7 +28,9 @@ def unregister():
 """
 
 
-def install_windows(blender_path, version=None, packages=None, force_reinstall=False, no_deps=False):
+def install_windows(
+    blender_path, version=None, packages=None, force_reinstall=False, no_deps=False
+):
     """Install COMPAS for Blender on Windows.
 
     Parameters
@@ -137,7 +137,7 @@ def install_windows(blender_path, version=None, packages=None, force_reinstall=F
             args.append("--force-reinstall")
         if no_deps:
             args.append("--no-deps")
-        
+
         subprocess.run(args, check=True)
     except subprocess.CalledProcessError:
         print("Could not install compas or some of the requested additional packages.")
@@ -162,7 +162,9 @@ def install_windows(blender_path, version=None, packages=None, force_reinstall=F
 
     print()
     print("COMPAS for Blender {} has been installed via pip.".format(version))
-    print("Note that functionaliy of conda-only packages has to be run via the command server (RPC).")
+    print(
+        "Note that functionaliy of conda-only packages has to be run via the command server (RPC)."
+    )
 
 
 # ==============================================================================
@@ -186,8 +188,10 @@ if __name__ == "__main__":
         choices=["2.83", "2.93", "3.1"],
         help="The version of Blender to install COMPAS in.",
     )
-    parser.add_argument('-p', '--packages', nargs='+', help="The packages to install.")
-    parser.add_argument("--force-reinstall", dest="force_reinstall", default=False, action="store_true")
+    parser.add_argument("-p", "--packages", nargs="+", help="The packages to install.")
+    parser.add_argument(
+        "--force-reinstall", dest="force_reinstall", default=False, action="store_true"
+    )
     parser.add_argument("--no-deps", dest="no_deps", default=False, action="store_true")
 
     args = parser.parse_args()
@@ -197,5 +201,5 @@ if __name__ == "__main__":
         version=args.version,
         packages=args.packages,
         force_reinstall=args.force_reinstall,
-        no_deps=args.no_deps
+        no_deps=args.no_deps,
     )
