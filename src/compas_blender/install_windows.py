@@ -30,7 +30,7 @@ def unregister():
 """
 
 
-def install_windows(blender_path, version=None, force_reinstall=False, no_deps=False):
+def install_windows(blender_path, version=None, packages=None, force_reinstall=False, no_deps=False):
     """Install COMPAS for Blender on Windows.
 
     Parameters
@@ -42,6 +42,13 @@ def install_windows(blender_path, version=None, force_reinstall=False, no_deps=F
     version : {'2.83', '2.93', '3.1'}, optional
         The version number of Blender.
         Default is ``'2.93'``.
+    packages : list[str], optional
+        Additional packages to install.
+        Note that the packages should be available on the Python Package Index (PyPI).
+    force_reinstall : bool, optional
+        Force existing packages to be reinstalled.
+    no_deps : bool, optional
+        Ignore requirements of the specified packages during installation.
 
     Examples
     --------
@@ -124,6 +131,8 @@ def install_windows(blender_path, version=None, force_reinstall=False, no_deps=F
 
     try:
         args = [blenderpython, "-m", "pip", "install", "compas"]
+        if packages:
+            args += packages
         if force_reinstall:
             args.append("--force-reinstall")
         if no_deps:
@@ -131,28 +140,29 @@ def install_windows(blender_path, version=None, force_reinstall=False, no_deps=F
         
         subprocess.run(args, check=True)
     except subprocess.CalledProcessError:
-        print("Could not install compas")
+        print("Could not install compas or some of the requested additional packages.")
         sys.exit(-1)
 
-    # Take either the CONDA environment directory or the current Python executable's directory
-    python_directory = os.environ.get("CONDA_PREFIX", None) or os.path.dirname(
-        sys.executable
-    )
-    environment_name = os.environ.get("CONDA_DEFAULT_ENV", "")
+    # # Take either the CONDA environment directory or the current Python executable's directory
+    # python_directory = os.environ.get("CONDA_PREFIX", None) or os.path.dirname(
+    #     sys.executable
+    # )
+    # environment_name = os.environ.get("CONDA_DEFAULT_ENV", "")
 
     # Get current sys.version value, we will override it inside Blender
     # because it seems Blender overrides it as well, but doing so breaks many things after having replaced the Python interpreter
 
-    _handle, bootstrapper_temp_path = tempfile.mkstemp(suffix=".py", text=True)
+    # _handle, bootstrapper_temp_path = tempfile.mkstemp(suffix=".py", text=True)
 
-    with open(bootstrapper_temp_path, "w") as f:
-        f.write(BOOTSTRAPPER_TEMPLATE.format(environment_name, python_directory))
+    # with open(bootstrapper_temp_path, "w") as f:
+    #     f.write(BOOTSTRAPPER_TEMPLATE.format(environment_name, python_directory))
 
-    print("  Creating bootstrap script: {}".format(compas_bootstrapper))
-    copy(bootstrapper_temp_path, compas_bootstrapper)
+    # print("  Creating bootstrap script: {}".format(compas_bootstrapper))
+    # copy(bootstrapper_temp_path, compas_bootstrapper)
 
     print()
-    print("COMPAS for Blender {} has been installed.".format(version))
+    print("COMPAS for Blender {} has been installed via pip.".format(version))
+    print("Note that functionaliy of conda-only packages has to be run via the command server (RPC).")
 
 
 # ==============================================================================
@@ -176,6 +186,7 @@ if __name__ == "__main__":
         choices=["2.83", "2.93", "3.1"],
         help="The version of Blender to install COMPAS in.",
     )
+    parser.add_argument('-p', '--packages', nargs='+', help="The packages to install.")
     parser.add_argument("--force-reinstall", dest="force_reinstall", default=False, action="store_true")
     parser.add_argument("--no-deps", dest="no_deps", default=False, action="store_true")
 
@@ -184,6 +195,7 @@ if __name__ == "__main__":
     install_windows(
         args.blenderpath,
         version=args.version,
+        packages=args.packages,
         force_reinstall=args.force_reinstall,
         no_deps=args.no_deps
     )
