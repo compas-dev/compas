@@ -19,6 +19,7 @@ from compas.geometry import area_polygon
 from compas.geometry import area_polygon_xy
 from compas.geometry import area_triangle
 from compas.geometry import area_triangle_xy
+from compas.geometry import normal_polygon
 
 
 @pytest.fixture
@@ -202,3 +203,14 @@ def test_area_triangle(triangle, R):
     assert close(area_triangle(triangle.points), 0.5)
     assert close(area_triangle_xy(triangle.points), 0.0)
     assert close(triangle.area, 0.5)
+
+
+# ==============================================================================
+# normals
+# ==============================================================================\
+
+def test_normal_polygon():
+    polygon = [(0, 0, 0), (10, 0, 0), (10, 10, 0), (0, 10, 0)]
+    normal = normal_polygon(polygon, unitized=False)
+    area = area_polygon(polygon)
+    assert length_vector(normal) == area
