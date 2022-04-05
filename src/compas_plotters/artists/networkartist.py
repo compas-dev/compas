@@ -307,7 +307,6 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
             color = (0, 0, 0) if is_color_light(bgcolor) else (1, 1, 1)
 
             text = self.node_text.get(node, None)
-            print(text)
             if text is None:
                 continue
 
