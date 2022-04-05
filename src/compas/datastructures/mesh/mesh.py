@@ -377,15 +377,15 @@ class Mesh(HalfEdge):
         return mesh
 
     def to_lines(self):
-        """Convert the mesh to a collection of lines.
+        """Return the lines of the mesh as pairs of start and end point coordinates.
 
         Returns
         -------
         list[tuple[list[float], list[float]]]
-            A list of lines each defined by a pair of points.
+            A list of lines each defined by a pair of point coordinates.
 
         """
-        raise NotImplementedError
+        return [self.edge_coordinates(u, v) for u, v in self.edges()]
 
     @classmethod
     def from_polylines(cls, boundary_polylines, other_polylines):

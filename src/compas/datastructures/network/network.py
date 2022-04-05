@@ -221,6 +221,7 @@ class Network(Graph):
         Returns
         -------
         :class:`~compas.datastructures.Network`
+            A network object.
 
         """
         network = cls()
@@ -256,6 +257,7 @@ class Network(Graph):
         Returns
         -------
         list[list[float]]
+            A list with the coordinates of the vertices of the network.
 
         """
         return [self.node_coordinates(key) for key in self.nodes()]
@@ -266,6 +268,7 @@ class Network(Graph):
         Returns
         -------
         list[tuple[list[float], list[float]]]
+            A list of lines each defined by a pair of point coordinates.
 
         """
         return [self.edge_coordinates(u, v) for u, v in self.edges()]
