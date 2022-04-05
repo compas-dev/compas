@@ -10,16 +10,40 @@ from ._geometry import BlenderGeometry
 class BlenderMesh(BlenderGeometry):
     """Wrapper for Blender meshes.
 
+    Attributes
+    ----------
+    object : :blender:`bpy.types.Object`
+        The Blender scene object.
+    geometry : :blender:`bpy.types.Mesh`
+        The mesh data block.
+    bmesh : :blender:`bpy.types.BMesh`
+        The mesh data structure.
+    location : :class:`~compas.geometry.Point`
+        The location of the object in the scene.
+    vertices : List[:class:`~compas.geometry.Point`]
+        The mesh vertex locations.
+    faces : List[List[:obj:`int`]]
+        The mesh face vertices.
+
     Examples
     --------
     .. code-block:: python
 
-        pass
+        import os
+        import compas
+        from compas_blender.conversions import BlenderMesh
+
+        mesh = BlenderMesh.from_monkey().to_compas()
+        mesh = mesh.subdivide(k=2)
+
+        path = os.path.join(os.path.expanduser(~), 'Desktop', 'monkey.json')
+
+        compas.json_dump(mesh, path)
+
     """
 
     @property
     def object(self):
-        """:blender:`bpy.types.Object` - The Blender scene object."""
         return self._object
 
     @object.setter
@@ -30,7 +54,6 @@ class BlenderMesh(BlenderGeometry):
 
     @property
     def geometry(self):
-        """:blender:`bpy.types.Mesh` - The mesh data block."""
         return self._geometry
 
     @geometry.setter
@@ -40,23 +63,21 @@ class BlenderMesh(BlenderGeometry):
 
     @property
     def bmesh(self):
-        """:blender:`bpy.types.BMesh` - The mesh data structure."""
         return bmesh.from_edit_mesh(self.mesh)
 
     @property
     def location(self):
-        """:class:`~compas.geometry.Point` - The location of the object in the scene."""
-        return Point(self.geometry.location)
+        if self.object:
+            return Point(self.object.location)
+        return Point(0, 0, 0)
 
     @property
     def vertices(self):
-        """List[:class:`~compas.geometry.Point`] - The mesh vertex locations."""
         point = self.location
         return [point + list(vertex.co) for vertex in self.geometry.vertices]
 
     @property
     def faces(self):
-        """List[List[:obj:`int`]] - The mesh face vertices."""
         return [list(face.vertices) for face in self.geometry.polygons]
 
     @classmethod
@@ -75,6 +96,7 @@ class BlenderMesh(BlenderGeometry):
         Returns
         -------
         :class:`~compas_blender.conversions.BlenderMesh`
+
         """
         data = bpy.data.meshes.new(name or 'Mesh')
         bm.to_mesh(data)
@@ -96,6 +118,7 @@ class BlenderMesh(BlenderGeometry):
         Returns
         -------
         :class:`~compas_blender.conversions.BlenderMesh`
+
         """
         bm = bmesh.new()
         bmesh.ops.create_monkey(bm)
@@ -117,6 +140,7 @@ class BlenderMesh(BlenderGeometry):
         Returns
         -------
         :class:`~compas.datastructure.Mesh`
+
         """
         cls = cls or Mesh
         return cls.from_vertices_and_faces(self.vertices, self.faces)

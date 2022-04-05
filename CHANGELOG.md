@@ -7,11 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
 ### Added
+
+* Added `Polyline.extend`, `Polyline.extended`, `Polyline.shorten`,  `Polyline.shortened`.
+* Added `Data.sha256` for computing a hash value of data objects, for example for comparisons during version control.
+* Added optional `path` parameter to `compas.rpc.Proxy` to allow for non-package calls.
+* Added Grasshopper component to call RPC functions.
 
 ### Changed
 
+* Set `jinja >= 3.0` to dev dependencies to fix docs build error.
+
+### Removed
+
+* Removed unused `compas_rhino.objects` (moved to `compas_ui`).
+* Removed unused `compas_rhino.ui` (moved to `compas_ui`).
+
+
+## [1.15.1] 2022-03-28
+
+### Added
+
+* Added optional `triangulated` flag to `Mesh.to_vertices_and_faces`.
+* Added geometry information of active meshes to the serialization/deserialization of robot model's `MeshDescriptor`.
+* Added Grasshopper component to draw any COMPAS object.
+* Added new icons to Grasshopper components and default to icon style.
+
+### Changed
+
+<<<<<<< HEAD
 * Fixed bug in `normal_polygon` in `compas.geometry`.
+=======
+* Fixed bug in Blender mesh conversion.
+* Changed Rhino plugin installer to check for and install required plugin packages.
+* Refactor robot model artists to use the same `Mesh.to_vertices_and_faces` everywhere.
+* Fix debug print on Blender artist.
+>>>>>>> main
 
 ### Removed
 

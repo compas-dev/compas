@@ -98,7 +98,18 @@ class Proxy(object):
     Stopping the server proxy.                              # doctest: +SKIP
     """
 
-    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, max_conn_attempts=100, autoreload=True, capture_output=True):
+    def __init__(
+        self,
+        package=None,
+        python=None,
+        url="http://127.0.0.1",
+        port=1753,
+        service=None,
+        max_conn_attempts=100,
+        autoreload=True,
+        capture_output=True,
+        path=None,
+    ):
         self._package = None
         self._python = compas._os.select_python(python)
         self._url = url
@@ -108,6 +119,7 @@ class Proxy(object):
         self._process = None
         self._function = None
         self._profile = None
+        self._path = path
 
         self.service = service
         self.package = package
@@ -151,7 +163,7 @@ class Proxy(object):
     @service.setter
     def service(self, service):
         if not service:
-            self._service = 'compas.rpc.services.default'
+            self._service = "compas.rpc.services.default"
         else:
             self._service = service
 
@@ -262,14 +274,25 @@ class Proxy(object):
             self._process.StartInfo.RedirectStandardOutput = self.capture_output
             self._process.StartInfo.RedirectStandardError = self.capture_output
             self._process.StartInfo.FileName = self.python
-            self._process.StartInfo.Arguments = '-m {0} --port {1} --{2}autoreload'.format(self.service, self._port, '' if self.autoreload else 'no-')
+            self._process.StartInfo.Arguments = (
+                "-m {0} --port {1} --{2}autoreload".format(
+                    self.service, self._port, "" if self.autoreload else "no-"
+                )
+            )
             self._process.Start()
         else:
-            args = [self.python, '-m', self.service, '--port', str(self._port), '--{}autoreload'.format('' if self.autoreload else 'no-')]
+            args = [
+                self.python,
+                "-m",
+                self.service,
+                "--port",
+                str(self._port),
+                "--{}autoreload".format("" if self.autoreload else "no-"),
+            ]
             kwargs = dict(env=env)
             if self.capture_output:
-                kwargs['stdout'] = PIPE
-                kwargs['stderr'] = PIPE
+                kwargs["stdout"] = PIPE
+                kwargs["stderr"] = PIPE
 
             self._process = Popen(args, **kwargs)
         # this starts the client side
@@ -285,7 +308,11 @@ class Proxy(object):
             except Exception:
                 time.sleep(0.1)
                 attempt_count += 1
-                print("    {} attempts left.".format(self.max_conn_attempts - attempt_count))
+                print(
+                    "    {} attempts left.".format(
+                        self.max_conn_attempts - attempt_count
+                    )
+                )
             else:
                 success = True
                 break
@@ -374,7 +401,7 @@ class Proxy(object):
         Numpy objects are automatically converted to their built-in Python equivalents.
 
         """
-        idict = {'args': args, 'kwargs': kwargs}
+        idict = {"args": args, "kwargs": kwargs}
         istring = json.dumps(idict, cls=DataEncoder)
         # it makes sense that there is a broken pipe error
         # because the process is not the one receiving the feedback
@@ -382,7 +409,7 @@ class Proxy(object):
         # this counts as output
         # it should be sent as part of RPC communication
         try:
-            ostring = self._function(istring)
+            ostring = self._function(istring, self._path or '')
         except Exception:
             # not clear what the point of this is
             # self.stop_server()
@@ -395,8 +422,8 @@ class Proxy(object):
 
         result = json.loads(ostring, cls=DataDecoder)
 
-        if result['error']:
-            raise RPCServerError(result['error'])
+        if result["error"]:
+            raise RPCServerError(result["error"])
 
-        self.profile = result['profile']
-        return result['data']
+        self.profile = result["profile"]
+        return result["data"]

@@ -11,8 +11,6 @@ from Rhino.DocObjects.ObjectColorSource import ColorFromObject
 from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
 from Rhino.DocObjects.ObjectMaterialSource import MaterialFromObject
 
-from compas.geometry import centroid_polygon
-from compas.utilities import pairwise
 from compas.artists import RobotModelArtist
 
 import compas_rhino
@@ -63,23 +61,7 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
         if 'mesh_color.diffuse' in geometry.attributes:
             color = geometry.attributes['mesh_color.diffuse']
 
-        key_index = geometry.key_index()
-        vertices = geometry.vertices_attributes('xyz')
-        faces = [[key_index[key] for key in geometry.face_vertices(fkey)] for fkey in geometry.faces()]
-        new_faces = []
-        for face in faces:
-            f = len(face)
-            if f == 3:
-                new_faces.append(face + face[-1:])
-            elif f == 4:
-                new_faces.append(face)
-            elif f > 4:
-                centroid = len(vertices)
-                vertices.append(centroid_polygon([vertices[index] for index in face]))
-                for a, b in pairwise(face + face[0:1]):
-                    new_faces.append([centroid, a, b, b])
-            else:
-                continue
+        vertices, faces = geometry.to_vertices_and_faces(triangulated=False)
 
         mesh = Rhino.Geometry.Mesh()
 
@@ -95,7 +77,7 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
 
         for v in vertices:
             mesh.Vertices.Add(*v)
-        for face in new_faces:
+        for face in faces:
             mesh.Faces.AddFace(*face)
 
         mesh.Normals.ComputeNormals()
