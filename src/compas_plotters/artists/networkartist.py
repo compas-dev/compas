@@ -55,19 +55,21 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
     """
 
-    def __init__(self,
-                 network: Network,
-                 nodes: Optional[List[int]] = None,
-                 edges: Optional[List[int]] = None,
-                 nodecolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0.0, 0.0, 0.0),
-                 edgewidth: float = 1.0,
-                 show_nodes: bool = True,
-                 show_edges: bool = True,
-                 nodesize: int = 5,
-                 sizepolicy: Literal['relative', 'absolute'] = 'relative',
-                 zorder: int = 1000,
-                 **kwargs):
+    def __init__(
+        self,
+        network: Network,
+        nodes: Optional[List[int]] = None,
+        edges: Optional[List[int]] = None,
+        nodecolor: Color = (1.0, 1.0, 1.0),
+        edgecolor: Color = (0.0, 0.0, 0.0),
+        edgewidth: float = 1.0,
+        show_nodes: bool = True,
+        show_edges: bool = True,
+        nodesize: int = 5,
+        sizepolicy: Literal["relative", "absolute"] = "relative",
+        zorder: int = 1000,
+        **kwargs,
+    ):
 
         super().__init__(network=network, **kwargs)
 
@@ -101,21 +103,31 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
     @property
     def data(self) -> List[List[float]]:
-        return self.network.nodes_attributes('xy')
+        return self.network.nodes_attributes("xy")
 
     @property
     def node_size(self):
         if not self._node_size:
-            factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.network.number_of_nodes()
+            factor = (
+                self.plotter.dpi
+                if self.sizepolicy == "absolute"
+                else self.network.number_of_nodes()
+            )
             size = self.default_nodesize / factor
             self._node_size = {node: size for node in self.network.nodes()}
         return self._node_size
 
     @node_size.setter
     def node_size(self, nodesize):
-        factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.network.number_of_nodes()
+        factor = (
+            self.plotter.dpi
+            if self.sizepolicy == "absolute"
+            else self.network.number_of_nodes()
+        )
         if isinstance(nodesize, dict):
-            self.node_size.update({node: size / factor for node, size in nodesize.items()})
+            self.node_size.update(
+                {node: size / factor for node, size in nodesize.items()}
+            )
         elif isinstance(nodesize, (int, float)):
             self._node_size = {node: nodesize / factor for node in self.network.nodes()}
 
@@ -178,9 +190,11 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
         if self.show_edges:
             self.draw_edges(edges=edges, color=edgecolor)
 
-    def draw_nodes(self,
-                   nodes: Optional[List[int]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> None:
+    def draw_nodes(
+        self,
+        nodes: Optional[List[int]] = None,
+        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+    ) -> None:
         """Draw a selection of nodes.
 
         Parameters
@@ -215,17 +229,16 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
             circles.append(circle)
 
         collection = PatchCollection(
-            circles,
-            match_original=True,
-            zorder=self.zorder_nodes,
-            alpha=1.0
+            circles, match_original=True, zorder=self.zorder_nodes, alpha=1.0
         )
         self.plotter.axes.add_collection(collection)
         self._nodecollection = collection
 
-    def draw_edges(self,
-                   edges: Optional[Tuple[int, int]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> None:
+    def draw_edges(
+        self,
+        edges: Optional[Tuple[int, int]] = None,
+        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+    ) -> None:
         """Draw a selection of edges.
 
         Parameters
@@ -259,9 +272,9 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
             lines,
             linewidths=widths,
             colors=colors,
-            linestyle='solid',
+            linestyle="solid",
             alpha=1.0,
-            zorder=self.zorder_edges
+            zorder=self.zorder_edges,
         )
         self.plotter.axes.add_collection(collection)
         self._edgecollection = collection
@@ -298,13 +311,15 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
             x, y = self.node_xyz[node][:2]
             artist = self.plotter.axes.text(
-                x, y,
-                f'{text}',
+                x,
+                y,
+                f"{text}",
                 fontsize=self.plotter.fontsize,
-                family='monospace',
-                ha='center', va='center',
+                family="monospace",
+                ha="center",
+                va="center",
                 zorder=10000,
-                color=color
+                color=color,
             )
             labels.append(artist)
 
@@ -343,13 +358,21 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
             y = 0.5 * (y0 + y1)
 
             artist = self.plotter.axes.text(
-                x, y, f'{text}',
+                x,
+                y,
+                f"{text}",
                 fontsize=self.plotter.fontsize,
-                family='monospace',
-                ha='center', va='center',
+                family="monospace",
+                ha="center",
+                va="center",
                 zorder=10000,
                 color=(0, 0, 0),
-                bbox=dict(boxstyle='round, pad=0.3', facecolor=(1, 1, 1), edgecolor=None, linewidth=0)
+                bbox=dict(
+                    boxstyle="round, pad=0.3",
+                    facecolor=(1, 1, 1),
+                    edgecolor=None,
+                    linewidth=0,
+                ),
             )
             labels.append(artist)
 
