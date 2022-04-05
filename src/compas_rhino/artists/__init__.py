@@ -86,7 +86,6 @@ from __future__ import absolute_import
 
 from compas.plugins import plugin
 from compas.artists import Artist
-from compas.artists import ShapeArtist
 
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -140,22 +139,6 @@ from .curveartist import CurveArtist
 from .surfaceartist import SurfaceArtist
 
 BaseArtist = RhinoArtist
-
-ShapeArtist.default_color = (255, 255, 255)
-
-# MeshArtist.default_color = (0, 0, 0)
-# MeshArtist.default_vertexcolor = (255, 255, 255)
-# MeshArtist.default_edgecolor = (0, 0, 0)
-# MeshArtist.default_facecolor = (255, 255, 255)
-
-NetworkArtist.default_nodecolor = (255, 255, 255)
-NetworkArtist.default_edgecolor = (0, 0, 0)
-
-VolMeshArtist.default_color = (0, 0, 0)
-VolMeshArtist.default_vertexcolor = (255, 255, 255)
-VolMeshArtist.default_edgecolor = (0, 0, 0)
-VolMeshArtist.default_facecolor = (255, 255, 255)
-VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['Rhino'])
