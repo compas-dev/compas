@@ -144,7 +144,7 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
         """
         if self._nodecollection:
-            self.plotter.axes.remove_collection(self._nodecollection)
+            self._nodecollection.remove()
         self._nodecollection = None
 
     def clear_edges(self):
@@ -156,14 +156,16 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
 
         """
         if self._edgecollection:
-            self.plotter.axes.remove_collection(self._edgecollection)
+            self._edgecollection.remove()
         self._edgecollection = None
 
-    def draw(self,
-             nodes: Optional[List[int]] = None,
-             edges: Optional[Tuple[int, int]] = None,
-             nodecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
-             edgecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None) -> None:
+    def draw(
+        self,
+        nodes: Optional[List[int]] = None,
+        edges: Optional[Tuple[int, int]] = None,
+        nodecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+        edgecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+    ) -> None:
         """Draw the network.
 
         Parameters
