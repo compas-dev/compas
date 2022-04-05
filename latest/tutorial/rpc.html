@@ -102,24 +102,10 @@
         
         <section id="remote-procedure-calls">
 <h1>Remote Procedure Calls</h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a></p></li>
-</ul>
 <p>Remote Procedure Calls (<code class="docutils literal notranslate"><span class="pre">RPC</span></code>) is a mechanism to transparently execute code in
 a remote process or computer. This is especially useful in scenarios where COMPAS
 runs inside an IronPython host (eg. Rhino) and needs to execute code that only
 runs on CPython (eg. code that requires <code class="docutils literal notranslate"><span class="pre">numpy</span></code>).</p>
-<p>COMPAS provides <strong>two ways to achieve</strong> this: <code class="docutils literal notranslate"><span class="pre">rcp</span></code> and <code class="docutils literal notranslate"><span class="pre">XFunc</span></code>.</p>
-<p>Through <code class="docutils literal notranslate"><span class="pre">Xfunc</span></code>, COMPAS provides a mechanism for calling Python functions through
-a separately launched sub-process.</p>
-<p>A drawback of the <code class="docutils literal notranslate"><span class="pre">Xfunc</span></code> mechanism is that every call launches a new Python
-(sub)process with all the overhead that that entails. For infrequent calls to
-long-running processes this is not an issue. However, for frequent calls to functions
-that are expected to run quickly, this is not ideal.</p>
-<p>The second mechanism is the <code class="docutils literal notranslate"><span class="pre">rpc</span></code> module. The principle of RPC is to start a server
-that handles all requests. The advantage is that once the server is started,
-no additional processes have to be launched and the server can handle the requests
-without any overhead. Therefore, the response time is much faster than with <code class="docutils literal notranslate"><span class="pre">XFunc</span></code>.</p>
 <section id="basic-usage">
 <h2>Basic Usage</h2>
 <p>The basic usage of RPC is simple.
@@ -156,6 +142,58 @@ for the requested function.</p>
 </code></pre></div>
 </div>
 <p>Note that Numpy arrays are automatically converted to lists.</p>
+</section>
+<section id="configuration-options">
+<h2>Configuration Options</h2>
+<p>The <a class="reference internal" href="../api/generated/compas.rpc.Proxy.html#compas.rpc.Proxy" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object has several configuration options.
+We will discuss only a few of those here.
+For a complete overview, please refer to the API docs (<a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a>).</p>
+<section id="python">
+<h3><code class="docutils literal notranslate"><span class="pre">python</span></code></h3>
+<p>The <a class="reference internal" href="../api/generated/compas.rpc.Proxy.html#compas.rpc.Proxy" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object will automatically try to reconnect to an
+active instance of the command server, or start a new one if no active server can be found.
+By default, a newly started server will run an instance of the default Python interpreter
+of the active environment, for example, when running RPC from the command line;
+or of the Python interpreter specified in <cite>compas_bootstrapper</cite>, for example, when running RPC from Rhino.</p>
+<p>In some cases, this might not be what you want, or might not result in the expected behaviour,
+for example when <cite>compas_bootstrapper</cite> does not exist.</p>
+<p>To use a specific Python iterpreter, you can specify the path to an executable through the <code class="docutils literal notranslate"><span class="pre">python</span></code> parameter.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">python</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">&lt;username&gt;</span><span class="se">\\</span><span class="s2">anaconda3</span><span class="se">\\</span><span class="s2">envs</span><span class="se">\\</span><span class="s2">research</span><span class="se">\\</span><span class="s2">python.exe&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</section>
+<section id="path">
+<h3><code class="docutils literal notranslate"><span class="pre">path</span></code></h3>
+<p>Sometimes you will want the server to run custom functions that are not (yet) part of a specific package.
+To allow the server to find such functions, you can specify an additional search path.</p>
+<p>For example, if you have a Python script on your desktop,
+defining a wrapper for the k-means clustering algorithm of <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>,
+you can tell the command server where to find it using the <code class="docutils literal notranslate"><span class="pre">path</span></code> parameter.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="c1"># C:\Users\&lt;username&gt;\Desktop\clustering.py</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+
+
+<span class="k">def</span> <span class="nf">cluster</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">):</span>
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">cloud</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">:</span>
+            <span class="n">clusters</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">clusters</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clusters</span>
+</code></pre></div>
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">package</span><span class="o">=</span><span class="s1">&#39;clustering&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:</span><span class="se">\\</span><span class="s1">Users</span><span class="se">\\</span><span class="s1">&lt;username&gt;</span><span class="se">\\</span><span class="s1">Desktop&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clusters</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</section>
 </section>
 <section id="supported-data-types">
 <h2>Supported data types</h2>
@@ -275,6 +313,11 @@ network, or on a server reachable over the internet.</p>
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Remote Procedure Calls</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#basic-usage">Basic Usage</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#configuration-options">Configuration Options</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#python"><code class="docutils literal notranslate"><span class="pre">python</span></code></a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#path"><code class="docutils literal notranslate"><span class="pre">path</span></code></a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#supported-data-types">Supported data types</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#starting-and-stopping">Starting and Stopping</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#starting-an-rpc-server-manually">Starting an RPC server manually</a></li>
