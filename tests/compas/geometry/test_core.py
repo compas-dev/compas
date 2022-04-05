@@ -213,4 +213,5 @@ def test_normal_polygon():
     polygon = [(0, 0, 0), (10, 0, 0), (10, 10, 0), (0, 10, 0)]
     normal = normal_polygon(polygon, unitized=False)
     area = area_polygon(polygon)
-    assert length_vector(normal) == area
+    assert close(area, 100.0)
+    assert close(area, length_vector(normal))
