@@ -1,14 +1,17 @@
-from compas.datastructures import Assembly, assembly
+import pytest
+
+from compas.datastructures import Assembly
+from compas.datastructures import AssemblyError
 from compas.datastructures import Part
 
 
 def test_init():
-    assembly = Assembly(name='abc')
-    assert assembly.name == 'abc'
+    assembly = Assembly(name="abc")
+    assert assembly.name == "abc"
 
-    assembly = Assembly(attr1='value', attr2=3.14)
-    assert assembly.attributes['attr1'] == 'value'
-    assert assembly.attributes['attr2'] == 3.14
+    assembly = Assembly(attr1="value", attr2=3.14)
+    assert assembly.attributes["attr1"] == "value"
+    assert assembly.attributes["attr2"] == 3.14
 
 
 def test_add_parts():
@@ -18,6 +21,16 @@ def test_add_parts():
         assembly.add_part(Part())
 
     assert len(list(assembly.parts())) == 3
+
+
+def test_add_duplicate_parts():
+    assembly = Assembly()
+
+    part = Part()
+    assembly.add_part(part)
+
+    with pytest.raises(AssemblyError):
+        assembly.add_part(part)
 
 
 def test_add_connections():

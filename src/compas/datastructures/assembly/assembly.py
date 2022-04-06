@@ -41,27 +41,30 @@ class Assembly(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "attributes": dict,
-            "graph": Graph,
-        })
+
+        return schema.Schema(
+            {
+                "attributes": dict,
+                "graph": Graph,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'assembly'
+        return "assembly"
 
     @property
     def data(self):
         data = {
-            'attributes': self.attributes,
-            'graph': self.graph.data,
+            "attributes": self.attributes,
+            "graph": self.graph.data,
         }
         return data
 
     @data.setter
     def data(self, data):
-        self.attributes.update(data['attributes'] or {})
-        self.graph.data = data['graph']
+        self.attributes.update(data["attributes"] or {})
+        self.graph.data = data["graph"]
 
     # ==========================================================================
     # properties
@@ -69,11 +72,11 @@ class Assembly(Datastructure):
 
     @property
     def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, value):
-        self.attributes['name'] = value
+        self.attributes["name"] = value
 
     # ==========================================================================
     # customization
@@ -143,10 +146,11 @@ class Assembly(Datastructure):
             If `a` and/or `b` are not in the assembly.
 
         """
+        error_msg = "Both parts have to be added to the assembly before a connection can be created."
         if a.key is None or b.key is None:
-            raise AssemblyError('Both parts have to be added to the assembly before a connection can be created.')
+            raise AssemblyError(error_msg)
         if not self.graph.has_node(a.key) or not self.graph.has_node(b.key):
-            raise AssemblyError('Both parts have to be added to the assembly before a connection can be created.')
+            raise AssemblyError(error_msg)
         return self.graph.add_edge(a.key, b.key, **kwargs)
 
     def parts(self):
@@ -159,7 +163,7 @@ class Assembly(Datastructure):
 
         """
         for node in self.graph.nodes():
-            yield self.graph.node_attribute(node, 'part')
+            yield self.graph.node_attribute(node, "part")
 
     def connections(self, data=False):
         """Iterate over the connections between the parts.
