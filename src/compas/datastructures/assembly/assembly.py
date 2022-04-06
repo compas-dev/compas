@@ -201,3 +201,22 @@ class Assembly(Datastructure):
 
         return self.graph.node_attribute(key, "part")
 
+    def find_by_key(self, key):
+        """Find a part in the assembly by its key.
+
+        Parameters
+        ----------
+        key : int | str, optional
+            The identifier of the part in the assembly.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Part` | None
+            The identified part,
+            or None if the part can't be found.
+
+        """
+        if key not in self.graph.node:
+            return None
+
+        return self.graph.node_attribute(key, "part")

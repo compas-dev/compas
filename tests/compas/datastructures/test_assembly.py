@@ -41,3 +41,16 @@ def test_find():
 
     assembly.add_part(part)
     assert assembly.find(part.guid) == part
+
+
+def test_find_by_key():
+    assembly = Assembly()
+    part = Part()
+    assembly.add_part(part, key=2)
+    assert assembly.find_by_key(2) == part
+
+    part = Part()
+    assembly.add_part(part, key="6")
+    assert assembly.find_by_key("6") == part
+
+    assert assembly.find_by_key("100") is None
