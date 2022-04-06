@@ -14,10 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Data.sha256` for computing a hash value of data objects, for example for comparisons during version control.
 * Added optional `path` parameter to `compas.rpc.Proxy` to allow for non-package calls.
 * Added Grasshopper component to call RPC functions.
+* Added `Mesh.to_lines` method and tests.
 
 ### Changed
 
 * Set `jinja >= 3.0` to dev dependencies to fix docs build error.
+* Fixed removing of collections for `compas_plotters`.
 
 ### Removed
 

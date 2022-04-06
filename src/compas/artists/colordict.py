@@ -1,5 +1,6 @@
 import compas
 from collections import defaultdict
+
 if compas.PY2:
     from collections import Mapping
 else:
@@ -12,7 +13,7 @@ class DescriptorProtocol(type):
 
     def __init__(cls, name, bases, attrs):
         for k, v in iter(attrs.items()):
-            if hasattr(v, '__set_name__'):
+            if hasattr(v, "__set_name__"):
                 v.__set_name__(cls, k)
 
 
@@ -58,8 +59,8 @@ class ColorDict(object):
 
         """
         self.public_name = name
-        self.private_name = '_' + name
-        self.default_name = 'default_' + ''.join(name.split('_'))
+        self.private_name = "_" + name
+        self.default_name = "default_" + "".join(name.split("_"))
 
     def __get__(self, obj, otype=None):
         """Get the color dict stored in the private attribute corresponding to the public attribute name of the descriptor.
