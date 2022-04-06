@@ -30,10 +30,9 @@ class Assembly(Datastructure):
 
     def __init__(self, name=None, **kwargs):
         super(Assembly, self).__init__()
-        self.attributes = {'name': name or 'Assembly'}
+        self.attributes = {"name": name or "Assembly", "guid_key_map": {}}
         self.attributes.update(kwargs)
         self.graph = Graph()
-        self._parts = {}
 
     # ==========================================================================
     # data
@@ -113,11 +112,12 @@ class Assembly(Datastructure):
             The identifier of the part in the current assembly graph.
 
         """
-        if part.guid in self._parts:
-            raise AssemblyError('Part already added to the assembly')
+        guid_key_map = self.attributes["guid_key_map"]
+        if part.guid in guid_key_map.keys():
+            raise AssemblyError("Part already added to the assembly")
         key = self.graph.add_node(key=key, part=part, **kwargs)
         part.key = key
-        self._parts[part.guid] = part
+        guid_key_map[part.guid] = part.key
         return key
 
     def add_connection(self, a, b, **kwargs):
@@ -194,4 +194,10 @@ class Assembly(Datastructure):
             or None if the part can't be found.
 
         """
-        return self._parts.get(guid)
+        key = self.attributes["guid_key_map"].get(guid)
+
+        if key is None:
+            return None
+
+        return self.graph.node_attribute(key, "part")
+
