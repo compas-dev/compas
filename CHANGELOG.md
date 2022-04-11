@@ -15,10 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added optional `path` parameter to `compas.rpc.Proxy` to allow for non-package calls.
 * Added Grasshopper component to call RPC functions.
 * Added alternative installation procedure for Blender on Windows.
+* Added `Mesh.to_lines` method and tests.
 
 ### Changed
 
 * Set `jinja >= 3.0` to dev dependencies to fix docs build error.
+* Fixed removing of collections for `compas_plotters`.
 
 ### Removed
 
@@ -37,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed bug in `normal_polygon` in `compas.geometry`.
 * Fixed bug in Blender mesh conversion.
 * Changed Rhino plugin installer to check for and install required plugin packages.
 * Refactor robot model artists to use the same `Mesh.to_vertices_and_faces` everywhere.

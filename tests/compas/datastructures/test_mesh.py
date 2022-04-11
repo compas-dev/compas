@@ -203,6 +203,14 @@ def test_to_vertices_and_faces_triangulated():
     assert len(vertices) == 32
     assert len(faces) == 60
 
+
+def test_to_lines():
+    lines = compas.json_load(compas.get('lines.json'))
+    mesh = Mesh.from_lines(lines)
+    lines = mesh.to_lines()
+    assert len(lines) == mesh.number_of_edges()
+
+
 # --------------------------------------------------------------------------
 # helpers
 # --------------------------------------------------------------------------
