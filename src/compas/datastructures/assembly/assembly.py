@@ -117,7 +117,7 @@ class Assembly(Datastructure):
             The identifier of the part in the current assembly graph.
 
         """
-        if part.guid in self._parts.keys():
+        if part.guid in self._parts:
             raise AssemblyError("Part already added to the assembly")
         key = self.graph.add_node(key=key, part=part, **kwargs)
         part.key = key
