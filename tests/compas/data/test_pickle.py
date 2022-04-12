@@ -10,3 +10,4 @@ def test_pickling():
     assert all(a == b for a, b in zip(f1.xaxis, f2.xaxis))
     assert all(a == b for a, b in zip(f1.yaxis, f2.yaxis))
     assert all(a == b for a, b in zip(f1.zaxis, f2.zaxis))
+    assert f1.guid == f2.guid

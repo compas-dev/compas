@@ -134,7 +134,9 @@ class Configuration(Data):
 
     """
 
-    def __init__(self, joint_values=None, joint_types=None, joint_names=None):
+    def __init__(self, joint_values=None, joint_types=None, joint_names=None, **kwargs):
+        super(Configuration, self).__init__(**kwargs)
+
         joint_values = FixedLengthList(joint_values or [])
         joint_types = FixedLengthList(joint_types or [])
         joint_names = FixedLengthList(joint_names or [], validator=joint_names_validator)
