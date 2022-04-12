@@ -23,6 +23,17 @@ Classes
     Part
 
 
+Exceptions
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    AssemblyError
+    FeatureError
+
+
 Functions
 =========
 
@@ -296,7 +307,9 @@ from .volmesh import (
 
 from .assembly import (
     Assembly,
-    Part
+    Part,
+    AssemblyError,
+    FeatureError,
 )
 
 if not compas.IPY:
@@ -439,6 +452,8 @@ __all__ = [
     # Assemblies
     'Assembly',
     'Part',
+    'AssemblyError',
+    'FeatureError',
 ]
 
 if not compas.IPY:

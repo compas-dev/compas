@@ -30,7 +30,7 @@ class Assembly(Datastructure):
 
     def __init__(self, name=None, **kwargs):
         super(Assembly, self).__init__()
-        self.attributes = {'name': name or 'Assembly'}
+        self.attributes = {"name": name or "Assembly"}
         self.attributes.update(kwargs)
         self.graph = Graph()
         self._parts = {}
@@ -42,27 +42,31 @@ class Assembly(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "attributes": dict,
-            "graph": Graph,
-        })
+
+        return schema.Schema(
+            {
+                "attributes": dict,
+                "graph": Graph,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'assembly'
+        return "assembly"
 
     @property
     def data(self):
         data = {
-            'attributes': self.attributes,
-            'graph': self.graph.data,
+            "attributes": self.attributes,
+            "graph": self.graph.data,
         }
         return data
 
     @data.setter
     def data(self, data):
-        self.attributes.update(data['attributes'] or {})
-        self.graph.data = data['graph']
+        self.attributes.update(data["attributes"] or {})
+        self.graph.data = data["graph"]
+        self._parts = {part.guid: part.key for part in self.parts()}
 
     # ==========================================================================
     # properties
@@ -70,11 +74,11 @@ class Assembly(Datastructure):
 
     @property
     def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, value):
-        self.attributes['name'] = value
+        self.attributes["name"] = value
 
     # ==========================================================================
     # customization
@@ -114,10 +118,10 @@ class Assembly(Datastructure):
 
         """
         if part.guid in self._parts:
-            raise AssemblyError('Part already added to the assembly')
+            raise AssemblyError("Part already added to the assembly")
         key = self.graph.add_node(key=key, part=part, **kwargs)
         part.key = key
-        self._parts[part.guid] = part
+        self._parts[part.guid] = part.key
         return key
 
     def add_connection(self, a, b, **kwargs):
@@ -143,10 +147,11 @@ class Assembly(Datastructure):
             If `a` and/or `b` are not in the assembly.
 
         """
+        error_msg = "Both parts have to be added to the assembly before a connection can be created."
         if a.key is None or b.key is None:
-            raise AssemblyError('Both parts have to be added to the assembly before a connection can be created.')
+            raise AssemblyError(error_msg)
         if not self.graph.has_node(a.key) or not self.graph.has_node(b.key):
-            raise AssemblyError('Both parts have to be added to the assembly before a connection can be created.')
+            raise AssemblyError(error_msg)
         return self.graph.add_edge(a.key, b.key, **kwargs)
 
     def parts(self):
@@ -159,7 +164,7 @@ class Assembly(Datastructure):
 
         """
         for node in self.graph.nodes():
-            yield self.graph.node_attribute(node, 'part')
+            yield self.graph.node_attribute(node, "part")
 
     def connections(self, data=False):
         """Iterate over the connections between the parts.
@@ -194,4 +199,29 @@ class Assembly(Datastructure):
             or None if the part can't be found.
 
         """
-        return self._parts.get(guid)
+        key = self._parts.get(guid)
+
+        if key is None:
+            return None
+
+        return self.graph.node_attribute(key, "part")
+
+    def find_by_key(self, key):
+        """Find a part in the assembly by its key.
+
+        Parameters
+        ----------
+        key : int | str, optional
+            The identifier of the part in the assembly.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Part` | None
+            The identified part,
+            or None if the part can't be found.
+
+        """
+        if key not in self.graph.node:
+            return None
+
+        return self.graph.node_attribute(key, "part")
