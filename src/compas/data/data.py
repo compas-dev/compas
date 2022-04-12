@@ -6,6 +6,7 @@ import os
 import json
 import hashlib
 from uuid import uuid4
+from uuid import UUID
 from copy import deepcopy
 
 import compas
@@ -113,12 +114,19 @@ class Data(object):
 
     def __getstate__(self):
         """Return the object data for state serialization with older pickle protocols."""
-        return {"__dict__": self.__dict__, "dtype": self.dtype, "data": self.data}
+        return {
+            "__dict__": self.__dict__,
+            "dtype": self.dtype,
+            "data": self.data,
+            "guid": str(self.guid),
+        }
 
     def __setstate__(self, state):
         """Assign a deserialized state to the object data to support older pickle protocols."""
         self.__dict__.update(state["__dict__"])
         self.data = state["data"]
+        if "guid" in state:
+            self._guid = UUID(state['guid'])
 
     @property
     def DATASCHEMA(self):
