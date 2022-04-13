@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed removing of collections for `compas_plotters`.
 * Fixed bug in `compas.robots.Configuration`.
 * Rebuild part index after deserialization in `Assembly`.
+* Fixed bug in `compas.artists.colordict.ColorDict`.
 
 ### Removed
 
