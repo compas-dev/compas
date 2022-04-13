@@ -79,7 +79,10 @@ class ColorDict(object):
 
         """
         default = getattr(obj, self.default_name)
-        return getattr(obj, self.private_name) or defaultdict(lambda: default)
+        d = getattr(obj, self.private_name)
+        if d is not None:
+            return d
+        return defaultdict(lambda: default)
 
     def __set__(self, obj, value):
         """Set a new value for the descriptor.
