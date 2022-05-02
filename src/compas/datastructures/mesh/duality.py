@@ -35,6 +35,7 @@ def mesh_dual(mesh, cls=None, boundary=0):
 
     Examples
     --------
+    >>> import compas
     >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
     >>> mesh.delete_face(11)
