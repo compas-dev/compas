@@ -51,7 +51,6 @@ def mesh_dual(mesh, cls=None, boundary=0):
 
     dual = cls()
 
-    mesh.unify_cycles()
     mesh.flip_cycles()
 
     face_centroid = {face: mesh.face_centroid(face) for face in mesh.faces()}
