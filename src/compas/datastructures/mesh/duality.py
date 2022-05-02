@@ -11,7 +11,7 @@ __all__ = ['mesh_dual']
 PI2 = 2.0 * pi
 
 
-def mesh_dual(mesh, cls=None, boundary=0):
+def mesh_dual(mesh, cls=None, include_boundary=False, preserve_boundary_vertices=False, preserve_corner_vertices=False):
     """Construct the dual of a mesh.
 
     Parameters
@@ -21,12 +21,15 @@ def mesh_dual(mesh, cls=None, boundary=0):
     cls : Type[:class:`~compas.datastructures.Mesh`], optional
         The type of the dual mesh.
         Defaults to the type of the provided mesh object.
-    boundary: float, optional
-        boundary mode for the dual mesh
-        Default mode is 0, not create faces on boundaries.
-        1, create faces on mesh edges, not include original mesh boundary vertices.
-        2. create faces on mesh edges and include original mesh boundary vertices on the corner.
-        3. create faces on mesh edges and include all original mesh boundary vertices.
+    include_boundary: str, optional
+        Whether to include boundary faces for the dual mesh
+        Default mode is False, don't create faces on boundaries.
+    preserve_boundary_vertices: str, optional
+        Whether to preserve boundary vertices from the original mesh
+        Default mode is False, include the boundary without the original vertices.
+    preserve_corner_vertices: str, optional
+        Whether to preserve corner vertices (only connect to one face) from the original mesh
+        Default mode is False, include the boundary with the original vertices only on corners.
 
     Returns
     -------
@@ -43,7 +46,7 @@ def mesh_dual(mesh, cls=None, boundary=0):
     >>> mesh.delete_face(7)
     >>> mesh.quads_to_triangles()
     >>> mesh = mesh.subdivide('corner')
-    >>> dual = mesh.dual(boundary=3)
+    >>> dual = mesh.dual(include_boundary=True, preserve_boundary_vertices=True, preserve_corner_vertices=False)
 
     """
     if not cls:
@@ -68,11 +71,8 @@ def mesh_dual(mesh, cls=None, boundary=0):
                 vertex_xyz[face] = face_centroid[face]
         face_vertices[vertex] = faces
 
-        if not boundary:
+        if not include_boundary:
             continue
-
-        if boundary > 3:
-            raise ValueError("edge mode from 0 to 3!")
 
         if vertex not in outer or len(faces) < 1:
             continue
@@ -88,13 +88,13 @@ def mesh_dual(mesh, cls=None, boundary=0):
                 continue
             pt = mesh.edge_midpoint(vertex, nbr_vertex)
 
-            if num_faces not in vertex_xyz and len(faces) == 1 and corner_count == 0 and (boundary == 2 or boundary == 3):
+            if num_faces not in vertex_xyz and len(faces) == 1 and corner_count == 0 and (preserve_corner_vertices or preserve_boundary_vertices):
                 vertex_xyz[num_faces] = mesh.vertex_coordinates(vertex)
                 current_face = num_faces
                 num_faces += 1
                 corner_count += 1
 
-            if num_faces not in vertex_xyz and len(faces) != 1 and edge_count == 0 and boundary == 3:
+            if num_faces not in vertex_xyz and len(faces) != 1 and edge_count == 0 and preserve_boundary_vertices:
                 vertex_xyz[num_faces] = mesh.vertex_coordinates(vertex)
                 current_face = num_faces
                 num_faces += 1
@@ -110,10 +110,10 @@ def mesh_dual(mesh, cls=None, boundary=0):
             else:
                 boundary_fids.append(edge_vertex[vertex, nbr_vertex])
 
-        if vertex in outer and len(faces) == 1 and (boundary == 2 or boundary == 3):
+        if vertex in outer and len(faces) == 1 and (preserve_corner_vertices or preserve_boundary_vertices):
             boundary_fids.insert(len(faces) + 1, current_face)
 
-        if vertex in outer and len(faces) != 1 and boundary == 3:
+        if vertex in outer and len(faces) != 1 and preserve_boundary_vertices:
             boundary_fids.insert(len(faces) + 1, current_face)
 
         face_vertices[vertex] = boundary_fids
