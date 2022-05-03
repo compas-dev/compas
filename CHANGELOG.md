@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.robots.Configuration`.
 * Rebuild part index after deserialization in `Assembly`.
 * Fixed bug in `compas.artists.colordict.ColorDict`.
+* Change `Mesh.mesh_dual` with option of including the boundary. 
 
 ### Removed
 
