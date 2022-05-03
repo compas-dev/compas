@@ -21,9 +21,9 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
     cls : Type[:class:`~compas.datastructures.Mesh`], optional
         The type of the dual mesh.
         Defaults to the type of the provided mesh object.
-    include_boundary: str, optional
+    include_boundary: bool, optional
         Whether to include boundary faces for the dual mesh
-        Default mode is False, don't create faces on boundaries.
+        If True, create faces on boundaries including all original mesh boundary vertices.
 
     Returns
     -------
