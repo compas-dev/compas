@@ -16,15 +16,15 @@ except ImportError:
 
 
 __all__ = [
-    'normalize_values',
-    'remap_values',
-    'meshgrid',
-    'linspace',
-    'flatten',
-    'pairwise',
-    'window',
-    'iterable_like',
-    'grouper'
+    "normalize_values",
+    "remap_values",
+    "meshgrid",
+    "linspace",
+    "flatten",
+    "pairwise",
+    "window",
+    "iterable_like",
+    "grouper",
 ]
 
 
@@ -57,12 +57,14 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
     """
     old_max = max(values)
     old_min = min(values)
-    old_range = (old_max - old_min)
-    new_range = (new_max - new_min)
+    old_range = old_max - old_min
+    new_range = new_max - new_min
     return [(((value - old_min) * new_range) / old_range) + new_min for value in values]
 
 
-def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
+def remap_values(
+    values, target_min=0.0, target_max=1.0, original_min=None, original_max=None
+):
     """Maps a list of numbers from one domain to another.
 
     Parameters
@@ -94,7 +96,7 @@ def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, orig
     return [target_min + ((value - original_min) * ratio) for value in values]
 
 
-def meshgrid(x, y, indexing='xy'):
+def meshgrid(x, y, indexing="xy"):
     """Construct coordinate matrices from two coordinate vectors.
 
     Parameters
@@ -153,7 +155,7 @@ def meshgrid(x, y, indexing='xy'):
     """
     x = list(x)
     y = list(y)
-    if indexing == 'xy':
+    if indexing == "xy":
         X = [[x[j] for j in range(len(x))] for i in range(len(y))]
         Y = [[y[i] for j in range(len(x))] for i in range(len(y))]
     else:
@@ -193,8 +195,9 @@ def linspace(start, stop, num=50):
 
     """
     step = (stop - start) / (num - 1)
-    for i in range(num):
+    for i in range(num - 1):
         yield start + i * step
+    yield stop
 
 
 def flatten(list_of_lists):
@@ -364,8 +367,7 @@ def padnone(iterable):
 
 
 def grouper(iterable, n, fillvalue=None):
-    """Collect data into fixed-length chunks or blocks.
-    """
+    """Collect data into fixed-length chunks or blocks."""
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
 
