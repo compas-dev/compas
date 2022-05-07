@@ -197,7 +197,7 @@ def linspace(start, stop, num=50):
     step = (stop - start) / (num - 1)
     for i in range(num - 1):
         yield start + i * step
-    yield stop
+    yield float(stop)
 
 
 def flatten(list_of_lists):
