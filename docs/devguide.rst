@@ -74,7 +74,7 @@ The procedure for submitting a PR is the following.
 Style guide
 ===========
 
-Please run `black -180 <path_to_source_file>` to auto-format your code.
+Please run `black -l 180 <path_to_source_file>` to auto-format your code.
 
 The command ``invoke lint`` runs the entire codebase through ``flake8``.
 As described in the `docs <https://flake8.pycqa.org/en/latest/manpage.html>`_,
