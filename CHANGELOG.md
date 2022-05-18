@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Data.guid` to JSON serialization.
 * Added `Data.guid` to pickle state.
 * Added `Assembly.find_by_key` to locate parts by key.
+* Added `clear_edges` and `clear_nodes` to `NetworkArtist` for ghpython.
 
 ### Changed
 
