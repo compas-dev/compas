@@ -25,6 +25,7 @@ import tempfile
 from PIL import Image
 
 import compas
+from compas.geometry import allclose
 from .artists import PlotterArtist
 
 
@@ -213,31 +214,53 @@ class Plotter:
             plt.pause(pause)
 
     def zoom_extents(self, padding: Optional[int] = None) -> None:
-        """Zoom the view to the bounding box of all objects."""
-        padding = padding or 0
+        """Zoom the view to the bounding box of all objects.
+
+        Parameters
+        ----------
+        padding : int, optional
+            Extra padding around the bounding box of all objects.
+        """
+        padding = padding or 0.0
         width, height = self.figsize
         fig_aspect = width / height
+
         data = []
         for artist in self.artists:
             data += artist.data
-        x, y = zip(* data)
+
+        x, y = zip(*data)
+
         xmin = min(x)
         xmax = max(x)
         ymin = min(y)
         ymax = max(y)
-        xspan = xmax - xmin + padding
-        yspan = ymax - ymin + padding
+        xdiff = xmax - xmin
+        ydiff = ymax - ymin
+
+        xmin = xmin - 0.1 * xdiff - padding
+        xmax = xmax + 0.1 * xdiff + padding
+        ymin = ymin - 0.1 * ydiff - padding
+        ymax = ymax + 0.1 * ydiff + padding
+
+        xspan = xmax - xmin
+        yspan = ymax - ymin
         data_aspect = xspan / yspan
-        xlim = [xmin - 0.1 * xspan, xmax + 0.1 * xspan]
-        ylim = [ymin - 0.1 * yspan, ymax + 0.1 * yspan]
+
         if data_aspect < fig_aspect:
             scale = fig_aspect / data_aspect
-            xlim[0] *= scale
-            xlim[1] *= scale
+            xpad = (xspan * (scale - 1.0)) / 2.0
+            xmin -= xpad
+            xmax += xpad
         else:
             scale = data_aspect / fig_aspect
-            ylim[0] *= scale
-            ylim[1] *= scale
+            ypad = (yspan * (scale - 1.0)) / 2.0
+            ymin -= ypad
+            ymax += ypad
+        assert allclose([fig_aspect], [(xmax - xmin) / (ymax - ymin)])
+
+        xlim = [xmin, xmax]
+        ylim = [ymin, ymax]
         self.viewbox = (xlim, ylim)
         self.axes.set_xlim(*xlim)
         self.axes.set_ylim(*ylim)
