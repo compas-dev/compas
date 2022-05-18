@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Rebuild part index after deserialization in `Assembly`.
 * Fixed bug in `compas.artists.colordict.ColorDict`.
 * Change `Mesh.mesh_dual` with option of including the boundary. 
+* Fixed type error in `compas_rhino.conversions._shapes.box_to_rhino`.
 
 ### Removed
 
