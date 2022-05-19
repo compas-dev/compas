@@ -262,7 +262,7 @@ class Plotter:
             ypad = (yspan * (scale - 1.0)) / 2.0
             ymin -= ypad
             ymax += ypad
-        
+
         assert allclose([fig_aspect], [(xmax - xmin) / (ymax - ymin)])
 
         xlim = [xmin, xmax]
