@@ -1,4 +1,4 @@
-autopep8
+black
 attrs >=17.4
 bump2version >=1.0.1
 check-manifest >=0.36
