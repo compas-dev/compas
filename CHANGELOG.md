@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Set `jinja >= 3.0` to dev dependencies to fix docs build error.
 * Fixed removing of collections for `compas_plotters`.
+* Fixed bug in `compas_plotters.plotter.Plotter.add_from_list`.
 * Fixed bug in `compas.robots.Configuration`.
 * Rebuild part index after deserialization in `Assembly`.
 * Fixed bug in `compas.artists.colordict.ColorDict`.
