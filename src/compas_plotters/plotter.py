@@ -105,13 +105,18 @@ class Plotter:
 
     fontsize = 12
 
-    def __init__(self,
-                 view: Tuple[Tuple[float, float], Tuple[float, float]] = ((-8.0, 16.0), (-5.0, 10.0)),
-                 figsize: Tuple[float, float] = (8.0, 5.0),
-                 dpi: float = 100,
-                 bgcolor: Tuple[float, float, float] = (1.0, 1.0, 1.0),
-                 show_axes: bool = False,
-                 zstack: Literal['natural', 'zorder'] = 'zorder'):
+    def __init__(
+        self,
+        view: Tuple[Tuple[float, float], Tuple[float, float]] = (
+            (-8.0, 16.0),
+            (-5.0, 10.0),
+        ),
+        figsize: Tuple[float, float] = (8.0, 5.0),
+        dpi: float = 100,
+        bgcolor: Tuple[float, float, float] = (1.0, 1.0, 1.0),
+        show_axes: bool = False,
+        zstack: Literal["natural", "zorder"] = "zorder",
+    ):
         self._show_axes = show_axes
         self._bgcolor = None
         self._viewbox = None
@@ -137,28 +142,28 @@ class Plotter:
     @property
     def axes(self) -> matplotlib.axes.Axes:
         if not self._axes:
-            figure = plt.figure(facecolor=self.bgcolor,
-                                figsize=self.figsize,
-                                dpi=self.dpi)
-            axes = figure.add_subplot(111, aspect='equal')
+            figure = plt.figure(
+                facecolor=self.bgcolor, figsize=self.figsize, dpi=self.dpi
+            )
+            axes = figure.add_subplot(111, aspect="equal")
             if self.viewbox:
                 xmin, xmax = self.viewbox[0]
                 ymin, ymax = self.viewbox[1]
                 axes.set_xlim(xmin, xmax)
                 axes.set_ylim(ymin, ymax)
-            axes.set_xscale('linear')
-            axes.set_yscale('linear')
+            axes.set_xscale("linear")
+            axes.set_yscale("linear")
             if self._show_axes:
                 axes.set_frame_on(True)
                 axes.grid(False)
                 axes.set_xticks([])
                 axes.set_yticks([])
-                axes.spines['top'].set_color('none')
-                axes.spines['right'].set_color('none')
-                axes.spines['left'].set_position('zero')
-                axes.spines['bottom'].set_position('zero')
-                axes.spines['left'].set_linestyle('-')
-                axes.spines['bottom'].set_linestyle('-')
+                axes.spines["top"].set_color("none")
+                axes.spines["right"].set_color("none")
+                axes.spines["left"].set_position("zero")
+                axes.spines["bottom"].set_position("zero")
+                axes.spines["left"].set_linestyle("-")
+                axes.spines["bottom"].set_linestyle("-")
             else:
                 axes.grid(False)
                 axes.set_frame_on(False)
@@ -257,6 +262,7 @@ class Plotter:
             ypad = (yspan * (scale - 1.0)) / 2.0
             ymin -= ypad
             ymax += ypad
+        
         assert allclose([fig_aspect], [(xmax - xmin) / (ymax - ymin)])
 
         xlim = [xmin, xmax]
@@ -266,12 +272,16 @@ class Plotter:
         self.axes.set_ylim(*ylim)
         self.axes.autoscale_view()
 
-    def add(self,
-            item: Union[compas.geometry.Primitive,
-                        compas.datastructures.Network,
-                        compas.datastructures.Mesh],
-            artist: Optional[PlotterArtist] = None,
-            **kwargs) -> PlotterArtist:
+    def add(
+        self,
+        item: Union[
+            compas.geometry.Primitive,
+            compas.datastructures.Network,
+            compas.datastructures.Mesh,
+        ],
+        artist: Optional[PlotterArtist] = None,
+        **kwargs,
+    ) -> PlotterArtist:
         """Add a COMPAS geometry object or data structure to the plot.
 
         Parameters
@@ -287,39 +297,33 @@ class Plotter:
 
         """
         if not artist:
-            if self.zstack == 'natural':
+            if self.zstack == "natural":
                 zorder = 1000 + len(self._artists) * 100
-                artist = PlotterArtist(item, plotter=self, zorder=zorder, context='Plotter', **kwargs)
+                artist = PlotterArtist(
+                    item, plotter=self, zorder=zorder, context="Plotter", **kwargs
+                )
             else:
-                artist = PlotterArtist(item, plotter=self, context='Plotter', **kwargs)
+                artist = PlotterArtist(item, plotter=self, context="Plotter", **kwargs)
         artist.draw()
         self._artists.append(artist)
         return artist
-
-    # def add_as(self,
-    #            item: Union[compas.geometry.Primitive,
-    #                        compas.datastructures.Network,
-    #                        compas.datastructures.Mesh],
-    #            artist_type: PlotterArtist,
-    #            **kwargs) -> PlotterArtist:
-    #     """Add a COMPAS geometry object or data structure using a specific artist type."""
-    #     artist = PlotterArtist(item, artist_type=artist_type, context='Plotter', **kwargs)
-    #     artist.draw()
-    #     self._artists.append(artist)
-    #     return artist
 
     def add_from_list(self, items, **kwargs) -> List[PlotterArtist]:
         """Add multiple COMPAS geometry objects and/or data structures from a list."""
         artists = []
         for item in items:
-            artist = self.add(item, plotter=self, **kwargs)
+            artist = self.add(item, **kwargs)
             artists.append(artist)
         return artists
 
-    def find(self,
-             item: Union[compas.geometry.Primitive,
-                         compas.datastructures.Network,
-                         compas.datastructures.Mesh]) -> PlotterArtist:
+    def find(
+        self,
+        item: Union[
+            compas.geometry.Primitive,
+            compas.datastructures.Network,
+            compas.datastructures.Mesh,
+        ],
+    ) -> PlotterArtist:
         """Find a geometry object or data structure in the plot."""
         for artist in self._artists:
             if item is artist.item:
@@ -348,7 +352,7 @@ class Plotter:
         .. [2] https://matplotlib.org/users/event_handling.html
 
         """
-        self.figure.canvas.mpl_connect('pick_event', listener)
+        self.figure.canvas.mpl_connect("pick_event", listener)
 
     def draw(self, pause: Optional[float] = None) -> None:
         """Draw all objects included in the plot."""
@@ -374,8 +378,7 @@ class Plotter:
             plt.pause(pause)
 
     def show(self) -> None:
-        """Displays the plot.
-        """
+        """Displays the plot."""
         self.draw()
         plt.show()
 
@@ -398,16 +401,18 @@ class Plotter:
         """
         plt.savefig(filepath, **kwargs)
 
-    def on(self,
-           interval: int = None,
-           frames: int = None,
-           record: bool = False,
-           recording: str = None,
-           dpi: int = 150) -> Callable:
+    def on(
+        self,
+        interval: int = None,
+        frames: int = None,
+        record: bool = False,
+        recording: str = None,
+        dpi: int = 150,
+    ) -> Callable:
         """Method for decorating callback functions in dynamic plots."""
         if record:
             if not recording:
-                raise Exception('Please provide a path for the recording.')
+                raise Exception("Please provide a path for the recording.")
 
         def outer(func: Callable):
             if record:
@@ -417,13 +422,20 @@ class Plotter:
                         func(f)
                         self.redraw(pause=interval)
                         if record:
-                            filepath = os.path.join(dirpath, f'frame-{f}.png')
+                            filepath = os.path.join(dirpath, f"frame-{f}.png")
                             paths.append(filepath)
                             self.save(filepath, dpi=dpi)
                     images = []
                     for path in paths:
                         images.append(Image.open(path))
-                    images[0].save(recording, save_all=True, append_images=images[1:], optimize=False, duration=interval * 1000, loop=0)
+                    images[0].save(
+                        recording,
+                        save_all=True,
+                        append_images=images[1:],
+                        optimize=False,
+                        duration=interval * 1000,
+                        loop=0,
+                    )
             else:
                 for f in range(frames):
                     func(f)

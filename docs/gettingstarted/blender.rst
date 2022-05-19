@@ -12,6 +12,11 @@ It is important that the version of Python installed in the ``conda`` environmen
 the version of Python that was originally shipped with Blender. For Blender 2.83 LTS
 the version of the bundled Python is 3.7, and for 2.93 LTS it is 3.9.
 
+.. note::
+
+    On windows, the standard installation procedure recently stopped working.
+    For an alternative procedure see `Installation on Windows`_.
+
 
 Installation
 ============
@@ -178,3 +183,37 @@ Alternatively, you can create a new environment and simply install entire COMPAS
     conda activate blender
     pip install compas
     python -m compas_blender.install
+
+
+Installation on Windows
+=======================
+
+On Windows, the procedure described above no longer works.
+However, an alternative procedure is still possible.
+Note that since this procedure is based on installing COMPAS directly using the `python` and `pip` executables shipped with Blender,
+it is limited to packages that can be installed from the Python Package Index (PyPI).
+
+The basic command will install `compas` and `compas_blender` (and `compas_rhino` and `compas_ghpython`) for the default version of Blender (2.93),
+if that version can be found in the default installation location.
+
+.. code-block:: bash
+
+    python -m compas_blender.install_windows
+
+Install for a different version.
+
+.. code-block:: bash
+
+    python -m compas_blender.install_windows -v 3.1
+
+Install additional packages.
+
+.. code-block:: bash
+
+    python -m compas_blender.install_windows -p compas_cloud
+
+Install with `pip` configuration options.
+
+.. code-block:: bash
+
+    python -m compas_blender.install_windows --force-reinstall --no-deps

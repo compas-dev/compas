@@ -95,3 +95,13 @@ class NetworkArtist(GHArtist, NetworkArtist):
                 'name': "{}.edge.{}-{}".format(self.network.name, u, v)
             })
         return compas_ghpython.draw_lines(lines)
+
+    def clear_edges(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+        """
+        pass
+
+    def clear_nodes(self):
+        """GH Artists are state-less. Therefore, clear does not have any effect.
+        """
+        pass
