@@ -15,7 +15,7 @@ RESULTING_POLYHEDRONS = [
 ]
 
 
-class TestOperation(object):
+class MockOperation(object):
     """
     Used to mock a boolean mesh on mesh operation.
 
@@ -57,7 +57,7 @@ def part_polyhedron():
 
 @pytest.fixture
 def test_operation():
-    return TestOperation()
+    return MockOperation()
 
 
 def test_part_creation():

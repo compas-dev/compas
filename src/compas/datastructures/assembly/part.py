@@ -81,9 +81,9 @@ class Part(Datastructure):
         self.frame = frame
         self.shape = shape or Shape([], [])
         self.features = features or []
-        self.transformations = deque()
+        self.transformations = deque() # TODO: why is it necessary to queue all transformations?
 
-        self._geometry = Shape(*self.shape.to_vertices_and_faces())
+        self._restore_original_geometry()
 
     # ==========================================================================
     # data
@@ -158,9 +158,8 @@ class Part(Datastructure):
         -------
 
         """
-        return self._geometry.transform(
-            Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
-        )
+        self._geometry.transform(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
+        return self._geometry
 
     @classmethod
     def get_operation_name_by_value(cls, value):
@@ -220,10 +219,9 @@ class Part(Datastructure):
             feature.transform(T)
 
     def clear_features(self, features_to_clear = None):
-        features_to_clear = features_to_clear or []
         if not features_to_clear:
             self._restore_original_geometry()
-            self.features.clear()
+            self.features = []
         else:
             # restore geometry using earliest feature
             for index, feature in enumerate(self.features):
@@ -259,6 +257,7 @@ class Part(Datastructure):
 
         feature = Feature(shape, self.operations[operation])
         self.features.append(feature)
+        feature.transform(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
         feature.apply(self)
         return feature
 
@@ -269,10 +268,11 @@ class Part(Datastructure):
 
     def _replay_features(self, from_index):
         for feature in self.features[from_index:]:
+            feature.transform(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
             feature.apply(part=self)
 
     def _restore_original_geometry(self):
-        self.features[0].restore()
+        self._geometry = Shape(*self.shape.to_vertices_and_faces())
 
     # def apply_transformations(self):
     #     """Apply all transformations to the part shape."""
@@ -370,14 +370,15 @@ class Feature(Data):
         result = self._operation(
             # This conversion to mesh seems unique to the supported boolean operations
             # and maybe not relevant to other kinds of operations, so maybe it desn't belong here.
+            part.geometry.to_vertices_and_faces(triangulated=True),
             self._shape.to_vertices_and_faces(triangulated=True),
-            part.shape.to_vertices_and_faces(triangulated=True)
+            # remesh=True,
         )
         part._geometry = Shape(*result)
 
     def _store_previoius_geometry(self, part):
         self._part = part
-        self.previous_geometry = copy.deepcopy(self._part._geometry)
+        self.previous_geometry = copy.deepcopy(self._part.geometry)
 
     def restore(self):
         if not self._part:
