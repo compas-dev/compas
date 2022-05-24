@@ -90,6 +90,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         :class: `~compas.robots.model.ToolModel`
 
         """
+        tool_model = None
         if self.attached_tool_models:
             link_name = self.model.get_end_effector_link()
             tool_model = self.attached_tool_models.get(link_name) or list(self.attached_tool_models.values())[0]
