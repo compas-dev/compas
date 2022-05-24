@@ -14,7 +14,6 @@ from .artist import Artist
 
 
 class AbstractRobotModelArtist(object):
-
     def transform(self, geometry, transformation):
         """Transforms a CAD-specific geometry using a Transformation.
 
@@ -75,7 +74,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         super(RobotModelArtist, self).__init__()
         self.model = model
         self.create()
-        self.scale_factor = 1.
+        self.scale_factor = 1.0
         self.attached_tool_models = {}
         self.attached_items = {}
 
@@ -105,7 +104,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
             The tool that should be attached to the robot's flange.
 
         """
-        self.create(tool_model.root, 'attached_tool')
+        self.create(tool_model.root, "attached_tool")
 
         if not tool_model.link_name:
             link = self.model.get_end_effector_link()
@@ -121,7 +120,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         sample_geometry = link.collision[0] if link.collision else link.visual[0] if link.visual else None
 
-        if hasattr(sample_geometry, 'current_transformation'):
+        if hasattr(sample_geometry, "current_transformation"):
             relative_transformation = sample_geometry.current_transformation
         else:
             relative_transformation = Transformation()
@@ -231,17 +230,17 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
             meshes = Geometry._get_item_meshes(item)
 
             if meshes:
-                is_visual = hasattr(item, 'get_color')
+                is_visual = hasattr(item, "get_color")
                 color = item.get_color() if is_visual else None
 
                 native_geometry = []
                 for i, mesh in enumerate(meshes):
-                    mesh_type = 'visual' if is_visual else 'collision'
+                    mesh_type = "visual" if is_visual else "collision"
                     if not context:
                         mesh_name_components = [self.model.name, mesh_type, link.name, str(i)]
                     else:
                         mesh_name_components = [self.model.name, mesh_type, context, link.name, str(i)]
-                    mesh_name = '.'.join(mesh_name_components)
+                    mesh_name = ".".join(mesh_name_components)
                     native_mesh = self.create_geometry(mesh, name=mesh_name, color=color)
 
                     self.transform(native_mesh, item.init_transformation)
@@ -363,7 +362,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         None
 
         """
-        if getattr(item, 'current_transformation'):
+        if getattr(item, "current_transformation"):
             relative_transformation = transformation * item.current_transformation.inverse()
         else:
             relative_transformation = transformation
@@ -450,10 +449,10 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         """
         visual = []
-        for native_geometry in self._iter_geometry(self.model, 'visual'):
+        for native_geometry in self._iter_geometry(self.model, "visual"):
             visual.append(native_geometry)
         for tool in self.attached_tool_models.values():
-            for native_geometry in self._iter_geometry(tool, 'visual'):
+            for native_geometry in self._iter_geometry(tool, "visual"):
                 visual.append(native_geometry)
         return visual
 
@@ -467,10 +466,10 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         """
         visual = []
-        for native_geometry in self._iter_geometry(self.model, 'collision'):
+        for native_geometry in self._iter_geometry(self.model, "collision"):
             visual.append(native_geometry)
         for tool in self.attached_tool_models.values():
-            for native_geometry in self._iter_geometry(tool, 'collision'):
+            for native_geometry in self._iter_geometry(tool, "collision"):
                 visual.append(native_geometry)
 
         return visual
