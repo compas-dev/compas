@@ -13,6 +13,7 @@ from Rhino.Geometry import Box as RhinoBox
 from Rhino.Geometry import Sphere as RhinoSphere
 from Rhino.Geometry import Cone as RhinoCone
 from Rhino.Geometry import Cylinder as RhinoCylinder
+from Rhino.Geometry import Interval
 
 from ._primitives import plane_to_rhino
 from ._primitives import circle_to_rhino
@@ -58,7 +59,7 @@ def box_to_rhino(box):
     :rhino:`Rhino.Geometry.Box`
 
     """
-    return RhinoBox(frame_to_rhino(box.frame), box.xsize, box.ysize, box.zsize)
+    return RhinoBox(frame_to_rhino(box.frame), Interval(0., box.xsize), Interval(0., box.ysize), Interval(0., box.zsize))
 
 
 def sphere_to_compas(sphere):
