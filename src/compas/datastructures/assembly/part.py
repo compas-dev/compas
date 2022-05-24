@@ -223,15 +223,17 @@ class Part(Datastructure):
             self._restore_original_geometry()
             self.features = []
         else:
-            # restore geometry using earliest feature
-            for index, feature in enumerate(self.features):
-                if feature in features_to_clear:
-                    feature.restore()
-                    break
-            # remove features from feature list
+            earliest_feature_index = self._restore_earliest_feature_in_list(features_to_clear)
             self.features = [f for f in self.features if f not in features_to_clear]
-            # replay all features, starting from the index of the removed feature
-            self._replay_features(from_index=index)
+            self._replay_features(from_index=earliest_feature_index)
+
+    def _restore_earliest_feature_in_list(self, features_to_restore):
+        for index, feature in enumerate(self.features):
+            if feature in features_to_restore:
+                feature.restore()
+                return index
+
+        raise AssertionError("Part does not contain the requested feature!")
 
     def add_feature(self, shape, operation):
         """Add a feature to the shape of the part and the operation through which it should be integrated.
@@ -305,9 +307,6 @@ class Feature(Data):
     Holds all the information needed to perform a certain operation using a shape on a specific part.
     When applying the feature to the geometry of the part, stores the pre-change geometry in order
     to allow restoring the state of the part before the operation. a la Command.
-
-    TODO: should this even inherit from Data?
-    TODO: is Feature reusable or is it forever bound to a single Part?
     """
 
     def __init__(self, shape, operation):
@@ -335,13 +334,17 @@ class Feature(Data):
 
     @property
     def DATASCHEMA(self):
-        # TODO: what comes here?
-        raise NotImplementedError
+        import schema
+        return schema.Schema({
+            "shape": Shape,
+            "operation": str,
+            "part": Part,
+            "previous_geometry": Shape,
+        })
 
     @property
     def JSONSCHEMANAME(self):
-        # TODO: what comes here?
-        raise NotImplementedError
+        return 'feature'
 
     @property
     def data(self):
@@ -372,7 +375,6 @@ class Feature(Data):
             # and maybe not relevant to other kinds of operations, so maybe it desn't belong here.
             part.geometry.to_vertices_and_faces(triangulated=True),
             self._shape.to_vertices_and_faces(triangulated=True),
-            # remesh=True,
         )
         part._geometry = Shape(*result)
 
