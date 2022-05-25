@@ -71,8 +71,8 @@ def test_add_feature(part_polyhedron, feature_polyhedron, test_operation, monkey
 
     f1 = part.add_feature(feature_polyhedron, 'difference')
 
-    assert f1._shape == feature_polyhedron
-    assert f1._operation == test_operation
+    assert f1.shape == feature_polyhedron
+    assert f1.operation == test_operation
     assert are_polyhedrons_equal(f1.previous_geometry, part_polyhedron)
     assert are_polyhedrons_equal(part._geometry, resulting_polyhedron)
     assert test_operation.mesh_a
