@@ -52,7 +52,7 @@ class Part(Datastructure):
         The most recent transformation is on the left of the stack.
         All transformations are with respect to the local coordinate system.
     geometry : :class:`~compas.geometry.Polyhedron`, read-only
-        The geometry of the part after combining the base shape and features through the specified operations.
+        A copy of the part's geometry, including applied features, transformed to part.frame.
 
     Class Attributes
     ----------------
@@ -61,20 +61,16 @@ class Part(Datastructure):
 
     """
 
-    ALLOWED_OPERATIONS = {
-        'union': boolean_union_mesh_mesh,
-        'difference': boolean_difference_mesh_mesh,
-        'intersection': boolean_intersection_mesh_mesh
-    }
+    ALLOWED_OPERATIONS = {"union": boolean_union_mesh_mesh, "difference": boolean_difference_mesh_mesh, "intersection": boolean_intersection_mesh_mesh}
 
     def __init__(self, name=None, frame=None, shape=None, features=None, **kwargs):
         super(Part, self).__init__()
-        self.attributes = {'name': name or 'Part'}
+        self.attributes = {"name": name or "Part"}
         self.attributes.update(kwargs)
         self.key = None
         self.frame = frame or copy.deepcopy(getattr(shape, "frame", None)) or Frame.worldXY()
         self.features = features or []
-        self.transformations = deque() # TODO: why is it necessary to queue all transformations?
+        self.transformations = deque()  # TODO: why is it necessary to queue all transformations?
 
         self._original_shape = shape or Polyhedron([], [])  # always in Frame.worldXY
         self._part_geometry = copy.deepcopy(self._original_shape)  # always in Frame.worldXY, w/ features applied
@@ -88,23 +84,26 @@ class Part(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "attributes": dict,
-            "key": int,
-            "frame": Frame,
-            "shape": Shape,
-            "features": list,
-            "transformations": list,
-        })
+
+        return schema.Schema(
+            {
+                "attributes": dict,
+                "key": int,
+                "frame": Frame,
+                "shape": Shape,
+                "features": list,
+                "transformations": list,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'part'
+        return "part"
 
     @property
     def data(self):
         data = {
-            'attributes': self.attributes,
+            "attributes": self.attributes,
             "key": self.key,
             "frame": self.frame.data,
             "shape": self._original_shape.data,
@@ -115,13 +114,13 @@ class Part(Datastructure):
 
     @data.setter
     def data(self, data):
-        self.attributes.update(data['attributes'] or {})
-        self.key = data['key']
-        self.frame.data = data['frame']
-        self._original_shape.data = data['shape']
+        self.attributes.update(data["attributes"] or {})
+        self.key = data["key"]
+        self.frame.data = data["frame"]
+        self._original_shape.data = data["shape"]
         self._part_geometry.data = data["shape"]
-        self.features = [self.add_feature(shape, operation) for shape, operation in data['features']]
-        self.transformations = deque([Transformation.from_data(T) for T in data['transformations']])
+        self.features = [self.add_feature(shape, operation) for shape, operation in data["features"]]
+        self.transformations = deque([Transformation.from_data(T) for T in data["transformations"]])
 
     # ==========================================================================
     # properties
@@ -129,11 +128,11 @@ class Part(Datastructure):
 
     @property
     def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, value):
-        self.attributes['name'] = value
+        self.attributes["name"] = value
 
     @property
     def shape(self):
@@ -168,12 +167,7 @@ class Part(Datastructure):
         try:
             return {v: k for k, v in cls.ALLOWED_OPERATIONS.items()}[value]
         except KeyError:
-            raise ValueError(
-                "Expected one of the following operations {} got instead {}".format(
-                    [v.__name__ for _, v in cls.ALLOWED_OPERATIONS.items()],
-                    value
-                )
-            )
+            raise ValueError("Expected one of the following operations {} got instead {}".format([v.__name__ for _, v in cls.ALLOWED_OPERATIONS.items()], value))
 
     # ==========================================================================
     # customization
@@ -208,7 +202,7 @@ class Part(Datastructure):
         for feature in self.features:
             feature.transform(T)
 
-    def clear_features(self, features_to_clear = None):
+    def clear_features(self, features_to_clear=None):
         if not features_to_clear:
             self._restore_original_geometry()
             self.features = []
@@ -243,9 +237,7 @@ class Part(Datastructure):
 
         """
         if operation not in self.ALLOWED_OPERATIONS:
-            raise ValueError(
-                "Operation {} unknown. Expected one of {}".format(operation, list(self.ALLOWED_OPERATIONS.keys()))
-            )
+            raise ValueError("Operation {} unknown. Expected one of {}".format(operation, list(self.ALLOWED_OPERATIONS.keys())))
 
         feature = Feature(shape, self.ALLOWED_OPERATIONS[operation])
         self.features.append(feature)
@@ -314,31 +306,28 @@ class Feature(Data):
         self.previous_geometry = None
 
     def __eq__(self, other):
-        return (
-            isinstance(other, Feature) and
-            self.guid == other.guid
-        )
+        return isinstance(other, Feature) and self.guid == other.guid
 
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "shape": Shape,
-            "operation": str,
-            "part": Part,
-            "previous_geometry": Shape,
-        })
+
+        return schema.Schema(
+            {
+                "shape": Shape,
+                "operation": str,
+                "part": Part,
+                "previous_geometry": Shape,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'feature'
+        return "feature"
 
     @property
     def data(self):
-        return {
-            "shape": self.shape.data,
-            "operation": Part.get_operation_name_by_value(self.operation)
-        }
+        return {"shape": self.shape.data, "operation": Part.get_operation_name_by_value(self.operation)}
 
     @data.setter
     def data(self, value):
@@ -354,12 +343,8 @@ class Feature(Data):
         part : :class: `~compas.datastructures.assembly.part.Part`
                 The part on which this feature should be applied
         """
-        # to support undo
         self._store_previoius_geometry(part)
-        result = self.operation(
-            part._part_geometry.to_vertices_and_faces(triangulated=True),
-            self.shape.to_vertices_and_faces(triangulated=True)
-        )
+        result = self.operation(part._part_geometry.to_vertices_and_faces(triangulated=True), self.shape.to_vertices_and_faces(triangulated=True))
         part._part_geometry = Polyhedron(*result)
 
     def _store_previoius_geometry(self, part):
@@ -370,4 +355,3 @@ class Feature(Data):
         if not self.part:
             raise AssertionError("This feature is not associated with any Part!")
         self.part._part_geometry = self.previous_geometry
-
