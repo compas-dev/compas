@@ -73,7 +73,7 @@ class Feature(Data):
     @data.setter
     def data(self, value):
         self.shape = Shape.from_data(value["shape"])
-        self.operation = Part.ALLOWED_OPERATIONS[value["operation"]]
+        self.operation = self.ALLOWED_OPERATIONS[value["operation"]]
 
     def apply(self, part):
         """
@@ -92,10 +92,7 @@ class Feature(Data):
         """
         Preforms the required geometry type specific operation required to apply this feature to self.part
         and set its new geometry.
-        Called by
-        Returns
-        -------
-
+        Called by Feature().apply()
         """
         raise NotImplementedError
 
@@ -104,8 +101,13 @@ class Feature(Data):
         self.previous_geometry = copy.deepcopy(self.part._part_geometry)
 
     def restore(self):
+        """
+        Restores the part's geometry to the one before the application of this feature.
+        Raises a FeatureError if no part has been associated with this feature.
+
+        """
         if not self.part:
-            raise AssertionError("This feature is not associated with any Part!")
+            raise FeatureError("This feature is not associated with any Part!")
         self.part._part_geometry = self.previous_geometry
 
     @classmethod
@@ -129,12 +131,11 @@ class Feature(Data):
 
 
 class MeshFeature(Feature):
+    """
+    Represents a Mesh/Shape feature of a Part. Can be applied to Part whose geometry is described by a MeshGeometry.
+    """
 
-    ALLOWED_OPERATIONS = {
-        "union": boolean_union_mesh_mesh,
-        "difference": boolean_difference_mesh_mesh,
-        "intersection": boolean_intersection_mesh_mesh
-    }
+    ALLOWED_OPERATIONS = {"union": boolean_union_mesh_mesh, "difference": boolean_difference_mesh_mesh, "intersection": boolean_intersection_mesh_mesh}
 
     def __init__(self, shape, operation):
         super(MeshFeature, self).__init__(operation)
@@ -146,8 +147,11 @@ class MeshFeature(Feature):
 
 
 class BrepFeature(Feature):
+    """
+    Represents a Brep feature of a Part. Can be applied to Part whose geometry is described by a BrepGeometry.
+    """
 
-    ALLOWED_OPERATIONS = {"trim": None}
+    ALLOWED_OPERATIONS = {"trim": None}  # TODO: map to pluggable trim operation function
 
     def __init__(self, cutting_plane, operation):
         super(BrepFeature, self).__init__(operation)
@@ -164,26 +168,52 @@ class BrepFeature(Feature):
         return brep_list[0]
 
 
-class PartGeometry:
+class PartGeometry(Data):
     """
-    Wraps a geometry do be used as the shape of a Part.
+    Interface for a Part's geometry.
     Abstracts the concrete type of geometry e.g. Brep/Mesh
     """
 
+    def __init__(self):
+        super(PartGeometry, self).__init__()
+
     @abstractproperty
     def FEATURE_CLASS(self):
+        """
+        Class attribute. Holds the concrete type of Feature which is supported by this type of PartGeometry.
+
+        Returns
+        -------
+        Type[:class:`~compas.datastructures.assembly.part.Feature`]
+        """
         raise NotImplementedError
 
     @abstractmethod
     def transformed(self, transformation):
+        """
+        Returns a copy of this geometry, transformed according to the given transformation.
+        Parameters
+        ----------
+        transformation :class:`~compas.geometry.Transformation`
+        The transformation object to apply to the copy of this geometry.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.assembly.part.PartGeometry`
+        The transformed geometry
+
+        """
         raise NotImplementedError
 
     @abstractmethod
     def get_drawable(self):
         """
         Returns a representation of this geometry which can be drawn by an Artist.
+
         Returns
         -------
+        :class:`~compas.data.Data`
+        An instance of an object which represents this geometry and can be drawn by one of the currently supported Artists.
 
         >>> from compas.artists import Artist
         >>> shape = Box()
@@ -194,10 +224,14 @@ class PartGeometry:
 
 
 class MeshGeometry(PartGeometry):
+    """
+    Mesh/Shape based Part geometry
+    """
 
     FEATURE_CLASS = MeshFeature
 
     def __init__(self, shape):
+        super(MeshGeometry, self).__init__()
         self.shape = shape
 
     def transformed(self, transformation):
@@ -218,8 +252,14 @@ class MeshGeometry(PartGeometry):
 
 
 class BrepGeometry(PartGeometry):
+    """
+    Brap based Part geometry.
+    """
 
     FEATURE_CLASS = BrepFeature
+
+    def __init__(self):
+        super(PartGeometry, self).__init__()
 
     def transformed(self, transformation):
         raise NotImplementedError
@@ -281,10 +321,6 @@ class Part(Datastructure):
         self._original_shape = geometry or MeshGeometry(shape=Polyhedron([], []))  # always in Frame.worldXY
         self._part_geometry = copy.deepcopy(self._original_shape)  # always in Frame.worldXY, w/ features applied
 
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
     @property
     def DATASCHEMA(self):
         import schema
@@ -326,10 +362,6 @@ class Part(Datastructure):
         self.features = [self.add_feature(shape, operation) for shape, operation in data["features"]]
         self.transformations = deque([Transformation.from_data(T) for T in data["transformations"]])
 
-    # ==========================================================================
-    # properties
-    # ==========================================================================
-
     @property
     def name(self):
         return self.attributes.get("name") or self.__class__.__name__
@@ -355,22 +387,9 @@ class Part(Datastructure):
         transformed_geometry = self._part_geometry.transformed(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
         return transformed_geometry.get_drawable()
 
-
-    # ==========================================================================
-    # customization
-    # ==========================================================================
-
     def __str__(self):
         tpl = "<Part with shape {} and features {}>"
         return tpl.format(self.shape, self.features)
-
-    # ==========================================================================
-    # constructors
-    # ==========================================================================
-
-    # ==========================================================================
-    # methods
-    # ==========================================================================
 
     def transform(self, T):
         """Transform the part with respect to the local cooordinate system.
@@ -468,5 +487,3 @@ class Part(Datastructure):
         """
         cls = cls or Mesh
         return cls.from_shape(self.geometry)
-
-
