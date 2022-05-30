@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import copy
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod, ABCMeta, abstractproperty
 from collections import deque
 
 from compas.geometry import Frame
@@ -16,8 +16,216 @@ from compas.data import Data
 
 from ..datastructure import Datastructure
 from ..mesh import Mesh
-
 from .exceptions import FeatureError
+
+
+class Feature(Data):
+    """
+    Abstract class. Holds all the information needed to perform a certain operation using a shape on a specific part.
+    When applying the feature to the geometry of the part, stores the pre-change geometry in order
+    to allow restoring the state of the part before the operation. a la Command.
+    """
+
+    ALLOWED_OPERATIONS = {}
+
+    def __init__(self, operation):
+        """
+
+        Parameters
+        ----------
+        shape : :class:`~compas.geometry._shape.Shape`
+                The shape of this feature
+        operation : :callable: e.g. boolean_op_mesh_mesh(A, B)
+        """
+        super(Feature, self).__init__()
+
+        if operation not in self.ALLOWED_OPERATIONS:
+            raise ValueError("Operation {} unknown. Expected one of {}".format(operation, list(self.ALLOWED_OPERATIONS.keys())))
+
+        self.operation = self.ALLOWED_OPERATIONS[operation]
+        self.part = None
+        self.previous_geometry = None
+
+    def __eq__(self, other):
+        return isinstance(other, Feature) and self.guid == other.guid
+
+    @property
+    def DATASCHEMA(self):
+        import schema
+
+        return schema.Schema(
+            {
+                "shape": PartGeometry,
+                "operation": str,
+                "part": Part,
+                "previous_geometry": PartGeometry,
+            }
+        )
+
+    @property
+    def JSONSCHEMANAME(self):
+        return "feature"
+
+    @property
+    def data(self):
+        return {"shape": self.shape.data, "operation": self.get_operation_name_by_value(self.operation)}
+
+    @data.setter
+    def data(self, value):
+        self.shape = Shape.from_data(value["shape"])
+        self.operation = Part.ALLOWED_OPERATIONS[value["operation"]]
+
+    def apply(self, part):
+        """
+        Applies this feature to the current geometry of part and replaces it with the resulting geometry.
+
+        Parameters
+        ----------
+        part : :class: `~compas.datastructures.assembly.part.Part`
+                The part on which this feature should be applied
+        """
+        self._store_previous_geometry(part)
+        self._apply_feature()
+
+    @abstractmethod
+    def _apply_feature(self):
+        """
+        Preforms the required geometry type specific operation required to apply this feature to self.part
+        and set its new geometry.
+        Called by
+        Returns
+        -------
+
+        """
+        raise NotImplementedError
+
+    def _store_previous_geometry(self, part):
+        self.part = part
+        self.previous_geometry = copy.deepcopy(self.part._part_geometry)
+
+    def restore(self):
+        if not self.part:
+            raise AssertionError("This feature is not associated with any Part!")
+        self.part._part_geometry = self.previous_geometry
+
+    @classmethod
+    def get_operation_name_by_value(cls, value):
+        """
+        Gets the the operation name of the given operation function
+
+        Parameters
+        ----------
+        value: :callback: one of the pluggable operation calls from Part.ALLOWED_OPERATIONS
+
+        Returns
+        -------
+        :str: the operation name which corresponds to the given operation function
+
+        """
+        try:
+            return {v: k for k, v in cls.ALLOWED_OPERATIONS.items()}[value]
+        except KeyError:
+            raise ValueError("Expected one of the following operations {} got instead {}".format([v.__name__ for _, v in cls.ALLOWED_OPERATIONS.items()], value))
+
+
+class MeshFeature(Feature):
+
+    ALLOWED_OPERATIONS = {
+        "union": boolean_union_mesh_mesh,
+        "difference": boolean_difference_mesh_mesh,
+        "intersection": boolean_intersection_mesh_mesh
+    }
+
+    def __init__(self, shape, operation):
+        super(MeshFeature, self).__init__(operation)
+        self.shape = shape
+
+    def _apply_feature(self):
+        result = self.operation(self.part._part_geometry.to_vertices_and_faces(triangulated=True), self.shape.to_vertices_and_faces(triangulated=True))
+        self.part._part_geometry = MeshGeometry(Polyhedron(*result))
+
+
+class BrepFeature(Feature):
+
+    ALLOWED_OPERATIONS = {"trim": None}
+
+    def __init__(self, cutting_plane, operation):
+        super(BrepFeature, self).__init__(operation)
+        self.cutting_plane = cutting_plane
+
+    def _apply_feature(self):
+        breps = self.operation(self.cutting_plane, self.part.geometry)
+        self.part._part_geometry = self._pick_resulting_brep(breps)
+
+    @staticmethod
+    def _pick_resulting_brep(brep_list):
+        if not brep_list:
+            raise AssertionError("Expected at least one Brep in result. Got zero or None.")
+        return brep_list[0]
+
+
+class PartGeometry:
+    """
+    Wraps a geometry do be used as the shape of a Part.
+    Abstracts the concrete type of geometry e.g. Brep/Mesh
+    """
+
+    @abstractproperty
+    def FEATURE_CLASS(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def transformed(self, transformation):
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_drawable(self):
+        """
+        Returns a representation of this geometry which can be drawn by an Artist.
+        Returns
+        -------
+
+        >>> from compas.artists import Artist
+        >>> shape = Box()
+        >>> geometry = MeshGeometry(shape)
+        >>> a = Artist(geometry.get_drawable()).draw()
+        """
+        raise NotImplementedError
+
+
+class MeshGeometry(PartGeometry):
+
+    FEATURE_CLASS = MeshFeature
+
+    def __init__(self, shape):
+        self.shape = shape
+
+    def transformed(self, transformation):
+        transformed_copy = copy.deepcopy(self)
+        transformed_copy.shape.transform(transformation)
+        return transformed_copy
+
+    def to_vertices_and_faces(self, triangulated=False):
+        return self.shape.to_vertices_and_faces(triangulated)
+
+    def get_drawable(self):
+        """
+        Returns
+        -------
+
+        """
+        return self.shape
+
+
+class BrepGeometry(PartGeometry):
+
+    FEATURE_CLASS = BrepFeature
+
+    def transformed(self, transformation):
+        raise NotImplementedError
+
+    def get_drawable(self):
+        raise NotImplementedError
 
 
 class Part(Datastructure):
@@ -61,21 +269,17 @@ class Part(Datastructure):
 
     """
 
-    ALLOWED_OPERATIONS = {"union": boolean_union_mesh_mesh, "difference": boolean_difference_mesh_mesh, "intersection": boolean_intersection_mesh_mesh}
-
-    def __init__(self, name=None, frame=None, shape=None, features=None, **kwargs):
+    def __init__(self, name=None, frame=None, geometry=None, features=None, **kwargs):
         super(Part, self).__init__()
         self.attributes = {"name": name or "Part"}
         self.attributes.update(kwargs)
         self.key = None
-        self.frame = frame or copy.deepcopy(getattr(shape, "frame", None)) or Frame.worldXY()
+        self.frame = frame or Frame.worldXY()
         self.features = features or []
         self.transformations = deque()  # TODO: why is it necessary to queue all transformations?
 
-        self._original_shape = shape or Polyhedron([], [])  # always in Frame.worldXY
+        self._original_shape = geometry or MeshGeometry(shape=Polyhedron([], []))  # always in Frame.worldXY
         self._part_geometry = copy.deepcopy(self._original_shape)  # always in Frame.worldXY, w/ features applied
-
-        self._restore_original_geometry()
 
     # ==========================================================================
     # data
@@ -136,38 +340,21 @@ class Part(Datastructure):
 
     @property
     def shape(self):
-        return self._original_shape
+        return getattr(self._original_shape, "shape", None)
 
     @property
     def geometry(self):
         """
         Returns a transformed copy of the part's geometry with features applied, if any.
+
+        The returned type can be drawn with an Artist.
         Returns
         -------
 
         """
-        transformed_geometry = copy.deepcopy(self._part_geometry)
-        transformed_geometry.transform(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
-        return transformed_geometry
+        transformed_geometry = self._part_geometry.transformed(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
+        return transformed_geometry.get_drawable()
 
-    @classmethod
-    def get_operation_name_by_value(cls, value):
-        """
-        Gets the the operation name of the given operation function
-
-        Parameters
-        ----------
-        value: :callback: one of the pluggable operation calls from Part.ALLOWED_OPERATIONS
-
-        Returns
-        -------
-        :str: the operation name which corresponds to the given operation function
-
-        """
-        try:
-            return {v: k for k, v in cls.ALLOWED_OPERATIONS.items()}[value]
-        except KeyError:
-            raise ValueError("Expected one of the following operations {} got instead {}".format([v.__name__ for _, v in cls.ALLOWED_OPERATIONS.items()], value))
 
     # ==========================================================================
     # customization
@@ -219,7 +406,7 @@ class Part(Datastructure):
 
         raise AssertionError("Part does not contain the requested feature!")
 
-    def add_feature(self, shape, operation):
+    def add_feature(self, geometry, operation):
         """Add a feature to the shape of the part and the operation through which it should be integrated.
 
         Parameters
@@ -236,10 +423,11 @@ class Part(Datastructure):
         keep track of the features it has created (and "own" them)
 
         """
-        if operation not in self.ALLOWED_OPERATIONS:
-            raise ValueError("Operation {} unknown. Expected one of {}".format(operation, list(self.ALLOWED_OPERATIONS.keys())))
+        class_ = geometry.FEATURE_CLASS
+        if class_ != self._part_geometry.FEATURE_CLASS:
+            raise TypeError("Cannot mix Brep geometry with mesh operations or vice versa.")
 
-        feature = Feature(shape, self.ALLOWED_OPERATIONS[operation])
+        feature = class_(geometry, operation)
         self.features.append(feature)
         feature.apply(self)
         return feature
@@ -251,7 +439,6 @@ class Part(Datastructure):
 
     def _replay_features(self, from_index):
         for feature in self.features[from_index:]:
-            # feature.transform(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
             feature.apply(part=self)
 
     def _restore_original_geometry(self):
@@ -283,75 +470,3 @@ class Part(Datastructure):
         return cls.from_shape(self.geometry)
 
 
-class Feature(Data):
-    """
-    Holds all the information needed to perform a certain operation using a shape on a specific part.
-    When applying the feature to the geometry of the part, stores the pre-change geometry in order
-    to allow restoring the state of the part before the operation. a la Command.
-    """
-
-    def __init__(self, shape, operation):
-        """
-
-        Parameters
-        ----------
-        shape : :class:`~compas.geometry._shape.Shape`
-                The shape of this feature
-        operation : :callable: e.g. boolean_op_mesh_mesh(A, B)
-        """
-        super(Feature, self).__init__()
-        self.shape = shape
-        self.operation = operation
-        self.part = None
-        self.previous_geometry = None
-
-    def __eq__(self, other):
-        return isinstance(other, Feature) and self.guid == other.guid
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "shape": Shape,
-                "operation": str,
-                "part": Part,
-                "previous_geometry": Shape,
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "feature"
-
-    @property
-    def data(self):
-        return {"shape": self.shape.data, "operation": Part.get_operation_name_by_value(self.operation)}
-
-    @data.setter
-    def data(self, value):
-        self.shape = Shape.from_data(value["shape"])
-        self.operation = Part.ALLOWED_OPERATIONS[value["operation"]]
-
-    def apply(self, part):
-        """
-        Applies this feature to the current geometry of part and replaces it with the resulting geometry.
-
-        Parameters
-        ----------
-        part : :class: `~compas.datastructures.assembly.part.Part`
-                The part on which this feature should be applied
-        """
-        self._store_previoius_geometry(part)
-        result = self.operation(part._part_geometry.to_vertices_and_faces(triangulated=True), self.shape.to_vertices_and_faces(triangulated=True))
-        part._part_geometry = Polyhedron(*result)
-
-    def _store_previoius_geometry(self, part):
-        self.part = part
-        self.previous_geometry = copy.deepcopy(self.part._part_geometry)
-
-    def restore(self):
-        if not self.part:
-            raise AssertionError("This feature is not associated with any Part!")
-        self.part._part_geometry = self.previous_geometry
