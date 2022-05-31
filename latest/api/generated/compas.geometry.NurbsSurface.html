@@ -112,10 +112,10 @@
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Surface.html#compas.geometry.Surface" title="compas.geometry.surfaces.surface.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a></p>
 <p>A NURBS surface is defined by control points, weights, knots, and a degree, in two directions U and V.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the surface.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>points</strong> (list[list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]], read-only) – The control points as rows along the U direction.</p></li>
 <li><p><strong>weights</strong> (<em>list[list[float]], read-only</em>) – The weights of the control points.</p></li>
@@ -130,10 +130,6 @@
 </dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.copy.html#compas.geometry.NurbsSurface.copy" title="compas.geometry.NurbsSurface.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the surface.</p></td>
@@ -160,93 +156,92 @@
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.aabb.html#compas.geometry.NurbsSurface.aabb" title="compas.geometry.NurbsSurface.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.ToString.html#compas.geometry.NurbsSurface.ToString" title="compas.geometry.NurbsSurface.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.aabb.html#compas.geometry.NurbsSurface.aabb" title="compas.geometry.NurbsSurface.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
 <td><p>Compute the axis aligned bounding box of the surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.boundary.html#compas.geometry.NurbsSurface.boundary" title="compas.geometry.NurbsSurface.boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.boundary.html#compas.geometry.NurbsSurface.boundary" title="compas.geometry.NurbsSurface.boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary</span></code></a></p></td>
 <td><p>Compute the boundary curves of the surface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.closest_point.html#compas.geometry.NurbsSurface.closest_point" title="compas.geometry.NurbsSurface.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.closest_point.html#compas.geometry.NurbsSurface.closest_point" title="compas.geometry.NurbsSurface.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
 <td><p>Compute the closest point on the curve to a given point.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.curvature_at.html#compas.geometry.NurbsSurface.curvature_at" title="compas.geometry.NurbsSurface.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.curvature_at.html#compas.geometry.NurbsSurface.curvature_at" title="compas.geometry.NurbsSurface.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
 <td><p>Compute the curvature at a point on the surface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.frame_at.html#compas.geometry.NurbsSurface.frame_at" title="compas.geometry.NurbsSurface.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.frame_at.html#compas.geometry.NurbsSurface.frame_at" title="compas.geometry.NurbsSurface.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Compute the local frame at a point on the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.from_json.html#compas.geometry.NurbsSurface.from_json" title="compas.geometry.NurbsSurface.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.from_json.html#compas.geometry.NurbsSurface.from_json" title="compas.geometry.NurbsSurface.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.from_jsonstring.html#compas.geometry.NurbsSurface.from_jsonstring" title="compas.geometry.NurbsSurface.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.from_jsonstring.html#compas.geometry.NurbsSurface.from_jsonstring" title="compas.geometry.NurbsSurface.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.from_obj.html#compas.geometry.NurbsSurface.from_obj" title="compas.geometry.NurbsSurface.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.from_obj.html#compas.geometry.NurbsSurface.from_obj" title="compas.geometry.NurbsSurface.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a surface from an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.intersections_with_line.html#compas.geometry.NurbsSurface.intersections_with_line" title="compas.geometry.NurbsSurface.intersections_with_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_line</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.intersections_with_line.html#compas.geometry.NurbsSurface.intersections_with_line" title="compas.geometry.NurbsSurface.intersections_with_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_line</span></code></a></p></td>
 <td><p>Compute the intersections with a line.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.obb.html#compas.geometry.NurbsSurface.obb" title="compas.geometry.NurbsSurface.obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.obb.html#compas.geometry.NurbsSurface.obb" title="compas.geometry.NurbsSurface.obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb</span></code></a></p></td>
 <td><p>Compute the oriented bounding box of the surface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.point_at.html#compas.geometry.NurbsSurface.point_at" title="compas.geometry.NurbsSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.point_at.html#compas.geometry.NurbsSurface.point_at" title="compas.geometry.NurbsSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Compute a point on the surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.sha256.html#compas.geometry.NurbsSurface.sha256" title="compas.geometry.NurbsSurface.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.sha256.html#compas.geometry.NurbsSurface.sha256" title="compas.geometry.NurbsSurface.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_data.html#compas.geometry.NurbsSurface.to_data" title="compas.geometry.NurbsSurface.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_data.html#compas.geometry.NurbsSurface.to_data" title="compas.geometry.NurbsSurface.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_json.html#compas.geometry.NurbsSurface.to_json" title="compas.geometry.NurbsSurface.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_json.html#compas.geometry.NurbsSurface.to_json" title="compas.geometry.NurbsSurface.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_jsonstring.html#compas.geometry.NurbsSurface.to_jsonstring" title="compas.geometry.NurbsSurface.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_jsonstring.html#compas.geometry.NurbsSurface.to_jsonstring" title="compas.geometry.NurbsSurface.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_mesh.html#compas.geometry.NurbsSurface.to_mesh" title="compas.geometry.NurbsSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_mesh.html#compas.geometry.NurbsSurface.to_mesh" title="compas.geometry.NurbsSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
 <td><p>Convert the surface to a quad mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_step.html#compas.geometry.NurbsSurface.to_step" title="compas.geometry.NurbsSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_step.html#compas.geometry.NurbsSurface.to_step" title="compas.geometry.NurbsSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the surface geometry to a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_tesselation.html#compas.geometry.NurbsSurface.to_tesselation" title="compas.geometry.NurbsSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_tesselation.html#compas.geometry.NurbsSurface.to_tesselation" title="compas.geometry.NurbsSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
 <td><p>Convert the surface to a triangle mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_triangles.html#compas.geometry.NurbsSurface.to_triangles" title="compas.geometry.NurbsSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.to_triangles.html#compas.geometry.NurbsSurface.to_triangles" title="compas.geometry.NurbsSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
 <td><p>Convert the surface to a list of triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.transform.html#compas.geometry.NurbsSurface.transform" title="compas.geometry.NurbsSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.transform.html#compas.geometry.NurbsSurface.transform" title="compas.geometry.NurbsSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.transformed.html#compas.geometry.NurbsSurface.transformed" title="compas.geometry.NurbsSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.transformed.html#compas.geometry.NurbsSurface.transformed" title="compas.geometry.NurbsSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.u_isocurve.html#compas.geometry.NurbsSurface.u_isocurve" title="compas.geometry.NurbsSurface.u_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_isocurve</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.u_isocurve.html#compas.geometry.NurbsSurface.u_isocurve" title="compas.geometry.NurbsSurface.u_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_isocurve</span></code></a></p></td>
 <td><p>Compute the isoparametric curve at parameter u.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.u_space.html#compas.geometry.NurbsSurface.u_space" title="compas.geometry.NurbsSurface.u_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_space</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.u_space.html#compas.geometry.NurbsSurface.u_space" title="compas.geometry.NurbsSurface.u_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_space</span></code></a></p></td>
 <td><p>Compute evenly spaced parameters over the surface domain in the U direction.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.v_isocurve.html#compas.geometry.NurbsSurface.v_isocurve" title="compas.geometry.NurbsSurface.v_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_isocurve</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.v_isocurve.html#compas.geometry.NurbsSurface.v_isocurve" title="compas.geometry.NurbsSurface.v_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_isocurve</span></code></a></p></td>
 <td><p>Compute the isoparametric curve at parameter v.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.v_space.html#compas.geometry.NurbsSurface.v_space" title="compas.geometry.NurbsSurface.v_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_space</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.v_space.html#compas.geometry.NurbsSurface.v_space" title="compas.geometry.NurbsSurface.v_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_space</span></code></a></p></td>
 <td><p>Compute evenly spaced parameters over the surface domain in the V direction.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.validate_data.html#compas.geometry.NurbsSurface.validate_data" title="compas.geometry.NurbsSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.validate_data.html#compas.geometry.NurbsSurface.validate_data" title="compas.geometry.NurbsSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.validate_json.html#compas.geometry.NurbsSurface.validate_json" title="compas.geometry.NurbsSurface.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.validate_json.html#compas.geometry.NurbsSurface.validate_json" title="compas.geometry.NurbsSurface.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.xyz.html#compas.geometry.NurbsSurface.xyz" title="compas.geometry.NurbsSurface.xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xyz</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsSurface.xyz.html#compas.geometry.NurbsSurface.xyz" title="compas.geometry.NurbsSurface.xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xyz</span></code></a></p></td>
 <td><p>Compute point locations corresponding to evenly spaced parameters over the surface domain.</p></td>
 </tr>
 </tbody>

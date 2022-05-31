@@ -111,19 +111,19 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">distance_point_plane_signed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L374"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the signed distance from a point to a plane defined by origin point and normal.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>point</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>) – Point coordinates.</p></li>
 <li><p><strong>plane</strong> ([point, vector] | <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a>) – A point and a vector defining a plane.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>float</em> – Distance between point and plane.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>The distance from a point to a plane can be computed from the coefficients
-of the equation of the plane and the coordinates of the point <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+of the equation of the plane and the coordinates of the point <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p>The equation of a plane is</p>
 <div class="math notranslate nohighlight">
 \[Ax + By + Cz + D = 0\]</div>
@@ -138,12 +138,11 @@ that point. The distance of any point <span class="math notranslate nohighlight"
 value of the dot product of the vector from <span class="math notranslate nohighlight">\(Q\)</span> to <span class="math notranslate nohighlight">\(P\)</span>
 and the normal at <span class="math notranslate nohighlight">\(Q\)</span>.</p>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Nykamp, D. <em>Distance from point to plane</em>.
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Nykamp, D. <em>Distance from point to plane</em>.
 Available at: <a class="reference external" href="http://mathinsight.org/distance_point_plane">http://mathinsight.org/distance_point_plane</a>.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

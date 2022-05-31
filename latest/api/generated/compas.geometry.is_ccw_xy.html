@@ -112,7 +112,7 @@
 <dd><p>Determine if c is on the left of ab when looking from a to b,
 and assuming that all points lie in the XY plane.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>a</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>) – Base point defined by XY(Z) coordinates.</p></li>
 <li><p><strong>b</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>) – First end point defined by XY(Z) coordinates.</p></li>
@@ -120,19 +120,18 @@ and assuming that all points lie in the XY plane.</p>
 <li><p><strong>colinear</strong> (<em>bool, optional</em>) – If True, colinear points will return a positive result.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>bool</em> – True if ccw.
 False otherwise.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>For more info, see <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Marsh, C. <em>Computational Geometry in Python: From Theory to Application</em>.
+<p>For more info, see <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Marsh, C. <em>Computational Geometry in Python: From Theory to Application</em>.
 Available at: <a class="reference external" href="https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation">https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation</a></p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">is_ccw_xy</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 <span class="go">True</span>

@@ -113,22 +113,21 @@
 <span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">complement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/complementarity.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Generate the complement network of a network.</p>
 <p>The complement of a graph G is the graph H with the same vertices
-but whose edges consists of the edges not present in the graph G <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+but whose edges consists of the edges not present in the graph G <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – A network.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> – The complement network.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Wolfram MathWorld. <em>Graph complement</em>.
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Wolfram MathWorld. <em>Graph complement</em>.
 Available at: <a class="reference external" href="http://mathworld.wolfram.com/GraphComplement.html">http://mathworld.wolfram.com/GraphComplement.html</a>.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>

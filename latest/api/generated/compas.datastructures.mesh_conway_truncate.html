@@ -111,25 +111,25 @@
 <span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_conway_truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/conway.py#L278"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Generates the truncate mesh from a seed mesh.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A seed mesh</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a> – The truncate mesh.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>Based on <a class="footnote-reference brackets" href="#id3" id="id1">1</a> and <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Wikipedia. <em>Conway polyhedron notation</em>.
+<p>Based on <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Wikipedia. <em>Conway polyhedron notation</em>.
 Available at: <a class="reference external" href="https://en.wikipedia.org/wiki/Conway_polyhedron_notation">https://en.wikipedia.org/wiki/Conway_polyhedron_notation</a>.</p>
-</dd>
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>Hart, George. <em>Conway Notation for Polyhedron</em>.
+</aside>
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Hart, George. <em>Conway Notation for Polyhedron</em>.
 Available at: <a class="reference external" href="http://www.georgehart.com/virtual-polyhedra/conway_notation.html">http://www.georgehart.com/virtual-polyhedra/conway_notation.html</a>.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>

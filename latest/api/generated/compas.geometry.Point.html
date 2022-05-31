@@ -112,14 +112,14 @@
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">Primitive</span></code></a></p>
 <p>A point is defined by XYZ coordinates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>float</em>) – The X coordinate of the point.</p></li>
 <li><p><strong>y</strong> (<em>float</em>) – The Y coordinate of the point.</p></li>
 <li><p><strong>z</strong> (<em>float, optional</em>) – The Z coordinate of the point.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>x</strong> (<em>float</em>) – The X coordinate of the point.</p></li>
 <li><p><strong>y</strong> (<em>float</em>) – The Y coordinate of the point.</p></li>
@@ -131,14 +131,13 @@
 <p>A <cite>Point</cite> object supports direct access to its xyz coordinates through
 the dot notation, as well list-style access using indices. Indexed
 access is implemented such that the <cite>Point</cite> behaves like a circular
-list <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+list <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Stack Overflow. <em>Pythonic Circular List</em>.
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Stack Overflow. <em>Pythonic Circular List</em>.
 Available at: <a class="reference external" href="https://stackoverflow.com/questions/8951020/pythonic-circular-list">https://stackoverflow.com/questions/8951020/pythonic-circular-list</a>.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -185,10 +184,6 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.distance_to_line.html#compas.geometry.Point.distance_to_line" title="compas.geometry.Point.distance_to_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_line</span></code></a></p></td>
 <td><p>Compute the distance to a line.</p></td>
@@ -239,39 +234,38 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.copy.html#compas.geometry.Point.copy" title="compas.geometry.Point.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.ToString.html#compas.geometry.Point.ToString" title="compas.geometry.Point.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.copy.html#compas.geometry.Point.copy" title="compas.geometry.Point.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.from_json.html#compas.geometry.Point.from_json" title="compas.geometry.Point.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.from_json.html#compas.geometry.Point.from_json" title="compas.geometry.Point.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.from_jsonstring.html#compas.geometry.Point.from_jsonstring" title="compas.geometry.Point.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.from_jsonstring.html#compas.geometry.Point.from_jsonstring" title="compas.geometry.Point.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.sha256.html#compas.geometry.Point.sha256" title="compas.geometry.Point.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.sha256.html#compas.geometry.Point.sha256" title="compas.geometry.Point.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.to_data.html#compas.geometry.Point.to_data" title="compas.geometry.Point.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.to_data.html#compas.geometry.Point.to_data" title="compas.geometry.Point.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.to_json.html#compas.geometry.Point.to_json" title="compas.geometry.Point.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.to_json.html#compas.geometry.Point.to_json" title="compas.geometry.Point.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.to_jsonstring.html#compas.geometry.Point.to_jsonstring" title="compas.geometry.Point.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.to_jsonstring.html#compas.geometry.Point.to_jsonstring" title="compas.geometry.Point.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.transformed.html#compas.geometry.Point.transformed" title="compas.geometry.Point.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.transformed.html#compas.geometry.Point.transformed" title="compas.geometry.Point.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.validate_data.html#compas.geometry.Point.validate_data" title="compas.geometry.Point.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.validate_data.html#compas.geometry.Point.validate_data" title="compas.geometry.Point.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Point.validate_json.html#compas.geometry.Point.validate_json" title="compas.geometry.Point.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.validate_json.html#compas.geometry.Point.validate_json" title="compas.geometry.Point.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>

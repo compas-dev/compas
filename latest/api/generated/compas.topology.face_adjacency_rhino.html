@@ -111,13 +111,13 @@
 <span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">face_adjacency_rhino</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/orientation_rhino.py#L69"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct an adjacency dictionary of the given faces, assuming that the faces have arbitrary orientation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xyz</strong> (sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – The coordinates of the face vertices.</p></li>
 <li><p><strong>faces</strong> (<em>sequence[sequence[int]]</em>) – A list of faces with each face defined by a list of indices into the list of xyz coordinates.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>dict[int, list[int]]</em> – For every face a list of neighbouring faces.</p>
 </dd>
 </dl>

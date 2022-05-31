@@ -110,15 +110,15 @@
 <dt class="sig sig-object py" id="compas.geometry.decompose_matrix">
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">decompose_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/transformations/matrices.py#L235"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculates the components of rotation, translation, scale, shear, and
-perspective of a given transformation matrix M. <a class="footnote-reference brackets" href="#id2" id="id1">1</a></p>
+perspective of a given transformation matrix M. <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>M</strong> (<em>list[list[float]]</em>) – The square matrix of any dimension.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If matrix is singular or degenerative.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><ul class="simple">
 <li><p><strong>scale</strong> (<em>[float, float, float]</em>) – The 3 scale factors in x-, y-, and z-direction.</p></li>
 <li><p><strong>shear</strong> (<em>[float, float, float]</em>) – The 3 shear factors for x-y, x-z, and y-z axes.</p></li>
@@ -148,12 +148,11 @@ perspective of a given transformation matrix M. <a class="footnote-reference bra
 </code></pre></div>
 </div>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Slabaugh, 1999. <em>Computing Euler angles from a rotation matrix</em>.
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Slabaugh, 1999. <em>Computing Euler angles from a rotation matrix</em>.
 Available at: <a class="reference external" href="http://www.gregslabaugh.net/publications/euler.pdf">http://www.gregslabaugh.net/publications/euler.pdf</a></p>
-</dd>
-</dl>
+</aside>
 </dd></dl>
 
 </section>

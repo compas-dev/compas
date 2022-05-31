@@ -111,10 +111,10 @@
 <span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">trimesh_cotangent_laplacian_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csr'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/matrices.py#L331"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct the Laplacian of a triangular mesh with cotangent weights.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – Instance of mesh.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>array_like</em> – The Laplacian matrix with cotangent weights.</p>
 </dd>
 </dl>
@@ -125,7 +125,7 @@ The cotangent laplacian vectors of a mesh thus provide an approximation of the
 per-vertex normals.</p>
 <p>The <span class="math notranslate nohighlight">\(n \times n\)</span> cotangent Laplacian matrix <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> of a mesh
 with vertices <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> and edges <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> is defined as
-follows <a class="footnote-reference brackets" href="#id2" id="id1">1</a></p>
+follows <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mathbf{L}_{ij} =
     \begin{cases}
@@ -137,12 +137,11 @@ follows <a class="footnote-reference brackets" href="#id2" id="id1">1</a></p>
 <div class="math notranslate nohighlight">
 \[w_{ij} = \frac{\omega_{ij}}{\sum_{(i, k) \in \mathbf{E}_{i}} \omega_{ik}}\]</div>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Nealen A., Igarashi T., Sorkine O. and Alexa M.
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Nealen A., Igarashi T., Sorkine O. and Alexa M.
 <a class="reference external" href="https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf">Laplacian Mesh Optimization</a>.</p>
-</dd>
-</dl>
+</aside>
 </dd></dl>
 
 </section>

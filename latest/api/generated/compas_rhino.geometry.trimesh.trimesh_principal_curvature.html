@@ -112,7 +112,7 @@
 <dd><p>Compute the principal curvature of a triangle mesh.
 :Parameters: <strong>M</strong> (tuple[sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], sequence[[int, int, int]]]) – A mesh represented by a list of vertices and a list of faces.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><ul class="simple">
 <li><p><em>list[float]</em> – The max curvature per vertex.</p></li>
 <li><p><em>list[float]</em> – The min curvature per vertex.</p></li>
@@ -135,11 +135,10 @@
 <div class="math notranslate nohighlight">
 \[\kappa^1_i, \kappa^2_i =  \frac{H_i}{A_i}\pm\sqrt{\left( \,\frac{H_i}{A_i}\right)\,^2-\frac{K_i}{A_i}}\]</div>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p>Formula of Discrete Principal Curvature available at Keenan Crane’s lecture, 03:16-07:11, at <a class="reference external" href="https://youtu.be/sokeN5VxBB8">https://youtu.be/sokeN5VxBB8</a></p>
-</dd>
-</dl>
+<aside class="footnote brackets" id="id1" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Formula of Discrete Principal Curvature available at Keenan Crane’s lecture, 03:16-07:11, at <a class="reference external" href="https://youtu.be/sokeN5VxBB8">https://youtu.be/sokeN5VxBB8</a></p>
+</aside>
 <p class="rubric">Examples</p>
 <p>Make a mesh from scratch
 &gt;&gt;&gt; from compas.geometry import Sphere

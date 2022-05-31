@@ -111,10 +111,10 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_sphere_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bestfit/bestfit_numpy.py#L156"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the sphere’s center and radius that fits best through a set of points.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>points</strong> (<em>array_like[point]</em>) – XYZ coordinates of the points.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>[float, float, float]</em> – Sphere center (XYZ coordinates).</p></li>
 <li><p><em>float</em> – Sphere radius.</p></li>
@@ -123,14 +123,13 @@
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>For more information see <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<p>For more information see <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Least Squares Sphere Fit.
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Least Squares Sphere Fit.
 Available at: <a class="reference external" href="https://jekel.me/2015/Least-Squares-Sphere-Fit/">https://jekel.me/2015/Least-Squares-Sphere-Fit/</a>.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">bestfit_sphere_numpy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">291.580</span><span class="p">,</span> <span class="o">-</span><span class="mf">199.041</span><span class="p">,</span> <span class="mf">120.194</span><span class="p">),</span> <span class="p">(</span><span class="mf">293.003</span><span class="p">,</span> <span class="o">-</span><span class="mf">52.379</span><span class="p">,</span> <span class="mf">33.599</span><span class="p">),</span>                  <span class="p">(</span><span class="mf">514.217</span><span class="p">,</span> <span class="mf">26.345</span><span class="p">,</span> <span class="mf">29.143</span><span class="p">),</span> <span class="p">(</span><span class="mf">683.253</span><span class="p">,</span> <span class="mf">26.510</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.194</span><span class="p">),</span>                  <span class="p">(</span><span class="mf">683.247</span><span class="p">,</span> <span class="o">-</span><span class="mf">327.154</span><span class="p">,</span> <span class="mf">179.113</span><span class="p">),</span> <span class="p">(</span><span class="mf">231.606</span><span class="p">,</span> <span class="o">-</span><span class="mf">430.659</span><span class="p">,</span> <span class="mf">115.458</span><span class="p">),</span>                  <span class="p">(</span><span class="mf">87.278</span><span class="p">,</span> <span class="o">-</span><span class="mf">419.178</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.863</span><span class="p">),</span> <span class="p">(</span><span class="mf">24.731</span><span class="p">,</span> <span class="o">-</span><span class="mf">340.222</span><span class="p">,</span> <span class="o">-</span><span class="mf">127.158</span><span class="p">)]</span>

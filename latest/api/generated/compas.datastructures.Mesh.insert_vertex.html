@@ -113,7 +113,7 @@
 <span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">insert_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/mesh.py#L727"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Insert a vertex in the specified face.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fkey</strong> (<em>int</em>) – The key of the face in which the vertex should be inserted.</p></li>
 <li><p><strong>key</strong> (<em>int, optional</em>) – The key to be used to identify the inserted vertex.</p></li>
@@ -121,7 +121,7 @@
 <li><p><strong>return_fkeys</strong> (<em>bool, optional</em>) – If True, return the identifiers of the newly created faces in addition to the identifier of the inserted vertex.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>int | tuple[int, list[int]]</em> – If <cite>return_fkeys</cite> is False, the key of the inserted vertex.
 If <cite>return_fkeys</cite> is True, the key of the newly created vertex and a list with the newly created faces.</p>
 </dd>

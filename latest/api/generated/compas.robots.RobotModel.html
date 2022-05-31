@@ -116,7 +116,7 @@ structure.</p>
 <p>In line with URDF limitations, only tree structures can be represented by
 this model, ruling out all parallel robots.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – Unique name of the robot.</p></li>
 <li><p><strong>joints</strong> (list[<a class="reference internal" href="compas.robots.Joint.html#compas.robots.Joint" title="compas.robots.Joint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Joint</span></code></a>]) – List of joint elements.</p></li>
@@ -129,10 +129,6 @@ this model, ruling out all parallel robots.</p>
 </dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.add_joint.html#compas.robots.RobotModel.add_joint" title="compas.robots.RobotModel.add_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_joint</span></code></a></p></td>
 <td><p>Adds a joint to the robot model.</p></td>
@@ -243,39 +239,38 @@ this model, ruling out all parallel robots.</p>
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.copy.html#compas.robots.RobotModel.copy" title="compas.robots.RobotModel.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.ToString.html#compas.robots.RobotModel.ToString" title="compas.robots.RobotModel.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.copy.html#compas.robots.RobotModel.copy" title="compas.robots.RobotModel.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_data.html#compas.robots.RobotModel.from_data" title="compas.robots.RobotModel.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_data.html#compas.robots.RobotModel.from_data" title="compas.robots.RobotModel.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_json.html#compas.robots.RobotModel.from_json" title="compas.robots.RobotModel.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_json.html#compas.robots.RobotModel.from_json" title="compas.robots.RobotModel.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_jsonstring.html#compas.robots.RobotModel.from_jsonstring" title="compas.robots.RobotModel.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.from_jsonstring.html#compas.robots.RobotModel.from_jsonstring" title="compas.robots.RobotModel.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.sha256.html#compas.robots.RobotModel.sha256" title="compas.robots.RobotModel.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.sha256.html#compas.robots.RobotModel.sha256" title="compas.robots.RobotModel.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_data.html#compas.robots.RobotModel.to_data" title="compas.robots.RobotModel.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_data.html#compas.robots.RobotModel.to_data" title="compas.robots.RobotModel.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_json.html#compas.robots.RobotModel.to_json" title="compas.robots.RobotModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_json.html#compas.robots.RobotModel.to_json" title="compas.robots.RobotModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_jsonstring.html#compas.robots.RobotModel.to_jsonstring" title="compas.robots.RobotModel.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_jsonstring.html#compas.robots.RobotModel.to_jsonstring" title="compas.robots.RobotModel.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_data.html#compas.robots.RobotModel.validate_data" title="compas.robots.RobotModel.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_data.html#compas.robots.RobotModel.validate_data" title="compas.robots.RobotModel.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_json.html#compas.robots.RobotModel.validate_json" title="compas.robots.RobotModel.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_json.html#compas.robots.RobotModel.validate_json" title="compas.robots.RobotModel.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>

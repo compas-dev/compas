@@ -113,13 +113,13 @@
 <span class="sig-prename descclassname"><span class="pre">NurbsSurface.</span></span><span class="sig-name descname"><span class="pre">closest_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/surfaces/surface.py#L332"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the closest point on the curve to a given point.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>point</strong> (<em>Point</em>) – The point to project to the surface.</p></li>
 <li><p><strong>return_parameters</strong> (<em>bool, optional</em>) – If True, return the surface UV parameters in addition to the closest point.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> | tuple[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>, tuple[float, float]] – If <cite>return_parameters</cite> is False, the nearest point on the surface.
 If <cite>return_parameters</cite> is True, the UV parameters in addition to the nearest point on the surface.</p>
 </dd>

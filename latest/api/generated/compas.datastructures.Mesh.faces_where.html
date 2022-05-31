@@ -113,7 +113,7 @@
 <span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">faces_where</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L816"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get faces for which a certain condition or set of conditions is true.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>conditions</strong> (<em>dict, optional</em>) – A set of conditions in the form of key-value pairs.
 The keys should be attribute names. The values can be attribute
@@ -122,7 +122,7 @@ values or ranges of attribute values in the form of min/max pairs.</p></li>
 <li><p><strong>**kwargs</strong> (<em>dict[str, Any], optional</em>) – Additional conditions provided as named function arguments.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Yields</dt>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>int | tuple[int, dict[str, Any]]</em> – If <cite>data</cite> is False, the next face that matches the condition.
 If <cite>data</cite> is True, the next face and its attributes.</p>
 </dd>

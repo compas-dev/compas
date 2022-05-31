@@ -116,7 +116,7 @@ it ensures the remote proxy server is stopped and disposed correctly.</p>
 <p>However, if the proxy server is left open, it can be re-used for a follow-up connection,
 saving start up time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>package</strong> (<em>str, optional</em>) – The base package for the requested functionality.
 Default is None, in which case a full path to function calls should be provided.</p></li>
@@ -134,7 +134,7 @@ it will unload the module, so that the next invocation uses a fresh version.</p>
 In general, <cite>capture_output</cite> should be True when using a <cite>pythonw</cite> as executable (default).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>address</strong> (<em>str, read-only</em>) – Address of the server as a combination of <cite>url</cite> and <cite>port</cite>.</p></li>
 <li><p><strong>profile</strong> (<em>str</em>) – A profile of the code executed by the server.</p></li>
@@ -168,10 +168,6 @@ server is disposed after using it:</p>
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.rpc.Proxy.restart_server.html#compas.rpc.Proxy.restart_server" title="compas.rpc.Proxy.restart_server"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restart_server</span></code></a></p></td>
 <td><p>Restart the server.</p></td>

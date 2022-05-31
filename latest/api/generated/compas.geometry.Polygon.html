@@ -112,10 +112,10 @@
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">Primitive</span></code></a></p>
 <p>A polygon is defined by a sequence of points forming a closed loop.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>points</strong> (list[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – An ordered list of points.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>points</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>) – The points of the polygon.</p></li>
 <li><p><strong>lines</strong> (list of <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a>, read-only) – The lines of the polygon.</p></li>
@@ -143,10 +143,6 @@ The boundary should not intersect itself.</p>
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.contains.html#compas.geometry.Polygon.contains" title="compas.geometry.Polygon.contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a></p></td>
 <td><p></p></td>
@@ -170,39 +166,38 @@ The boundary should not intersect itself.</p>
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.copy.html#compas.geometry.Polygon.copy" title="compas.geometry.Polygon.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.ToString.html#compas.geometry.Polygon.ToString" title="compas.geometry.Polygon.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.copy.html#compas.geometry.Polygon.copy" title="compas.geometry.Polygon.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_json.html#compas.geometry.Polygon.from_json" title="compas.geometry.Polygon.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_json.html#compas.geometry.Polygon.from_json" title="compas.geometry.Polygon.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_jsonstring.html#compas.geometry.Polygon.from_jsonstring" title="compas.geometry.Polygon.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.from_jsonstring.html#compas.geometry.Polygon.from_jsonstring" title="compas.geometry.Polygon.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.sha256.html#compas.geometry.Polygon.sha256" title="compas.geometry.Polygon.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.sha256.html#compas.geometry.Polygon.sha256" title="compas.geometry.Polygon.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_data.html#compas.geometry.Polygon.to_data" title="compas.geometry.Polygon.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_data.html#compas.geometry.Polygon.to_data" title="compas.geometry.Polygon.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_json.html#compas.geometry.Polygon.to_json" title="compas.geometry.Polygon.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_json.html#compas.geometry.Polygon.to_json" title="compas.geometry.Polygon.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_jsonstring.html#compas.geometry.Polygon.to_jsonstring" title="compas.geometry.Polygon.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.to_jsonstring.html#compas.geometry.Polygon.to_jsonstring" title="compas.geometry.Polygon.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.transformed.html#compas.geometry.Polygon.transformed" title="compas.geometry.Polygon.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.transformed.html#compas.geometry.Polygon.transformed" title="compas.geometry.Polygon.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.validate_data.html#compas.geometry.Polygon.validate_data" title="compas.geometry.Polygon.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.validate_data.html#compas.geometry.Polygon.validate_data" title="compas.geometry.Polygon.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polygon.validate_json.html#compas.geometry.Polygon.validate_json" title="compas.geometry.Polygon.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polygon.validate_json.html#compas.geometry.Polygon.validate_json" title="compas.geometry.Polygon.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>

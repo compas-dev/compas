@@ -111,10 +111,10 @@
 <span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.trimesh.</span></span><span class="sig-name descname"><span class="pre">trimesh_mean_curvature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/trimesh/curvature.py#L117"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the discrete mean curvature of a triangle mesh.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>M</strong> (tuple[sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], sequence[[int, int, int]]]) – A mesh represented by a list of vertices and a list of faces.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>list[float]</em> – The discrete mean curvature per vertex.</p>
 </dd>
 </dl>
@@ -134,14 +134,14 @@
 <div class="math notranslate nohighlight">
 \[H_{i} = \frac{1}{4}\sum_{ij\in E}l_{ij}\phi_{ij}\]</div>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p>Formula of Discrete Mean Curvature available at Keenan Crane’s lecture, 03:16-07:11, at <a class="reference external" href="https://youtu.be/sokeN5VxBB8">https://youtu.be/sokeN5VxBB8</a></p>
-</dd>
-<dt class="label" id="id2"><span class="brackets">2</span></dt>
-<dd><p>Formula of dihedral angle available at Keenan Crane’s lecture, 04:20-05:43, at <a class="reference external" href="https://youtu.be/NlU1m-OfumE">https://youtu.be/NlU1m-OfumE</a></p>
-</dd>
-</dl>
+<aside class="footnote brackets" id="id1" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Formula of Discrete Mean Curvature available at Keenan Crane’s lecture, 03:16-07:11, at <a class="reference external" href="https://youtu.be/sokeN5VxBB8">https://youtu.be/sokeN5VxBB8</a></p>
+</aside>
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Formula of dihedral angle available at Keenan Crane’s lecture, 04:20-05:43, at <a class="reference external" href="https://youtu.be/NlU1m-OfumE">https://youtu.be/NlU1m-OfumE</a></p>
+</aside>
 <p class="rubric">Examples</p>
 <p>Make a mesh from scratch
 &gt;&gt;&gt; from compas.geometry import Sphere

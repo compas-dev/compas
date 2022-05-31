@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.conduits.BaseConduit.html#compas_rhino.conduits.BaseConduit" title="compas_rhino.conduits.base.BaseConduit"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConduit</span></code></a></p>
 <p>A Rhino display conduit for faces.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vertices</strong> (list[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – The coordinates of the vertices of the faces.</p></li>
 <li><p><strong>faces</strong> (<em>list[list[int]]</em>) – The faces defined as lists of indices in <cite>vertices</cite>.</p></li>
@@ -120,10 +120,10 @@
 Default is None, in which case the default color is used for all faces (<code class="xref py py-attr docutils literal notranslate"><span class="pre">FacesConduit.default_color</span></code>).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>color</strong> (<em>list[System.Drawing.Color]</em>) – The color specification per face.</p>
 </dd>
-<dt class="field-odd">Class Attributes</dt>
+<dt class="field-odd">Class Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>default_color</strong> (<em>System.Drawing.Color</em>) – The default color is <code class="docutils literal notranslate"><span class="pre">FromArgb(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></code>.</p>
 </dd>
 </dl>
@@ -140,10 +140,6 @@ Default is None, in which case the default color is used for all faces (<code cl
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conduits.FacesConduit.DrawForeground.html#compas_rhino.conduits.FacesConduit.DrawForeground" title="compas_rhino.conduits.FacesConduit.DrawForeground"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DrawForeground</span></code></a></p></td>
 <td><p>Draw the faces as polygons.</p></td>
@@ -152,10 +148,6 @@ Default is None, in which case the default color is used for all faces (<code cl
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conduits.FacesConduit.CalculateBoundingBox.html#compas_rhino.conduits.FacesConduit.CalculateBoundingBox" title="compas_rhino.conduits.FacesConduit.CalculateBoundingBox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CalculateBoundingBox</span></code></a></p></td>
 <td><p>Calculate the model extents that should be included in the visualization.</p></td>

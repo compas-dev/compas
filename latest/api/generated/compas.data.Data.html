@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Data.copy" href="compas.data.Data.copy.html" />
+  <link rel="next" title="Data.ToString" href="compas.data.Data.ToString.html" />
   
 
   
@@ -112,10 +112,10 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Abstract base class for all COMPAS data objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the object.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>dtype</strong> (<em>str, read-only</em>) – The type of the object in the form of a fully qualified module name and a class name, separated by a forward slash (“/”).
 For example: <code class="docutils literal notranslate"><span class="pre">&quot;compas.datastructures/Mesh&quot;</span></code>.</p></li>
@@ -179,39 +179,38 @@ of the data property: <code class="xref py py-attr docutils literal notranslate"
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.copy.html#compas.data.Data.copy" title="compas.data.Data.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.ToString.html#compas.data.Data.ToString" title="compas.data.Data.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.copy.html#compas.data.Data.copy" title="compas.data.Data.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.from_data.html#compas.data.Data.from_data" title="compas.data.Data.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.from_data.html#compas.data.Data.from_data" title="compas.data.Data.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.from_json.html#compas.data.Data.from_json" title="compas.data.Data.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.from_json.html#compas.data.Data.from_json" title="compas.data.Data.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.from_jsonstring.html#compas.data.Data.from_jsonstring" title="compas.data.Data.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.from_jsonstring.html#compas.data.Data.from_jsonstring" title="compas.data.Data.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.sha256.html#compas.data.Data.sha256" title="compas.data.Data.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.sha256.html#compas.data.Data.sha256" title="compas.data.Data.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.to_data.html#compas.data.Data.to_data" title="compas.data.Data.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.to_data.html#compas.data.Data.to_data" title="compas.data.Data.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.to_json.html#compas.data.Data.to_json" title="compas.data.Data.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.to_json.html#compas.data.Data.to_json" title="compas.data.Data.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.to_jsonstring.html#compas.data.Data.to_jsonstring" title="compas.data.Data.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.to_jsonstring.html#compas.data.Data.to_jsonstring" title="compas.data.Data.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.validate_data.html#compas.data.Data.validate_data" title="compas.data.Data.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.validate_data.html#compas.data.Data.validate_data" title="compas.data.Data.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.data.Data.validate_json.html#compas.data.Data.validate_json" title="compas.data.Data.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.data.Data.validate_json.html#compas.data.Data.validate_json" title="compas.data.Data.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>
@@ -295,10 +294,10 @@ of the data property: <code class="xref py py-attr docutils literal notranslate"
       
 
       
-      <a href="compas.data.Data.copy.html" title="Data.copy" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.data.Data.ToString.html" title="Data.ToString" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Data.copy
+          Data.ToString
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

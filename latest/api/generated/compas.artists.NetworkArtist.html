@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference internal" href="compas.artists.Artist.html#compas.artists.Artist" title="compas.artists.artist.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">Artist</span></code></a></p>
 <p>Artist for drawing network data structures.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – A COMPAS network.</p></li>
 <li><p><strong>nodes</strong> (<em>list[hashable], optional</em>) – A list of node identifiers.
@@ -123,7 +123,7 @@ The default is None, in which case all edges are drawn.</p></li>
 <li><p><strong>edgecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[tuple[hashable, hashable]], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional) – The color specification for the edges.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – The COMPAS network associated with the artist.</p></li>
 <li><p><strong>nodes</strong> (<em>list[hashable]</em>) – The list of nodes to draw.
@@ -144,7 +144,7 @@ Missing nodes get assigned the default node size <code class="xref py py-attr do
 Missing edges get assigned the default edge width <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgewidth</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Class Attributes</dt>
+<dt class="field-odd">Class Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>default_nodecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color for nodes that do not have a specified color.</p></li>
 <li><p><strong>default_edgecolor</strong> (<a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) – The default color for edges that do not have a specified color.</p></li>
@@ -155,10 +155,6 @@ Missing edges get assigned the default edge width <code class="xref py py-attr d
 </dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.NetworkArtist.clear.html#compas.artists.NetworkArtist.clear" title="compas.artists.NetworkArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear the nodes and the edges of the network.</p></td>
@@ -179,10 +175,6 @@ Missing edges get assigned the default edge width <code class="xref py py-attr d
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.NetworkArtist.build.html#compas.artists.NetworkArtist.build" title="compas.artists.NetworkArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
 <td><p>Build an artist corresponding to the item type.</p></td>

@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Plotter for the visualization of COMPAS geometry.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>view</strong> (<em>tuple[tuple[float, float], tuple[float, float]], optional</em>) – The area of the axes that should be zoomed into view.</p></li>
 <li><p><strong>figsize</strong> (<em>tuple[float, float], optional</em>) – Size of the figure in inches.</p></li>
@@ -123,34 +123,35 @@
 If <code class="docutils literal notranslate"><span class="pre">'natural'</span></code>, the drawing elements are added based on their <cite>zorder</cite>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>viewbox</strong> (<em>tuple[tuple[float, float], tuple[float, float]]</em>) – X min-max and Y min-max of the area of the axes that is zoomed into view.</p></li>
 <li><p><strong>axes</strong> (<em>matplotlib.axes.Axes, read-only</em>) – <cite>matplotlib</cite> axes object used by the figure.
-For more info, see the documentation of the Axes class (<a class="footnote-reference brackets" href="#id4" id="id1">1</a>) and the axis and tick API (<a class="footnote-reference brackets" href="#id5" id="id2">2</a>).</p></li>
+For more info, see the documentation of the Axes class (<a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>) and the axis and tick API (<a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>).</p></li>
 <li><p><strong>figure</strong> (<em>matplotlib.figure.Figure, read-only</em>) – <cite>matplotlib</cite> figure instance.
-For more info, see the figure API (<a class="footnote-reference brackets" href="#id6" id="id3">3</a>).</p></li>
+For more info, see the figure API (<a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>).</p></li>
 <li><p><strong>bgcolor</strong> (<em>tuple[float, float, float]</em>) – Background color of the figure.</p></li>
 <li><p><strong>title</strong> (<em>str</em>) – Title of the plot.</p></li>
 <li><p><strong>artists</strong> (list[<a class="reference internal" href="compas_plotters.artists.PlotterArtist.html#compas_plotters.artists.PlotterArtist" title="compas_plotters.artists.PlotterArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotterArtist</span></code></a>]) – Artists that should be included in the plot.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Class Attributes</dt>
+<dt class="field-odd">Class Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fontsize</strong> (<em>int</em>) – Default fontsize used by the plotter.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html">https://matplotlib.org/api/axes_api.html</a></p>
-</dd>
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p><a class="reference external" href="https://matplotlib.org/api/axis_api.html">https://matplotlib.org/api/axis_api.html</a></p>
-</dd>
-<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
-<dd><p><a class="reference external" href="https://matplotlib.org/api/figure_api.html">https://matplotlib.org/api/figure_api.html</a></p>
-</dd>
-</dl>
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://matplotlib.org/api/axes_api.html">https://matplotlib.org/api/axes_api.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id5" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://matplotlib.org/api/axis_api.html">https://matplotlib.org/api/axis_api.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id6" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://matplotlib.org/api/figure_api.html">https://matplotlib.org/api/figure_api.html</a></p>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Plane</span><span class="p">,</span> <span class="n">Circle</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_plotters.plotter</span> <span class="kn">import</span> <span class="n">Plotter</span>
@@ -169,10 +170,6 @@ For more info, see the figure API (<a class="footnote-reference brackets" href="
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.plotter.Plotter.add.html#compas_plotters.plotter.Plotter.add" title="compas_plotters.plotter.Plotter.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a COMPAS geometry object or data structure to the plot.</p></td>

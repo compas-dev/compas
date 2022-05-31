@@ -112,39 +112,35 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A tree for nearest neighbor search in a k-dimensional space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>objects</strong> (sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], optional) – A list of objects to populate the tree with.
 If objects are provided, the tree is built automatically.
 Otherwise, use <a class="reference internal" href="compas.geometry.KDTree.build.html#compas.geometry.KDTree.build" title="compas.geometry.KDTree.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>root</strong> (<em>Node</em>) – The root node of the built tree.
 This is the median with respect to the different dimensions of the tree.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>For more info, see <a class="footnote-reference brackets" href="#id3" id="id1">1</a> and <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
+<p>For more info, see <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Wikipedia. <em>k-d tree</em>.
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Wikipedia. <em>k-d tree</em>.
 Available at: <a class="reference external" href="https://en.wikipedia.org/wiki/K-d_tree">https://en.wikipedia.org/wiki/K-d_tree</a>.</p>
-</dd>
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>Dell’Amico, M. <em>KD-Tree for nearest neighbor search in a K-dimensional space (Python recipe)</em>.
+</aside>
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Dell’Amico, M. <em>KD-Tree for nearest neighbor search in a K-dimensional space (Python recipe)</em>.
 Available at: <a class="reference external" href="http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space/">http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space/</a>.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.KDTree.build.html#compas.geometry.KDTree.build" title="compas.geometry.KDTree.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
 <td><p>Populate a kd-tree with given objects.</p></td>

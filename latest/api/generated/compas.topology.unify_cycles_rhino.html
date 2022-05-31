@@ -111,17 +111,17 @@
 <span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">unify_cycles_rhino</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/orientation_rhino.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Unify the cycle directions of the given faces such that adjacent faces share opposite halfedges.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vertices</strong> (sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – A list of vertex coordinates.</p></li>
 <li><p><strong>faces</strong> (<em>sequence[sequence[int]]</em>) – A list of faces with each face defined by a list of indices into the list of vertices.</p></li>
 <li><p><strong>root</strong> (<em>int, optional</em>) – The starting face.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>list[list[int]]</em> – A list of faces with the same orientation as the root face.</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.10)"><strong>AssertionError</strong></a> – If not all faces were visited.</p>
 </dd>
 </dl>

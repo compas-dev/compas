@@ -113,7 +113,7 @@
 <span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">edges_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1487"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get or set multiple attributes of multiple edges.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>names</strong> (<em>list[str], optional</em>) – The names of the attribute.
 Default is None.</p></li>
@@ -122,14 +122,14 @@ Default is None.</p></li>
 <li><p><strong>keys</strong> (<em>list[tuple[int, int]], optional</em>) – A list of edge identifiers.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>list[dict[str, Any]] | list[list[Any]] | None</em> – If the parameter <cite>names</cite> is empty,
 a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
 If the parameter <cite>names</cite> is not empty,
 a list containing per edge a list of attribute values corresponding to the requested names.
 None if the function is used as a “setter”.</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.10)"><strong>KeyError</strong></a> – If any of the edges does not exist.</p>
 </dd>
 </dl>

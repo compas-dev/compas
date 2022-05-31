@@ -112,10 +112,10 @@
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.NurbsCurve.html#compas.geometry.NurbsCurve" title="compas.geometry.curves.nurbs.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">NurbsCurve</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoCurve</span></code></p>
 <p>Class representing a NURBS curve based on the NurbsCurve of Rhino.Geometry.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – Name of the curve.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], read-only) – The control points of the curve.</p></li>
 <li><p><strong>weights</strong> (<em>list[float], read-only</em>) – The weights of the control points.</p></li>
@@ -137,10 +137,6 @@
 </ul>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_interpolation.html#compas_rhino.geometry.RhinoNurbsCurve.from_interpolation" title="compas_rhino.geometry.RhinoNurbsCurve.from_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_interpolation</span></code></a></p></td>
 <td><p>Construct a NURBS curve by interpolating a set of points.</p></td>
@@ -158,126 +154,125 @@
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.aabb.html#compas_rhino.geometry.RhinoNurbsCurve.aabb" title="compas_rhino.geometry.RhinoNurbsCurve.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.ToString.html#compas_rhino.geometry.RhinoNurbsCurve.ToString" title="compas_rhino.geometry.RhinoNurbsCurve.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.aabb.html#compas_rhino.geometry.RhinoNurbsCurve.aabb" title="compas_rhino.geometry.RhinoNurbsCurve.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
 <td><p>Compute the axis aligned bounding box of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.closest_point.html#compas_rhino.geometry.RhinoNurbsCurve.closest_point" title="compas_rhino.geometry.RhinoNurbsCurve.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.closest_point.html#compas_rhino.geometry.RhinoNurbsCurve.closest_point" title="compas_rhino.geometry.RhinoNurbsCurve.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
 <td><p>Compute the closest point on the curve to a given point.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.copy.html#compas_rhino.geometry.RhinoNurbsCurve.copy" title="compas_rhino.geometry.RhinoNurbsCurve.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.copy.html#compas_rhino.geometry.RhinoNurbsCurve.copy" title="compas_rhino.geometry.RhinoNurbsCurve.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the current curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.curvature_at.html#compas_rhino.geometry.RhinoNurbsCurve.curvature_at" title="compas_rhino.geometry.RhinoNurbsCurve.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.curvature_at.html#compas_rhino.geometry.RhinoNurbsCurve.curvature_at" title="compas_rhino.geometry.RhinoNurbsCurve.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
 <td><p>Compute the curvature at a point on the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.divide_by_count.html#compas_rhino.geometry.RhinoNurbsCurve.divide_by_count" title="compas_rhino.geometry.RhinoNurbsCurve.divide_by_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_count</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.divide_by_count.html#compas_rhino.geometry.RhinoNurbsCurve.divide_by_count" title="compas_rhino.geometry.RhinoNurbsCurve.divide_by_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_count</span></code></a></p></td>
 <td><p>Divide the curve into a specific number of equal length segments.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.divide_by_length.html#compas_rhino.geometry.RhinoNurbsCurve.divide_by_length" title="compas_rhino.geometry.RhinoNurbsCurve.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.divide_by_length.html#compas_rhino.geometry.RhinoNurbsCurve.divide_by_length" title="compas_rhino.geometry.RhinoNurbsCurve.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
 <td><p>Divide the curve into segments of specified length.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.fair.html#compas_rhino.geometry.RhinoNurbsCurve.fair" title="compas_rhino.geometry.RhinoNurbsCurve.fair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fair</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.fair.html#compas_rhino.geometry.RhinoNurbsCurve.fair" title="compas_rhino.geometry.RhinoNurbsCurve.fair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fair</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.frame_at.html#compas_rhino.geometry.RhinoNurbsCurve.frame_at" title="compas_rhino.geometry.RhinoNurbsCurve.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.frame_at.html#compas_rhino.geometry.RhinoNurbsCurve.frame_at" title="compas_rhino.geometry.RhinoNurbsCurve.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Compute the local frame at a point on the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_arc.html#compas_rhino.geometry.RhinoNurbsCurve.from_arc" title="compas_rhino.geometry.RhinoNurbsCurve.from_arc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_arc</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_arc.html#compas_rhino.geometry.RhinoNurbsCurve.from_arc" title="compas_rhino.geometry.RhinoNurbsCurve.from_arc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_arc</span></code></a></p></td>
 <td><p>Construct a NURBS curve from an arc.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_circle.html#compas_rhino.geometry.RhinoNurbsCurve.from_circle" title="compas_rhino.geometry.RhinoNurbsCurve.from_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circle</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_circle.html#compas_rhino.geometry.RhinoNurbsCurve.from_circle" title="compas_rhino.geometry.RhinoNurbsCurve.from_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circle</span></code></a></p></td>
 <td><p>Construct a NURBS curve from a circle.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_data.html#compas_rhino.geometry.RhinoNurbsCurve.from_data" title="compas_rhino.geometry.RhinoNurbsCurve.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_data.html#compas_rhino.geometry.RhinoNurbsCurve.from_data" title="compas_rhino.geometry.RhinoNurbsCurve.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct a NURBS curve from its data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_ellipse.html#compas_rhino.geometry.RhinoNurbsCurve.from_ellipse" title="compas_rhino.geometry.RhinoNurbsCurve.from_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ellipse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_ellipse.html#compas_rhino.geometry.RhinoNurbsCurve.from_ellipse" title="compas_rhino.geometry.RhinoNurbsCurve.from_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ellipse</span></code></a></p></td>
 <td><p>Construct a NURBS curve from an ellipse.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_json.html#compas_rhino.geometry.RhinoNurbsCurve.from_json" title="compas_rhino.geometry.RhinoNurbsCurve.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_json.html#compas_rhino.geometry.RhinoNurbsCurve.from_json" title="compas_rhino.geometry.RhinoNurbsCurve.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_jsonstring.html#compas_rhino.geometry.RhinoNurbsCurve.from_jsonstring" title="compas_rhino.geometry.RhinoNurbsCurve.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_jsonstring.html#compas_rhino.geometry.RhinoNurbsCurve.from_jsonstring" title="compas_rhino.geometry.RhinoNurbsCurve.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_obj.html#compas_rhino.geometry.RhinoNurbsCurve.from_obj" title="compas_rhino.geometry.RhinoNurbsCurve.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_obj.html#compas_rhino.geometry.RhinoNurbsCurve.from_obj" title="compas_rhino.geometry.RhinoNurbsCurve.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a curve from an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_rhino.html#compas_rhino.geometry.RhinoNurbsCurve.from_rhino" title="compas_rhino.geometry.RhinoNurbsCurve.from_rhino"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhino</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_rhino.html#compas_rhino.geometry.RhinoNurbsCurve.from_rhino" title="compas_rhino.geometry.RhinoNurbsCurve.from_rhino"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhino</span></code></a></p></td>
 <td><p>Construct a curve from an existing Rhino curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_step.html#compas_rhino.geometry.RhinoNurbsCurve.from_step" title="compas_rhino.geometry.RhinoNurbsCurve.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_step.html#compas_rhino.geometry.RhinoNurbsCurve.from_step" title="compas_rhino.geometry.RhinoNurbsCurve.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Load a NURBS curve from an STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.length.html#compas_rhino.geometry.RhinoNurbsCurve.length" title="compas_rhino.geometry.RhinoNurbsCurve.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.length.html#compas_rhino.geometry.RhinoNurbsCurve.length" title="compas_rhino.geometry.RhinoNurbsCurve.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
 <td><p>Compute the length of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.locus.html#compas_rhino.geometry.RhinoNurbsCurve.locus" title="compas_rhino.geometry.RhinoNurbsCurve.locus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locus</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.locus.html#compas_rhino.geometry.RhinoNurbsCurve.locus" title="compas_rhino.geometry.RhinoNurbsCurve.locus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locus</span></code></a></p></td>
 <td><p>Compute the locus of points on the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.offset.html#compas_rhino.geometry.RhinoNurbsCurve.offset" title="compas_rhino.geometry.RhinoNurbsCurve.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.offset.html#compas_rhino.geometry.RhinoNurbsCurve.offset" title="compas_rhino.geometry.RhinoNurbsCurve.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.point_at.html#compas_rhino.geometry.RhinoNurbsCurve.point_at" title="compas_rhino.geometry.RhinoNurbsCurve.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.point_at.html#compas_rhino.geometry.RhinoNurbsCurve.point_at" title="compas_rhino.geometry.RhinoNurbsCurve.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Compute a point on the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.reverse.html#compas_rhino.geometry.RhinoNurbsCurve.reverse" title="compas_rhino.geometry.RhinoNurbsCurve.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.reverse.html#compas_rhino.geometry.RhinoNurbsCurve.reverse" title="compas_rhino.geometry.RhinoNurbsCurve.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
 <td><p>Reverse the parametrisation of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.reversed.html#compas_rhino.geometry.RhinoNurbsCurve.reversed" title="compas_rhino.geometry.RhinoNurbsCurve.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.reversed.html#compas_rhino.geometry.RhinoNurbsCurve.reversed" title="compas_rhino.geometry.RhinoNurbsCurve.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
 <td><p>Reverse a copy of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.sha256.html#compas_rhino.geometry.RhinoNurbsCurve.sha256" title="compas_rhino.geometry.RhinoNurbsCurve.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.sha256.html#compas_rhino.geometry.RhinoNurbsCurve.sha256" title="compas_rhino.geometry.RhinoNurbsCurve.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.smooth.html#compas_rhino.geometry.RhinoNurbsCurve.smooth" title="compas_rhino.geometry.RhinoNurbsCurve.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.smooth.html#compas_rhino.geometry.RhinoNurbsCurve.smooth" title="compas_rhino.geometry.RhinoNurbsCurve.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.space.html#compas_rhino.geometry.RhinoNurbsCurve.space" title="compas_rhino.geometry.RhinoNurbsCurve.space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">space</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.space.html#compas_rhino.geometry.RhinoNurbsCurve.space" title="compas_rhino.geometry.RhinoNurbsCurve.space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">space</span></code></a></p></td>
 <td><p>Compute evenly spaced parameters over the curve domain.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.split.html#compas_rhino.geometry.RhinoNurbsCurve.split" title="compas_rhino.geometry.RhinoNurbsCurve.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.split.html#compas_rhino.geometry.RhinoNurbsCurve.split" title="compas_rhino.geometry.RhinoNurbsCurve.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.tangent_at.html#compas_rhino.geometry.RhinoNurbsCurve.tangent_at" title="compas_rhino.geometry.RhinoNurbsCurve.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.tangent_at.html#compas_rhino.geometry.RhinoNurbsCurve.tangent_at" title="compas_rhino.geometry.RhinoNurbsCurve.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
 <td><p>Compute the tangent vector at a point on the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_data.html#compas_rhino.geometry.RhinoNurbsCurve.to_data" title="compas_rhino.geometry.RhinoNurbsCurve.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_data.html#compas_rhino.geometry.RhinoNurbsCurve.to_data" title="compas_rhino.geometry.RhinoNurbsCurve.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_json.html#compas_rhino.geometry.RhinoNurbsCurve.to_json" title="compas_rhino.geometry.RhinoNurbsCurve.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_json.html#compas_rhino.geometry.RhinoNurbsCurve.to_json" title="compas_rhino.geometry.RhinoNurbsCurve.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_jsonstring.html#compas_rhino.geometry.RhinoNurbsCurve.to_jsonstring" title="compas_rhino.geometry.RhinoNurbsCurve.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_jsonstring.html#compas_rhino.geometry.RhinoNurbsCurve.to_jsonstring" title="compas_rhino.geometry.RhinoNurbsCurve.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_obj.html#compas_rhino.geometry.RhinoNurbsCurve.to_obj" title="compas_rhino.geometry.RhinoNurbsCurve.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_obj.html#compas_rhino.geometry.RhinoNurbsCurve.to_obj" title="compas_rhino.geometry.RhinoNurbsCurve.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the curve geometry to an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_step.html#compas_rhino.geometry.RhinoNurbsCurve.to_step" title="compas_rhino.geometry.RhinoNurbsCurve.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.to_step.html#compas_rhino.geometry.RhinoNurbsCurve.to_step" title="compas_rhino.geometry.RhinoNurbsCurve.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the curve geometry to a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.torsion_at.html#compas_rhino.geometry.RhinoNurbsCurve.torsion_at" title="compas_rhino.geometry.RhinoNurbsCurve.torsion_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torsion_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.torsion_at.html#compas_rhino.geometry.RhinoNurbsCurve.torsion_at" title="compas_rhino.geometry.RhinoNurbsCurve.torsion_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torsion_at</span></code></a></p></td>
 <td><p>Compute the torsion of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.transform.html#compas_rhino.geometry.RhinoNurbsCurve.transform" title="compas_rhino.geometry.RhinoNurbsCurve.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.transform.html#compas_rhino.geometry.RhinoNurbsCurve.transform" title="compas_rhino.geometry.RhinoNurbsCurve.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform this curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.transformed.html#compas_rhino.geometry.RhinoNurbsCurve.transformed" title="compas_rhino.geometry.RhinoNurbsCurve.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.transformed.html#compas_rhino.geometry.RhinoNurbsCurve.transformed" title="compas_rhino.geometry.RhinoNurbsCurve.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.trim.html#compas_rhino.geometry.RhinoNurbsCurve.trim" title="compas_rhino.geometry.RhinoNurbsCurve.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.trim.html#compas_rhino.geometry.RhinoNurbsCurve.trim" title="compas_rhino.geometry.RhinoNurbsCurve.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.validate_data.html#compas_rhino.geometry.RhinoNurbsCurve.validate_data" title="compas_rhino.geometry.RhinoNurbsCurve.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.validate_data.html#compas_rhino.geometry.RhinoNurbsCurve.validate_data" title="compas_rhino.geometry.RhinoNurbsCurve.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.validate_json.html#compas_rhino.geometry.RhinoNurbsCurve.validate_json" title="compas_rhino.geometry.RhinoNurbsCurve.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.validate_json.html#compas_rhino.geometry.RhinoNurbsCurve.validate_json" title="compas_rhino.geometry.RhinoNurbsCurve.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>

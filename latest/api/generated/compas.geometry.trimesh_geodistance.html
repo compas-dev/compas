@@ -111,17 +111,17 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">trimesh_geodistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'exact'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/trimesh/geodistance.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the geodesic distance from every vertex of the mesh to a source vertex.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>M</strong> (tuple[sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], sequence[[int, int, int]]]) – A mesh represented by a list of vertices and a list of faces.</p></li>
 <li><p><strong>source</strong> (<em>int</em>) – The index of the vertex from where the geodesic distances should be calculated.</p></li>
 <li><p><strong>method</strong> (<em>Literal[‘exact’, ‘heat’], optional</em>) – The method for calculating the distances.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>list[float]</em> – A list of geodesic distances from the source vertex.</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.10)"><strong>NotImplementedError</strong></a> – If <cite>method</cite> is not one of <code class="docutils literal notranslate"><span class="pre">{'exact',</span> <span class="pre">'heat'}</span></code>.</p>
 </dd>
 </dl>

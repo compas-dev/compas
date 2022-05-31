@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" title="compas.datastructures.datastructure.Datastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></a></p>
 <p>Base half-face data structure for representing volumetric meshes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str, optional</em>) – The name of the graph.</p></li>
 <li><p><strong>default_vertex_attributes</strong> (<em>dict[str, Any], optional</em>) – Default values for vertex attributes.</p></li>
@@ -121,7 +121,7 @@
 <li><p><strong>default_cell_attributes</strong> (<em>dict[str, Any], optional</em>) – Default values for cell attributes.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>attributes</strong> (<em>dict[str, Any]</em>) – General attributes of the data structure which will be included in the data representation.</p></li>
 <li><p><strong>default_vertex_attributes</strong> (<em>dict[str, Any]</em>) – Default attributes of the vertices.</p></li>
@@ -133,10 +133,6 @@
 </dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.add_cell.html#compas.datastructures.HalfFace.add_cell" title="compas.datastructures.HalfFace.add_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cell</span></code></a></p></td>
 <td><p>Add a cell to the volmesh object.</p></td>
@@ -433,39 +429,38 @@
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.copy.html#compas.datastructures.HalfFace.copy" title="compas.datastructures.HalfFace.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.ToString.html#compas.datastructures.HalfFace.ToString" title="compas.datastructures.HalfFace.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.copy.html#compas.datastructures.HalfFace.copy" title="compas.datastructures.HalfFace.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_data.html#compas.datastructures.HalfFace.from_data" title="compas.datastructures.HalfFace.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_data.html#compas.datastructures.HalfFace.from_data" title="compas.datastructures.HalfFace.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_json.html#compas.datastructures.HalfFace.from_json" title="compas.datastructures.HalfFace.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_json.html#compas.datastructures.HalfFace.from_json" title="compas.datastructures.HalfFace.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_jsonstring.html#compas.datastructures.HalfFace.from_jsonstring" title="compas.datastructures.HalfFace.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_jsonstring.html#compas.datastructures.HalfFace.from_jsonstring" title="compas.datastructures.HalfFace.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.sha256.html#compas.datastructures.HalfFace.sha256" title="compas.datastructures.HalfFace.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.sha256.html#compas.datastructures.HalfFace.sha256" title="compas.datastructures.HalfFace.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_data.html#compas.datastructures.HalfFace.to_data" title="compas.datastructures.HalfFace.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_data.html#compas.datastructures.HalfFace.to_data" title="compas.datastructures.HalfFace.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_json.html#compas.datastructures.HalfFace.to_json" title="compas.datastructures.HalfFace.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_json.html#compas.datastructures.HalfFace.to_json" title="compas.datastructures.HalfFace.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_jsonstring.html#compas.datastructures.HalfFace.to_jsonstring" title="compas.datastructures.HalfFace.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_jsonstring.html#compas.datastructures.HalfFace.to_jsonstring" title="compas.datastructures.HalfFace.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_data.html#compas.datastructures.HalfFace.validate_data" title="compas.datastructures.HalfFace.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_data.html#compas.datastructures.HalfFace.validate_data" title="compas.datastructures.HalfFace.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_json.html#compas.datastructures.HalfFace.validate_json" title="compas.datastructures.HalfFace.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_json.html#compas.datastructures.HalfFace.validate_json" title="compas.datastructures.HalfFace.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>

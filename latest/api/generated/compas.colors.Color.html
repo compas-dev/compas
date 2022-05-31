@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Class for working with colors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>red</strong> (<em>float</em>) – The red component in the range of 0-1.</p></li>
 <li><p><strong>green</strong> (<em>float</em>) – The green component in the range of 0-1.</p></li>
@@ -122,10 +122,10 @@ If <code class="docutils literal notranslate"><span class="pre">alpha</span> <sp
 If <code class="docutils literal notranslate"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></code>, the color is fully opaque.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Other Parameters</dt>
+<dt class="field-even">Other Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>**kwargs</strong> (<em>dict, optional</em>) – See <code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code> for more information.</p>
 </dd>
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>r</strong> (<em>float</em>) – Red component of the color in RGB1 color space.</p></li>
 <li><p><strong>g</strong> (<em>float</em>) – Green component of the color in RGB1 color space.</p></li>
@@ -172,10 +172,6 @@ Making a color “brighter” is like shining a stronger light on it, or illumin
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.azure.html#compas.colors.Color.azure" title="compas.colors.Color.azure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">azure</span></code></a></p></td>
 <td><p>Construct the color azure.</p></td>
@@ -316,36 +312,35 @@ Making a color “brighter” is like shining a stronger light on it, or illumin
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.copy.html#compas.colors.Color.copy" title="compas.colors.Color.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.ToString.html#compas.colors.Color.ToString" title="compas.colors.Color.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.copy.html#compas.colors.Color.copy" title="compas.colors.Color.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.from_json.html#compas.colors.Color.from_json" title="compas.colors.Color.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.from_json.html#compas.colors.Color.from_json" title="compas.colors.Color.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.from_jsonstring.html#compas.colors.Color.from_jsonstring" title="compas.colors.Color.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.from_jsonstring.html#compas.colors.Color.from_jsonstring" title="compas.colors.Color.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.sha256.html#compas.colors.Color.sha256" title="compas.colors.Color.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.sha256.html#compas.colors.Color.sha256" title="compas.colors.Color.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.to_data.html#compas.colors.Color.to_data" title="compas.colors.Color.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.to_data.html#compas.colors.Color.to_data" title="compas.colors.Color.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.to_json.html#compas.colors.Color.to_json" title="compas.colors.Color.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.to_json.html#compas.colors.Color.to_json" title="compas.colors.Color.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.to_jsonstring.html#compas.colors.Color.to_jsonstring" title="compas.colors.Color.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.to_jsonstring.html#compas.colors.Color.to_jsonstring" title="compas.colors.Color.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.validate_data.html#compas.colors.Color.validate_data" title="compas.colors.Color.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.validate_data.html#compas.colors.Color.validate_data" title="compas.colors.Color.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.colors.Color.validate_json.html#compas.colors.Color.validate_json" title="compas.colors.Color.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.colors.Color.validate_json.html#compas.colors.Color.validate_json" title="compas.colors.Color.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>

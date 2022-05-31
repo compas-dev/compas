@@ -111,27 +111,27 @@
 <span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">trimesh_samplepoints_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_normals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/trimesh_samplepoints_numpy.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute sample points on a triangle mesh surface.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A triangle mesh data structure.</p></li>
 <li><p><strong>num_points</strong> (<em>int, optional</em>) – The number of sample points.</p></li>
 <li><p><strong>return_normals</strong> (<em>bool, optional</em>) – If True, return the normals in addition to the sample points.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>ndarray | tuple[ndarray, ndarray]</em> – If <cite>return_normals</cite> is False, a numpy ndarray representing sampled points with dim = [num_points, 3].
 If <cite>return_normals</cite> is True, the sample points and the normals.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p>Barycentric coordinate system, Available at <a class="reference external" href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">https://en.wikipedia.org/wiki/Barycentric_coordinate_system</a></p>
-</dd>
-<dt class="label" id="id2"><span class="brackets">2</span></dt>
-<dd><p>Efficient barycentric point sampling on meshes, arXiv:1708.07559</p>
-</dd>
-</dl>
+<aside class="footnote brackets" id="id1" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Barycentric coordinate system, Available at <a class="reference external" href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">https://en.wikipedia.org/wiki/Barycentric_coordinate_system</a></p>
+</aside>
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Efficient barycentric point sampling on meshes, arXiv:1708.07559</p>
+</aside>
 <p class="rubric">Examples</p>
 <p>Make a triangle mesh.</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>

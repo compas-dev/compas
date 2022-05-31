@@ -111,14 +111,14 @@
 <span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.booleans.</span></span><span class="sig-name descname"><span class="pre">boolean_intersection_mesh_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/booleans.py#L65"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the boolean intersection of two triangle meshes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> (tuple[sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], sequence[[int, int, int]]]) – The vertices and faces of mesh A.</p></li>
 <li><p><strong>B</strong> (tuple[sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], sequence[[int, int, int]]]) – The vertices and faces of mesh B.</p></li>
 <li><p><strong>remesh</strong> (<em>bool, optional</em>) – If True, remesh the result.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>sequence[[float, float, float]]</em> – The vertices of the boolean intersection.</p></li>
 <li><p><em>sequence[[int, int, int]]</em> – The faces of the boolean intersection.</p></li>

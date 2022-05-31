@@ -113,7 +113,7 @@
 <span class="sig-prename descclassname"><span class="pre">NurbsCurve.</span></span><span class="sig-name descname"><span class="pre">divide_by_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/curves/curve.py#L403"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Divide the curve into segments of specified length.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>length</strong> (<em>float</em>) – The length of the segments.</p></li>
 <li><p><strong>return_points</strong> (<em>bool, optional</em>) – If True, return the list of division parameters,
@@ -121,7 +121,7 @@ and the points corresponding to those parameters.
 If False, return only the list of parameters.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[float] | tuple[list[float], list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]] – If <cite>return_points</cite> is False, the parameters of the discretisation.
 If <cite>return_points</cite> is True, a list of points in addition to the parameters of the discretisation.</p>
 </dd>

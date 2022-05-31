@@ -112,10 +112,10 @@
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.curves.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a></p>
 <p>A NURBS curve is defined by control points, weights, knots, and a degree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str, optional</em>) – The name of the curve.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], read-only) – The control points.</p></li>
 <li><p><strong>weights</strong> (<em>list[float], read-only</em>) – The weights of the control points.</p></li>
@@ -130,10 +130,6 @@
 </dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.copy.html#compas.geometry.NurbsCurve.copy" title="compas.geometry.NurbsCurve.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the current curve.</p></td>
@@ -169,105 +165,104 @@
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.aabb.html#compas.geometry.NurbsCurve.aabb" title="compas.geometry.NurbsCurve.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.ToString.html#compas.geometry.NurbsCurve.ToString" title="compas.geometry.NurbsCurve.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.aabb.html#compas.geometry.NurbsCurve.aabb" title="compas.geometry.NurbsCurve.aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aabb</span></code></a></p></td>
 <td><p>Compute the axis aligned bounding box of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.closest_point.html#compas.geometry.NurbsCurve.closest_point" title="compas.geometry.NurbsCurve.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.closest_point.html#compas.geometry.NurbsCurve.closest_point" title="compas.geometry.NurbsCurve.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
 <td><p>Compute the closest point on the curve to a given point.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.curvature_at.html#compas.geometry.NurbsCurve.curvature_at" title="compas.geometry.NurbsCurve.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.curvature_at.html#compas.geometry.NurbsCurve.curvature_at" title="compas.geometry.NurbsCurve.curvature_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curvature_at</span></code></a></p></td>
 <td><p>Compute the curvature of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.divide_by_count.html#compas.geometry.NurbsCurve.divide_by_count" title="compas.geometry.NurbsCurve.divide_by_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_count</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.divide_by_count.html#compas.geometry.NurbsCurve.divide_by_count" title="compas.geometry.NurbsCurve.divide_by_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_count</span></code></a></p></td>
 <td><p>Divide the curve into a specific number of equal length segments.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.divide_by_length.html#compas.geometry.NurbsCurve.divide_by_length" title="compas.geometry.NurbsCurve.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.divide_by_length.html#compas.geometry.NurbsCurve.divide_by_length" title="compas.geometry.NurbsCurve.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
 <td><p>Divide the curve into segments of specified length.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.fair.html#compas.geometry.NurbsCurve.fair" title="compas.geometry.NurbsCurve.fair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fair</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.fair.html#compas.geometry.NurbsCurve.fair" title="compas.geometry.NurbsCurve.fair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fair</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.frame_at.html#compas.geometry.NurbsCurve.frame_at" title="compas.geometry.NurbsCurve.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.frame_at.html#compas.geometry.NurbsCurve.frame_at" title="compas.geometry.NurbsCurve.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Compute the local frame of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_json.html#compas.geometry.NurbsCurve.from_json" title="compas.geometry.NurbsCurve.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_json.html#compas.geometry.NurbsCurve.from_json" title="compas.geometry.NurbsCurve.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_jsonstring.html#compas.geometry.NurbsCurve.from_jsonstring" title="compas.geometry.NurbsCurve.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_jsonstring.html#compas.geometry.NurbsCurve.from_jsonstring" title="compas.geometry.NurbsCurve.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_obj.html#compas.geometry.NurbsCurve.from_obj" title="compas.geometry.NurbsCurve.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_obj.html#compas.geometry.NurbsCurve.from_obj" title="compas.geometry.NurbsCurve.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a curve from an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.length.html#compas.geometry.NurbsCurve.length" title="compas.geometry.NurbsCurve.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.length.html#compas.geometry.NurbsCurve.length" title="compas.geometry.NurbsCurve.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
 <td><p>Compute the length of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.locus.html#compas.geometry.NurbsCurve.locus" title="compas.geometry.NurbsCurve.locus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locus</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.locus.html#compas.geometry.NurbsCurve.locus" title="compas.geometry.NurbsCurve.locus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locus</span></code></a></p></td>
 <td><p>Compute the locus of points on the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.offset.html#compas.geometry.NurbsCurve.offset" title="compas.geometry.NurbsCurve.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.offset.html#compas.geometry.NurbsCurve.offset" title="compas.geometry.NurbsCurve.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.point_at.html#compas.geometry.NurbsCurve.point_at" title="compas.geometry.NurbsCurve.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.point_at.html#compas.geometry.NurbsCurve.point_at" title="compas.geometry.NurbsCurve.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Compute a point of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.reverse.html#compas.geometry.NurbsCurve.reverse" title="compas.geometry.NurbsCurve.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.reverse.html#compas.geometry.NurbsCurve.reverse" title="compas.geometry.NurbsCurve.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
 <td><p>Reverse the parametrisation of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.reversed.html#compas.geometry.NurbsCurve.reversed" title="compas.geometry.NurbsCurve.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.reversed.html#compas.geometry.NurbsCurve.reversed" title="compas.geometry.NurbsCurve.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
 <td><p>Reverse a copy of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.sha256.html#compas.geometry.NurbsCurve.sha256" title="compas.geometry.NurbsCurve.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.sha256.html#compas.geometry.NurbsCurve.sha256" title="compas.geometry.NurbsCurve.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.smooth.html#compas.geometry.NurbsCurve.smooth" title="compas.geometry.NurbsCurve.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.smooth.html#compas.geometry.NurbsCurve.smooth" title="compas.geometry.NurbsCurve.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.space.html#compas.geometry.NurbsCurve.space" title="compas.geometry.NurbsCurve.space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">space</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.space.html#compas.geometry.NurbsCurve.space" title="compas.geometry.NurbsCurve.space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">space</span></code></a></p></td>
 <td><p>Compute evenly spaced parameters over the curve domain.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.split.html#compas.geometry.NurbsCurve.split" title="compas.geometry.NurbsCurve.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.split.html#compas.geometry.NurbsCurve.split" title="compas.geometry.NurbsCurve.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.tangent_at.html#compas.geometry.NurbsCurve.tangent_at" title="compas.geometry.NurbsCurve.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.tangent_at.html#compas.geometry.NurbsCurve.tangent_at" title="compas.geometry.NurbsCurve.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
 <td><p>Compute the tangent vector of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_data.html#compas.geometry.NurbsCurve.to_data" title="compas.geometry.NurbsCurve.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_data.html#compas.geometry.NurbsCurve.to_data" title="compas.geometry.NurbsCurve.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_json.html#compas.geometry.NurbsCurve.to_json" title="compas.geometry.NurbsCurve.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_json.html#compas.geometry.NurbsCurve.to_json" title="compas.geometry.NurbsCurve.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_jsonstring.html#compas.geometry.NurbsCurve.to_jsonstring" title="compas.geometry.NurbsCurve.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_jsonstring.html#compas.geometry.NurbsCurve.to_jsonstring" title="compas.geometry.NurbsCurve.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_obj.html#compas.geometry.NurbsCurve.to_obj" title="compas.geometry.NurbsCurve.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_obj.html#compas.geometry.NurbsCurve.to_obj" title="compas.geometry.NurbsCurve.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the curve geometry to an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_step.html#compas.geometry.NurbsCurve.to_step" title="compas.geometry.NurbsCurve.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.to_step.html#compas.geometry.NurbsCurve.to_step" title="compas.geometry.NurbsCurve.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the curve geometry to a STP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.torsion_at.html#compas.geometry.NurbsCurve.torsion_at" title="compas.geometry.NurbsCurve.torsion_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torsion_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.torsion_at.html#compas.geometry.NurbsCurve.torsion_at" title="compas.geometry.NurbsCurve.torsion_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torsion_at</span></code></a></p></td>
 <td><p>Compute the torsion of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.transform.html#compas.geometry.NurbsCurve.transform" title="compas.geometry.NurbsCurve.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.transform.html#compas.geometry.NurbsCurve.transform" title="compas.geometry.NurbsCurve.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.transformed.html#compas.geometry.NurbsCurve.transformed" title="compas.geometry.NurbsCurve.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.transformed.html#compas.geometry.NurbsCurve.transformed" title="compas.geometry.NurbsCurve.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.trim.html#compas.geometry.NurbsCurve.trim" title="compas.geometry.NurbsCurve.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.trim.html#compas.geometry.NurbsCurve.trim" title="compas.geometry.NurbsCurve.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.validate_data.html#compas.geometry.NurbsCurve.validate_data" title="compas.geometry.NurbsCurve.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.validate_data.html#compas.geometry.NurbsCurve.validate_data" title="compas.geometry.NurbsCurve.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.validate_json.html#compas.geometry.NurbsCurve.validate_json" title="compas.geometry.NurbsCurve.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.validate_json.html#compas.geometry.NurbsCurve.validate_json" title="compas.geometry.NurbsCurve.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>
