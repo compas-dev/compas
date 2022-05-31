@@ -14,7 +14,7 @@ def after_rhino_uninstall(uninstalled_packages):
     if 'compas_ghpython' not in uninstalled_packages:
         return []
 
-    srcdir = os.path.join(os.path.dirname(__file__), 'components')
+    srcdir = os.path.join(os.path.dirname(__file__), 'components', 'ghuser')
     userobjects = [os.path.basename(ghuser) for ghuser in glob.glob(os.path.join(srcdir, '*.ghuser'))]
     uninstalled_objects = uninstall_userobjects(userobjects)
 

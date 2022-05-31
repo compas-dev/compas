@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved from `autopep8` to `black`
 * Fixed bug in `compas.utilities.linspace` for number series with high precision start and stop values.
 * Fixed uncentered viewbox in `Plotter.zoom_extents()`
+* Fixed source directory path in `compas_ghpython.uninstall` plugin.
 
 ### Removed
 
