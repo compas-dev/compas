@@ -250,6 +250,15 @@ class MeshGeometry(PartGeometry):
         """
         return self.shape
 
+    @property
+    def data(self):
+        return {
+            "shape": self.shape
+        }
+
+    @data.setter
+    def data(self, value):
+        self.shape = value["shape"]
 
 class BrepGeometry(PartGeometry):
     """
