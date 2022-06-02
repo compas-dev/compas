@@ -14,19 +14,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Data.sha256` for computing a hash value of data objects, for example for comparisons during version control.
 * Added optional `path` parameter to `compas.rpc.Proxy` to allow for non-package calls.
 * Added Grasshopper component to call RPC functions.
+* Added alternative installation procedure for Blender on Windows.
 * Added `Mesh.to_lines` method and tests.
 * Added `Data.guid` to JSON serialization.
 * Added `Data.guid` to pickle state.
 * Added `Assembly.find_by_key` to locate parts by key.
+* Added `clear_edges` and `clear_nodes` to `NetworkArtist` for ghpython.
 
 ### Changed
 
 * Set `jinja >= 3.0` to dev dependencies to fix docs build error.
 * Fixed removing of collections for `compas_plotters`.
+* Fixed bug in `compas_plotters.plotter.Plotter.add_from_list`.
 * Fixed bug in `compas.robots.Configuration`.
 * Rebuild part index after deserialization in `Assembly`.
 * Fixed bug in `compas.artists.colordict.ColorDict`.
 * Change `Mesh.mesh_dual` with option of including the boundary. 
+* Fixed type error in `compas_rhino.conversions._shapes.box_to_rhino`.
+* Moved from `autopep8` to `black`
+* Fixed bug in `compas.utilities.linspace` for number series with high precision start and stop values.
+* Fixed uncentered viewbox in `Plotter.zoom_extents()`
 * Changed `RobotModelArtists.atteched_tool_models` to dictionary to support multiple tools.
 
 ### Removed
