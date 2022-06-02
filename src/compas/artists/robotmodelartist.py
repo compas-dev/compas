@@ -82,7 +82,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
     def attached_tool_model(self):
         """
         For backwards compatibility. Returns the tool attached to the first end effector link or,
-        if not availabel, the first tool from the dictionary.
+        if not available, the first tool from the dictionary.
         Returns None if no tool are attached.
 
         Returns
@@ -134,6 +134,8 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
     def detach_tool_model(self, tool_model=None):
         """
+        Detach tool_model from this robot model.
+        If tool_model is None, all attached tools are detached.
 
         Parameters
         ----------
@@ -143,9 +145,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         """
         if tool_model:
             del self.attached_tool_models[tool_model.link_name]
-            print("DEBUG! removed tool: {}".format(tool_model))
         else:
-            print("DEBUG!")
             self.attached_tool_models.clear()
 
     def attach_mesh(self, mesh, name, link=None, frame=None):
@@ -332,7 +332,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         self._scale_link_helper(link, transformation)
 
         for tool in self.attached_tool_models.values():
-            self._scale_link_helper(tool, transformation)
+            self._scale_link_helper(tool.root, transformation)
 
     def _scale_link_helper(self, link, transformation):
         for item in itertools.chain(link.visual, link.collision):
