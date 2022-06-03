@@ -111,25 +111,26 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">allclose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L133"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns True if two lists are element-wise equal within a tolerance.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>l1</strong> (<em>sequence[float]</em>) – The first list of values.</p></li>
 <li><p><strong>l2</strong> (<em>sequence[float]</em>) – The second list of values.</p></li>
 <li><p><strong>tol</strong> (<em>float, optional</em>) – The tolerance for comparing values.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>bool</em> – True if all corresponding values of the two lists are closer than the tolerance.
 False otherwise.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The function is similar to NumPy’s <em>allclose</em> function <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>The function is similar to NumPy’s <em>allclose</em> function <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html</a></p>
-</aside>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html</a></p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.20001</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
 <span class="go">True</span>

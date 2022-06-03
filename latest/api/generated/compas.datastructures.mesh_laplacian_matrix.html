@@ -111,20 +111,20 @@
 <span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">mesh_laplacian_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csr'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/matrices.py#L193"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct a Laplacian matrix with uniform weights from a mesh data structure.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – Instance of mesh.</p></li>
 <li><p><strong>rtype</strong> (<em>Literal[‘array’, ‘csc’, ‘csr’, ‘coo’, ‘list’], optional</em>) – Format of the result.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>array_like</em> – The Laplacian matrix.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>The <span class="math notranslate nohighlight">\(n \times n\)</span> uniform Laplacian matrix <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> of a mesh
 with vertices <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> and edges <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> is defined as
-follows <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+follows <a class="footnote-reference brackets" href="#id2" id="id1">1</a></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mathbf{L}_{ij} =
 \begin{cases}
@@ -136,11 +136,12 @@ follows <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-no
 <p>Therefore, the uniform Laplacian of a vertex <span class="math notranslate nohighlight">\(\mathbf{v}_{i}\)</span> points to
 the centroid of its neighboring vertices.</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Nealen A., Igarashi T., Sorkine O. and Alexa M.
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Nealen A., Igarashi T., Sorkine O. and Alexa M.
 <a class="reference external" href="https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf">Laplacian Mesh Optimization</a>.</p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>

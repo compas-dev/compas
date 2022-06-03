@@ -111,14 +111,14 @@
 <span class="sig-prename descclassname"><span class="pre">compas.topology.</span></span><span class="sig-name descname"><span class="pre">astar_shortest_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goal</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/topology/traversal.py#L446"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Find the shortest path between two vertices of a graph or mesh using the A* search algorithm.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>graph</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> | <a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – A network or mesh data structure.</p></li>
 <li><p><strong>root</strong> (<em>hashable</em>) – The identifier of the starting node.</p></li>
 <li><p><strong>goal</strong> (<em>hashable</em>) – The identifier of the ending node.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>list[hashable] | None</em> – The path from root to goal, or None, if no path exists between the vertices.</p>
 </dd>
 </dl>

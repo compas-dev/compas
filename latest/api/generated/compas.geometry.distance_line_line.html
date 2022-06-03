@@ -111,33 +111,33 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">distance_line_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/distance.py#L431"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the shortest distance between two lines.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>l1</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a>) – Two points defining a line.</p></li>
 <li><p><strong>l2</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a>) – Two points defining a line.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>float</em> – The distance between the two lines.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>The distance is the absolute value of the dot product of a unit vector that
-is perpendicular to the two lines, and the vector between two points on the lines (<a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>).</p>
+is perpendicular to the two lines, and the vector between two points on the lines (<a class="footnote-reference brackets" href="#id3" id="id1">1</a>, <a class="footnote-reference brackets" href="#id4" id="id2">2</a>).</p>
 <p>If each of the lines is defined by two points (<span class="math notranslate nohighlight">\(l_1 = (\mathbf{x_1}, \mathbf{x_2})\)</span>,
 <span class="math notranslate nohighlight">\(l_2 = (\mathbf{x_3}, \mathbf{x_4})\)</span>), then the unit vector that is
 perpendicular to both lines is…</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id3" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Weisstein, E.W. <em>Line-line Distance</em>.
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Weisstein, E.W. <em>Line-line Distance</em>.
 Available at: <a class="reference external" href="http://mathworld.wolfram.com/Line-LineDistance.html">http://mathworld.wolfram.com/Line-LineDistance.html</a>.</p>
-</aside>
-<aside class="footnote brackets" id="id4" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Wikipedia. <em>Skew lines Distance</em>.
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Wikipedia. <em>Skew lines Distance</em>.
 Available at: <a class="reference external" href="https://en.wikipedia.org/wiki/Skew_lines#Distance">https://en.wikipedia.org/wiki/Skew_lines#Distance</a>.</p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

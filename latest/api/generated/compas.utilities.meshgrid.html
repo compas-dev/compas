@@ -111,14 +111,14 @@
 <span class="sig-prename descclassname"><span class="pre">compas.utilities.</span></span><span class="sig-name descname"><span class="pre">meshgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xy'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/utilities/itertools.py#L99"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct coordinate matrices from two coordinate vectors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>list[float]</em>) – The values of the “x axis” of the grid.</p></li>
 <li><p><strong>y</strong> (<em>list[float]</em>) – The values of the “y axis” of the grid.</p></li>
 <li><p><strong>indexing</strong> (<em>Literal[‘xy’, ‘ij’], optional</em>) – The indexing strategy determines the structure of the output.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>list[list[float]]</em> – The X values of the coordinate grid.</p></li>
 <li><p><em>list[list[float]]</em> – The Y values of the coordinate grid.</p></li>
@@ -137,12 +137,13 @@ If <cite>indexing</cite> is <code class="docutils literal notranslate"><span cla
 the shape of both matrices is <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n)</span></code>,
 with <cite>X</cite> containing the elements of <cite>x</cite> in its columns, and <cite>Y</cite> the elements of <cite>y</cite> in its rows.</p>
 <p class="rubric">References</p>
-<p>This function mimicks the functionality of <code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code> <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, but in a simpler form.</p>
-<aside class="footnote brackets" id="id2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p><cite>numpy.meshgrid</cite>.
+<p>This function mimicks the functionality of <code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code> <a class="footnote-reference brackets" href="#id2" id="id1">1</a>, but in a simpler form.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p><cite>numpy.meshgrid</cite>.
 Available at <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html">https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html</a></p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">linspace</span><span class="p">,</span> <span class="n">meshgrid</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>

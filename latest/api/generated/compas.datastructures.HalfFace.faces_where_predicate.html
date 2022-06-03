@@ -113,14 +113,14 @@
 <span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">faces_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L964"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get faces for which a certain condition or set of conditions is true using a lambda function.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate.
 The callable takes 2 parameters: the face identifier and the the face attributes, and should return True or False.</p></li>
 <li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the face attributes in addition to the identifiers.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dt class="field-even">Yields</dt>
 <dd class="field-even"><p><em>int | tuple[int, dict[str, Any]]</em> – If <cite>data</cite> is False, the next face that matches the condition.
 If <cite>data</cite> is True, the next face and its attributes.</p>
 </dd>

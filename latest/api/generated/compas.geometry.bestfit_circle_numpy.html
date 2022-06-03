@@ -111,10 +111,10 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_circle_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bestfit/bestfit_numpy.py#L74"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Fit a circle through a set of points.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>points</strong> (<em>array_like[point]</em>) – XYZ coordinates of the points.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>[float, float, float]</em> – XYZ coordinates of the center of the circle.</p></li>
 <li><p><em>[float, float, float]</em> – The normal vector of the local frame.</p></li>
@@ -130,13 +130,14 @@ and transform the points to make the problem 2D.</p>
 the difference between the resulting circles for all given points, i.e.
 minimise in the least squares sense the deviation between the individual
 radii and the average radius.</p>
-<p>For more information see <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>For more information see <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Scipy. <em>Least squares circle</em>.
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Scipy. <em>Least squares circle</em>.
 Available at: <a class="reference external" href="http://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html">http://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html</a>.</p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

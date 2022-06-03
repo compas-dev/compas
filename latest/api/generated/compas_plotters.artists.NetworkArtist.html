@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference internal" href="compas_plotters.artists.PlotterArtist.html#compas_plotters.artists.PlotterArtist" title="compas_plotters.artists.artist.PlotterArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotterArtist</span></code></a>, <a class="reference internal" href="compas.artists.NetworkArtist.html#compas.artists.NetworkArtist" title="compas.artists.networkartist.NetworkArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkArtist</span></code></a></p>
 <p>Artist for COMPAS network data structures.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – A COMPAS network.</p></li>
 <li><p><strong>nodes</strong> (<em>list[int], optional</em>) – Selection of node identifiers.
@@ -129,7 +129,7 @@ If <code class="docutils literal notranslate"><span class="pre">'relative'</span
 If <code class="docutils literal notranslate"><span class="pre">'absolute'</span></code>, the value of <cite>nodesize</cite> is scaled by the resolution of the plotter (:attr:NetworkArtist.plotter.dpi).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>node_size</strong> (<em>dict[int, float]</em>) – Mapping between node identifiers and node sizes.</p></li>
 <li><p><strong>zorder_edges</strong> (<em>int, read-only</em>) – The stacking order of the edges relative to the base stacking order of the network.</p></li>
@@ -139,6 +139,10 @@ If <code class="docutils literal notranslate"><span class="pre">'absolute'</span
 </dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.NetworkArtist.clear_edges.html#compas_plotters.artists.NetworkArtist.clear_edges" title="compas_plotters.artists.NetworkArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
 <td><p>Clear the current edges from the canvas.</p></td>
@@ -165,6 +169,10 @@ If <code class="docutils literal notranslate"><span class="pre">'absolute'</span
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.artists.NetworkArtist.build.html#compas_plotters.artists.NetworkArtist.build" title="compas_plotters.artists.NetworkArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
 <td><p>Build an artist corresponding to the item type.</p></td>

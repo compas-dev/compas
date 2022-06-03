@@ -113,7 +113,7 @@
 <span class="sig-prename descclassname"><span class="pre">RobotModel.</span></span><span class="sig-name descname"><span class="pre">forward_kinematics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/robots/model/robot.py#L934"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculate the robot’s forward kinematic.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>joint_state</strong> (<a class="reference internal" href="compas.robots.Configuration.html#compas.robots.Configuration" title="compas.robots.Configuration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Configuration</span></code></a> | dict[str, float]) – A configuration instance or a dictionary with joint names and joint values in radians and
 meters (depending on the joint type).</p></li>
@@ -121,7 +121,7 @@ meters (depending on the joint type).</p></li>
 Defaults to the end-effector link name.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code> – The frame at the end-effector link in the world coordinate system.</p>
 </dd>
 </dl>

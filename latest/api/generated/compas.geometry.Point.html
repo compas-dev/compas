@@ -112,14 +112,14 @@
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">Primitive</span></code></a></p>
 <p>A point is defined by XYZ coordinates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>float</em>) – The X coordinate of the point.</p></li>
 <li><p><strong>y</strong> (<em>float</em>) – The Y coordinate of the point.</p></li>
 <li><p><strong>z</strong> (<em>float, optional</em>) – The Z coordinate of the point.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>x</strong> (<em>float</em>) – The X coordinate of the point.</p></li>
 <li><p><strong>y</strong> (<em>float</em>) – The Y coordinate of the point.</p></li>
@@ -131,13 +131,14 @@
 <p>A <cite>Point</cite> object supports direct access to its xyz coordinates through
 the dot notation, as well list-style access using indices. Indexed
 access is implemented such that the <cite>Point</cite> behaves like a circular
-list <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+list <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Stack Overflow. <em>Pythonic Circular List</em>.
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Stack Overflow. <em>Pythonic Circular List</em>.
 Available at: <a class="reference external" href="https://stackoverflow.com/questions/8951020/pythonic-circular-list">https://stackoverflow.com/questions/8951020/pythonic-circular-list</a>.</p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -184,6 +185,10 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.distance_to_line.html#compas.geometry.Point.distance_to_line" title="compas.geometry.Point.distance_to_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to_line</span></code></a></p></td>
 <td><p>Compute the distance to a line.</p></td>
@@ -234,6 +239,10 @@ Available at: <a class="reference external" href="https://stackoverflow.com/ques
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Point.ToString.html#compas.geometry.Point.ToString" title="compas.geometry.Point.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
 <td><p>Converts the instance to a string.</p></td>

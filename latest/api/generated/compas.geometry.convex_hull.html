@@ -111,29 +111,29 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">convex_hull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/hull/hull.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct convex hull for a set of points.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>points</strong> (<em>sequence[point]</em>) – A sequence of XYZ coordinates.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>list[[int, int, int]]</em> – The triangular faces of the convex hull as lists of vertex indices
 referring to the original point coordinates.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This algorithm is based on <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. Note that is not optimized and relatively
+<p>This algorithm is based on <a class="footnote-reference brackets" href="#id3" id="id1">1</a>. Note that is not optimized and relatively
 slow on large sets of points. For a more optimized version of this algorithm,
-see <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+see <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id3" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>GitHubGist. <em>Convex Hull</em>.
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>GitHubGist. <em>Convex Hull</em>.
 Available at: <a class="reference external" href="https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543">https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543</a></p>
-</aside>
-<aside class="footnote brackets" id="id4" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Thomas Diewald. <em>Convex Hull 3D - Quickhull Algorithm</em>.
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Thomas Diewald. <em>Convex Hull 3D - Quickhull Algorithm</em>.
 Available at: <a class="reference external" href="https://web.archive.org/web/20180106161310/http://thomasdiewald.com/blog/?p=1888">https://web.archive.org/web/20180106161310/http://thomasdiewald.com/blog/?p=1888</a></p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

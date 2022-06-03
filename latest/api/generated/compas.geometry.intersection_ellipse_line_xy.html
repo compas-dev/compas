@@ -111,25 +111,26 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_ellipse_line_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ellipse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/intersections/intersections.py#L949"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Computes the intersection of an ellipse and a line in the XY plane.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ellipse</strong> (<em>tuple[float, float]</em>) – The major and minor of the ellipse.</p></li>
 <li><p><strong>line</strong> ([point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a>) – A line defined by two points, with at least XY coordinates.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>tuple[[float, float, float], [float, float, float]] | [float, float, float] | None</em> – Two points, if the line goes through the ellipse.
 One point, if the line is tangent to the ellipse.
 None, otherwise.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<p>Based on <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
-<aside class="footnote brackets" id="id2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>C# Helper. <em>Calculate where a line segment and an ellipse intersect in C#</em>.
+<p>Based on <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>C# Helper. <em>Calculate where a line segment and an ellipse intersect in C#</em>.
 Available at: <a class="reference external" href="http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/">http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/</a></p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ellipse</span> <span class="o">=</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">2.5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="mf">4.1</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>

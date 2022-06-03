@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.conduits.BaseConduit.html#compas_rhino.conduits.BaseConduit" title="compas_rhino.conduits.base.BaseConduit"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConduit</span></code></a></p>
 <p>A Rhino display conduit for lines.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>lines</strong> (list[[point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a>]) – A list of start-end point pairs that define the lines.</p></li>
 <li><p><strong>thickness</strong> (<em>list[int], optional</em>) – The thickness of the individual lines.
@@ -121,13 +121,13 @@ Default is <code class="xref py py-attr docutils literal notranslate"><span clas
 Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">LinesConduit.default_color</span></code> for all lines.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>color</strong> (<em>list[System.Drawing.Color]</em>) – A color per line.</p></li>
 <li><p><strong>thickness</strong> (<em>list[float]</em>) – A thickness per line.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Class Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Class Attributes</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>default_thickness</strong> (<em>float</em>) – The default thickness is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
 <li><p><strong>default_color</strong> (<em>System.Drawing.Color</em>) – the default color is <code class="docutils literal notranslate"><span class="pre">FromArgb(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></code>.</p></li>
@@ -150,6 +150,10 @@ Default is <code class="xref py py-attr docutils literal notranslate"><span clas
 </div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conduits.LinesConduit.DrawForeground.html#compas_rhino.conduits.LinesConduit.DrawForeground" title="compas_rhino.conduits.LinesConduit.DrawForeground"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DrawForeground</span></code></a></p></td>
 <td><p>Draw the lines.</p></td>
@@ -158,6 +162,10 @@ Default is <code class="xref py py-attr docutils literal notranslate"><span clas
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.conduits.LinesConduit.CalculateBoundingBox.html#compas_rhino.conduits.LinesConduit.CalculateBoundingBox" title="compas_rhino.conduits.LinesConduit.CalculateBoundingBox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CalculateBoundingBox</span></code></a></p></td>
 <td><p>Calculate the model extents that should be included in the visualization.</p></td>

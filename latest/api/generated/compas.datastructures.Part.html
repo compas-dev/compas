@@ -112,7 +112,7 @@
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" title="compas.datastructures.datastructure.Datastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></a></p>
 <p>A data structure for representing assembly parts.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str, optional</em>) – The name of the part.
 The name will be stored in <code class="xref py py-attr docutils literal notranslate"><span class="pre">Part.attributes</span></code>.</p></li>
@@ -121,7 +121,7 @@ The name will be stored in <code class="xref py py-attr docutils literal notrans
 <li><p><strong>features</strong> (sequence[tuple[<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a>, str]], optional) – The features to be added to the base shape of the part geometry.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>attributes</strong> (<em>dict[str, Any]</em>) – General data structure attributes that will be included in the data dict and serialization.</p></li>
 <li><p><strong>key</strong> (<em>int or str</em>) – The identifier of the part in the connectivity graph of the parent assembly.</p></li>
@@ -134,12 +134,16 @@ All transformations are with respect to the local coordinate system.</p></li>
 <li><p><strong>geometry</strong> (<a class="reference internal" href="compas.geometry.Polyhedron.html#compas.geometry.Polyhedron" title="compas.geometry.Polyhedron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polyhedron</span></code></a>, read-only) – The geometry of the part after combining the base shape and features through the specified operations.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Class Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Class Attributes</dt>
 <dd class="field-odd"><p><strong>operations</strong> (<em>dict[str, callable]</em>) – Available operations for combining features with a base shape.</p>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Part.add_feature.html#compas.datastructures.Part.add_feature" title="compas.datastructures.Part.add_feature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_feature</span></code></a></p></td>
 <td><p>Add a feature to the shape of the part and the operation through which it should be integrated.</p></td>
@@ -154,6 +158,10 @@ All transformations are with respect to the local coordinate system.</p></li>
 </table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Part.ToString.html#compas.datastructures.Part.ToString" title="compas.datastructures.Part.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
 <td><p>Converts the instance to a string.</p></td>

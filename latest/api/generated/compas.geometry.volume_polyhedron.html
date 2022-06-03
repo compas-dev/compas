@@ -111,10 +111,10 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">volume_polyhedron</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polyhedron</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/size.py#L133"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the volume of a polyhedron represented by a closed mesh.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>polyhedron</strong> (tuple[sequence[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], sequence[sequence[int]]]) – The vertices and faces of the polyhedron.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>float</em> – The volume of the polyhedron.</p>
 </dd>
 </dl>
@@ -122,7 +122,7 @@
 <p>This implementation is based on the divergence theorem, the fact that the
 <em>area vector</em> is constant for each face, and the fact that the area of each
 face can be computed as half the length of the cross product of two adjacent
-edge vectors <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+edge vectors <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <div class="math notranslate nohighlight">
 \begin{align}
     V  = \int_{P} 1
@@ -135,11 +135,12 @@ edge vectors <a class="footnote-reference brackets" href="#id2" id="id1" role="d
 has planar faces, and is positively oriented (all face normals point outwards).</p>
 </div>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id2" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Nurnberg, R. <em>Calculating the area and centroid of a polygon in 2d</em>.
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Nurnberg, R. <em>Calculating the area and centroid of a polygon in 2d</em>.
 Available at: <a class="reference external" href="http://wwwf.imperial.ac.uk/~rn/centroid.pdf">http://wwwf.imperial.ac.uk/~rn/centroid.pdf</a></p>
-</aside>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

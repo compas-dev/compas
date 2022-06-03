@@ -111,10 +111,10 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/bestfit/bestfit.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Fit a plane to a list of (more than three) points.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>points</strong> (<em>sequence[point]</em>) – A list of points represented by their XYZ coordinates.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>[float, float, float]</em> – Base point.</p></li>
 <li><p><em>[float, float, float]</em> – Normal vector (normalized).</p></li>
@@ -130,13 +130,12 @@ then this method will probably suffice. However, if your points are more
 spread then this method may not be the best fit. For more information see
 <a class="reference internal" href="#ernerfeldt2015" id="id1"><span>[ernerfeldt2015]</span></a></p>
 <p class="rubric">References</p>
-<div role="list" class="citation-list">
-<div class="citation" id="ernerfeldt2015" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">ernerfeldt2015</a><span class="fn-bracket">]</span></span>
-<p>Ernerfeldt, E. <em>Fitting a plane to many points in 3D</em>.
+<dl class="citation">
+<dt class="label" id="ernerfeldt2015"><span class="brackets"><a class="fn-backref" href="#id1">ernerfeldt2015</a></span></dt>
+<dd><p>Ernerfeldt, E. <em>Fitting a plane to many points in 3D</em>.
 Available at: <a class="reference external" href="http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points">http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points</a></p>
-</div>
-</div>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

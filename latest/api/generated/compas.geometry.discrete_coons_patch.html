@@ -112,7 +112,7 @@
 <dd><p>Creates a coons patch from a set of four or three boundary
 polylines (ab, bc, dc, ad).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ab</strong> (list[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – The XYZ coordinates of the vertices of the first polyline.</p></li>
 <li><p><strong>bc</strong> (list[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – The XYZ coordinates of the vertices of the second polyline.</p></li>
@@ -120,7 +120,7 @@ polylines (ab, bc, dc, ad).</p>
 <li><p><strong>ad</strong> (list[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – The XYZ coordinates of the vertices of the fourth polyline.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>list[[float, float, float]]</em> – The points of the coons patch.</p></li>
 <li><p><em>list[list[int]]</em> – List of faces, with every face a list of indices into the point list.</p></li>
@@ -139,18 +139,18 @@ polylines (ab, bc, dc, ad).</p>
 </div>
 <p>To create a triangular patch, one of the input polylines should be None.
 (Warning! This will result in duplicate vertices.)</p>
-<p>For more information see <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+<p>For more information see <a class="footnote-reference brackets" href="#id3" id="id1">1</a> and <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id3" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Wikipedia. <em>Coons patch</em>.
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Wikipedia. <em>Coons patch</em>.
 Available at: <a class="reference external" href="https://en.wikipedia.org/wiki/Coons_patch">https://en.wikipedia.org/wiki/Coons_patch</a>.</p>
-</aside>
-<aside class="footnote brackets" id="id4" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Robert Ferreol. <em>Patch de Coons</em>.
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Robert Ferreol. <em>Patch de Coons</em>.
 Available at: <a class="reference external" href="https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml">https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml</a></p>
-</aside>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>

@@ -111,29 +111,29 @@
 <span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">vector_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L1037"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the component of u in the direction of v.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>u</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>) – XYZ components of the vector.</p></li>
 <li><p><strong>v</strong> ([float, float, float] | <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>) – XYZ components of the direction.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>[float, float, float]</em> – The component of u in the direction of v.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>This is similar to computing direction cosines, or to the projection of
-a vector onto another vector. See the respective Wikipedia pages (<a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>)
+a vector onto another vector. See the respective Wikipedia pages (<a class="footnote-reference brackets" href="#id3" id="id1">1</a>, <a class="footnote-reference brackets" href="#id4" id="id2">2</a>)
 for more info.</p>
 <p class="rubric">References</p>
-<aside class="footnote brackets" id="id3" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p><em>Direction cosine</em>. Available at <a class="reference external" href="https://en.wikipedia.org/wiki/Direction_cosine">https://en.wikipedia.org/wiki/Direction_cosine</a>.</p>
-</aside>
-<aside class="footnote brackets" id="id4" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p><em>Vector projection</em>. Available at <a class="reference external" href="https://en.wikipedia.org/wiki/Vector_projection">https://en.wikipedia.org/wiki/Vector_projection</a>.</p>
-</aside>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p><em>Direction cosine</em>. Available at <a class="reference external" href="https://en.wikipedia.org/wiki/Direction_cosine">https://en.wikipedia.org/wiki/Direction_cosine</a>.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p><em>Vector projection</em>. Available at <a class="reference external" href="https://en.wikipedia.org/wiki/Vector_projection">https://en.wikipedia.org/wiki/Vector_projection</a>.</p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vector_component</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
 <span class="go">[1.0, 0.0, 0.0]</span>

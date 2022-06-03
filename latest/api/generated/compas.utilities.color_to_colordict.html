@@ -114,7 +114,7 @@
 <p><span class="versionmodified deprecated">Deprecated since version 1.14: </span>Use <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> instead.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>color</strong> (<em>str | [int, int, int] | [float, float, float] | dict[hashable, [int, int, int]] | dict[hashable, [float, float, float]]</em>) – The base color specification.
 This can be a single color (as HEX or RGB), a list of colors, or a dict of colors.</p></li>
@@ -124,10 +124,10 @@ This can be a single color (as HEX or RGB), a list of colors, or a dict of color
 <li><p><strong>normalize</strong> (<em>bool, optional</em>) – If True and <cite>colorformat</cite> is <code class="docutils literal notranslate"><span class="pre">'rgb'</span></code>, normalize the color components.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>dict[hashable, tuple[int, int, int]] | dict[hashable, tuple[float, float, float]]</em> – A dictionary mapping the provided keys to the provided color(s).</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.10)"><strong>Exception</strong></a> – If the value of <cite>color</cite>, or the value of <cite>colorformat</cite> is not valid.</p>
 </dd>
 </dl>
