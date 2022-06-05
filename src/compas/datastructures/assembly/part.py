@@ -18,6 +18,12 @@ from ..datastructure import Datastructure
 from ..mesh import Mesh
 from .exceptions import FeatureError
 
+# TODO: not to do
+try:
+    from compas_rhino.conversions import xform_to_rhino
+except ImportError:
+    pass
+
 
 class Feature(Data):
     """
@@ -150,16 +156,23 @@ class BrepFeature(Feature):
     """
     Represents a Brep feature of a Part. Can be applied to Part whose geometry is described by a BrepGeometry.
     """
+    # TODO: not to do
+    try:
+        from Rhino.Geometry import Brep
+    except ImportError:
+        pass
 
-    ALLOWED_OPERATIONS = {"trim": None}  # TODO: map to pluggable trim operation function
+    ALLOWED_OPERATIONS = {"trim": Brep.Trim}  # TODO: map to pluggable trim operation function
 
     def __init__(self, cutting_plane, operation):
         super(BrepFeature, self).__init__(operation)
         self.cutting_plane = cutting_plane
 
     def _apply_feature(self):
-        breps = self.operation(self.cutting_plane, self.part.geometry)
-        self.part._part_geometry = self._pick_resulting_brep(breps)
+        self.cutting_plane.Flip()  # why?
+        # self.cutting_plane.transform_to_worldXY ?
+        breps = self.operation(self.part.geometry.shape_brep, self.cutting_plane, 1e-6)
+        self.part._part_geometry = BrepGeometry(self._pick_resulting_brep(breps))
 
     @staticmethod
     def _pick_resulting_brep(brep_list):
@@ -267,14 +280,27 @@ class BrepGeometry(PartGeometry):
 
     FEATURE_CLASS = BrepFeature
 
-    def __init__(self):
-        super(PartGeometry, self).__init__()
+    def __init__(self, brep):
+        super(BrepGeometry, self).__init__()
+        self.shape_brep = brep
+
+    @property
+    def data(self):
+        return {
+            "shape": self.shape_brep
+        }
+
+    @data.setter
+    def data(self, value):
+        self.shape_brep = value["shape"]
 
     def transformed(self, transformation):
-        raise NotImplementedError
+        transformed_copy = copy.deepcopy(self)
+        transformed_copy.shape_brep.Transform(xform_to_rhino(transformation))
+        return transformed_copy
 
     def get_drawable(self):
-        raise NotImplementedError
+        return self.shape_brep
 
 
 class Part(Datastructure):
