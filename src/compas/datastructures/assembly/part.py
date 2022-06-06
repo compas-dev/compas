@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import sys
 import copy
 from abc import abstractmethod, ABCMeta, abstractproperty
 from collections import deque
@@ -20,7 +21,7 @@ from .exceptions import FeatureError
 
 # TODO: not to do
 try:
-    from compas_rhino.conversions import xform_to_rhino
+    from compas_rhino.conversions import xform_to_rhino, frame_to_rhino
 except ImportError:
     pass
 
@@ -166,13 +167,14 @@ class BrepFeature(Feature):
 
     def __init__(self, cutting_plane, operation):
         super(BrepFeature, self).__init__(operation)
-        self.cutting_plane = cutting_plane
+        cutting_plane = cutting_plane.shape_brep
+        self.cutting_plane = frame_to_rhino(cutting_plane)
 
     def _apply_feature(self):
         self.cutting_plane.Flip()  # why?
-        # self.cutting_plane.transform_to_worldXY ?
-        breps = self.operation(self.part.geometry.shape_brep, self.cutting_plane, 1e-6)
-        self.part._part_geometry = BrepGeometry(self._pick_resulting_brep(breps))
+        breps = self.operation(self.part.geometry, self.cutting_plane, 1e-6)
+        result = BrepGeometry(self._pick_resulting_brep(breps))
+        self.part._part_geometry = result.transformed(Transformation.from_frame_to_frame(self.part.frame, Frame.worldXY()))
 
     @staticmethod
     def _pick_resulting_brep(brep_list):
@@ -478,7 +480,9 @@ class Part(Datastructure):
 
         """
         class_ = geometry.FEATURE_CLASS
-        if class_ != self._part_geometry.FEATURE_CLASS:
+
+        # unload_modules can make it difficult comparying types by identity
+        if class_.__name__ != self._part_geometry.FEATURE_CLASS.__name__:
             raise TypeError("Cannot mix Brep geometry with mesh operations or vice versa.")
 
         feature = class_(geometry, operation)
