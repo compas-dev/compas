@@ -144,6 +144,13 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
 <span class="n">unload_modules</span><span class="p">(</span><span class="s1">&#39;compas_fab&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prefer using <cite>unload_modules</cite> as early as possible in your grasshopper
+workflow. Re-loading modules later might result, for example,
+in COMPAS not being able to find an <cite>Artist</cite> as well as other issues
+related to a mid-workflow re-definition of Python types.</p>
+</div>
 </section>
 </section>
 
