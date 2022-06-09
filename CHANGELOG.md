@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Data.guid` to pickle state.
 * Added `Assembly.find_by_key` to locate parts by key.
 * Added `clear_edges` and `clear_nodes` to `NetworkArtist` for ghpython.
+* Added `ToString` method to `Data` to ensure that Rhino/Grasshopper correctly casts objects to string.
 
 ### Changed
 
@@ -34,6 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved from `autopep8` to `black`
 * Fixed bug in `compas.utilities.linspace` for number series with high precision start and stop values.
 * Fixed uncentered viewbox in `Plotter.zoom_extents()`
+* Changed `RobotModelArtists.atteched_tool_models` to dictionary to support multiple tools.
+* Locked `sphinx` to 4.5.
+* Fixed conversion bug of transformed box in `compas_rhino.conversions._shapes`
 
 ### Removed
 

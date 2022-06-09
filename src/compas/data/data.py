@@ -185,6 +185,18 @@ class Data(object):
     def data(self, data):
         raise NotImplementedError
 
+    def ToString(self):
+        """Converts the instance to a string.
+
+        This method exists for .NET compatibility. When using IronPython,
+        the implicit string conversion that usually takes place in CPython
+        will not kick-in, and in its place, IronPython will default to
+        printing self.GetType().FullName or similar. Overriding the `ToString`
+        method of .NET object class fixes that and makes Rhino/Grasshopper
+        display proper string representations when the objects are printed or
+        connected to a panel or other type of string output."""
+        return str(self)
+
     @property
     def jsonstring(self):
         return compas.json_dumps(self.data)

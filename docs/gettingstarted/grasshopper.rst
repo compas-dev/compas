@@ -60,3 +60,10 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
 
     unload_modules('compas_fab')
 
+.. note::
+
+    Prefer using `unload_modules` as early as possible in your grasshopper
+    workflow. Re-loading modules later might result, for example,
+    in COMPAS not being able to find an `Artist` as well as other issues
+    related to a mid-workflow re-definition of Python types.
+
