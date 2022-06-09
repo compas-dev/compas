@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed uncentered viewbox in `Plotter.zoom_extents()`
 * Changed `RobotModelArtists.atteched_tool_models` to dictionary to support multiple tools.
 * Locked `sphinx` to 4.5.
+* Fixed conversion bug of transformed box in `compas_rhino.conversions._shapes`
 
 ### Removed
 
