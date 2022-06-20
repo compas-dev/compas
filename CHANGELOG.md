@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Rebuild part index after deserialization in `Assembly`.
 * Fixed bug in `compas.artists.colordict.ColorDict`.
 * Change `Mesh.mesh_dual` with option of including the boundary. 
-* Fixed type error in `compas_rhino.conversions._shapes.box_to_rhino`.
+* Fixed type error in `compas_rhino.conversions.box_to_rhino`.
 * Moved from `autopep8` to `black`
 * Fixed bug in `compas.utilities.linspace` for number series with high precision start and stop values.
 * Fixed uncentered viewbox in `Plotter.zoom_extents()`
@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Locked `sphinx` to 4.5.
 * Fixed source directory path in `compas_ghpython.uninstall` plugin.
 * Fixed bug in`compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
+* Fixed conversion bug of transformed `Box` in `compas_rhino.conversions`
 
 ### Removed
 

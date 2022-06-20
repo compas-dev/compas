@@ -41,9 +41,9 @@ def box_to_compas(box):
     ysize = box.Y.Length
     zsize = box.Z.Length
     frame = plane_to_compas_frame(box.Plane)
-    frame.point.x += 0.5 * xsize
-    frame.point.y += 0.5 * ysize
-    frame.point.z += 0.5 * zsize
+    frame.point += frame.xaxis * 0.5 * xsize
+    frame.point += frame.yaxis * 0.5 * ysize
+    frame.point += frame.zaxis * 0.5 * zsize
     return Box(frame, xsize, ysize, zsize)
 
 
@@ -59,7 +59,12 @@ def box_to_rhino(box):
     :rhino:`Rhino.Geometry.Box`
 
     """
-    return RhinoBox(frame_to_rhino(box.frame), Interval(0., box.xsize), Interval(0., box.ysize), Interval(0., box.zsize))
+    # compas frame is center of box, intervals are in frame space
+    base_plane = box.frame.copy()
+    base_plane.point -= base_plane.xaxis * 0.5 * box.xsize
+    base_plane.point -= base_plane.yaxis * 0.5 * box.ysize
+    base_plane.point -= base_plane.zaxis * 0.5 * box.zsize
+    return RhinoBox(frame_to_rhino(base_plane), Interval(0, box.xsize), Interval(0, box.ysize), Interval(0, box.zsize))
 
 
 def sphere_to_compas(sphere):

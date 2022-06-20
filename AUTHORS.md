@@ -33,3 +33,4 @@
 - Andrea Ghensi <<a.ghensi@swsglobal.com>> [@sanzoghenzo](https://github.com/sanzoghenzo)
 - Nizar Taha <<taha@arch.ethz.ch>> [@nizartaha](https://github.com/nizartaha)
 - Gene Ting-Chun Kao <<kao@arch.ethz.ch>> [@GeneKao](https://github.com/GeneKao)
+- Chen Kasirer <<kasirer@arch.ethz.ch>> [@chenkasirer](https://github.com/chenkasirer)
