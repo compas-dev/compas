@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.15.0
+            1.16.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -108,6 +108,11 @@ Python by the Python of a <code class="docutils literal notranslate"><span class
 <p>It is important that the version of Python installed in the <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment matches
 the version of Python that was originally shipped with Blender. For Blender 2.83 LTS
 the version of the bundled Python is 3.7, and for 2.93 LTS it is 3.9.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On windows, the standard installation procedure recently stopped working.
+For an alternative procedure see <a class="reference internal" href="#installation-on-windows">Installation on Windows</a>.</p>
+</div>
 <section id="installation">
 <h2>Installation</h2>
 <p>These instructions are for the latest Blender 2.93 LTS which ships with Python 3.9
@@ -117,8 +122,8 @@ If you don’t have an environment yet with Python 3.9 and COMPAS you can create
 </div>
 <p>Configuring Blender to use the newly installed environment is slightly different per OS.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="6e2a2111-89a7-4aca-86df-067831098159" name="d54980a9-2129-42eb-9354-c2ef211d1eec" type="radio">
-</input><label class="compas-tab-item-label" for="6e2a2111-89a7-4aca-86df-067831098159">
+<input checked="checked" id="ecc92d96-afcb-4903-8598-a89927cea2c2" name="168fef52-fe83-4661-8983-129d0f0e85c6" type="radio">
+</input><label class="compas-tab-item-label" for="ecc92d96-afcb-4903-8598-a89927cea2c2">
 Windows</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install -v <span class="m">2</span>.93
@@ -127,8 +132,8 @@ python -m compas_blender.install -v <span class="m">2</span>.93
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.93\\2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="d307aff1-c8c7-4860-967a-99c7aa2c711f" name="d54980a9-2129-42eb-9354-c2ef211d1eec" type="radio">
-</input><label class="compas-tab-item-label" for="d307aff1-c8c7-4860-967a-99c7aa2c711f">
+<input id="d4c259e9-9ac8-4067-bf3f-4aed77807b35" name="168fef52-fe83-4661-8983-129d0f0e85c6" type="radio">
+</input><label class="compas-tab-item-label" for="d4c259e9-9ac8-4067-bf3f-4aed77807b35">
 OSX</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.93
@@ -137,8 +142,8 @@ python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="098a5b6d-1960-4098-b972-ece660ed3a00" name="d54980a9-2129-42eb-9354-c2ef211d1eec" type="radio">
-</input><label class="compas-tab-item-label" for="098a5b6d-1960-4098-b972-ece660ed3a00">
+<input id="fa05b9ec-a0a7-4b87-b390-5e14d47a5907" name="168fef52-fe83-4661-8983-129d0f0e85c6" type="radio">
+</input><label class="compas-tab-item-label" for="fa05b9ec-a0a7-4b87-b390-5e14d47a5907">
 Linux</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install ~/Blender/2.93
@@ -202,15 +207,15 @@ On Mac or Linux, you should start Blender from the command line.</p>
 <p>By adding the Blender executable to the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable this is really simple.
 Just add the following to your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="5f45f039-6aa1-4cb1-8a86-d4d7d03fe2b5" name="cbcec31b-a51a-400e-a865-2100a4094110" type="radio">
-</input><label class="compas-tab-item-label" for="5f45f039-6aa1-4cb1-8a86-d4d7d03fe2b5">
+<input checked="checked" id="606f8fdc-0e30-4d58-876f-ce5ae106e13c" name="84c494e9-767f-4802-97c7-6deccfbdb2dd" type="radio">
+</input><label class="compas-tab-item-label" for="606f8fdc-0e30-4d58-876f-ce5ae106e13c">
 OSX</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
 </div>
-<input id="0a22fab3-e835-4e2c-86db-45da55130344" name="cbcec31b-a51a-400e-a865-2100a4094110" type="radio">
-</input><label class="compas-tab-item-label" for="0a22fab3-e835-4e2c-86db-45da55130344">
+<input id="7906d4c0-f57a-4fb8-ba5b-8d1d4286ab7c" name="84c494e9-767f-4802-97c7-6deccfbdb2dd" type="radio">
+</input><label class="compas-tab-item-label" for="7906d4c0-f57a-4fb8-ba5b-8d1d4286ab7c">
 Linux</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.83:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 
@@ -242,6 +247,30 @@ you should install the same version as the one installed originally by <code cla
 conda activate blender
 pip install compas
 python -m compas_blender.install
+</code></pre></div>
+</div>
+</section>
+<section id="installation-on-windows">
+<h2>Installation on Windows</h2>
+<p>On Windows, the procedure described above no longer works.
+However, an alternative procedure is still possible.
+Note that since this procedure is based on installing COMPAS directly using the <cite>python</cite> and <cite>pip</cite> executables shipped with Blender,
+it is limited to packages that can be installed from the Python Package Index (PyPI).</p>
+<p>The basic command will install <cite>compas</cite> and <cite>compas_blender</cite> (and <cite>compas_rhino</cite> and <cite>compas_ghpython</cite>) for the default version of Blender (2.93),
+if that version can be found in the default installation location.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows
+</code></pre></div>
+</div>
+<p>Install for a different version.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows -v <span class="m">3</span>.1
+</code></pre></div>
+</div>
+<p>Install additional packages.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows -p compas_cloud
+</code></pre></div>
+</div>
+<p>Install with <cite>pip</cite> configuration options.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows --force-reinstall --no-deps
 </code></pre></div>
 </div>
 </section>
@@ -300,6 +329,7 @@ python -m compas_blender.install
 <li class="nav-item"><a class="nav-link reference internal" href="#add-ons">Add-ons</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#start-blender">Start Blender</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#known-issues">Known Issues</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#installation-on-windows">Installation on Windows</a></li>
 </ul>
 </li>
 </ul>
@@ -372,7 +402,7 @@ python -m compas_blender.install
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.15.0',
+      VERSION: '1.16.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

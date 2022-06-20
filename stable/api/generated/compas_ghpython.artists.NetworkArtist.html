@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="NetworkArtist.draw" href="compas_ghpython.artists.NetworkArtist.draw.html" />
+  <link rel="next" title="NetworkArtist.clear_edges" href="compas_ghpython.artists.NetworkArtist.clear_edges.html" />
   
 
   
@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.15.0
+            1.16.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -121,12 +121,18 @@ See <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#co
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_edges.html#compas_ghpython.artists.NetworkArtist.clear_edges" title="compas_ghpython.artists.NetworkArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
+<td><p>GH Artists are state-less.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_nodes.html#compas_ghpython.artists.NetworkArtist.clear_nodes" title="compas_ghpython.artists.NetworkArtist.clear_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_nodes</span></code></a></p></td>
+<td><p>GH Artists are state-less.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw.html#compas_ghpython.artists.NetworkArtist.draw" title="compas_ghpython.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the entire network with default color settings.</p></td>
 </tr>
@@ -139,7 +145,7 @@ See <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#co
 </tbody>
 </table>
 <p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -153,12 +159,6 @@ See <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#co
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear.html#compas_ghpython.artists.NetworkArtist.clear" title="compas_ghpython.artists.NetworkArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear the nodes and the edges of the network.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_edges.html#compas_ghpython.artists.NetworkArtist.clear_edges" title="compas_ghpython.artists.NetworkArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
-<td><p>Clear the edges of the network.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.clear_nodes.html#compas_ghpython.artists.NetworkArtist.clear_nodes" title="compas_ghpython.artists.NetworkArtist.clear_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_nodes</span></code></a></p></td>
-<td><p>Clear the nodes of the network.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_collection.html#compas_ghpython.artists.NetworkArtist.draw_collection" title="compas_ghpython.artists.NetworkArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p>Drawing method for drawing an entire collection of objects.</p></td>
@@ -240,10 +240,10 @@ See <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#co
       
 
       
-      <a href="compas_ghpython.artists.NetworkArtist.draw.html" title="NetworkArtist.draw" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_ghpython.artists.NetworkArtist.clear_edges.html" title="NetworkArtist.clear_edges" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          NetworkArtist.draw
+          NetworkArtist.clear_edges
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
@@ -288,7 +288,7 @@ See <a class="reference internal" href="compas_ghpython.artists.GHArtist.html#co
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.15.0',
+      VERSION: '1.16.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

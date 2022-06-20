@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.15.0
+            1.16.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -143,6 +143,13 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
 
 <span class="n">unload_modules</span><span class="p">(</span><span class="s1">&#39;compas_fab&#39;</span><span class="p">)</span>
 </code></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prefer using <cite>unload_modules</cite> as early as possible in your grasshopper
+workflow. Re-loading modules later might result, for example,
+in COMPAS not being able to find an <cite>Artist</cite> as well as other issues
+related to a mid-workflow re-definition of Python types.</p>
 </div>
 </section>
 </section>
@@ -269,7 +276,7 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.15.0',
+      VERSION: '1.16.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

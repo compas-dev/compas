@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.15.0
+            1.16.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -111,12 +111,33 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.conversions.</span></span><span class="sig-name descname"><span class="pre">BlenderMesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_blender/conversions/mesh.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html#compas_blender.conversions.BlenderGeometry" title="compas_blender.conversions._geometry.BlenderGeometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlenderGeometry</span></code></a></p>
 <p>Wrapper for Blender meshes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Object.html">bpy.types.Object</a>) – The Blender scene object.</p></li>
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Mesh.html">bpy.types.Mesh</a>) – The mesh data block.</p></li>
+<li><p><strong>bmesh</strong> (<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.BMesh.html">bpy.types.BMesh</a>) – The mesh data structure.</p></li>
+<li><p><strong>location</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>) – The location of the object in the scene.</p></li>
+<li><p><strong>vertices</strong> (List[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]) – The mesh vertex locations.</p></li>
+<li><p><strong>faces</strong> (List[List[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>]]) – The mesh face vertices.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="k">pass</span>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas_blender.conversions</span> <span class="kn">import</span> <span class="n">BlenderMesh</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">BlenderMesh</span><span class="o">.</span><span class="n">from_monkey</span><span class="p">()</span><span class="o">.</span><span class="n">to_compas</span><span class="p">()</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">subdivide</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="o">~</span><span class="p">),</span> <span class="s1">&#39;Desktop&#39;</span><span class="p">,</span> <span class="s1">&#39;monkey.json&#39;</span><span class="p">)</span>
+
+<span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -134,7 +155,7 @@
 </tbody>
 </table>
 <p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -274,7 +295,7 @@
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.15.0',
+      VERSION: '1.16.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

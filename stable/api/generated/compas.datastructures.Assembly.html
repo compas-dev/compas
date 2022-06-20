@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.15.0
+            1.16.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -127,7 +127,7 @@
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -145,29 +145,38 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Assembly.find.html#compas.datastructures.Assembly.find" title="compas.datastructures.Assembly.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a></p></td>
 <td><p>Find a part in the assembly by its GUID.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.parts.html#compas.datastructures.Assembly.parts" title="compas.datastructures.Assembly.parts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parts</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.find_by_key.html#compas.datastructures.Assembly.find_by_key" title="compas.datastructures.Assembly.find_by_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_by_key</span></code></a></p></td>
+<td><p>Find a part in the assembly by its key.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Assembly.parts.html#compas.datastructures.Assembly.parts" title="compas.datastructures.Assembly.parts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parts</span></code></a></p></td>
 <td><p>The parts of the assembly.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Inherited Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.copy.html#compas.datastructures.Assembly.copy" title="compas.datastructures.Assembly.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.ToString.html#compas.datastructures.Assembly.ToString" title="compas.datastructures.Assembly.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Assembly.copy.html#compas.datastructures.Assembly.copy" title="compas.datastructures.Assembly.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Assembly.from_data.html#compas.datastructures.Assembly.from_data" title="compas.datastructures.Assembly.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.from_data.html#compas.datastructures.Assembly.from_data" title="compas.datastructures.Assembly.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.from_json.html#compas.datastructures.Assembly.from_json" title="compas.datastructures.Assembly.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Assembly.from_json.html#compas.datastructures.Assembly.from_json" title="compas.datastructures.Assembly.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Assembly.from_jsonstring.html#compas.datastructures.Assembly.from_jsonstring" title="compas.datastructures.Assembly.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.from_jsonstring.html#compas.datastructures.Assembly.from_jsonstring" title="compas.datastructures.Assembly.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Assembly.sha256.html#compas.datastructures.Assembly.sha256" title="compas.datastructures.Assembly.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Assembly.to_data.html#compas.datastructures.Assembly.to_data" title="compas.datastructures.Assembly.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
@@ -313,7 +322,7 @@
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.15.0',
+      VERSION: '1.16.0',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',
