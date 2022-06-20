@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <title> - Colors and Color Maps</title>
+  
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/mono-blue.min.css">
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
+
+  
+  <link rel="next" title="API Reference" href="../api.html" />
+  
+
+  
+  <link rel="prev" title="Plotters" href="plotters.html" />
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            1.16.0
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-7 px-4 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../index.html">docs</a></li>
+            
+            <li class="breadcrumb-item"><a href="../tutorial.html">Tutorial</a></li>
+            
+            <!-- <li class="breadcrumb-item active" aria-current="page">Colors and Color Maps</li> -->
+          </ol>
+        </nav>
+        
+
+        
+        
+        <section id="colors-and-color-maps">
+<h1>Colors and Color Maps</h1>
+<p class="lead">In COMPAS colors are defined in RGB color space, with components in the range of 0-1.</p>
+<section id="the-rgb-color-circle">
+<h2>The RGB Color Circle</h2>
+<p>The color class (<a class="reference internal" href="../api/generated/compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>) provides constructor methods
+for the primary, secondary, and tertiary colors of the RGB color wheel or color circle.</p>
+<p><strong>Primary</strong></p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
+<span class="go">Color(1.0, 0.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">green</span><span class="p">()</span>
+<span class="go">Color(0.0, 1.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">blue</span><span class="p">()</span>
+<span class="go">Color(0.0, 0.0, 1.0, 1.0)</span>
+</code></pre></div>
+</div>
+<p><strong>Secondary</strong></p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">yellow</span><span class="p">()</span>
+<span class="go">Color(1.0, 1.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">cyan</span><span class="p">()</span>
+<span class="go">Color(0.0, 1.0, 1.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">magenta</span><span class="p">()</span>
+<span class="go">Color(1.0, 0.0, 1.0, 1.0)</span>
+</code></pre></div>
+</div>
+<p><strong>Tertiary</strong></p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">orange</span><span class="p">()</span>
+<span class="go">Color(1.0, 0.5, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">lime</span><span class="p">()</span>
+<span class="go">Color(0.5, 1.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">mint</span><span class="p">()</span>
+<span class="go">Color(0.0, 1.0, 0.5, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">azure</span><span class="p">()</span>
+<span class="go">Color(0.0, 0.5, 1.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">violet</span><span class="p">()</span>
+<span class="go">Color(0.5, 0.0, 1.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">()</span>
+<span class="go">Color(1.0, 0.0, 0.5, 1.0)</span>
+</code></pre></div>
+</div>
+<blockquote>
+<div><figure class="align-default" id="id1">
+<img alt="../_images/colors-1.png" class="figure-img img-fluid" src="../_images/colors-1.png" />
+<figcaption>
+<p><span class="caption-text">Colors of the RGB color circle.</span></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</section>
+<section id="lighter-and-darker-colors">
+<h2>Lighter and Darker Colors</h2>
+<p>The color class (<a class="reference internal" href="../api/generated/compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>) provides methods to generate lighter and darker variations of a given color.
+The methods can be used to modify the colors in-place (<a class="reference internal" href="../api/generated/compas.colors.Color.lighten.html#compas.colors.Color.lighten" title="compas.colors.Color.lighten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.lighten()</span></code></a> and <a class="reference internal" href="../api/generated/compas.colors.Color.darken.html#compas.colors.Color.darken" title="compas.colors.Color.darken"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.darken()</span></code></a>),
+or to generate new colors (<a class="reference internal" href="../api/generated/compas.colors.Color.lightened.html#compas.colors.Color.lightened" title="compas.colors.Color.lightened"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.lightened()</span></code></a> and <a class="reference internal" href="../api/generated/compas.colors.Color.darkened.html#compas.colors.Color.darkened" title="compas.colors.Color.darkened"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.darkened()</span></code></a>).</p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">red</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">red</span><span class="o">.</span><span class="n">lighten</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">red</span><span class="o">.</span><span class="n">darken</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">red</span>
+<span class="go">Color(1.0, 0.0, 0.0, 1.0)</span>
+</code></pre></div>
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">red</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">red</span><span class="o">.</span><span class="n">lightened</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="go">Color(1.0, 0.5, 0.5, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">red</span><span class="o">.</span><span class="n">darkened</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="go">Color(0.5, 0.0, 0.0, 1.0)</span>
+</code></pre></div>
+</div>
+<blockquote>
+<div><figure class="align-default" id="id2">
+<img alt="../_images/colors-2.png" class="figure-img img-fluid" src="../_images/colors-2.png" />
+<figcaption>
+<p><span class="caption-text">Lighter and darker colors of the color wheel.</span></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</section>
+<section id="saturation">
+<h2>Saturation</h2>
+<p>Similar to generating lighter and darker colors, the color class provides methods for saturating or desaturating colors
+(<a class="reference internal" href="../api/generated/compas.colors.Color.saturate.html#compas.colors.Color.saturate" title="compas.colors.Color.saturate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturate()</span></code></a> and <a class="reference internal" href="../api/generated/compas.colors.Color.desaturate.html#compas.colors.Color.desaturate" title="compas.colors.Color.desaturate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturate()</span></code></a>, and <a class="reference internal" href="../api/generated/compas.colors.Color.saturated.html#compas.colors.Color.saturated" title="compas.colors.Color.saturated"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturated()</span></code></a> and <a class="reference internal" href="../api/generated/compas.colors.Color.desaturated.html#compas.colors.Color.desaturated" title="compas.colors.Color.desaturated"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturated()</span></code></a>).</p>
+<blockquote>
+<div><figure class="align-default" id="id3">
+<img alt="../_images/colors-3.png" class="figure-img img-fluid" src="../_images/colors-3.png" />
+<figcaption>
+<p><span class="caption-text">Lighter and darker colors of the color wheel.</span></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</section>
+<section id="color-maps">
+<h2>Color Maps</h2>
+<p>Using <a class="reference internal" href="../api/generated/compas.colors.ColorMap.html#compas.colors.ColorMap" title="compas.colors.ColorMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorMap</span></code></a>, color maps can be constructed from various color inputs.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/generated/compas.colors.ColorMap.from_rgb.html#compas.colors.ColorMap.from_rgb" title="compas.colors.ColorMap.from_rgb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_rgb()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.colors.ColorMap.from_color.html#compas.colors.ColorMap.from_color" title="compas.colors.ColorMap.from_color"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_color()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.colors.ColorMap.from_two_colors.html#compas.colors.ColorMap.from_two_colors" title="compas.colors.ColorMap.from_two_colors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_two_colors()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.colors.ColorMap.from_three_colors.html#compas.colors.ColorMap.from_three_colors" title="compas.colors.ColorMap.from_three_colors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_three_colors()</span></code></a></p></li>
+</ul>
+<p>Maps based on named scientific color palettes designed by Fabio Crameri (<a class="reference external" href="https://www.fabiocrameri.ch/colourmaps/">https://www.fabiocrameri.ch/colourmaps/</a>)
+and some of the <cite>matplotlib</cite> color palettes are also available.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/generated/compas.colors.ColorMap.from_palette.html#compas.colors.ColorMap.from_palette" title="compas.colors.ColorMap.from_palette"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_palette()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.colors.ColorMap.from_mpl.html#compas.colors.ColorMap.from_mpl" title="compas.colors.ColorMap.from_mpl"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_mpl()</span></code></a></p></li>
+</ul>
+<p>To quickly plot a color palette for visual inspection use plot method of the color map class <a class="reference internal" href="../api/generated/compas.colors.ColorMap.plot.html#compas.colors.ColorMap.plot" title="compas.colors.ColorMap.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.plot()</span></code></a>.
+For example, the “viridis” map from <cite>matplotlib</cite>.</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/colors-4.png" class="figure-img img-fluid" src="../_images/colors-4.png" />
+</figure>
+</div></blockquote>
+<section id="examples">
+<h3>Examples</h3>
+<p>Using the following template we can compare various color maps.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.colors</span> <span class="kn">import</span> <span class="n">Color</span><span class="p">,</span> <span class="n">ColorMap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Bezier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_plotters.plotter</span> <span class="kn">import</span> <span class="n">Plotter</span>
+</code></pre></div>
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">Bezier</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="o">...</span>
+</code></pre></div>
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plotter</span> <span class="o">=</span> <span class="n">Plotter</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">locus</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="n">color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">plotter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">edgewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plotter</span><span class="o">.</span><span class="n">zoom_extents</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<section id="from-rgb">
+<h4>From RGB</h4>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_rgb</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/colors-5.png" class="figure-img img-fluid" src="../_images/colors-5.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="from-one-color">
+<h4>From One Color</h4>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">&#39;light&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">&#39;dark&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/colors-6.png" class="figure-img img-fluid" src="../_images/colors-6.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="from-two-colors">
+<h4>From Two Colors</h4>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_two_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s1">&#39;#0092D2&#39;</span><span class="p">),</span> <span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_two_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s1">&#39;#0092D2&#39;</span><span class="p">),</span> <span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">(),</span> <span class="n">diverging</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/colors-7.png" class="figure-img img-fluid" src="../_images/colors-7.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="from-three-colors">
+<h4>From Three Colors</h4>
+<div class="language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_three_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">Color</span><span class="o">.</span><span class="n">green</span><span class="p">(),</span> <span class="n">Color</span><span class="o">.</span><span class="n">blue</span><span class="p">())</span>
+</code></pre></div>
+</div>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/colors-8.png" class="figure-img img-fluid" src="../_images/colors-8.png" />
+</figure>
+</div></blockquote>
+</section>
+</section>
+</section>
+</section>
+
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation">
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column collapse show active">
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1 nav-item active"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a><ul class="nav flex-column collapse show active">
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="data.html">Data</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="geometry.html">Geometry</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="networks.html">Networks</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="volmeshes.html">Vol(umetric) Meshes</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="robots.html">Robots</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="numericaldata.html">Numerical Data</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="rpc.html">Remote Procedure Calls</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="geomaps.html">Geometric Maps</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="plotters.html">Plotters</a></li>
+<li class="toctree-l2 nav-item active"><a class="nav-link active reference internal" href="#">Colors and Color Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../plugins.html">Extension points</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../devguide.html">Developer Guide</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../releases.html">Releases</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../citing.html">Citing</a></li>
+</ul>
+
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Colors and Color Maps</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#the-rgb-color-circle">The RGB Color Circle</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#lighter-and-darker-colors">Lighter and Darker Colors</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#saturation">Saturation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#color-maps">Color Maps</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#examples">Examples</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#from-rgb">From RGB</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#from-one-color">From One Color</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#from-two-colors">From Two Colors</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#from-three-colors">From Three Colors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+      <a href="plotters.html" title="Plotters" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
+        <div class="nav-title flex-grow-1 align-self-center">
+          <div class="nav-direction small font-weight-light">Previous</div>
+          Plotters
+        </div>
+      </a>
+      
+
+      
+      <a href="../api.html" title="API Reference" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <div class="nav-title footer-link flex-grow-1 align-self-center">
+          <div class="nav-direction small font-weight-light">Next</div>
+          API Reference
+        </div>
+        <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      
+    </nav>
+  </footer>
+  <!-- footer -->
+  <!-- below -->
+  <div class="below py-5">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
+            A computational framework for collaboration and research in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <!-- <nav class="nav justify-content-center my-4">
+            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav> -->
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- below -->
+  <!-- scripts -->
+  <!-- <script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+      URL_ROOT: '',
+      VERSION: '1.16.0',
+      COLLAPSE_INDEX: false,
+      FILE_SUFFIX: '.html',
+      HAS_SOURCE: 'false',
+      SOURCELINK_SUFFIX: '.txt'
+    };
+  </script> -->
+
+  <script id="documentation_options" src="../_static/documentation_options.js"
+          data-url_root=""
+          data-has_source="true" ></script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+  <script src="../_static/underscore.js"></script>
+  <script src="../_static/doctools.js"></script>
+  <script src="../_static/js/searchtools.js"></script>
+  <script src="../_static/language_data.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $(".language-default code").addClass("python");
+      $(".language-python code").addClass("python");
+      $(".language-bash code").addClass("bash");
+      $(".language-cpp code").addClass("cpp");
+      $(".language-json code").addClass("json");
+      $(".language-none code").addClass("plaintext");
+
+      hljs.initHighlighting();
+      anchors.add();
+
+      new ClipboardJS('.btn.copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      $("#compas-navigation li.active > ul").each(function() {
+        var ul = $(this);
+        if (! ul.hasClass("show")) {
+          ul.addClass("show");
+        }
+      });
+
+      $("#compas-navigation li.toctree-l1").has("ul").each(function() {
+        var li = $(this);
+        li.addClass("has-children");
+        if (li.hasClass("active")) {
+          li.prepend('<span class="menu-toggle"><i class="fas fa-chevron-up"></i></span>');
+        }
+        else {
+          li.prepend('<span class="menu-toggle"><i class="fas fa-chevron-down"></i></span>');
+        }
+      });
+
+      $(".menu-toggle").click(function() {
+        var toggle = $(this);
+        toggle.siblings("ul").toggleClass("show");
+      });
+
+    });
+
+    var url = $("#doc_versions").data("url");
+    var docs_site = $("#doc_versions").data("docs");
+
+    if (url) {
+      $.get(url, res => {
+        var lines = res.match(/[^\r\n]+/g);
+        lines.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+        lines.reverse();
+        lines.forEach(version => {
+          $("#doc_version_list").append("<a class=\"dropdown-item\" href=\"" + docs_site + version + "/\">" + version + "</a>");
+        });
+
+        var selected_version = $('.nav-versions .dropdown-item').filter(function (i, ver) {
+          return window.location.href.startsWith(ver.href);
+        });
+        selected_version.addClass('active');
+        $("#bd-versions").text(selected_version.text());
+
+      })
+    }
+  </script>
+  <!-- scripts -->
+  
+  
+</body>
+
+</html>
