@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
 import copy
 import abc
 from collections import deque
@@ -13,6 +12,7 @@ from compas.geometry import Transformation
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
+from compas.datastructures import Mesh
 from compas.data import Data
 from compas.plugins import pluggable
 
@@ -78,10 +78,7 @@ class Feature(Data):
 
     @property
     def data(self):
-        return {
-            "feature_geometry": self.feature_geometry,
-            "operation": self.get_operation_name_by_value(self.operation)
-        }
+        return {"feature_geometry": self.feature_geometry, "operation": self.get_operation_name_by_value(self.operation)}
 
     @data.setter
     def data(self, value):
@@ -269,13 +266,12 @@ class MeshGeometry(PartGeometry):
 
     @property
     def data(self):
-        return {
-            "geometry": self.geometry
-        }
+        return {"geometry": self.geometry}
 
     @data.setter
     def data(self, value):
         self.geometry = value["geometry"]
+
 
 class BrepGeometry(PartGeometry):
     """
@@ -290,9 +286,7 @@ class BrepGeometry(PartGeometry):
 
     @property
     def data(self):
-        return {
-            "geometry": self.geometry
-        }
+        return {"geometry": self.geometry}
 
     @data.setter
     def data(self, value):
@@ -369,7 +363,7 @@ class Part(Datastructure):
                 "attributes": dict,
                 "key": int,
                 "frame": Frame,
-                "shape": Shape,
+                "geometry": PartGeometry,
                 "features": list,
                 "transformations": list,
             }
