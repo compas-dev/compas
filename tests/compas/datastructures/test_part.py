@@ -1,40 +1,14 @@
 import pytest
-from pytest import MonkeyPatch
 
 from numpy import allclose
 
 from compas.datastructures import Part
-from compas.datastructures.assembly.part import Feature
+from compas.datastructures.assembly.part import MeshGeometry, MeshFeature
 from compas.geometry import Polyhedron
 
 
-RESULTING_POLYHEDRONS = [
-    Polyhedron.from_platonicsolid(4),
-    Polyhedron.from_platonicsolid(6),
-    Polyhedron.from_platonicsolid(8),
-]
-
-
-class MockOperation(object):
-    """
-    Used to mock a boolean mesh on mesh operation.
-
-    """
-    def __init__(self):
-        self.mesh_a = None
-        self.mesh_b = None
-
-        self.result_index = 0
-
-        self.resulting_geometries = [
-            (poly.vertices, poly.faces) for poly in RESULTING_POLYHEDRONS
-        ]
-
-    def __call__(self, *args, **kwargs):
-        self.mesh_a, self.mesh_b = args[:2]
-        result = self.resulting_geometries[self.result_index]
-        self.result_index = (self.result_index + 1) % len(self.resulting_geometries)
-        return result
+def are_mesh_geometries_equal(mesh_geo_a, mesh_geo_b):
+    return are_polyhedrons_equal(mesh_geo_a.geometry, mesh_geo_b.geometry)
 
 
 def are_polyhedrons_equal(poly_a, poly_b):
@@ -55,122 +29,133 @@ def part_polyhedron():
     return Polyhedron.from_platonicsolid(4)
 
 
-@pytest.fixture
-def test_operation():
-    return MockOperation()
-
-
 def test_part_creation():
     _ = Part()
 
 
-def test_add_feature(part_polyhedron, feature_polyhedron, test_operation, monkeypatch):
-    part = Part(shape=part_polyhedron)
-    monkeypatch.setitem(Part.operations, 'difference', test_operation)
-    resulting_polyhedron = RESULTING_POLYHEDRONS[0]
+def test_add_feature(mocker, monkeypatch, part_polyhedron, feature_polyhedron):
+    original_part_geometry = MeshGeometry(part_polyhedron)
+    part = Part(geometry=original_part_geometry)
+    resulting_geometry = Polyhedron.from_platonicsolid(4)
+    feature_geometry = MeshGeometry(feature_polyhedron)
+    mock_difference_operation = mocker.Mock(return_value=resulting_geometry)
+    monkeypatch.setitem(MeshFeature.ALLOWED_OPERATIONS, "difference", mock_difference_operation)
 
-    f1 = part.add_feature(feature_polyhedron, 'difference')
+    f1 = part.add_feature(feature_geometry, "difference")
 
-    assert f1.shape == feature_polyhedron
-    assert f1.operation == test_operation
-    assert are_polyhedrons_equal(f1.previous_geometry, part_polyhedron)
-    assert are_polyhedrons_equal(part._geometry, resulting_polyhedron)
-    assert test_operation.mesh_a
+    assert are_mesh_geometries_equal(f1.previous_geometry, original_part_geometry)
+    assert are_mesh_geometries_equal(part._part_geometry, MeshGeometry(resulting_geometry))
 
 
-def test_restore_feature(part_polyhedron, feature_polyhedron, test_operation, monkeypatch):
-    part = Part(shape=part_polyhedron)
-    monkeypatch.setitem(Part.operations, 'difference', test_operation)
-    resulting_polyhedron = RESULTING_POLYHEDRONS[0]
+def test_restore_feature(mocker,monkeypatch, part_polyhedron, feature_polyhedron):
+    original_part_geometry = MeshGeometry(part_polyhedron)
+    part = Part(geometry=original_part_geometry)
+    resulting_geometry = Polyhedron.from_platonicsolid(4)
+    feature_geometry = MeshGeometry(feature_polyhedron)
+    mock_difference_operation = mocker.Mock(return_value=resulting_geometry)
+    monkeypatch.setitem(MeshFeature.ALLOWED_OPERATIONS, "difference", mock_difference_operation)
 
-    f1 = part.add_feature(shape=feature_polyhedron, operation='difference')
+    f1 = part.add_feature(feature_geometry, "difference")
 
-    assert are_polyhedrons_equal(part._geometry, resulting_polyhedron)
+    assert are_mesh_geometries_equal(part._part_geometry, MeshGeometry(resulting_geometry))
 
     f1.restore()
 
-    assert are_polyhedrons_equal(part._geometry, part_polyhedron)
+    assert are_mesh_geometries_equal(part._part_geometry, original_part_geometry)
 
 
-def test_remove_single_feature(part_polyhedron, feature_polyhedron, test_operation, monkeypatch):
-    part = Part(shape=part_polyhedron)
-    monkeypatch.setitem(Part.operations, 'difference', test_operation)
-    resulting_polyhedron = RESULTING_POLYHEDRONS[0]
+def test_remove_single_feature(mocker, monkeypatch, part_polyhedron, feature_polyhedron):
+    original_part_geometry = MeshGeometry(part_polyhedron)
+    part = Part(geometry=original_part_geometry)
+    resulting_geometry = Polyhedron.from_platonicsolid(4)
+    feature_geometry = MeshGeometry(feature_polyhedron)
+    mock_difference_operation = mocker.Mock(return_value=resulting_geometry)
+    monkeypatch.setitem(MeshFeature.ALLOWED_OPERATIONS, "difference", mock_difference_operation)
 
-    _ = part.add_feature(shape=feature_polyhedron, operation='difference')
+    _ = part.add_feature(feature_geometry, "difference")
 
-    assert are_polyhedrons_equal(part._geometry, resulting_polyhedron)
+    assert are_mesh_geometries_equal(part._part_geometry, MeshGeometry(resulting_geometry))
 
     part.clear_features()
 
-    assert are_polyhedrons_equal(part._geometry, part_polyhedron)
+    assert are_mesh_geometries_equal(part._part_geometry, original_part_geometry)
 
 
-def test_remove_multiple_features_all(part_polyhedron, feature_polyhedron, test_operation, monkeypatch):
-    part = Part(shape=part_polyhedron)
-    monkeypatch.setitem(Part.operations, 'difference', test_operation)
-    resulting_polyhedron = RESULTING_POLYHEDRONS[2]
+def test_remove_multiple_features_all(mocker, monkeypatch, part_polyhedron, feature_polyhedron):
+    original_part_geometry = MeshGeometry(part_polyhedron)
+    part = Part(geometry=original_part_geometry)
+    resulting_shapes = [Polyhedron.from_platonicsolid(4), Polyhedron.from_platonicsolid(8), Polyhedron.from_platonicsolid(12)]
+    feature_geometries = [MeshGeometry(shape) for shape in resulting_shapes]
+    mock_difference_operation = mocker.Mock(side_effect=resulting_shapes)
+    monkeypatch.setitem(MeshFeature.ALLOWED_OPERATIONS, "difference", mock_difference_operation)
+    cumulative_resulting_geometry = MeshGeometry(resulting_shapes[-1])
 
-    f1 = part.add_feature(shape=feature_polyhedron, operation='difference')
-    f2 = part.add_feature(shape=feature_polyhedron, operation='difference')
-    f3 = part.add_feature(shape=feature_polyhedron, operation='difference')
+    for geometry in feature_geometries:
+        part.add_feature(geometry, operation="difference")
 
-    assert are_polyhedrons_equal(part._geometry, resulting_polyhedron)
+    assert are_mesh_geometries_equal(part._part_geometry, cumulative_resulting_geometry)
     assert len(part.features) == 3
 
     part.clear_features()
 
-    assert are_polyhedrons_equal(part._geometry, part_polyhedron)
+    assert are_mesh_geometries_equal(part._part_geometry, original_part_geometry)
     assert len(part.features) == 0
 
 
-def test_remove_multiple_features_first_two(part_polyhedron, feature_polyhedron, test_operation, monkeypatch):
-    part = Part(shape=part_polyhedron)
-    monkeypatch.setitem(Part.operations, 'difference', test_operation)
-    f1_result = RESULTING_POLYHEDRONS[0]
-    f2_result = RESULTING_POLYHEDRONS[1]
-    f3_result = RESULTING_POLYHEDRONS[2]
+def test_remove_multiple_features_first_two(mocker, monkeypatch, part_polyhedron, feature_polyhedron):
+    original_part_geometry = MeshGeometry(part_polyhedron)
+    part = Part(geometry=original_part_geometry)
 
-    # operation is called for a total of 4 times (3 when first adding the features and once again when replaying f3 [after removing f1 and f2])
-    # 0 because index wraps (index % 3)
-    result_after_removing = RESULTING_POLYHEDRONS[0]
+    # 3 results, one for each feature, plus one for the re-application of feature #3
+    resulting_shapes = [Polyhedron.from_platonicsolid(4), Polyhedron.from_platonicsolid(6), Polyhedron.from_platonicsolid(8)] + [Polyhedron.from_platonicsolid(12)]
+    feature_geometries = [MeshGeometry(shape) for shape in resulting_shapes]
+    mock_difference_operation = mocker.Mock(side_effect=resulting_shapes)
+    monkeypatch.setitem(MeshFeature.ALLOWED_OPERATIONS, "difference", mock_difference_operation)
+    result_of_third_feature = MeshGeometry(resulting_shapes[2])
+    result_after_removing_features = MeshGeometry(resulting_shapes[-1])
 
-    f1 = part.add_feature(shape=feature_polyhedron, operation='difference')
-    f2 = part.add_feature(shape=feature_polyhedron, operation='difference')
-    f3 = part.add_feature(shape=feature_polyhedron, operation='difference')
+    features = []
+    for geometry in feature_geometries[:3]:
+        features.append(part.add_feature(geometry, operation="difference"))
 
-    assert are_polyhedrons_equal(part._geometry, f3_result)
+    assert are_mesh_geometries_equal(part._part_geometry, result_of_third_feature)
+    # third feature saves geometry resulting form second feature
+    assert are_mesh_geometries_equal(features[-1].previous_geometry, MeshGeometry(resulting_shapes[1]))
     assert len(part.features) == 3
-    assert are_polyhedrons_equal(f3.previous_geometry, f2_result)
 
-    part.clear_features(features_to_clear=[f1, f2])
+    # remove first two, third is re-applied
+    part.clear_features(features_to_clear=features[:2])
 
-    assert are_polyhedrons_equal(part._geometry, result_after_removing)
+    assert are_mesh_geometries_equal(part._part_geometry, result_after_removing_features)
+
+    # third feature is applied directly onto original shape
+    assert are_mesh_geometries_equal(features[-1].previous_geometry, original_part_geometry)
     assert len(part.features) == 1
-    assert are_polyhedrons_equal(f3.previous_geometry, part_polyhedron)
 
 
-def test_remove_middle_feature(part_polyhedron, feature_polyhedron, test_operation, monkeypatch):
+def test_remove_middle_feature(mocker, monkeypatch, part_polyhedron, feature_polyhedron):
     part = Part(shape=part_polyhedron)
-    monkeypatch.setitem(Part.operations, 'difference', test_operation)
-    f1_result = RESULTING_POLYHEDRONS[0]
-    f2_result = RESULTING_POLYHEDRONS[1]
-    f3_result = RESULTING_POLYHEDRONS[2]
+    resulting_shapes = [Polyhedron.from_platonicsolid(4), Polyhedron.from_platonicsolid(6), Polyhedron.from_platonicsolid(8)] + [Polyhedron.from_platonicsolid(12)]
+    feature_geometries = [MeshGeometry(shape) for shape in resulting_shapes]
+    mock_difference_operation = mocker.Mock(side_effect=resulting_shapes)
+    monkeypatch.setitem(MeshFeature.ALLOWED_OPERATIONS, "difference", mock_difference_operation)
+    result_of_third_feature = MeshGeometry(resulting_shapes[2])
+    result_after_removing_features = MeshGeometry(resulting_shapes[-1])
 
-    # operation is called for a total of 4 times (3 when first adding the features and once again when replaying f3 [after removing f2])
-    # 0 because index wraps (index % 3)
-    result_after_removing = RESULTING_POLYHEDRONS[0]
+    features = [part.add_feature(geometry, operation="difference") for geometry in feature_geometries[:3]]
 
-    f1 = part.add_feature(shape=feature_polyhedron, operation='difference')
-    f2 = part.add_feature(shape=feature_polyhedron, operation='difference')
-    f3 = part.add_feature(shape=feature_polyhedron, operation='difference')
+    assert are_mesh_geometries_equal(part._part_geometry, result_of_third_feature)
+    assert are_mesh_geometries_equal(features[-1].previous_geometry, MeshGeometry(resulting_shapes[1]))
+    assert len(part.features) == 3
 
-    assert are_polyhedrons_equal(f3.previous_geometry, f2_result)
+    middle_feature = features[1]
+    part.clear_features(features_to_clear=[middle_feature])
 
-    part.clear_features(features_to_clear=[f2])
+    # features #1 and #3 are being re-applied
 
-    assert are_polyhedrons_equal(part._geometry, result_after_removing)
-    assert are_polyhedrons_equal(f3.previous_geometry, f1_result)
+    assert are_mesh_geometries_equal(part._part_geometry, result_after_removing_features)
+    last_feature = features[-1]
+    assert are_mesh_geometries_equal(last_feature.previous_geometry, feature_geometries[0])
 
 
 def test_operation_unknown_raises_value_error():

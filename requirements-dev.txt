@@ -13,6 +13,7 @@ m2r2
 nbsphinx
 pydocstyle
 pytest <7.1
+pytest-mock
 sphinx_compas_theme >=0.15.18
 sphinx ==4.5
 twine

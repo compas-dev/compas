@@ -4,7 +4,7 @@ from __future__ import division
 
 import sys
 import copy
-from abc import abstractmethod, ABCMeta, abstractproperty
+import abc
 from collections import deque
 
 from compas.geometry import Frame
@@ -14,9 +14,9 @@ from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
 from compas.data import Data
+from compas.plugins import pluggable
 
 from ..datastructure import Datastructure
-from ..mesh import Mesh
 from .exceptions import FeatureError
 
 # TODO: not to do
@@ -24,6 +24,13 @@ try:
     from compas_rhino.conversions import xform_to_rhino, frame_to_rhino
 except ImportError:
     pass
+
+
+# TODO what's the category?
+# TODO move to geotmetry.__init__py
+@pluggable(category="trim")
+def trim_brep_with_plane(brep, cutting_plane, precision):
+    raise NotImplementedError
 
 
 class Feature(Data):
@@ -35,7 +42,7 @@ class Feature(Data):
 
     ALLOWED_OPERATIONS = {}
 
-    def __init__(self, operation):
+    def __init__(self, geometry, operation):
         """
 
         Parameters
@@ -50,11 +57,9 @@ class Feature(Data):
             raise ValueError("Operation {} unknown. Expected one of {}".format(operation, list(self.ALLOWED_OPERATIONS.keys())))
 
         self.operation = self.ALLOWED_OPERATIONS[operation]
+        self.feature_geometry = geometry
         self.part = None
         self.previous_geometry = None
-
-    def __eq__(self, other):
-        return isinstance(other, Feature) and self.guid == other.guid
 
     @property
     def DATASCHEMA(self):
@@ -62,10 +67,8 @@ class Feature(Data):
 
         return schema.Schema(
             {
-                "shape": PartGeometry,
+                "feature_geometry": PartGeometry,
                 "operation": str,
-                "part": Part,
-                "previous_geometry": PartGeometry,
             }
         )
 
@@ -75,11 +78,14 @@ class Feature(Data):
 
     @property
     def data(self):
-        return {"shape": self.shape.data, "operation": self.get_operation_name_by_value(self.operation)}
+        return {
+            "feature_geometry": self.feature_geometry,
+            "operation": self.get_operation_name_by_value(self.operation)
+        }
 
     @data.setter
     def data(self, value):
-        self.shape = Shape.from_data(value["shape"])
+        self.feature_geometry = value["feature_geometry"]
         self.operation = self.ALLOWED_OPERATIONS[value["operation"]]
 
     def apply(self, part):
@@ -94,7 +100,7 @@ class Feature(Data):
         self._store_previous_geometry(part)
         self._apply_feature()
 
-    @abstractmethod
+    @abc.abstractmethod
     def _apply_feature(self):
         """
         Preforms the required geometry type specific operation required to apply this feature to self.part
@@ -144,12 +150,13 @@ class MeshFeature(Feature):
 
     ALLOWED_OPERATIONS = {"union": boolean_union_mesh_mesh, "difference": boolean_difference_mesh_mesh, "intersection": boolean_intersection_mesh_mesh}
 
-    def __init__(self, shape, operation):
-        super(MeshFeature, self).__init__(operation)
-        self.shape = shape
+    def __init__(self, geometry, operation):
+        super(MeshFeature, self).__init__(geometry, operation)
 
     def _apply_feature(self):
-        result = self.operation(self.part._part_geometry.to_vertices_and_faces(triangulated=True), self.shape.to_vertices_and_faces(triangulated=True))
+        part_mesh = self.part._part_geometry.to_vertices_and_faces(triangulated=True)
+        feature_mesh = self.feature_geometry.to_vertices_and_faces(triangulated=True)
+        result = self.operation(part_mesh, feature_mesh)
         self.part._part_geometry = MeshGeometry(Polyhedron(*result))
 
 
@@ -157,22 +164,17 @@ class BrepFeature(Feature):
     """
     Represents a Brep feature of a Part. Can be applied to Part whose geometry is described by a BrepGeometry.
     """
-    # TODO: not to do
-    try:
-        from Rhino.Geometry import Brep
-    except ImportError:
-        pass
 
-    ALLOWED_OPERATIONS = {"trim": Brep.Trim}  # TODO: map to pluggable trim operation function
+    ALLOWED_OPERATIONS = {"trim": trim_brep_with_plane}  # TODO: map to pluggable trim operation function
 
     def __init__(self, cutting_plane, operation):
-        super(BrepFeature, self).__init__(operation)
-        cutting_plane = cutting_plane.shape_brep
-        self.cutting_plane = frame_to_rhino(cutting_plane)
+        super(BrepFeature, self).__init__(cutting_plane, operation)
 
     def _apply_feature(self):
-        self.cutting_plane.Flip()  # why?
-        breps = self.operation(self.part.geometry, self.cutting_plane, 1e-6)
+        cutting_plane = self.feature_geometry.geometry
+        rhino_plane = frame_to_rhino(cutting_plane)
+        rhino_plane.Flip()  # why?
+        breps = self.operation(self.part.geometry, rhino_plane, 1e-6)
         result = BrepGeometry(self._pick_resulting_brep(breps))
         self.part._part_geometry = result.transformed(Transformation.from_frame_to_frame(self.part.frame, Frame.worldXY()))
 
@@ -192,7 +194,7 @@ class PartGeometry(Data):
     def __init__(self):
         super(PartGeometry, self).__init__()
 
-    @abstractproperty
+    @abc.abstractproperty
     def FEATURE_CLASS(self):
         """
         Class attribute. Holds the concrete type of Feature which is supported by this type of PartGeometry.
@@ -203,7 +205,7 @@ class PartGeometry(Data):
         """
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def transformed(self, transformation):
         """
         Returns a copy of this geometry, transformed according to the given transformation.
@@ -220,7 +222,7 @@ class PartGeometry(Data):
         """
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def get_drawable(self):
         """
         Returns a representation of this geometry which can be drawn by an Artist.
@@ -245,17 +247,17 @@ class MeshGeometry(PartGeometry):
 
     FEATURE_CLASS = MeshFeature
 
-    def __init__(self, shape):
+    def __init__(self, geometry):
         super(MeshGeometry, self).__init__()
-        self.shape = shape
+        self.geometry = geometry
 
     def transformed(self, transformation):
         transformed_copy = copy.deepcopy(self)
-        transformed_copy.shape.transform(transformation)
+        transformed_copy.geometry.transform(transformation)
         return transformed_copy
 
     def to_vertices_and_faces(self, triangulated=False):
-        return self.shape.to_vertices_and_faces(triangulated)
+        return self.geometry.to_vertices_and_faces(triangulated)
 
     def get_drawable(self):
         """
@@ -263,17 +265,17 @@ class MeshGeometry(PartGeometry):
         -------
 
         """
-        return self.shape
+        return self.geometry
 
     @property
     def data(self):
         return {
-            "shape": self.shape
+            "geometry": self.geometry
         }
 
     @data.setter
     def data(self, value):
-        self.shape = value["shape"]
+        self.geometry = value["geometry"]
 
 class BrepGeometry(PartGeometry):
     """
@@ -284,25 +286,25 @@ class BrepGeometry(PartGeometry):
 
     def __init__(self, brep):
         super(BrepGeometry, self).__init__()
-        self.shape_brep = brep
+        self.geometry = brep
 
     @property
     def data(self):
         return {
-            "shape": self.shape_brep
+            "geometry": self.geometry
         }
 
     @data.setter
     def data(self, value):
-        self.shape_brep = value["shape"]
+        self.geometry = value["geometry"]
 
     def transformed(self, transformation):
         transformed_copy = copy.deepcopy(self)
-        transformed_copy.shape_brep.Transform(xform_to_rhino(transformation))
+        transformed_copy.geometry.Transform(xform_to_rhino(transformation))
         return transformed_copy
 
     def get_drawable(self):
-        return self.shape_brep
+        return self.geometry
 
 
 class Part(Datastructure):
@@ -355,7 +357,7 @@ class Part(Datastructure):
         self.features = features or []
         self.transformations = deque()  # TODO: why is it necessary to queue all transformations?
 
-        self._original_shape = geometry or MeshGeometry(shape=Polyhedron([], []))  # always in Frame.worldXY
+        self._original_shape = geometry or MeshGeometry(geometry=Polyhedron([], []))  # always in Frame.worldXY
         self._part_geometry = copy.deepcopy(self._original_shape)  # always in Frame.worldXY, w/ features applied
 
     @property
@@ -382,8 +384,8 @@ class Part(Datastructure):
         data = {
             "attributes": self.attributes,
             "key": self.key,
-            "frame": self.frame.data,
-            "shape": self._original_shape.data,
+            "frame": self.frame,
+            "shape": self._original_shape,
             "features": [f.data for f in self.features],
             "transformations": [T.data for T in self.transformations],
         }
@@ -393,9 +395,8 @@ class Part(Datastructure):
     def data(self, data):
         self.attributes.update(data["attributes"] or {})
         self.key = data["key"]
-        self.frame.data = data["frame"]
-        self._original_shape.data = data["shape"]
-        self._part_geometry.data = data["shape"]
+        self.frame = data["frame"]
+        self._original_shape = data["shape"]
         self.features = [self.add_feature(shape, operation) for shape, operation in data["features"]]
         self.transformations = deque([Transformation.from_data(T) for T in data["transformations"]])
 
