@@ -158,7 +158,7 @@ def test_remove_middle_feature(mocker, monkeypatch, part_polyhedron, feature_pol
     assert are_mesh_geometries_equal(last_feature.previous_geometry, feature_geometries[0])
 
 
-def test_operation_unknown_raises_value_error():
+def test_operation_unknown_raises_value_error(mocker):
     with pytest.raises(ValueError):
-        Part().add_feature(None, "convert_mesh_to_brep")
+        Part().add_feature(MeshGeometry(geometry=mocker.Mock()), "convert_mesh_to_brep")
 
