@@ -21,31 +21,34 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
     Parameters
     ----------
-    polylines : sequence
-        The XYZ coordinates of the vertices of the polyline.
-        The vertices are assumed to be in order.
-        The polyline is assumed to be open:
+    ab : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The XYZ coordinates of the vertices of the first polyline.
+    bc : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The XYZ coordinates of the vertices of the second polyline.
+    dc : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The XYZ coordinates of the vertices of the third polyline.
+    ad : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The XYZ coordinates of the vertices of the fourth polyline.
 
     Returns
     -------
-    points : list of tuples
+    list[[float, float, float]]
         The points of the coons patch.
-    faces : list of lists
-        List of faces (face = list of vertex indices as integers)
+    list[list[int]]
+        List of faces, with every face a list of indices into the point list.
 
     Notes
     -----
-    Direction and order of polylines::
+    The vertices of the polylines are assumed to be in the following order::
 
         b -----> c
         ^        ^
         |        |
         |        |
-        |        |
         a -----> d
 
-    One polyline can be None to create a triangular patch
-    (Warning! This will result in duplicate vertices)
+    To create a triangular patch, one of the input polylines should be None.
+    (Warning! This will result in duplicate vertices.)
 
     For more information see [1]_ and [2]_.
 

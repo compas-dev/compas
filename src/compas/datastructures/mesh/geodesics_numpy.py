@@ -28,11 +28,11 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh instance.
-    sources : list
+    sources : list[int]
         A list of vertex identifiers from which the distances should be calculated.
-    m : float (1.0)
+    m : float, optional
         ?
 
     Returns

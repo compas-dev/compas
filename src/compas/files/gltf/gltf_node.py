@@ -27,18 +27,18 @@ class GLTFNode(object):
         Matrix representing the displacement from node's parent to the node.
         Default value is the identity matrix.
         Cannot be set when any of translation, rotation or scale is set.
-    translation : list of floats
+    translation : list[float]
         xyz-coordinates of the translation displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
-    rotation : list of floats
+    rotation : list[float]
         Unit quaternion representing the rotational displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
-    scale : list of floats
+    scale : list[float]
         List of length 3 representing the scaling displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
     mesh_key : int
         Key of the mesh within :attr:`compas.files.GLTFNode.context.meshes`.
-    weights : list of floats
+    weights : list[float]
         Weights used for computing morph targets in the attached mesh.
     position : tuple
         xyz-coordinates of the node, calculated from the matrix and tree structure.
@@ -237,7 +237,7 @@ class GLTFNode(object):
         return matrix
 
     def add_child(self, child_name=None, child_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
+        """Creates a :class:`~compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
         (default `None`), and adds this node to the children of this node.
 
         Parameters
@@ -247,7 +247,7 @@ class GLTFNode(object):
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        :class:`~compas.files.GLTFNode`
         """
         return self.context.add_child_to_node(self, child_name, child_extras)
 
@@ -307,17 +307,17 @@ class GLTFNode(object):
 
     @classmethod
     def from_data(cls, node, context):
-        """Creates a :class:`compas.files.GLTFNode` from a glTF node dictionary
+        """Creates a :class:`~compas.files.GLTFNode` from a glTF node dictionary
         and inserts it in the provided context.
 
         Parameters
         ----------
         node : dict
-        context : :class:`compas.files.GLTFContent`
+        context : :class:`~compas.files.GLTFContent`
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        :class:`~compas.files.GLTFNode`
         """
         if node is None:
             return None

@@ -10,318 +10,6 @@ from compas.utilities import pairwise
 from ._shape import Shape
 
 
-class Polyhedron(Shape):
-    """A polyhedron is defined by its vertices and faces.
-
-    Parameters
-    ----------
-    vertices : list of :class:`compas.geometry.Point` or list of [x, y, z]
-        The point locations of the vertices of the polyhedron.
-    faces : list of list of int
-        The faces as a list of index lists.
-
-    """
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-        from compas.data import is_float3, is_sequence_of_int
-        return schema.Schema({
-            'vertices': lambda items: all(is_float3(item) for item in items),
-            'faces': lambda items: all(is_sequence_of_int(item) for item in items)
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        return 'polyhedron'
-
-    __slots__ = ['_vertices', '_faces']
-
-    def __init__(self, vertices, faces, **kwargs):
-        super(Polyhedron, self).__init__(**kwargs)
-        self._vertices = None
-        self._faces = None
-        self.vertices = vertices
-        self.faces = faces
-
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
-
-    @property
-    def vertices(self):
-        return self._vertices
-
-    @vertices.setter
-    def vertices(self, vertices):
-        self._vertices = vertices
-
-    @property
-    def faces(self):
-        return self._faces
-
-    @faces.setter
-    def faces(self, faces):
-        self._faces = faces
-
-    @property
-    def edges(self):
-        seen = set()
-        for face in self.faces:
-            for u, v in pairwise(face + face[:1]):
-                if (u, v) not in seen:
-                    seen.add((u, v))
-                    seen.add((v, u))
-                    yield u, v
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the polyhedron.
-
-        Returns
-        -------
-        dict
-            The polyhedron data.
-
-        """
-        return {'vertices': self.vertices, 'faces': self.faces}
-
-    @data.setter
-    def data(self, data):
-        self.vertices = data['vertices']
-        self.faces = data['faces']
-
-    # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __repr__(self):
-        return '<Polyhedron with {} vertices and {} faces>'.format(len(self.vertices), len(self.faces))
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.vertices
-        elif key == 1:
-            return self.faces
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.vertices = value
-        elif key == 1:
-            self.faces = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.vertices, self.faces])
-
-    # ==========================================================================
-    # constructors
-    # ==========================================================================
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a polyhedron from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        Polyhedron
-            The constructed polyhedron.
-
-        Examples
-        --------
-        >>> from compas.geometry import Polyhedron
-        >>> p = Polyhedron.from_platonicsolid(4)
-        >>> q = Polyhedron.from_data(p.data)
-        """
-        return cls(data['vertices'], data['faces'])
-
-    @classmethod
-    def from_platonicsolid(cls, f):
-        """Construct a polyhedron from one of the platonic solids.
-
-        A Platonic solid is a regular, convex polyhedron. It is constructed by
-        congruent regular polygonal faces with the same number of faces meeting
-        at each vertex [1]_.
-
-        Parameters
-        ----------
-        f : {4, 6, 8, 12, 20}
-
-        References
-        ----------
-        .. [1] Wikipedia. *Platonic solids*.
-            Available at: https://en.wikipedia.org/wiki/Platonic_solid.
-
-        """
-        if f == 4:
-            vertices, faces = tetrahedron()
-        elif f == 6:
-            vertices, faces = hexahedron()
-        elif f == 8:
-            vertices, faces = octahedron()
-        elif f == 12:
-            vertices, faces = dodecahedron()
-        elif f == 20:
-            vertices, faces = icosahedron()
-        else:
-            raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
-        solid = cls(vertices, faces)
-        return solid
-
-    @classmethod
-    def from_halfspaces(cls, halfspaces, interior_point):
-        """Construct a polyhedron from its half-spaces and one interior point.
-
-        Parameters
-        ----------
-        halfspaces : array-like
-            The coefficients of the hgalfspace equations in normal form.
-        interior_point : array-like
-            A point on the interior.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polyhedron`
-
-        Examples
-        --------
-        >>> from compas.geometry import Plane
-        >>> left = Plane([-1, 0, 0], [-1, 0, 0])
-        >>> right = Plane([+1, 0, 0], [+1, 0, 0])
-        >>> top = Plane([0, 0, +1], [0, 0, +1])
-        >>> bottom = Plane([0, 0, -1], [0, 0, -1])
-        >>> front = Plane([0, -1, 0], [0, -1, 0])
-        >>> back = Plane([0, +1, 0], [0, +1, 0])
-
-        >>> import numpy as np
-        >>> halfspaces = np.array([left.abcd, right.abcd, top.abcd, bottom.abcd, front.abcd, back.abcd], dtype=float)
-        >>> interior = np.array([0, 0, 0], dtype=float)
-
-        >>> p = Polyhedron.from_halfspaces(halfspaces, interior)
-        """
-        from itertools import combinations
-        from numpy import asarray
-        from scipy.spatial import HalfspaceIntersection, ConvexHull
-        from compas.datastructures import Mesh, mesh_merge_faces
-        from compas.geometry import length_vector, dot_vectors, cross_vectors
-        halfspaces = asarray(halfspaces, dtype=float)
-        interior_point = asarray(interior_point, dtype=float)
-        hsi = HalfspaceIntersection(halfspaces, interior_point)
-        hull = ConvexHull(hsi.intersections)
-        mesh = Mesh.from_vertices_and_faces([hsi.intersections[i] for i in hull.vertices], hull.simplices)
-        mesh.unify_cycles()
-        to_merge = []
-        for a, b in combinations(mesh.faces(), 2):
-            na = mesh.face_normal(a)
-            nb = mesh.face_normal(b)
-            if dot_vectors(na, nb) >= 1:
-                if length_vector(cross_vectors(na, nb)) < 1e-6:
-                    to_merge.append([a, b])
-        for faces in to_merge:
-            mesh_merge_faces(mesh, faces)
-        vertices, faces = mesh.to_vertices_and_faces()
-        return cls(vertices, faces)
-
-    @classmethod
-    def from_planes(cls, planes):
-        """Construct a polyhedron from intersecting planes.
-
-        Parameters
-        ----------
-        planes : list of :class:`compas.geometry.Plane` or list of (point, normal)
-
-        Returns
-        -------
-        :class:`compas.geometry.Polyhedron`
-
-        Examples
-        --------
-        >>> from compas.geometry import Plane
-        >>> left = Plane([-1, 0, 0], [-1, 0, 0])
-        >>> right = Plane([+1, 0, 0], [+1, 0, 0])
-        >>> top = Plane([0, 0, +1], [0, 0, +1])
-        >>> bottom = Plane([0, 0, -1], [0, 0, -1])
-        >>> front = Plane([0, -1, 0], [0, -1, 0])
-        >>> back = Plane([0, +1, 0], [0, +1, 0])
-        >>> p = Polyhedron.from_planes([left, right, top, bottom, front, back])
-
-        """
-        from compas.geometry import Plane
-        from compas.geometry import centroid_points
-        planes = [Plane(point, normal) for point, normal in planes]
-        interior = centroid_points([plane.point for plane in planes])
-        return cls.from_halfspaces([plane.abcd for plane in planes], interior)
-
-    # ==========================================================================
-    # methods
-    # ==========================================================================
-
-    def to_vertices_and_faces(self, triangulated=False):
-        """Returns a list of vertices and faces.
-
-        Parameters
-        ----------
-        triangulated: bool, optional
-            Flag indicating that the faces have to be triangulated.
-
-        Returns
-        -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
-            with each face defined as a list of indices into the list of vertices.
-        """
-        if triangulated:
-            vertices = self.vertices[:]
-            faces = []
-            for face in self.faces:
-                if len(face) > 3:
-                    centroid = centroid_polygon([vertices[index] for index in face])
-                    index = len(vertices)
-                    vertices.append(centroid)
-                    for a, b in pairwise(face):
-                        faces.append([a, b, index])
-                else:
-                    faces.append(face)
-        else:
-            vertices = self.vertices
-            faces = self.faces
-        return vertices, faces
-
-    def is_closed(self):
-        """Verify that the polyhedron forms a closed surface.
-
-        Returns
-        -------
-        bool
-            True if the polyhedron is closed.
-            False otherwise.
-        """
-        from compas.datastructures import Mesh
-        mesh = Mesh.from_vertices_and_faces(self.vertices, self.faces)
-        return mesh.is_closed()
-
-    def transform(self, transformation):
-        """Transform the polyhedron.
-
-        Parameters
-        ----------
-        transformation : :class:`Transformation`
-
-        """
-        self.vertices = transform_points(self.vertices, transformation)
-
-
 def tetrahedron():
     faces = [[0, 1, 2], [0, 3, 1], [0, 2, 3], [1, 3, 2]]
     vertices = []
@@ -436,3 +124,339 @@ def icosahedron():
         [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
     ]
     return vertices, faces
+
+
+class Polyhedron(Shape):
+    """A polyhedron is defined by its vertices and faces.
+
+    Parameters
+    ----------
+    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The point locations of the vertices of the polyhedron.
+    faces : list[list[int]]
+        The faces as a list of index lists.
+
+    Attributes
+    ----------
+    vertices : list[list[float]]
+        The XYZ coordinates of the vertices of the polyhedron.
+    faces : list[list[int]]
+        The faces of the polyhedron defined as lists of vertex indices.
+    edges : list[tuple[int, int]], read-only
+        The edges of the polyhedron as vertex index pairs.
+
+    """
+
+    __slots__ = ['_vertices', '_faces']
+
+    def __init__(self, vertices, faces, **kwargs):
+        super(Polyhedron, self).__init__(**kwargs)
+        self._vertices = None
+        self._faces = None
+        self.vertices = vertices
+        self.faces = faces
+
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : Schema of the data representation."""
+        import schema
+        from compas.data import is_float3, is_sequence_of_int
+        return schema.Schema({
+            'vertices': lambda items: all(is_float3(item) for item in items),
+            'faces': lambda items: all(is_sequence_of_int(item) for item in items)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        """str : Name of the schema of the data representation in JSON format."""
+        return 'polyhedron'
+
+    @property
+    def data(self):
+        """dict : Returns the data dictionary that represents the polyhedron.
+        """
+        return {'vertices': self.vertices, 'faces': self.faces}
+
+    @data.setter
+    def data(self, data):
+        self.vertices = data['vertices']
+        self.faces = data['faces']
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polyhedron from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The constructed polyhedron.
+
+        Examples
+        --------
+        >>> from compas.geometry import Polyhedron
+        >>> p = Polyhedron.from_platonicsolid(4)
+        >>> q = Polyhedron.from_data(p.data)
+
+        """
+        return cls(data['vertices'], data['faces'])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
+    @property
+    def vertices(self):
+        return self._vertices
+
+    @vertices.setter
+    def vertices(self, vertices):
+        self._vertices = vertices
+
+    @property
+    def faces(self):
+        return self._faces
+
+    @faces.setter
+    def faces(self, faces):
+        self._faces = faces
+
+    @property
+    def edges(self):
+        seen = set()
+        for face in self.faces:
+            for u, v in pairwise(face + face[:1]):
+                if (u, v) not in seen:
+                    seen.add((u, v))
+                    seen.add((v, u))
+                    yield u, v
+
+    # ==========================================================================
+    # customisation
+    # ==========================================================================
+
+    def __repr__(self):
+        return '<Polyhedron with {} vertices and {} faces>'.format(len(self.vertices), len(self.faces))
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.vertices
+        elif key == 1:
+            return self.faces
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.vertices = value
+        elif key == 1:
+            self.faces = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.vertices, self.faces])
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_platonicsolid(cls, f):
+        """Construct a polyhedron from one of the platonic solids.
+
+        A Platonic solid is a regular, convex polyhedron. It is constructed by
+        congruent regular polygonal faces with the same number of faces meeting
+        at each vertex [1]_.
+
+        Parameters
+        ----------
+        f : {4, 6, 8, 12, 20}
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The constructed polyhedron.
+
+        References
+        ----------
+        .. [1] Wikipedia. *Platonic solids*.
+            Available at: https://en.wikipedia.org/wiki/Platonic_solid.
+
+        """
+        if f == 4:
+            vertices, faces = tetrahedron()
+        elif f == 6:
+            vertices, faces = hexahedron()
+        elif f == 8:
+            vertices, faces = octahedron()
+        elif f == 12:
+            vertices, faces = dodecahedron()
+        elif f == 20:
+            vertices, faces = icosahedron()
+        else:
+            raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
+        solid = cls(vertices, faces)
+        return solid
+
+    @classmethod
+    def from_halfspaces(cls, halfspaces, interior_point):
+        """Construct a polyhedron from its half-spaces and one interior point.
+
+        Parameters
+        ----------
+        halfspaces : array-like
+            The coefficients of the hgalfspace equations in normal form.
+        interior_point : array-like
+            A point on the interior.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+
+        Examples
+        --------
+        >>> from compas.geometry import Plane
+        >>> left = Plane([-1, 0, 0], [-1, 0, 0])
+        >>> right = Plane([+1, 0, 0], [+1, 0, 0])
+        >>> top = Plane([0, 0, +1], [0, 0, +1])
+        >>> bottom = Plane([0, 0, -1], [0, 0, -1])
+        >>> front = Plane([0, -1, 0], [0, -1, 0])
+        >>> back = Plane([0, +1, 0], [0, +1, 0])
+
+        >>> import numpy as np
+        >>> halfspaces = np.array([left.abcd, right.abcd, top.abcd, bottom.abcd, front.abcd, back.abcd], dtype=float)
+        >>> interior = np.array([0, 0, 0], dtype=float)
+
+        >>> p = Polyhedron.from_halfspaces(halfspaces, interior)
+
+        """
+        from itertools import combinations
+        from numpy import asarray
+        from scipy.spatial import HalfspaceIntersection, ConvexHull
+        from compas.datastructures import Mesh, mesh_merge_faces
+        from compas.geometry import length_vector, dot_vectors, cross_vectors
+        halfspaces = asarray(halfspaces, dtype=float)
+        interior_point = asarray(interior_point, dtype=float)
+        hsi = HalfspaceIntersection(halfspaces, interior_point)
+        hull = ConvexHull(hsi.intersections)
+        mesh = Mesh.from_vertices_and_faces([hsi.intersections[i] for i in hull.vertices], hull.simplices)
+        mesh.unify_cycles()
+        to_merge = []
+        for a, b in combinations(mesh.faces(), 2):
+            na = mesh.face_normal(a)
+            nb = mesh.face_normal(b)
+            if dot_vectors(na, nb) >= 1:
+                if length_vector(cross_vectors(na, nb)) < 1e-6:
+                    to_merge.append([a, b])
+        for faces in to_merge:
+            mesh_merge_faces(mesh, faces)
+        vertices, faces = mesh.to_vertices_and_faces()
+        return cls(vertices, faces)
+
+    @classmethod
+    def from_planes(cls, planes):
+        """Construct a polyhedron from intersecting planes.
+
+        Parameters
+        ----------
+        planes : list[[point, normal] | :class:`~compas.geometry.Plane`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+
+        Examples
+        --------
+        >>> from compas.geometry import Plane
+        >>> left = Plane([-1, 0, 0], [-1, 0, 0])
+        >>> right = Plane([+1, 0, 0], [+1, 0, 0])
+        >>> top = Plane([0, 0, +1], [0, 0, +1])
+        >>> bottom = Plane([0, 0, -1], [0, 0, -1])
+        >>> front = Plane([0, -1, 0], [0, -1, 0])
+        >>> back = Plane([0, +1, 0], [0, +1, 0])
+        >>> p = Polyhedron.from_planes([left, right, top, bottom, front, back])
+
+        """
+        from compas.geometry import Plane
+        from compas.geometry import centroid_points
+        planes = [Plane(point, normal) for point, normal in planes]
+        interior = centroid_points([plane.point for plane in planes])
+        return cls.from_halfspaces([plane.abcd for plane in planes], interior)
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
+    def to_vertices_and_faces(self, triangulated=False):
+        """Returns a list of vertices and faces.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            If True, triangulate the faces.
+
+        Returns
+        -------
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
+            with each face defined as a list of indices into the list of vertices.
+
+        """
+        if triangulated:
+            vertices = self.vertices[:]
+            faces = []
+            for face in self.faces:
+                if len(face) > 3:
+                    centroid = centroid_polygon([vertices[index] for index in face])
+                    index = len(vertices)
+                    vertices.append(centroid)
+                    for a, b in pairwise(face):
+                        faces.append([a, b, index])
+                else:
+                    faces.append(face)
+        else:
+            vertices = self.vertices
+            faces = self.faces
+        return vertices, faces
+
+    def is_closed(self):
+        """Verify that the polyhedron forms a closed surface.
+
+        Returns
+        -------
+        bool
+            True if the polyhedron is closed.
+            False otherwise.
+
+        """
+        from compas.datastructures import Mesh
+        mesh = Mesh.from_vertices_and_faces(self.vertices, self.faces)
+        return mesh.is_closed()
+
+    def transform(self, transformation):
+        """Transform the polyhedron.
+
+        Parameters
+        ----------
+        transformation : :class:`~compas.geometry.Transformation`
+
+        Returns
+        -------
+        None
+
+        """
+        self.vertices = transform_points(self.vertices, transformation)

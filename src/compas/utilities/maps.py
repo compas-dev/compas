@@ -17,31 +17,30 @@ def geometric_key(xyz, precision=None, sanitize=True):
 
     Parameters
     ----------
-    xyz : list of float
+    xyz : list[float]
         The XYZ coordinates.
     precision : str, optional
         A formatting option that specifies the precision of the
         individual numbers in the string.
-        Supported values are any float precision, or decimal integer (``'d'``).
-        Default is ``None``, in which case the global precision setting will be used (``compas.PRECISION``).
-    sanitize : {True, False}, optional
-        Flag that indicates whether or not the input should be cleaned up.
-        Default is ``True``.
+        Supported values are any float precision (e.g. ``'3f'``), or decimal integer (``'d'``).
+        Default is ``None``, in which case the global precision setting will be used (:attr:`compas.PRECISION`).
+    sanitize : bool, optional
+        If True, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
 
     Returns
     -------
     str
         The string representation of the given coordinates.
 
+    See also
+    --------
+    geometric_key_xy
+
     Examples
     --------
     >>> from math import pi
     >>> geometric_key([pi, pi, pi])
     '3.142,3.142,3.142'
-
-    See also
-    --------
-    geometric_key_xy: Create geometric keys for 2D coordinates
 
     """
     x, y, z = xyz
@@ -70,8 +69,12 @@ def reverse_geometric_key(gkey):
 
     Returns
     -------
-    list of float
+    list[float]
         A list of XYZ coordinates.
+
+    See Also
+    --------
+    geometric_key
 
     Examples
     --------
@@ -80,6 +83,7 @@ def reverse_geometric_key(gkey):
     >>> gkey = geometric_key(xyz)
     >>> reverse_geometric_key(gkey)
     [3.142, 3.142, 3.142]
+
     """
     xyz = gkey.split(',')
     return [float(i) for i in xyz]
@@ -90,31 +94,30 @@ def geometric_key_xy(xy, precision=None, sanitize=True):
 
     Parameters
     ----------
-    xy : list of float
+    xy : list[float]
         The XY(Z) coordinates.
     precision : str, optional
         A formatting option that specifies the precision of the
         individual numbers in the string.
-        Supported values are any float precision, or decimal integer (``'d'``).
+        Supported values are any float precision (e.g. ``'3f'``), or decimal integer (``'d'``).
         Default is ``None``, inwhich case the global precision setting will be used (``compas.PRECISION``).
-    sanitize : {True, False}, optional
-        Flag that indicates whether or not the input should be cleaned up.
-        Default is ``True``.
+    sanitize : bool, optional
+        If True, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
 
     Returns
     -------
     str
         The string representation of the given coordinates.
 
+    See also
+    --------
+    geometric_key
+
     Examples
     --------
     >>> from math import pi
     >>> geometric_key_xy([pi, pi, pi])
     '3.142,3.142'
-
-    See also
-    --------
-    geometric_key: Create geometric keys for 3D coordinates
 
     """
     x, y = xy[:2]

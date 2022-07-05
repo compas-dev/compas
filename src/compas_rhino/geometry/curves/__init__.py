@@ -1,63 +1,36 @@
+from .curve import RhinoCurve  # noqa : F401
 from .nurbs import RhinoNurbsCurve
 
+from compas.geometry import Curve
 from compas.geometry import NurbsCurve
 from compas.plugins import plugin
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve(*args, **kwargs):
-    """Create a new empty Nurbs curve."""
-    return super(NurbsCurve, RhinoNurbsCurve).__new__(RhinoNurbsCurve)
+def new_curve(cls, *args, **kwargs):
+    return super(Curve, cls).__new__(cls)
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve_from_parameters(*args, **kwargs):
-    """Create a new Nurbs curve from explicit curve parameters."""
+def new_nurbscurve(cls, *args, **kwargs):
+    return super(NurbsCurve, cls).__new__(cls)
+
+
+@plugin(category='factories', requires=['Rhino'])
+def new_nurbscurve_from_parameters(cls, *args, **kwargs):
     return RhinoNurbsCurve.from_parameters(*args, **kwargs)
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve_from_points(*args, **kwargs):
-    """Construct a NURBS curve from control points.
-
-    Parameters
-    ----------
-    points : list of :class:`compas.geometry.Point`
-        The control points.
-    degree : int
-        The degree of the curve.
-    is_periodic : bool, optional
-        Flag indicating whether the curve is periodic or not.
-
-    Returns
-    -------
-    :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-    """
+def new_nurbscurve_from_points(cls, *args, **kwargs):
     return RhinoNurbsCurve.from_points(*args, **kwargs)
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve_from_interpolation(*args, **kwargs):
-    """Construct a NURBS curve by interpolating a set of points.
-
-    Parameters
-    ----------
-    points : list of :class:`compas.geometry.Point`
-        The control points.
-    precision : float, optional
-        The required precision of the interpolation.
-        This parameter is currently not supported.
-
-    Returns
-    -------
-    :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-    """
+def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
     return RhinoNurbsCurve.from_interpolation(*args, **kwargs)
 
 
 @plugin(category='factories', requires=['Rhino'])
-def new_nurbscurve_from_step(*args, **kwargs):
-    """Create a new Nurbs curve from the data contained in a step file."""
+def new_nurbscurve_from_step(cls, *args, **kwargs):
     return RhinoNurbsCurve.from_step(*args, **kwargs)

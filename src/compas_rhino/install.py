@@ -15,8 +15,10 @@ import compas.plugins
 __all__ = [
     'install',
     'installable_rhino_packages',
-    'after_rhino_install',
+    'after_rhino_install'
 ]
+
+INSTALLED_VERSION = None
 
 
 def install(version=None, packages=None, clean=False):
@@ -32,7 +34,7 @@ def install(version=None, packages=None, clean=False):
         Default is the result of ``installable_rhino_packages``,
         which collects all installable packages in the current environment.
     clean : bool, optional
-        If ``True``, this will clean up the entire scripts folder and remove
+        If True, this will clean up the entire scripts folder and remove
         also existing symlinks that are not importable in the current environment.
 
     Examples
@@ -185,7 +187,7 @@ def install(version=None, packages=None, clean=False):
 
     # output the outcome of the installation process
     # perhaps we should more info here
-    print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
+    print('\nInstalling COMPAS packages to Rhino {0} scripts folder:'.format(version))
     print('{}\n'.format(scripts_path))
 
     for package, status in results:
@@ -201,6 +203,9 @@ def install(version=None, packages=None, clean=False):
     print('\nInstall completed.')
     if exit_code != 0:
         sys.exit(exit_code)
+
+    global INSTALLED_VERSION
+    INSTALLED_VERSION = version
 
 
 def _run_post_execution_steps(steps_generator):
@@ -289,7 +294,7 @@ def after_rhino_install(installed_packages):
     Returns
     -------
     :obj:`list` of 3-tuple (str, str, bool)
-        List containing a 3-tuple with component name, message and ``True``/``False`` success flag.
+        List containing a 3-tuple with component name, message and True/False success flag.
     """
     pass
 

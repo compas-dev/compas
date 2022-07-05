@@ -16,13 +16,14 @@ def mesh_disconnected_vertices(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh.
 
     Returns
     -------
-    parts : list
-        The list of disconnected vertex groups.
+    list[list[int]]
+        The disconnected parts of the mesh as a list of lists of vertex identifiers.
+
     """
     return connected_components(mesh.adjacency)
 
@@ -32,13 +33,14 @@ def mesh_disconnected_faces(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh.
 
     Returns
     -------
-    parts : list
-        The list of disconnected face groups.
+    list[list[int]]
+        The disconnected parts of the mesh as a list of lists of face identifiers.
+
     """
     parts = mesh_disconnected_vertices(mesh)
     return [set([fkey for vkey in part for fkey in mesh.vertex_faces(vkey)]) for part in parts]
@@ -49,12 +51,14 @@ def mesh_explode(mesh, cls=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh.
+    cls : Type[:class:`~compas.datastructures.Mesh`], optional
+        The type of the return mesh.
 
     Returns
     -------
-    exploded_meshes : list
+    list[:class:`~compas.datastructures.Mesh`]
         The list of the meshes from the exploded mesh parts.
 
     """

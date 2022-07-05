@@ -27,29 +27,37 @@ class Part(Datastructure):
     name : str, optional
         The name of the part.
         The name will be stored in :attr:`Part.attributes`.
-    frame : :class:`compas.geometry.Frame`, optional
+    frame : :class:`~compas.geometry.Frame`, optional
         The local coordinate system of the part.
-    shape : :class:`compas.geometry.Shape`, optional
+    shape : :class:`~compas.geometry.Shape`, optional
         The base shape of the part geometry.
-    features : list of tuple(:class:`compas.geometry.Shape`, str), optional
+    features : sequence[tuple[:class:`~compas.geometry.Shape`, str]], optional
         The features to be added to the base shape of the part geometry.
 
     Attributes
     ----------
-    attributes : dict
-        General object attributes that will be included in the data dict.
+    attributes : dict[str, Any]
+        General data structure attributes that will be included in the data dict and serialization.
     key : int or str
         The identifier of the part in the connectivity graph of the parent assembly.
-    frame : :class:`compas.geometry.Frame`
+    frame : :class:`~compas.geometry.Frame`
         The local coordinate system of the part.
-    shape : :class:`compas.geometry.Shape`
+    shape : :class:`~compas.geometry.Shape`
         The base shape of the part geometry.
-    features : list of tuple(:class:`compas.geometry.Shape`, str)
+    features : list[tuple[:class:`~compas.geometry.Shape`, str]]
         The features added to the base shape of the part geometry.
-    transformations : deque of :class:`compas.geometry.Transformation`
+    transformations : Deque[:class:`~compas.geometry.Transformation`]
         The stack of transformations applied to the part geometry.
         The most recent transformation is on the left of the stack.
         All transformations are with respect to the local coordinate system.
+    geometry : :class:`~compas.geometry.Polyhedron`, read-only
+        The geometry of the part after combining the base shape and features through the specified operations.
+
+    Class Attributes
+    ----------------
+    operations : dict[str, callable]
+        Available operations for combining features with a base shape.
+
     """
 
     operations = {
@@ -57,6 +65,21 @@ class Part(Datastructure):
         'difference': boolean_difference_mesh_mesh,
         'intersection': boolean_intersection_mesh_mesh
     }
+
+    def __init__(self, name=None, frame=None, shape=None, features=None, **kwargs):
+        super(Part, self).__init__()
+        self._frame = None
+        self.attributes = {'name': name or 'Part'}
+        self.attributes.update(kwargs)
+        self.key = None
+        self.frame = frame
+        self.shape = shape or Shape([], [])
+        self.features = features or []
+        self.transformations = deque()
+
+    # ==========================================================================
+    # data
+    # ==========================================================================
 
     @property
     def DATASCHEMA(self):
@@ -74,35 +97,8 @@ class Part(Datastructure):
     def JSONSCHEMANAME(self):
         return 'part'
 
-    def __init__(self, name=None, frame=None, shape=None, features=None, **kwargs):
-        super(Part, self).__init__()
-        self._frame = None
-        self.attributes = {'name': name or 'Part'}
-        self.attributes.update(kwargs)
-        self.key = None
-        self.frame = frame
-        self.shape = shape or Shape([], [])
-        self.features = features or []
-        self.transformations = deque()
-
-    def __str__(self):
-        tpl = "<Part with shape {} and features {}>"
-        return tpl.format(self.shape, self.features)
-
-    @property
-    def name(self):
-        """str : The name of the part."""
-        return self.attributes.get('name') or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes['name'] = value
-
     @property
     def data(self):
-        """dict : A data dict representing the part attributes, the assembly graph identifier, the local coordinate system,
-        the base shape, the shape features, and the transformation tack wrt to the local coordinate system.
-        """
         data = {
             'attributes': self.attributes,
             "key": self.key,
@@ -122,6 +118,18 @@ class Part(Datastructure):
         self.features = [(Shape.from_data(shape), operation) for shape, operation in data['features']]
         self.transformations = deque([Transformation.from_data(T) for T in data['transformations']])
 
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
+    @property
+    def name(self):
+        return self.attributes.get('name') or self.__class__.__name__
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
     @property
     def frame(self):
         if not self._frame:
@@ -136,23 +144,46 @@ class Part(Datastructure):
     def geometry(self):
         # TODO: this is a temp solution
         # TODO: add memoization or some other kind of caching
-        A = Mesh.from_shape(self.shape)
-        for shape, operation in self.features:
-            A.quads_to_triangles()
-            B = Mesh.from_shape(shape)
-            B.quads_to_triangles()
-            A = Part.operations[operation](A.to_vertices_and_faces(), B.to_vertices_and_faces())
-        geometry = Shape(*A)
+        if self.features:
+            A = self.shape.to_vertices_and_faces(triangulated=True)
+            for shape, operation in self.features:
+                B = shape.to_vertices_and_faces(triangulated=True)
+                A = Part.operations[operation](A, B)
+            geometry = Shape(*A)
+        else:
+            geometry = Shape(*self.shape.to_vertices_and_faces())
+
         T = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
         geometry.transform(T)
         return geometry
+
+    # ==========================================================================
+    # customization
+    # ==========================================================================
+
+    def __str__(self):
+        tpl = "<Part with shape {} and features {}>"
+        return tpl.format(self.shape, self.features)
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def transform(self, T):
         """Transform the part with respect to the local cooordinate system.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        T : :class:`~compas.geometry.Transformation`
+
+        Returns
+        -------
+        None
+
         """
         self.transformations.appendleft(T)
         self.shape.transform(T)
@@ -164,10 +195,15 @@ class Part(Datastructure):
 
         Parameters
         ----------
-        shape : :class:`compas.geometry.Shape`
+        shape : :class:`~compas.geometry.Shape`
             The shape of the feature.
-        operation : {'union', 'difference', 'intersection'}
+        operation : Literal['union', 'difference', 'intersection']
             The boolean operation through which the feature should be integrated in the base shape.
+
+        Returns
+        -------
+        None
+
         """
         if operation not in Part.operations:
             raise FeatureError
@@ -186,13 +222,14 @@ class Part(Datastructure):
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
+        cls : :class:`~compas.datastructures.Mesh`, optional
             The type of mesh to be used for the conversion.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             The resulting mesh.
+
         """
         cls = cls or Mesh
         return cls.from_shape(self.geometry)

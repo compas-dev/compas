@@ -26,16 +26,16 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
     Parameters
     ----------
-    points : sequence of tuple
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         XYZ coordinates of the original points.
-    boundary : sequence of tuples
-        list of ordered points describing the outer boundary (optional)
-    holes : list of sequences of tuples
-        list of polygons (ordered points describing internal holes (optional)
+    boundary : sequence[[float, float, float] | :class:`~compas.geometry.Point`] | :class:`~compas.geometry.Polygon`, optional
+        List of ordered points describing the outer boundary.
+    holes : sequence[sequence[[float, float, float] | :class:`~compas.geometry.Point`] | :class:`~compas.geometry.Polygon`], optional
+        List of polygons (ordered points describing internal holes.
 
     Returns
     -------
-    list
+    list[[int, int, int]]
         The faces of the triangulation.
         Each face is a triplet of indices referring to the list of point coordinates.
 

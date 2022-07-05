@@ -13,7 +13,6 @@ compas_rhino
     compas_rhino.conversions
     compas_rhino.forms
     compas_rhino.geometry
-    compas_rhino.objects
     compas_rhino.utilities
 
 """
@@ -30,7 +29,7 @@ if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '1.13.2'
+__version__ = '1.16.0'
 
 
 PURGE_ON_DELETE = True
@@ -64,6 +63,7 @@ __all_plugins__ = [
     'compas_rhino.uninstall',
     'compas_rhino.artists',
     'compas_rhino.geometry.curves',
+    'compas_rhino.geometry.surfaces',
 ]
 
 
@@ -117,7 +117,7 @@ def _try_remove_bootstrapper(path):
 
     Returns
     -------
-    bool: ``True`` if the operation did not cause errors, ``False`` otherwise.
+    bool: True if the operation did not cause errors, False otherwise.
     """
 
     bootstrapper = _get_bootstrapper_path(path)

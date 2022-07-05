@@ -11,6 +11,7 @@ import struct
 from compas.files.gltf.constants import COMPONENT_TYPE_ENUM
 from compas.files.gltf.constants import COMPONENT_TYPE_FLOAT
 from compas.files.gltf.constants import COMPONENT_TYPE_UNSIGNED_INT
+from compas.files.gltf.constants import COMPONENT_TYPE_UNSIGNED_SHORT
 from compas.files.gltf.constants import NUM_COMPONENTS_BY_TYPE_ENUM
 from compas.files.gltf.constants import TYPE_MAT4
 from compas.files.gltf.constants import TYPE_SCALAR
@@ -37,7 +38,7 @@ class GLTFExporter(object):
         Location where the glTF or glb is to be written. The extension of the filepath
         determines which format will be used. If there will be an accompanying binary file,
         it will be written in the same directory.
-    content : :class:`compas.files.GLTFContent`
+    content : :class:`~compas.files.GLTFContent`
     embed_data : bool
         When ``True``, all mesh and other data will be embedded as data uri's in the glTF json,
         with the exception of external image data.
@@ -283,6 +284,8 @@ class GLTFExporter(object):
             return
         if self._content.default_scene_key is not None:
             self._gltf_dict['scene'] = self._scene_index_by_key[self._content.default_scene_key]
+        else:
+            self._gltf_dict['scene'] = list(self._content.scenes.values())[0].key
         scene_list = [None] * len(self._content.scenes.values())
         for key, scene in self._content.scenes.items():
             scene_list[self._scene_index_by_key[key]] = scene.to_data(self._node_index_by_key)
@@ -304,7 +307,7 @@ class GLTFExporter(object):
     def _construct_primitives(self, mesh_data):
         primitives = []
         for primitive_data in mesh_data.primitive_data_list:
-            indices_accessor = self._construct_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)
+            indices_accessor = self._construct_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_SHORT, TYPE_SCALAR)
 
             attributes = {}
             for attr in primitive_data.attributes:

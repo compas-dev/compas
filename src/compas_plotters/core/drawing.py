@@ -69,10 +69,10 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Default is ``100``.
     xlabel : str, optional
         Label for the x-axis.
-        Default is ``None``.
+        Default is None.
     ylabel : str, optional
         Label for the y-axis.
-        Default is ``None``.
+        Default is None.
     fontname : str, optional
         Fontname of the main labels and text.
         Default is ``'Times New Roman'``.
@@ -81,13 +81,13 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Default is ``10``.
     grid : bool, optional
         Display grid.
-        Default is ``False``.
+        Default is False.
     xlim : 2-tuple, optional
         Limits of the X-axis.
-        Default is ``None``.
+        Default is None.
     ylim : 2-tuple, optional
         Limits of the Y-axis.
-        Default is ``None``.
+        Default is None.
     ticklength : float, optional
         Length of the ticks.
         Default is ``20``.
@@ -98,7 +98,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Scale of the X axis.
     yscale : {'linear', 'log'}
         Scale of the Y axis.
-    bgcolor : str or list, optional
+    bgcolor : str | list, optional
         Background color as hex string or rgb tuple.
         Default is white.
 
@@ -171,10 +171,10 @@ def create_axes_3d(size=(10, 7),
         Default is ``10``.
     grid : bool, optional
         Display grid.
-        Default is ``False``.
+        Default is False.
     limits : dict, optional
         Axis limits and tick spacing.
-        Default is ``None``.
+        Default is None.
     ticklength : float, optional
         Length of the ticks.
         Default is ``20``.
@@ -229,10 +229,10 @@ def draw_points_xy(points,
         XY(Z) coordinates of the points.
     axes : object
         Matplotlib axes.
-    facecolor : str or list, optional
+    facecolor : str | list, optional
         Color of the point face.
         Default is white.
-    edgecolor : str or list, optional
+    edgecolor : str | list, optional
         Color of the point edge.
         Default is black.
     linewidth : float or list, optional
@@ -358,10 +358,10 @@ def draw_points_3d(points,
         XYZ coordinates of the points.
     axes : object
         Matplotlib axes.
-    facecolor : str or list, optional
+    facecolor : str | list, optional
         Color of the face of the points.
         Default is white.
-    edgecolor : str or list, optional
+    edgecolor : str | list, optional
         Color of the edge of the points.
         Default is black.
 
@@ -406,10 +406,10 @@ def draw_lines_xy(lines,
     linewidth : float or list of float, optional
         Width of the lines.
         Default is ``1.0``.
-    linestyle : str or list of str, optional
+    linestyle : str | list of str, optional
         Matplotlib line style strings.
         Default is ``'-'``.
-    color : str or list of str, optional
+    color : str | list of str, optional
         Color of the lines.
         Default is black.
     alpha : float or list of float, optional
@@ -454,7 +454,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         * end (list): XY(Z) coordinatesof the end point.
         * width (float, optional): The width of the line. Default is ``1.0``.
         * color (rgb tuple or hex string, optional): The color of the line. Default is black.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
 
@@ -529,7 +529,7 @@ def draw_lines_3d(lines,
     linestyle : str, optional
         Matplotlib line style strings.
         Default is ``'solid'``.
-    color : str or list of str, optional
+    color : str | list of str, optional
         Color of the lines.
         Default is black.
 
@@ -633,7 +633,7 @@ def draw_xarrows_xy(lines, axes):
 
         * start (list): XY(Z) coordinates of the starting point.
         * end (list): XY(Z) coordinates of the end point.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
         * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
@@ -737,7 +737,7 @@ def draw_xpolygons_xy(polygons, axes):
         The following properties can be specified in the dict.
 
         * points (list): XY(Z) coordinates of the polygon vertices.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
         * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.

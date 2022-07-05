@@ -132,53 +132,42 @@ class XFunc(object):
         A directory that should be used for storing the IO files.
         Default is the current directory.
     delete_files : bool, optional
-        Set to ``False`` if the IO files should not be deleted afterwards.
-        Default is ``True``.
+        If True, the IO files will be deleted afterwards.
     verbose : bool, optional
-        Set to ``False`` if no information about the process should be displayed
-        to the user. Default is ``True``.
+        If True, information about the process will be displayed to the user.
     callback : callable, optional
         A function to be called eveytime the wrapped function prints output.
         The first parameter passed to this function is the line printed by the
         wrapped function. Additional parameters can be defined using `callback_args`.
-        Default is ``None``.
     callback_args : tuple, optional
         Additional parameter for the callback function.
-        Default is ``None``.
     python : str, optional
         The Python executable.
         This can be a path to a specific executable (e.g. ``'/opt/local/bin/python'``)
-        or the name of an executable registered on the system ``PATH`` (e.g. ``'pythonw'``).
-        Default is ``'pythonw'``.
+        or the name of an executable registered on the system `PATH` (e.g. ``'pythonw'``).
     paths : list, optional
-        A list of paths to be added to the ``PYTHONPATH`` by the subprocess.
-        Default is ``None``.
+        A list of paths to be added to the `PYTHONPATH` by the subprocess.
     serializer : {'json', 'pickle'}, optional
         The serialization mechnanism to be used to pass data between the caller and the subprocess.
-        Default is ``'json'``.
 
     Attributes
     ----------
     data : object
         The object returned by the wrapped function.
-        This is ``None`` if something went wrong.
     profile : str
         A profile of the call to the wrapped function.
-        This is ``None`` if something went wrong.
     error : str
         A traceback of the exception raised during the wrapped function call.
-        This is ``None`` if nothing went wrong.
 
     Methods
     -------
     __call__(*args, **kwargs)
-        Call the wrapped function with the apropriate/related arguments and keyword
-        arguments.
+        Call the wrapped function with the apropriate/related arguments and keyword arguments.
 
     Notes
     -----
     To use the Python executable of a virtual environment, simply assign the path
-    to that executable to the ``python`` parameter. For example
+    to that executable to the `python` parameter. For example
 
     .. code-block:: python
 
@@ -186,11 +175,11 @@ class XFunc(object):
 
     Examples
     --------
-    `compas.numerical` provides an implementation of the Force Density Method that
+    :mod:`compas.numerical` provides an implementation of the Force Density Method that
     is based on Numpy and Scipy. This implementation is not directly available in
     Rhino because Numpy and Scipy are not available for IronPython.
 
-    With `compas.utilities.XFunc`, `compas.numerical.fd_numpy` can be easily
+    With :class:`~compas.utilities.XFunc`, :func:`compas.numerical.fd_numpy` can be easily
     wrapped in an external process and called as if it would be directly available.
 
     .. code-block:: python
@@ -324,20 +313,18 @@ class XFunc(object):
 
         Parameters
         ----------
-        args : list
+        **args : list
             Positional arguments to be passed to the wrapped function.
-            Default is ``[]``.
-        kwargs : dict
+        **kwargs : dict, optional
             Named arguments to be passed to the wrapped function.
-            Default is ``{}``.
 
         Returns
         -------
-        result: object or None
+        object or None
             The data returned by the wrapped call.
             The type of the return value depends on the implementation of the wrapped function.
             If something went wrong the value is ``None``.
-            In this case, check the ``error`` attribute for more information.
+            In this case, check the :attr:`XFunc.error` for more information.
 
         """
         # if self.argtypes:

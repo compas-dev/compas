@@ -21,17 +21,18 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    fkey : hashable
+    fkey : int
         The identifier of a face.
-    where : list (None)
+    where : list[int], optional
         A list of vertices to unweld.
         Default is to unweld all vertices of the face.
 
-    Examples
-    --------
-    >>>
+    Returns
+    -------
+    list[int]
+        The vertices of the unwelded face.
 
     """
     face = []
@@ -58,13 +59,16 @@ def mesh_unweld_edges(mesh, edges):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh.
-    edges: list
+    edges: list[tuple[int, int]]
         List of edges as tuples of vertex keys.
 
-    """
+    Returns
+    -------
+    None
 
+    """
     # set of vertices in edges to unweld
     vertices = set([i for edge in edges for i in edge])
 

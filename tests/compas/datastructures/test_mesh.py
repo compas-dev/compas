@@ -1,4 +1,4 @@
-import os
+import tempfile
 
 import pytest
 
@@ -7,6 +7,7 @@ from compas.datastructures import Mesh
 from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
 from compas.geometry import Polygon
+from compas.geometry import Polyhedron
 from compas.geometry import Translation
 from compas.geometry import allclose
 
@@ -167,13 +168,13 @@ def test_from_ploygons():
 # --------------------------------------------------------------------------
 
 def test_to_obj():
+    _, fname = tempfile.mkstemp(suffix='.obj', prefix='temp_mesh_test')
     mesh = Mesh.from_obj(compas.get('faces.obj'))
-    mesh.to_obj('data/temp.obj')
-    mesh = Mesh.from_obj(compas.get('temp.obj'))
+    mesh.to_obj(fname)
+    mesh = Mesh.from_obj(fname)
     assert mesh.number_of_faces() == 25
     assert mesh.number_of_vertices() == 36
     assert mesh.number_of_edges() == 60
-    os.remove(compas.get('temp.obj'))
 
 
 def test_to_vertices_and_faces():
@@ -181,6 +182,33 @@ def test_to_vertices_and_faces():
     vertices, faces = mesh.to_vertices_and_faces()
     assert len(vertices) == 36
     assert len(faces) == 25
+
+
+def test_to_vertices_and_faces_triangulated():
+    # tri
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(4))
+    vertices, faces = mesh.to_vertices_and_faces(triangulated=True)
+    assert len(vertices) == 4
+    assert len(faces) == 4
+
+    # quad
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(6))
+    vertices, faces = mesh.to_vertices_and_faces(triangulated=True)
+    assert len(vertices) == 8
+    assert len(faces) == 12
+
+    # ngon
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(12))
+    vertices, faces = mesh.to_vertices_and_faces(triangulated=True)
+    assert len(vertices) == 32
+    assert len(faces) == 60
+
+
+def test_to_lines():
+    lines = compas.json_load(compas.get('lines.json'))
+    mesh = Mesh.from_lines(lines)
+    lines = mesh.to_lines()
+    assert len(lines) == mesh.number_of_edges()
 
 
 # --------------------------------------------------------------------------

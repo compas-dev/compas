@@ -30,36 +30,37 @@ def trimesh_remesh(mesh,
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A triangle mesh.
     target : float
         The target length for the mesh edges.
-    kmax : int, optional [100]
+    kmax : int, optional
         The number of iterations.
-    tol : float, optional [0.1]
+    tol : float, optional
         Length deviation tolerance.
-    divergence : float, optional [0.01]
+    divergence : float, optional
         ??
-    verbose : bool, optional [False]
+    verbose : bool, optional
         Print feedback messages.
-    allow_boundary_split : bool, optional [False]
+    allow_boundary_split : bool, optional
         Allow boundary edges to be split.
-    allow_boundary_swap : bool, optional [False]
+    allow_boundary_swap : bool, optional
         Allow boundary edges or edges connected to the boundary to be swapped.
-    allow_boundary_collapse : bool, optional [False]
+    allow_boundary_collapse : bool, optional
         Allow boundary edges or edges connected to the boundary to be collapsed.
-    smooth : bool, optional [True]
+    smooth : bool, optional
         Apply smoothing at every iteration.
-    fixed : list, optional [None]
+    fixed : list[int], optional
         A list of vertices that have to stay fixed.
-    callback : callable, optional [None]
+    callback : callable, optional
         A user-defined function that is called after every iteration.
-    callback_args : list, optional [None]
+    callback_args : list[Any], optional
         A list of additional parameters to be passed to the callback function.
 
     Returns
     -------
     None
+        The mesh is modified in place.
 
     Notes
     -----
@@ -82,10 +83,6 @@ def trimesh_remesh(mesh,
     .. [1] Botsch, M. & Kobbelt, L., 2004. *A remeshing approach to multiresolution modeling*.
            Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
            Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457.
-
-    Examples
-    --------
-    >>>
 
     """
     if verbose:

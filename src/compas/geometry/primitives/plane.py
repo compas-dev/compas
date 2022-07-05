@@ -13,21 +13,21 @@ class Plane(Primitive):
 
     Parameters
     ----------
-    point : point
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         The base point of the plane.
-    normal : vector
+    normal : [float, float, float] | :class:`~compas.geometry.Vector`
         The normal vector of the plane.
 
     Attributes
     ----------
-    data : dict
-        The data representation of the plane.
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Plane`
         The base point of the plane.
-    normal : :class:`compas.geometry.Vector`
-        The normal of the plane.
+    normal : :class:`~compas.geometry.Vector`
+        The normal vector of the plane.
     d : float, read-only
-        The *d* parameter of the equation describing the plane.
+        The *d* parameter of the linear equation describing the plane.
+    abcd : list[float], read-only
+        The coefficients of the plane equation.
 
     Examples
     --------
@@ -36,19 +36,8 @@ class Plane(Primitive):
     Point(0.000, 0.000, 0.000)
     >>> plane.normal
     Vector(0.000, 0.000, 1.000)
+
     """
-
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        return Schema({
-            'point': Point.DATASCHEMA.fget(None),
-            'normal': Vector.DATASCHEMA.fget(None)
-        })
-
-    @property
-    def JSONSCHEMANAME(self):
-        return 'plane'
 
     __slots__ = ['_point', '_normal']
 
@@ -58,6 +47,24 @@ class Plane(Primitive):
         self._normal = None
         self.point = point
         self.normal = normal
+
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : Schema of the data representation."""
+        from schema import Schema
+        return Schema({
+            'point': Point.DATASCHEMA.fget(None),
+            'normal': Vector.DATASCHEMA.fget(None)
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        """str : Name of the schema of the data representation in JSON format."""
+        return 'plane'
 
     @property
     def data(self):
@@ -70,9 +77,37 @@ class Plane(Primitive):
         self.point = Point.from_data(data['point'])
         self.normal = Vector.from_data(data['normal'])
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a plane from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Plane`
+            The constructed plane.
+
+        Examples
+        --------
+        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
+        >>> plane.point
+        Point(0.000, 0.000, 0.000)
+        >>> plane.normal
+        Vector(0.000, 0.000, 1.000)
+
+        """
+        return cls(Point.from_data(data['point']), Vector.from_data(data['normal']))
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
+
     @property
     def point(self):
-        """:class:`compas.geometry.Plane` : The base point of the plane."""
         return self._point
 
     @point.setter
@@ -81,7 +116,6 @@ class Plane(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` : The normal vector of the plane."""
         return self._normal
 
     @normal.setter
@@ -91,14 +125,12 @@ class Plane(Primitive):
 
     @property
     def d(self):
-        """float: The *d* parameter of the linear equation describing the plane."""
         a, b, c = self.normal
         x, y, z = self.point
         return - a * x - b * y - c * z
 
     @property
     def abcd(self):
-        """list: The coefficients of the plane equation."""
         a, b, c = self.normal
         d = self.d
         return a, b, c, d
@@ -140,47 +172,23 @@ class Plane(Primitive):
     # ==========================================================================
 
     @classmethod
-    def from_data(cls, data):
-        """Construct a plane from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Plane`
-            The constructed plane.
-
-        Examples
-        --------
-        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
-        >>> plane.point
-        Point(0.000, 0.000, 0.000)
-        >>> plane.normal
-        Vector(0.000, 0.000, 1.000)
-        """
-        return cls(Point.from_data(data['point']), Vector.from_data(data['normal']))
-
-    @classmethod
     def from_three_points(cls, a, b, c):
         """Construct a plane from three points in three-dimensional space.
 
         Parameters
         ----------
-        a : point
+        a : [float, float, float] | :class:`~compas.geometry.Point`
             The first point.
-        b : point
+        b : [float, float, float] | :class:`~compas.geometry.Point`
             The second point.
-        c : point
+        c : [float, float, float] | :class:`~compas.geometry.Point`
             The second point.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
-            A plane with base point ``a`` and normal vector defined as the unitized
-            cross product of the vectors ``ab`` and ``ac``.
+        :class:`~compas.geometry.Plane`
+            A plane with base point `a` and normal vector defined as the unitized
+            cross product of the vectors `ab` and `ac`.
 
         Examples
         --------
@@ -189,6 +197,7 @@ class Plane(Primitive):
         Point(0.000, 0.000, 0.000)
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
+
         """
         a = Point(*a)
         b = Point(*b)
@@ -202,18 +211,18 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        point : point
+        point : [float, float, float] | :class:`~compas.geometry.Point`
             The base point.
-        u : vector
+        u : [float, float, float] | :class:`~compas.geometry.Vector`
             The first vector.
-        v : vector
+        v : [float, float, float] | :class:`~compas.geometry.Vector`
             The second vector.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
-            A plane with base point ``point`` and normal vector defined as the unitized
-            cross product of vectors ``u`` and ``v``.
+        :class:`~compas.geometry.Plane`
+            A plane with base point `point` and normal vector defined as the unitized
+            cross product of vectors `u` and `v`.
 
         Examples
         --------
@@ -222,6 +231,7 @@ class Plane(Primitive):
         Point(0.000, 0.000, 0.000)
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
+
         """
         normal = Vector.cross(u, v)
         return cls(point, normal)
@@ -231,12 +241,13 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        abcd : list of float
+        abcd : [float, float, float, float]
             The equation coefficients.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
+
         """
         a, b, c, d = abcd
         x = 1 / sqrt(a**2 + b**2 + c**2)
@@ -250,7 +261,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        :class:`~compas.geometry.Plane`
             The world XY plane.
 
         """
@@ -262,8 +273,8 @@ class Plane(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
-            A plane with the frame's ``point`` and the frame's ``normal``.
+        :class:`~compas.geometry.Plane`
+            A plane with the frame's `point` and the frame's `normal`.
 
         Examples
         --------
@@ -271,6 +282,7 @@ class Plane(Primitive):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> Plane.from_frame(frame)
         Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))
+
         """
         return cls(frame.point, frame.normal)
 
@@ -283,8 +295,12 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -295,6 +311,7 @@ class Plane(Primitive):
         >>> T = Transformation.from_frame(f)
         >>> plane = Plane.worldXY()
         >>> plane.transform(T)
+
         """
         self.point.transform(T)
         self.normal.transform(T)
@@ -305,15 +322,13 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        plane: :class:`compas.geometry.Plane`
-            The plane to be offset.
-        distance: :obj:`float`
+        distance: float
             The offset distance.
 
         Returns
         -------
-        :class:`Plane`
+        :class:`~compas.geometry.Plane`
             The offset plane.
-        """
 
-        return Plane(self.point+self.normal.scaled(distance), self.normal)
+        """
+        return Plane(self.point + self.normal.scaled(distance), self.normal)

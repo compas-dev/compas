@@ -14,7 +14,34 @@ Color = Tuple[float, float, float]
 
 
 class LineArtist(PlotterArtist, PrimitiveArtist):
-    """Artist for COMPAS lines."""
+    """Artist for COMPAS lines.
+
+    Parameters
+    ----------
+    line : :class:`~compas.geometry.Line`
+        A COMPAS line.
+    draw_points : bool, optional
+        If True, draw the start and end point of the line.
+    draw_as_segment : bool, optional
+        If True, draw only the segment between start and end, instead of the infinite line.
+    linewidth : float, optional
+        Width of the line.
+    linestyle : {'solid', 'dotted', 'dashed', 'dashdot'}, optional
+        Style of the line.
+    color : tuple[float, float, float], optional
+        Color of the line.
+    zorder : int, optional
+        Stacking order of the line on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
+
+    Attributes
+    ----------
+    line : :class:`~compas.geometry.Line`
+        The line associated with the artist.
+
+    """
 
     def __init__(self,
                  line: Line,
@@ -47,19 +74,33 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
     def line(self, line):
         self.primitive = line
 
+    @property
+    def data(self) -> List[List[float]]:
+        return [self.line.start[:2], self.line.end[:2]]
+
     def clip(self) -> List[Point]:
-        """Compute the clipping points of the line for the current view box."""
+        """Compute the clipping points of the line for the current view box.
+
+        Returns
+        -------
+        list[[float, float, float]]
+            The intersection between the line and the viewbox.
+
+        """
         xlim, ylim = self.plotter.viewbox
         xmin, xmax = xlim
         ymin, ymax = ylim
         box = [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]]
         return intersection_line_box_xy(self.line, box)
 
-    @property
-    def data(self) -> List[List[float]]:
-        return [self.line.start[:2], self.line.end[:2]]
-
     def draw(self) -> None:
+        """Draw the line associated with the artist.
+
+        Returns
+        -------
+        None
+
+        """
         if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
@@ -89,6 +130,13 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
                     self._end_artist = self.plotter.add(self.line.end, edgecolor=self.color)
 
     def redraw(self) -> None:
+        """Update the line using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]

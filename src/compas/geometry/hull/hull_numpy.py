@@ -17,14 +17,20 @@ def convex_hull_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple
+    ndarray[int](N, )
         Indices of the points on the hull.
+    ndarray[int](M, 3)
         Faces of the hull.
+
+    Raises
+    ------
+    AssertionError
+        If the input data is not 3D.
 
     Notes
     -----
@@ -52,34 +58,26 @@ def convex_hull_numpy(points):
 def convex_hull_xy_numpy(points):
     """Compute the convex hull of a set of points in the XY plane.
 
-    Warnings
-    --------
-    This function requires Numpy ands Scipy.
-
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XY(Z) coordinates of the points.
 
     Returns
     -------
-    list
+    ndarray[int](N, )
         Indices of the points on the hull.
-    list
-        Faces of the hull.
+    ndarray[int](M, 2)
+        Lines of the hull.
 
-    Notes
-    -----
-    The faces of the hull returned by this function do not necessarily have consistent
-    cycle directions. To obtain a mesh with consistent cycle directions, construct
-    a mesh from the returned vertices, this function should be used in combination
-    with :func:`compas.topology.unify_cycles`.
+    Raises
+    ------
+    AssertionError
+        If the input data is not at least 2D.
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>>
 
     """
     points = asarray(points)

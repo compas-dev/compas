@@ -6,40 +6,51 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas_blender.utilities import RGBColor
 from compas.artists import PrimitiveArtist
 from compas.geometry import Line
+from compas.colors import Color
 from compas_blender.artists import BlenderArtist
 
 
 class LineArtist(BlenderArtist, PrimitiveArtist):
-    """Artist for drawing lines.
+    """Artist for drawing lines in Blender.
 
     Parameters
     ----------
-    line : :class:`compas.geometry.Line`
+    line : :class:`~compas.geometry.Line`
         A COMPAS line.
-    collection: str or :class:`bpy.types.Collection`
-        The name of the collection the object belongs to.
+    collection : str | :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------
+    Use the Blender artist explicitly.
+
     .. code-block:: python
 
-        import random
-        from compas.geometry import Pointcloud
-        from compas.geometry import Vector
         from compas.geometry import Line
-        from compas.utilities import i_to_rgb
-
         from compas_blender.artists import LineArtist
 
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
+        line = Line([0, 0, 0], [1, 1, 1])
 
-        for point in pcl.points:
-            line = Line(point, point + Vector(1, 0, 0))
-            artist = LineArtist(line, color=i_to_rgb(random.random()))
-            artist.draw()
+        artist = LineArtist(line)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Line
+        from compas.artists import Artist
+
+        line = Line([0, 0, 0], [1, 1, 1])
+
+        artist = Artist(line)
+        artist.draw()
 
     """
 
@@ -50,23 +61,23 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
                  ):
         super().__init__(primitive=line, collection=collection or line.name, **kwargs)
 
-    def draw(self, color: Optional[RGBColor] = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, show_points: bool = False) -> List[bpy.types.Object]:
         """Draw the line.
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
+            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
         show_points : bool, optional
-            Show the start and end point.
-            Default is ``False``.
+            If True, show the start and end point in addition to the line.
 
         Returns
         -------
-        list of bpy.types.Object
+        list[:blender:`bpy.types.Object`]
 
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         start = self.primitive.start
         end = self.primitive.end
         objects = []

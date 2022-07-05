@@ -91,30 +91,30 @@ class Configuration(Data):
 
     Parameters
     ----------
-    joint_values : :obj:`list` of :obj:`float`
+    joint_values : list of float
         Joint values expressed in radians or meters, depending on the respective
         type.
-    joint_types : :obj:`list` of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
+    joint_types : list of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
         Joint types, e.g. a list of :attr:`compas.robots.Joint.REVOLUTE` for
         revolute joints.
-    joint_names : :obj:`list` of :obj:`str`, optional
+    joint_names : list[str], optional
         List of joint names.
 
     Attributes
     ----------
-    joint_values : :obj:`list` of :obj:`float`
+    joint_values : list of float
         Joint values expressed in radians or meters, depending on the respective
         type.
-    joint_types : :obj:`list` of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
+    joint_types : list of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
         Joint types, e.g. a list of :attr:`compas.robots.Joint.REVOLUTE` for
         revolute joints.
-    joint_names : :obj:`list` of :obj:`str`
+    joint_names : list[str]
         List of joint names.
-    data : :obj:`dict`
+    data : dict
         The data representing the configuration.
-    prismatic_values : :obj:`list` of :obj:`float`
+    prismatic_values : list of float
         Prismatic joint values in meters.
-    revolute_values : :obj:`list` of :obj:`float`
+    revolute_values : list of float
         Revolute joint values in radians.
 
     Examples
@@ -134,7 +134,9 @@ class Configuration(Data):
 
     """
 
-    def __init__(self, joint_values=None, joint_types=None, joint_names=None):
+    def __init__(self, joint_values=None, joint_types=None, joint_names=None, **kwargs):
+        super(Configuration, self).__init__(**kwargs)
+
         joint_values = FixedLengthList(joint_values or [])
         joint_types = FixedLengthList(joint_types or [])
         joint_names = FixedLengthList(joint_names or [], validator=joint_names_validator)
@@ -160,7 +162,7 @@ class Configuration(Data):
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
+        list of float
         """
         return self._joint_values
 
@@ -177,7 +179,7 @@ class Configuration(Data):
 
         Returns
         -------
-        :obj:`list` of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
+        list of :attr:`compas.robots.Joint.SUPPORTED_TYPES`
         """
         return self._joint_types
 
@@ -193,7 +195,7 @@ class Configuration(Data):
 
         Returns
         -------
-        :obj:`list` of :obj:`str`
+        list[str]
         """
         return self._joint_names
 
@@ -266,9 +268,9 @@ class Configuration(Data):
 
         Parameters
         ----------
-        values : :obj:`list` of :obj:`float`
+        values : list of float
             Joint values expressed in radians.
-        joint_names : :obj:`list` of :obj:`str`, optional
+        joint_names : list[str], optional
             List of joint names.
 
         Returns
@@ -286,11 +288,11 @@ class Configuration(Data):
 
         Parameters
         ----------
-        prismatic_values : :obj:`list` of :obj:`float`
+        prismatic_values : list of float
             Positions on the external axis system in meters.
-        revolute_values : :obj:`list` of :obj:`float`
+        revolute_values : list of float
             Joint values expressed in radians.
-        joint_names : :obj:`list` of :obj:`str`, optional
+        joint_names : list[str], optional
             List of joint names.
 
         Returns
@@ -309,10 +311,10 @@ class Configuration(Data):
 
     @property
     def data(self):
-        """:obj:`dict` : The data representing the configuration.
+        """dict : The data representing the configuration.
 
         By assigning a data dictionary to this property, the current data of
-        the configuration will be replaced by the data in the :obj:`dict`. The
+        the configuration will be replaced by the data in the dict. The
         data getter and setter should always be used in combination with each
         other.
         """
@@ -330,7 +332,7 @@ class Configuration(Data):
 
     @property
     def prismatic_values(self):
-        """:obj:`list` of :obj:`float` : Prismatic joint values in meters.
+        """list of float : Prismatic joint values in meters.
 
         E.g. positions on the external axis system.
         """
@@ -338,7 +340,7 @@ class Configuration(Data):
 
     @property
     def revolute_values(self):
-        """:obj:`list` of :obj:`float` : Revolute joint values in radians."""
+        """list of float : Revolute joint values in radians."""
         return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == _JOINT_REVOLUTE]
 
     def scale(self, scale_factor):
@@ -348,7 +350,7 @@ class Configuration(Data):
 
         Parameters
         ----------
-        scale_factor : :obj:`float`
+        scale_factor : float
             Scale factor.
 
         Returns
@@ -371,7 +373,7 @@ class Configuration(Data):
 
         Parameters
         ----------
-        scale_factor : :obj:`float`
+        scale_factor : float
             Scale factor
 
         Returns
@@ -395,7 +397,7 @@ class Configuration(Data):
 
         Yields
         ------
-        :obj:`float`
+        float
             The next difference to the `Configuration`'s joint_values.
 
         Raises
@@ -445,7 +447,7 @@ class Configuration(Data):
 
         Returns
         ------
-        :obj:`float`
+        float
             The maximum absolute difference.
 
         Examples

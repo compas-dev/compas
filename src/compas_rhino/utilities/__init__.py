@@ -72,6 +72,8 @@ drawing
     draw_pipes
     draw_spheres
     draw_mesh
+    draw_curves
+    draw_surfaces
 
 
 constructors
@@ -82,6 +84,14 @@ constructors
     :nosignatures:
 
     volmesh_from_polysurfaces
+
+misc
+====
+
+.. autosummary::
+    :toctree: generated/
+
+    unload_modules
 
 """
 from __future__ import absolute_import
@@ -185,7 +195,9 @@ from .drawing import (
     draw_pipes,
     draw_spheres,
     draw_mesh,
-    draw_circles
+    draw_circles,
+    draw_curves,
+    draw_surfaces,
 )
 from .geometry import uv_points_from_surface
 from .constructors import volmesh_from_polysurfaces
@@ -283,6 +295,8 @@ __all__ = [
     'draw_spheres',
     'draw_mesh',
     'draw_circles',
+    'draw_curves',
+    'draw_surfaces',
     'uv_points_from_surface',
     'volmesh_from_polysurfaces'
 ]

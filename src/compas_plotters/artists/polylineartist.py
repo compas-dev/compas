@@ -13,7 +13,32 @@ Color = Tuple[float, float, float]
 
 
 class PolylineArtist(PlotterArtist, PrimitiveArtist):
-    """Artist for COMPAS polylines."""
+    """Artist for COMPAS polylines.
+
+    Parameters
+    ----------
+    polyline : :class:`~compas.geometry.Polyline`
+        A COMPAS polyline.
+    linewidth : float, optional
+        Width of the polyline edge lines.
+    linestyle : {'solid', 'dotted', 'dashed', 'dashdot'}, optional
+        Style of the line.
+    facecolor : tuple[float, float, float], optional
+        Color of the interior face of the polyline.
+    edgecolor : tuple[float, float, float], optional
+        Color of the boundary of the polyline.
+    zorder : int, optional
+        Stacking order of the polyline on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
+
+    Attributes
+    ----------
+    polyline : :class:`~compas.geometry.Polyline`
+        The line associated with the artist.
+
+    """
 
     def __init__(self,
                  polyline: Polyline,
@@ -47,6 +72,13 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
         return [point[:2] for point in self.polyline.points]
 
     def draw(self) -> None:
+        """Draw the polyline.
+
+        Returns
+        -------
+        None
+
+        """
         x, y, _ = zip(* self.polyline.points)
         line2d = Line2D(x, y,
                         linewidth=self.linewidth,
@@ -59,6 +91,13 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
                 self._point_artists.append(self.plotter.add(point))
 
     def redraw(self) -> None:
+        """Update the polyline using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         x, y, _ = zip(* self.polyline.points)
         self._mpl_line.set_xdata(x)
         self._mpl_line.set_ydata(y)

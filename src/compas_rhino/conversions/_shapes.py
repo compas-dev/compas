@@ -13,6 +13,7 @@ from Rhino.Geometry import Box as RhinoBox
 from Rhino.Geometry import Sphere as RhinoSphere
 from Rhino.Geometry import Cone as RhinoCone
 from Rhino.Geometry import Cylinder as RhinoCylinder
+from Rhino.Geometry import Interval
 
 from ._primitives import plane_to_rhino
 from ._primitives import circle_to_rhino
@@ -29,19 +30,20 @@ def box_to_compas(box):
 
     Parameters
     ----------
-    box: :class:`Rhino.Geometry.Box`
+    box: :rhino:`Rhino.Geometry.Box`
 
     Returns
     -------
-    :class:`compas.geometry.Box`
+    :class:`~compas.geometry.Box`
+
     """
     xsize = box.X.Length
     ysize = box.Y.Length
     zsize = box.Z.Length
     frame = plane_to_compas_frame(box.Plane)
-    frame.point.x += 0.5 * xsize
-    frame.point.y += 0.5 * ysize
-    frame.point.z += 0.5 * zsize
+    frame.point += frame.xaxis * 0.5 * xsize
+    frame.point += frame.yaxis * 0.5 * ysize
+    frame.point += frame.zaxis * 0.5 * zsize
     return Box(frame, xsize, ysize, zsize)
 
 
@@ -50,13 +52,19 @@ def box_to_rhino(box):
 
     Parameters
     ----------
-    box: :class:`compas.geometry.Box`
+    box: :class:`~compas.geometry.Box`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Box`
+    :rhino:`Rhino.Geometry.Box`
+
     """
-    return RhinoBox(frame_to_rhino(box.frame), box.xsize, box.ysize, box.zsize)
+    # compas frame is center of box, intervals are in frame space
+    base_plane = box.frame.copy()
+    base_plane.point -= base_plane.xaxis * 0.5 * box.xsize
+    base_plane.point -= base_plane.yaxis * 0.5 * box.ysize
+    base_plane.point -= base_plane.zaxis * 0.5 * box.zsize
+    return RhinoBox(frame_to_rhino(base_plane), Interval(0, box.xsize), Interval(0, box.ysize), Interval(0, box.zsize))
 
 
 def sphere_to_compas(sphere):
@@ -64,11 +72,12 @@ def sphere_to_compas(sphere):
 
     Parameters
     ----------
-    sphere: :class:`Rhino.Geometry.Sphere`
+    sphere: :rhino:`Rhino.Geometry.Sphere`
 
     Returns
     -------
-    :class:`compas.geometry.Sphere`
+    :class:`~compas.geometry.Sphere`
+
     """
     return Sphere(point_to_compas(sphere.Center), sphere.Radius)
 
@@ -78,11 +87,12 @@ def sphere_to_rhino(sphere):
 
     Parameters
     ----------
-    sphere: :class:`compas.geometry.Sphere`
+    sphere: :class:`~compas.geometry.Sphere`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Sphere`
+    :rhino:`Rhino.Geometry.Sphere`
+
     """
     return RhinoSphere(point_to_rhino(sphere.point), sphere.radius)
 
@@ -92,11 +102,12 @@ def cone_to_compas(cone):
 
     Parameters
     ----------
-    cone: :class:`Rhino.Geometry.Cone`
+    cone: :rhino:`Rhino.Geometry.Cone`
 
     Returns
     -------
-    :class:`compas.geometry.Cone`
+    :class:`~compas.geometry.Cone`
+
     """
     plane = Plane(cone.BasePoint, vector_to_compas(cone.Plane.Normal).inverted())
     return Cone(Circle(plane, cone.Radius), cone.Height)
@@ -107,11 +118,12 @@ def cone_to_rhino(cone):
 
     Parameters
     ----------
-    cone: :class:`compas.geometry.Cone`
+    cone: :class:`~compas.geometry.Cone`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Cone`
+    :rhino:`Rhino.Geometry.Cone`
+
     """
     return RhinoCone(plane_to_rhino(cone.circle.plane), cone.height, cone.circle.radius)
 
@@ -121,11 +133,12 @@ def cylinder_to_compas(cylinder):
 
     Parameters
     ----------
-    cylinder: :class:`Rhino.Geometry.Cylinder`
+    cylinder: :rhino:`Rhino.Geometry.Cylinder`
 
     Returns
     -------
-    :class:`compas.geometry.Cylinder`
+    :class:`~compas.geometry.Cylinder`
+
     """
     plane = plane_to_compas(cylinder.BasePlane)
     height = cylinder.TotalHeight
@@ -138,10 +151,11 @@ def cylinder_to_rhino(cylinder):
 
     Parameters
     ----------
-    cylinder: :class:`compas.geometry.Cylinder`
+    cylinder: :class:`~compas.geometry.Cylinder`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Cylinder`
+    :rhino:`Rhino.Geometry.Cylinder`
+
     """
     return RhinoCylinder(circle_to_rhino(cylinder.circle), cylinder.height)

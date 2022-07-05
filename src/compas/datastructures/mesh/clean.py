@@ -15,13 +15,12 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    precision : str (None)
-        A formatting option that specifies the precision of the
-        individual numbers in the string (truncation after the decimal point).
-        Supported values are any float precision, or decimal integer (``'d'``).
-        Default is ``'3f'``.
+    precision : str, optional
+        Precision for point comparison in the form of a string formatting specifier.
+        For example, floating point precision (``'3f'``), or decimal integer (``'d'``).
+        Default is :attr:`compas.PRECISION`.
 
     Returns
     -------

@@ -5,7 +5,8 @@ from __future__ import division
 from System.Drawing.Color import FromArgb
 from Rhino.Geometry import Point3d
 
-from compas.utilities import color_to_rgb
+from compas.utilities import iterable_like
+from compas.utilities import is_sequence_of_iterable
 from .base import BaseConduit
 
 
@@ -14,21 +15,29 @@ class LabelsConduit(BaseConduit):
 
     Parameters
     ----------
-    labels : list of 2-tuple
+    labels : list[tuple[[float, float, float] | :class:`~compas.geometry.Point`, str]]
         A list of label tuples.
         Each tuple contains a position and text for the label.
-    color : list of 2-tuple, optional
+    color : list[tuple[tuple[int, int, int], tuple[int, int, int]]], optional
         The colors of the labels.
         Each color is a tuple with a background color and a text color.
-        Default is ``((0, 0, 0), (255, 255, 255))`` for all labels.
+        The default background color is :attr:`LabelsConduit.default_color`,
+        and the default text color is :attr:`LabelsConduit.default_textcolor`.
 
     Attributes
     ----------
-    color : list of RGB colors
+    color : list[tuple[System.Drawing.Color, System.Drawing.Color]]
         A color specification per label.
-    labels : list
+    labels : list[tuple[[float, float, float] | :class:`~compas.geometry.Point`, str]]
         A list of label tuples.
         Each tuple contains a position and text for the label.
+
+    Class Attributes
+    ----------------
+    default_color : System.Drawing.Color
+        The default background color is ``FromArgb(0, 0, 0)``.
+    default_textcolor : System.Drawing.Color
+        The default text color is ``FromArgb(255, 255, 255)``.
 
     Examples
     --------
@@ -47,10 +56,12 @@ class LabelsConduit(BaseConduit):
                 conduit.redraw(pause=0.1)
 
     """
+
+    default_color = FromArgb(0, 0, 0)
+    default_textcolor = FromArgb(255, 255, 255)
+
     def __init__(self, labels, color=None, **kwargs):
         super(LabelsConduit, self).__init__(**kwargs)
-        self._default_color = FromArgb(0, 0, 0)
-        self._default_textcolor = FromArgb(255, 255, 255)
         self._color = None
         self.labels = labels or []
         self.color = color
@@ -61,20 +72,30 @@ class LabelsConduit(BaseConduit):
 
     @color.setter
     def color(self, color):
-        if color:
-            color[:] = [(FromArgb(* color_to_rgb(bgc)), FromArgb(* color_to_rgb(tc))) for bgc, tc in color]
-            l = len(self.labels)  # noqa: E741
-            c = len(color)
-            if c < l:
-                color += [(self._default_color, self._default_textcolor) for i in range(l - c)]
-            elif c > l:
-                color[:] = color[:l]
-            self._color = color
+        if not color:
+            return
+        if not is_sequence_of_iterable(color[0]):
+            # the first item in the list should be a tuple of colors
+            # if not, wrap the tuple
+            color = [color]
+        color = [(FromArgb(* bg), FromArgb(* text)) for bg, text in iterable_like(self.labels, color, (self.default_color, self.default_textcolor))]
+        self._color = color
 
     def DrawForeground(self, e):
+        """Draw the labels as text dots.
+
+        Parameters
+        ----------
+        e : Rhino.Display.DrawEventArgs
+
+        Returns
+        -------
+        None
+
+        """
         for i, (pos, text) in enumerate(self.labels):
             if self.color:
                 color, textcolor = self.color[i]
                 e.Display.DrawDot(Point3d(*pos), text, color, textcolor)
             else:
-                e.Display.DrawDot(Point3d(*pos), text, self._default_color, self._default_textcolor)
+                e.Display.DrawDot(Point3d(*pos), text, self.default_color, self.default_textcolor)

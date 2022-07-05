@@ -34,17 +34,6 @@ from compas_rhino import _check_rhino_version
 import compas_rhino
 
 
-def coerce_frame(plane):
-    import Rhino
-    from compas.geometry import Frame
-    if isinstance(plane, Rhino.Geometry.Plane):
-        return Frame(plane.Origin, plane.XAxis, plane.YAxis)
-    elif isinstance(plane, Frame):
-        return plane
-    else:
-        return Frame(*plane)
-
-
 def get_version_from_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--version', choices=compas_rhino.SUPPORTED_VERSIONS, default=compas_rhino.DEFAULT_VERSION)
@@ -87,14 +76,16 @@ def install_userobjects(source):
     return list(zip(symlinks_to_add, created))
 
 
-def uninstall_userobjects(userobjects):
+def uninstall_userobjects(userobjects=None):
     """
     Uninstalls Grasshopper user objects.
 
     Parameters
     ----------
-    userobjects : list of str
+    userobjects : list of str, optional
         List of user object names to uninstall, eg. ``['Compas_Info.ghuser']``
+        Defaults to ``None``, in which case the uninstaller will search for user objects
+        whose name starts with the string 'compas'.
 
     Returns
     -------
@@ -104,10 +95,11 @@ def uninstall_userobjects(userobjects):
     version = get_version_from_args()
     dstdir = get_grasshopper_userobjects_path(version)
 
-    userobjects = []
-    for name in os.listdir(dstdir):
-        if name.lower().startswith('compas'):
-            userobjects.append(name)
+    if not userobjects:
+        userobjects = []
+        for name in os.listdir(dstdir):
+            if name.lower().startswith('compas'):
+                userobjects.append(name)
 
     symlinks = []
     for obj in userobjects:
@@ -119,7 +111,4 @@ def uninstall_userobjects(userobjects):
     return list(zip(symlinks, removed))
 
 
-__all__ = [
-    'install_userobjects',
-    'uninstall_userobjects'
-]
+__all__ = ['install_userobjects', 'uninstall_userobjects']

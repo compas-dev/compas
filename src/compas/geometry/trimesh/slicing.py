@@ -14,14 +14,14 @@ def trimesh_slice(mesh, planes):
 
     Parameters
     ----------
-    mesh : tuple of vertices and faces
-        The mesh to slice.
-    planes : list of (point, normal) tuples or compas.geometry.Plane
+    mesh : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+        A mesh represented by a list of vertices and a list of faces.
+    planes : sequence[[point, vector] | :class:`~compas.geometry.Plane`]
         The slicing planes.
 
     Returns
     -------
-    list of arrays
+    list[list[float, float, float]]
         The points defining the slice polylines.
 
     """

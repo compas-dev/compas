@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from itertools import product
+
 from compas.datastructures import HalfFace
 from compas.datastructures import Mesh
 
@@ -21,13 +23,11 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
 from compas.utilities import geometric_key
+from compas.utilities import linspace
 
 from .bbox import volmesh_bounding_box
 from .transformations import volmesh_transform
 from .transformations import volmesh_transformed
-
-
-__all__ = ['VolMesh']
 
 
 class VolMesh(HalfFace):
@@ -36,8 +36,7 @@ class VolMesh(HalfFace):
     Parameters
     ----------
     name: str, optional
-        The name of the graph.
-        Defaults to "Graph".
+        The name of the data structure.
     default_vertex_attributes: dict, optional
         Default values for vertex attributes.
     default_edge_attributes: dict, optional
@@ -59,7 +58,6 @@ class VolMesh(HalfFace):
                  default_edge_attributes=None,
                  default_face_attributes=None,
                  default_cell_attributes=None):
-        name = name or 'VolMesh'
         _default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         _default_edge_attributes = {}
         _default_face_attributes = {}
@@ -72,7 +70,7 @@ class VolMesh(HalfFace):
             _default_face_attributes.update(default_face_attributes)
         if default_cell_attributes:
             _default_cell_attributes.update(default_cell_attributes)
-        super(VolMesh, self).__init__(name=name,
+        super(VolMesh, self).__init__(name=name or 'VolMesh',
                                       default_vertex_attributes=_default_vertex_attributes,
                                       default_edge_attributes=_default_edge_attributes,
                                       default_face_attributes=_default_face_attributes,
@@ -95,20 +93,75 @@ class VolMesh(HalfFace):
     # --------------------------------------------------------------------------
 
     @classmethod
+    def from_meshgrid(cls, dx=10, dy=None, dz=None, nx=10, ny=None, nz=None):
+        """Construct a volmesh from a 3D meshgrid.
+
+        Parameters
+        ----------
+        dx : float, optional
+            The size of the grid in the x direction.
+        dy : float, optional
+            The size of the grid in the y direction.
+            Defaults to the value of `dx`.
+        dz : float, optional
+            The size of the grid in the z direction.
+            Defaults to the value of `dx`.
+        nx : int, optional
+            The number of elements in the x direction.
+        ny : int, optional
+            The number of elements in the y direction.
+            Defaults to the value of `nx`.
+        nz : int, optional
+            The number of elements in the z direction.
+            Defaults to the value of `nx`.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.VolMesh`
+
+        """
+        dy = dy or dx
+        dz = dz or dx
+        ny = ny or nx
+        nz = nz or nx
+
+        vertices = [[x, y, z] for z, x, y in product(linspace(0, dz, nz + 1), linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))]
+        cells = []
+        for k, i, j in product(range(nz), range(nx), range(ny)):
+            a = k * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j
+            b = k * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j
+            c = k * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j + 1
+            d = k * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j + 1
+            aa = (k + 1) * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j
+            bb = (k + 1) * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j
+            cc = (k + 1) * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j + 1
+            dd = (k + 1) * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j + 1
+            bottom = [d, c, b, a]
+            front = [a, b, bb, aa]
+            right = [b, c, cc, bb]
+            left = [a, aa, dd, d]
+            back = [c, d, dd, cc]
+            top = [aa, bb, cc, dd]
+            cells.append([bottom, front, left, back, right, top])
+
+        return cls.from_vertices_and_cells(vertices, cells)
+
+    @classmethod
     def from_obj(cls, filepath, precision=None):
         """Construct a volmesh object from the data described in an OBJ file.
 
         Parameters
         ----------
-        filepath : path string, file-like object or URL string
+        filepath : path string | file-like object | URL string
             A path, a file-like object or a URL pointing to a file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
-        Volesh
+        :class:`~compas.datastructures.VolMesh`
             A volmesh object.
+
         """
         obj = OBJ(filepath, precision)
         vertices = obj.parser.vertices
@@ -131,19 +184,24 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        filepath : path string or file-like object
+        filepath : path string | file-like object
             A path or a file-like object pointing to a file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
         unweld : bool, optional
-            If true, all faces have their own unique vertices.
-            If false, vertices are shared between faces if this is also the case in the mesh.
-            Default is ``False``.
+            If True, all faces have their own unique vertices.
+            If False, vertices are shared between faces if this is also the case in the mesh.
+            Default is False.
+
+        Returns
+        -------
+        None
 
         Warnings
         --------
         This function only writes geometric data about the vertices and
         the faces to the file.
+
         """
         obj = OBJ(filepath, precision=precision)
         obj.write(self, **kwargs)
@@ -154,15 +212,16 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        vertices : list
+        vertices : list[list[float]]
             Ordered list of vertices, represented by their XYZ coordinates.
-        cells : lists of lists
-            List of cells (list of faces).
+        cells : list[list[list[int]]]
+            List of cells defined by their faces.
 
         Returns
         -------
-        Volmesh
+        :class:`~compas.datastructures.VolMesh`
             A volmesh object.
+
         """
         volmesh = cls()
         for x, y, z in vertices:
@@ -176,13 +235,11 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        tuple
-            A 2-tuple containing
+        list[list[float]]
+            A list of vertices, represented by their XYZ coordinates.
+        list[list[list[int]]]
+            A list of cells, with each cell a list of faces, and each face a list of vertex indices.
 
-            * a list of vertices, represented by their XYZ coordinates, and
-            * a list of cells.
-
-            Each cell is a list of faces, which are lists of indices referencing the list of vertex coordinates.
         """
         vertex_index = self.vertex_index()
         vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
@@ -197,13 +254,14 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        cell : hashable
+        cell : int
             Identifier of the cell.
 
         Returns
         -------
-        Mesh
+        :class:`~compas.datastructures.Mesh`
             A mesh object.
+
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Mesh.from_vertices_and_faces(vertices, faces)
@@ -213,18 +271,16 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        cell : hashable
+        cell : int
             Identifier of the cell.
 
         Returns
         -------
-        tuple
-            A 2-tuple containing
+        list[list[float]]
+            A list of vertices, represented by their XYZ coordinates,
+        list[list[int]]
+            A list of faces, with each face a list of vertex indices.
 
-            * a list of vertices, represented by their XYZ coordinates, and
-            * a list of faces.
-
-            Each face is a list of indices referencing the list of vertex coordinates.
         """
         vertices = self.cell_vertices(cell)
         faces = self.cell_faces(cell)
@@ -243,12 +299,12 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        precision : str (3f)
+        precision : str, optional
             The float precision specifier used in string formatting.
 
         Returns
         -------
-        dict
+        dict[int, str]
             A dictionary of vertex-geometric key pairs.
 
         """
@@ -262,12 +318,12 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        precision : str (3f)
+        precision : str, optional
             The float precision specifier used in string formatting.
 
         Returns
         -------
-        dict
+        dict[str, int]
             A dictionary of geometric key-vertex pairs.
 
         """
@@ -292,7 +348,7 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the centroid.
 
         """
@@ -311,12 +367,11 @@ class VolMesh(HalfFace):
             The identifier of the vertex.
         axes : str, optional
             The axes alon which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------
-        list
+        list[float]
             Coordinates of the vertex.
 
         """
@@ -332,8 +387,9 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list
+        list[float]
             The components of the vector.
+
         """
         c = self.vertex_neighborhood_centroid(vertex)
         p = self.vertex_coordinates(vertex)
@@ -349,8 +405,9 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the centroid.
+
         """
         return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(vertex)])
 
@@ -363,15 +420,17 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The edge identifier.
-        axes : str (xyz)
+        axes : str, optional
             The axes along which the coordinates should be included.
 
         Returns
         -------
-        tuple
-            The coordinates of the start point and the coordinates of the end point.
+        list[float]
+            The coordinates of the start point.
+        list[float]
+            The coordinates of the end point.
 
         """
         u, v = edge
@@ -382,7 +441,7 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The edge identifier.
 
         Returns
@@ -399,12 +458,12 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The edge identifier.
 
         Returns
         -------
-        list
+        list[float]
             The vector from u to v.
 
         """
@@ -417,16 +476,16 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The edge identifier.
-        t : float (0.5)
+        t : float, optional
             The location of the point on the edge.
-            If the value of ``t`` is outside the range ``0-1``, the point will
+            If the value of `t` is outside the range 0-1, the point will
             lie in the direction of the edge, but not on the edge vector.
 
         Returns
         -------
-        list
+        list[float]
             The XYZ coordinates of the point.
 
         """
@@ -439,12 +498,12 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        edge : tuple of int
+        edge : tuple[int, int]
             The edge identifier.
 
         Returns
         -------
-        list
+        list[float]
             The direction vector of the edge.
 
         """
@@ -464,12 +523,13 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list
+        list[int]
             Ordered vertex identifiers.
+
         """
         return self.halfface_vertices(face)
 
-    def face_coordinates(self, face):
+    def face_coordinates(self, face, axes='xyz'):
         """Compute the coordinates of the vertices of a face.
 
         Parameters
@@ -478,16 +538,15 @@ class VolMesh(HalfFace):
             The identifier of the face.
         axes : str, optional
             The axes alon which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
+            Should be a combination of x, y, and z.
 
         Returns
         -------
-        list of list
+        list[list[float]]
             The coordinates of the vertices of the face.
 
         """
-        return [self.vertex_coordinates(vertex) for vertex in self.face_vertices(face)]
+        return [self.vertex_coordinates(vertex, axes=axes) for vertex in self.face_vertices(face)]
 
     def face_normal(self, face, unitized=True):
         """Compute the oriented normal of a face.
@@ -497,12 +556,11 @@ class VolMesh(HalfFace):
         face : int
             The identifier of the face.
         unitized : bool, optional
-            Unitize the normal vector.
-            Default is ``True``.
+            If True, unitize the normal vector.
 
         Returns
         -------
-        list
+        list[float]
             The components of the normal vector.
 
         """
@@ -518,7 +576,7 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the centroid.
 
         """
@@ -534,7 +592,7 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the center of mass.
 
         """
@@ -572,7 +630,8 @@ class VolMesh(HalfFace):
         Note
         ----
         compas.geometry.mesh_flatness function currently only works for quadrilateral faces.
-        This function uses the distance between each face vertex and its projected point on the best-fit plane of the face as the flatness metric.
+        This function uses the distance between each face vertex and its projected point
+        on the best-fit plane of the face as the flatness metric.
 
         """
         deviation = 0
@@ -602,6 +661,7 @@ class VolMesh(HalfFace):
         ----------
         .. [1] Wikipedia. *Types of mesh*.
                Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
+
         """
         face_edge_lengths = [self.edge_length(edge) for edge in self.face_halfedges(face)]
         return max(face_edge_lengths) / min(face_edge_lengths)
@@ -623,13 +683,14 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        cell : hashable
+        cell : int
             The identifier of the cell.
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the centroid.
+
         """
         vertices = self.cell_vertices(cell)
         return centroid_points([self.vertex_coordinates(vertex) for vertex in vertices])
@@ -639,13 +700,14 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        cell : hashable
+        cell : int
             The identifier of the cell.
 
         Returns
         -------
-        list
+        list[float]
             The coordinates of the center of mass.
+
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return centroid_polyhedron((vertices, faces))
@@ -663,8 +725,9 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list
+        list[float]
             The components of the normal vector.
+
         """
         cell_faces = self.cell_faces(cell)
         vectors = [self.face_normal(face) for face in self.vertex_faces(vertex) if face in cell_faces]

@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.artists import ShapeArtist
+from compas.colors import Color
 from .artist import RhinoArtist
 
 
@@ -12,10 +13,14 @@ class BoxArtist(RhinoArtist, ShapeArtist):
 
     Parameters
     ----------
-    box : :class:`compas.geometry.Box`
+    box : :class:`~compas.geometry.Box`
         A COMPAS box.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
+
     """
 
     def __init__(self, box, layer=None, **kwargs):
@@ -26,21 +31,23 @@ class BoxArtist(RhinoArtist, ShapeArtist):
 
         Parameters
         ----------
-        color : tuple of float, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
+            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the objects created in Rhino.
+
         """
-        color = color or self.color
+        color = Color.coerce(color) or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]
         faces = self.shape.faces
         guid = compas_rhino.draw_mesh(vertices,
                                       faces,
                                       layer=self.layer,
                                       name=self.shape.name,
-                                      color=color,
+                                      color=color.rgb255,
                                       disjoint=True)
         return [guid]

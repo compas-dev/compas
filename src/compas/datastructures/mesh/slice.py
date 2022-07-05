@@ -12,18 +12,18 @@ def mesh_slice_plane(mesh, plane):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The original mesh.
-    plane : compas.geometry.Plane
+    plane : :class:`~compas.geometry.Plane`
         The cutting plane.
 
     Returns
     -------
-    None or tuple of :class:`compas.datastructures.Mesh`
+    tuple[:class:`~compas.datastructures.Mesh`, :class:`~compas.datastructures.Mesh`] | None
+        The "positive" and "negative" submeshes.
         If the mesh and plane do not intersect,
         or if the intersection is degenerate (point or line),
-        the function returns ``None``.
-        Otherwise, the "positive" and "negative" submeshes are returned.
+        the function returns None.
 
     Examples
     --------
@@ -36,6 +36,7 @@ def mesh_slice_plane(mesh, plane):
     >>> result = mesh_slice_plane(mesh, plane)
     >>> len(result) == 2
     True
+
     """
     intersection = IntersectionMeshPlane(mesh, plane)
     if not intersection.is_polygon:
@@ -140,22 +141,25 @@ class IntersectionMeshPlane(object):
 
     def intersect(self):
         intersections = []
+        vertex_intersections = []
         for u, v in list(self.mesh.edges()):
             a = self.mesh.vertex_attributes(u, 'xyz')
             b = self.mesh.vertex_attributes(v, 'xyz')
             x = intersection_segment_plane((a, b), self.plane)
             if not x:
                 continue
-            if len(x) == sum([1 for i, j in zip(x, a) if i == j]):
-                intersections.append(u)
-            elif len(x) == sum([1 for i, j in zip(x, b) if i == j]):
-                intersections.append(v)
-            else:
+            if any([i != j for i, j in zip(x, a)]) and any([i != j for i, j in zip(x, b)]):
                 L_ax = length_vector(subtract_vectors(x, a))
                 L_ab = length_vector(subtract_vectors(b, a))
                 t = L_ax / L_ab
                 key = self.mesh.split_edge(u, v, t=t, allow_boundary=True)
                 intersections.append(key)
+            else:
+                if u in vertex_intersections:
+                    intersections.append(u)
+                vertex_intersections.clear()
+                vertex_intersections.append(u)
+                vertex_intersections.append(v)
         self._intersections = intersections
 
     def split(self):
@@ -163,5 +167,8 @@ class IntersectionMeshPlane(object):
             split = [key for key in self.mesh.face_vertices(fkey) if key in self.intersections]
             if len(split) == 2:
                 u, v = split
-                self.mesh.split_face(fkey, u, v)
+                try:
+                    self.mesh.split_face(fkey, u, v)
+                except Exception:
+                    continue
         return self.positive, self.negative

@@ -14,6 +14,22 @@ __all__ = ['volmesh_from_polysurfaces']
 def volmesh_from_polysurfaces(cls, guids, precision=None):
     """Construct a volumetric mesh from given polysurfaces.
 
+    Parameters
+    ----------
+    cls : :class:`~compas.datastructures.VolMesh`
+        The class of volmesh.
+    guids : sequence[str | System.Guid]
+        The *globally unique identifiers* of the polysurfaces.
+    precision: string
+        Precision of the polysurface connectivity.
+
+    Returns
+    -------
+    :class:`~compas.datastructures.Volmesh`
+        The volumetric mesh object.
+
+    Notes
+    -----
     Essentially, this function does the following:
 
     * find each of the polysurfaces and check if they have a boundary representation (b-rep)
@@ -22,20 +38,6 @@ def volmesh_from_polysurfaces(cls, guids, precision=None):
     * add a cell per brep
     * and add the faces of a brep to the cell
     * create a volmesh from the found vertices and cells
-
-    Parameters
-    ----------
-    cls : :class:`compas.datastructures.VolMesh`
-        The class of volmesh.
-    guids : sequence of str or System.Guid
-        The *globally unique identifiers* of the polysurfaces.
-    precision: string
-        Precision of the polysurface connectivity.
-
-    Returns
-    -------
-    :class:`compas.datastructures.Volmesh`
-        The volumetric mesh object.
 
     """
     gkey_xyz = {}

@@ -6,42 +6,52 @@ from typing import Union
 import bpy
 
 import compas_blender
-from compas_blender.artists import BlenderArtist
-from compas_blender.utilities import RGBColor
 from compas.artists import PrimitiveArtist
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.colors import Color
+from .artist import BlenderArtist
 
 
 class VectorArtist(BlenderArtist, PrimitiveArtist):
-    """Artist for drawing vectors.
+    """Artist for drawing vectors in Blender.
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Vector`
+    primitive : :class:`~compas.geometry.Vector`
         A COMPAS vector.
-
-    Notes
-    -----
-    See :class:`compas_blender.artists.PrimitiveArtist` for all other parameters.
+    collection : str | :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by this artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
 
     Examples
     --------
+    Use the Blender artist explicitly.
+
     .. code-block:: python
 
-        import random
-        from compas.geometry import Pointcloud
         from compas.geometry import Vector
-        from compas.utilities import i_to_rgb
-\
         from compas_blender.artists import VectorArtist
 
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
+        vector = Vector(1, 1, 1)
 
-        for point in pcl.points:
-            vector = Vector(0, 0, 1)
-            artist = VectorArtist(vector, color=i_to_rgb(random.random()))
-            artist.draw(point=point)
+        artist = VectorArtist(vector)
+        artist.draw()
+
+    Or, use the artist through the plugin mechanism.
+
+    .. code-block:: python
+
+        from compas.geometry import Vector
+        from compas.artists import Artist
+
+        vector = Vector(1, 1, 1)
+
+        artist = Artist(vector)
+        artist.draw()
 
     """
 
@@ -52,29 +62,31 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         super().__init__(primitive=vector, collection=collection or vector.name, **kwargs)
 
     def draw(self,
-             color: Optional[RGBColor] = None,
+             color: Optional[Color] = None,
              point: Optional[Point] = None,
              show_point: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the vector.
 
         Parameters
         ----------
-        color : tuple of float or tuple of int, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the vector.
-        point : [float, float, float] or :class:`compas.geometry.Point`, optional
+            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
+        point : [float, float, float] | :class:`~compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
         show_point : bool, optional
-            Show the point of application of the vector.
-            Default is ``False``.
+            If True, draw the point of application of the vector.
 
         Returns
         -------
-        list of :class:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+
         """
-        start = point or (0., 0., 0.)
-        end = tuple(map(sum, zip(start, self.primitive)))
-        color = color or self. color
+        point = point or (0., 0., 0.)
+        start = Point(*point)
+        end = start + self.primitive
+        color = Color.coerce(color) or self.color
         lines = [
             {'start': start, 'end': end, 'color': color, 'name': f"{self.primitive.name}"},
         ]

@@ -91,17 +91,16 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'}, optional
+    scheme : Literal['tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'], optional
         The scheme according to which the mesh should be subdivided.
-        Default is ``'catmullclark'``.
-    options : dict
+    **options : dict[str, Any], optional
         Optional additional keyword arguments.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         The subdivided mesh.
 
     Raises
@@ -133,14 +132,14 @@ def mesh_subdivide_tri(mesh, k=1):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
+    k : int, optional
+        The number of levels of subdivision.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -173,14 +172,14 @@ def mesh_subdivide_quad(mesh, k=1):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
+    k : int, optional
+        The number of levels of subdivision.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -229,20 +228,19 @@ def mesh_subdivide_corner(mesh, k=1):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
+    k : int, optional
+        The number of levels of subdivision.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Notes
     -----
-    This is essentially the same as Loop subdivision, but applied to general
-    meshes.
+    This is essentially the same as Loop subdivision, but applied to general meshes.
 
     """
     cls = type(mesh)
@@ -273,16 +271,16 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
-    fixed : list
-        Optional. A list of fixed vertices. Default is ``None``.
+    k : int, optional
+        The number of levels of subdivision.
+    fixed : list[int], optional
+        A list of fixed vertices.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Notes
@@ -290,6 +288,13 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     Note that *Catmull-Clark* subdivision is like *Quad* subdivision, but with
     smoothing after every level of further subdivision. Smoothing is done
     according to the scheme prescribed by the Catmull-Clark algorithm.
+
+    References
+    ----------
+    .. [1] Tony DeRose, Michael Kass and Tien Truong.
+           Subdivision Surfaces in Character Animation.
+           Pixar Animation Studios.
+           see https://graphics.pixar.com/library/Geri/paper.pdf
 
     Examples
     --------
@@ -308,11 +313,11 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     The algorithm supports "integer creasing" as described in
     Subdivision Surfaces in Character Animation [1]_.
-    Creases are supported through the optional edge attribute ``'crease'``,
+    Creases are supported through the optional edge attribute "crease",
     which can be set to an integer value that defines how sharp the crease is wrt
     the number of subdivision steps.
 
-    To add an infinitely sharp crease to an edge, set the ``'crease'`` attribute of the edge
+    To add an infinitely sharp crease to an edge, set the "crease" attribute of the edge
     to a number higher than the number of subdivision steps.
 
     >>> from compas.geometry import Box, dot_vectors
@@ -324,13 +329,6 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     >>> cage.edges_attribute('crease', 5, keys=list(cage.face_halfedges(top)))
 
     >>> subd = cage.subdivide(k=4)
-
-    References
-    ----------
-    .. [1] Tony DeRose, Michael Kass and Tien Truong.
-           Subdivision Surfaces in Character Animation.
-           Pixar Animation Studios.
-           see https://graphics.pixar.com/library/Geri/paper.pdf
 
     """
     cls = type(mesh)
@@ -457,16 +455,16 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
-    fixed : list
-        Optional. A list of fixed vertices. Default is ``None``.
+    k : int, optional
+        The number of levels of subdivision.
+    fixed : list[int], optional
+        A list of fixed vertices.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -572,23 +570,19 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object to be subdivided.
-    offset : float or dict
+    offset : float | dict[int, float]
         The offset distance to create the frames.
         A single value will result in a constant offset everywhere.
-        A dictionary mapping facekey: offset will be processed accordingly.
-    add_windows : boolean
-        Optional. Flag to add window face. Default is ``False``.
+        A dictionary mapping faces to offset values will be processed accordingly.
+    add_windows : bool, optional
+        If True, add a window face in the frame opening.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
-
-    Examples
-    --------
-    >>>
 
     """
     cls = type(mesh)
@@ -643,16 +637,16 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
-    fixed : list
-        Optional. A list of fixed vertices. Default is ``None``.
+    k : int, optional
+        The number of levels of subdivision.
+    fixed : list[int], optional
+        A list of fixed vertices.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples

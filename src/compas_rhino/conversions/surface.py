@@ -12,6 +12,7 @@ from compas.datastructures import meshes_join
 from ._primitives import point_to_compas
 
 from ._geometry import RhinoGeometry
+from ._exceptions import ConversionError
 
 
 class RhinoSurface(RhinoGeometry):
@@ -34,32 +35,54 @@ class RhinoSurface(RhinoGeometry):
         ------
         :class:`ConversionError`
             If the geometry cannot be converted to a surface.
+
         """
         if not isinstance(geometry, Rhino.Geometry.Surface):
             if not isinstance(geometry, Rhino.Geometry.Brep):
                 raise TypeError("Geometry cannot be interpreted as a `Rhino.Geometry.Surface`: {}".format(type(geometry)))
         self._geometry = geometry
 
-    def to_compas_mesh(self, cls=None, facefilter=None, cleanup=True):
+    def to_compas(self):
+        """Convert the surface to a COMPAS surface.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        Raises
+        ------
+        :class:`ConversionError`
+            If the surface BRep contains more than one face.
+
+        """
+        from compas_rhino.geometry import RhinoNurbsSurface
+
+        brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
+        if brep.Surfaces.Count > 1:
+            raise ConversionError('Conversion of a BRep with multiple underlying surface is currently not supported.')
+        for geometry in brep.Surfaces:
+            return RhinoNurbsSurface.from_rhino(geometry)
+
+    def to_compas_mesh(self, cls=None, facefilter=None, cleanup=False):
         """Convert the surface b-rep loops to a COMPAS mesh.
 
         Parameters
         ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
+        cls : :class:`~compas.datastructures.Mesh`, optional
             The type of COMPAS mesh.
         facefilter : callable, optional
             A filter for selection which Brep faces to include.
-            If provided, the filter should return ``True`` or ``False`` per face.
+            If provided, the filter should return True or False per face.
             A very simple filter that includes all faces is ``def facefilter(face): return True``.
-            Default parameter value is ``None`` in which case all faces are included.
+            Default parameter value is None in which case all faces are included.
         cleanup : bool, optional
             Flag indicating to clean up the result.
             Cleaning up means to remove isolated faces and unused vertices.
-            Default is ``True``.
+            Default is False.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        :class:`~compas.datastructures.Mesh`
             The resulting mesh.
 
         Examples
@@ -131,9 +154,10 @@ class RhinoSurface(RhinoGeometry):
         mesh.name = self.name
         # remove isolated faces
         if cleanup:
-            for face in list(mesh.faces()):
-                if not mesh.face_neighbors(face):
-                    mesh.delete_face(face)
+            if mesh.number_of_faces() > 1:
+                for face in list(mesh.faces()):
+                    if not mesh.face_neighbors(face):
+                        mesh.delete_face(face)
             mesh.remove_unused_vertices()
         return mesh
 
@@ -149,18 +173,18 @@ class RhinoSurface(RhinoGeometry):
             Default is the same as the u direction.
         weld: bool, optional
             Weld the vertices of the mesh.
-            Default is ``False``.
+            Default is False.
         facefilter: callable, optional
             A filter for selection which Brep faces to include.
-            If provided, the filter should return ``True`` or ``False`` per face.
+            If provided, the filter should return True or False per face.
             A very simple filter that includes all faces is ``def facefilter(face): return True``.
-            Default parameter value is ``None`` in which case all faces are included.
-        cls: :class:`compas.geometry.Mesh`, optional
+            Default parameter value is None in which case all faces are included.
+        cls: :class:`~compas.geometry.Mesh`, optional
             The type of COMPAS mesh.
 
         Returns
         -------
-        :class:`compas.geometry.Mesh`
+        :class:`~compas.geometry.Mesh`
         """
         nv = nv or nu
         cls = cls or Mesh
@@ -293,7 +317,7 @@ class RhinoSurface(RhinoGeometry):
     #         Default is ``10`` in both directions.
     #     over_space : bool, optional
     #         Construct the grid over the UV space of the surface.
-    #         Default is ``True``.
+    #         Default is True.
 
     #     Returns
     #     -------

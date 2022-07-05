@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.utilities import is_color_rgb
+from compas.colors import Color
 from .artist import Artist
 
 
@@ -11,38 +11,40 @@ class ShapeArtist(Artist):
 
     Parameters
     ----------
-    shape: :class:`compas.geometry.Shape`
+    shape: :class:`~compas.geometry.Shape`
         The geometry of the shape.
-    color : tuple, optional
+    color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
         The RGB color.
-
-    Class Attributes
-    ----------------
-    default_color : tuple
-        The default rgb color value of the shape (``(255, 255, 255)``).
 
     Attributes
     ----------
-    shape: :class:`compas.geometry.Shape`
+    shape : :class:`~compas.geometry.Shape`
         The geometry of the shape.
-    color : tuple
-        The RGB color.
+    color : :class:`~compas.colors.Color`
+        The color of the shape.
     u : int
-        The resolution in the u direction.
-        The default is ``16`` and the minimum ``3``.
+        The resolution in the U direction of the discrete shape representation.
     v : int
-        The resolution in the v direction.
-        The default is ``16`` and the minimum ``3``.
+        The resolution in the V direction of the discrete shape representation.
+
+    Class Attributes
+    ----------------
+    default_color : :class:`~compas.colors.Color`
+        The default color of the shape.
+
     """
 
-    default_color = (1, 1, 1)
+    default_color = Color.from_hex('#0092D2')
 
     def __init__(self, shape, color=None, **kwargs):
         super(ShapeArtist, self).__init__()
+        self._default_color = None
+
         self._u = None
         self._v = None
         self._shape = None
         self._color = None
+
         self.shape = shape
         self.color = color
         self.u = kwargs.get('u')
@@ -59,13 +61,12 @@ class ShapeArtist(Artist):
     @property
     def color(self):
         if not self._color:
-            self._color = self.default_color
+            self.color = self.default_color
         return self._color
 
     @color.setter
-    def color(self, color):
-        if is_color_rgb(color):
-            self._color = color
+    def color(self, value):
+        self._color = Color.coerce(value)
 
     @property
     def u(self):

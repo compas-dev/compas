@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_ghpython.utilities
 from compas.artists import PrimitiveArtist
+from compas.colors import Color
 from .artist import GHArtist
 
 
@@ -12,23 +13,31 @@ class PointArtist(GHArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    point : :class:`compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`
         A COMPAS point.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
+
     """
 
     def __init__(self, point, **kwargs):
         super(PointArtist, self).__init__(primitive=point, **kwargs)
 
-    def draw(self):
+    def draw(self, color=None):
         """Draw the point.
+
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+            The RGB color of the point.
+            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
-        :class:`Rhino.Geometry.Point3d`
-        """
-        points = [self._get_args(self.primitive)]
-        return compas_ghpython.utilities.draw_points(points)[0]
+        :rhino:`Rhino.Geometry.Point3d`
 
-    @staticmethod
-    def _get_args(primitive):
-        return {'pos': list(primitive)}
+        """
+        color = Color.coerce(color) or self.color
+        points = [{'pos': list(self.primitive), 'color': color.rgb255}]
+        return compas_ghpython.utilities.draw_points(points)[0]

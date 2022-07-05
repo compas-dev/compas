@@ -127,7 +127,6 @@ src/.build/**
 data/bunny
 data/models
 data/ctralie
-*.ply
 *.tar.gz
 
 data/models
@@ -143,3 +142,5 @@ data/ctralie
 src/compas_ghpython/components/**/*.ghuser
 
 dev
+
+NOTES

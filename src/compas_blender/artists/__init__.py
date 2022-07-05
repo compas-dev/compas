@@ -5,7 +5,11 @@ artists
 
 .. currentmodule:: compas_blender.artists
 
-Artists for visualizing (painting) COMPAS data structures in Blender.
+.. rst-class:: lead
+
+Artists for visualizing (painting) COMPAS geometry, robots, and data structures in Blender.
+The artists in this package provide plugins for the pluggable methods of the base artists defined in :mod:`compas.artists`.
+They can be used directly from here (:mod:`compas_blender.artists`), or through the base artist :class:`~compas.artists.Artist`.
 
 
 Primitive Artists
@@ -13,6 +17,7 @@ Primitive Artists
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     CircleArtist
     FrameArtist
@@ -36,6 +41,17 @@ Shape Artists
     CylinderArtist
     PolyhedronArtist
     SphereArtist
+
+
+Curve and Surface Artists
+=========================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    CurveArtist
+    SurfaceArtist
 
 
 Datastructure Artists
@@ -78,6 +94,7 @@ from compas.geometry import Box
 from compas.geometry import Capsule
 from compas.geometry import Circle
 from compas.geometry import Cone
+from compas.geometry import Curve
 from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -86,10 +103,12 @@ from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Polyline
 from compas.geometry import Sphere
+from compas.geometry import Surface
 from compas.geometry import Torus
 from compas.geometry import Vector
 from compas.datastructures import Mesh
 from compas.datastructures import Network
+from compas.datastructures import VolMesh
 from compas.robots import RobotModel
 
 from .artist import BlenderArtist
@@ -97,6 +116,7 @@ from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .circleartist import CircleArtist
 from .coneartist import ConeArtist
+from .curveartist import CurveArtist
 from .cylinderartist import CylinderArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
@@ -108,13 +128,14 @@ from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
 from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
+from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
+from .volmeshartist import VolMeshArtist
 
 
 @plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
 def clear_blender():
-    print('doing it')
     compas_blender.clear()
 
 
@@ -129,6 +150,7 @@ def register_artists():
     Artist.register(Capsule, CapsuleArtist, context='Blender')
     Artist.register(Circle, CircleArtist, context='Blender')
     Artist.register(Cone, ConeArtist, context='Blender')
+    Artist.register(Curve, CurveArtist, context='Blender')
     Artist.register(Cylinder, CylinderArtist, context='Blender')
     Artist.register(Frame, FrameArtist, context='Blender')
     Artist.register(Line, LineArtist, context='Blender')
@@ -140,8 +162,10 @@ def register_artists():
     Artist.register(Polyline, PolylineArtist, context='Blender')
     Artist.register(RobotModel, RobotModelArtist, context='Blender')
     Artist.register(Sphere, SphereArtist, context='Blender')
+    Artist.register(Surface, SurfaceArtist, context='Blender')
     Artist.register(Torus, TorusArtist, context='Blender')
     Artist.register(Vector, VectorArtist, context='Blender')
+    Artist.register(VolMesh, VolMeshArtist, context='Blender')
     print('Blender Artists registered.')
 
 
@@ -151,6 +175,7 @@ __all__ = [
     'CapsuleArtist',
     'CircleArtist',
     'ConeArtist',
+    'CurveArtist',
     'CylinderArtist',
     'FrameArtist',
     'LineArtist',
@@ -162,6 +187,8 @@ __all__ = [
     'PolylineArtist',
     'RobotModelArtist',
     'SphereArtist',
+    'SurfaceArtist',
     'TorusArtist',
     'VectorArtist',
+    'VolMeshArtist',
 ]

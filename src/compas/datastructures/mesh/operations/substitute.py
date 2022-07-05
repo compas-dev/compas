@@ -13,22 +13,18 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
 
     Parameters
     ----------
-    old_vkey : hashable
+    old_vkey : int
         The old vertex key.
-    new_vkey : hashable
+    new_vkey : int
         The new vertex key.
-    fkeys : list, optional
+    fkeys : list[int], optional
         List of face keys where to subsitute the old vertex by the new one.
         Default is to subsitute in all faces.
 
     Returns
     -------
-    fkeys : list
+    list[int]
         The list of modified faces.
-
-    Examples
-    --------
-    >>>
 
     """
 

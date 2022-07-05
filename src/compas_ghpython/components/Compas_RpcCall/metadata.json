@@ -1,0 +1,46 @@
+{
+    "name": "RPC Call",
+    "nickname": "RPC",
+    "category": "COMPAS",
+    "subcategory": "RPC",
+    "description": "Remote Procedure Call: to invoke Python functions outside of Rhino, in the context of the CPython interpreter.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "module",
+                "description": "Module name to import.",
+                "typeHintID": "str"
+            },
+            {
+                "name": "function",
+                "description": "Function name to call.",
+                "typeHintID": "str"
+            },
+            {
+                "name": "parameters",
+                "description": "List of parameters to pass to the function.",
+                "scriptParamAccess": "list"
+            },
+            {
+                "name": "path",
+                "description": "Optional. Path where the module can be found (if not a pip installed module).",
+                "typeHintID": "str"
+            },
+            {
+                "name": "restart",
+                "description": "If True, try to restart the RPC server before calling it.",
+                "typeHintID": "bool"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "result",
+                "description": "Return value of the function call."
+            }
+        ]
+    }
+}

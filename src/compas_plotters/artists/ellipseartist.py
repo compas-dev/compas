@@ -13,7 +13,36 @@ Color = Tuple[float, float, float]
 
 
 class EllipseArtist(PlotterArtist, PrimitiveArtist):
-    """Artist for COMPAS ellipses."""
+    """Artist for COMPAS ellipses.
+
+    Parameters
+    ----------
+    ellipse : :class:`~compas.geometry.Ellipse`
+        A COMPAS ellipse.
+    linewidth : float, optional
+        Width of the ellipse boundary.
+    linestyle : {'solid', 'dotted', 'dashed', 'dashdot'}, optional
+        Style of the ellipse boundary.
+    facecolor : tuple[float ,float, float], optional
+        Color of the interior of the ellipse.
+    edgecolor : tuple[float, float, float], optional
+        Color of the boundary of the ellipse.
+    fill : bool, optional
+        If True, draw the interior of the ellipse.
+    alpha : float, optional
+        Transparency of the ellipse.
+    zorder : int, optional
+        Stacking order of the ellipse on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
+
+    Attributes
+    ----------
+    ellipse : :class:`~compas.geometry.Ellipse`
+        The ellipse associated with the artist.
+
+    """
 
     def __init__(self,
                  ellipse: Ellipse,
@@ -60,6 +89,13 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
         return points
 
     def draw(self) -> None:
+        """Draw the ellipse on the plotter canvas.
+
+        Returns
+        -------
+        None
+
+        """
         ellipse = EllipsePatch(
             self.ellipse.center[:2],
             width=2*self.ellipse.major,
@@ -72,6 +108,13 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
         self._mpl_ellipse = self.plotter.axes.add_artist(ellipse)
 
     def redraw(self) -> None:
+        """Update the ellipse using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         self._mpl_ellipse.center = self.ellipse.center[:2]
         self._mpl_ellipse.set_width(2*self.ellipse.major)
         self._mpl_ellipse.set_height(2*self.ellipse.minor)

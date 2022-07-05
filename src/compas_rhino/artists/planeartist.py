@@ -11,10 +11,14 @@ class PlaneArtist(RhinoArtist, PrimitiveArtist):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         A COMPAS plane.
     layer : str, optional
         The layer that should contain the drawing.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
+
     """
 
     def __init__(self, plane, layer=None, **kwargs):
@@ -25,7 +29,7 @@ class PlaneArtist(RhinoArtist, PrimitiveArtist):
 
         Returns
         -------
-        list
+        list[System.Guid]
             The GUIDs of the created Rhino objects.
 
         """

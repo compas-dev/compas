@@ -37,12 +37,12 @@ def network_adjacency_matrix(network, rtype='array'):
     ----------
     network : obj
         Network datastructure object to get data from.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed adjacency matrix.
 
     """
@@ -58,12 +58,12 @@ def network_degree_matrix(network, rtype='array'):
     ----------
     network : obj
         Network datastructure object to get data from.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed node degree matrix.
 
     """
@@ -77,14 +77,14 @@ def network_connectivity_matrix(network, rtype='array'):
 
     Parameters
     ----------
-    network : obj
-        Network datastructure object to get data from.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    network : :class:`~compas.datastructures.Network`
+        Network data structure.
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed connectivity matrix.
 
     """
@@ -98,16 +98,16 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
 
     Parameters
     ----------
-    network : obj
-        Network datastructure object to get data from.
-    normalize : bool
-        Normalize the entries such that the value on the diagonal is ``1``.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    network : :class:`~compas.datastructures.Network`
+        Network data structure.
+    normalize : bool, optional
+        If True, normalize the entries such that the value on the diagonal is 1.
+    rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
 
     Returns
     -------
-    array-like
+    array_like
         Constructed Laplacian matrix.
 
     Notes
@@ -115,10 +115,6 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
     ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the node.
     Therefore ``c = xyz - d``. By changing the signs in the laplacian, the dsiplacement
     vectors could be used in a more natural way ``c = xyz + d``.
-
-    Examples
-    --------
-    >>>
 
     """
     key_index = network.key_index()

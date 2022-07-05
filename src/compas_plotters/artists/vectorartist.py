@@ -14,7 +14,31 @@ Color = Tuple[float, float, float]
 
 
 class VectorArtist(PlotterArtist, PrimitiveArtist):
-    """Artist for COMPAS vectors."""
+    """Artist for COMPAS vectors.
+
+    Parameters
+    ----------
+    vector : :class:`~compas.geometry.Vector`
+        A COMPAS vector.
+    point : :class:`~compas.geometry.Point`, optional
+        A COMPAS point as base point for the vector.
+        Default is the origin of the world coordinate system.
+    draw_point : bool, optional
+        If True, draw the point of application of the vector.
+    color : tuple[float, float, float], optional
+        Color of the vector.
+    zorder : int, optional
+        Stacking order of the vector on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
+
+    Attributes
+    ----------
+    vector : :class:`~compas.geometry.Vector`
+        The vector associated with the artist.
+
+    """
 
     def __init__(self,
                  vector: Vector,
@@ -46,6 +70,13 @@ class VectorArtist(PlotterArtist, PrimitiveArtist):
         return [self.point[:2], (self.point + self.vector)[:2]]
 
     def draw(self) -> None:
+        """Draw the vector.
+
+        Returns
+        -------
+        None
+
+        """
         style = ArrowStyle("Simple, head_length=0.1, head_width=0.1, tail_width=0.02")
         arrow = FancyArrowPatch(self.point[:2], (self.point + self.vector)[:2],
                                 arrowstyle=style,
@@ -58,6 +89,13 @@ class VectorArtist(PlotterArtist, PrimitiveArtist):
         self._mpl_vector = self.plotter.axes.add_patch(arrow)
 
     def redraw(self):
+        """Update the vector using the current geometry and visualization settings.
+
+        Returns
+        -------
+        None
+
+        """
         self._mpl_vector.set_positions(self.point[:2], (self.point + self.vector)[:2])
         if self.draw_point:
             self._point_artist.redraw()

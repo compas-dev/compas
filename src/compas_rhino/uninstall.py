@@ -203,7 +203,7 @@ def after_rhino_uninstall(uninstalled_packages):
     Returns
     -------
     :obj:`list` of 3-tuple (str, str, bool)
-        List containing a 3-tuple with component name, message and ``True``/``False`` success flag.
+        List containing a 3-tuple with component name, message and True/False success flag.
     """
     pass
 

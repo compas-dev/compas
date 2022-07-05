@@ -22,11 +22,12 @@ def curve_to_compas_line(curve):
 
     Parameters
     ----------
-    curve: :class:`Rhino.Geometry.Curve`
+    curve: :rhino:`Rhino.Geometry.Curve`
 
     Returns
     -------
-    :class:`compas.geometry.Line`
+    :class:`~compas.geometry.Line`
+
     """
     return Line(point_to_compas(curve.PointAtStart),
                 point_to_compas(curve.PointAtEnd))
@@ -37,11 +38,12 @@ def line_to_rhino_curve(line):
 
     Parameters
     ----------
-    line: :class:`compas.geometry.Line`
+    line: :class:`~compas.geometry.Line`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Curve`
+    :rhino:`Rhino.Geometry.Curve`
+
     """
     return RhinoNurbsCurve.CreateFromLine(line_to_rhino(line))
 
@@ -51,16 +53,17 @@ def curve_to_compas_circle(curve):
 
     Parameters
     ----------
-    curve: :class:`Rhino.Geometry.Curve`
+    curve: :rhino:`Rhino.Geometry.Curve`
 
     Returns
     -------
-    :class:`compas.geometry.Circle`
+    :class:`~compas.geometry.Circle`
 
     Raises
     ------
     ConversionError
         If the curve cannot be converted to a circle.
+
     """
     result, circle = curve.TryGetCircle()
     if not result:
@@ -73,11 +76,12 @@ def circle_to_rhino_curve(circle):
 
     Parameters
     ----------
-    circle: :class:`compas.geometry.Circle`
+    circle: :class:`~compas.geometry.Circle`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Curve`
+    :rhino:`Rhino.Geometry.Curve`
+
     """
     return RhinoNurbsCurve.CreateFromCircle(circle_to_rhino(circle))
 
@@ -87,16 +91,17 @@ def curve_to_compas_ellipse(curve):
 
     Parameters
     ----------
-    curve: :class:`Rhino.Geometry.Curve`
+    curve: :rhino:`Rhino.Geometry.Curve`
 
     Returns
     -------
-    :class:`compas.geometry.Ellipse`
+    :class:`~compas.geometry.Ellipse`
 
     Raises
     ------
     ConversionError
         If the curve cannot be converted to an ellipse.
+
     """
     result, ellipse = curve.TryGetEllipse()
     if not result:
@@ -109,11 +114,12 @@ def ellipse_to_rhino_curve(ellipse):
 
     Parameters
     ----------
-    ellipse: :class:`compas.geometry.Ellipse`
+    ellipse: :class:`~compas.geometry.Ellipse`
 
     Returns
     -------
-    :class:`Rhino.Geometry.Curve`
+    :rhino:`Rhino.Geometry.Curve`
+
     """
     return RhinoNurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
 
@@ -123,16 +129,17 @@ def curve_to_compas_polyline(curve):
 
     Parameters
     ----------
-    curve: :class:`Rhino.Geometry.Curve`
+    curve: :rhino:`Rhino.Geometry.Curve`
 
     Returns
     -------
-    :class:`compas.geometry.Polyline`
+    :class:`~compas.geometry.Polyline`
 
     Raises
     ------
     ConversionError
         If the curve cannot be converted to a polyline.
+
     """
     result, polyline = curve.TryGetPolyline()
     if not result:
@@ -145,11 +152,12 @@ def curve_to_compas_data(curve):
 
     Parameters
     ----------
-    curve: :class:`Rhino.Geometry.Curve`
+    curve: :rhino:`Rhino.Geometry.Curve`
 
     Returns
     -------
-    :obj:`dict`
+    dict
+
     """
     nurbs = curve.ToNurbsCurve()
     points = []
@@ -183,11 +191,12 @@ def data_to_rhino_curve(data):
 
     Parameters
     ----------
-    data: :obj:`dict`
+    data: dict
 
     Returns
     -------
-    :class:`Rhino.Geometry.NurbsCurve`
+    :rhino:`Rhino.Geometry.NurbsCurve`
+
     """
     nurbs = RhinoNurbsCurve(data['degree'], len(data['points']))
 

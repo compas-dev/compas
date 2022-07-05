@@ -1,9 +1,9 @@
 graft src
 
 prune .github
-prune data
 prune docs
 prune libs
+prune samples
 prune tests
 prune temp
 

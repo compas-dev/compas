@@ -19,16 +19,16 @@ def tween_points(points1, points2, num):
 
     Parameters
     ----------
-    points1 : list
-        The first set of points
-    points2 : list
-        The second set of points
+    points1 : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The first set of points.
+    points2 : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The second set of points.
     num : int
-        The number of interpolated sets to return
+        The number of interpolated sets to return.
 
     Returns
     -------
-    list
+    list[list[[float, float, float]]]
         Nested list of points.
 
     Raises
@@ -36,13 +36,13 @@ def tween_points(points1, points2, num):
     AssertionError
         When the two point sets do not have the same length.
 
-    Examples
-    --------
-    >>>
-
     Notes
     -----
     The two point sets should have the same length.
+
+    Examples
+    --------
+    >>>
 
     """
     vectors = [subtract_vectors(p2, p1) for p1, p2 in zip(points1, points2)]
@@ -62,21 +62,20 @@ def tween_points_distance(points1, points2, dist, index=None):
 
     Parameters
     ----------
-    points1 : list
-        The first set of points
-    points2 : list
-        The second set of points
+    points1 : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The first set of points.
+    points2 : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        The second set of points.
     dist : float
-        The distance from the first set to the second at which to compute the
-        interpolated set.
-    index: int
-        The index of the point in the first set from which to calculate the
-        distance to the second set. If no value is given, the first point will be used.
+        The distance from the first set to the second at which to compute the interpolated set.
+    index: int, optional
+        The index of the point in the first set from which to calculate the distance to the second set.
+        If no value is given, the first point will be used.
 
     Returns
     -------
-    list
-        List of points
+    list[list[[float, float, float]]]
+        List of points.
 
     """
     if not index:

@@ -31,43 +31,62 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
-    vertices : list of int, optional
-        A list of vertex identifiers.
-        Default is ``None``, in which case all vertices are drawn.
-    edges : list, optional
-        A list of edge keys (as uv pairs) identifying which edges to draw.
-        The default is ``None``, in which case all edges are drawn.
-    faces : list, optional
-        A list of face identifiers.
-        The default is ``None``, in which case all faces are drawn.
-    vertexcolor : rgb-tuple or dict of rgb-tuples, optional
-        The color specification for the vertices.
-    edgecolor : rgb-tuple or dict of rgb-tuples, optional
-        The color specification for the edges.
-    facecolor : rgb-tuple or dict of rgb-tuples, optional
-        The color specification for the faces.
+    vertices : list[int], optional
+        Selection of vertex identifiers.
+        Default is None, in which case all vertices are drawn.
+    edges : list[tuple[int, int]], optional
+        Selection of edge identifiers.
+        The default is None, in which case all edges are drawn.
+    faces : list[int], optional
+        Selection of face identifiers.
+        The default is None, in which case all faces are drawn.
+    vertexcolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        Color specification for the vertices.
+    edgecolor : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
+        Color specification for the edges.
+    facecolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        Color specification for the faces.
     show_vertices : bool, optional
+        If True, draw the vertices of the mesh.
     show_edges : bool, optional
+        If True, draw the edges of the mesh.
     show_faces : bool, optional
+        If True, draw the faces of the mesh.
     vertexsize : int, optional
+        Size of the vertices.
+    vertextext : str | dict[int, str], optional
+        Labels for the vertices.
+    edgetext : str | dict[tuple[int, int], str], optional
+        Labels for the edges.
+    facetext : str | dict[int, str], optional
+        Labels for the faces.
     sizepolicy : {'relative', 'absolute'}, optional
+        The policy for sizing the vertices.
+        If ``'relative'``, the value of `vertexsize` is scaled by the number of vertices.
+        If ``'absolute'``, the value of `vertexsize` is scaled by the resolution of the plotter (:attr:MeshArtist.plotter.dpi).
+    zorder : int, optional
+        The base stacking order of the components of the mesh on the canvas.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas_plotters.artists.PlotterArtist` and :class:`~compas.artists.MeshArtist` for more info.
 
     Attributes
     ----------
-    vertexcollection : :class:`PatchCollection`
-        The collection containing the vertices.
-    edgecollection : :class:`LineCollection`
-        The collection containing the edges.
-    facecollection : :class:`PatchCollection`
-        The collection containing the faces.
+    halfedges : list[tuple[int, int]]
+        The halfedges to include in the drawing.
+    vertex_size : dict[int, float]
+        Mapping between vertex identifiers and vertex sizes.
+    halfedge_color : dict[tuple[int, int], tuple[float, float, float]]
+        Mapping between halfedge identifiers and halfedge colors.
+    zorder_faces : int, read-only
+        The stacking order of the faces relative to the base stacking order of the mesh.
+    zorder_edges : int, read-only
+        The stacking order of the edges relative to the base stacking order of the mesh.
+    zorder_vertices : int, read-only
+        The stacking order of the vertices relative to the base stacking order of the mesh.
 
-    Class Attributes
-    ----------------
-    zorder_vertices : int
-    zorder_edges : int
-    zorder_faces : int
     """
 
     default_halfedgecolor = (0.7, 0.7, 0.7)
@@ -181,23 +200,54 @@ class MeshArtist(PlotterArtist, MeshArtist):
     # clear and draw
     # ==============================================================================
 
+    def clear(self) -> None:
+        pass
+
     def clear_vertices(self) -> None:
+        """Clear the current vertices from the canvas.
+
+        Returns
+        -------
+        None
+
+        """
         if self._vertexcollection:
             self._vertexcollection.remove()
         self._vertexcollection = None
 
     def clear_edges(self) -> None:
+        """Clear the current edges from the canvas.
+
+        Returns
+        -------
+        None
+
+        """
         if self._edgecollection:
             self._edgecollection.remove()
         self._edgecollection = None
 
     def clear_halfedges(self) -> None:
+        """Clear the current halfedges from the canvas.
+
+        Returns
+        -------
+        None
+
+        """
         if self._halfedgecollection:
             for artist in self._halfedgecollection:
                 artist.remove()
         self._halfedgecollection = None
 
     def clear_faces(self) -> None:
+        """Clear the current faces from the canvas.
+
+        Returns
+        -------
+        None
+
+        """
         if self._facecollection:
             self._facecollection.remove()
         self._facecollection = None
@@ -214,21 +264,26 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list of int, optional
+        vertices : list[int], optional
             A list of vertex identifiers.
-            Default is ``None``, in which case all vertices are drawn.
-        edges : list, optional
+            Default is None, in which case all vertices are drawn.
+        edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        faces : list, optional
+            The default is None, in which case all edges are drawn.
+        faces : list[int], optional
             A list of face identifiers.
-            The default is ``None``, in which case all faces are drawn.
-        vertexcolor : rgb-tuple or dict of rgb-tuples, optional
+            The default is None, in which case all faces are drawn.
+        vertexcolor : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the vertices.
-        edgecolor : rgb-tuple or dict of rgb-tuples, optional
+        edgecolor : rgb-tuple | dict[tuple[int, int], rgb-tuple], optional
             The color specification for the edges.
-        facecolor : rgb-tuple or dict of rgb-tuples, optional
+        facecolor : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the faces.
+
+        Returns
+        -------
+        None
+
         """
         self.clear()
         if self.show_vertices:
@@ -249,15 +304,16 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        vertices : list of int, optional
+        vertices : list[int], optional
             A list of vertex identifiers.
-            Default is ``None``, in which case all vertices are drawn.
-        color : rgb-tuple or dict of rgb-tuples, optional
+            Default is None, in which case all vertices are drawn.
+        color : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the vertices.
 
         Returns
         -------
         None
+
         """
         self.clear_vertices()
 
@@ -296,15 +352,16 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
-            The default is ``None``, in which case all edges are drawn.
-        color : rgb-tuple or dict of rgb-tuples, optional
+            The default is None, in which case all edges are drawn.
+        color : rgb-tuple | dict[tuple[int, int], rgb-tuple], optional
             The color specification for the edges.
 
         Returns
         -------
         None
+
         """
         self.clear_edges()
         if edges:
@@ -343,15 +400,16 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             A list of halfedges to draw.
-            The default is ``None``, in which case all halfedges are drawn.
-        color : rgb-tuple or dict of rgb-tuples, optional
+            The default is None, in which case all halfedges are drawn.
+        color : rgb-tuple | dict[tuple[int, int], rgb-tuple], optional
             The color specification for the halfedges.
 
         Returns
         -------
         None
+
         """
         self.clear_halfedges()
         self._halfedgecollection = []
@@ -397,15 +455,16 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[int], optional
             A list of face identifiers.
-            The default is ``None``, in which case all faces are drawn.
-        color : rgb-tuple or dict of rgb-tuples, optional
+            The default is None, in which case all faces are drawn.
+        color : rgb-tuple | dict[int, rgb-tuple], optional
             The color specification for the faces.
 
         Returns
         -------
         None
+
         """
         self.clear_faces()
         if faces:
@@ -441,13 +500,13 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        text : dict of int to str, optional
+        text : dict[int, str], optional
             A vertex-label map.
-            If not text dict is provided, the vertex identifiers are drawn.
 
         Returns
         -------
         None
+
         """
         if self._vertexlabelcollection:
             for artist in self._vertexlabelcollection:
@@ -484,12 +543,13 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        text : dict of tuple of int to str
+        text : dict[tuple[int, int], str]
             An edge-label map.
 
         Returns
         -------
         None
+
         """
         if self._edgelabelcollection:
             for artist in self._edgelabelcollection:
@@ -528,12 +588,13 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
         Parameters
         ----------
-        text : dict of int to str
+        text : dict[int, str]
             A face-label map.
 
         Returns
         -------
         None
+
         """
         if self._facelabelcollection:
             for artist in self._facelabelcollection:
@@ -564,9 +625,29 @@ class MeshArtist(PlotterArtist, MeshArtist):
         self._facelabelcollection = labels
 
     def redraw(self) -> None:
+        """Redraw the mesh using the current geometry.
+
+        Returns
+        -------
+        None
+
+        """
         pass
 
     def update_vertexcolors(self, colors):
+        """Update the colors of the vertices.
+
+        Parameters
+        ----------
+        colors : dict[int, tuple[float, float, float]]
+            Mapping between vertex identifiers and colors.
+            Missing vertices get the default color: :attr:`MeshArtist.default_vertexcolor`.
+
+        Returns
+        -------
+        None
+
+        """
         facecolors = []
         for vertex in self.vertices:
             if vertex in colors:
@@ -577,6 +658,19 @@ class MeshArtist(PlotterArtist, MeshArtist):
         self._vertexcollection.set_facecolors(facecolors)
 
     def update_edgecolors(self, colors):
+        """Update the colors of the edges.
+
+        Parameters
+        ----------
+        colors : dict[tuple[int, int], tuple[float, float, float]]
+            Mapping between edge identifiers and colors.
+            Missing edge get the default color: :attr:`MeshArtist.default_edgecolor`.
+
+        Returns
+        -------
+        None
+
+        """
         edgecolors = []
         for edge in self.edges:
             if edge in colors:
@@ -587,6 +681,19 @@ class MeshArtist(PlotterArtist, MeshArtist):
         self._edgecollection.set_colors(edgecolors)
 
     def update_edgewidths(self, widths):
+        """Update the widths of the edges.
+
+        Parameters
+        ----------
+        widths : dict[tuple[int, int], float]
+            Mapping between edge identifiers and linewidths.
+            Missing edges get the default edge linewidth: :attr:`MeshArtist.default_edgewidth`.
+
+        Returns
+        -------
+        None
+
+        """
         edgewidths = []
         for edge in self.edges:
             if edge in widths:

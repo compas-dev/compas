@@ -4,4 +4,4 @@ from __future__ import division
 
 
 class ConversionError(Exception):
-    pass
+    """Raised when a conversion is not possible."""

@@ -11,10 +11,18 @@ from compas.artists import Artist
 class BlenderArtist(Artist):
     """Base class for all Blender artists.
 
+    Parameters
+    ----------
+    collection : str | :blender:`bpy.types.Collection`, optional
+        The Blender scene collection the object(s) created by the artist belong to.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        See :class:`~compas.artists.Artist` for more info.
+
     Attributes
     ----------
-    objects : list
-        A list of Blender objects (unique object names) created by the artist.
+    collection : :blender:`bpy.types.Collection`
+        The collection containing the object(s) created by this artist.
 
     """
 

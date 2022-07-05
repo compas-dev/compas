@@ -34,7 +34,7 @@ class RhinoCurve(RhinoGeometry):
 
         Parameters
         ----------
-        geometry : :rhino:`Rhino_Geometry_Curve` or :class:`compas.geometry.Line` or :class:`compas.geometry.Circle` or :class:`compas.geometry.Ellipse`
+        geometry : :rhino:`Rhino_Geometry_Curve` | :class:`~compas.geometry.Line` | :class:`~compas.geometry.Circle` | :class:`~compas.geometry.Ellipse`
             The geometry object defining a curve.
 
         Raises
@@ -58,11 +58,10 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+        :class:`~compas_rhino.geometry.RhinoNurbsCurve`
         """
-        from compas.geometry import NurbsCurve
-        curve = NurbsCurve()
-        curve.rhino_curve = self.geometry
+        from compas_rhino.geometry import RhinoNurbsCurve
+        curve = RhinoNurbsCurve.from_rhino(self.geometry)
         return curve
 
     def to_compas_circle(self):
@@ -70,7 +69,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Circle`
+        :class:`~compas.geometry.Circle`
         """
         return curve_to_compas_circle(self.geometry)
 
@@ -79,7 +78,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Ellipse`
+        :class:`~compas.geometry.Ellipse`
         """
         return curve_to_compas_ellipse(self.geometry)
 
@@ -88,7 +87,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Line`
+        :class:`~compas.geometry.Line`
         """
         return curve_to_compas_line(self.geometry)
 
@@ -97,7 +96,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        :class:`compas.geometry.Polyline`
+        :class:`~compas.geometry.Polyline`
         """
         return curve_to_compas_polyline(self.geometry)
 
@@ -113,13 +112,13 @@ class RhinoCurve(RhinoGeometry):
             Default is ``0.0``.
         return_param : bool, optional
             Return not only the point coordinates, but also the parameter of the point on the curve.
-            Default is ``False``.
+            Default is False.
 
         Returns
         -------
         list
-            The XYZ coordinates of the closest point, if ``return_param`` is ``False``.
-            The XYZ coordinates of the closest point and the curve parameter, if ``return_param`` is ``True``.
+            The XYZ coordinates of the closest point, if ``return_param`` is False.
+            The XYZ coordinates of the closest point and the curve parameter, if ``return_param`` is True.
 
         """
         rc, t = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)

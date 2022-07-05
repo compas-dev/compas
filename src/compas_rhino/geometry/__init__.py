@@ -12,7 +12,9 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    RhinoCurve
     RhinoNurbsCurve
+    RhinoNurbsSurface
 
 
 Plugins
@@ -36,6 +38,7 @@ Curves
     :toctree: generated/
     :nosignatures:
 
+    curves.new_curve
     curves.new_nurbscurve
     curves.new_nurbscurve_from_interpolation
     curves.new_nurbscurve_from_parameters
@@ -75,6 +78,7 @@ from compas_rhino.conversions import RhinoSurface
 from compas_rhino.conversions import RhinoVector
 
 from .curves import RhinoNurbsCurve
+from .surfaces import RhinoNurbsSurface
 
 
 __all__ = [
@@ -94,5 +98,6 @@ __all__ = [
     'RhinoSurface',
     'RhinoVector',
 
-    'RhinoNurbsCurve'
+    'RhinoNurbsCurve',
+    'RhinoNurbsSurface',
 ]

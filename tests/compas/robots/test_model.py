@@ -5,12 +5,15 @@ import tempfile
 import pytest
 
 from compas.files import URDF
-from compas.robots import Box
-from compas.robots import Cylinder
+from compas.geometry import Box
+from compas.geometry import Cylinder
+from compas.geometry import Sphere
 from compas.robots import Joint
 from compas.robots import Link
 from compas.robots import RobotModel
-from compas.robots import Sphere
+from compas.robots.model.geometry import BoxProxy
+from compas.robots.model.geometry import CylinderProxy
+from compas.robots.model.geometry import SphereProxy
 
 BASE_FOLDER = os.path.dirname(__file__)
 
@@ -198,7 +201,7 @@ def test_robot_default_namespace_creates_box_shape_based_on_tagname():
         """<?xml version="1.0"?><robot xmlns="https://drake.mit.edu" name="Acrobot"><link name="base_link"><visual><geometry><box size="0.2 0.2 0.2"/></geometry></visual></link></robot>""")
     assert r.name == 'Acrobot'
     assert r.links[0].name == 'base_link'
-    assert isinstance(r.links[0].visual[0].geometry.shape, Box)
+    assert isinstance(r.links[0].visual[0].geometry.shape, (Box, BoxProxy))
 
 
 def test_robot_default_namespace_to_string():
@@ -268,6 +271,12 @@ def test_robot_material_attributes():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"><material name="LightGrey"><color rgba="0.7 0.7 0.7 1.0"/></material></robot>""")
     assert r.materials[0].color.rgba == [0.7, 0.7, 0.7, 1.0]
+
+
+def test_robot_material_conversion_from_name():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"><material name="aqua"/></robot>""")
+    assert r.materials[0].get_color() == (0.0, 1.0, 1.0, 1.0)
 
 
 def test_robot_material_attributes_to_string():
@@ -386,13 +395,13 @@ def test_geometry_parser(urdf_file_with_shapes):
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
-    assert type(r.links[0].collision[0].geometry.shape) == Sphere
+    assert isinstance(r.links[0].collision[0].geometry.shape, (Sphere, SphereProxy))
     assert r.links[0].collision[0].geometry.shape.radius == 0.2
 
-    assert type(r.links[1].visual[0].geometry.shape) == Box
+    assert isinstance(r.links[1].visual[0].geometry.shape, (Box, BoxProxy))
     assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
 
-    assert type(r.links[1].collision[0].geometry.shape) == Cylinder
+    assert isinstance(r.links[1].collision[0].geometry.shape, (Cylinder, CylinderProxy))
     assert r.links[1].collision[0].geometry.shape.length == 0.6
     assert r.links[1].collision[0].geometry.shape.radius == 0.2
 
@@ -405,13 +414,13 @@ def test_geometry_parser_to_string(urdf_file_with_shapes):
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
-    assert type(r.links[0].collision[0].geometry.shape) == Sphere
+    assert isinstance(r.links[0].collision[0].geometry.shape, (Sphere, SphereProxy))
     assert r.links[0].collision[0].geometry.shape.radius == 0.2
 
-    assert type(r.links[1].visual[0].geometry.shape) == Box
+    assert isinstance(r.links[1].visual[0].geometry.shape, (Box, BoxProxy))
     assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
 
-    assert type(r.links[1].collision[0].geometry.shape) == Cylinder
+    assert isinstance(r.links[1].collision[0].geometry.shape, (Cylinder, CylinderProxy))
     assert r.links[1].collision[0].geometry.shape.length == 0.6
     assert r.links[1].collision[0].geometry.shape.radius == 0.2
 
@@ -423,13 +432,13 @@ def test_geometry_parser_data(urdf_file_with_shapes):
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
-    assert type(r.links[0].collision[0].geometry.shape) == Sphere
+    assert isinstance(r.links[0].collision[0].geometry.shape, (Sphere, SphereProxy))
     assert r.links[0].collision[0].geometry.shape.radius == 0.2
 
-    assert type(r.links[1].visual[0].geometry.shape) == Box
+    assert isinstance(r.links[1].visual[0].geometry.shape, (Box, BoxProxy))
     assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
 
-    assert type(r.links[1].collision[0].geometry.shape) == Cylinder
+    assert isinstance(r.links[1].collision[0].geometry.shape, (Cylinder, CylinderProxy))
     assert r.links[1].collision[0].geometry.shape.length == 0.6
     assert r.links[1].collision[0].geometry.shape.radius == 0.2
 
@@ -670,10 +679,9 @@ if __name__ == '__main__':
                 except Exception as e:
                     errors.append((f, e))
 
-    print('Found %d files and parsed successfully %d of them' %
-          (len(all_files), len(all_files) - len(errors)))
-
     if len(errors):
         print('\nErrors found during parsing:')
         for error in errors:
             print(' * File=%s, Error=%s' % error)
+
+    print('\nFound {} files and parsed successfully {} of them.'.format(len(all_files), len(all_files) - len(errors)))

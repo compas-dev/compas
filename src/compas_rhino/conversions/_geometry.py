@@ -93,13 +93,14 @@ class RhinoGeometry(object):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`~compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
 
         Raises
         ------
         :class:`ConversionError`
             If the geometry of the Rhino DocObject cannot be converted to the geometry type of the wrapper.
+
         """
         wrapper = cls()
         wrapper.guid = guid
@@ -116,7 +117,7 @@ class RhinoGeometry(object):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`~compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
 
         Raises
@@ -135,18 +136,19 @@ class RhinoGeometry(object):
 
         Parameters
         ----------
-        obj : :rhino:`Rhino_DocObjects_RhinoObject`
+        geometry : :rhino:`Rhino_DocObjects_RhinoObject`
             The Rhino object.
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`~compas_rhino.geometry.RhinoGeometry`
             The Rhino object wrapper.
 
         Raises
         ------
         :class:`ConversionError`
             If the geometry cannot be converted to the geometry type of the wrapper.
+
         """
         wrapper = cls()
         wrapper.geometry = geometry
@@ -160,13 +162,14 @@ class RhinoGeometry(object):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or Rhino.Geomtry.Transform
+        T : :class:`~compas.geometry.Transformation` or :rhino:`Rhino.Geometry.Transform`
             The transformation matrix.
 
         Returns
         -------
         None
             The Rhino object is transformed in place.
+
         """
         if not isinstance(T, Rhino.Geometry.Transform):
             M = Rhino.Geometry.Transform(0.0)
@@ -176,3 +179,5 @@ class RhinoGeometry(object):
         else:
             M = T
         self.geometry.Transform(M)
+        if self.object:
+            self.object.CommitChanges()

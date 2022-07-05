@@ -4,8 +4,9 @@ from __future__ import division
 
 from abc import abstractmethod
 
-from compas.utilities import is_color_rgb
+from compas.colors import Color
 from .artist import Artist
+from .colordict import ColorDict
 
 
 class MeshArtist(Artist):
@@ -13,65 +14,111 @@ class MeshArtist(Artist):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A COMPAS mesh.
-
-    Class Attributes
-    ----------------
-    default_color : tuple
-        The default color of the mesh.
-    default_vertexcolor : tuple
-        The default color for vertices that do not have a specified color.
-    default_edgecolor : tuple
-        The default color for edges that do not have a specified color.
-    default_facecolor : tuple
-        The default color for faces that do not have a specified color.
-    default_vertexsize : int
-    default_edgewidth : float
+    vertices : list[int], optional
+        Selection of vertices to draw.
+    edges : list[tuple[int, int]], optional
+        Selection of edges to draw.
+    faces : list[int], optional
+        Selection of faces to draw.
+    vertexcolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        Color of the vertices.
+        Default color is :attr:`MeshArtists.default_vertexcolor`.
+    edgecolor : tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional
+        Color of the edges.
+        Default color is :attr:`MeshArtists.default_edgecolor`.
+    facecolor : tuple[float, float, float] | dict[int, tuple[float, float, float]], optional
+        Color of the faces.
+        Default color is :attr:`MeshArtists.default_facecolor`.
 
     Attributes
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        The mesh associated with the artist.
-    vertices : list
-        The vertices to include in the drawing.
-        Default is all vertices.
-    edges : list
-        The edges to include in the drawing.
-        Default is all edges.
-    faces : list
-        The faces to include in the drawing.
-        Default is all faces.
-    vertex_xyz : dict
-        The view coordinates of the vertices.
-        Default is to use the actual vertex coordinates.
-    vertex_color : dict
-        Mapping between vertices and colors.
-        Default is to use the default color for vertices.
-    edge_color : dict
-        Mapping between edges and colors.
-        Default is to use the default color for edges.
-    face_color : dict
-        Mapping between faces and colors.
-        Default is to use the default color for faces.
-    vertex_text : dict
-        Mapping between vertices and text labels.
-    edge_text : dict
-        Mapping between edges and text labels.
-    face_text : dict
-        Mapping between faces and text labels.
+    mesh : :class:`~compas.datastructures.Mesh`
+        The mesh data structure.
+    vertices : list[int]
+        The selection of vertices that should be included in the drawing.
+        Defaults to all vertices.
+    edges : list[tuple[int, int]]
+        The selection of edges that should be included in the drawing.
+        Defaults to all edges.
+    faces : list[int]
+        The selection of faces that should be included in the drawing.
+        Defaults to all faces.
+    color : :class:`~compas.colors.Color`
+        The base RGB color of the mesh.
+    vertex_xyz : dict[int, list[float]]
+        View coordinates of the vertices.
+        Defaults to the real coordinates.
+    vertex_color : dict[int, :class:`~compas.colors.Color`]
+        Vertex colors.
+        Missing vertices get the default vertex color :attr:`default_vertexcolor`.
+    edge_color : dict[tuple[int, int], :class:`~compas.colors.Color`]
+        Edge colors.
+        Missing edges get the default edge color :attr:`default_edgecolor`.
+    face_color : dict[int, :class:`~compas.colors.Color`]
+        Face colors.
+        Missing faces get the default face color :attr:`default_facecolor`.
+    vertex_text : dict[int, str]
+        Vertex labels.
+        Defaults to the vertex identifiers.
+    edge_text : dict[tuple[int, int], str]
+        Edge labels.
+        Defaults to the edge identifiers.
+    face_text : dict[int, str]
+        Face labels.
+        Defaults to the face identifiers.
+    vertex_size : dict[int, float]
+        Vertex sizes.
+        Defaults to 1.
+        Visualization of vertices with variable size is not available for all visualization contexts.
+    edge_width : dict[tuple[int, int], float]
+        Edge widths.
+        Defaults to 1.
+        Visualization of edges with variable width is not available for all visualization contexts.
+
+    Class Attributes
+    ----------------
+    default_vertexcolor : :class:`~compas.colors.Color`
+        The default color of the vertices of the mesh.
+    default_edgecolor : :class:`~compas.colors.Color`
+        The default color of the edges of the mesh.
+    default_facecolor : :class:`~compas.colors.Color`
+        The default color of the faces of the mesh.
+    default_vertexsize : float
+        The default size of the vertices of the mesh.
+    default_edgewidth : float
+        The default width of the edges of the mesh.
+
     """
 
-    default_color = (0.0, 0.0, 0.0)
-    default_vertexcolor = (1.0, 1.0, 1.0)
-    default_edgecolor = (0.0, 0.0, 0.0)
-    default_facecolor = (0.9, 0.9, 0.9)
+    color = Color.from_hex('#0092D2').lightened(50)
+
+    default_vertexcolor = Color.from_hex('#0092D2')
+    default_edgecolor = Color.from_hex('#0092D2')
+    default_facecolor = Color.from_hex('#0092D2').lightened(50)
+
+    vertex_color = ColorDict()
+    edge_color = ColorDict()
+    face_color = ColorDict()
 
     default_vertexsize = 5
     default_edgewidth = 1.0
 
-    def __init__(self, mesh, **kwargs):
+    def __init__(self,
+                 mesh,
+                 vertices=None,
+                 edges=None,
+                 faces=None,
+                 vertexcolor=None,
+                 edgecolor=None,
+                 facecolor=None,
+                 **kwargs):
         super(MeshArtist, self).__init__()
+
+        self._default_vertexcolor = None
+        self._default_edgecolor = None
+        self._default_facecolor = None
 
         self._mesh = None
         self._vertices = None
@@ -98,6 +145,13 @@ class MeshArtist(Artist):
         self._facelabelcollection = None
 
         self.mesh = mesh
+
+        self.vertices = vertices
+        self.edges = edges
+        self.faces = faces
+        self.vertex_color = vertexcolor
+        self.edge_color = edgecolor
+        self.face_color = facecolor
 
     @property
     def mesh(self):
@@ -139,17 +193,6 @@ class MeshArtist(Artist):
         self._faces = faces
 
     @property
-    def color(self):
-        if not self._color:
-            self._color = self.default_color
-        return self._color
-
-    @color.setter
-    def color(self, color):
-        if is_color_rgb(color):
-            self._color = color
-
-    @property
     def vertex_xyz(self):
         if self._vertex_xyz is None:
             return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
@@ -158,19 +201,6 @@ class MeshArtist(Artist):
     @vertex_xyz.setter
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
-
-    @property
-    def vertex_color(self):
-        if self._vertex_color is None:
-            self._vertex_color = {vertex: self.default_vertexcolor for vertex in self.mesh.vertices()}
-        return self._vertex_color
-
-    @vertex_color.setter
-    def vertex_color(self, vertex_color):
-        if isinstance(vertex_color, dict):
-            self._vertex_color = vertex_color
-        elif is_color_rgb(vertex_color):
-            self._vertex_color = {vertex: vertex_color for vertex in self.mesh.vertices()}
 
     @property
     def vertex_text(self):
@@ -201,19 +231,6 @@ class MeshArtist(Artist):
             self._vertex_size = {vertex: vertexsize for vertex in self.mesh.vertices()}
 
     @property
-    def edge_color(self):
-        if self._edge_color is None:
-            self._edge_color = {edge: self.default_edgecolor for edge in self.mesh.edges()}
-        return self._edge_color
-
-    @edge_color.setter
-    def edge_color(self, edge_color):
-        if isinstance(edge_color, dict):
-            self._edge_color = edge_color
-        elif is_color_rgb(edge_color):
-            self._edge_color = {edge: edge_color for edge in self.mesh.edges()}
-
-    @property
     def edge_text(self):
         if self._edge_text is None:
             self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
@@ -242,19 +259,6 @@ class MeshArtist(Artist):
             self._edge_width = {edge: edgewidth for edge in self.mesh.edges()}
 
     @property
-    def face_color(self):
-        if self._face_color is None:
-            self._face_color = {face: self.default_facecolor for face in self.mesh.faces()}
-        return self._face_color
-
-    @face_color.setter
-    def face_color(self, face_color):
-        if isinstance(face_color, dict):
-            self._face_color = face_color
-        elif is_color_rgb(face_color):
-            self._face_color = {face: face_color for face in self.mesh.faces()}
-
-    @property
     def face_text(self):
         if self._face_text is None:
             self._face_text = {face: str(face) for face in self.mesh.faces()}
@@ -275,16 +279,22 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        vertices : list, optional
+        vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
-        text : dict, optional
+        text : dict[int, str], optional
             The text labels for the vertices
             as a text dict, mapping specific vertices to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the vertices in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -294,16 +304,22 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        edges : list, optional
+        edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
-        text : dict, optional
+        text : dict[tuple[int, int], str], optional
             The text labels for the edges
             as a text dict, mapping specific edges to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the edges in the visualization context.
+
         """
         raise NotImplementedError
 
@@ -313,36 +329,79 @@ class MeshArtist(Artist):
 
         Parameters
         ----------
-        faces : list, optional
+        faces : list[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : tuple or dict, optional
+        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.
-        text : dict, optional
+        text : dict[int, str], optional
             The text labels for the faces
             as a text dict, mapping specific faces to specific text labels.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the faces in the visualization context.
+
+        """
+        raise NotImplementedError
+
+    def draw_mesh(self, *args, **kwargs):
+        """Draw the mesh of the mesh.
+
+        .. deprecated:: 1.14.1
+            Use :meth:`~MeshArtist.draw` instead.
+
+        Returns
+        -------
+        list
+            The identifiers of the objects representing the mesh in the visualization context.
+
+        """
+        return self.draw(*args, **kwargs)
+
+    @abstractmethod
+    def clear(self):
+        """Clear all components of the mesh.
+
+        Returns
+        -------
+        None
+
         """
         raise NotImplementedError
 
     @abstractmethod
-    def draw_mesh(self):
-        raise NotImplementedError
-
-    @abstractmethod
     def clear_vertices(self):
+        """Clear the vertices of the mesh.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_edges(self):
+        """Clear the edges of the mesh.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     @abstractmethod
     def clear_faces(self):
-        raise NotImplementedError
+        """Clear the faces of the mesh.
 
-    def clear(self):
-        self.clear_vertices()
-        self.clear_edges()
-        self.clear_faces()
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError

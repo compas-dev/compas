@@ -53,7 +53,7 @@ def install(blender_path, version=None):
         The path to the folder with the version number of Blender.
         For example, on Mac: ``'/Applications/Blender.app/Contents/Resources/2.83'``.
         On Windows: ``'%PROGRAMFILES%/Blender Foundation/Blender 2.83/2.83'``.
-    version : {'2.83', '2.93'}, optional
+    version : {'2.83', '2.93', '3.1'}, optional
         The version number of Blender.
         Default is ``'2.93'``.
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('blenderpath', nargs='?', help="The path to the folder with the version number of Blender.")
-    parser.add_argument('-v', '--version', choices=['2.83', '2.93'], help="The version of Blender to install COMPAS in.")
+    parser.add_argument('-v', '--version', choices=['2.83', '2.93', '3.1'], help="The version of Blender to install COMPAS in.")
 
     args = parser.parse_args()
 
