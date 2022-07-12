@@ -897,6 +897,10 @@ from .surfaces import (
     NurbsSurface
 )
 
+from .brep import (
+    BRep
+)
+
 __all__ = [
     'close',
     'allclose',
@@ -1201,7 +1205,9 @@ __all__ = [
     'NurbsCurve',
 
     'Surface',
-    'NurbsSurface'
+    'NurbsSurface',
+
+    "Brep",
 ]
 
 if not compas.IPY:
