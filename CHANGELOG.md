@@ -6,11 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-* Added `get_node_by_name` to `compas.files.gltf.GLTFContent`.
 
 ### Added
+* Added gltf extensions: `KHR_materials_transmission`, `KHR_materials_specular`, `KHR_materials_ior`, `KHR_materials_clearcoat`, `KHR_Texture_Transform`, `KHR_materials_pbrSpecularGlossiness` 
+* Added `GLTFContent.check_extensions_texture_recursively`
+* Added `GLTFContent.get_node_by_name`, `GLTFContent.get_material_index_by_name`
+* Added `GLTFContent.add_material`, `GLTFContent.add_texture`, `GLTFContent.add_image`
+* Added `GLTFExporter._add_extensions_recursively` and added the check in mostly all `GLTFExporter._add_*`
 
 ### Changed
+* Based all gltf data classes on `BaseGLTFDataClass`
+* Changed `GLTFExporter._add_images` to automatically save images in the export folder of the gltf
 
 ### Removed
 
@@ -31,11 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Assembly.find_by_key` to locate parts by key.
 * Added `clear_edges` and `clear_nodes` to `NetworkArtist` for ghpython.
 * Added `ToString` method to `Data` to ensure that Rhino/Grasshopper correctly casts objects to string.
-* Added gltf extensions: `KHR_materials_transmission`, `KHR_materials_specular`, `KHR_materials_ior`, `KHR_materials_clearcoat`, `KHR_Texture_Transform`, `KHR_materials_pbrSpecularGlossiness` 
-* Added `GLTFContent.check_extensions_texture_recursively`
-* Added `GLTFContent.get_node_by_name`, `GLTFContent.get_material_index_by_name`
-* Added `GLTFContent.add_material`, `GLTFContent.add_texture`, `GLTFContent.add_image`
-* Added `GLTFExporter._add_extensions_recursively` and added the check in mostly all `GLTFExporter._add_*`
 
 ### Changed
 
@@ -56,8 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed source directory path in `compas_ghpython.uninstall` plugin.
 * Fixed bug in`compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
 * Fixed conversion bug of transformed `Box` in `compas_rhino.conversions`
-* Based all gltf data classes on `BaseGLTFDataClass`
-* Changed `GLTFExporter._add_images` to automatically save images in the export folder of the gltf
 
 ### Removed
 
