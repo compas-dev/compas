@@ -5,6 +5,7 @@ from compas_rhino.conversions import line_to_rhino_curve
 
 from .vertex import RhinoBRepVertex
 
+
 class RhinoBRepEdge(Data):
     def __init__(self, rhino_edge=None):
         super(RhinoBRepEdge, self).__init__()
@@ -31,14 +32,4 @@ class RhinoBRepEdge(Data):
 
     @property
     def data(self):
-        return {
-            "type": "nurbs",
-            "value": self._curve.data,
-            "points": [self._start_vertex.point, self._end_vertex.point]
-        }
-
-
-
-
-
-
+        return {"type": "nurbs", "value": self._curve.data, "points": [self._start_vertex.point, self._end_vertex.point]}

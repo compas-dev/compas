@@ -33,7 +33,6 @@ class RhinoBRep(Geometry):
     def from_faces(cls, faces):
         brep = Brep()
 
-
     @property
     def points(self):
         if self.rhino_brep:
@@ -81,8 +80,3 @@ class RhinoBRep(Geometry):
     def from_box(cls, box):
         rhino_box = box_to_rhino(box)
         return cls.from_shape(rhino_box.ToBrep())
-
-
-
-
-

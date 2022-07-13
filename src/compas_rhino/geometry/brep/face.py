@@ -3,6 +3,7 @@ from compas_rhino.geometry import RhinoNurbsSurface
 
 from .loop import RhinoBRepLoop
 
+
 class RhinoBRepFace(Data):
 
     TOLERANCE = 1e-6
@@ -31,7 +32,6 @@ class RhinoBRepFace(Data):
         if len(self.loops) > 1:
             holes = [loop.data for loop in self.loops[1:]]
         return {"boundary": boundary, "surface": self.surface, "holes": holes}
-
 
     @data.setter
     def data(self, value):

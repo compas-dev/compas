@@ -4,7 +4,7 @@ from compas_rhino.conversions import point_to_compas
 
 
 class RhinoBRepVertex(Data):
-    def __init__(self, rhino_vertex = None):
+    def __init__(self, rhino_vertex=None):
         super(RhinoBRepVertex, self).__init__()
         self._rhino_vertex = None
         self._point = None
@@ -19,7 +19,6 @@ class RhinoBRepVertex(Data):
     def rhino_vertex(self, value):
         self._rhino_vertex = value
         self._point = point_to_compas(self._rhino_vertex.Location)
-
 
     @property
     def data(self):

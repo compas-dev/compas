@@ -295,11 +295,10 @@ class BRep(Geometry):
     def to_json(self, filepath):
         raise NotImplementedError
 
-
-    def to_step(self, filepath, schema = "AP203", unit = "MM"):
+    def to_step(self, filepath, schema="AP203", unit="MM"):
         raise NotImplementedError
 
-    def to_tesselation(self, linear_deflection = 1e-3):
+    def to_tesselation(self, linear_deflection=1e-3):
         raise NotImplementedError
 
     def to_meshes(self, u=16, v=16):
@@ -348,7 +347,6 @@ class BRep(Geometry):
 
     def sew(self):
         raise NotImplementedError
-
 
     def fix(self):
         raise NotImplementedError
@@ -408,5 +406,5 @@ class BRep(Geometry):
     def split(self, other):
         raise NotImplementedError
 
-    def overlap(self, other, deflection = 1e-3, tolerance = 0.0):
+    def overlap(self, other, deflection=1e-3, tolerance=0.0):
         raise NotImplementedError

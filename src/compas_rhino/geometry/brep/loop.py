@@ -2,6 +2,7 @@ from compas.data import Data
 
 from .edge import RhinoBRepEdge
 
+
 class RhinoBRepLoop(Data):
     def __init__(self, rhino_loop=None):
         super(RhinoBRepLoop, self).__init__()
