@@ -7,49 +7,59 @@ import compas
 from compas.files import GLTF
 from compas.files import GLTFContent
 
-compas.PRECISION = '12f'
+compas.PRECISION = "12f"
 
 BASE_FOLDER = os.path.dirname(__file__)
 
 
 @pytest.fixture
 def simple_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleMeshes.gltf')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleMeshes.gltf")
 
 
 @pytest.fixture
 def embedded_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleMeshesEmbedded.gltf')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleMeshesEmbedded.gltf")
 
 
 @pytest.fixture
 def interleaved_glb():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'BoxInterleaved.glb')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "BoxInterleaved.glb")
 
 
 @pytest.fixture
 def indexless_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'TriangleWithoutIndices.gltf')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "TriangleWithoutIndices.gltf")
 
 
 @pytest.fixture
 def morph_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleMorph.gltf')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleMorph.gltf")
 
 
 @pytest.fixture
 def sparse_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'SimpleSparseAccessor.gltf')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleSparseAccessor.gltf")
 
 
 @pytest.fixture
 def animated_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'AnimatedMorphCube.glb')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "AnimatedMorphCube.glb")
 
 
 @pytest.fixture
 def textured_gltf():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'gltf', 'BoxTextured.glb')
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "BoxTextured.glb")
+
+
+@pytest.fixture
+def specglossmetalrough_gltf():
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SpecGlossVsMetalRough.glb")
+
+
+@pytest.fixture
+def specular_gltf():
+    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SpecularTest.glb")
 
 
 def test_simple_gltf(simple_gltf):
@@ -59,9 +69,9 @@ def test_simple_gltf(simple_gltf):
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
-    assert len(exporter._gltf_dict['nodes']) == 2
-    assert len(exporter._gltf_dict['meshes']) == 1
-    assert len(exporter._buffer) == exporter._gltf_dict['buffers'][0]['byteLength']
+    assert len(exporter._gltf_dict["nodes"]) == 2
+    assert len(exporter._gltf_dict["meshes"]) == 1
+    assert len(exporter._buffer) == exporter._gltf_dict["buffers"][0]["byteLength"]
 
 
 def test_embedded_gltf(embedded_gltf):
@@ -73,9 +83,9 @@ def test_embedded_gltf(embedded_gltf):
     exporter.embed_data = True
     exporter.load()
     json.dumps(exporter._gltf_dict)
-    assert exporter._gltf_dict['buffers'][0]['uri'].startswith('data')
-    assert 'animations' not in exporter._gltf_dict
-    assert 'materials' not in exporter._gltf_dict
+    assert exporter._gltf_dict["buffers"][0]["uri"].startswith("data")
+    assert "animations" not in exporter._gltf_dict
+    assert "materials" not in exporter._gltf_dict
 
 
 def test_interleaved_glb(interleaved_glb):
@@ -112,8 +122,8 @@ def test_animated_gltf(animated_gltf):
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
-    assert len(exporter._gltf_dict['animations']) > 0
-    assert 'images' not in exporter._gltf_dict
+    assert len(exporter._gltf_dict["animations"]) > 0
+    assert "images" not in exporter._gltf_dict
 
 
 def test_textured_gltf(textured_gltf):
@@ -123,11 +133,28 @@ def test_textured_gltf(textured_gltf):
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
-    assert len(exporter._gltf_dict['materials']) > 0
-    assert len(exporter._gltf_dict['samplers']) > 0
-    assert len(exporter._gltf_dict['images']) > 0
-    assert len(exporter._gltf_dict['textures']) > 0
-    assert 'animations' not in exporter._gltf_dict
+    assert len(exporter._gltf_dict["materials"]) > 0
+    assert len(exporter._gltf_dict["samplers"]) > 0
+    assert len(exporter._gltf_dict["images"]) > 0
+    assert len(exporter._gltf_dict["textures"]) > 0
+    assert "animations" not in exporter._gltf_dict
+
+
+def test_specglossmetalrough(specglossmetalrough_gltf):
+    gltf = GLTF(specglossmetalrough_gltf)
+    gltf.read()
+    exporter = gltf.exporter
+    json.dumps(exporter._gltf_dict)
+    assert exporter._content.extensions == ["KHR_materials_pbrSpecularGlossiness"]
+
+
+def test_specular(specular_gltf):
+    gltf = GLTF(specular_gltf)
+    gltf.read()
+    exporter = gltf.exporter
+    json.dumps(exporter._gltf_dict)
+    assert exporter._content.extensions == ["KHR_materials_specular"]
+    print(exporter._content.extensions)
 
 
 def test_gltf_content():
