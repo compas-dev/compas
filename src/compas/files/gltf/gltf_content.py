@@ -495,21 +495,16 @@ if __name__ == "__main__":
     import os
     import compas
     import urllib
-
-    # https://github.com/Stykka/glTF-Bin
-
-    from compas.geometry import Box, Frame, Point
+    from compas.geometry import Box, Frame
     from compas.datastructures import Mesh
     from compas.utilities import download_file_from_remote
     from compas.files.gltf.gltf import GLTF
     from compas.files.gltf.data_classes import (
         MaterialData,
         PBRMetallicRoughnessData,
-        TextureInfoData,
         ImageData,
         TextureData,
         MineType,
-        BaseGLTFDataClass,
     )
     from compas.files.gltf.extensions import (
         KHR_materials_pbrSpecularGlossiness,

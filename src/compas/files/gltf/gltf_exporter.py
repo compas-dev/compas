@@ -179,7 +179,7 @@ class GLTFExporter(object):
                     self._add_extensions_recursively(getattr(item, a))
         if item.extensions is not None:
             for ek, e in item.extensions.items():
-                if self._content.extensions == None:
+                if self._content.extensions is None:
                     self._content.extensions = []
                 if ek not in self._content.extensions:
                     self._content.extensions.append(ek)
