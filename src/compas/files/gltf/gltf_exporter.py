@@ -19,6 +19,7 @@ from compas.files.gltf.constants import TYPE_SCALAR
 from compas.files.gltf.constants import TYPE_VEC2
 from compas.files.gltf.constants import TYPE_VEC3
 from compas.files.gltf.constants import TYPE_VEC4
+from compas.files.gltf.data_classes import BaseGLTFDataClass
 
 
 # This fails on IronPython 2.7.8 (eg. Rhino 6 on Windows)
@@ -89,9 +90,6 @@ class GLTFExporter(object):
 
         """
         self._content.remove_orphans()
-        print("self._content.materials", self._content.materials)
-        print("self._content.textures", self._content.textures)
-        print("self._content.images", self._content.images)
         self._content.check_if_forest()
 
         self._set_initial_gltf_dict()
@@ -118,6 +116,7 @@ class GLTFExporter(object):
         self._add_images()
         self._add_animations()
         self._add_buffer()
+        self._add_extensions()
 
     def _get_index_by_key(self, d):
         return {key: index for index, key in enumerate(d)}
@@ -172,8 +171,21 @@ class GLTFExporter(object):
                     for i in range(0, zeros_bin):
                         f.write("\0".encode())
 
+    def _add_extensions_recursively(self, item):
+        # get the extensions that are in the attributes
+        for a in dir(item):
+            if not a.startswith("__") and not callable(getattr(item, a)):
+                if isinstance(getattr(item, a), BaseGLTFDataClass):
+                    self._add_extensions_recursively(getattr(item, a))
+        if item.extensions is not None:
+            for ek, e in item.extensions.items():
+                if self._content.extensions == None:
+                    self._content.extensions = []
+                if ek not in self._content.extensions:
+                    self._content.extensions.append(ek)
+                self._add_extensions_recursively(e)
+
     def _add_images(self):
-        print(">>>", "_add_images")
         if not self._content.images:
             return
         images_list = [None] * len(self._content.images)
@@ -196,6 +208,7 @@ class GLTFExporter(object):
             images_list[self._image_index_by_key[key]] = image_data.to_data(
                 uri, buffer_view
             )
+            self._add_extensions_recursively(image_data)
         self._gltf_dict["images"] = images_list
 
     def _construct_image_data_uri(self, image_data):
@@ -207,6 +220,12 @@ class GLTFExporter(object):
             + ";base64,"
             + base64.b64encode(image_data.data).decode("ascii")
         )
+
+    def _add_extensions(self):
+        if not self._content.extensions:
+            return
+        self._gltf_dict["extensionsRequired"] = self._content.extensions
+        self._gltf_dict["extensionsUsed"] = self._content.extensions
 
     def _add_samplers(self):
         if not self._content.samplers:
@@ -224,6 +243,7 @@ class GLTFExporter(object):
             textures_list[self._texture_index_by_key[key]] = texture_data.to_data(
                 self._sampler_index_by_key, self._image_index_by_key
             )
+            self._add_extensions_recursively(texture_data)
         self._gltf_dict["textures"] = textures_list
 
     def _add_materials(self):
@@ -231,12 +251,10 @@ class GLTFExporter(object):
             return
         materials_list = [None] * len(self._content.materials)
         for key, material_data in self._content.materials.items():
-            print("key, material_data", key, material_data)
-            print("self._material_index_by_key", self._material_index_by_key)
-            print("self._texture_index_by_key", self._texture_index_by_key)
             materials_list[self._material_index_by_key[key]] = material_data.to_data(
                 self._texture_index_by_key
             )
+            self._add_extensions_recursively(material_data)
         self._gltf_dict["materials"] = materials_list
 
     def _add_skins(self):
@@ -250,6 +268,7 @@ class GLTFExporter(object):
             skins_list[self._skin_index_by_key[key]] = skin_data.to_data(
                 self._node_index_by_key, accessor_index
             )
+            self._add_extensions_recursively(skin_data)
         self._gltf_dict["skins"] = skins_list
 
     def _add_cameras(self):
@@ -258,6 +277,7 @@ class GLTFExporter(object):
         camera_list = [None] * len(self._content.cameras)
         for key, camera_data in self._content.cameras.items():
             camera_list[self._camera_index_by_key[key]] = camera_data.to_data()
+            self._add_extensions_recursively(camera_data)
         self._gltf_dict["cameras"] = camera_list
 
     def _add_meshes(self):
@@ -267,6 +287,7 @@ class GLTFExporter(object):
         for key, mesh_data in self._content.meshes.items():
             primitives = self._construct_primitives(mesh_data)
             mesh_list[self._mesh_index_by_key[key]] = mesh_data.to_data(primitives)
+            self._add_extensions_recursively(mesh_data)
         self._gltf_dict["meshes"] = mesh_list
 
     def _add_buffer(self):
@@ -290,6 +311,7 @@ class GLTFExporter(object):
             animation_list.append(
                 animation_data.to_data(samplers_list, self._node_index_by_key)
             )
+            self._add_extensions_recursively(animation_data)
         self._gltf_dict["animations"] = animation_list
 
     def _construct_animation_samplers_list(self, animation_data):
