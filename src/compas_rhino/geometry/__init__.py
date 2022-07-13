@@ -80,6 +80,8 @@ from compas_rhino.conversions import RhinoVector
 from .curves import RhinoNurbsCurve
 from .surfaces import RhinoNurbsSurface
 
+from .brep import RhinoBRep
+
 
 __all__ = [
     'RhinoGeometry',
@@ -100,4 +102,6 @@ __all__ = [
 
     'RhinoNurbsCurve',
     'RhinoNurbsSurface',
+
+    "RhinoBRep",
 ]
