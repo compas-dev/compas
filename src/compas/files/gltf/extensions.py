@@ -107,6 +107,44 @@ class KHR_materials_specular(BaseGLTFDataClass):
         )
 
 
+class KHR_materials_ior(BaseGLTFDataClass):
+    """glTF extension that defines the optical transmission of a material.
+
+    https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_ior
+    """
+
+    key = "KHR_materials_ior"
+
+    def __init__(
+        self,
+        ior=None,
+        extensions=None,
+        extras=None,
+    ):
+        super(KHR_materials_ior, self).__init__(extras, extensions)
+        self.ior = ior
+
+    def to_data(self, texture_index_by_key, **kwargs):
+        dct = {}
+        if self.ior is not None:
+            dct["ior"] = self.ior
+        if self.extras is not None:
+            dct["extras"] = self.extras
+        if self.extensions is not None:
+            dct["extensions"] = self.extensions_to_data()
+        return dct
+
+    @classmethod
+    def from_data(cls, dct):
+        if dct is None:
+            return None
+        return cls(
+            ior=dct.get("ior"),
+            extensions=cls.extensions_from_data(dct.get("extensions")),
+            extras=dct.get("extras"),
+        )
+
+
 class KHR_materials_clearcoat(BaseGLTFDataClass):
     """glTF extension that defines the clearcoat material layer.
 
@@ -293,4 +331,5 @@ SUPPORTED_EXTENSIONS = {
     KHR_Texture_Transform.key: KHR_Texture_Transform,
     KHR_materials_pbrSpecularGlossiness.key: KHR_materials_pbrSpecularGlossiness,
     KHR_materials_specular.key: KHR_materials_specular,
+    KHR_materials_ior.key: KHR_materials_ior,
 }
