@@ -143,7 +143,6 @@ class TextureInfoData(BaseGLTFDataClass):
         self.tex_coord = tex_coord
 
     def to_data(self, texture_index_by_key):
-        print("texture_index_by_key.keys()", texture_index_by_key.keys())
         texture_info_dict = {"index": texture_index_by_key[self.index]}
         if self.tex_coord is not None:
             texture_info_dict["texCoord"] = self.tex_coord
