@@ -36,7 +36,7 @@ class BaseGLTFDataClass(object):
     @classmethod
     def extensions_from_data(cls, data):
         # i hate hate hate this local import, but i don't see a good way around it
-        from .extensions import SUPPORTED_EXTENSIONS
+        from compas.files.gltf.extensions import SUPPORTED_EXTENSIONS
 
         if not data:
             return None
