@@ -322,7 +322,7 @@ class GLTFContent(object):
         return key
 
     def add_image(self, image):
-        """Adds a image to the content.
+        """Adds an image to the content.
 
         Parameters
         ----------
