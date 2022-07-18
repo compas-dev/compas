@@ -304,6 +304,8 @@ class GLTFContent(object):
 
         Parameters
         ----------
+        texture : :class:`compas.files.data_classes.TextureData`
+            The texture to add
 
         Returns
         -------
@@ -320,6 +322,8 @@ class GLTFContent(object):
 
         Parameters
         ----------
+        image : :class:`compas.files.data_classes.ImageData`
+            The image to add
 
         Returns
         -------
