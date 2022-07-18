@@ -1,15 +1,15 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
+from compas.files.gltf.data_classes import BaseGLTFDataClass
+from compas.files.gltf.data_classes import TextureInfoData
 from compas.files.gltf.gltf_mesh import GLTFMesh
 from compas.files.gltf.gltf_node import GLTFNode
 from compas.files.gltf.gltf_scene import GLTFScene
 from compas.files.gltf.helpers import get_weighted_mesh_vertices
-from compas.files.gltf.data_classes import TextureInfoData
-from compas.files.gltf.data_classes import BaseGLTFDataClass
-from compas.geometry import transform_points
 from compas.geometry import multiply_matrices
+from compas.geometry import transform_points
 
 
 class GLTFContent(object):
@@ -491,23 +491,21 @@ class GLTFContent(object):
 if __name__ == "__main__":
 
     import os
-    import compas
     import urllib
-    from compas.geometry import Box, Frame
+
+    import compas
     from compas.datastructures import Mesh
-    from compas.utilities import download_file_from_remote
+    from compas.files.gltf.data_classes import ImageData
+    from compas.files.gltf.data_classes import MaterialData
+    from compas.files.gltf.data_classes import MineType
+    from compas.files.gltf.data_classes import PBRMetallicRoughnessData
+    from compas.files.gltf.data_classes import TextureData
+    from compas.files.gltf.extensions import KHR_materials_pbrSpecularGlossiness
+    from compas.files.gltf.extensions import KHR_Texture_Transform
     from compas.files.gltf.gltf import GLTF
-    from compas.files.gltf.data_classes import (
-        MaterialData,
-        PBRMetallicRoughnessData,
-        ImageData,
-        TextureData,
-        MineType,
-    )
-    from compas.files.gltf.extensions import (
-        KHR_materials_pbrSpecularGlossiness,
-        KHR_Texture_Transform,
-    )
+    from compas.geometry import Box
+    from compas.geometry import Frame
+    from compas.utilities import download_file_from_remote
 
     dirname = os.path.join(compas.APPDATA, "data", "gltfs")
     gltf_filepath = os.path.join(dirname, "compas.gltf")
