@@ -1,3 +1,5 @@
-from .brep import BRep
+from .brep import Brep
 
-__all__ = [_ for _ in dir() if not _.startswith("_")]
+__all__ = [
+    "Brep"
+]

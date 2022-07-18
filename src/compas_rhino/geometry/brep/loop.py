@@ -1,23 +1,19 @@
 from compas.data import Data
 
-from .edge import RhinoBRepEdge
+from .edge import RhinoBrepEdge
 
 
-class RhinoBRepLoop(Data):
+class RhinoBrepLoop(Data):
     def __init__(self, rhino_loop=None):
-        super(RhinoBRepLoop, self).__init__()
-        self._rhino_loop = None
+        super(RhinoBrepLoop, self).__init__()
+        self._loop = None
+        self.edges = None
         if rhino_loop:
-            self.rhino_loop = rhino_loop
+            self._set_loop(rhino_loop)
 
-    @property
-    def rhino_loop(self):
-        return self._rhino_loop
-
-    @rhino_loop.setter
-    def rhino_loop(self, value):
-        self._rhino_loop = value
-        self.edges = [RhinoBRepEdge(t.Edge) for t in self._rhino_loop.Trims]
+    def _set_loop(self, native_loop):
+        self._loop = native_loop
+        self.edges = [RhinoBrepEdge(t.Edge) for t in self._loop.Trims]
 
     @property
     def data(self):
@@ -25,4 +21,4 @@ class RhinoBRepLoop(Data):
 
     @data.setter
     def data(self, value):
-        self.edges = [RhinoBRepEdge.from_data(e_data) for e_data in value]
+        self.edges = [RhinoBrepEdge.from_data(e_data) for e_data in value]

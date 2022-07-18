@@ -1,29 +1,25 @@
 from compas.data import Data
 from compas_rhino.geometry import RhinoNurbsSurface
 
-from .loop import RhinoBRepLoop
+from .loop import RhinoBrepLoop
 
 
-class RhinoBRepFace(Data):
+class RhinoBrepFace(Data):
 
     TOLERANCE = 1e-6
 
     def __init__(self, rhino_face=None):
-        super(RhinoBRepFace, self).__init__()
+        super(RhinoBrepFace, self).__init__()
         self.loops = None
         self.surface = None
+        self._face = None
         if rhino_face:
-            self.rhino_face = rhino_face
+            self._set_face(rhino_face)
 
-    @property
-    def rhino_face(self):
-        return self._rhino_face
-
-    @rhino_face.setter
-    def rhino_face(self, value):
-        self._rhino_face = value
-        self.loops = [RhinoBRepLoop(l) for l in self._rhino_face.Brep.Loops]
-        self.surface = RhinoNurbsSurface.from_rhino(self._rhino_face.ToNurbsSurface())
+    def _set_face(self, native_face):
+        self._face = native_face
+        self.loops = [RhinoBrepLoop(l) for l in self._face.Brep.Loops]
+        self.surface = RhinoNurbsSurface.from_rhino(self._face.ToNurbsSurface())
 
     @property
     def data(self):
@@ -35,7 +31,7 @@ class RhinoBRepFace(Data):
 
     @data.setter
     def data(self, value):
-        boundary = RhinoBRepLoop.from_data(value["boundary"])
-        holes = [RhinoBRepLoop.from_data(l) for l in value["holes"]]
+        boundary = RhinoBrepLoop.from_data(value["boundary"])
+        holes = [RhinoBrepLoop.from_data(l) for l in value["holes"]]
         self.loops = boundary + holes
         self.surface = RhinoNurbsSurface.from_data(value["surface"])

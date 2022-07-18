@@ -1,74 +1,118 @@
 from compas.geometry import Geometry
 from compas.plugins import pluggable
+from compas.plugins import PluginNotInstalledError
+
+
+LINEAR_DEFLECTION = 1e-3
 
 
 @pluggable(category="factories")
-def new_brep(cls, *args, **kwargs):
-    raise NotImplementedError
+def new_brep(*args, **kwargs):
+    raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def new_brep_from_mesh(cls, *args, **kwargs):
-    raise NotImplementedError
+def from_brep(*args, **kwargs):
+    raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def new_brep_from_box(cls, *args, **kwargs):
-    raise NotImplementedError
+def from_mesh(*args, **kwargs):
+    raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def new_brep_from_cylinder(cls, *args, **kwargs):
-    raise NotImplementedError
+def from_box(*args, **kwargs):
+    raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def new_brep_from_sphere(cls, *args, **kwargs):
-    raise NotImplementedError
+def from_cylinder(*args, **kwargs):
+    raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def new_brep_from_cone(cls, *args, **kwargs):
-    raise NotImplementedError
+def from_sphere(*args, **kwargs):
+    raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def new_brep_from_surface(cls, *args, **kwargs):
-    raise NotImplementedError
+def from_cone(*args, **kwargs):
+    raise PluginNotInstalledError()
 
 
-class BRep(Geometry):
+@pluggable(category="factories")
+def from_surface(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_torus(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_mesh(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+@pluggable(category="factories")
+def from_sweep(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+class BrepType:
+    """
+    Possible types of a Brep
+    """
+    COMPOUND = 0
+    COMPSOLID = 1
+    SHELL = 2
+    FACE = 3
+    WIRE = 4
+    EDGE = 5
+    VERTEX = 6
+    SHAPE = 7
+
+
+class BrepOrientation:
+    """
+    Possible orientations of a Brep
+    """
+    FORWARD = 0
+    REVERSED = 1
+    INTERNAL = 2
+    EXTERNAL = 3
+
+
+class Brep(Geometry):
     """Class for Boundary Representation of geometric entities.
+
+    This class allows COMPAS users to work with Brep implementation in various backends (e.g. Rhino/OpenCasCade)
+    uses COMPAS's plugin system
 
     Attributes
     ----------
-    vertices : list[:class:`~compas_occ.brep.BRepVertex`], read-only
-        The vertices of the BRep.
-    edges : list[:class:`~compas_occ.brep.BRepEdge`], read-only
-        The edges of the BRep.
-    loops : list[:class:`~compas_occ.brep.BRepLoop`], read-only
-        The loops of the BRep.
-    faces : list[:class:`~compas_occ.brep.BRepFace`], read-only
-        The faces of the BRep.
+    vertices : list[:class:`~compas_rhino.geometry.BrepVertex`], read-only
+        The vertices of the Brep.
+    edges : list[:class:`~compas_rhino.geometry.BrepEdge`], read-only
+        The edges of the Brep.
+    loops : list[:class:`~compas_rhino.geometry.BrepLoop`], read-only
+        The loops of the Brep.
+    faces : list[:class:`~compas_rhino.geometry.BrepFace`], read-only
+        The faces of the Brep.
     frame : :class:`~compas.geometry.Frame`, read-only
-        The local coordinate system of the BRep.
+        The local coordinate system of the Brep.
     area : float, read-only
-        The surface area of the BRep.
+        The surface area of the Brep.
     volume : float, read-only
-        The volume of the regions contained by the BRep.
+        The volume of the regions contained by the Brep.
 
     Other Attributes
     ----------------
-    occ_shape : ``TopoDS_Shape``
-        The underlying OCC shape of the BRep.
-    type : {TopAbs_COMPOUND, TopAbs_COMPSOLID, TopAbs_SOLID, TopAbs_SHELL, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_VERTEX, TopAbs_SHAPE}, read-only
-        The type of BRep shape.
-    orientation : {TopAbs_FORWARD, TopAbs_REVERSED, TopAbs_INTERNAL, TopAbs_EXTERNAL}, read-only
+    type : :class:`~compas.geometry.BrepType`, read-only
+        The type of Brep shape.
+    orientation : :class:`~compas.geometry.BrepOrientation`, read-obly
         Orientation of the shape.
-
-    Examples
-    --------
-    Constructors
 
     """
 
@@ -76,11 +120,11 @@ class BRep(Geometry):
         return new_brep(cls, *args, **kwargs)
 
     def __init__(self, name=None):
-        super(BRep, self).__init__(name=name)
+        super(Brep, self).__init__(name=name)
 
     def __str__(self):
         lines = [
-            "BRep",
+            "Brep",
             "-----",
             "Vertices: {}".format(self.vertices),
             "Edges: {}".format(self.edges),
@@ -95,6 +139,17 @@ class BRep(Geometry):
     # ==============================================================================
     # Data
     # ==============================================================================
+
+    @property
+    def data(self):
+        faces = []
+        for face in self.faces:
+            faces.append(face.data)
+        return {"faces": faces}
+
+    @data.setter
+    def data(self):
+        raise NotImplementedError
 
     @property
     def orientation(self):
@@ -142,11 +197,11 @@ class BRep(Geometry):
 
     @property
     def is_manifold(self):
-        pass
+        raise NotImplementedError
 
     @property
     def is_surface(self):
-        pass
+        raise NotImplementedError
 
     # ==============================================================================
     # Geometric Components
@@ -217,48 +272,48 @@ class BRep(Geometry):
     # ==============================================================================
 
     @classmethod
-    def from_shape(cls, shape):
-        raise NotImplementedError
+    def from_brep(cls, brep):
+        return from_brep(brep)
 
     @classmethod
-    def from_step(cls, filename):
-        raise NotImplementedError
+    def from_step_file(cls, filename):
+        return from_step_file(filename)
 
     @classmethod
     def from_polygons(cls, polygons):
-        raise NotImplementedError
+        return from_polygons(polygons)
 
     @classmethod
     def from_curves(cls, curves):
-        raise NotImplementedError
+        return from_curves(curves)
 
     @classmethod
     def from_box(cls, box):
-        return new_brep_from_box(cls, box)
+        return from_box(box)
 
     @classmethod
     def from_sphere(cls, sphere):
-        raise NotImplementedError
+        return from_sphere(sphere)
 
     @classmethod
     def from_cylinder(cls, cylinder):
-        raise NotImplementedError
+        return from_cylinder(cylinder)
 
     @classmethod
     def from_cone(cls, cone):
-        raise NotImplementedError
+        return from_cone(cone)
 
     @classmethod
     def from_torus(cls, torus):
-        raise NotImplementedError
+        return from_torus(torus)
 
     @classmethod
     def from_mesh(cls, mesh):
-        raise NotImplementedError
+        return from_mesh(mesh)
 
     @classmethod
     def from_faces(cls, faces):
-        raise NotImplementedError
+        return from_faces(faces)
 
     @classmethod
     def from_extrusion(cls, curve, vector):
@@ -295,10 +350,10 @@ class BRep(Geometry):
     def to_json(self, filepath):
         raise NotImplementedError
 
-    def to_step(self, filepath, schema="AP203", unit="MM"):
+    def to_step(self, filepath):
         raise NotImplementedError
 
-    def to_tesselation(self, linear_deflection=1e-3):
+    def to_tesselation(self, linear_deflection=LINEAR_DEFLECTION):
         raise NotImplementedError
 
     def to_meshes(self, u=16, v=16):
@@ -359,7 +414,7 @@ class BRep(Geometry):
         None
 
         """
-        pass
+        NotImplementedError
 
     def cull_unused_edges(self):
         """Remove all unused edges.
@@ -369,7 +424,7 @@ class BRep(Geometry):
         None
 
         """
-        pass
+        NotImplementedError
 
     def cull_unused_loops(self):
         """Remove all unused loops.
@@ -379,7 +434,7 @@ class BRep(Geometry):
         None
 
         """
-        pass
+        NotImplementedError
 
     def cull_unused_faces(self):
         """Remove all unused faces.
@@ -389,7 +444,7 @@ class BRep(Geometry):
         None
 
         """
-        pass
+        NotImplementedError
 
     def transform(self, matrix):
         raise NotImplementedError
@@ -406,5 +461,5 @@ class BRep(Geometry):
     def split(self, other):
         raise NotImplementedError
 
-    def overlap(self, other, deflection=1e-3, tolerance=0.0):
+    def overlap(self, other, deflection=LINEAR_DEFLECTION, tolerance=0.0):
         raise NotImplementedError

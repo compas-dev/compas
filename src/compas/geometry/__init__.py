@@ -898,7 +898,7 @@ from .surfaces import (
 )
 
 from .brep import (
-    BRep
+    Brep
 )
 
 __all__ = [

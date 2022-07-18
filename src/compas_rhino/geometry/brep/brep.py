@@ -1,18 +1,52 @@
+from compas.geometry import Frame
 from compas.geometry import Geometry
+from compas.geometry import Brep
 from compas_rhino.conversions import box_to_rhino
 
-from Rhino.Geometry import Brep
+import Rhino
 
-from .face import RhinoBRepFace
-from .edge import RhinoBRepEdge
-from .vertex import RhinoBRepVertex
-from .loop import RhinoBRepLoop
+from .face import RhinoBrepFace
+from .edge import RhinoBrepEdge
+from .vertex import RhinoBrepVertex
+from .loop import RhinoBrepLoop
 
 
-class RhinoBRep(Geometry):
-    def __init__(self):
-        super(RhinoBRep, self).__init__()
-        self.rhino_brep = None
+class RhinoBrep(Brep):
+
+    def __new__(cls, *args, **kwargs):
+        # This breaks the endless recursion when calling `compas.geometry.Brep()` and allows
+        # having Brep here as the parent class. Otherwise RhinoBrep() calls Brep.__new__()
+        # which calls RhinoBrep() and so on...
+        return object.__new__(cls, *args, **kwargs)
+
+    def __init__(self, brep=None):
+        super(RhinoBrep, self).__init__()
+        self._brep = brep or Rhino.Geometry.Brep()
+
+    # ==============================================================================
+    # Constructors
+    # ==============================================================================
+
+    @classmethod
+    def from_brep(cls, rhino_brep):
+        brep = cls(rhino_brep)
+        return brep
+
+    @classmethod
+    def from_box(cls, box):
+        rhino_box = box_to_rhino(box)
+        return cls.from_brep(rhino_box.ToBrep())
+
+    # ==============================================================================
+    # Data
+    # ==============================================================================
+
+    @property
+    def dtype(self):
+        # this should make de-serialization backend-agnostic
+        # The deserializing type is determined by plugin availability when de-serializing
+        # regardless of the context available when serializing.
+        return super(RhinoBrep, self).dtype
 
     @property
     def data(self):
@@ -25,58 +59,50 @@ class RhinoBRep(Geometry):
     def data(self, data):
         faces = []
         for facedata in data["faces"]:
-            face = RhinoBRepFace.from_data(facedata)
+            face = RhinoBrepFace.from_data(facedata)
             faces.append(face)
-        self.rhino_brep = BRep.from_faces(faces).rhino_brep
+        self._brep = self._create_rhino_brep(faces)
 
-    @classmethod
-    def from_faces(cls, faces):
-        brep = Brep()
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
 
     @property
     def points(self):
-        if self.rhino_brep:
-            return [RhinoBRepVertex(v) for v in self.rhino_brep.Vertices]
+        if self._brep:
+            return [RhinoBrepVertex(v) for v in self._brep.Vertices]
 
     @property
     def edges(self):
-        if self.rhino_brep:
-            return [RhinoBRepEdge(e) for e in self.rhino_brep.Edges]
+        if self._brep:
+            return [RhinoBrepEdge(e) for e in self._brep.Edges]
 
     @property
     def loops(self):
-        if self.rhino_brep:
-            return [RhinoBRepLoop(l) for l in self.rhino_brep.Loops]
+        if self._brep:
+            return [RhinoBrepLoop(l) for l in self._brep.Loops]
 
     @property
     def faces(self):
-        if self.rhino_brep:
-            return [RhinoBRepFace(f) for f in self.rhino_brep.Faces]
+        if self._brep:
+            return [RhinoBrepFace(f) for f in self._brep.Faces]
 
     @property
     def frame(self):
-        """TODO: what to do here? Brep has no Frame/plane information"""
-        # if self.rhino_brep:
-        #     return self.rhino_brep.Frame
-        pass
+        return Frame.worldXY()
 
     @property
     def area(self):
-        if self.rhino_brep:
-            return self.rhino_brep.GetArea()
+        if self._brep:
+            return self._brep.GetArea()
 
     @property
     def volume(self):
-        if self.rhino_brep:
-            return self.rhino_brep.GetVolume()
+        if self._brep:
+            return self._brep.GetVolume()
 
-    @classmethod
-    def from_shape(cls, shape):
-        brep = cls()
-        brep.rhino_brep = shape
+    def _create_rhino_brep(self, faces):
+        brep = Rhino.Geometry.Brep()
+        # TODO re-construct the Brep from the serialized faces
         return brep
 
-    @classmethod
-    def from_box(cls, box):
-        rhino_box = box_to_rhino(box)
-        return cls.from_shape(rhino_box.ToBrep())

@@ -3,22 +3,17 @@ from compas.geometry import Point
 from compas_rhino.conversions import point_to_compas
 
 
-class RhinoBRepVertex(Data):
+class RhinoBrepVertex(Data):
     def __init__(self, rhino_vertex=None):
-        super(RhinoBRepVertex, self).__init__()
-        self._rhino_vertex = None
+        super(RhinoBrepVertex, self).__init__()
+        self._vertex = None
         self._point = None
         if rhino_vertex:
-            self.rhino_vertex = rhino_vertex
+            self._set_vertex(rhino_vertex)
 
-    @property
-    def rhino_vertex(self):
-        return self._rhino_vertex
-
-    @rhino_vertex.setter
-    def rhino_vertex(self, value):
-        self._rhino_vertex = value
-        self._point = point_to_compas(self._rhino_vertex.Location)
+    def _set_vertex(self, native_vertex):
+        self._vertex = native_vertex
+        self._point = point_to_compas(self._vertex.Location)
 
     @property
     def data(self):
