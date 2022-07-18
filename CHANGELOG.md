@@ -12,11 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `GLTFContent.check_extensions_texture_recursively`
 * Added `GLTFContent.get_node_by_name`, `GLTFContent.get_material_index_by_name`
 * Added `GLTFContent.add_material`, `GLTFContent.add_texture`, `GLTFContent.add_image`
-* Added `GLTFExporter._add_extensions_recursively` and added the check in mostly all `GLTFExporter._add_*`
 
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`
-* Changed `GLTFExporter._add_images` to automatically save images in the export folder of the gltf
 
 ### Removed
 
