@@ -1,6 +1,10 @@
 from compas.plugins import plugin
 
 from .brep import RhinoBrep
+from .face import RhinoBrepFace
+from .edge import RhinoBrepEdge
+from .vertex import RhinoBrepVertex
+from .loop import RhinoBrepLoop
 
 import Rhino
 

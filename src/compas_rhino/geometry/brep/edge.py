@@ -1,4 +1,5 @@
 from compas.data import Data
+from compas.geometry import BrepEdge
 from compas_rhino.conversions import curve_to_compas_line
 from compas_rhino.conversions import line_to_rhino_curve
 
@@ -6,7 +7,7 @@ from compas_rhino.conversions import line_to_rhino_curve
 from .vertex import RhinoBrepVertex
 
 
-class RhinoBrepEdge(Data):
+class RhinoBrepEdge(BrepEdge):
 
     def __init__(self, rhino_edge=None):
         super(RhinoBrepEdge, self).__init__()
@@ -16,7 +17,7 @@ class RhinoBrepEdge(Data):
         self._end_vertex = None
 
         if rhino_edge:
-            self.rhino_edge = rhino_edge
+            self._set_edge(rhino_edge)
 
     def _set_edge(self, native_edge):
         self._edge = native_edge

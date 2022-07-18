@@ -1,9 +1,10 @@
 from compas.data import Data
 from compas.geometry import Point
+from compas.geometry import BrepVertex
 from compas_rhino.conversions import point_to_compas
 
 
-class RhinoBrepVertex(Data):
+class RhinoBrepVertex(BrepVertex):
     def __init__(self, rhino_vertex=None):
         super(RhinoBrepVertex, self).__init__()
         self._vertex = None

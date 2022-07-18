@@ -81,6 +81,10 @@ from .curves import RhinoNurbsCurve
 from .surfaces import RhinoNurbsSurface
 
 from .brep import RhinoBrep
+from .brep import RhinoBrepLoop
+from .brep import RhinoBrepVertex
+from .brep import RhinoBrepFace
+from .brep import RhinoBrepEdge
 
 
 __all__ = [
@@ -104,4 +108,8 @@ __all__ = [
     'RhinoNurbsSurface',
 
     "RhinoBrep",
+    "RhinoBrepVertex",
+    "RhinoBrepEdge",
+    "RhinoBrepFace",
+    "RhinoBrepLoop",
 ]
