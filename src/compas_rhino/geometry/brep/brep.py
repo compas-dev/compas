@@ -12,6 +12,9 @@ from .loop import RhinoBrepLoop
 
 
 class RhinoBrep(Brep):
+    """
+    Rhino Brep backend class. Wraps around and allows serialization and de-serialization of a `Rhino.Geometry.Brep`
+    """
 
     def __new__(cls, *args, **kwargs):
         # This breaks the endless recursion when calling `compas.geometry.Brep()` and allows

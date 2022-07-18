@@ -898,7 +898,11 @@ from .surfaces import (
 )
 
 from .brep import (
-    Brep
+    Brep,
+    BrepVertex,
+    BrepFace,
+    BrepLoop,
+    BrepEdge,
 )
 
 __all__ = [
@@ -1208,6 +1212,10 @@ __all__ = [
     'NurbsSurface',
 
     "Brep",
+    "BrepLoop",
+    "BrepEdge",
+    "BrepVertex",
+    "BrepFace"
 ]
 
 if not compas.IPY:

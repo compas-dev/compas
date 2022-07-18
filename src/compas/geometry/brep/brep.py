@@ -87,8 +87,8 @@ class BrepOrientation:
 class Brep(Geometry):
     """Class for Boundary Representation of geometric entities.
 
-    This class allows COMPAS users to work with Brep implementation in various backends (e.g. Rhino/OpenCasCade)
-    uses COMPAS's plugin system
+    This class serves as an interface for a Brep and allows instantiating a Brep object depending on the available Backend.
+    Note: this is not a full implementation of Brep and rather relies on COMPAS's plugin system for actual implementation.
 
     Attributes
     ----------
