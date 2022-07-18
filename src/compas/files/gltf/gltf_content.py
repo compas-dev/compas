@@ -134,11 +134,7 @@ class GLTFContent(object):
                     animation.channels.remove(channel)
                 else:
                     visited_sampler_keys.append(channel.sampler)
-            animation.samplers_dict = {
-                key: animation.samplers_dict[key]
-                for key in animation.samplers_dict
-                if key in visited_sampler_keys
-            }
+            animation.samplers_dict = {key: animation.samplers_dict[key] for key in animation.samplers_dict if key in visited_sampler_keys}
             if not animation.samplers_dict:
                 del self.animations[animation_key]
 
@@ -230,9 +226,7 @@ class GLTFContent(object):
                 cur = self.nodes[cur_key]
                 for child_key in cur.children:
                     child = self.nodes[child_key]
-                    child.transform = multiply_matrices(
-                        cur.transform, child.matrix or child.get_matrix_from_trs()
-                    )
+                    child.transform = multiply_matrices(cur.transform, child.matrix or child.get_matrix_from_trs())
                     child.position = transform_points([origin], child.transform)[0]
                     queue.append(child_key)
 
@@ -517,9 +511,7 @@ if __name__ == "__main__":
     image_uri = "compas_icon_white.png"
     image_file = os.path.join(dirname, image_uri)
     try:
-        download_file_from_remote(
-            "https://compas.dev/images/compas_icon_white.png", image_file
-        )
+        download_file_from_remote("https://compas.dev/images/compas_icon_white.png", image_file)
     except urllib.error.HTTPError:
         pass
 
@@ -548,9 +540,7 @@ if __name__ == "__main__":
     material.name = "Texture"
     material.pbr_metallic_roughness = PBRMetallicRoughnessData()
     material.pbr_metallic_roughness.metallic_factor = 0.0
-    material.pbr_metallic_roughness.base_color_texture = TextureInfoData(
-        index=texture_idx
-    )
+    material.pbr_metallic_roughness.base_color_texture = TextureInfoData(index=texture_idx)
     material_key = cnt.add_material(material)
 
     # add extension

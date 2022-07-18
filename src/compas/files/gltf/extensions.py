@@ -27,9 +27,7 @@ class KHR_materials_transmission(BaseGLTFDataClass):
         if self.transmission_factor is not None:
             dct["transmissionFactor"] = self.transmission_factor
         if self.transmission_texture is not None:
-            dct["transmissionTexture"] = self.transmission_texture.to_data(
-                texture_index_by_key
-            )
+            dct["transmissionTexture"] = self.transmission_texture.to_data(texture_index_by_key)
         if self.extras is not None:
             dct["extras"] = self.extras
         if self.extensions is not None:
@@ -42,9 +40,7 @@ class KHR_materials_transmission(BaseGLTFDataClass):
             return None
         return cls(
             transmission_factor=dct.get("transmissionFactor"),
-            transmission_texture=TextureInfoData.from_data(
-                dct.get("transmissionTexture")
-            ),
+            transmission_texture=TextureInfoData.from_data(dct.get("transmissionTexture")),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )
@@ -82,9 +78,7 @@ class KHR_materials_specular(BaseGLTFDataClass):
         if self.specular_color_factor is not None:
             dct["specularColorFactor"] = self.specular_color_factor
         if self.specular_color_texture is not None:
-            dct["specularColorTexture"] = self.specular_color_texture.to_data(
-                texture_index_by_key
-            )
+            dct["specularColorTexture"] = self.specular_color_texture.to_data(texture_index_by_key)
         if self.extras is not None:
             dct["extras"] = self.extras
         if self.extensions is not None:
@@ -99,9 +93,7 @@ class KHR_materials_specular(BaseGLTFDataClass):
             specular_factor=dct.get("specularFactor"),
             specular_texture=TextureInfoData.from_data(dct.get("specularTexture")),
             specular_color_factor=dct.get("specularColorFactor"),
-            specular_color_texture=TextureInfoData.from_data(
-                dct.get("specularColorTexture")
-            ),
+            specular_color_texture=TextureInfoData.from_data(dct.get("specularColorTexture")),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )
@@ -175,19 +167,13 @@ class KHR_materials_clearcoat(BaseGLTFDataClass):
         if self.clearcoat_factor is not None:
             dct["clearcoatFactor"] = self.clearcoat_factor
         if self.clearcoat_texture is not None:
-            dct["clearcoatTexture"] = self.clearcoat_texture.to_data(
-                texture_index_by_key
-            )
+            dct["clearcoatTexture"] = self.clearcoat_texture.to_data(texture_index_by_key)
         if self.clearcoat_roughness_factor is not None:
             dct["clearcoatRoughnessFactor"] = self.clearcoat_roughness_factor
         if self.clearcoat_roughness_texture is not None:
-            dct["clearcoatRoughnessTexture"] = self.clearcoat_roughness_texture.to_data(
-                texture_index_by_key
-            )
+            dct["clearcoatRoughnessTexture"] = self.clearcoat_roughness_texture.to_data(texture_index_by_key)
         if self.clearcoat_normal_texture is not None:
-            dct["clearcoatNormalTexture"] = self.clearcoat_normal_texture.to_data(
-                texture_index_by_key
-            )
+            dct["clearcoatNormalTexture"] = self.clearcoat_normal_texture.to_data(texture_index_by_key)
         if self.extras is not None:
             dct["extras"] = self.extras
         if self.extensions is not None:
@@ -202,12 +188,8 @@ class KHR_materials_clearcoat(BaseGLTFDataClass):
             clearcoat_factor=dct.get("clearcoatFactor"),
             clearcoat_texture=TextureInfoData.from_data(dct.get("clearcoatTexture")),
             clearcoat_roughness_factor=dct.get("clearcoatRoughnessFactor"),
-            clearcoat_roughness_texture=TextureInfoData.from_data(
-                dct.get("clearcoatRoughnessTexture")
-            ),
-            clearcoat_normal_texture=NormalTextureInfoData.from_data(
-                dct.get("clearcoatNormalTexture")
-            ),
+            clearcoat_roughness_texture=TextureInfoData.from_data(dct.get("clearcoatRoughnessTexture")),
+            clearcoat_normal_texture=NormalTextureInfoData.from_data(dct.get("clearcoatNormalTexture")),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )
@@ -299,9 +281,7 @@ class KHR_materials_pbrSpecularGlossiness(BaseGLTFDataClass):
         if self.glossiness_factor is not None:
             dct["glossinessFactor"] = self.glossiness_factor
         if self.specular_glossiness_texture is not None:
-            dct["specularGlossinessTexture"] = self.specular_glossiness_texture.to_data(
-                texture_index_by_key
-            )
+            dct["specularGlossinessTexture"] = self.specular_glossiness_texture.to_data(texture_index_by_key)
         if self.extras is not None:
             dct["extras"] = self.extras
         if self.extensions is not None:
@@ -317,9 +297,7 @@ class KHR_materials_pbrSpecularGlossiness(BaseGLTFDataClass):
             diffuse_texture=TextureInfoData.from_data(dct.get("diffuseTexture")),
             specular_factor=dct.get("specularFactor"),
             glossiness_factor=dct.get("glossinessFactor"),
-            specular_glossiness_texture=TextureInfoData.from_data(
-                dct.get("specularGlossinessTexture")
-            ),
+            specular_glossiness_texture=TextureInfoData.from_data(dct.get("specularGlossinessTexture")),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )

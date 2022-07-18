@@ -10,10 +10,10 @@ from .gltf_parser import GLTFParser
 from .gltf_reader import GLTFReader
 
 __all__ = [
-    'GLTF',
-    'GLTFContent',
-    'GLTFMesh',
-    'GLTFReader',
-    'GLTFParser',
-    'GLTFExporter',
+    "GLTF",
+    "GLTFContent",
+    "GLTFMesh",
+    "GLTFReader",
+    "GLTFParser",
+    "GLTFExporter",
 ]

@@ -112,7 +112,7 @@ class GLTFNode(object):
     @mesh_key.setter
     def mesh_key(self, value):
         if value is not None and value not in self.context.meshes:
-            raise Exception('Cannot find mesh {}'.format(value))
+            raise Exception("Cannot find mesh {}".format(value))
         self._mesh_key = value
 
     @property
@@ -122,7 +122,7 @@ class GLTFNode(object):
     @camera.setter
     def camera(self, value):
         if value is not None and value not in self.context.cameras:
-            raise Exception('Cannot find camera {}'.format(value))
+            raise Exception("Cannot find camera {}".format(value))
         self._camera = value
 
     @property
@@ -132,7 +132,7 @@ class GLTFNode(object):
     @skin.setter
     def skin(self, value):
         if value is not None and value not in self.context.skin:
-            raise Exception('Cannot find skin {}'.format(value))
+            raise Exception("Cannot find skin {}".format(value))
         self._skin = value
 
     @property
@@ -145,9 +145,9 @@ class GLTFNode(object):
             self._translation = value
             return
         if self._matrix:
-            raise Exception('Cannot set translation when matrix is set.')
+            raise Exception("Cannot set translation when matrix is set.")
         if not isinstance(value, list) or len(value) != 3:
-            raise Exception('Invalid translation. Translations are expected to be of the form [x, y, z].')
+            raise Exception("Invalid translation. Translations are expected to be of the form [x, y, z].")
         self._translation = value
 
     @property
@@ -160,10 +160,9 @@ class GLTFNode(object):
             self._rotation = value
             return
         if self._matrix:
-            raise Exception('Cannot set rotation when matrix is set.')
+            raise Exception("Cannot set rotation when matrix is set.")
         if not isinstance(value, list) or len(value) != 4 or fabs(sum([q**2 for q in value]) - 1) > 1e-03:
-            raise Exception('Invalid rotation.  Rotations are expected to be given as '
-                            'unit quaternions of the form [q1, q2, q3, q4]')
+            raise Exception("Invalid rotation.  Rotations are expected to be given as " "unit quaternions of the form [q1, q2, q3, q4]")
         self._rotation = value
 
     @property
@@ -176,9 +175,9 @@ class GLTFNode(object):
             self._scale = value
             return
         if self._matrix:
-            raise Exception('Cannot set scale when matrix is set.')
+            raise Exception("Cannot set scale when matrix is set.")
         if not isinstance(value, list) or len(value) != 3:
-            raise Exception('Invalid scale.  Scales are expected to be of the form [s1, s2, s3]')
+            raise Exception("Invalid scale.  Scales are expected to be of the form [s1, s2, s3]")
         self._scale = value
 
     @property
@@ -193,14 +192,15 @@ class GLTFNode(object):
             self._matrix = value
             return
         if self.translation or self.rotation or self.scale:
-            raise Exception('Cannot set matrix when translation, rotation or scale is set.')
+            raise Exception("Cannot set matrix when translation, rotation or scale is set.")
         if not isinstance(value, list) or not value or not value[0] or not isinstance(value[0], list):
-            raise Exception('Invalid matrix. A list of lists is expected.')
+            raise Exception("Invalid matrix. A list of lists is expected.")
         if len(value) != 4 or len(value[0]) != 4:
-            raise Exception('Invalid matrix. A 4x4 matrix is expected.')
+            raise Exception("Invalid matrix. A 4x4 matrix is expected.")
         if value[3] != [0, 0, 0, 1]:
-            raise Exception('Invalid matrix.  A matrix without shear or skew is expected.  It must be of '
-                            'the form TRS, where T is a translation, R is a rotation and S is a scaling.')
+            raise Exception(
+                "Invalid matrix.  A matrix without shear or skew is expected.  It must be of " "the form TRS, where T is a translation, R is a rotation and S is a scaling."
+            )
         self._matrix = value
 
     @property
@@ -281,28 +281,28 @@ class GLTFNode(object):
         """
         node_dict = {}
         if self.name is not None:
-            node_dict['name'] = self.name
+            node_dict["name"] = self.name
         if self.children:
-            node_dict['children'] = [node_index_by_key[key] for key in self.children]
+            node_dict["children"] = [node_index_by_key[key] for key in self.children]
         if self.matrix and self.matrix != identity_matrix(4):
-            node_dict['matrix'] = matrix_to_col_major_order(self.matrix)
+            node_dict["matrix"] = matrix_to_col_major_order(self.matrix)
         else:
             if self.translation:
-                node_dict['translation'] = self.translation
+                node_dict["translation"] = self.translation
             if self.rotation:
-                node_dict['rotation'] = self.rotation
+                node_dict["rotation"] = self.rotation
             if self.scale:
-                node_dict['scale'] = self.scale
+                node_dict["scale"] = self.scale
         if self.mesh_key is not None:
-            node_dict['mesh'] = mesh_index_by_key[self.mesh_key]
+            node_dict["mesh"] = mesh_index_by_key[self.mesh_key]
         if self._camera is not None:
-            node_dict['camera'] = camera_index_by_key[self._camera]
+            node_dict["camera"] = camera_index_by_key[self._camera]
         if self._skin is not None:
-            node_dict['skin'] = skin_index_by_key[self._skin]
+            node_dict["skin"] = skin_index_by_key[self._skin]
         if self.extras:
-            node_dict['extras'] = self.extras
+            node_dict["extras"] = self.extras
         if self.extensions is not None:
-            node_dict['extensions'] = self.extensions
+            node_dict["extensions"] = self.extensions
         return node_dict
 
     @classmethod
@@ -323,20 +323,20 @@ class GLTFNode(object):
             return None
         gltf_node = cls(
             context=context,
-            name=node.get('name'),
-            extras=node.get('extras'),
-            extensions=node.get('extensions'),
+            name=node.get("name"),
+            extras=node.get("extras"),
+            extensions=node.get("extensions"),
         )
         # Accessing protected attribute to bypass validation:
         # Nodes may reference children that haven't yet been added to the GLTFContent
-        gltf_node.children._values = node.get('children', [])
+        gltf_node.children._values = node.get("children", [])
 
-        gltf_node.translation = node.get('translation')
-        gltf_node.rotation = node.get('rotation')
-        gltf_node.scale = node.get('scale')
-        gltf_node.matrix = get_matrix_from_col_major_list(node['matrix']) if 'matrix' in node else None
-        gltf_node.weights = node.get('weights')
-        gltf_node.mesh_key = node.get('mesh')
-        gltf_node.camera = node.get('camera')
-        gltf_node.skin = node.get('skin')
+        gltf_node.translation = node.get("translation")
+        gltf_node.rotation = node.get("rotation")
+        gltf_node.scale = node.get("scale")
+        gltf_node.matrix = get_matrix_from_col_major_list(node["matrix"]) if "matrix" in node else None
+        gltf_node.weights = node.get("weights")
+        gltf_node.mesh_key = node.get("mesh")
+        gltf_node.camera = node.get("camera")
+        gltf_node.skin = node.get("skin")
         return gltf_node
