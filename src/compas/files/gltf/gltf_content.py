@@ -281,6 +281,13 @@ class GLTFContent(object):
                 return self.nodes[key]
         return None
 
+    @classmethod
+    def _get_next_available_key(cls, adict):
+        key = len(adict)
+        while key in adict:
+            key += 1
+        return key
+
     def add_material(self, material):
         """Adds a material to the content.
 
@@ -293,9 +300,7 @@ class GLTFContent(object):
         -------
         int
         """
-        key = len(self.materials)
-        while key in self.materials:
-            key += 1
+        key = self._get_next_available_key(self.materials)
         self.materials[key] = material
         return key
 
@@ -311,9 +316,7 @@ class GLTFContent(object):
         -------
         int
         """
-        key = len(self.textures)
-        while key in self.textures:
-            key += 1
+        key = self._get_next_available_key(self.textures)
         self.textures[key] = texture
         return key
 
@@ -329,9 +332,7 @@ class GLTFContent(object):
         -------
         int
         """
-        key = len(self.images)
-        while key in self.images:
-            key += 1
+        key = self._get_next_available_key(self.images)
         self.images[key] = image
         return key
 
