@@ -348,7 +348,7 @@ class GLTFContent(object):
         -------
         int or None
         """
-        for key, material in self.materials:
+        for key, material in self.materials.items():
             if material.name == name:
                 return key
         return None
