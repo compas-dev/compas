@@ -145,7 +145,7 @@ class RhinoBrep(Brep):
             # create and add curves
             for loop in face.loops:
 
-                brep_loop = brep.Loops.Add(loop.loop_type, brep_face)
+                brep_loop = brep.Loops.Add(Rhino.Geometry.BrepLoopType.Outer, brep_face)
 
                 for edge in loop.edges:
                     # add vertuces
@@ -157,14 +157,27 @@ class RhinoBrep(Brep):
                     # create edges
                     brep_edge = brep.Edges.Add(start_vertex, end_vertex, curve_index, TOLERANCE)
                     curve_2d = surface.Pullback(curve_3d, TOLERANCE)
-                    curve_2d_index = brep.Curves2D.Add(curve_2d)
-                    print("added 2d curve with index:{}".format(curve_2d_index))
-                    print("curve with index {} is {}".format(curve_2d_index, brep.Curves2D.Item[curve_2d_index]))
+                    curve_2d.Reverse()
+                    # curve_2d_index = brep.Curves2D.Add(curve_2d)
+                    trim_curve_index = brep.AddTrimCurve(curve_2d)
+                    print("added 2d curve with index:{}".format(trim_curve_index))
+                    # trim = brep.Trims.Add(False, brep_edge, trim_curve_index)
+                    trim = brep.Trims.Add(brep_edge, True, brep_loop, trim_curve_index)
+                    trim.IsoStatus = Rhino.Geometry.IsoStatus.None
+                    trim.TrimType = Rhino.Geometry.BrepTrimType.Boundary
+                    trim.SetTolerances(TOLERANCE, TOLERANCE)
+                    trim.SetTolerances(TOLERANCE, TOLERANCE)
+
+                    print("added trim with index:{} with geometry index:{}".format(trim.TrimIndex, trim_curve_index))
+                    # trim_index = trim.TrimIndex
+
                     try:
-                        trim = brep_loop.Trims.Add(curve_2d_index)
+                        pass
+                        # brep_loop.Trims.Add(trim_curve_index)
                     except Exception as ex:
-                        print("failed adding trim with curve index:{}".format(curve_2d_index))
+                        print("failed adding trim with curve index:{}".format(trim_curve_index))
                         print("exception is:{}".format(str(ex)))
+                brep.Repair(TOLERANCE)
 
         # if not brep.Repair(TOLERANCE):
         #     raise Exception("Unable to fix Brep!")
