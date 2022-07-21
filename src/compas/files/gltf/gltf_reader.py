@@ -113,7 +113,7 @@ class GLTFReader(object):
         chunk_header = self._unpack_content("<I4s", offset)
         length = chunk_header[0]
         type_ = chunk_header[1]
-        data = self._bin_content[offset + 8 : offset + 8 + length]
+        data = self._bin_content[offset + 8 : offset + 8 + length]  # noqa E203
 
         return type_, length, data, offset + 8 + length
 
@@ -138,7 +138,7 @@ class GLTFReader(object):
         buffer = self._get_buffer(buffer_view["buffer"])
         offset = buffer_view.get("byteOffset", 0)
         length = buffer_view["byteLength"]
-        return buffer[offset : offset + length].tobytes()
+        return buffer[offset : offset + length].tobytes()  # noqa E203
 
     def _access_data(self, accessor):
         count = accessor["count"]
@@ -222,7 +222,7 @@ class GLTFReader(object):
         buffer_index = buffer_view["buffer"]
         buffer = self._get_buffer(buffer_index)
 
-        data = [unpack_from(buffer[i : i + byte_stride].tobytes()) for i in range(offset, offset + count * byte_stride, byte_stride)]
+        data = [unpack_from(buffer[i : i + byte_stride].tobytes()) for i in range(offset, offset + count * byte_stride, byte_stride)]  # noqa E203
 
         if num_components == 1:
             data = [item[0] for item in data]  # unwrap scalars from tuple
