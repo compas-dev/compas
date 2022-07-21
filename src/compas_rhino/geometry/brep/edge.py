@@ -67,7 +67,7 @@ class RhinoBrepEdge(BrepEdge):
         start = point_to_rhino(self._start_vertex.point)
         end = point_to_rhino(self._end_vertex.point)
         line_curve = Rhino.Geometry.LineCurve(start, end)  # TODO: doesn't have to be a Line, determine actual geometry
-        line_curve.Domain = Rhino.Geometry.Interval(0.0, 1.0)  # not sure what this is about, copied from example code
+        # line_curve.Domain = Rhino.Geometry.Interval(0.0, 1.0)  # not sure what this is about, copied from example code
         return line_curve
 
     @property

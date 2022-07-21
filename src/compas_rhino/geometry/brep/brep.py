@@ -149,15 +149,13 @@ class RhinoBrep(Brep):
 
                 for edge in loop.edges:
                     # add vertuces
-                    for vertex in edge.vertices:
-                        rhino_vertex = brep.Vertices.Add(point_to_rhino(vertex.point), TOLERANCE)  # TODO: use actual tolerance here
-                        vertex._vertex = rhino_vertex
+                    start_vertex = brep.Vertices.Add(point_to_rhino(edge.start_vertex.point), TOLERANCE)
+                    end_vertex = brep.Vertices.Add(point_to_rhino(edge.end_vertex.point), TOLERANCE)
 
                     curve_3d = edge.to_curve()
-                    curve_index = brep.Curves3D.Add(edge.to_curve())
+                    curve_index = brep.AddEdgeCurve(curve_3d)
                     # create edges
-                    brep_edge = brep.Edges.Add(curve_index)
-
+                    brep_edge = brep.Edges.Add(start_vertex, end_vertex, curve_index, TOLERANCE)
                     curve_2d = surface.Pullback(curve_3d, TOLERANCE)
                     curve_2d_index = brep.Curves2D.Add(curve_2d)
                     print("added 2d curve with index:{}".format(curve_2d_index))
