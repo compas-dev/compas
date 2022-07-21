@@ -2,6 +2,8 @@ from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Brep
 from compas_rhino.conversions import box_to_rhino
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.geometry import RhinoNurbsSurface
 
 import Rhino
 
@@ -9,6 +11,9 @@ from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 from .loop import RhinoBrepLoop
+
+
+TOLERANCE = 1e-6
 
 
 class RhinoBrep(Brep):
@@ -61,6 +66,17 @@ class RhinoBrep(Brep):
 
     @data.setter
     def data(self, data):
+        """
+        https://github.com/mcneel/rhino-developer-samples/blob/3179a8386a64602ee670cc832c77c561d1b0944b/rhinocommon/cs/SampleCsCommands/SampleCsTrimmedPlane.cs
+
+        Parameters
+        ----------
+        data
+
+        Returns
+        -------
+
+        """
         faces = []
         for facedata in data["faces"]:
             face = RhinoBrepFace.from_data(facedata)
@@ -106,7 +122,60 @@ class RhinoBrep(Brep):
             return self._brep.GetVolume()
 
     def _create_rhino_brep(self, faces):
+        """
+          Things need to be defined in a valid brep:
+           1- Vertices
+           2- 3D Curves (geometry)
+           3- Edges (topology - reference curve geometry)
+           4- Surface (geometry)
+           5- Faces (topology - reference surface geometry)
+           6- Loops (2D parameter space of faces)
+           4- Trims and 2D curves (2D parameter space of edges)
+        """
         brep = Rhino.Geometry.Brep()
+        print("created empty brep: {}".format(brep))
+        for face_index, face in enumerate(faces):
+            print("reconstructing face with index {}".format(face_index))
+            # create face geometry
+            surface_index = brep.AddSurface(face.surface.rhino_surface)
+
+            brep_face = brep.Faces.Add(surface_index)
+            surface = brep.Surfaces.Item[surface_index]
+
+            # create and add curves
+            for loop in face.loops:
+
+                brep_loop = brep.Loops.Add(loop.loop_type, brep_face)
+
+                for edge in loop.edges:
+                    # add vertuces
+                    for vertex in edge.vertices:
+                        rhino_vertex = brep.Vertices.Add(point_to_rhino(vertex.point), TOLERANCE)  # TODO: use actual tolerance here
+                        vertex._vertex = rhino_vertex
+
+                    curve_3d = edge.to_curve()
+                    curve_index = brep.Curves3D.Add(edge.to_curve())
+                    # create edges
+                    brep_edge = brep.Edges.Add(curve_index)
+
+                    curve_2d = surface.Pullback(curve_3d, TOLERANCE)
+                    curve_2d_index = brep.Curves2D.Add(curve_2d)
+                    print("added 2d curve with index:{}".format(curve_2d_index))
+                    print("curve with index {} is {}".format(curve_2d_index, brep.Curves2D.Item[curve_2d_index]))
+                    try:
+                        trim = brep_loop.Trims.Add(curve_2d_index)
+                    except Exception as ex:
+                        print("failed adding trim with curve index:{}".format(curve_2d_index))
+                        print("exception is:{}".format(str(ex)))
+
+        # if not brep.Repair(TOLERANCE):
+        #     raise Exception("Unable to fix Brep!")
+        #
+        # if not brep.IsValid:
+        #     raise Exception("Brep invalid!")
+        # create faces
+        # check if valid
         # TODO re-construct the Brep from the serialized faces
         return brep
+
 
