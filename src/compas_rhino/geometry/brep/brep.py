@@ -190,7 +190,7 @@ class RhinoBrep(Brep):
 
     def _add_edge(self, edge, start_vertex, end_vertex):
         # Geometry
-        curve_index = self._brep.AddEdgeCurve(edge.to_curve())
+        curve_index = self._brep.AddEdgeCurve(edge.curve)
         # Topology
         rhino_edge = self._brep.Edges.Add(start_vertex, end_vertex, curve_index, TOLERANCE)
         return rhino_edge
