@@ -1,4 +1,3 @@
-from compas.data import Data
 from compas.geometry import BrepLoop
 
 import Rhino

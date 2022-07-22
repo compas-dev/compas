@@ -52,11 +52,22 @@ def from_torus(*args, **kwargs):
 
 
 @pluggable(category="factories")
-def from_mesh(*args, **kwargs):
+def from_sweep(*args, **kwargs):
     raise PluginNotInstalledError()
 
+
 @pluggable(category="factories")
-def from_sweep(*args, **kwargs):
+def from_step_file(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_polygons(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_curves(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
@@ -64,6 +75,7 @@ class BrepType:
     """
     Possible types of a Brep
     """
+
     COMPOUND = 0
     COMPSOLID = 1
     SHELL = 2
@@ -78,6 +90,7 @@ class BrepOrientation:
     """
     Possible orientations of a Brep
     """
+
     FORWARD = 0
     REVERSED = 1
     INTERNAL = 2
@@ -313,15 +326,15 @@ class Brep(Geometry):
 
     @classmethod
     def from_faces(cls, faces):
-        return from_faces(faces)
+        raise NotImplementedError
 
     @classmethod
     def from_extrusion(cls, curve, vector):
-        pass
+        raise NotImplementedError
 
     @classmethod
     def from_sweep(cls, profile, path):
-        pass
+        raise NotImplementedError
 
     # create pipe
     # create patch

@@ -12,7 +12,6 @@ from .vertex import RhinoBrepVertex
 
 
 class RhinoBrepEdge(BrepEdge):
-
     def __init__(self, rhino_edge=None):
         super(RhinoBrepEdge, self).__init__()
         self._edge = None

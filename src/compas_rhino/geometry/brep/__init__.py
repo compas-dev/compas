@@ -9,6 +9,19 @@ from .loop import RhinoBrepLoop
 import Rhino
 
 
+__all__ = [
+    "RhinoBrep",
+    "RhinoBrepVertex",
+    "RhinoBrepEdge",
+    "RhinoBrepLoop",
+    "RhinoBrepFace",
+
+    "new_brep",
+    "from_brep",
+    "from_box",
+]
+
+
 @plugin(category="factories", requires=["Rhino"])
 def new_brep(*args, **kwargs):
     # Note: this is called inside Brep.__new__, thus Brep.__init__ will be ran by the interpreter

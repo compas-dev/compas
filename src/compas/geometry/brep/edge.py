@@ -179,7 +179,6 @@ class BrepEdge(Data):
     def from_vertices(cls):
         raise NotImplementedError
 
-
     @classmethod
     def from_points(cls):
         raise NotImplementedError
@@ -198,10 +197,6 @@ class BrepEdge(Data):
 
     @classmethod
     def from_curve(cls):
-        raise NotImplementedError
-
-    @classmethod
-    def from_points(cls):
         raise NotImplementedError
 
     # ==============================================================================

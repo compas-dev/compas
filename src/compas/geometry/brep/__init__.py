@@ -19,7 +19,6 @@ __all__ = [
     "BrepLoop",
     "BrepFace",
     "BrepVertex",
-
     "BrepError",
     "BrepInvalidError",
 ]

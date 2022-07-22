@@ -67,8 +67,6 @@ class RhinoBrep(Brep):
     @data.setter
     def data(self, data):
         """
-        https://github.com/mcneel/rhino-developer-samples/blob/3179a8386a64602ee670cc832c77c561d1b0944b/rhinocommon/cs/SampleCsCommands/SampleCsTrimmedPlane.cs
-
         Parameters
         ----------
         data
@@ -134,15 +132,15 @@ class RhinoBrep(Brep):
 
     def _create_native_brep(self, faces):
         """
-         Source: https://github.com/mcneel/rhino-developer-samples/blob/3179a8386a64602ee670cc832c77c561d1b0944b/rhinocommon/cs/SampleCsCommands/SampleCsTrimmedPlane.cs
-          Things need to be defined in a valid brep:
-           1- Vertices
-           2- 3D Curves (geometry)
-           3- Edges (topology - reference curve geometry)
-           4- Surface (geometry)
-           5- Faces (topology - reference surface geometry)
-           6- Loops (2D parameter space of faces)
-           4- Trims and 2D curves (2D parameter space of edges)
+        Source: https://github.com/mcneel/rhino-developer-samples/blob/3179a8386a64602ee670cc832c77c561d1b0944b/rhinocommon/cs/SampleCsCommands/SampleCsTrimmedPlane.cs
+         Things need to be defined in a valid brep:
+          1- Vertices
+          2- 3D Curves (geometry)
+          3- Edges (topology - reference curve geometry)
+          4- Surface (geometry)
+          5- Faces (topology - reference surface geometry)
+          6- Loops (2D parameter space of faces)
+          4- Trims and 2D curves (2D parameter space of edges)
         """
         self._brep = Rhino.Geometry.Brep()
         for face in faces:
@@ -200,7 +198,7 @@ class RhinoBrep(Brep):
         trim_curve_index = self._brep.AddTrimCurve(rhino_trim_curve)
         # Topology
         trim = self._brep.Trims.Add(rhino_edge, True, rhino_loop, trim_curve_index)
-        trim.IsoStatus = Rhino.Geometry.IsoStatus.None
+        trim.IsoStatus = Rhino.Geometry.IsoStatus.None  # noqa: E999
         trim.TrimType = Rhino.Geometry.BrepTrimType.Boundary
         trim.SetTolerances(TOLERANCE, TOLERANCE)
 
@@ -209,4 +207,3 @@ class RhinoBrep(Brep):
         curve_2d = rhino_surface.Pullback(rhino_edge.EdgeCurve, TOLERANCE)
         curve_2d.Reverse()
         return curve_2d
-

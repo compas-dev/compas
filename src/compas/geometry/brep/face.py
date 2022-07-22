@@ -170,4 +170,3 @@ class BrepFace(Data):
     @classmethod
     def from_surface(cls):
         raise NotImplementedError
-

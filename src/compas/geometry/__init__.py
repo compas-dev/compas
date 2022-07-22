@@ -74,6 +74,21 @@ Bases
     Torus
     Polyhedron
 
+Boundary Representation
+-----------------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignature:
+
+    Brep
+    BrepVertex
+    BrepEdge
+    BrepLoop
+    BrepFace
+
+    BrepError
+    BrepInvalidError
 
 Transformations
 ===============

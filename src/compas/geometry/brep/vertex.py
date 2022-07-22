@@ -38,4 +38,3 @@ class BrepVertex(Data):
             The created vertex
         """
         raise NotImplementedError
-
