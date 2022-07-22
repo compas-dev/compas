@@ -36,6 +36,11 @@ class RhinoBrepFace(BrepFace):
         self._surface = RhinoNurbsSurface.from_data(value["surface"])
 
     @property
+    def native_surface(self):
+        if self._surface:
+            return self._surface.rhino_surface
+
+    @property
     def loops(self):
         return self._loops
 
@@ -45,8 +50,8 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def boundary(self):
-        self._loops[0]
+        return self._loops[0]
 
     @property
     def holes(self):
-        self._loops[1:]
+        return self._loops[1:]
