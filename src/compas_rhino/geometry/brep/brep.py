@@ -1,5 +1,7 @@
 from compas.geometry import Frame
 from compas.geometry import Brep
+from compas.geometry import BrepInvalidError
+
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import point_to_rhino
 
@@ -156,17 +158,22 @@ class RhinoBrep(Brep):
         self._brep.Repair(TOLERANCE)
         self._validate_brep()
 
-        # if not brep.Repair(TOLERANCE):
-        #     raise Exception("Unable to fix Brep!")
-        #
-        # if not brep.IsValid:
-        #     raise Exception("Brep invalid!")
-        # create faces
-        # check if valid
-
     def _validate_brep(self):
-        if not self._brep.IsValid:
-            raise Exception("Re-constructed Brep is invalid!")
+        if self._brep.IsValid:
+            return
+
+        error_message = ""
+        valid_topo, log_topo = self._brep.IsValidTopology()
+        valid_tol, log_tol = self._brep.IsValidTolerancesAndFlags()
+        valid_geo, log_geo = self._brep.IsValidGeometry()
+        if not valid_geo:
+            error_message += "Invalid geometry:\n{}\n".format(log_geo)
+        if not valid_topo:
+            error_message += "Invalid topology:\n{}\n".format(log_topo)
+        if not valid_tol:
+            error_message += "Invalid tolerances:\n{}\n".format(log_tol)
+
+        raise BrepInvalidError(error_message)
 
     def _create_brep_face(self, face):
         # Geometry

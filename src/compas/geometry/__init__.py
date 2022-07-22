@@ -903,6 +903,9 @@ from .brep import (
     BrepFace,
     BrepLoop,
     BrepEdge,
+
+    BrepError,
+    BrepInvalidError,
 )
 
 __all__ = [
@@ -1215,7 +1218,9 @@ __all__ = [
     "BrepLoop",
     "BrepEdge",
     "BrepVertex",
-    "BrepFace"
+    "BrepFace",
+    "BrepError",
+    "BrepInvalidError",
 ]
 
 if not compas.IPY:
