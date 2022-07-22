@@ -99,22 +99,22 @@ class RhinoBrep(Brep):
     @property
     def points(self):
         if self._brep:
-            return [RhinoBrepVertex(v) for v in self._brep.Vertices]
+            return [RhinoBrepVertex(vertex) for vertex in self._brep.Vertices]
 
     @property
     def edges(self):
         if self._brep:
-            return [RhinoBrepEdge(e) for e in self._brep.Edges]
+            return [RhinoBrepEdge(edge) for edge in self._brep.Edges]
 
     @property
     def loops(self):
         if self._brep:
-            return [RhinoBrepLoop(l) for l in self._brep.Loops]
+            return [RhinoBrepLoop(loop) for loop in self._brep.Loops]
 
     @property
     def faces(self):
         if self._brep:
-            return [RhinoBrepFace(f) for f in self._brep.Faces]
+            return [RhinoBrepFace(face) for face in self._brep.Faces]
 
     @property
     def frame(self):
