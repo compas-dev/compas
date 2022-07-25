@@ -1,9 +1,11 @@
+import copy
 from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepInvalidError
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import xform_to_rhino
 
 import Rhino
 
@@ -198,7 +200,7 @@ class RhinoBrep(Brep):
         trim_curve_index = self._brep.AddTrimCurve(rhino_trim_curve)
         # Topology
         trim = self._brep.Trims.Add(rhino_edge, True, rhino_loop, trim_curve_index)
-        trim.IsoStatus = Rhino.Geometry.IsoStatus.None  # noqa: E999
+        trim.IsoStatus = getattr(Rhino.Geometry.IsoStatus, "None")  # IsoStatus.None makes lint, IDE and even Python angry
         trim.TrimType = Rhino.Geometry.BrepTrimType.Boundary
         trim.SetTolerances(TOLERANCE, TOLERANCE)
 
@@ -207,3 +209,34 @@ class RhinoBrep(Brep):
         curve_2d = rhino_surface.Pullback(rhino_edge.EdgeCurve, TOLERANCE)
         curve_2d.Reverse()
         return curve_2d
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
+
+    def transform(self, matrix):
+        """
+        Transform this Brep by given transformation matrix
+        Parameters
+        ----------
+        matrix: :class:`~compas.geometry.Transformation`
+            The transformation matrix by which to transform this Brep.
+        """
+        self._brep.Transform(xform_to_rhino(matrix))
+
+    def transformed(self, matrix):
+        """
+        Returns a copy of this Brep which is transformed by the given transformation matrix.
+
+        Parameters
+        ----------
+        matrix: :class:`~compas.geometry.Transformation`
+            The transformation matrix by which to transform this Brep.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.Brep`
+        """
+        brep_copy = copy.deepcopy(self)
+        brep_copy.transform(matrix)
+        return brep_copy

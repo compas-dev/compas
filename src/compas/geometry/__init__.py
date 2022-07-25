@@ -75,11 +75,11 @@ Bases
     Polyhedron
 
 Boundary Representation (Brep)
------------------------
+------------------------------
 
 .. autosummary::
     :toctree: generated/
-    :nosignature:
+    :nosignatures:
 
     Brep
     BrepVertex
