@@ -98,7 +98,7 @@ class BrepOrientation:
 
 
 class Brep(Geometry):
-    """Class for Boundary Representation of geometric entities.
+    """Contains the topological and geometrical information of a Brep shape.
 
     This class serves as an interface for a Brep and allows instantiating a Brep object depending on the available Backend.
     Note: this is not a full implementation of Brep and rather relies on COMPAS's plugin system for actual implementation.

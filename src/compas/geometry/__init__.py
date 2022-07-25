@@ -74,7 +74,7 @@ Bases
     Torus
     Polyhedron
 
-Boundary Representation
+Boundary Representation (Brep)
 -----------------------
 
 .. autosummary::

@@ -6,10 +6,12 @@ from .vertex import BrepVertex
 
 
 class BrepError(Exception):
+    """Represents a generic error in the Brep context"""
     pass
 
 
 class BrepInvalidError(BrepError):
+    """Raised when the process of re-constructing a Brep has resulted in an invalid Brep"""
     pass
 
 
@@ -19,6 +21,7 @@ __all__ = [
     "BrepLoop",
     "BrepFace",
     "BrepVertex",
+
     "BrepError",
     "BrepInvalidError",
 ]
