@@ -15,7 +15,6 @@ __all__ = [
     "RhinoBrepEdge",
     "RhinoBrepLoop",
     "RhinoBrepFace",
-
     "new_brep",
     "from_brep",
     "from_box",

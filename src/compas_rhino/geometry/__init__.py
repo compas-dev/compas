@@ -16,6 +16,12 @@ Classes
     RhinoNurbsCurve
     RhinoNurbsSurface
 
+    RhinoBrep
+    RhinoBrepVertex
+    RhinoBrepEdge
+    RhinoBrepFace
+    RhinoBrepLoop
+
 
 Plugins
 =======

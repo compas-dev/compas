@@ -4,6 +4,8 @@ from compas_rhino.conversions import point_to_compas
 
 
 class RhinoBrepVertex(BrepVertex):
+    """A wrapper for Rhino.Geometry.BrepVertex"""
+
     def __init__(self, rhino_vertex=None):
         super(RhinoBrepVertex, self).__init__()
         self._vertex = None

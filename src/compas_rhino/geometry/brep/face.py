@@ -5,6 +5,7 @@ from .loop import RhinoBrepLoop
 
 
 class RhinoBrepFace(BrepFace):
+    """A wrapper for Rhino.Geometry.BrepFace"""
 
     TOLERANCE = 1e-6
 

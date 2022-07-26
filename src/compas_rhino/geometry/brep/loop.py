@@ -15,6 +15,8 @@ class LoopType(object):
 
 
 class RhinoBrepLoop(BrepLoop):
+    """A wrapper for Rhino.Geometry.BrepLoop"""
+
     def __init__(self, rhino_loop=None):
         super(RhinoBrepLoop, self).__init__()
         self._loop = None

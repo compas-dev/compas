@@ -154,6 +154,17 @@ class Brep(Geometry):
     # ==============================================================================
 
     @property
+    def DATASCHEMA(self):
+        import schema
+        return schema.Schema({
+            "faces": list,
+        })
+
+    @property
+    def JSONSCHEMANAME(self):
+        return 'brep'
+
+    @property
     def data(self):
         faces = []
         for face in self.faces:
