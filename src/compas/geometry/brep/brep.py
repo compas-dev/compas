@@ -139,10 +139,10 @@ class Brep(Geometry):
         lines = [
             "Brep",
             "-----",
-            "Vertices: {}".format(self.vertices),
-            "Edges: {}".format(self.edges),
-            "Loops: {}".format(self.loops),
-            "Faces: {}".format(self.faces),
+            "Vertices: {}".format(len(self.vertices)),
+            "Edges: {}".format(len(self.edges)),
+            "Loops: {}".format(len(self.loops)),
+            "Faces: {}".format(len(self.faces)),
             "Frame: {}".format(self.frame),
             "Area: {}".format(self.area),
             "Volume: {}".format(self.volume),
@@ -417,6 +417,19 @@ class Brep(Geometry):
     # rotate
     # translate
     # unjoin edges
+
+    def trim(self, trimming_plane, tolerance):
+        """Trim this Brep using the given trimming plane
+
+        Parameters
+        ----------
+        trimming_plane: defines the trimming plane
+            :class:`~compas.geometry.Frame
+
+        tolerance: the tolerance to use when trimming
+            float
+        """
+        raise NotImplementedError
 
     def make_solid(self):
         raise NotImplementedError

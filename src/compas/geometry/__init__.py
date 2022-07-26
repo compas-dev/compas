@@ -89,6 +89,7 @@ Boundary Representation (Brep)
 
     BrepError
     BrepInvalidError
+    BrepTrimmingError
 
 Transformations
 ===============
@@ -921,6 +922,7 @@ from .brep import (
 
     BrepError,
     BrepInvalidError,
+    BrepTrimmingError,
 )
 
 __all__ = [
@@ -1236,6 +1238,7 @@ __all__ = [
     "BrepFace",
     "BrepError",
     "BrepInvalidError",
+    "BrepTrimmingError",
 ]
 
 if not compas.IPY:

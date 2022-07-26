@@ -2,10 +2,12 @@ import copy
 from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepInvalidError
+from compas.geometry import BrepTrimmingError
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import frame_to_rhino
 
 import Rhino
 
@@ -97,6 +99,10 @@ class RhinoBrep(Brep):
         :class: `Rhino.Geometry.Brep`
         """
         return self._brep
+
+    @property
+    def vertices(self):
+        return self.points
 
     @property
     def points(self):
@@ -240,3 +246,22 @@ class RhinoBrep(Brep):
         brep_copy = copy.deepcopy(self)
         brep_copy.transform(matrix)
         return brep_copy
+
+    def trim(self, trimming_plane, tolerance=TOLERANCE):
+        """Trim this brep by the given trimming plane
+
+        Parameters
+        ----------
+        trimming_plane
+            :class:`~compas.geometry.Frame`
+
+        tolerance: the tolerance to use when trimming
+            float
+        """
+        rhino_frame = frame_to_rhino(trimming_plane)
+        rhino_frame.Flip()
+        results = self._brep.Trim(rhino_frame, tolerance)
+        if not results:
+            raise BrepTrimmingError("Trim operation ended with no result")
+
+        self._brep = results[0]

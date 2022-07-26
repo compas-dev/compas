@@ -15,6 +15,11 @@ class BrepInvalidError(BrepError):
     pass
 
 
+class BrepTrimmingError(BrepError):
+    """Raised when a trimming operation has failed or had not result"""
+    pass
+
+
 __all__ = [
     "Brep",
     "BrepEdge",
@@ -24,4 +29,5 @@ __all__ = [
 
     "BrepError",
     "BrepInvalidError",
+    "BrepTrimmingError",
 ]
