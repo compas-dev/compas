@@ -74,6 +74,25 @@ Bases
     Torus
     Polyhedron
 
+Boundary Representation (Brep)
+------------------------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Brep
+    BrepVertex
+    BrepEdge
+    BrepLoop
+    BrepFace
+
+    BrepType
+    BrepOrientation
+
+    BrepError
+    BrepInvalidError
+    BrepTrimmingError
 
 Transformations
 ===============
@@ -897,6 +916,21 @@ from .surfaces import (
     NurbsSurface
 )
 
+from .brep import (
+    Brep,
+    BrepVertex,
+    BrepFace,
+    BrepLoop,
+    BrepEdge,
+
+    BrepType,
+    BrepOrientation,
+
+    BrepError,
+    BrepInvalidError,
+    BrepTrimmingError,
+)
+
 __all__ = [
     'close',
     'allclose',
@@ -1201,7 +1235,20 @@ __all__ = [
     'NurbsCurve',
 
     'Surface',
-    'NurbsSurface'
+    'NurbsSurface',
+
+    "Brep",
+    "BrepLoop",
+    "BrepEdge",
+    "BrepVertex",
+    "BrepFace",
+
+    "BrepType",
+    "BrepOrientation",
+
+    "BrepError",
+    "BrepInvalidError",
+    "BrepTrimmingError",
 ]
 
 if not compas.IPY:
