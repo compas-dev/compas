@@ -19,28 +19,30 @@ Some topological properties are associated with an underlying geometry, while ot
 
 A Brep is comprised of the following:
 
-.. list-table::
-   :widths: 25 25 50
-   :header-rows: 1
+.. rst-class:: table table-bordered
 
-   * - Topology
-     - Geometry
-     - Description
-   * - Vertex
-     - 3D Point
-     - The most basic element of a Brep, geometrically described as a point in 3D space.
-   * - Edge
-     - 3D Curve
-     - An edge has a start vertex and an end vertex. The underlying 3D curve describes the geometry of the edge (Line, Circle etc.). Closed edges feature start_vertex == end_vertex.
-   * - Loop
-     - None
-     - A collection of trims which define the inner or outer boundary of a face.
-   * - Face
-     - Surface
-     - Defines the geometry of one of the shape's faces using a surface. Associated with at least one loop which describes the trimmed outer boundary of the surface. Inner loops are referred to as holes in the face.
-   * - Trim
-     - 2D Curve
-     - A 2D curve which trims a face. Trims are associated with a corresponding edge.
+.. list-table::
+    :widths: auto
+    :header-rows: 1
+
+    * - Topology
+      - Geometry
+      - Description
+    * - Vertex
+      - 3D Point
+      - The most basic element of a Brep, geometrically described as a point in 3D space.
+    * - Edge
+      - 3D Curve
+      - An edge has a start vertex and an end vertex. The underlying 3D curve describes the geometry of the edge (Line, Circle etc.). Closed edges feature start_vertex == end_vertex.
+    * - Loop
+      - None
+      - A collection of trims which define the inner or outer boundary of a face.
+    * - Face
+      - Surface
+      - Defines the geometry of one of the shape's faces using a surface. Associated with at least one loop which describes the trimmed outer boundary of the surface. Inner loops are referred to as holes in the face.
+    * - Trim
+      - 2D Curve
+      - A 2D curve which trims a face. Trims are associated with a corresponding edge.
 
 
 Getting Started with COMPAS Brep
@@ -73,6 +75,30 @@ Every backend is expected to implement some alternative constructors
     >>> from compas.geometry import Brep
     >>> ...
     >>> Brep.from_brep(Rhino.Geometry.Brep())
+
+Brep operations
+===============
+
+Trimming a Brep in Grasshopper
+::
+    from compas.geometry import Frame
+    from compas.geometry import Point
+    from compas.geometry import Brep
+
+    box = Box.from_width_height_depth(5, 5, 10)
+
+    brep = Brep.from_box(box)
+    cutting_plane = Frame(Point(0, 2.5, 0), [1, 0, 0], [0, 1, 1.5])
+
+    brep.trim(cutting_plane)
+
+|pic1| |pic2|
+
+.. |pic1| image:: files/box_w_plane.png
+   :width: 48%
+
+.. |pic2| image:: files/trimmed_box.png
+   :width: 48%
 
 
 Implementing a new backend
@@ -109,4 +135,4 @@ A powerful feature of this approach is to be able to serialize a Brep created in
 For that, it is required that `your.package.OccBrep` implements the `compas.data.Data` interface and follows the unified serialization protocol.
 
 ::
-    
+
