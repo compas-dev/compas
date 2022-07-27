@@ -5,7 +5,7 @@ Boundary Representation
 .. rst-class:: lead
 
 Boundary representation (Brep) support is realized in COMPAS using its `plugin` system.
-The expected interface for Brep related classes is defined in the `compas.geometry.brep` module
+The expected interface for Brep related classes is defined in the :mod:`compas.geometry.brep` module
 whereas the actual implementation is context dependent and implemented using plugins.
 
 .. currentmodule:: compas.geometry
@@ -49,19 +49,24 @@ Getting Started with COMPAS Brep
 ================================
 
 To create an empty `Brep`
-::
+
+.. code-block::
+
     >>> from compas.geometry import Brep
     >>> brep = Brep()
 
 
 Notice that the type of the actual instance created by `Brep()` will differ depending on the currently available backend.
 For example, when in Rhino
-::
+
+.. code-block::
+
     >>> type(brep)
     compas_rhino.geometry.RhinoBrep
 
 Every backend is expected to implement some alternative constructors
-::
+.. code-block::
+
     >>> from compas.geometry import Box
     >>> from compas.geometry import Brep
     >>> ...
@@ -70,7 +75,8 @@ Every backend is expected to implement some alternative constructors
 
 
 `Brep` can also be instantiated from an instance of a backend native `Brep`
-::
+.. code-block::
+
     >>> import Rhino
     >>> from compas.geometry import Brep
     >>> ...
@@ -80,7 +86,9 @@ Brep operations
 ===============
 
 Trimming a Brep in Grasshopper
-::
+
+.. code-block::
+
     from compas.geometry import Frame
     from compas.geometry import Point
     from compas.geometry import Brep
@@ -107,7 +115,9 @@ Implementing a new backend
 If you wish to create an additional backend to `Brep` in your package, this can be done using the plugin system of COMPAS.
 
 Create a Brep type in your package which inherits from `compas.geometry.Brep` and override the `__new__` dundle as follows:
-::
+
+.. code-block::
+
     from compas.geometry import Brep
 
     class OccBrep(Brep):
@@ -119,7 +129,9 @@ Create a Brep type in your package which inherits from `compas.geometry.Brep` an
             return object.__new__(cls, *args, **kwargs)
 
 Whenever instantiating `compas.geometry.Brep`, the actual instantiation is delegated to the available factory plugin
-::
+
+.. code-block::
+
     @plugin(category="factories", requires=["OCC"])
     def new_brep(*args, **kwargs):
         # Note: this is called inside Brep.__new__, thus Brep.__init__ will be ran by the interpreter
@@ -133,6 +145,4 @@ Implementing the `compas.data.Data` interface
 ---------------------------------------------
 A powerful feature of this approach is to be able to serialize a Brep created in one backend and de-serialize it using another.
 For that, it is required that `your.package.OccBrep` implements the `compas.data.Data` interface and follows the unified serialization protocol.
-
-::
 
