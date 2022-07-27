@@ -1,4 +1,6 @@
 from .brep import Brep
+from .brep import BrepOrientation
+from .brep import BrepType
 from .edge import BrepEdge
 from .loop import BrepLoop
 from .face import BrepFace
@@ -26,6 +28,9 @@ __all__ = [
     "BrepLoop",
     "BrepFace",
     "BrepVertex",
+
+    "BrepOrientation",
+    "BrepType",
 
     "BrepError",
     "BrepInvalidError",

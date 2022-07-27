@@ -87,6 +87,9 @@ Boundary Representation (Brep)
     BrepLoop
     BrepFace
 
+    BrepType
+    BrepOrientation
+
     BrepError
     BrepInvalidError
     BrepTrimmingError
@@ -920,6 +923,9 @@ from .brep import (
     BrepLoop,
     BrepEdge,
 
+    BrepType,
+    BrepOrientation,
+
     BrepError,
     BrepInvalidError,
     BrepTrimmingError,
@@ -1236,6 +1242,10 @@ __all__ = [
     "BrepEdge",
     "BrepVertex",
     "BrepFace",
+
+    "BrepType",
+    "BrepOrientation",
+
     "BrepError",
     "BrepInvalidError",
     "BrepTrimmingError",

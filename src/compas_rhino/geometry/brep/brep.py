@@ -145,7 +145,7 @@ class RhinoBrep(Brep):
           1- Vertices
           2- 3D Curves (geometry)
           3- Edges (topology - reference curve geometry)
-          4- Surface (geometry)
+          4- Surfaces (geometry)
           5- Faces (topology - reference surface geometry)
           6- Loops (2D parameter space of faces)
           4- Trims and 2D curves (2D parameter space of edges)
