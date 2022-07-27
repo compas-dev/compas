@@ -230,23 +230,6 @@ class RhinoBrep(Brep):
         """
         self._brep.Transform(xform_to_rhino(matrix))
 
-    def transformed(self, matrix):
-        """
-        Returns a copy of this Brep which is transformed by the given transformation matrix.
-
-        Parameters
-        ----------
-        matrix: :class:`~compas.geometry.Transformation`
-            The transformation matrix by which to transform this Brep.
-
-        Returns
-        -------
-        :class:`~compas_rhino.geometry.Brep`
-        """
-        brep_copy = copy.deepcopy(self)
-        brep_copy.transform(matrix)
-        return brep_copy
-
     def trim(self, trimming_plane, tolerance=TOLERANCE):
         """Trim this brep by the given trimming plane
 

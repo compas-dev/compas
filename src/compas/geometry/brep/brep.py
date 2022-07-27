@@ -483,12 +483,6 @@ class Brep(Geometry):
         """
         NotImplementedError
 
-    def transform(self, matrix):
-        raise NotImplementedError
-
-    def transformed(self, matrix):
-        raise NotImplementedError
-
     def contours(self, planes):
         raise NotImplementedError
 
