@@ -12,6 +12,8 @@ from compas.geometry import Transformation
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
+from compas.geometry import Brep
+from compas.geometry import Geometry
 from compas.datastructures import Mesh
 from compas.data import Data
 from compas.plugins import pluggable
@@ -19,18 +21,10 @@ from compas.plugins import pluggable
 from ..datastructure import Datastructure
 from .exceptions import FeatureError
 
-# TODO: not to do
-try:
-    from compas_rhino.conversions import xform_to_rhino, frame_to_rhino
-except ImportError:
-    pass
+from compas.artists import Artist
 
-
-# TODO what's the category?
-# TODO move to geotmetry.__init__py
-@pluggable(category="trim")
-def trim_brep_with_plane(brep, cutting_plane, precision):
-    raise NotImplementedError
+def trim_brep_with_plane(brep, cutting_plane, presicion):
+    brep.trim(cutting_plane, tolerance)
 
 
 class Feature(Data):
@@ -160,29 +154,31 @@ class MeshFeature(Feature):
 class BrepFeature(Feature):
     """
     Represents a Brep feature of a Part. Can be applied to Part whose geometry is described by a BrepGeometry.
+    TODO: this assumes all Brep operations take 3 arguments, should we be more flexible with this? maybe a BrepFeature child for each kind of operation?
     """
-
-    ALLOWED_OPERATIONS = {"trim": trim_brep_with_plane}  # TODO: map to pluggable trim operation function
-
-    def __init__(self, cutting_plane, operation):
-        super(BrepFeature, self).__init__(cutting_plane, operation)
-
-    def _apply_feature(self):
-        cutting_plane = self.feature_geometry.geometry
-        rhino_plane = frame_to_rhino(cutting_plane)
-        rhino_plane.Flip()  # why?
-        breps = self.operation(self.part.geometry, rhino_plane, 1e-6)
-        result = BrepGeometry(self._pick_resulting_brep(breps))
-        self.part._part_geometry = result.transformed(Transformation.from_frame_to_frame(self.part.frame, Frame.worldXY()))
+    TOLERANCE = 1e-6
 
     @staticmethod
-    def _pick_resulting_brep(brep_list):
-        if not brep_list:
-            raise AssertionError("Expected at least one Brep in result. Got zero or None.")
-        return brep_list[0]
+    def _trim_brep_with_plane(feature_geometry, part_geometry, tolerance):
+        brep = part_geometry
+        cutting_plane = feature_geometry
+        brep.trim(cutting_plane, tolerance)
+
+    ALLOWED_OPERATIONS = {"trim": _trim_brep_with_plane.__func__}  # cannot reference static method before it's declared
+
+    def __init__(self, geometry, operation):
+        super(BrepFeature, self).__init__(geometry, operation)
+
+    def _apply_feature(self):
+        part_geometry = self.part.geometry
+        print("before operation: {}".format(part_geometry))
+        self.operation(self.feature_geometry, part_geometry, self.TOLERANCE)
+        print("after operation: {}".format(part_geometry))
+        new_part_geometry = BrepGeometry(part_geometry)
+        self.part._part_geometry = new_part_geometry.transformed(Transformation.from_frame_to_frame(self.part.frame, Frame.worldXY()))
 
 
-class PartGeometry(Data):
+class PartGeometry(Geometry):
     """
     Interface for a Part's geometry.
     Abstracts the concrete type of geometry e.g. Brep/Mesh
@@ -202,25 +198,7 @@ class PartGeometry(Data):
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def transformed(self, transformation):
-        """
-        Returns a copy of this geometry, transformed according to the given transformation.
-        Parameters
-        ----------
-        transformation :class:`~compas.geometry.Transformation`
-        The transformation object to apply to the copy of this geometry.
-
-        Returns
-        -------
-        :class:`~compas.datastructures.assembly.part.PartGeometry`
-        The transformed geometry
-
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get_drawable(self):
+    def get_underlying_geometry(self):
         """
         Returns a representation of this geometry which can be drawn by an Artist.
 
@@ -228,13 +206,19 @@ class PartGeometry(Data):
         -------
         :class:`~compas.data.Data`
         An instance of an object which represents this geometry and can be drawn by one of the currently supported Artists.
-
-        >>> from compas.artists import Artist
-        >>> shape = Box()
-        >>> geometry = MeshGeometry(shape)
-        >>> a = Artist(geometry.get_drawable()).draw()
         """
-        raise NotImplementedError
+        return self.geometry
+
+    @property
+    def data(self):
+        return {"geometry": self.geometry}
+
+    @data.setter
+    def data(self, value):
+        self.geometry = value["geometry"]
+
+    def transform(self, transformation):
+        self.geometry.transform(transformation)
 
 
 class MeshGeometry(PartGeometry):
@@ -244,33 +228,12 @@ class MeshGeometry(PartGeometry):
 
     FEATURE_CLASS = MeshFeature
 
-    def __init__(self, geometry):
+    def __init__(self, geometry=None):
         super(MeshGeometry, self).__init__()
         self.geometry = geometry
 
-    def transformed(self, transformation):
-        transformed_copy = copy.deepcopy(self)
-        transformed_copy.geometry.transform(transformation)
-        return transformed_copy
-
     def to_vertices_and_faces(self, triangulated=False):
         return self.geometry.to_vertices_and_faces(triangulated)
-
-    def get_drawable(self):
-        """
-        Returns
-        -------
-
-        """
-        return self.geometry
-
-    @property
-    def data(self):
-        return {"geometry": self.geometry}
-
-    @data.setter
-    def data(self, value):
-        self.geometry = value["geometry"]
 
 
 class BrepGeometry(PartGeometry):
@@ -280,25 +243,9 @@ class BrepGeometry(PartGeometry):
 
     FEATURE_CLASS = BrepFeature
 
-    def __init__(self, brep):
+    def __init__(self, brep=None):
         super(BrepGeometry, self).__init__()
         self.geometry = brep
-
-    @property
-    def data(self):
-        return {"geometry": self.geometry}
-
-    @data.setter
-    def data(self, value):
-        self.geometry = value["geometry"]
-
-    def transformed(self, transformation):
-        transformed_copy = copy.deepcopy(self)
-        transformed_copy.geometry.Transform(xform_to_rhino(transformation))
-        return transformed_copy
-
-    def get_drawable(self):
-        return self.geometry
 
 
 class Part(Datastructure):
@@ -417,7 +364,7 @@ class Part(Datastructure):
 
         """
         transformed_geometry = self._part_geometry.transformed(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
-        return transformed_geometry.get_drawable()
+        return transformed_geometry.get_underlying_geometry()
 
     def __str__(self):
         tpl = "<Part with shape {} and features {}>"
@@ -474,8 +421,10 @@ class Part(Datastructure):
         keep track of the features it has created (and "own" them)
 
         """
-        class_ = geometry.FEATURE_CLASS
-
+        # TODO: this is a bit hacky, maybe better solution is due
+        # TODO: A Mesh part geometry calls for features that also consist of a mesh geometry
+        # TODO: A Brep part, however, allows other feature geometries e.g. a Plane
+        class_ = geometry.FEATURE_CLASS if isinstance(geometry, Feature) else BrepFeature
         # unload_modules can make it difficult comparying types by identity
         if class_.__name__ != self._part_geometry.FEATURE_CLASS.__name__:
             raise TypeError("Cannot mix Brep geometry with mesh operations or vice versa.")
