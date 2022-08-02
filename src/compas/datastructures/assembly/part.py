@@ -23,9 +23,6 @@ from .exceptions import FeatureError
 
 from compas.artists import Artist
 
-def trim_brep_with_plane(brep, cutting_plane, presicion):
-    brep.trim(cutting_plane, tolerance)
-
 
 class Feature(Data):
     """
@@ -36,7 +33,7 @@ class Feature(Data):
 
     ALLOWED_OPERATIONS = {}
 
-    def __init__(self, geometry, operation):
+    def __init__(self,part, geometry, operation):
         """
 
         Parameters
@@ -52,7 +49,7 @@ class Feature(Data):
 
         self.operation = self.ALLOWED_OPERATIONS[operation]
         self.feature_geometry = geometry
-        self.part = None
+        self.part = part
         self.previous_geometry = None
 
     @property
@@ -79,7 +76,7 @@ class Feature(Data):
         self.feature_geometry = value["feature_geometry"]
         self.operation = self.ALLOWED_OPERATIONS[value["operation"]]
 
-    def apply(self, part):
+    def apply(self):
         """
         Applies this feature to the current geometry of part and replaces it with the resulting geometry.
 
@@ -88,7 +85,7 @@ class Feature(Data):
         part : :class: `~compas.datastructures.assembly.part.Part`
                 The part on which this feature should be applied
         """
-        self._store_previous_geometry(part)
+        self._store_previous_geometry()
         self._apply_feature()
 
     @abc.abstractmethod
@@ -100,8 +97,7 @@ class Feature(Data):
         """
         raise NotImplementedError
 
-    def _store_previous_geometry(self, part):
-        self.part = part
+    def _store_previous_geometry(self):
         self.previous_geometry = copy.deepcopy(self.part._part_geometry)
 
     def restore(self):
@@ -141,8 +137,8 @@ class MeshFeature(Feature):
 
     ALLOWED_OPERATIONS = {"union": boolean_union_mesh_mesh, "difference": boolean_difference_mesh_mesh, "intersection": boolean_intersection_mesh_mesh}
 
-    def __init__(self, geometry, operation):
-        super(MeshFeature, self).__init__(geometry, operation)
+    def __init__(self,part, geometry, operation):
+        super(MeshFeature, self).__init__(part, geometry, operation)
 
     def _apply_feature(self):
         part_mesh = self.part._part_geometry.to_vertices_and_faces(triangulated=True)
@@ -166,8 +162,8 @@ class BrepFeature(Feature):
 
     ALLOWED_OPERATIONS = {"trim": _trim_brep_with_plane.__func__}  # cannot reference static method before it's declared
 
-    def __init__(self, geometry, operation):
-        super(BrepFeature, self).__init__(geometry, operation)
+    def __init__(self,part, geometry, operation):
+        super(BrepFeature, self).__init__(part, geometry, operation)
 
     def _apply_feature(self):
         part_geometry = self.part.geometry
@@ -338,7 +334,7 @@ class Part(Datastructure):
         self.key = data["key"]
         self.frame = data["frame"]
         self._original_shape = data["shape"]
-        self.features = [self.add_feature(shape, operation) for shape, operation in data["features"]]
+        self.features = [self.add_feature(f["feature_geometry"], f["operation"]) for f in data["features"]]
         self.transformations = deque([Transformation.from_data(T) for T in data["transformations"]])
 
     @property
@@ -405,7 +401,8 @@ class Part(Datastructure):
         raise AssertionError("Part does not contain the requested feature!")
 
     def add_feature(self, geometry, operation):
-        """Add a feature to the shape of the part and the operation through which it should be integrated.
+        """
+        Add a feature to the shape of the part and the operation through which it should be integrated.
 
         Parameters
         ----------
@@ -429,9 +426,8 @@ class Part(Datastructure):
         if class_.__name__ != self._part_geometry.FEATURE_CLASS.__name__:
             raise TypeError("Cannot mix Brep geometry with mesh operations or vice versa.")
 
-        feature = class_(geometry, operation)
+        feature = class_(self, geometry, operation)
         self.features.append(feature)
-        feature.apply(self)
         return feature
 
     def replay_all_features(self):
