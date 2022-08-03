@@ -167,9 +167,7 @@ class BrepFeature(Feature):
 
     def _apply_feature(self):
         part_geometry = self.part.geometry
-        print("before operation: {}".format(part_geometry))
         self.operation(self.feature_geometry, part_geometry, self.TOLERANCE)
-        print("after operation: {}".format(part_geometry))
         new_part_geometry = BrepGeometry(part_geometry)
         self.part._part_geometry = new_part_geometry.transformed(Transformation.from_frame_to_frame(self.part.frame, Frame.worldXY()))
 
@@ -334,6 +332,7 @@ class Part(Datastructure):
         self.key = data["key"]
         self.frame = data["frame"]
         self._original_shape = data["shape"]
+        self._part_geometry = self._original_shape.copy()
         self.features = [self.add_feature(f["feature_geometry"], f["operation"]) for f in data["features"]]
         self.transformations = deque([Transformation.from_data(T) for T in data["transformations"]])
 
@@ -397,8 +396,7 @@ class Part(Datastructure):
             if feature in features_to_restore:
                 feature.restore()
                 return index
-
-        raise AssertionError("Part does not contain the requested feature!")
+        return 0
 
     def add_feature(self, geometry, operation):
         """
