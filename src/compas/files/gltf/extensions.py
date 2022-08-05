@@ -3,6 +3,10 @@ from .data_classes import TextureInfoData
 from .data_classes import NormalTextureInfoData
 
 
+def create_if_data(cls, data, attr):
+    return cls.from_data(data.get(attr)) if attr in data and len(data[attr]) else None
+
+
 class KHR_materials_transmission(BaseGLTFDataClass):
     """glTF extension that defines the optical transmission of a material.
 
@@ -40,7 +44,7 @@ class KHR_materials_transmission(BaseGLTFDataClass):
             return None
         return cls(
             transmission_factor=dct.get("transmissionFactor"),
-            transmission_texture=TextureInfoData.from_data(dct.get("transmissionTexture")),
+            transmission_texture=create_if_data(TextureInfoData, dct, "transmissionTexture"),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )
@@ -91,9 +95,9 @@ class KHR_materials_specular(BaseGLTFDataClass):
             return None
         return cls(
             specular_factor=dct.get("specularFactor"),
-            specular_texture=TextureInfoData.from_data(dct.get("specularTexture")),
+            specular_texture=create_if_data(TextureInfoData, dct, "specularTexture"),
             specular_color_factor=dct.get("specularColorFactor"),
-            specular_color_texture=TextureInfoData.from_data(dct.get("specularColorTexture")),
+            specular_color_texture=create_if_data(TextureInfoData, dct, "specularColorTexture"),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )
@@ -186,10 +190,10 @@ class KHR_materials_clearcoat(BaseGLTFDataClass):
             return None
         return cls(
             clearcoat_factor=dct.get("clearcoatFactor"),
-            clearcoat_texture=TextureInfoData.from_data(dct.get("clearcoatTexture")),
+            clearcoat_texture=create_if_data(TextureInfoData, dct, "clearcoatTexture"),
             clearcoat_roughness_factor=dct.get("clearcoatRoughnessFactor"),
-            clearcoat_roughness_texture=TextureInfoData.from_data(dct.get("clearcoatRoughnessTexture")),
-            clearcoat_normal_texture=NormalTextureInfoData.from_data(dct.get("clearcoatNormalTexture")),
+            clearcoat_roughness_texture=create_if_data(TextureInfoData, dct, "clearcoatRoughnessTexture"),
+            clearcoat_normal_texture=create_if_data(NormalTextureInfoData, dct, "clearcoatNormalTexture"),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )
@@ -294,13 +298,131 @@ class KHR_materials_pbrSpecularGlossiness(BaseGLTFDataClass):
             return None
         return cls(
             diffuse_factor=dct.get("diffuseFactor"),
-            diffuse_texture=TextureInfoData.from_data(dct.get("diffuseTexture")),
+            diffuse_texture=create_if_data(TextureInfoData, dct, "diffuseTexture"),
             specular_factor=dct.get("specularFactor"),
             glossiness_factor=dct.get("glossinessFactor"),
-            specular_glossiness_texture=TextureInfoData.from_data(dct.get("specularGlossinessTexture")),
+            specular_glossiness_texture=create_if_data(TextureInfoData, dct, "specularGlossinessTexture"),
             extensions=cls.extensions_from_data(dct.get("extensions")),
             extras=dct.get("extras"),
         )
+
+
+class LightSpot(BaseGLTFDataClass):
+    """LightSpot
+
+    https://github.com/KhronosGroup/glTF/blob/main/extensions/2.0/Khronos/KHR_lights_punctual/schema/light.spot.schema.json
+    """
+
+    def __init__(
+        self,
+        innerConeAngle=None,
+        outerConeAngle=None,
+        extensions=None,
+        extras=None,
+    ):
+        super(LightSpot, self).__init__(extras, extensions)
+        self.innerConeAngle = innerConeAngle  # Angle in radians from centre of spotlight where falloff ends.
+        self.outerConeAngle = outerConeAngle  # Angle in radians from centre of spotlight where falloff begins.
+
+    def to_data(self, texture_index_by_key, **kwargs):
+        dct = super(LightSpot, self).to_data(texture_index_by_key, **kwargs)
+        if self.innerConeAngle is not None:
+            dct["innerConeAngle"] = self.innerConeAngle
+        if self.outerConeAngle is not None:
+            dct["outerConeAngle"] = self.outerConeAngle
+        return dct
+
+    @classmethod
+    def from_data(cls, dct):
+        if dct is None:
+            return None
+        return cls(
+            innerConeAngle=dct.get("innerConeAngle"), outerConeAngle=dct.get("outerConeAngle"), extensions=cls.extensions_from_data(dct.get("extensions")), extras=dct.get("extras")
+        )
+
+
+class LightType(object):
+    """Specifies the light type."""
+
+    directional = "directional"
+    point = "point"
+    spot = "spot"
+
+
+class Light(BaseGLTFDataClass):
+    """A directional, point, or spot light.
+
+    https://github.com/KhronosGroup/glTF/blob/main/extensions/2.0/Khronos/KHR_lights_punctual/schema/light.schema.json
+    """
+
+    key = "KHR_lights_punctual"
+
+    def __init__(self, color=None, intensity=None, spot=None, type=None, range=None, name=None, extensions=None, extras=None):
+        super(Light, self).__init__(extras, extensions)
+        self.color = color  # [1, 1, 1]
+        self.intensity = intensity  # 1.0
+        self.spot = spot  # LightSpot
+        self.type = type or LightType.directional
+        self.range = range  # A distance cutoff at which the light's intensity may be considered to have reached zero.
+        self.name = name
+
+    def to_data(self, texture_index_by_key, **kwargs):
+        dct = super(Light, self).to_data(texture_index_by_key, **kwargs)
+        if self.color is not None:
+            dct["color"] = self.color
+        if self.intensity is not None:
+            dct["intensity"] = self.intensity
+        if self.spot is not None:
+            dct["spot"] = self.spot.to_data()
+        if self.type is not None:
+            dct["type"] = self.type
+        if self.range is not None:
+            dct["range"] = self.range
+        if self.name is not None:
+            dct["name"] = self.name
+        return dct
+
+    @classmethod
+    def from_data(cls, dct):
+        if dct is None:
+            return None
+        return cls(
+            color=dct.get("color"),
+            intensity=dct.get("intensity"),
+            spot=LightSpot.from_data(dct.get("spot")),
+            type=dct.get("type"),
+            range=dct.get("range"),
+            name=dct.get("name"),
+            extensions=cls.extensions_from_data(dct.get("extensions")),
+            extras=dct.get("extras"),
+        )
+
+
+class KHR_lights_punctual(BaseGLTFDataClass):
+    """"""
+
+    key = "KHR_lights_punctual"
+
+    def __init__(
+        self,
+        lights=None,
+        extensions=None,
+        extras=None,
+    ):
+        super(KHR_lights_punctual, self).__init__(extras, extensions)
+        self.lights = lights
+
+    def to_data(self, texture_index_by_key, **kwargs):
+        dct = super(KHR_lights_punctual, self).to_data(texture_index_by_key, **kwargs)
+        if self.lights is not None:
+            dct["lights"] = self.lights
+        return dct
+
+    @classmethod
+    def from_data(cls, dct):
+        if dct is None:
+            return None
+        return cls(lights=dct.get("lights"), extensions=cls.extensions_from_data(dct.get("extensions")), extras=dct.get("extras"))
 
 
 SUPPORTED_EXTENSIONS = {
@@ -310,4 +432,5 @@ SUPPORTED_EXTENSIONS = {
     KHR_materials_pbrSpecularGlossiness.key: KHR_materials_pbrSpecularGlossiness,
     KHR_materials_specular.key: KHR_materials_specular,
     KHR_materials_ior.key: KHR_materials_ior,
+    KHR_lights_punctual.key: KHR_lights_punctual,
 }
