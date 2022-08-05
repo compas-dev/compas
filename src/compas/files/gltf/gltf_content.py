@@ -59,6 +59,7 @@ class GLTFContent(object):
         self.images = {}
         self.extras = None
         self.extensions = None
+        self.extensions_used = None
 
     @property
     def default_or_first_scene(self):

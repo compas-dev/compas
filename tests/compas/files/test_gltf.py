@@ -145,7 +145,7 @@ def test_specglossmetalrough(specglossmetalrough_gltf):
     gltf.read()
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
-    assert exporter._content.extensions == ["KHR_materials_pbrSpecularGlossiness"]
+    assert exporter._content.extensions_used == ["KHR_materials_pbrSpecularGlossiness"]
 
 
 def test_specular(specular_gltf):
@@ -153,8 +153,7 @@ def test_specular(specular_gltf):
     gltf.read()
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
-    assert exporter._content.extensions == ["KHR_materials_specular"]
-    print(exporter._content.extensions)
+    assert exporter._content.extensions_used == ["KHR_materials_specular"]
 
 
 def test_gltf_content():

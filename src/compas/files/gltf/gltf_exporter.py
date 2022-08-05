@@ -89,7 +89,9 @@ class GLTFExporter(object):
         None
 
         """
+        print(self._content.textures)
         self._content.remove_orphans()
+        print(self._content.textures)
         self._content.check_if_forest()
 
         self._set_initial_gltf_dict()
@@ -179,10 +181,10 @@ class GLTFExporter(object):
                     self._add_extensions_recursively(getattr(item, a))
         if item.extensions is not None:
             for ek, e in item.extensions.items():
-                if self._content.extensions is None:
-                    self._content.extensions = []
-                if ek not in self._content.extensions:
-                    self._content.extensions.append(ek)
+                if self._content.extensions_used is None:  # attention: self._content.extension exists if we have general extensions.
+                    self._content.extensions_used = []
+                if ek not in self._content.extensions_used:
+                    self._content.extensions_used.append(ek)
                 self._add_extensions_recursively(e)
 
     def _add_images(self):
@@ -209,10 +211,10 @@ class GLTFExporter(object):
         return "data:" + (image_data.mime_type if image_data.mime_type else "") + ";base64," + base64.b64encode(image_data.data).decode("ascii")
 
     def _add_extensions(self):
-        if not self._content.extensions:
+        if not self._content.extensions_used:
             return
-        self._gltf_dict["extensionsRequired"] = self._content.extensions
-        self._gltf_dict["extensionsUsed"] = self._content.extensions
+        self._gltf_dict["extensionsRequired"] = self._content.extensions_used
+        self._gltf_dict["extensionsUsed"] = self._content.extensions_used
 
     def _add_samplers(self):
         if not self._content.samplers:
