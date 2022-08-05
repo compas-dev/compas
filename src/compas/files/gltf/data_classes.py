@@ -45,6 +45,14 @@ class BaseGLTFDataClass(object):
                 extensions[key] = value_data
         return extensions
 
+    def to_data(self, *args, **kwargs):
+        dct = {}
+        if self.extras is not None:
+            dct["extras"] = self.extras
+        if self.extensions is not None:
+            dct["extensions"] = self.extensions_to_data()
+        return dct
+
 
 class SamplerData(BaseGLTFDataClass):
     def __init__(
