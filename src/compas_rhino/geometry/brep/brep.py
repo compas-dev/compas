@@ -1,4 +1,3 @@
-import copy
 from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepInvalidError
