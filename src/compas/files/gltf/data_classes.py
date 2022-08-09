@@ -16,6 +16,9 @@ class MineType(object):
 
 # I changed the name of this so as not to collide with compas.Base
 class BaseGLTFDataClass(object):
+
+    IS_BASE_GLTF_DATA = True  # only needed for ipy in `GLTFContent.check_extensions_texture_recursively`
+
     def __init__(self, extras=None, extensions=None):
         self.extras = extras
         self.extensions = extensions
@@ -140,6 +143,9 @@ class TextureData(BaseGLTFDataClass):
 
 
 class TextureInfoData(BaseGLTFDataClass):
+
+    IS_TEXTURE_INFO_DATA = True  # only needed for ipy in `GLTFContent.check_extensions_texture_recursively`
+
     def __init__(self, index, tex_coord=None, extras=None, extensions=None):
         super(TextureInfoData, self).__init__(extras, extensions)
         self.index = index

@@ -161,9 +161,11 @@ class GLTFContent(object):
             # get the extensions that are in the attributes
             for a in dir(item):
                 if not a.startswith("__") and not callable(getattr(item, a)):
-                    if isinstance(getattr(item, a), TextureInfoData):
+                    # ipy does not like this one: if isinstance(getattr(item, a), TextureInfoData):
+                    if getattr(getattr(item, a), "IS_TEXTURE_INFO_DATA", False):
                         texture_visit_log[getattr(item, a).index] = True
-                    elif isinstance(getattr(item, a), BaseGLTFDataClass):
+                    # ipy does not like this one: elif isinstance(getattr(item, a), BaseGLTFDataClass):
+                    elif getattr(getattr(item, a), "IS_BASE_GLTF_DATA", False):
                         check_extensions_texture_recursively(getattr(item, a))
             if item.extensions is not None:
                 for _, e in item.extensions.items():
