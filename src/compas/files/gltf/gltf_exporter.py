@@ -89,9 +89,7 @@ class GLTFExporter(object):
         None
 
         """
-        print(self._content.textures)
         self._content.remove_orphans()
-        print(self._content.textures)
         self._content.check_if_forest()
 
         self._set_initial_gltf_dict()
