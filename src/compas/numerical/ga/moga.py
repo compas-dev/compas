@@ -306,7 +306,7 @@ class MOGA(object):
             fitl = [list(x) for x in zip(*self.parent_pop['fit_values'])]
             best = [self.get_sorting_indices(l, reverse=False)[0] if self.fit_types[i] == 'min' else self.get_sorting_indices(l, reverse=True)[0] for i, l in enumerate(fitl)]
             fit = [min(x) if self.fit_types[i] == 'min' else max(x) for i, x in enumerate(fitl)]
-        except(Exception):
+        except Exception:
             best = None
             fit = None
         return TPL.format(fit_names, fit_types, num_gen, num_pop, num_var, best, fit)
