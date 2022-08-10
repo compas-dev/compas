@@ -290,7 +290,7 @@ def trimesh_principal_curvature(M):
 
     # (3) Main - loop over all vertices
     for i in range(mesh.Vertices.Count):
-        if(A[i] == 0):
+        if A[i] == 0:
             k1.append(None)
             k2.append(None)
             continue
