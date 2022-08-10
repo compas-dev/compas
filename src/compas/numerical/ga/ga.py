@@ -267,7 +267,7 @@ class GA(object):
         best = self.best_individual_index, self.current_pop['scaled'][self.best_individual_index]
         try:
             fit = self.current_pop['fit_value'][self.best_individual_index]
-        except(Exception):
+        except Exception:
             fit = None
         return TPL.format(fit_name, fit_type, num_gen, num_pop, num_var, best, fit)
 
