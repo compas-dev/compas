@@ -21,8 +21,6 @@ from compas.plugins import pluggable
 from ..datastructure import Datastructure
 from .exceptions import FeatureError
 
-from compas.artists import Artist
-
 
 class Feature(Data):
     """
