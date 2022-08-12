@@ -8,3 +8,7 @@ from .assembly import Assembly  # noqa: F401
 from .part import Part  # noqa: F401
 from .part import MeshGeometry  # noqa: F401
 from .part import BrepGeometry  # noqa: F401
+from .part import Feature  # noqa: F401
+from .part import GeometryFeature  # noqa: F401
+from .part import MeshFeature  # noqa: F401
+from .part import BrepFeature  # noqa: F401

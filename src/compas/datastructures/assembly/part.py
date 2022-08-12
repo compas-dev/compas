@@ -26,6 +26,22 @@ from compas.artists import Artist
 
 class Feature(Data):
     """
+    General interface for Geometric and Parametric features
+    """
+    def __init__(self, part=None):
+        self.part = part
+
+    @abc.abstractmethod
+    def apply(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def restore(self):
+        raise NotImplementedError
+
+
+class GeometryFeature(Feature):
+    """
     Abstract class. Holds all the information needed to perform a certain operation using a shape on a specific part.
     When applying the feature to the geometry of the part, stores the pre-change geometry in order
     to allow restoring the state of the part before the operation. a la Command.
@@ -33,7 +49,7 @@ class Feature(Data):
 
     ALLOWED_OPERATIONS = {}
 
-    def __init__(self,part, geometry, operation):
+    def __init__(self,part=None, geometry=None, operation=None):
         """
 
         Parameters
@@ -42,7 +58,7 @@ class Feature(Data):
                 The shape of this feature
         operation : :callable: e.g. boolean_op_mesh_mesh(A, B)
         """
-        super(Feature, self).__init__()
+        super(GeometryFeature, self).__init__(part)
 
         if operation not in self.ALLOWED_OPERATIONS:
             raise ValueError("Operation {} unknown. Expected one of {}".format(operation, list(self.ALLOWED_OPERATIONS.keys())))
@@ -130,7 +146,7 @@ class Feature(Data):
             raise ValueError("Expected one of the following operations {} got instead {}".format([v.__name__ for _, v in cls.ALLOWED_OPERATIONS.items()], value))
 
 
-class MeshFeature(Feature):
+class MeshFeature(GeometryFeature):
     """
     Represents a Mesh/Shape feature of a Part. Can be applied to Part whose geometry is described by a MeshGeometry.
     """
@@ -147,7 +163,7 @@ class MeshFeature(Feature):
         self.part._part_geometry = MeshGeometry(Polyhedron(*result))
 
 
-class BrepFeature(Feature):
+class BrepFeature(GeometryFeature):
     """
     Represents a Brep feature of a Part. Can be applied to Part whose geometry is described by a BrepGeometry.
     TODO: this assumes all Brep operations take 3 arguments, should we be more flexible with this? maybe a BrepFeature child for each kind of operation?
@@ -398,14 +414,14 @@ class Part(Datastructure):
                 return index
         return 0
 
-    def add_feature(self, geometry, operation):
+    def add_geometry_feature(self, geometry, operation):
         """
         Add a feature to the shape of the part and the operation through which it should be integrated.
 
         Parameters
         ----------
-        shape : :class:`~compas.geometry.Shape`
-            The shape of the feature.
+        shape : :class:`~compas.assembly.PartGeometry`
+            The geometry of the feature.
         operation : Literal['union', 'difference', 'intersection']
             The boolean operation through which the feature should be integrated in the base shape.
 
@@ -419,14 +435,32 @@ class Part(Datastructure):
         # TODO: this is a bit hacky, maybe better solution is due
         # TODO: A Mesh part geometry calls for features that also consist of a mesh geometry
         # TODO: A Brep part, however, allows other feature geometries e.g. a Plane
-        class_ = geometry.FEATURE_CLASS if isinstance(geometry, Feature) else BrepFeature
+        class_ = geometry.FEATURE_CLASS if isinstance(geometry, PartGeometry) else BrepFeature
         # unload_modules can make it difficult comparying types by identity
         if class_.__name__ != self._part_geometry.FEATURE_CLASS.__name__:
             raise TypeError("Cannot mix Brep geometry with mesh operations or vice versa.")
 
         feature = class_(self, geometry, operation)
-        self.features.append(feature)
+        self.add_feature(feature)
         return feature
+
+    def add_feature(self, feature, apply=False):
+        """Add a Feature to this Part.
+
+        Parameters
+        ----------
+        feature : :class:`~compas.assembly.Feature`
+            The feature to add
+        apply : :bool:
+            If True, feature is also applied
+
+        Returns
+        -------
+        None
+        """
+        self.features.append(feature)
+        if apply:
+            feature.apply()
 
     def replay_all_features(self):
         if not self.features:
@@ -435,7 +469,7 @@ class Part(Datastructure):
 
     def _replay_features(self, from_index):
         for feature in self.features[from_index:]:
-            feature.apply(part=self)
+            feature.apply()
 
     def _restore_original_geometry(self):
         self._part_geometry = copy.deepcopy(self._original_shape)

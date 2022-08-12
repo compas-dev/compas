@@ -21,9 +21,14 @@ Classes
     VolMesh
     Assembly
     Part
+
     MeshGeometry
     BrepGeometry
 
+    Feature
+    GeometryFeature
+    BrepFeature
+    MeshFeature
 
 Exceptions
 ==========
@@ -311,9 +316,15 @@ from .assembly import (
     Assembly,
     Part,
     AssemblyError,
-    FeatureError,
+
     MeshGeometry,
     BrepGeometry,
+
+    Feature,
+    FeatureError,
+    GeometryFeature,
+    BrepFeature,
+    MeshFeature,
 )
 
 if not compas.IPY:
@@ -460,6 +471,8 @@ __all__ = [
     'FeatureError',
     "MeshGeometry",
     "BrepGeometry",
+    "Feature",
+    "GeometryFeature"
 ]
 
 if not compas.IPY:
