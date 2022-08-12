@@ -27,7 +27,18 @@ class Feature(Data):
     General interface for Geometric and Parametric features
     """
     def __init__(self, part=None):
+        super(Feature, self).__init__()
         self.part = part
+
+    def __deepcopy__(self, memodict):
+        # Even though deepcopy should know how to deal with circular references, their presence in some places causes issues.
+        # This here causes Rhino to crash. This ugly bit of code works around it by removing the reference prior to copying and restoring it after.
+        # It is up to the parent (Part in this case) to restore the reference of the copy.
+        part_ = self.part
+        self.part = None
+        c_feature = self.copy()
+        self.part = part_
+        return c_feature
 
     @abc.abstractmethod
     def apply(self):
@@ -57,14 +68,13 @@ class GeometryFeature(Feature):
         operation : :callable: e.g. boolean_op_mesh_mesh(A, B)
         """
         super(GeometryFeature, self).__init__(part)
-
-        if operation not in self.ALLOWED_OPERATIONS:
-            raise ValueError("Operation {} unknown. Expected one of {}".format(operation, list(self.ALLOWED_OPERATIONS.keys())))
-
-        self.operation = self.ALLOWED_OPERATIONS[operation]
         self.feature_geometry = geometry
         self.part = part
         self.previous_geometry = None
+        self._operation = None
+
+        if operation:
+            self.operation = operation
 
     @property
     def DATASCHEMA(self):
@@ -88,7 +98,17 @@ class GeometryFeature(Feature):
     @data.setter
     def data(self, value):
         self.feature_geometry = value["feature_geometry"]
-        self.operation = self.ALLOWED_OPERATIONS[value["operation"]]
+        self.operation = value["operation"]
+
+    @property
+    def operation(self):
+        return self._operation
+
+    @operation.setter
+    def operation(self, value):
+        if value not in self.ALLOWED_OPERATIONS:
+            raise ValueError("Operation {} unknown. Expected one of {}".format(value, list(self.ALLOWED_OPERATIONS.keys())))
+        self._operation = self.ALLOWED_OPERATIONS[value]
 
     def apply(self):
         """
@@ -151,7 +171,7 @@ class MeshFeature(GeometryFeature):
 
     ALLOWED_OPERATIONS = {"union": boolean_union_mesh_mesh, "difference": boolean_difference_mesh_mesh, "intersection": boolean_intersection_mesh_mesh}
 
-    def __init__(self,part, geometry, operation):
+    def __init__(self,part=None, geometry=None, operation=None):
         super(MeshFeature, self).__init__(part, geometry, operation)
 
     def _apply_feature(self):
@@ -176,7 +196,7 @@ class BrepFeature(GeometryFeature):
 
     ALLOWED_OPERATIONS = {"trim": _trim_brep_with_plane.__func__}  # cannot reference static method before it's declared
 
-    def __init__(self,part, geometry, operation):
+    def __init__(self,part=None, geometry=None, operation=None):
         super(BrepFeature, self).__init__(part, geometry, operation)
 
     def _apply_feature(self):
@@ -335,7 +355,7 @@ class Part(Datastructure):
             "key": self.key,
             "frame": self.frame,
             "shape": self._original_shape,
-            "features": [f.data for f in self.features],
+            "features": self.features,
             "transformations": [T.data for T in self.transformations],
         }
         return data
@@ -347,7 +367,9 @@ class Part(Datastructure):
         self.frame = data["frame"]
         self._original_shape = data["shape"]
         self._part_geometry = self._original_shape.copy()
-        self.features = [self.add_feature(f["feature_geometry"], f["operation"]) for f in data["features"]]
+        self.features = data["features"]
+        for f in self.features:
+            f.part = self
         self.transformations = deque([Transformation.from_data(T) for T in data["transformations"]])
 
     @property
