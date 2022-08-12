@@ -469,10 +469,13 @@ __all__ = [
     'Part',
     'AssemblyError',
     'FeatureError',
+
     "MeshGeometry",
     "BrepGeometry",
     "Feature",
-    "GeometryFeature"
+    "GeometryFeature",
+    "BrepFeature",
+    "MeshFeature",
 ]
 
 if not compas.IPY:
