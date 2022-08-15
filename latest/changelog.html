@@ -107,10 +107,17 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h2>Unreleased</h2>
 <section id="added">
 <h3>Added</h3>
+<ul class="simple">
+<li><p>Added gltf extensions: <code class="docutils literal notranslate"><span class="pre">KHR_materials_transmission</span></code>, <code class="docutils literal notranslate"><span class="pre">KHR_materials_specular</span></code>, <code class="docutils literal notranslate"><span class="pre">KHR_materials_ior</span></code>, <code class="docutils literal notranslate"><span class="pre">KHR_materials_clearcoat</span></code>, <code class="docutils literal notranslate"><span class="pre">KHR_Texture_Transform</span></code>, <code class="docutils literal notranslate"><span class="pre">KHR_materials_pbrSpecularGlossiness</span></code></p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">GLTFContent.check_extensions_texture_recursively</span></code></p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">GLTFContent.get_node_by_name</span></code>, <code class="docutils literal notranslate"><span class="pre">GLTFContent.get_material_index_by_name</span></code></p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">GLTFContent.add_material</span></code>, <code class="docutils literal notranslate"><span class="pre">GLTFContent.add_texture</span></code>, <code class="docutils literal notranslate"><span class="pre">GLTFContent.add_image</span></code></p></li>
+</ul>
 </section>
 <section id="changed">
 <h3>Changed</h3>
 <ul class="simple">
+<li><p>Based all gltf data classes on <code class="docutils literal notranslate"><span class="pre">BaseGLTFDataClass</span></code></p></li>
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">Color.__get___</span></code> AttributeError.</p></li>
 </ul>
 </section>
@@ -1087,7 +1094,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <section id="id142">
 <h3>Added</h3>
 <ul class="simple">
-<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh.trimesh_samplepoints_numpy</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh.trimesh_samplepoints_numpy</span></code>.</p></li>
 </ul>
 </section>
 <section id="id143">
