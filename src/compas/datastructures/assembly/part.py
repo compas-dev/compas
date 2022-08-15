@@ -12,11 +12,9 @@ from compas.geometry import Transformation
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
-from compas.geometry import Brep
 from compas.geometry import Geometry
 from compas.datastructures import Mesh
 from compas.data import Data
-from compas.plugins import pluggable
 
 from ..datastructure import Datastructure
 from .exceptions import FeatureError
@@ -26,6 +24,7 @@ class Feature(Data):
     """
     General interface for Geometric and Parametric features
     """
+
     def __init__(self, part=None):
         super(Feature, self).__init__()
         self.part = part
@@ -58,7 +57,7 @@ class GeometryFeature(Feature):
 
     ALLOWED_OPERATIONS = {}
 
-    def __init__(self,part=None, geometry=None, operation=None):
+    def __init__(self, part=None, geometry=None, operation=None):
         """
 
         Parameters
@@ -171,7 +170,7 @@ class MeshFeature(GeometryFeature):
 
     ALLOWED_OPERATIONS = {"union": boolean_union_mesh_mesh, "difference": boolean_difference_mesh_mesh, "intersection": boolean_intersection_mesh_mesh}
 
-    def __init__(self,part=None, geometry=None, operation=None):
+    def __init__(self, part=None, geometry=None, operation=None):
         super(MeshFeature, self).__init__(part, geometry, operation)
 
     def _apply_feature(self):
@@ -186,6 +185,7 @@ class BrepFeature(GeometryFeature):
     Represents a Brep feature of a Part. Can be applied to Part whose geometry is described by a BrepGeometry.
     TODO: this assumes all Brep operations take 3 arguments, should we be more flexible with this? maybe a BrepFeature child for each kind of operation?
     """
+
     TOLERANCE = 1e-6
 
     @staticmethod
@@ -196,7 +196,7 @@ class BrepFeature(GeometryFeature):
 
     ALLOWED_OPERATIONS = {"trim": _trim_brep_with_plane.__func__}  # cannot reference static method before it's declared
 
-    def __init__(self,part=None, geometry=None, operation=None):
+    def __init__(self, part=None, geometry=None, operation=None):
         super(BrepFeature, self).__init__(part, geometry, operation)
 
     def _apply_feature(self):
