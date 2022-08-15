@@ -1,7 +1,6 @@
 import pytest
 
-from numpy import allclose
-
+from compas.geometry import allclose
 from compas.datastructures import Part
 from compas.datastructures.assembly.part import MeshGeometry, MeshFeature
 from compas.geometry import Polyhedron
