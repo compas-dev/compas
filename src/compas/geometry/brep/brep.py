@@ -156,13 +156,16 @@ class Brep(Geometry):
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "faces": list,
-        })
+
+        return schema.Schema(
+            {
+                "faces": list,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'brep'
+        return "brep"
 
     @property
     def data(self):
