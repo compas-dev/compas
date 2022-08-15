@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+* Added gltf extensions: `KHR_materials_transmission`, `KHR_materials_specular`, `KHR_materials_ior`, `KHR_materials_clearcoat`, `KHR_Texture_Transform`, `KHR_materials_pbrSpecularGlossiness`
+* Added `GLTFContent.check_extensions_texture_recursively`
+* Added `GLTFContent.get_node_by_name`, `GLTFContent.get_material_index_by_name`
+* Added `GLTFContent.add_material`, `GLTFContent.add_texture`, `GLTFContent.add_image`
 
 ### Changed
+* Based all gltf data classes on `BaseGLTFDataClass`
 
 * Fixed `Color.__get___` AttributeError.
 
@@ -542,7 +547,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Removed `compas.datastructures.mesh.core.mesh.BaseMesh`.
-
 * Removed `compas.datastructures.BaseNetwork`.
 
 ## [1.7.1] 2021-06-14
@@ -814,7 +818,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
+* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
 
 ### Changed
 

@@ -35,6 +35,7 @@ class GLTFMesh(object):
         representing faces of the mesh.
 
     """
+
     def __init__(self, primitive_data_list, context, mesh_name=None, weights=None, extras=None, extensions=None):
         self.mesh_name = mesh_name
         self.weights = weights
@@ -72,7 +73,7 @@ class GLTFMesh(object):
             group_size = VERTEX_COUNT_BY_MODE[primitive_data.mode]
             grouped_indices = self.group_indices(shifted_indices, group_size)
             faces.extend(grouped_indices)
-            shift += len(primitive_data.attributes['POSITION'])
+            shift += len(primitive_data.attributes["POSITION"])
         return faces
 
     def shift_indices(self, indices, shift):
@@ -122,11 +123,11 @@ class GLTFMesh(object):
         if not faces:
             return
         if len(faces[0]) > 3:
-            raise Exception('Invalid mesh. Expected mesh composed of points, lines xor triangles.')
+            raise Exception("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
         for face in faces:
             if len(face) != len(faces[0]):
                 # This restriction could be removed by splitting into multiple primitives.
-                raise NotImplementedError('Invalid mesh. Expected mesh composed of points, lines xor triangles.')
+                raise NotImplementedError("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
 
     @classmethod
     def validate_vertices(cls, vertices):
@@ -143,11 +144,11 @@ class GLTFMesh(object):
         """
         if len(vertices) > 4294967295:
             # This restriction could be removed by splitting into multiple primitives.
-            raise Exception('Invalid mesh.  Too many vertices.')
+            raise Exception("Invalid mesh.  Too many vertices.")
         positions = list(vertices.values()) if isinstance(vertices, dict) else vertices
         for position in positions:
             if len(position) != 3:
-                raise Exception('Invalid mesh.  Vertices are expected to be points in 3-space.')
+                raise Exception("Invalid mesh.  Vertices are expected to be points in 3-space.")
 
     @classmethod
     def from_vertices_and_faces(cls, context, vertices, faces, mesh_name=None, extras=None):
@@ -183,7 +184,7 @@ class GLTFMesh(object):
             positions = vertices
             face_list = list(itertools.chain(*faces))
 
-        primitive = PrimitiveData({'POSITION': positions}, face_list, None, mode, None, None)
+        primitive = PrimitiveData({"POSITION": positions}, face_list, None, mode, None, None)
 
         return cls([primitive], context, mesh_name=mesh_name, extras=extras)
 
@@ -214,15 +215,15 @@ class GLTFMesh(object):
         -------
         dict
         """
-        mesh_dict = {'primitives': primitives}
+        mesh_dict = {"primitives": primitives}
         if self.mesh_name is not None:
-            mesh_dict['name'] = self.mesh_name
+            mesh_dict["name"] = self.mesh_name
         if self.weights is not None:
-            mesh_dict['weights'] = self.weights
+            mesh_dict["weights"] = self.weights
         if self.extras is not None:
-            mesh_dict['extras'] = self.extras
+            mesh_dict["extras"] = self.extras
         if self.extensions is not None:
-            mesh_dict['extensions'] = self.extensions
+            mesh_dict["extensions"] = self.extensions
         return mesh_dict
 
     @classmethod
@@ -245,8 +246,8 @@ class GLTFMesh(object):
         return cls(
             primitive_data_list=primitive_data_list,
             context=context,
-            mesh_name=mesh.get('name'),
-            weights=mesh.get('weights'),
-            extras=mesh.get('extras'),
-            extensions=mesh.get('extensions'),
+            mesh_name=mesh.get("name"),
+            weights=mesh.get("weights"),
+            extras=mesh.get("extras"),
+            extensions=mesh.get("extensions"),
         )

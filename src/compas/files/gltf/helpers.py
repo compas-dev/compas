@@ -41,19 +41,19 @@ def get_weighted_mesh_vertices(mesh, weights):
     """
     vertices = []
     for primitive_data in mesh.primitive_data_list:
-        position_target_data = [target['POSITION'] for target in primitive_data.targets]
+        position_target_data = [target["POSITION"] for target in primitive_data.targets]
         apply_morph_targets = get_morph_function(weights)
-        vertices += list(map(apply_morph_targets, primitive_data.attributes['POSITION'], *position_target_data))
+        vertices += list(map(apply_morph_targets, primitive_data.attributes["POSITION"], *position_target_data))
     return vertices
 
 
 def get_unweighted_primitive_vertices(primitive_data_list):
     """This returns the vertices within a primitive without any weighted morph targets applied."""
-    return list(itertools.chain(*[primitive.attributes['POSITION'] for primitive in primitive_data_list]))
+    return list(itertools.chain(*[primitive.attributes["POSITION"] for primitive in primitive_data_list]))
 
 
 def get_mode(faces):
     vertex_count = len(faces[0])
     if vertex_count in MODE_BY_VERTEX_COUNT:
         return MODE_BY_VERTEX_COUNT[vertex_count]
-    raise Exception('Meshes must be composed of triangles, lines or points.')
+    raise Exception("Meshes must be composed of triangles, lines or points.")

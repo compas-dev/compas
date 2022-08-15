@@ -24,7 +24,7 @@ class GLTFChildren(object):
 
     def check_node_context(self, v):
         if v not in self._context.nodes:
-            raise Exception('Cannot find Node {}.'.format(v))
+            raise Exception("Cannot find Node {}.".format(v))
 
     def append(self, value):
         self.check_node_context(value)

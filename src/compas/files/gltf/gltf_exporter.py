@@ -7,6 +7,7 @@ import base64
 import json
 import os
 import struct
+import shutil
 
 from compas.files.gltf.constants import COMPONENT_TYPE_ENUM
 from compas.files.gltf.constants import COMPONENT_TYPE_FLOAT
@@ -18,12 +19,13 @@ from compas.files.gltf.constants import TYPE_SCALAR
 from compas.files.gltf.constants import TYPE_VEC2
 from compas.files.gltf.constants import TYPE_VEC3
 from compas.files.gltf.constants import TYPE_VEC4
+from compas.files.gltf.data_classes import BaseGLTFDataClass
 
 
 # This fails on IronPython 2.7.8 (eg. Rhino 6 on Windows)
 # but works on IronPython 2.7.9 (Rhino 6 on Mac)
 try:
-    struct.pack_into('<I', bytearray(4), 0, 0)
+    struct.pack_into("<I", bytearray(4), 0, 0)
     USE_BYTEARRAY_BUFFERS = True
 except TypeError:
     USE_BYTEARRAY_BUFFERS = False
@@ -65,7 +67,7 @@ class GLTFExporter(object):
         self._texture_index_by_key = {}
         self._sampler_index_by_key = {}
         self._image_index_by_key = {}
-        self._buffer = b''
+        self._buffer = b""
 
         self.load()
 
@@ -100,7 +102,7 @@ class GLTFExporter(object):
         self._texture_index_by_key = self._get_index_by_key(self._content.textures)
         self._sampler_index_by_key = self._get_index_by_key(self._content.samplers)
         self._image_index_by_key = self._get_index_by_key(self._content.images)
-        self._buffer = b''
+        self._buffer = b""
 
         self._set_path_attributes()
         self._add_meshes()
@@ -114,6 +116,7 @@ class GLTFExporter(object):
         self._add_images()
         self._add_animations()
         self._add_buffer()
+        self._add_extensions()
 
     def _get_index_by_key(self, d):
         return {key: index for index, key in enumerate(d)}
@@ -128,15 +131,15 @@ class GLTFExporter(object):
         """
         gltf_json = json.dumps(self._gltf_dict, indent=4)
 
-        if self._ext == '.gltf':
-            with open(self.gltf_filepath, 'w') as f:
+        if self._ext == ".gltf":
+            with open(self.gltf_filepath, "w") as f:
                 f.write(gltf_json)
             if not self._embed_data and len(self._buffer) > 0:
-                with open(self.get_bin_path(), 'wb') as f:
+                with open(self.get_bin_path(), "wb") as f:
                     f.write(self._buffer)
 
-        if self._ext == '.glb':
-            with open(self.gltf_filepath, 'wb') as f:
+        if self._ext == ".glb":
+            with open(self.gltf_filepath, "wb") as f:
                 gltf_data = gltf_json.encode()
 
                 length_gltf = len(gltf_data)
@@ -151,41 +154,65 @@ class GLTFExporter(object):
                 if length_bin > 0:
                     length += 8 + length_bin
 
-                f.write('glTF'.encode('ascii'))
-                f.write(struct.pack('<I', 2))
-                f.write(struct.pack('<I', length))
+                f.write("glTF".encode("ascii"))
+                f.write(struct.pack("<I", 2))
+                f.write(struct.pack("<I", length))
 
-                f.write(struct.pack('<I', length_gltf))
-                f.write('JSON'.encode('ascii'))
+                f.write(struct.pack("<I", length_gltf))
+                f.write("JSON".encode("ascii"))
                 f.write(gltf_data)
                 for i in range(0, spaces_gltf):
-                    f.write(' '.encode())
+                    f.write(" ".encode())
 
                 if length_bin > 0:
-                    f.write(struct.pack('<I', length_bin))
-                    f.write('BIN\0'.encode())
+                    f.write(struct.pack("<I", length_bin))
+                    f.write("BIN\0".encode())
                     f.write(self._buffer)
                     for i in range(0, zeros_bin):
-                        f.write('\0'.encode())
+                        f.write("\0".encode())
+
+    def _add_extensions_recursively(self, item):
+        # get the extensions that are in the attributes
+        for a in dir(item):
+            if not a.startswith("__") and not callable(getattr(item, a)):
+                if isinstance(getattr(item, a), BaseGLTFDataClass):
+                    self._add_extensions_recursively(getattr(item, a))
+        if item.extensions is not None:
+            for ek, e in item.extensions.items():
+                if self._content.extensions_used is None:  # attention: self._content.extension exists if we have general extensions.
+                    self._content.extensions_used = []
+                if ek not in self._content.extensions_used:
+                    self._content.extensions_used.append(ek)
+                self._add_extensions_recursively(e)
 
     def _add_images(self):
         if not self._content.images:
             return
         images_list = [None] * len(self._content.images)
         for key, image_data in self._content.images.items():
+            if image_data.uri:
+                # copy to file location
+                basename = os.path.basename(image_data.uri)
+                src, dst = image_data.uri, os.path.join(self._dirname, basename)
+                if src != dst:
+                    shutil.copyfile(src, dst)
+                image_data.uri = basename
             uri = self._construct_image_data_uri(image_data) if self.embed_data else None
             buffer_view = self._construct_buffer_view(image_data.data) if not self.embed_data else None
             images_list[self._image_index_by_key[key]] = image_data.to_data(uri, buffer_view)
-        self._gltf_dict['images'] = images_list
+            self._add_extensions_recursively(image_data)
+        self._gltf_dict["images"] = images_list
 
     def _construct_image_data_uri(self, image_data):
         if image_data.data is None:
             return None
-        return (
-            'data:'
-            + (image_data.mime_type if image_data.mime_type else '')
-            + ';base64,' + base64.b64encode(image_data.data).decode('ascii')
-        )
+        return "data:" + (image_data.mime_type if image_data.mime_type else "") + ";base64," + base64.b64encode(image_data.data).decode("ascii")
+
+    def _add_extensions(self):
+        if not self._content.extensions_used:
+            return
+        self._gltf_dict["extensionsRequired"] = self._content.extensions_used
+        self._gltf_dict["extensionsUsed"] = self._content.extensions_used
 
     def _add_samplers(self):
         if not self._content.samplers:
@@ -193,7 +220,7 @@ class GLTFExporter(object):
         samplers_list = [None] * len(self._content.samplers)
         for key, sampler_data in self._content.samplers.items():
             samplers_list[self._sampler_index_by_key[key]] = sampler_data.to_data()
-        self._gltf_dict['samplers'] = samplers_list
+        self._gltf_dict["samplers"] = samplers_list
 
     def _add_textures(self):
         if not self._content.textures:
@@ -201,7 +228,8 @@ class GLTFExporter(object):
         textures_list = [None] * len(self._content.textures)
         for key, texture_data in self._content.textures.items():
             textures_list[self._texture_index_by_key[key]] = texture_data.to_data(self._sampler_index_by_key, self._image_index_by_key)
-        self._gltf_dict['textures'] = textures_list
+            self._add_extensions_recursively(texture_data)
+        self._gltf_dict["textures"] = textures_list
 
     def _add_materials(self):
         if not self._content.materials:
@@ -209,7 +237,8 @@ class GLTFExporter(object):
         materials_list = [None] * len(self._content.materials)
         for key, material_data in self._content.materials.items():
             materials_list[self._material_index_by_key[key]] = material_data.to_data(self._texture_index_by_key)
-        self._gltf_dict['materials'] = materials_list
+            self._add_extensions_recursively(material_data)
+        self._gltf_dict["materials"] = materials_list
 
     def _add_skins(self):
         if not self._content.skins:
@@ -218,7 +247,8 @@ class GLTFExporter(object):
         for key, skin_data in self._content.skins.items():
             accessor_index = self._construct_accessor(skin_data.inverse_bind_matrices, COMPONENT_TYPE_FLOAT, TYPE_MAT4)
             skins_list[self._skin_index_by_key[key]] = skin_data.to_data(self._node_index_by_key, accessor_index)
-        self._gltf_dict['skins'] = skins_list
+            self._add_extensions_recursively(skin_data)
+        self._gltf_dict["skins"] = skins_list
 
     def _add_cameras(self):
         if not self._content.cameras:
@@ -226,7 +256,8 @@ class GLTFExporter(object):
         camera_list = [None] * len(self._content.cameras)
         for key, camera_data in self._content.cameras.items():
             camera_list[self._camera_index_by_key[key]] = camera_data.to_data()
-        self._gltf_dict['cameras'] = camera_list
+            self._add_extensions_recursively(camera_data)
+        self._gltf_dict["cameras"] = camera_list
 
     def _add_meshes(self):
         if not self._content.meshes:
@@ -235,17 +266,18 @@ class GLTFExporter(object):
         for key, mesh_data in self._content.meshes.items():
             primitives = self._construct_primitives(mesh_data)
             mesh_list[self._mesh_index_by_key[key]] = mesh_data.to_data(primitives)
-        self._gltf_dict['meshes'] = mesh_list
+            self._add_extensions_recursively(mesh_data)
+        self._gltf_dict["meshes"] = mesh_list
 
     def _add_buffer(self):
         if not self._buffer:
             return
-        buffer = {'byteLength': len(self._buffer)}
+        buffer = {"byteLength": len(self._buffer)}
         if self._embed_data:
-            buffer['uri'] = 'data:application/octet-stream;base64,' + base64.b64encode(self._buffer).decode('ascii')
-        elif self._ext == '.gltf':
-            buffer['uri'] = self.get_bin_filename()
-        self._gltf_dict['buffers'] = [buffer]
+            buffer["uri"] = "data:application/octet-stream;base64," + base64.b64encode(self._buffer).decode("ascii")
+        elif self._ext == ".gltf":
+            buffer["uri"] = self.get_bin_filename()
+        self._gltf_dict["buffers"] = [buffer]
 
     def _add_animations(self):
         if not self._content.animations:
@@ -254,13 +286,19 @@ class GLTFExporter(object):
         for animation_data in self._content.animations.values():
             samplers_list = self._construct_animation_samplers_list(animation_data)
             animation_list.append(animation_data.to_data(samplers_list, self._node_index_by_key))
-        self._gltf_dict['animations'] = animation_list
+            self._add_extensions_recursively(animation_data)
+        self._gltf_dict["animations"] = animation_list
 
     def _construct_animation_samplers_list(self, animation_data):
         sampler_index_by_key = animation_data.get_sampler_index_by_key()
         samplers_list = [None] * len(sampler_index_by_key)
         for key, sampler_data in animation_data.samplers_dict.items():
-            input_accessor = self._construct_accessor(sampler_data.input, COMPONENT_TYPE_FLOAT, TYPE_SCALAR, include_bounds=True)
+            input_accessor = self._construct_accessor(
+                sampler_data.input,
+                COMPONENT_TYPE_FLOAT,
+                TYPE_SCALAR,
+                include_bounds=True,
+            )
             type_ = TYPE_VEC3
             if isinstance(sampler_data.output[0], int) or isinstance(sampler_data.output[0], float):
                 type_ = TYPE_SCALAR
@@ -271,25 +309,25 @@ class GLTFExporter(object):
         return samplers_list
 
     def _set_initial_gltf_dict(self):
-        asset_dict = {'version': '2.0'}
-        gltf_dict = {'asset': asset_dict}
+        asset_dict = {"version": "2.0"}
+        gltf_dict = {"asset": asset_dict}
         if self._content.extras:
-            gltf_dict['extras'] = self._content.extras
+            gltf_dict["extras"] = self._content.extras
         if self._content.extensions:
-            gltf_dict['extensions'] = self._content.extensions
+            gltf_dict["extensions"] = self._content.extensions
         self._gltf_dict = gltf_dict
 
     def _add_scenes(self):
         if not self._content.scenes:
             return
         if self._content.default_scene_key is not None:
-            self._gltf_dict['scene'] = self._scene_index_by_key[self._content.default_scene_key]
+            self._gltf_dict["scene"] = self._scene_index_by_key[self._content.default_scene_key]
         else:
-            self._gltf_dict['scene'] = list(self._content.scenes.values())[0].key
+            self._gltf_dict["scene"] = list(self._content.scenes.values())[0].key
         scene_list = [None] * len(self._content.scenes.values())
         for key, scene in self._content.scenes.items():
             scene_list[self._scene_index_by_key[key]] = scene.to_data(self._node_index_by_key)
-        self._gltf_dict['scenes'] = scene_list
+        self._gltf_dict["scenes"] = scene_list
 
     def _add_nodes(self):
         if not self._content.nodes:
@@ -302,7 +340,7 @@ class GLTFExporter(object):
                 self._camera_index_by_key,
                 self._skin_index_by_key,
             )
-        self._gltf_dict['nodes'] = node_list
+        self._gltf_dict["nodes"] = node_list
 
     def _construct_primitives(self, mesh_data):
         primitives = []
@@ -311,7 +349,7 @@ class GLTFExporter(object):
 
             attributes = {}
             for attr in primitive_data.attributes:
-                component_type = COMPONENT_TYPE_UNSIGNED_INT if attr.startswith('JOINT') else COMPONENT_TYPE_FLOAT
+                component_type = COMPONENT_TYPE_UNSIGNED_INT if attr.startswith("JOINT") else COMPONENT_TYPE_FLOAT
                 type_ = TYPE_VEC3
                 if len(primitive_data.attributes[attr][0]) == 4:
                     type_ = TYPE_VEC4
@@ -339,15 +377,15 @@ class GLTFExporter(object):
         count = len(data)
 
         fmt_char = COMPONENT_TYPE_ENUM[component_type]
-        fmt = '<' + fmt_char * NUM_COMPONENTS_BY_TYPE_ENUM[type_]
+        fmt = "<" + fmt_char * NUM_COMPONENTS_BY_TYPE_ENUM[type_]
 
-        component_size = struct.calcsize('<' + fmt_char)
-        if component_type == 'MAT2' and component_size == 1:
-            fmt = '<FFxxFFxx'.replace('F', fmt_char)
-        elif component_type == 'MAT3' and component_size == 1:
-            fmt = '<FFFxFFFxFFFx'.replace('F', fmt_char)
-        elif component_type == 'MAT3' and component_size == 2:
-            fmt = '<FFFxxFFFxxFFFxx'.replace('F', fmt_char)
+        component_size = struct.calcsize("<" + fmt_char)
+        if component_type == "MAT2" and component_size == 1:
+            fmt = "<FFxxFFxx".replace("F", fmt_char)
+        elif component_type == "MAT3" and component_size == 1:
+            fmt = "<FFFxFFFxFFFx".replace("F", fmt_char)
+        elif component_type == "MAT3" and component_size == 2:
+            fmt = "<FFFxxFFFxxFFFxx".replace("F", fmt_char)
 
         component_len = struct.calcsize(fmt)
 
@@ -358,7 +396,7 @@ class GLTFExporter(object):
         if USE_BYTEARRAY_BUFFERS:
             bytes_ = bytearray(size)
         else:
-            bytes_ = array.array('B', [0] * size)
+            bytes_ = array.array("B", [0] * size)
 
         for i, datum in enumerate(data):
             if isinstance(datum, int) or isinstance(datum, float):
@@ -368,10 +406,10 @@ class GLTFExporter(object):
 
         buffer_view_index = self._construct_buffer_view(bytes_)
         accessor_dict = {
-            'bufferView': buffer_view_index,
-            'count': count,
-            'componentType': component_type,
-            'type': type_,
+            "bufferView": buffer_view_index,
+            "count": count,
+            "componentType": component_type,
+            "type": type_,
         }
         if include_bounds:
             try:
@@ -385,26 +423,26 @@ class GLTFExporter(object):
                 # so min and max are more simply computed.
                 minimum = (min(data),)
                 maximum = (max(data),)
-            accessor_dict['min'] = minimum
-            accessor_dict['max'] = maximum
+            accessor_dict["min"] = minimum
+            accessor_dict["max"] = maximum
 
-        self._gltf_dict.setdefault('accessors', []).append(accessor_dict)
+        self._gltf_dict.setdefault("accessors", []).append(accessor_dict)
 
-        return len(self._gltf_dict['accessors']) - 1
+        return len(self._gltf_dict["accessors"]) - 1
 
     def _construct_buffer_view(self, bytes_):
         if not bytes_:
             return None
         byte_offset = self._update_buffer(bytes_)
         buffer_view_dict = {
-            'buffer': 0,
-            'byteLength': len(bytes_),
-            'byteOffset': byte_offset,
+            "buffer": 0,
+            "byteLength": len(bytes_),
+            "byteOffset": byte_offset,
         }
 
-        self._gltf_dict.setdefault('bufferViews', []).append(buffer_view_dict)
+        self._gltf_dict.setdefault("bufferViews", []).append(buffer_view_dict)
 
-        return len(self._gltf_dict['bufferViews']) - 1
+        return len(self._gltf_dict["bufferViews"]) - 1
 
     def _update_buffer(self, bytes_):
         byte_offset = len(self._buffer)
@@ -422,7 +460,7 @@ class GLTFExporter(object):
         self._ext = ext.lower()
 
     def get_bin_path(self):
-        return os.path.join(self._dirname, self._filename + '.bin')
+        return os.path.join(self._dirname, self._filename + ".bin")
 
     def get_bin_filename(self):
-        return self._filename + '.bin'
+        return self._filename + ".bin"
