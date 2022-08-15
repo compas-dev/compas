@@ -326,8 +326,7 @@ class Part(Datastructure):
         self.features = features or []
         self.transformations = deque()  # TODO: why is it necessary to queue all transformations?
 
-        self._original_shape = geometry or MeshGeometry(geometry=Polyhedron([], []))  # always in Frame.worldXY
-        self._part_geometry = copy.deepcopy(self._original_shape)  # always in Frame.worldXY, w/ features applied
+        self.geometry = geometry or MeshGeometry(geometry=Polyhedron([], []))
 
     @property
     def DATASCHEMA(self):
@@ -396,6 +395,12 @@ class Part(Datastructure):
         """
         transformed_geometry = self._part_geometry.transformed(Transformation.from_frame_to_frame(Frame.worldXY(), self.frame))
         return transformed_geometry.get_underlying_geometry()
+
+    @geometry.setter
+    def geometry(self, value):
+        self._original_shape = value
+        self._part_geometry = copy.deepcopy(self._original_shape)
+        # TODO: re-apply features?
 
     def __str__(self):
         tpl = "<Part with shape {} and features {}>"
